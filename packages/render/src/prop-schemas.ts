@@ -18,8577 +18,10953 @@ export interface PropSchema {
 }
 
 export const propSchemas: Record<string, PropSchema[]> = {
-  Accordion: [
+  "Accordion": [
     {
-      name: 'type',
-      required: false,
-      enum: ['single', 'multiple'],
+      "name": "type",
+      "required": false,
+      "enum": [
+        "single",
+        "multiple"
+      ]
     },
     {
-      name: 'defaultValue',
-      required: false,
-      shape: {
-        anyOf: [
+      "name": "defaultValue",
+      "required": false,
+      "shape": {
+        "anyOf": [
           {
-            type: 'string',
-          },
-          {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        ],
-      },
-    },
-    {
-      name: 'value',
-      required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'string',
+            "type": "string"
           },
           {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        ],
-      },
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-  ],
-  ActionSheet: [
-    {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'defaultOpen',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onOpenChange',
-      required: false,
-    },
-    {
-      name: 'actions',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: false,
-    },
-    {
-      name: 'description',
-      required: false,
-    },
-    {
-      name: 'showCancel',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  AiBadge: [
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'edited',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onRevert',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  AiDisclaimer: [
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  AiStatus: [
-    {
-      name: 'status',
-      required: true,
-      enum: ['thinking', 'generating', 'complete', 'error', 'stopped'],
-    },
-    {
-      name: 'label',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'onStop',
-      required: false,
-    },
-  ],
-  Alert: [
-    {
-      name: 'variant',
-      required: false,
-      enum: ['default', 'info', 'success', 'warning', 'destructive'],
-    },
-    {
-      name: 'title',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'icon',
-      required: false,
-    },
-    {
-      name: 'dismissible',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onDismiss',
-      required: false,
-    },
-    {
-      name: 'action',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  AlertDialog: [
-    {
-      name: 'open',
-      required: true,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'onConfirm',
-      required: true,
-    },
-    {
-      name: 'onCancel',
-      required: true,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'variant',
-      required: false,
-      enum: ['destructive', 'default'],
-    },
-  ],
-  AppFrame: [
-    {
-      name: 'footer',
-      required: false,
-    },
-    {
-      name: 'sideNavMode',
-      required: false,
-      enum: ['push', 'overlay'],
-    },
-    {
-      name: 'header',
-      required: true,
-    },
-    {
-      name: 'sideNav',
-      required: false,
-    },
-    {
-      name: 'aside',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'persistKey',
-      required: false,
-      primitives: ['string', 'boolean'],
-    },
-    {
-      name: 'state',
-      required: false,
-    },
-  ],
-  AppShell: [
-    {
-      name: 'header',
-      required: true,
-    },
-    {
-      name: 'nav',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'footer',
-      required: false,
-    },
-    {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'defaultOpen',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onOpenChange',
-      required: false,
-    },
-    {
-      name: 'padding',
-      required: false,
-    },
-  ],
-  AreaChart: [
-    {
-      name: 'series',
-      required: true,
-    },
-    {
-      name: 'x',
-      required: true,
-    },
-    {
-      name: 'y',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'stacked',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'curve',
-      required: false,
-      enum: [
-        'linear',
-        'monotone',
-        'step',
-        'stepBefore',
-        'stepAfter',
-        'natural',
-        'basis',
-        'cardinal',
-        'catmullRom',
-      ],
-    },
-    {
-      name: 'fill',
-      required: false,
-      enum: ['solid', 'gradient', 'pattern'],
-    },
-    {
-      name: 'patternKind',
-      required: false,
-      enum: ['dots', 'lines', 'cross'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'xTicks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'yTicks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'legend',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'annotations',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'onSelect',
-      required: false,
-    },
-    {
-      name: 'brush',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'dataZoom',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'zoom',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'syncId',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'tooltipMode',
-      required: false,
-      enum: ['item', 'axis'],
-    },
-    {
-      name: 'decimate',
-      required: false,
-    },
-    {
-      name: 'toolbox',
-      required: false,
-    },
-    {
-      name: 'format',
-      required: false,
-    },
-    {
-      name: 'secondAxis',
-      required: false,
-    },
-  ],
-  AspectRatio: [
-    {
-      name: 'ratio',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  AuthLayout: [
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'logo',
-      required: false,
-    },
-  ],
-  AutoGrid: [
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'min',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'gap',
-      required: false,
-    },
-  ],
-  Avatar: [
-    {
-      name: 'src',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'alt',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'name',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'fallback',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['xs', 'sm', 'md', 'lg', 'xl'],
-    },
-    {
-      name: 'status',
-      required: false,
-      enum: ['online', 'offline', 'busy'],
-    },
-  ],
-  AvatarGroup: [
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'total',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'spacing',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'isGrid',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  Badge: [
-    {
-      name: 'variant',
-      required: false,
-      enum: ['default', 'secondary', 'success', 'warning', 'destructive', 'outline'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  BarChart: [
-    {
-      name: 'series',
-      required: true,
-    },
-    {
-      name: 'x',
-      required: true,
-    },
-    {
-      name: 'y',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['vertical', 'horizontal'],
-    },
-    {
-      name: 'mode',
-      required: false,
-      enum: ['grouped', 'stacked', 'percent'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'valueAxisTicks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'categoryAxisTicks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'categoryLabelEvery',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'xLabelEvery',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'legend',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'tooltipFormat',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'annotations',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'onSelect',
-      required: false,
-    },
-    {
-      name: 'fill',
-      required: false,
-      enum: ['solid', 'gradient', 'pattern'],
-    },
-    {
-      name: 'patternKind',
-      required: false,
-      enum: ['dots', 'lines', 'cross'],
-    },
-    {
-      name: 'format',
-      required: false,
-    },
-  ],
-  Blockquote: [
-    {
-      name: 'cite',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  BottomSheet: [
-    {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'defaultOpen',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onOpenChange',
-      required: false,
-    },
-    {
-      name: 'snapPoints',
-      required: false,
-    },
-    {
-      name: 'activeSnap',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'defaultSnap',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'onSnapChange',
-      required: false,
-    },
-    {
-      name: 'title',
-      required: false,
-    },
-    {
-      name: 'description',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Boxplot: [
-    {
-      name: 'series',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'format',
-      required: false,
-    },
-  ],
-  Breadcrumb: [
-    {
-      name: 'items',
-      required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            label: {
-              type: 'string',
-            },
-            href: {
-              type: 'string',
-            },
-          },
-          required: ['label'],
-        },
-      },
-    },
-    {
-      name: 'maxVisible',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  BubbleChart: [
-    {
-      name: 'series',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'glyph',
-      required: false,
-    },
-    {
-      name: 'format',
-      required: false,
-    },
-  ],
-  Bullet: [
-    {
-      name: 'value',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'target',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'ranges',
-      required: true,
-    },
-    {
-      name: 'label',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'min',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Button: [
-    {
-      name: 'variant',
-      required: false,
-      enum: ['primary', 'secondary', 'ghost', 'destructive'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'loading',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'asChild',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onClick',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  ButtonGroup: [
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['horizontal', 'vertical'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'roving',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'loop',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'aria-label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-labelledby',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Calendar: [
-    {
-      name: 'isInRange',
-      required: false,
-    },
-    {
-      name: 'isRangeStart',
-      required: false,
-    },
-    {
-      name: 'isRangeEnd',
-      required: false,
-    },
-    {
-      name: 'onDayHover',
-      required: false,
-    },
-    {
-      name: 'value',
-      required: false,
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'min',
-      required: false,
-    },
-    {
-      name: 'max',
-      required: false,
-    },
-    {
-      name: 'disabled',
-      required: false,
-    },
-    {
-      name: 'locale',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'month',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'year',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'onViewChange',
-      required: false,
-    },
-    {
-      name: 'hideNav',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'showToday',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'showWeekNumbers',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  CalendarHeatmap: [
-    {
-      name: 'data',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'from',
-      required: false,
-    },
-    {
-      name: 'to',
-      required: false,
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'maxCellSize',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'visualMap',
-      required: false,
-    },
-  ],
-  Candlestick: [
-    {
-      name: 'data',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'yTicks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'upColor',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'downColor',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'volume',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'annotations',
-      required: false,
-    },
-    {
-      name: 'brush',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'dataZoom',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'zoom',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'syncId',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'tooltipMode',
-      required: false,
-      enum: ['item', 'axis'],
-    },
-    {
-      name: 'format',
-      required: false,
-    },
-  ],
-  Card: [
-    {
-      name: 'actions',
-      required: false,
-    },
-    {
-      name: 'variant',
-      required: false,
-      enum: ['default', 'outlined', 'elevated'],
-    },
-    {
-      name: 'padding',
-      required: false,
-      enum: ['none', 'sm', 'md', 'lg'],
-    },
-    {
-      name: 'ai',
-      required: false,
-      shape: {
-        anyOf: [
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "value",
+      "required": false,
+      "shape": {
+        "anyOf": [
           {
-            type: 'string',
-            enum: ['generating'],
+            "type": "string"
           },
           {
-            type: 'boolean',
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "children",
+      "required": true
+    }
+  ],
+  "ActionSheet": [
+    {
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "defaultOpen",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onOpenChange",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": false
+    },
+    {
+      "name": "description",
+      "required": false
+    },
+    {
+      "name": "showCancel",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "AiBadge": [
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "edited",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onRevert",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "AiDisclaimer": [
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "AiStatus": [
+    {
+      "name": "status",
+      "required": true,
+      "enum": [
+        "thinking",
+        "generating",
+        "complete",
+        "error",
+        "stopped"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "onStop",
+      "required": false
+    }
+  ],
+  "Alert": [
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "default",
+        "info",
+        "success",
+        "warning",
+        "destructive"
+      ]
+    },
+    {
+      "name": "title",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "icon",
+      "required": false
+    },
+    {
+      "name": "dismissible",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onDismiss",
+      "required": false
+    },
+    {
+      "name": "action",
+      "required": false
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "AlertDialog": [
+    {
+      "name": "open",
+      "required": true,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onConfirm",
+      "required": true
+    },
+    {
+      "name": "onCancel",
+      "required": true
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "destructive",
+        "default"
+      ]
+    }
+  ],
+  "AppFrame": [
+    {
+      "name": "footer",
+      "required": false
+    },
+    {
+      "name": "sideNavMode",
+      "required": false,
+      "enum": [
+        "push",
+        "overlay"
+      ]
+    },
+    {
+      "name": "header",
+      "required": true
+    },
+    {
+      "name": "sideNav",
+      "required": false
+    },
+    {
+      "name": "aside",
+      "required": false
+    },
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "persistKey",
+      "required": false,
+      "primitives": [
+        "string",
+        "boolean"
+      ]
+    },
+    {
+      "name": "state",
+      "required": false
+    }
+  ],
+  "AppShell": [
+    {
+      "name": "header",
+      "required": true
+    },
+    {
+      "name": "nav",
+      "required": false
+    },
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "footer",
+      "required": false
+    },
+    {
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "defaultOpen",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onOpenChange",
+      "required": false
+    },
+    {
+      "name": "padding",
+      "required": false
+    }
+  ],
+  "AreaChart": [
+    {
+      "name": "series",
+      "required": true
+    },
+    {
+      "name": "x",
+      "required": true
+    },
+    {
+      "name": "y",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "stacked",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "enum": [
+        "linear",
+        "monotone",
+        "step",
+        "stepBefore",
+        "stepAfter",
+        "natural",
+        "basis",
+        "cardinal",
+        "catmullRom"
+      ]
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "enum": [
+        "solid",
+        "gradient",
+        "pattern"
+      ]
+    },
+    {
+      "name": "patternKind",
+      "required": false,
+      "enum": [
+        "dots",
+        "lines",
+        "cross"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "xTicks",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "yTicks",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "legend",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "annotations",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "required": false
+    },
+    {
+      "name": "brush",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "dataZoom",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "zoom",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "syncId",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "tooltipMode",
+      "required": false,
+      "enum": [
+        "item",
+        "axis"
+      ]
+    },
+    {
+      "name": "decimate",
+      "required": false
+    },
+    {
+      "name": "toolbox",
+      "required": false
+    },
+    {
+      "name": "format",
+      "required": false
+    },
+    {
+      "name": "secondAxis",
+      "required": false
+    }
+  ],
+  "AspectRatio": [
+    {
+      "name": "ratio",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "AuthLayout": [
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "logo",
+      "required": false
+    }
+  ],
+  "AutoGrid": [
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "min",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "gap",
+      "required": false
+    }
+  ],
+  "Avatar": [
+    {
+      "name": "src",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "alt",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "name",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "fallback",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl"
+      ]
+    },
+    {
+      "name": "status",
+      "required": false,
+      "enum": [
+        "online",
+        "offline",
+        "busy"
+      ]
+    }
+  ],
+  "AvatarGroup": [
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "total",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "spacing",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "isGrid",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "Badge": [
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "default",
+        "secondary",
+        "success",
+        "warning",
+        "destructive",
+        "outline"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "BarChart": [
+    {
+      "name": "series",
+      "required": true
+    },
+    {
+      "name": "x",
+      "required": true
+    },
+    {
+      "name": "y",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "vertical",
+        "horizontal"
+      ]
+    },
+    {
+      "name": "mode",
+      "required": false,
+      "enum": [
+        "grouped",
+        "stacked",
+        "percent"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "valueAxisTicks",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "categoryAxisTicks",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "categoryLabelEvery",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "xLabelEvery",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "legend",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "tooltipFormat",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "annotations",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "required": false
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "enum": [
+        "solid",
+        "gradient",
+        "pattern"
+      ]
+    },
+    {
+      "name": "patternKind",
+      "required": false,
+      "enum": [
+        "dots",
+        "lines",
+        "cross"
+      ]
+    },
+    {
+      "name": "format",
+      "required": false
+    }
+  ],
+  "Blockquote": [
+    {
+      "name": "cite",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "BottomSheet": [
+    {
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "defaultOpen",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onOpenChange",
+      "required": false
+    },
+    {
+      "name": "snapPoints",
+      "required": false
+    },
+    {
+      "name": "activeSnap",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "defaultSnap",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "onSnapChange",
+      "required": false
+    },
+    {
+      "name": "title",
+      "required": false
+    },
+    {
+      "name": "description",
+      "required": false
+    },
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Boxplot": [
+    {
+      "name": "series",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "format",
+      "required": false
+    }
+  ],
+  "Breadcrumb": [
+    {
+      "name": "items",
+      "required": true,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "href": {
+              "type": "string"
+            }
           },
-        ],
-      },
+          "required": [
+            "label"
+          ]
+        }
+      }
     },
     {
-      name: 'children',
-      required: false,
+      "name": "maxVisible",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
     },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  Carousel: [
+  "BubbleChart": [
     {
-      name: 'labels',
-      required: false,
+      "name": "series",
+      "required": true
     },
     {
-      name: 'children',
-      required: false,
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'slides',
-      required: false,
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'index',
-      required: false,
-      primitives: ['number'],
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
     },
     {
-      name: 'defaultIndex',
-      required: false,
-      primitives: ['number'],
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
     },
     {
-      name: 'onIndexChange',
-      required: false,
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'loop',
-      required: false,
-      primitives: ['boolean'],
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'autoplay',
-      required: false,
-      primitives: ['number'],
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
+    {
+      "name": "glyph",
+      "required": false
+    },
+    {
+      "name": "format",
+      "required": false
+    }
   ],
-  Center: [
+  "Bullet": [
     {
-      name: 'children',
-      required: false,
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
     },
     {
-      name: 'maxWidth',
-      required: false,
-      primitives: ['string'],
+      "name": "target",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
     },
+    {
+      "name": "ranges",
+      "required": true
+    },
+    {
+      "name": "label",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "min",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  ChainOfThought: [
+  "Button": [
     {
-      name: 'items',
-      required: true,
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "primary",
+        "secondary",
+        "ghost",
+        "destructive"
+      ]
     },
     {
-      name: 'labels',
-      required: false,
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
     },
+    {
+      "name": "loading",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "asChild",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onClick",
+      "required": false
+    },
+    {
+      "name": "children",
+      "required": false
+    }
   ],
-  ChatBubble: [
+  "ButtonGroup": [
     {
-      name: 'children',
-      required: true,
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "horizontal",
+        "vertical"
+      ]
     },
     {
-      name: 'side',
-      required: false,
-      enum: ['start', 'end'],
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
     },
     {
-      name: 'avatar',
-      required: false,
+      "name": "roving",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'name',
-      required: false,
-      primitives: ['string'],
+      "name": "loop",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'time',
-      required: false,
-      primitives: ['string'],
+      "name": "aria-label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
+      "name": "aria-labelledby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  Checkbox: [
+  "Calendar": [
     {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
+      "name": "isInRange",
+      "required": false
     },
     {
-      name: 'checked',
-      required: false,
-      primitives: ['boolean'],
+      "name": "isRangeStart",
+      "required": false
     },
     {
-      name: 'indeterminate',
-      required: false,
-      primitives: ['boolean'],
+      "name": "isRangeEnd",
+      "required": false
     },
     {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
+      "name": "onDayHover",
+      "required": false
     },
     {
-      name: 'onChange',
-      required: false,
+      "name": "value",
+      "required": false
     },
     {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
+      "name": "defaultValue",
+      "required": false
     },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "min",
+      "required": false
+    },
+    {
+      "name": "max",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "month",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "year",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "onViewChange",
+      "required": false
+    },
+    {
+      "name": "hideNav",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "showToday",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "showWeekNumbers",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  CheckboxCard: [
+  "CalendarHeatmap": [
     {
-      name: 'title',
-      required: true,
+      "name": "data",
+      "required": true
     },
     {
-      name: 'description',
-      required: false,
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'checked',
-      required: false,
-      primitives: ['boolean'],
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'defaultChecked',
-      required: false,
-      primitives: ['boolean'],
+      "name": "from",
+      "required": false
     },
     {
-      name: 'onCheckedChange',
-      required: false,
+      "name": "to",
+      "required": false
     },
     {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
     },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "maxCellSize",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "visualMap",
+      "required": false
+    }
   ],
-  Code: [
+  "Candlestick": [
     {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md'],
+      "name": "data",
+      "required": true
     },
     {
-      name: 'children',
-      required: false,
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
     },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "yTicks",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "upColor",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "downColor",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "volume",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "annotations",
+      "required": false
+    },
+    {
+      "name": "brush",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "dataZoom",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "zoom",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "syncId",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "tooltipMode",
+      "required": false,
+      "enum": [
+        "item",
+        "axis"
+      ]
+    },
+    {
+      "name": "format",
+      "required": false
+    }
   ],
-  CodeEditor: [
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'language',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'lineNumbers',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'tabSize',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'insertSpaces',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'wrap',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'readOnly',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'placeholder',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onSave',
-      required: false,
-    },
-    {
-      name: 'bracketMatching',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'theme',
-      required: false,
-    },
-    {
-      name: 'keymap',
-      required: false,
-    },
-    {
-      name: 'decorations',
-      required: false,
-    },
-    {
-      name: 'commands',
-      required: false,
-    },
-    {
-      name: 'ref',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'virtualize',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  CodeSnippet: [
-    {
-      name: 'code',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'children',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'variant',
-      required: false,
-      enum: ['inline', 'single', 'multi'],
-    },
-    {
-      name: 'language',
-      required: false,
-      enum: ['bash', 'css', 'js', 'ts'],
-    },
-    {
-      name: 'terminal',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'title',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'showLineNumbers',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'showCopyButton',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Collapsible: [
-    {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'defaultOpen',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onOpenChange',
-      required: false,
-    },
-    {
-      name: 'trigger',
-      required: true,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  ColorPicker: [
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'presets',
-      required: false,
-    },
-    {
-      name: 'alpha',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'format',
-      required: false,
-      enum: ['hex', 'rgb', 'hsl'],
-    },
-    {
-      name: 'name',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'aria-labelledby',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-describedby',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-invalid',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'id',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Columns: [
-    {
-      name: 'count',
-      required: false,
-    },
-    {
-      name: 'gap',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  ComboChart: [
-    {
-      name: 'bars',
-      required: true,
-    },
-    {
-      name: 'line',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'secondAxis',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'annotations',
-      required: false,
-    },
-    {
-      name: 'barsLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'format',
-      required: false,
-    },
-    {
-      name: 'legend',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'lineLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'xLabelEvery',
-      required: false,
-      primitives: ['number'],
-    },
-  ],
-  Combobox: [
-    {
-      name: 'id',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'options',
-      required: true,
-    },
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'clearable',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'searchable',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'loading',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onSearchChange',
-      required: false,
-    },
-    {
-      name: 'filter',
-      required: false,
-    },
-    {
-      name: 'creatable',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onCreate',
-      required: false,
-    },
-    {
-      name: 'name',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'required',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'defaultOpen',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onOpenChange',
-      required: false,
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'hint',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'error',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-labelledby',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-describedby',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-invalid',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  CommandMenu: [
-    {
-      name: 'open',
-      required: true,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onOpenChange',
-      required: true,
-    },
-    {
-      name: 'groups',
-      required: true,
-    },
-    {
-      name: 'placeholder',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'emptyLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'hotkey',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'loading',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onQueryChange',
-      required: false,
-    },
-    {
-      name: 'scopes',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Comparison: [
-    {
-      name: 'after',
-      required: true,
-    },
-    {
-      name: 'before',
-      required: true,
-    },
-    {
-      name: 'position',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'defaultPosition',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'onPositionChange',
-      required: false,
-    },
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['horizontal', 'vertical'],
-    },
-    {
-      name: 'keyboardStep',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  ConsoleApp: [],
-  ContainedList: [
-    {
-      name: 'label',
-      required: true,
-    },
-    {
-      name: 'kind',
-      required: false,
-      enum: ['on-page', 'disclosed'],
-    },
-    {
-      name: 'action',
-      required: false,
-    },
-  ],
-  ContextMenu: [
-    {
-      name: 'children',
-      required: true,
-    },
-  ],
-  ContextMeter: [
-    {
-      name: 'value',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'max',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  CopyButton: [
-    {
-      name: 'value',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  Cta: [
-    {
-      name: 'title',
-      required: true,
-    },
-    {
-      name: 'description',
-      required: false,
-    },
-    {
-      name: 'actions',
-      required: false,
-    },
-    {
-      name: 'headingLevel',
-      required: false,
-    },
-  ],
-  DashboardCharts: [
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  DashboardLayout: [
-    {
-      name: 'stats',
-      required: false,
-    },
-    {
-      name: 'main',
-      required: true,
-    },
-    {
-      name: 'aside',
-      required: false,
-    },
-  ],
-  DataList: [
-    {
-      name: 'items',
-      required: false,
-    },
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['horizontal', 'vertical'],
-    },
-    {
-      name: 'dividers',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  DataTable: [
-    {
-      name: 'virtualized',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'rowHeight',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'windowSize',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'overscan',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'columns',
-      required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            key: {
-              type: 'string',
-            },
-            header: {
-              type: 'string',
-            },
-            sortable: {
-              type: 'boolean',
-            },
-            align: {
-              type: 'string',
-            },
-            filter: {
-              type: 'string',
-            },
-            editable: {
-              type: 'boolean',
-            },
-            minWidth: {
-              type: 'string',
-            },
-            width: {
-              type: 'string',
-            },
+  "Card": [
+    {
+      "name": "actions",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "default",
+        "outlined",
+        "elevated"
+      ]
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "enum": [
+        "none",
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "ai",
+      "required": false,
+      "shape": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "generating"
+            ]
           },
-          required: ['key', 'header'],
-        },
-      },
+          {
+            "type": "boolean"
+          }
+        ]
+      }
     },
     {
-      name: 'rows',
-      required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-        },
-      },
+      "name": "children",
+      "required": false
+    }
+  ],
+  "Carousel": [
+    {
+      "name": "labels",
+      "required": false
     },
     {
-      name: 'getRowId',
-      required: false,
+      "name": "children",
+      "required": false
     },
     {
-      name: 'sort',
-      required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          key: {
-            type: 'string',
+      "name": "slides",
+      "required": false
+    },
+    {
+      "name": "index",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "defaultIndex",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "onIndexChange",
+      "required": false
+    },
+    {
+      "name": "loop",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "autoplay",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    }
+  ],
+  "Center": [
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "maxWidth",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "ChainOfThought": [
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "ChatBubble": [
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "side",
+      "required": false,
+      "enum": [
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "avatar",
+      "required": false
+    },
+    {
+      "name": "name",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "time",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Checkbox": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "checked",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "indeterminate",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onChange",
+      "required": false
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "CheckboxCard": [
+    {
+      "name": "title",
+      "required": true
+    },
+    {
+      "name": "description",
+      "required": false
+    },
+    {
+      "name": "checked",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "defaultChecked",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onCheckedChange",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "Code": [
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "CodeEditor": [
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "language",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "lineNumbers",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "tabSize",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "insertSpaces",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "wrap",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "readOnly",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "placeholder",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onSave",
+      "required": false
+    },
+    {
+      "name": "bracketMatching",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "theme",
+      "required": false
+    },
+    {
+      "name": "keymap",
+      "required": false
+    },
+    {
+      "name": "decorations",
+      "required": false
+    },
+    {
+      "name": "commands",
+      "required": false
+    },
+    {
+      "name": "ref",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "virtualize",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "CodeSnippet": [
+    {
+      "name": "code",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "inline",
+        "single",
+        "multi"
+      ]
+    },
+    {
+      "name": "language",
+      "required": false,
+      "enum": [
+        "bash",
+        "css",
+        "js",
+        "ts"
+      ]
+    },
+    {
+      "name": "terminal",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "title",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "showLineNumbers",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "showCopyButton",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Collapsible": [
+    {
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "defaultOpen",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onOpenChange",
+      "required": false
+    },
+    {
+      "name": "trigger",
+      "required": true
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "ColorPicker": [
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "presets",
+      "required": false
+    },
+    {
+      "name": "alpha",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "format",
+      "required": false,
+      "enum": [
+        "hex",
+        "rgb",
+        "hsl"
+      ]
+    },
+    {
+      "name": "name",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "aria-labelledby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-describedby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-invalid",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "id",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Columns": [
+    {
+      "name": "count",
+      "required": false
+    },
+    {
+      "name": "gap",
+      "required": false
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "ComboChart": [
+    {
+      "name": "bars",
+      "required": true
+    },
+    {
+      "name": "line",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "secondAxis",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "annotations",
+      "required": false
+    },
+    {
+      "name": "barsLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "format",
+      "required": false
+    },
+    {
+      "name": "legend",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "lineLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "xLabelEvery",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    }
+  ],
+  "Combobox": [
+    {
+      "name": "id",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "options",
+      "required": true
+    },
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "clearable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "searchable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "loading",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onSearchChange",
+      "required": false
+    },
+    {
+      "name": "filter",
+      "required": false
+    },
+    {
+      "name": "creatable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onCreate",
+      "required": false
+    },
+    {
+      "name": "name",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "required",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "defaultOpen",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onOpenChange",
+      "required": false
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "hint",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "error",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-labelledby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-describedby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-invalid",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "CommandMenu": [
+    {
+      "name": "open",
+      "required": true,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onOpenChange",
+      "required": true
+    },
+    {
+      "name": "groups",
+      "required": true
+    },
+    {
+      "name": "placeholder",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "emptyLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "hotkey",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "loading",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onQueryChange",
+      "required": false
+    },
+    {
+      "name": "scopes",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Comparison": [
+    {
+      "name": "after",
+      "required": true
+    },
+    {
+      "name": "before",
+      "required": true
+    },
+    {
+      "name": "position",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "defaultPosition",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "onPositionChange",
+      "required": false
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "horizontal",
+        "vertical"
+      ]
+    },
+    {
+      "name": "keyboardStep",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "ConsoleApp": [],
+  "ContainedList": [
+    {
+      "name": "label",
+      "required": true
+    },
+    {
+      "name": "kind",
+      "required": false,
+      "enum": [
+        "on-page",
+        "disclosed"
+      ]
+    },
+    {
+      "name": "action",
+      "required": false
+    }
+  ],
+  "ContextMenu": [
+    {
+      "name": "children",
+      "required": true
+    }
+  ],
+  "ContextMeter": [
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "max",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "CopyButton": [
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "Cta": [
+    {
+      "name": "title",
+      "required": true
+    },
+    {
+      "name": "description",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "required": false
+    },
+    {
+      "name": "headingLevel",
+      "required": false
+    }
+  ],
+  "DashboardCharts": [
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "DashboardLayout": [
+    {
+      "name": "stats",
+      "required": false
+    },
+    {
+      "name": "main",
+      "required": true
+    },
+    {
+      "name": "aside",
+      "required": false
+    }
+  ],
+  "DataList": [
+    {
+      "name": "items",
+      "required": false
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "horizontal",
+        "vertical"
+      ]
+    },
+    {
+      "name": "dividers",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "DataTable": [
+    {
+      "name": "virtualized",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "rowHeight",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "windowSize",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "overscan",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "columns",
+      "required": true,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "header": {
+              "type": "string"
+            },
+            "sortable": {
+              "type": "boolean"
+            },
+            "align": {
+              "type": "string"
+            },
+            "filter": {
+              "type": "string"
+            },
+            "editable": {
+              "type": "boolean"
+            },
+            "minWidth": {
+              "type": "string"
+            },
+            "width": {
+              "type": "string"
+            }
           },
-          direction: {
-            type: 'string',
+          "required": [
+            "key",
+            "header"
+          ]
+        }
+      }
+    },
+    {
+      "name": "rows",
+      "required": true,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    {
+      "name": "getRowId",
+      "required": false
+    },
+    {
+      "name": "sort",
+      "required": false,
+      "shape": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
           },
-          thenBy: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                key: {
-                  type: 'string',
+          "direction": {
+            "type": "string"
+          },
+          "thenBy": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
                 },
-                direction: {
-                  type: 'string',
+                "direction": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "key",
+                "direction"
+              ]
+            }
+          }
+        },
+        "required": [
+          "key",
+          "direction"
+        ]
+      }
+    },
+    {
+      "name": "defaultSort",
+      "required": false,
+      "shape": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "direction": {
+            "type": "string"
+          },
+          "thenBy": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
                 },
+                "direction": {
+                  "type": "string"
+                }
               },
-              required: ['key', 'direction'],
-            },
-          },
+              "required": [
+                "key",
+                "direction"
+              ]
+            }
+          }
         },
-        required: ['key', 'direction'],
-      },
+        "required": [
+          "key",
+          "direction"
+        ]
+      }
     },
     {
-      name: 'defaultSort',
-      required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          key: {
-            type: 'string',
+      "name": "sortMode",
+      "required": false,
+      "enum": [
+        "client",
+        "server"
+      ]
+    },
+    {
+      "name": "onSortChange",
+      "required": false
+    },
+    {
+      "name": "searchable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "pagination",
+      "required": false,
+      "shape": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "number"
           },
-          direction: {
-            type: 'string',
+          "pageSizeOptions": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
           },
-          thenBy: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                key: {
-                  type: 'string',
-                },
-                direction: {
-                  type: 'string',
-                },
-              },
-              required: ['key', 'direction'],
-            },
-          },
+          "page": {
+            "type": "number"
+          }
         },
-        required: ['key', 'direction'],
-      },
+        "required": [
+          "pageSize"
+        ]
+      }
     },
     {
-      name: 'sortMode',
-      required: false,
-      enum: ['client', 'server'],
-    },
-    {
-      name: 'onSortChange',
-      required: false,
-    },
-    {
-      name: 'searchable',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'pagination',
-      required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          pageSize: {
-            type: 'number',
+      "name": "selection",
+      "required": false,
+      "shape": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string"
           },
-          pageSizeOptions: {
-            type: 'array',
-            items: {
-              type: 'number',
-            },
-          },
-          page: {
-            type: 'number',
-          },
+          "selected": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         },
-        required: ['pageSize'],
-      },
+        "required": [
+          "mode"
+        ]
+      }
     },
     {
-      name: 'selection',
-      required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          mode: {
-            type: 'string',
+      "name": "batchActions",
+      "required": false
+    },
+    {
+      "name": "filters",
+      "required": false
+    },
+    {
+      "name": "defaultFilters",
+      "required": false
+    },
+    {
+      "name": "onFiltersChange",
+      "required": false
+    },
+    {
+      "name": "noResultsState",
+      "required": false
+    },
+    {
+      "name": "toolbar",
+      "required": false
+    },
+    {
+      "name": "rowActions",
+      "required": false
+    },
+    {
+      "name": "columnState",
+      "required": false,
+      "shape": {
+        "type": "object",
+        "properties": {
+          "hidden": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
-          selected: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
+          "order": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "defaultColumnState",
+      "required": false,
+      "shape": {
+        "type": "object",
+        "properties": {
+          "hidden": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
-        },
-        required: ['mode'],
-      },
+          "order": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
     },
     {
-      name: 'batchActions',
-      required: false,
+      "name": "onColumnStateChange",
+      "required": false
     },
     {
-      name: 'filters',
-      required: false,
-    },
-    {
-      name: 'defaultFilters',
-      required: false,
-    },
-    {
-      name: 'onFiltersChange',
-      required: false,
-    },
-    {
-      name: 'noResultsState',
-      required: false,
-    },
-    {
-      name: 'toolbar',
-      required: false,
-    },
-    {
-      name: 'rowActions',
-      required: false,
-    },
-    {
-      name: 'columnState',
-      required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          hidden: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
+      "name": "columnSettings",
+      "required": false,
+      "shape": {
+        "type": "object",
+        "properties": {
+          "visibility": {
+            "type": "boolean"
           },
-          order: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
+          "resizable": {
+            "type": "boolean"
           },
-        },
-      },
-    },
-    {
-      name: 'defaultColumnState',
-      required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          hidden: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
+          "reorderable": {
+            "type": "boolean"
           },
-          order: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        },
-      },
+          "pinnable": {
+            "type": "boolean"
+          }
+        }
+      }
     },
     {
-      name: 'onColumnStateChange',
-      required: false,
+      "name": "server",
+      "required": false
     },
     {
-      name: 'columnSettings',
-      required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          visibility: {
-            type: 'boolean',
-          },
-          resizable: {
-            type: 'boolean',
-          },
-          reorderable: {
-            type: 'boolean',
-          },
-          pinnable: {
-            type: 'boolean',
-          },
-        },
-      },
+      "name": "multiSort",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'server',
-      required: false,
+      "name": "stateKey",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'multiSort',
-      required: false,
-      primitives: ['boolean'],
+      "name": "keyboardNavigation",
+      "required": false,
+      "enum": [
+        "row",
+        "grid"
+      ]
     },
     {
-      name: 'stateKey',
-      required: false,
-      primitives: ['string'],
+      "name": "onCellEdit",
+      "required": false
     },
     {
-      name: 'keyboardNavigation',
-      required: false,
-      enum: ['row', 'grid'],
-    },
-    {
-      name: 'onCellEdit',
-      required: false,
-    },
-    {
-      name: 'groupBy',
-      required: false,
-      shape: {
-        anyOf: [
+      "name": "groupBy",
+      "required": false,
+      "shape": {
+        "anyOf": [
           {
-            type: 'string',
+            "type": "string"
           },
           {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        ],
-      },
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
+      }
     },
     {
-      name: 'totals',
-      required: false,
-      primitives: ['boolean'],
+      "name": "totals",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'pinnedRows',
-      required: false,
-      shape: {
-        type: 'object',
-        properties: {
-          top: {
-            type: 'array',
-            items: {
-              type: 'object',
-            },
+      "name": "pinnedRows",
+      "required": false,
+      "shape": {
+        "type": "object",
+        "properties": {
+          "top": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
           },
-          bottom: {
-            type: 'array',
-            items: {
-              type: 'object',
-            },
-          },
-        },
-      },
+          "bottom": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      }
     },
     {
-      name: 'columnGroups',
-      required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            header: {
-              type: 'string',
+      "name": "columnGroups",
+      "required": false,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
             },
-            columns: {
-              type: 'array',
-              items: {
-                type: 'string',
-              },
-            },
+            "columns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           },
-          required: ['header', 'columns'],
-        },
-      },
+          "required": [
+            "header",
+            "columns"
+          ]
+        }
+      }
     },
     {
-      name: 'exportable',
-      required: false,
-      shape: {
-        anyOf: [
+      "name": "exportable",
+      "required": false,
+      "shape": {
+        "anyOf": [
           {
-            type: 'boolean',
+            "type": "boolean"
           },
           {
-            type: 'object',
-            properties: {
-              filename: {
-                type: 'string',
-              },
-            },
-          },
-        ],
-      },
+            "type": "object",
+            "properties": {
+              "filename": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
     },
     {
-      name: 'renderExpandedRow',
-      required: false,
+      "name": "renderExpandedRow",
+      "required": false
     },
     {
-      name: 'density',
-      required: false,
-      enum: ['compact', 'normal', 'relaxed'],
+      "name": "density",
+      "required": false,
+      "enum": [
+        "compact",
+        "normal",
+        "relaxed"
+      ]
     },
     {
-      name: 'zebra',
-      required: false,
-      primitives: ['boolean'],
+      "name": "zebra",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'stickyHeader',
-      required: false,
-      primitives: ['boolean'],
+      "name": "stickyHeader",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'loading',
-      required: false,
-      primitives: ['boolean'],
+      "name": "loading",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'emptyState',
-      required: false,
+      "name": "emptyState",
+      "required": false
     },
     {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'title',
-      required: false,
-      primitives: ['string'],
+      "name": "title",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'labels',
-      required: false,
+      "name": "labels",
+      "required": false
     },
     {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  DatePicker: [
+  "DatePicker": [
     {
-      name: 'id',
-      required: false,
-      primitives: ['string'],
+      "name": "id",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'onValueChange',
-      required: false,
+      "name": "onValueChange",
+      "required": false
     },
     {
-      name: 'min',
-      required: false,
-      primitives: ['string'],
+      "name": "min",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'max',
-      required: false,
-      primitives: ['string'],
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'clearable',
-      required: false,
-      primitives: ['boolean'],
+      "name": "clearable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'typeable',
-      required: false,
-      primitives: ['boolean'],
+      "name": "typeable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'disabledDate',
-      required: false,
+      "name": "disabledDate",
+      "required": false
     },
     {
-      name: 'format',
-      required: false,
+      "name": "format",
+      "required": false
     },
     {
-      name: 'showToday',
-      required: false,
-      primitives: ['boolean'],
+      "name": "showToday",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'name',
-      required: false,
-      primitives: ['string'],
+      "name": "name",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'required',
-      required: false,
-      primitives: ['boolean'],
+      "name": "required",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'onOpenChange',
-      required: false,
+      "name": "onOpenChange",
+      "required": false
     },
     {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'hint',
-      required: false,
-      primitives: ['string'],
+      "name": "hint",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'error',
-      required: false,
-      primitives: ['string'],
+      "name": "error",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
     },
     {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'labels',
-      required: false,
+      "name": "labels",
+      "required": false
     },
     {
-      name: 'aria-labelledby',
-      required: false,
-      primitives: ['string'],
+      "name": "aria-labelledby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'aria-describedby',
-      required: false,
-      primitives: ['string'],
+      "name": "aria-describedby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'aria-invalid',
-      required: false,
-      primitives: ['boolean'],
+      "name": "aria-invalid",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  DateRangePicker: [
+  "DateRangePicker": [
     {
-      name: 'value',
-      required: false,
+      "name": "value",
+      "required": false
     },
     {
-      name: 'defaultValue',
-      required: false,
+      "name": "defaultValue",
+      "required": false
     },
     {
-      name: 'onValueChange',
-      required: false,
+      "name": "onValueChange",
+      "required": false
     },
     {
-      name: 'min',
-      required: false,
+      "name": "min",
+      "required": false
     },
     {
-      name: 'max',
-      required: false,
+      "name": "max",
+      "required": false
     },
     {
-      name: 'disabled',
-      required: false,
+      "name": "disabled",
+      "required": false
     },
     {
-      name: 'presets',
-      required: false,
+      "name": "presets",
+      "required": false
     },
     {
-      name: 'locale',
-      required: false,
-      primitives: ['string'],
+      "name": "locale",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'placeholder',
-      required: false,
-      primitives: ['string'],
+      "name": "placeholder",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
     },
     {
-      name: 'labels',
-      required: false,
-    },
+      "name": "labels",
+      "required": false
+    }
   ],
-  Dock: [
+  "Dock": [
     {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'items',
-      required: true,
+      "name": "items",
+      "required": true
     },
     {
-      name: 'activeIndex',
-      required: false,
-      primitives: ['number'],
+      "name": "activeIndex",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
     },
     {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  Drawer: [
+  "Drawer": [
     {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'defaultOpen',
-      required: false,
-      primitives: ['boolean'],
+      "name": "defaultOpen",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'onOpenChange',
-      required: false,
+      "name": "onOpenChange",
+      "required": false
     },
     {
-      name: 'side',
-      required: false,
-      enum: ['start', 'end', 'top', 'bottom'],
+      "name": "side",
+      "required": false,
+      "enum": [
+        "start",
+        "end",
+        "top",
+        "bottom"
+      ]
     },
     {
-      name: 'size',
-      required: false,
-      primitives: ['string'],
+      "name": "size",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'title',
-      required: false,
+      "name": "title",
+      "required": false
     },
     {
-      name: 'description',
-      required: false,
+      "name": "description",
+      "required": false
     },
     {
-      name: 'children',
-      required: false,
+      "name": "children",
+      "required": false
     },
     {
-      name: 'labels',
-      required: false,
+      "name": "labels",
+      "required": false
     },
     {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'swipeToDismiss',
-      required: false,
-      primitives: ['boolean'],
-    },
+      "name": "swipeToDismiss",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
   ],
-  Dropdown: [
+  "Dropdown": [
     {
-      name: 'trigger',
-      required: true,
+      "name": "trigger",
+      "required": true
     },
     {
-      name: 'items',
-      required: true,
-      shape: {
-        type: 'array',
-        items: {
-          anyOf: [
+      "name": "items",
+      "required": true,
+      "shape": {
+        "type": "array",
+        "items": {
+          "anyOf": [
             {
-              type: 'object',
-              properties: {
-                label: {
-                  type: 'string',
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
                 },
-                value: {
-                  type: 'string',
+                "value": {
+                  "type": "string"
                 },
-                icon: {
-                  anyOf: [
+                "icon": {
+                  "anyOf": [
                     {
-                      type: 'string',
+                      "type": "string"
                     },
                     {
-                      type: 'number',
-                    },
-                  ],
+                      "type": "number"
+                    }
+                  ]
                 },
-                disabled: {
-                  type: 'boolean',
-                },
+                "disabled": {
+                  "type": "boolean"
+                }
               },
-              required: ['label', 'value'],
+              "required": [
+                "label",
+                "value"
+              ]
             },
             {
-              type: 'object',
-              properties: {
-                kind: {
-                  type: 'string',
-                },
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string"
+                }
               },
-              required: ['kind'],
+              "required": [
+                "kind"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "onSelect",
+      "required": false
+    },
+    {
+      "name": "placement",
+      "required": false,
+      "enum": [
+        "bottom-start",
+        "bottom-end"
+      ]
+    },
+    {
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onOpenChange",
+      "required": false
+    }
+  ],
+  "Editable": [
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": true
+    },
+    {
+      "name": "placeholder",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "submitOnBlur",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onCancel",
+      "required": false
+    },
+    {
+      "name": "id",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-labelledby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-describedby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-invalid",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "EmptyDashboard": [
+    {
+      "name": "onCreateItem",
+      "required": false
+    }
+  ],
+  "EmptyState": [
+    {
+      "name": "icon",
+      "required": false
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "action",
+      "required": false
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "md",
+        "lg"
+      ]
+    }
+  ],
+  "Fab": [
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onClick",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "required": false
+    },
+    {
+      "name": "position",
+      "required": false,
+      "enum": [
+        "bottom-end",
+        "bottom-start"
+      ]
+    },
+    {
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "defaultOpen",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onOpenChange",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "FeatureGrid": [
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": false
+    },
+    {
+      "name": "description",
+      "required": false
+    },
+    {
+      "name": "headingLevel",
+      "required": false
+    },
+    {
+      "name": "min",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Field": [
+    {
+      "name": "label",
+      "required": false
+    },
+    {
+      "name": "hint",
+      "required": false
+    },
+    {
+      "name": "description",
+      "required": false
+    },
+    {
+      "name": "error",
+      "required": false
+    },
+    {
+      "name": "required",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "id",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "children",
+      "required": true
+    }
+  ],
+  "FileUploader": [
+    {
+      "name": "files",
+      "required": false
+    },
+    {
+      "name": "onFilesAdded",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "required": false
+    },
+    {
+      "name": "multiple",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "accept",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "maxSize",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "onRejected",
+      "required": false
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "hint",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Filter": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "options",
+      "required": true
+    },
+    {
+      "name": "value",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "multi",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "pill",
+        "outline"
+      ]
+    },
+    {
+      "name": "multiple",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "Flex": [
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "direction",
+      "required": false,
+      "enum": [
+        "vertical",
+        "horizontal"
+      ]
+    },
+    {
+      "name": "gap",
+      "required": false
+    },
+    {
+      "name": "align",
+      "required": false,
+      "enum": [
+        "start",
+        "center",
+        "end",
+        "stretch"
+      ]
+    },
+    {
+      "name": "justify",
+      "required": false,
+      "enum": [
+        "start",
+        "center",
+        "end",
+        "between"
+      ]
+    },
+    {
+      "name": "wrap",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "auto",
+        "fixed",
+        "grow",
+        "shrink"
+      ]
+    },
+    {
+      "name": "basis",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "truncate",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "Flow": [
+    {
+      "name": "nodes",
+      "required": true
+    },
+    {
+      "name": "edges",
+      "required": true
+    },
+    {
+      "name": "onNodesChange",
+      "required": false
+    },
+    {
+      "name": "onEdgesChange",
+      "required": false
+    },
+    {
+      "name": "onConnect",
+      "required": false
+    },
+    {
+      "name": "nodeTypes",
+      "required": false
+    },
+    {
+      "name": "fitView",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "background",
+      "required": false
+    },
+    {
+      "name": "controls",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "minimap",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "layout",
+      "required": false
+    },
+    {
+      "name": "interactive",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "activeDirection",
+      "required": false
+    },
+    {
+      "name": "activeEdgeId",
+      "required": false
+    },
+    {
+      "name": "maxZoom",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "minZoom",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    }
+  ],
+  "FlowBackground": [
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "dots",
+        "grid",
+        "cross"
+      ]
+    },
+    {
+      "name": "gap",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "color",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "FlowCanvas": [
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "viewport",
+      "required": false
+    },
+    {
+      "name": "onViewportChange",
+      "required": false
+    },
+    {
+      "name": "minZoom",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "maxZoom",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "panOnDrag",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "zoomOnScroll",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "fitView",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "chrome",
+      "required": false
+    },
+    {
+      "name": "controller",
+      "required": false
+    },
+    {
+      "name": "defaultViewport",
+      "required": false
+    },
+    {
+      "name": "flow",
+      "required": false
+    }
+  ],
+  "FlowControls": [
+    {
+      "name": "position",
+      "required": false,
+      "enum": [
+        "top-left",
+        "top-right",
+        "bottom-left",
+        "bottom-right"
+      ]
+    },
+    {
+      "name": "showZoom",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "showFitView",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onZoomIn",
+      "required": false
+    },
+    {
+      "name": "onZoomOut",
+      "required": false
+    },
+    {
+      "name": "onFitView",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "FlowEdge": [
+    {
+      "name": "sourceX",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "sourceY",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "targetX",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "targetY",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "type",
+      "required": false,
+      "enum": [
+        "bezier",
+        "straight",
+        "smoothstep"
+      ]
+    },
+    {
+      "name": "animated",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false
+    },
+    {
+      "name": "selected",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "markerStart",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "markerEnd",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "active",
+      "required": false
+    },
+    {
+      "name": "direction",
+      "required": false
+    },
+    {
+      "name": "id",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "sourcePosition",
+      "required": false
+    },
+    {
+      "name": "targetPosition",
+      "required": false
+    }
+  ],
+  "FlowHandle": [
+    {
+      "name": "type",
+      "required": true,
+      "enum": [
+        "source",
+        "target"
+      ]
+    },
+    {
+      "name": "position",
+      "required": false,
+      "enum": [
+        "top",
+        "right",
+        "bottom",
+        "left"
+      ]
+    },
+    {
+      "name": "id",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "isConnectable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "FlowMiniMap": [
+    {
+      "name": "nodes",
+      "required": true
+    },
+    {
+      "name": "viewport",
+      "required": true
+    },
+    {
+      "name": "containerWidth",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "containerHeight",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "position",
+      "required": false,
+      "enum": [
+        "top-left",
+        "top-right",
+        "bottom-left",
+        "bottom-right"
+      ]
+    },
+    {
+      "name": "onViewportChange",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false
+    },
+    {
+      "name": "nodeColor",
+      "required": false
+    }
+  ],
+  "FlowNode": [
+    {
+      "name": "id",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "position",
+      "required": false
+    },
+    {
+      "name": "defaultPosition",
+      "required": false
+    },
+    {
+      "name": "onPositionChange",
+      "required": false
+    },
+    {
+      "name": "zoom",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "selected",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "draggable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "interactive",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onSelect",
+      "required": false
+    },
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onMeasure",
+      "required": false
+    }
+  ],
+  "FlowPanel": [
+    {
+      "name": "position",
+      "required": false,
+      "enum": [
+        "top-left",
+        "top-center",
+        "top-right",
+        "bottom-left",
+        "bottom-center",
+        "bottom-right"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "FlowStory": [
+    {
+      "name": "nodes",
+      "required": true
+    },
+    {
+      "name": "edges",
+      "required": true
+    },
+    {
+      "name": "script",
+      "required": true
+    },
+    {
+      "name": "loop",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "stepDuration",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "stepGap",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "playing",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "currentStep",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "onStepChange",
+      "required": false
+    },
+    {
+      "name": "controls",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "autoPlay",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "interactive",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "background",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "clock",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "Form": [
+    {
+      "name": "form",
+      "required": true
+    },
+    {
+      "name": "onValid",
+      "required": true
+    },
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Funnel": [
+    {
+      "name": "data",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "showConversion",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "Gauge": [
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "min",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "thresholds",
+      "required": false
+    },
+    {
+      "name": "unit",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "sweep",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "ticks",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "Grid": [
+    {
+      "name": "cols",
+      "required": false,
+      "shape": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "base": {
+                "type": "number"
+              },
+              "sm": {
+                "type": "number"
+              },
+              "md": {
+                "type": "number"
+              },
+              "lg": {
+                "type": "number"
+              },
+              "xl": {
+                "type": "number"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "gap",
+      "required": false
+    },
+    {
+      "name": "align",
+      "required": false,
+      "enum": [
+        "start",
+        "center",
+        "end",
+        "stretch"
+      ]
+    },
+    {
+      "name": "justify",
+      "required": false,
+      "enum": [
+        "start",
+        "center",
+        "end",
+        "stretch"
+      ]
+    },
+    {
+      "name": "alignRows",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "span",
+      "required": false,
+      "shape": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "base": {
+                "type": "number"
+              },
+              "sm": {
+                "type": "number"
+              },
+              "md": {
+                "type": "number"
+              },
+              "lg": {
+                "type": "number"
+              },
+              "xl": {
+                "type": "number"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "Header": [
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "brand",
+      "required": false
+    },
+    {
+      "name": "links",
+      "required": false,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
             },
-          ],
-        },
-      },
-    },
-    {
-      name: 'onSelect',
-      required: false,
-    },
-    {
-      name: 'placement',
-      required: false,
-      enum: ['bottom-start', 'bottom-end'],
-    },
-    {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onOpenChange',
-      required: false,
-    },
-  ],
-  Editable: [
-    {
-      name: 'value',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'onValueChange',
-      required: true,
-    },
-    {
-      name: 'placeholder',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'submitOnBlur',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onCancel',
-      required: false,
-    },
-    {
-      name: 'id',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-labelledby',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-describedby',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-invalid',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  EmptyDashboard: [
-    {
-      name: 'onCreateItem',
-      required: false,
-    },
-  ],
-  EmptyState: [
-    {
-      name: 'icon',
-      required: false,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'action',
-      required: false,
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['md', 'lg'],
-    },
-  ],
-  Fab: [
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onClick',
-      required: false,
-    },
-    {
-      name: 'actions',
-      required: false,
-    },
-    {
-      name: 'position',
-      required: false,
-      enum: ['bottom-end', 'bottom-start'],
-    },
-    {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'defaultOpen',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onOpenChange',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  FeatureGrid: [
-    {
-      name: 'items',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: false,
-    },
-    {
-      name: 'description',
-      required: false,
-    },
-    {
-      name: 'headingLevel',
-      required: false,
-    },
-    {
-      name: 'min',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Field: [
-    {
-      name: 'label',
-      required: false,
-    },
-    {
-      name: 'hint',
-      required: false,
-    },
-    {
-      name: 'description',
-      required: false,
-    },
-    {
-      name: 'error',
-      required: false,
-    },
-    {
-      name: 'required',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'id',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-  ],
-  FileUploader: [
-    {
-      name: 'files',
-      required: false,
-    },
-    {
-      name: 'onFilesAdded',
-      required: false,
-    },
-    {
-      name: 'onRemove',
-      required: false,
-    },
-    {
-      name: 'multiple',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'accept',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'maxSize',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'onRejected',
-      required: false,
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'hint',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Filter: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'options',
-      required: true,
-    },
-    {
-      name: 'value',
-      required: false,
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'multi',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'variant',
-      required: false,
-      enum: ['pill', 'outline'],
-    },
-    {
-      name: 'multiple',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  Flex: [
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'direction',
-      required: false,
-      enum: ['vertical', 'horizontal'],
-    },
-    {
-      name: 'gap',
-      required: false,
-    },
-    {
-      name: 'align',
-      required: false,
-      enum: ['start', 'center', 'end', 'stretch'],
-    },
-    {
-      name: 'justify',
-      required: false,
-      enum: ['start', 'center', 'end', 'between'],
-    },
-    {
-      name: 'wrap',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['auto', 'fixed', 'grow', 'shrink'],
-    },
-    {
-      name: 'basis',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'truncate',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  Flow: [
-    {
-      name: 'nodes',
-      required: true,
-    },
-    {
-      name: 'edges',
-      required: true,
-    },
-    {
-      name: 'onNodesChange',
-      required: false,
-    },
-    {
-      name: 'onEdgesChange',
-      required: false,
-    },
-    {
-      name: 'onConnect',
-      required: false,
-    },
-    {
-      name: 'nodeTypes',
-      required: false,
-    },
-    {
-      name: 'fitView',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'background',
-      required: false,
-    },
-    {
-      name: 'controls',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'minimap',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'layout',
-      required: false,
-    },
-    {
-      name: 'interactive',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'activeDirection',
-      required: false,
-    },
-    {
-      name: 'activeEdgeId',
-      required: false,
-    },
-    {
-      name: 'maxZoom',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'minZoom',
-      required: false,
-      primitives: ['number'],
-    },
-  ],
-  FlowBackground: [
-    {
-      name: 'variant',
-      required: false,
-      enum: ['dots', 'grid', 'cross'],
-    },
-    {
-      name: 'gap',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'size',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'color',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  FlowCanvas: [
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'viewport',
-      required: false,
-    },
-    {
-      name: 'onViewportChange',
-      required: false,
-    },
-    {
-      name: 'minZoom',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'maxZoom',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'panOnDrag',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'zoomOnScroll',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'fitView',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'chrome',
-      required: false,
-    },
-    {
-      name: 'controller',
-      required: false,
-    },
-    {
-      name: 'defaultViewport',
-      required: false,
-    },
-    {
-      name: 'flow',
-      required: false,
-    },
-  ],
-  FlowControls: [
-    {
-      name: 'position',
-      required: false,
-      enum: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-    },
-    {
-      name: 'showZoom',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'showFitView',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onZoomIn',
-      required: false,
-    },
-    {
-      name: 'onZoomOut',
-      required: false,
-    },
-    {
-      name: 'onFitView',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  FlowEdge: [
-    {
-      name: 'sourceX',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'sourceY',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'targetX',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'targetY',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'type',
-      required: false,
-      enum: ['bezier', 'straight', 'smoothstep'],
-    },
-    {
-      name: 'animated',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'label',
-      required: false,
-    },
-    {
-      name: 'selected',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'markerStart',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'markerEnd',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'active',
-      required: false,
-    },
-    {
-      name: 'direction',
-      required: false,
-    },
-    {
-      name: 'id',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'sourcePosition',
-      required: false,
-    },
-    {
-      name: 'targetPosition',
-      required: false,
-    },
-  ],
-  FlowHandle: [
-    {
-      name: 'type',
-      required: true,
-      enum: ['source', 'target'],
-    },
-    {
-      name: 'position',
-      required: false,
-      enum: ['top', 'right', 'bottom', 'left'],
-    },
-    {
-      name: 'id',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'isConnectable',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  FlowMiniMap: [
-    {
-      name: 'nodes',
-      required: true,
-    },
-    {
-      name: 'viewport',
-      required: true,
-    },
-    {
-      name: 'containerWidth',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'containerHeight',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'position',
-      required: false,
-      enum: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-    },
-    {
-      name: 'onViewportChange',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-    },
-    {
-      name: 'nodeColor',
-      required: false,
-    },
-  ],
-  FlowNode: [
-    {
-      name: 'id',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'position',
-      required: false,
-    },
-    {
-      name: 'defaultPosition',
-      required: false,
-    },
-    {
-      name: 'onPositionChange',
-      required: false,
-    },
-    {
-      name: 'zoom',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'selected',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'draggable',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'interactive',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onSelect',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onMeasure',
-      required: false,
-    },
-  ],
-  FlowPanel: [
-    {
-      name: 'position',
-      required: false,
-      enum: ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  FlowStory: [
-    {
-      name: 'nodes',
-      required: true,
-    },
-    {
-      name: 'edges',
-      required: true,
-    },
-    {
-      name: 'script',
-      required: true,
-    },
-    {
-      name: 'loop',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'stepDuration',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'stepGap',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'playing',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'currentStep',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'onStepChange',
-      required: false,
-    },
-    {
-      name: 'controls',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'autoPlay',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'interactive',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'background',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'clock',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  Form: [
-    {
-      name: 'form',
-      required: true,
-    },
-    {
-      name: 'onValid',
-      required: true,
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Funnel: [
-    {
-      name: 'data',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'showConversion',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  Gauge: [
-    {
-      name: 'value',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'min',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'thresholds',
-      required: false,
-    },
-    {
-      name: 'unit',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'sweep',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'ticks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  Grid: [
-    {
-      name: 'cols',
-      required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'number',
-          },
-          {
-            type: 'object',
-            properties: {
-              base: {
-                type: 'number',
-              },
-              sm: {
-                type: 'number',
-              },
-              md: {
-                type: 'number',
-              },
-              lg: {
-                type: 'number',
-              },
-              xl: {
-                type: 'number',
-              },
+            "href": {
+              "type": "string"
             },
+            "active": {
+              "type": "boolean"
+            }
           },
-        ],
-      },
+          "required": [
+            "label",
+            "href"
+          ]
+        }
+      }
     },
     {
-      name: 'gap',
-      required: false,
+      "name": "actions",
+      "required": false
     },
     {
-      name: 'align',
-      required: false,
-      enum: ['start', 'center', 'end', 'stretch'],
+      "name": "sticky",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'justify',
-      required: false,
-      enum: ['start', 'center', 'end', 'stretch'],
-    },
-    {
-      name: 'alignRows',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'span',
-      required: false,
-      shape: {
-        anyOf: [
-          {
-            type: 'number',
-          },
-          {
-            type: 'object',
-            properties: {
-              base: {
-                type: 'number',
-              },
-              sm: {
-                type: 'number',
-              },
-              md: {
-                type: 'number',
-              },
-              lg: {
-                type: 'number',
-              },
-              xl: {
-                type: 'number',
-              },
-            },
-          },
-        ],
-      },
-    },
-    {
-      name: 'children',
-      required: false,
-    },
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  Header: [
+  "HeaderPanel": [
     {
-      name: 'labels',
-      required: false,
+      "name": "open",
+      "required": true,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'brand',
-      required: false,
+      "name": "onClose",
+      "required": true
     },
     {
-      name: 'links',
-      required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            label: {
-              type: 'string',
-            },
-            href: {
-              type: 'string',
-            },
-            active: {
-              type: 'boolean',
-            },
-          },
-          required: ['label', 'href'],
-        },
-      },
+      "name": "label",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'actions',
-      required: false,
+      "name": "children",
+      "required": true
     },
     {
-      name: 'sticky',
-      required: false,
-      primitives: ['boolean'],
+      "name": "labels",
+      "required": false
     },
     {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  HeaderPanel: [
+  "Heading": [
     {
-      name: 'open',
-      required: true,
-      primitives: ['boolean'],
+      "name": "level",
+      "required": false
     },
     {
-      name: 'onClose',
-      required: true,
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "2xl"
+      ]
     },
     {
-      name: 'label',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
+      "name": "children",
+      "required": false
+    }
   ],
-  Heading: [
+  "Heatmap": [
     {
-      name: 'level',
-      required: false,
+      "name": "data",
+      "required": true
     },
     {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg', 'xl', '2xl'],
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'children',
-      required: false,
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "visualMap",
+      "required": false
+    },
+    {
+      "name": "toolbox",
+      "required": false
+    },
+    {
+      "name": "format",
+      "required": false
+    }
   ],
-  Heatmap: [
+  "Hero": [
     {
-      name: 'data',
-      required: true,
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "centered",
+        "split"
+      ]
     },
     {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
+      "name": "title",
+      "required": true
     },
     {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
+      "name": "eyebrow",
+      "required": false
     },
     {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
+      "name": "description",
+      "required": false
     },
     {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
+      "name": "actions",
+      "required": false
     },
     {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
+      "name": "media",
+      "required": false
     },
     {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'visualMap',
-      required: false,
-    },
-    {
-      name: 'toolbox',
-      required: false,
-    },
-    {
-      name: 'format',
-      required: false,
-    },
+      "name": "headingLevel",
+      "required": false
+    }
   ],
-  Hero: [
+  "Highlight": [
     {
-      name: 'variant',
-      required: false,
-      enum: ['centered', 'split'],
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'title',
-      required: true,
+      "name": "language",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'eyebrow',
-      required: false,
+      "name": "lineNumbers",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'description',
-      required: false,
+      "name": "wrap",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'actions',
-      required: false,
+      "name": "tabSize",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
     },
     {
-      name: 'media',
-      required: false,
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'headingLevel',
-      required: false,
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "gutterRef",
+      "required": false
+    },
+    {
+      "name": "preRef",
+      "required": false
+    }
   ],
-  Highlight: [
+  "Histogram": [
     {
-      name: 'value',
-      required: true,
-      primitives: ['string'],
+      "name": "data",
+      "required": true
     },
     {
-      name: 'language',
-      required: false,
-      primitives: ['string'],
+      "name": "bins",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
     },
     {
-      name: 'lineNumbers',
-      required: false,
-      primitives: ['boolean'],
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'wrap',
-      required: false,
-      primitives: ['boolean'],
+      "name": "label",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'tabSize',
-      required: false,
-      primitives: ['number'],
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
     },
     {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
     },
     {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'gutterRef',
-      required: false,
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'preRef',
-      required: false,
-    },
+      "name": "format",
+      "required": false
+    }
   ],
-  Histogram: [
+  "HoverCard": [
     {
-      name: 'data',
-      required: true,
+      "name": "children",
+      "required": true
     },
     {
-      name: 'bins',
-      required: false,
-      primitives: ['number'],
+      "name": "openDelay",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
     },
     {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'format',
-      required: false,
-    },
+      "name": "closeDelay",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    }
   ],
-  HoverCard: [
+  "IconButton": [
     {
-      name: 'children',
-      required: true,
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'openDelay',
-      required: false,
-      primitives: ['number'],
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'closeDelay',
-      required: false,
-      primitives: ['number'],
+      "name": "icon",
+      "required": false
     },
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "ghost",
+        "outline",
+        "filled"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "asChild",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onClick",
+      "required": false
+    }
   ],
-  IconButton: [
+  "Image": [
     {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
+      "name": "src",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
+      "name": "alt",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'icon',
-      required: false,
+      "name": "fallbackSrc",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'variant',
-      required: false,
-      enum: ['ghost', 'outline', 'filled'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'asChild',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onClick',
-      required: false,
-    },
-  ],
-  Image: [
-    {
-      name: 'src',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'alt',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'fallbackSrc',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['string', 'number'],
-      shape: {
-        anyOf: [
-          {
-            type: 'string',
-          },
-          {
-            type: 'number',
-          },
-        ],
-      },
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['string', 'number'],
-      shape: {
-        anyOf: [
-          {
-            type: 'string',
-          },
-          {
-            type: 'number',
-          },
-        ],
-      },
-    },
-    {
-      name: 'radius',
-      required: false,
-      enum: ['none', 'sm', 'md', 'lg', 'full'],
-    },
-    {
-      name: 'zoom',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'removeWrapper',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'isBlurred',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  Indicator: [
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'overlay',
-      required: true,
-    },
-    {
-      name: 'placement',
-      required: false,
-      enum: ['top-start', 'top-end', 'bottom-start', 'bottom-end'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  InfiniteScroll: [
-    {
-      name: 'onLoadMore',
-      required: true,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'rootMargin',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  InlineCitation: [
-    {
-      name: 'index',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'source',
-      required: true,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  InlineLoading: [
-    {
-      name: 'status',
-      required: true,
-      enum: ['inactive', 'active', 'finished', 'error'],
-    },
-    {
-      name: 'label',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  Input: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'hint',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'error',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'placeholder',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onChange',
-      required: false,
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ai',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  InputGroup: [
-    {
-      name: 'prefix',
-      required: false,
-    },
-    {
-      name: 'suffix',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-  ],
-  Item: [
-    {
-      name: 'asChild',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'variant',
-      required: false,
-      enum: ['default', 'muted'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md'],
-    },
-  ],
-  Join: [
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['horizontal', 'vertical'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Kbd: [
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  Kpi: [
-    {
-      name: 'value',
-      required: true,
-      primitives: ['string', 'number'],
-    },
-    {
-      name: 'label',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'delta',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'deltaFormat',
-      required: false,
-    },
-    {
-      name: 'goodDirection',
-      required: false,
-      enum: ['up', 'down', 'neutral'],
-    },
-    {
-      name: 'deltaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'icon',
-      required: false,
-    },
-    {
-      name: 'sparkline',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Label: [
-    {
-      name: 'htmlFor',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'asChild',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'required',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  LargeTitleHeader: [
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'leading',
-      required: false,
-    },
-    {
-      name: 'actions',
-      required: false,
-    },
-    {
-      name: 'level',
-      required: false,
-    },
-    {
-      name: 'collapseDistance',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  LineChart: [
-    {
-      name: 'series',
-      required: true,
-    },
-    {
-      name: 'x',
-      required: true,
-    },
-    {
-      name: 'y',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'curve',
-      required: false,
-      enum: [
-        'linear',
-        'monotone',
-        'step',
-        'stepBefore',
-        'stepAfter',
-        'natural',
-        'basis',
-        'cardinal',
-        'catmullRom',
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "string",
+        "number"
       ],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'xTicks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'yTicks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'format',
-      required: false,
-    },
-    {
-      name: 'legend',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'formatTooltip',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'annotations',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'connectNulls',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onSelect',
-      required: false,
-    },
-    {
-      name: 'brush',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'dataZoom',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'zoom',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'syncId',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'tooltipMode',
-      required: false,
-      enum: ['item', 'axis'],
-    },
-    {
-      name: 'decimate',
-      required: false,
-    },
-    {
-      name: 'toolbox',
-      required: false,
-    },
-    {
-      name: 'transition',
-      required: false,
-    },
-    {
-      name: 'onBeforeDraw',
-      required: false,
-    },
-    {
-      name: 'onAfterDraw',
-      required: false,
-    },
-    {
-      name: 'secondAxis',
-      required: false,
-    },
-  ],
-  Link: [
-    {
-      name: 'variant',
-      required: false,
-      enum: ['standalone', 'inline'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'external',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'href',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'asChild',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  List: [
-    {
-      name: 'as',
-      required: false,
-      enum: ['ul', 'ol'],
-    },
-    {
-      name: 'marker',
-      required: false,
-      enum: ['disc', 'decimal', 'none'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  LogViewer: [
-    {
-      name: 'lines',
-      required: true,
-    },
-    {
-      name: 'rowHeight',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'overscan',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'follow',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onFollowChange',
-      required: false,
-    },
-    {
-      name: 'ansi',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'search',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'maxHeight',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'timestampWidth',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  LoginPage: [
-    {
-      name: 'onSubmit',
-      required: false,
-    },
-  ],
-  Logo: [
-    {
-      name: 'variant',
-      required: false,
-      enum: ['mark', 'mark-accent', 'horizontal', 'stacked', 'nav'],
-    },
-    {
-      name: 'size',
-      required: false,
-      primitives: ['number'],
-    },
-  ],
-  Masonry: [
-    {
-      name: 'cols',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'gap',
-      required: false,
-    },
-  ],
-  MediaMasonry: [
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: false,
-    },
-    {
-      name: 'description',
-      required: false,
-    },
-    {
-      name: 'headingLevel',
-      required: false,
-    },
-    {
-      name: 'cols',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'gap',
-      required: false,
-    },
-  ],
-  Menu: [
-    {
-      name: 'children',
-      required: true,
-    },
-  ],
-  MenuButton: [
-    {
-      name: 'label',
-      required: true,
-    },
-    {
-      name: 'items',
-      required: true,
-    },
-    {
-      name: 'variant',
-      required: false,
-      enum: ['primary', 'secondary', 'ghost'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'align',
-      required: false,
-      enum: ['start', 'end'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  Menubar: [
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'menus',
-      required: true,
-    },
-    {
-      name: 'aria-label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  MessageActions: [
-    {
-      name: 'copyValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'feedback',
-      required: false,
-    },
-    {
-      name: 'defaultFeedback',
-      required: false,
-    },
-    {
-      name: 'onFeedbackChange',
-      required: false,
-    },
-    {
-      name: 'onRegenerate',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  Meter: [
-    {
-      name: 'value',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'label',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'min',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'variant',
-      required: false,
-      enum: ['bar', 'gauge'],
-    },
-    {
-      name: 'thresholds',
-      required: false,
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-  ],
-  Modal: [
-    {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onClose',
-      required: false,
-    },
-    {
-      name: 'title',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'footer',
-      required: false,
-    },
-    {
-      name: 'draggable',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'ai',
-      required: false,
-      shape: {
-        anyOf: [
+      "shape": {
+        "anyOf": [
           {
-            type: 'string',
-            enum: ['generating'],
+            "type": "string"
           },
           {
-            type: 'boolean',
-          },
-        ],
-      },
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  MultiSelect: [
-    {
-      name: 'options',
-      required: true,
-    },
-    {
-      name: 'value',
-      required: false,
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'placeholder',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-labelledby',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-describedby',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-invalid',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'hint',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'error',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'display',
-      required: false,
-      enum: ['count', 'chips'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'clearable',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'selectAll',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'creatable',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onCreate',
-      required: false,
-    },
-    {
-      name: 'loading',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onSearchChange',
-      required: false,
-    },
-    {
-      name: 'filter',
-      required: false,
-    },
-    {
-      name: 'searchable',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'name',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'id',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  NativeSelect: [
-    {
-      name: 'options',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'invalid',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'placeholder',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onChange',
-      required: false,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  NavigationMenu: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'items',
-      required: true,
-    },
-    {
-      name: 'aria-label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['horizontal', 'vertical', 'both'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Notification: [
-    {
-      name: 'title',
-      required: true,
-    },
-    {
-      name: 'description',
-      required: false,
-    },
-    {
-      name: 'variant',
-      required: false,
-      enum: ['info', 'success', 'warning', 'error'],
-    },
-    {
-      name: 'dismissible',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onDismiss',
-      required: false,
-    },
-    {
-      name: 'actions',
-      required: false,
-    },
-    {
-      name: 'icon',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  NotificationCenter: [
-    {
-      name: 'notifications',
-      required: false,
-    },
-    {
-      name: 'onMarkAllRead',
-      required: false,
-    },
-  ],
-  NumberInput: [
-    {
-      name: 'value',
-      required: false,
-      primitives: ['number', 'null'],
-      shape: {
-        anyOf: [
-          {
-            type: 'number',
-          },
-          {
-            type: 'null',
-          },
-        ],
-      },
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'min',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'step',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'precision',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'formatOptions',
-      required: false,
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'hint',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'error',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'incrementLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'decrementLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  OtpInput: [
-    {
-      name: 'length',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'value',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'onValueChange',
-      required: true,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'type',
-      required: false,
-      enum: ['numeric', 'alphanumeric'],
-    },
-  ],
-  OverflowMenu: [
-    {
-      name: 'items',
-      required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            label: {
-              type: 'string',
-            },
-            value: {
-              type: 'string',
-            },
-            id: {
-              type: 'string',
-            },
-            icon: {
-              anyOf: [
-                {
-                  type: 'string',
-                },
-                {
-                  type: 'number',
-                },
-              ],
-            },
-            disabled: {
-              type: 'boolean',
-            },
-            destructive: {
-              type: 'boolean',
-            },
-          },
-          required: ['label'],
-        },
-      },
-    },
-    {
-      name: 'onSelect',
-      required: false,
-    },
-    {
-      name: 'placement',
-      required: false,
-      enum: ['bottom-start', 'bottom-end'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'tabIndex',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  PageFooter: [
-    {
-      name: 'groups',
-      required: true,
-    },
-    {
-      name: 'brand',
-      required: false,
-    },
-    {
-      name: 'meta',
-      required: false,
-    },
-  ],
-  PageHeader: [
-    {
-      name: 'title',
-      required: true,
-    },
-    {
-      name: 'description',
-      required: false,
-    },
-    {
-      name: 'breadcrumb',
-      required: false,
-    },
-    {
-      name: 'actions',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  PageWithBreadcrumb: [],
-  Pagination: [
-    {
-      name: 'page',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'pageSize',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'totalItems',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'onPageChange',
-      required: true,
-    },
-    {
-      name: 'onPageSizeChange',
-      required: false,
-    },
-    {
-      name: 'pageSizeOptions',
-      required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'number',
-        },
-      },
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  PasswordInput: [
-    {
-      name: 'showStrengthMeter',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'placeholder',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onChange',
-      required: false,
-    },
-  ],
-  PieChart: [
-    {
-      name: 'data',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'donut',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'size',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'thickness',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'innerRadius',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'centerValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'centerLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'centerSlot',
-      required: false,
-    },
-    {
-      name: 'emptyLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'tooltipFormat',
-      required: false,
-    },
-    {
-      name: 'legend',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'onSelect',
-      required: false,
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  Polar: [
-    {
-      name: 'data',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'mode',
-      required: false,
-      enum: ['bar', 'line', 'area'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'rings',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  Popover: [
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onOpenChange',
-      required: false,
-    },
-    {
-      name: 'placement',
-      required: false,
-      enum: ['top', 'bottom', 'left', 'right'],
-    },
-    {
-      name: 'offset',
-      required: false,
-      primitives: ['number'],
-    },
-  ],
-  Progress: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-describedby',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'value',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'variant',
-      required: false,
-      enum: ['primary', 'info', 'success', 'warning', 'error'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-  ],
-  ProgressBar: [
-    {
-      name: 'value',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'helperText',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md'],
-    },
-    {
-      name: 'status',
-      required: false,
-      enum: ['active', 'success', 'error'],
-    },
-  ],
-  ProgressCircle: [
-    {
-      name: 'value',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'showValue',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  ProgressIndicator: [
-    {
-      name: 'steps',
-      required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            label: {
-              type: 'string',
-            },
-            description: {
-              type: 'string',
-            },
-          },
-          required: ['label'],
-        },
-      },
-    },
-    {
-      name: 'currentIndex',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'vertical',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  PromptSuggestions: [
-    {
-      name: 'items',
-      required: true,
-    },
-    {
-      name: 'onSelect',
-      required: true,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  Prose: [
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'dangerouslySetInnerHTML',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  PullToRefresh: [
-    {
-      name: 'onRefresh',
-      required: true,
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'threshold',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  QrCode: [
-    {
-      name: 'value',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'errorCorrection',
-      required: false,
-      enum: ['L', 'M', 'Q', 'H'],
-    },
-    {
-      name: 'radius',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'fill',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'background',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Radar: [
-    {
-      name: 'axes',
-      required: true,
-    },
-    {
-      name: 'series',
-      required: true,
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  RadialBar: [
-    {
-      name: 'data',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'sweep',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'centerValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'centerLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'centerSlot',
-      required: false,
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'legend',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  RadialProgress: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'value',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'variant',
-      required: false,
-      enum: ['primary', 'info', 'success', 'warning', 'error'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'aria-label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Radio: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'value',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'name',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  RadioCard: [
-    {
-      name: 'hideIndicator',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'value',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'title',
-      required: true,
-    },
-    {
-      name: 'description',
-      required: false,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-  ],
-  RadioCardGroup: [
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'name',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  RatingGroup: [
-    {
-      name: 'value',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'readOnly',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  Reasoning: [
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'streaming',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'duration',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'label',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  RelativeTime: [
-    {
-      name: 'date',
-      required: true,
-    },
-    {
-      name: 'sync',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'now',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'format',
-      required: false,
-    },
-  ],
-  ReorderList: [
-    {
-      name: 'value',
-      required: true,
-    },
-    {
-      name: 'onValueChange',
-      required: true,
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Resizable: [
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['horizontal', 'vertical'],
-    },
-    {
-      name: 'defaultRatio',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'ratio',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'minRatio',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'maxRatio',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'onRatioChange',
-      required: false,
-    },
-  ],
-  Sankey: [
-    {
-      name: 'nodes',
-      required: true,
-    },
-    {
-      name: 'links',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  ScatterChart: [
-    {
-      name: 'series',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'r',
-      required: false,
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'xTicks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'yTicks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'legend',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'annotations',
-      required: false,
-    },
-    {
-      name: 'onSelect',
-      required: false,
-    },
-    {
-      name: 'glyph',
-      required: false,
-    },
-    {
-      name: 'renderer',
-      required: false,
-      enum: ['svg', 'canvas', 'auto'],
-    },
-    {
-      name: 'visualMap',
-      required: false,
-    },
-    {
-      name: 'toolbox',
-      required: false,
-    },
-    {
-      name: 'format',
-      required: false,
-    },
-  ],
-  ScrollArea: [
-    {
-      name: 'height',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['vertical', 'horizontal', 'both'],
-    },
-    {
-      name: 'edges',
-      required: false,
-      enum: ['shadow', 'mask', 'none'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  Search: [
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'onSearch',
-      required: false,
-    },
-    {
-      name: 'debounceMs',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'placeholder',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'clearLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'id',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-labelledby',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-describedby',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-invalid',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Section: [
-    {
-      name: 'width',
-      required: false,
-      enum: ['content', 'wide', 'full'],
-    },
-    {
-      name: 'gap',
-      required: false,
-    },
-  ],
-  SegmentedControl: [
-    {
-      name: 'options',
-      required: true,
-    },
-    {
-      name: 'value',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'onValueChange',
-      required: true,
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Select: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'hint',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'error',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'placeholder',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'options',
-      required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            value: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            disabled: {
-              type: 'boolean',
-            },
-          },
-          required: ['value', 'label'],
-        },
-      },
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onChange',
-      required: false,
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Separator: [
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['horizontal', 'vertical'],
-    },
-    {
-      name: 'decorative',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  SettingsFormPage: [
-    {
-      name: 'onSave',
-      required: false,
-    },
-  ],
-  SettingsLayout: [
-    {
-      name: 'menu',
-      required: true,
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-  ],
-  ShareMenu: [
-    {
-      name: 'url',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'text',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'items',
-      required: false,
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Sheet: [
-    {
-      name: 'open',
-      required: true,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onClose',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: false,
-    },
-    {
-      name: 'side',
-      required: false,
-      enum: ['start', 'end', 'top', 'bottom'],
-    },
-  ],
-  ShellHeader: [
-    {
-      name: 'brand',
-      required: false,
-    },
-    {
-      name: 'nav',
-      required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            label: {
-              type: 'string',
-            },
-            href: {
-              type: 'string',
-            },
-            items: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  label: {
-                    type: 'string',
-                  },
-                  href: {
-                    type: 'string',
-                  },
-                  active: {
-                    type: 'boolean',
-                  },
-                },
-                required: ['label', 'href'],
-              },
-            },
-            active: {
-              type: 'boolean',
-            },
-          },
-          required: ['label'],
-        },
-      },
-    },
-    {
-      name: 'center',
-      required: false,
-    },
-    {
-      name: 'actions',
-      required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            label: {
-              type: 'string',
-            },
-            icon: {
-              anyOf: [
-                {
-                  type: 'string',
-                },
-                {
-                  type: 'number',
-                },
-              ],
-            },
-            active: {
-              type: 'boolean',
-            },
-          },
-          required: ['id', 'label', 'icon'],
-        },
-      },
-    },
-    {
-      name: 'end',
-      required: false,
-    },
-    {
-      name: 'onMenuClick',
-      required: false,
-    },
-    {
-      name: 'menuExpanded',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'skipToContentHref',
-      required: false,
-      primitives: ['string', 'boolean'],
-      shape: {
-        anyOf: [
-          {
-            type: 'boolean',
-            enum: [false],
-          },
-          {
-            type: 'string',
-          },
-        ],
-      },
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  ShimmerText: [
-    {
-      name: 'as',
-      required: false,
-      enum: ['span', 'p', 'div'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  SideNav: [
-    {
-      name: 'groups',
-      required: false,
-    },
-    {
-      name: 'showCollapseToggle',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'items',
-      required: false,
-    },
-    {
-      name: 'collapsed',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'defaultCollapsed',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onCollapsedChange',
-      required: false,
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'collapseLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'expandLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'expandOnHover',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'header',
-      required: false,
-    },
-    {
-      name: 'footer',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  SidebarApp: [],
-  Skeleton: [
-    {
-      name: 'variant',
-      required: false,
-      enum: ['text', 'circle', 'rect'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'lines',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'ai',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  SkipNav: [
-    {
-      name: 'targetId',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'id',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Slider: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'min',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'step',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'value',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onChange',
-      required: false,
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Sources: [
-    {
-      name: 'items',
-      required: true,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  Spacer: [
-    {
-      name: 'size',
-      required: false,
-    },
-  ],
-  Sparkline: [
-    {
-      name: 'data',
-      required: true,
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'color',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'endDot',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  Spinner: [
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  SplitView: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'start',
-      required: true,
-    },
-    {
-      name: 'end',
-      required: true,
-    },
-    {
-      name: 'defaultRatio',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'min',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'aria-label',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Stack: [
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'offset',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Stat: [
-    {
-      name: 'card',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'label',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'value',
-      required: true,
-      primitives: ['string', 'number'],
-      shape: {
-        anyOf: [
-          {
-            type: 'string',
-          },
-          {
-            type: 'number',
-          },
-        ],
-      },
-    },
-    {
-      name: 'delta',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'trend',
-      required: false,
-      enum: ['up', 'down', 'flat'],
-    },
-    {
-      name: 'goodDirection',
-      required: false,
-      enum: ['up', 'down', 'neutral'],
-    },
-    {
-      name: 'helpText',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'visual',
-      required: false,
-    },
-  ],
-  StatsBand: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'stats',
-      required: true,
-    },
-    {
-      name: 'aria-label',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  StatsCards: [
-    {
-      name: 'stats',
-      required: false,
-    },
-  ],
-  Status: [
-    {
-      name: 'status',
-      required: false,
-      enum: ['success', 'warning', 'error', 'info', 'neutral'],
-    },
-    {
-      name: 'pulse',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  Steps: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'items',
-      required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            label: {
-              type: 'string',
-            },
-            id: {
-              type: 'string',
-            },
-          },
-          required: ['label'],
-        },
-      },
-    },
-    {
-      name: 'steps',
-      required: false,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            label: {
-              type: 'string',
-            },
-            id: {
-              type: 'string',
-            },
-          },
-          required: ['label'],
-        },
-      },
-    },
-    {
-      name: 'activeStep',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['horizontal', 'vertical'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Stream: [
-    {
-      name: 'series',
-      required: true,
-    },
-    {
-      name: 'categories',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'offset',
-      required: false,
-      enum: ['silhouette', 'zero'],
-    },
-    {
-      name: 'curve',
-      required: false,
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'legend',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'format',
-      required: false,
-    },
-  ],
-  StreamingText: [
-    {
-      name: 'text',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'speed',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'onComplete',
-      required: false,
-    },
-  ],
-  StructuredList: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'aria-label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'items',
-      required: true,
-    },
-    {
-      name: 'headers',
-      required: false,
-    },
-    {
-      name: 'selectable',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onSelect',
-      required: false,
-    },
-  ],
-  Sunburst: [
-    {
-      name: 'data',
-      required: true,
-    },
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'tooltip',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  Swap: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'on',
-      required: true,
-    },
-    {
-      name: 'off',
-      required: true,
-    },
-    {
-      name: 'checked',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'mode',
-      required: false,
-      enum: ['rotate', 'flip'],
-    },
-    {
-      name: 'aria-label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  SwipeItem: [
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'leadingActions',
-      required: false,
-    },
-    {
-      name: 'trailingActions',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Switcher: [
-    {
-      name: 'items',
-      required: true,
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Tabs: [
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-  ],
-  Tag: [
-    {
-      name: 'variant',
-      required: false,
-      enum: ['default', 'info', 'success', 'warning', 'error'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md'],
-    },
-    {
-      name: 'onDismiss',
-      required: false,
-    },
-    {
-      name: 'dismissLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  TagsInput: [
-    {
-      name: 'value',
-      required: true,
-    },
-    {
-      name: 'onValueChange',
-      required: true,
-    },
-    {
-      name: 'placeholder',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'validate',
-      required: false,
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'id',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Terminal: [
-    {
-      name: 'lines',
-      required: true,
-    },
-    {
-      name: 'speed',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'loop',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onComplete',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-  ],
-  Text: [
-    {
-      name: 'as',
-      required: false,
-      enum: ['p', 'span', 'div'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'weight',
-      required: false,
-      enum: ['normal', 'medium', 'semibold'],
-    },
-    {
-      name: 'muted',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-  ],
-  Textarea: [
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'hint',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'error',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'rows',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'resize',
-      required: false,
-      enum: ['none', 'vertical', 'both'],
-    },
-    {
-      name: 'autosize',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onChange',
-      required: false,
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ai',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  Tile: [
-    {
-      name: 'value',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'selected',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'defaultSelected',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onSelect',
-      required: false,
-    },
-    {
-      name: 'selectable',
-      required: false,
-      enum: ['single', 'multi'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'icon',
-      required: false,
-    },
-    {
-      name: 'asChild',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'children',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  TimePicker: [
-    {
-      name: 'value',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'min',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'max',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'step',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'hint',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'error',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Timeline: [
-    {
-      name: 'items',
-      required: true,
-      shape: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-            },
-            title: {
-              anyOf: [
-                {
-                  type: 'string',
-                },
-                {
-                  type: 'number',
-                },
-              ],
-            },
-            description: {
-              anyOf: [
-                {
-                  type: 'string',
-                },
-                {
-                  type: 'number',
-                },
-              ],
-            },
-            time: {
-              type: 'string',
-            },
-            icon: {
-              anyOf: [
-                {
-                  type: 'string',
-                },
-                {
-                  type: 'number',
-                },
-              ],
-            },
-            status: {
-              type: 'string',
-            },
-            tone: {
-              type: 'string',
-            },
-          },
-          required: ['id', 'title'],
-        },
-      },
-    },
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['vertical', 'horizontal'],
-    },
-  ],
-  Toast: [
-    {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
-    },
-    {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'variant',
-      required: false,
-      enum: ['default', 'success', 'warning', 'destructive'],
-    },
-    {
-      name: 'duration',
-      required: false,
-      primitives: ['number'],
-    },
-  ],
-  Toc: [
-    {
-      name: 'items',
-      required: true,
-    },
-    {
-      name: 'activeId',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'onActiveChange',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  Toggle: [
-    {
-      name: 'checked',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'defaultChecked',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-  ],
-  ToggleGroup: [
-    {
-      name: 'type',
-      required: true,
-      enum: ['single', 'multiple'],
-    },
-    {
-      name: 'value',
-      required: false,
-    },
-    {
-      name: 'defaultValue',
-      required: false,
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'items',
-      required: true,
-    },
-    {
-      name: 'orientation',
-      required: false,
-      enum: ['horizontal', 'vertical'],
-    },
-    {
-      name: 'size',
-      required: false,
-      enum: ['sm', 'md', 'lg'],
-    },
-    {
-      name: 'disabled',
-      required: false,
-      primitives: ['boolean'],
-    },
-  ],
-  Toggletip: [
-    {
-      name: 'trigger',
-      required: true,
-    },
-    {
-      name: 'children',
-      required: true,
-    },
-    {
-      name: 'placement',
-      required: false,
-      enum: [
-        'top',
-        'bottom',
-        'left',
-        'right',
-        'top-start',
-        'top-end',
-        'bottom-start',
-        'bottom-end',
+            "type": "number"
+          }
+        ]
+      }
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "string",
+        "number"
       ],
+      "shape": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      }
     },
     {
-      name: 'defaultOpen',
-      required: false,
-      primitives: ['boolean'],
+      "name": "radius",
+      "required": false,
+      "enum": [
+        "none",
+        "sm",
+        "md",
+        "lg",
+        "full"
+      ]
     },
     {
-      name: 'open',
-      required: false,
-      primitives: ['boolean'],
+      "name": "zoom",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'onOpenChange',
-      required: false,
+      "name": "removeWrapper",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'labels',
-      required: false,
-    },
+      "name": "isBlurred",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
   ],
-  ToolCall: [
+  "Indicator": [
     {
-      name: 'name',
-      required: true,
-      primitives: ['string'],
+      "name": "children",
+      "required": true
     },
     {
-      name: 'status',
-      required: true,
-      enum: ['pending', 'running', 'awaiting-approval', 'complete', 'error', 'denied'],
+      "name": "overlay",
+      "required": true
     },
     {
-      name: 'input',
-      required: false,
+      "name": "placement",
+      "required": false,
+      "enum": [
+        "top-start",
+        "top-end",
+        "bottom-start",
+        "bottom-end"
+      ]
     },
     {
-      name: 'output',
-      required: false,
-    },
-    {
-      name: 'error',
-      required: false,
-    },
-    {
-      name: 'actions',
-      required: false,
-    },
-    {
-      name: 'labels',
-      required: false,
-    },
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  Tooltip: [
+  "InfiniteScroll": [
     {
-      name: 'content',
-      required: true,
+      "name": "onLoadMore",
+      "required": true
     },
     {
-      name: 'placement',
-      required: false,
-      enum: ['top', 'right', 'bottom', 'left'],
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'children',
-      required: true,
+      "name": "rootMargin",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'delay',
-      required: false,
-      primitives: ['number'],
+      "name": "labels",
+      "required": false
     },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  TreeView: [
+  "InlineCitation": [
     {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
+      "name": "index",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
     },
     {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
+      "name": "source",
+      "required": true
     },
     {
-      name: 'aria-label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'items',
-      required: true,
-    },
-    {
-      name: 'selectionMode',
-      required: false,
-      enum: ['single', 'multi'],
-    },
-    {
-      name: 'selected',
-      required: false,
-    },
-    {
-      name: 'defaultSelected',
-      required: false,
-    },
-    {
-      name: 'onSelectChange',
-      required: false,
-    },
-    {
-      name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'expanded',
-      required: false,
-    },
-    {
-      name: 'defaultExpanded',
-      required: false,
-    },
-    {
-      name: 'onExpandedChange',
-      required: false,
-    },
+      "name": "labels",
+      "required": false
+    }
   ],
-  Treemap: [
+  "InlineLoading": [
     {
-      name: 'data',
-      required: true,
+      "name": "status",
+      "required": true,
+      "enum": [
+        "inactive",
+        "active",
+        "finished",
+        "error"
+      ]
     },
     {
-      name: 'title',
-      required: true,
-      primitives: ['string'],
+      "name": "label",
+      "required": false
     },
     {
-      name: 'description',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'width',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'height',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'plain',
-      required: false,
-      primitives: ['boolean'],
-    },
+      "name": "labels",
+      "required": false
+    }
   ],
-  TypingIndicator: [
+  "Input": [
     {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
+      "name": "hint",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
+    {
+      "name": "error",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "placeholder",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onChange",
+      "required": false
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ai",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
   ],
-  User: [
+  "InputGroup": [
     {
-      name: 'name',
-      required: true,
+      "name": "prefix",
+      "required": false
     },
     {
-      name: 'description',
-      required: false,
+      "name": "suffix",
+      "required": false
     },
     {
-      name: 'avatarProps',
-      required: false,
-    },
+      "name": "children",
+      "required": true
+    }
   ],
-  UsersTablePage: [
+  "Item": [
     {
-      name: 'users',
-      required: false,
+      "name": "asChild",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
     },
     {
-      name: 'onInvite',
-      required: false,
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "default",
+        "muted"
+      ]
     },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md"
+      ]
+    }
   ],
-  VirtualList: [
+  "Join": [
     {
-      name: 'items',
-      required: true,
+      "name": "children",
+      "required": true
     },
     {
-      name: 'itemHeight',
-      required: true,
-      primitives: ['number'],
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "horizontal",
+        "vertical"
+      ]
     },
     {
-      name: 'height',
-      required: true,
-      primitives: ['number'],
-    },
-    {
-      name: 'renderItem',
-      required: true,
-    },
-    {
-      name: 'overscan',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
-    },
-    {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
-    },
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
-  VisuallyHidden: [
+  "Kbd": [
     {
-      name: 'children',
-      required: true,
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md"
+      ]
     },
+    {
+      "name": "children",
+      "required": false
+    }
   ],
-  WheelPicker: [
+  "Kpi": [
     {
-      name: 'options',
-      required: true,
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string",
+        "number"
+      ]
     },
     {
-      name: 'value',
-      required: true,
-      primitives: ['string'],
+      "name": "label",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'onValueChange',
-      required: true,
+      "name": "delta",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
     },
     {
-      name: 'visibleCount',
-      required: false,
-      primitives: ['number'],
+      "name": "deltaFormat",
+      "required": false
     },
     {
-      name: 'itemHeight',
-      required: false,
-      primitives: ['number'],
+      "name": "goodDirection",
+      "required": false,
+      "enum": [
+        "up",
+        "down",
+        "neutral"
+      ]
     },
     {
-      name: 'label',
-      required: false,
-      primitives: ['string'],
+      "name": "deltaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     },
     {
-      name: 'ariaLabel',
-      required: false,
-      primitives: ['string'],
+      "name": "icon",
+      "required": false
     },
     {
-      name: 'className',
-      required: false,
-      primitives: ['string'],
+      "name": "sparkline",
+      "required": false
     },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
   ],
+  "Label": [
+    {
+      "name": "htmlFor",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "asChild",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "required",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "LargeTitleHeader": [
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "leading",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "required": false
+    },
+    {
+      "name": "level",
+      "required": false
+    },
+    {
+      "name": "collapseDistance",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "LineChart": [
+    {
+      "name": "series",
+      "required": true
+    },
+    {
+      "name": "x",
+      "required": true
+    },
+    {
+      "name": "y",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "enum": [
+        "linear",
+        "monotone",
+        "step",
+        "stepBefore",
+        "stepAfter",
+        "natural",
+        "basis",
+        "cardinal",
+        "catmullRom"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "xTicks",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "yTicks",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "format",
+      "required": false
+    },
+    {
+      "name": "legend",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "formatTooltip",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "annotations",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "connectNulls",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onSelect",
+      "required": false
+    },
+    {
+      "name": "brush",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "dataZoom",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "zoom",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "syncId",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "tooltipMode",
+      "required": false,
+      "enum": [
+        "item",
+        "axis"
+      ]
+    },
+    {
+      "name": "decimate",
+      "required": false
+    },
+    {
+      "name": "toolbox",
+      "required": false
+    },
+    {
+      "name": "transition",
+      "required": false
+    },
+    {
+      "name": "onBeforeDraw",
+      "required": false
+    },
+    {
+      "name": "onAfterDraw",
+      "required": false
+    },
+    {
+      "name": "secondAxis",
+      "required": false
+    }
+  ],
+  "Link": [
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "standalone",
+        "inline"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "external",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "href",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "asChild",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "List": [
+    {
+      "name": "as",
+      "required": false,
+      "enum": [
+        "ul",
+        "ol"
+      ]
+    },
+    {
+      "name": "marker",
+      "required": false,
+      "enum": [
+        "disc",
+        "decimal",
+        "none"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "LogViewer": [
+    {
+      "name": "lines",
+      "required": true
+    },
+    {
+      "name": "rowHeight",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "overscan",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "follow",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onFollowChange",
+      "required": false
+    },
+    {
+      "name": "ansi",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "search",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "maxHeight",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "timestampWidth",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "LoginPage": [
+    {
+      "name": "onSubmit",
+      "required": false
+    }
+  ],
+  "Logo": [
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "mark",
+        "mark-accent",
+        "horizontal",
+        "stacked",
+        "nav"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    }
+  ],
+  "Masonry": [
+    {
+      "name": "cols",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "gap",
+      "required": false
+    }
+  ],
+  "MediaMasonry": [
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": false
+    },
+    {
+      "name": "description",
+      "required": false
+    },
+    {
+      "name": "headingLevel",
+      "required": false
+    },
+    {
+      "name": "cols",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "gap",
+      "required": false
+    }
+  ],
+  "Menu": [
+    {
+      "name": "children",
+      "required": true
+    }
+  ],
+  "MenuButton": [
+    {
+      "name": "label",
+      "required": true
+    },
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "primary",
+        "secondary",
+        "ghost"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "align",
+      "required": false,
+      "enum": [
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "Menubar": [
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "menus",
+      "required": true
+    },
+    {
+      "name": "aria-label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "MessageActions": [
+    {
+      "name": "copyValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "feedback",
+      "required": false
+    },
+    {
+      "name": "defaultFeedback",
+      "required": false
+    },
+    {
+      "name": "onFeedbackChange",
+      "required": false
+    },
+    {
+      "name": "onRegenerate",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "Meter": [
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "label",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "min",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "bar",
+        "gauge"
+      ]
+    },
+    {
+      "name": "thresholds",
+      "required": false
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    }
+  ],
+  "Modal": [
+    {
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onClose",
+      "required": false
+    },
+    {
+      "name": "title",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "footer",
+      "required": false
+    },
+    {
+      "name": "draggable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "ai",
+      "required": false,
+      "shape": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "generating"
+            ]
+          },
+          {
+            "type": "boolean"
+          }
+        ]
+      }
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "MultiSelect": [
+    {
+      "name": "options",
+      "required": true
+    },
+    {
+      "name": "value",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-labelledby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-describedby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-invalid",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "hint",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "error",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "display",
+      "required": false,
+      "enum": [
+        "count",
+        "chips"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "clearable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "selectAll",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "creatable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onCreate",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onSearchChange",
+      "required": false
+    },
+    {
+      "name": "filter",
+      "required": false
+    },
+    {
+      "name": "searchable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "name",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "id",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "NativeSelect": [
+    {
+      "name": "options",
+      "required": false
+    },
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "invalid",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "placeholder",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onChange",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "NavigationMenu": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "aria-label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "horizontal",
+        "vertical",
+        "both"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Notification": [
+    {
+      "name": "title",
+      "required": true
+    },
+    {
+      "name": "description",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "info",
+        "success",
+        "warning",
+        "error"
+      ]
+    },
+    {
+      "name": "dismissible",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onDismiss",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "NotificationCenter": [
+    {
+      "name": "notifications",
+      "required": false
+    },
+    {
+      "name": "onMarkAllRead",
+      "required": false
+    }
+  ],
+  "NumberInput": [
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "number",
+        "null"
+      ],
+      "shape": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "min",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "step",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "precision",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "formatOptions",
+      "required": false
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "hint",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "error",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "incrementLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "decrementLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "OtpInput": [
+    {
+      "name": "length",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": true
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "type",
+      "required": false,
+      "enum": [
+        "numeric",
+        "alphanumeric"
+      ]
+    }
+  ],
+  "OverflowMenu": [
+    {
+      "name": "items",
+      "required": true,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "icon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "disabled": {
+              "type": "boolean"
+            },
+            "destructive": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "label"
+          ]
+        }
+      }
+    },
+    {
+      "name": "onSelect",
+      "required": false
+    },
+    {
+      "name": "placement",
+      "required": false,
+      "enum": [
+        "bottom-start",
+        "bottom-end"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "tabIndex",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "PageFooter": [
+    {
+      "name": "groups",
+      "required": true
+    },
+    {
+      "name": "brand",
+      "required": false
+    },
+    {
+      "name": "meta",
+      "required": false
+    }
+  ],
+  "PageHeader": [
+    {
+      "name": "title",
+      "required": true
+    },
+    {
+      "name": "description",
+      "required": false
+    },
+    {
+      "name": "breadcrumb",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "PageWithBreadcrumb": [],
+  "Pagination": [
+    {
+      "name": "page",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "pageSize",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "totalItems",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "onPageChange",
+      "required": true
+    },
+    {
+      "name": "onPageSizeChange",
+      "required": false
+    },
+    {
+      "name": "pageSizeOptions",
+      "required": false,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      }
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "PasswordInput": [
+    {
+      "name": "showStrengthMeter",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "placeholder",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onChange",
+      "required": false
+    }
+  ],
+  "PieChart": [
+    {
+      "name": "data",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "donut",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "thickness",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "innerRadius",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "centerValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "centerLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "centerSlot",
+      "required": false
+    },
+    {
+      "name": "emptyLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "tooltipFormat",
+      "required": false
+    },
+    {
+      "name": "legend",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "required": false
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "Polar": [
+    {
+      "name": "data",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "mode",
+      "required": false,
+      "enum": [
+        "bar",
+        "line",
+        "area"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "rings",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "Popover": [
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onOpenChange",
+      "required": false
+    },
+    {
+      "name": "placement",
+      "required": false,
+      "enum": [
+        "top",
+        "bottom",
+        "left",
+        "right"
+      ]
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    }
+  ],
+  "Progress": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-describedby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "primary",
+        "info",
+        "success",
+        "warning",
+        "error"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    }
+  ],
+  "ProgressBar": [
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "helperText",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "status",
+      "required": false,
+      "enum": [
+        "active",
+        "success",
+        "error"
+      ]
+    }
+  ],
+  "ProgressCircle": [
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "showValue",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "ProgressIndicator": [
+    {
+      "name": "steps",
+      "required": true,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "label"
+          ]
+        }
+      }
+    },
+    {
+      "name": "currentIndex",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "vertical",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "PromptSuggestions": [
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "onSelect",
+      "required": true
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "Prose": [
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "dangerouslySetInnerHTML",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "PullToRefresh": [
+    {
+      "name": "onRefresh",
+      "required": true
+    },
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "threshold",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "QrCode": [
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "errorCorrection",
+      "required": false,
+      "enum": [
+        "L",
+        "M",
+        "Q",
+        "H"
+      ]
+    },
+    {
+      "name": "radius",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "background",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Radar": [
+    {
+      "name": "axes",
+      "required": true
+    },
+    {
+      "name": "series",
+      "required": true
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "RadialBar": [
+    {
+      "name": "data",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "sweep",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "centerValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "centerLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "centerSlot",
+      "required": false
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "legend",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "RadialProgress": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "primary",
+        "info",
+        "success",
+        "warning",
+        "error"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "aria-label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Radio": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "name",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "RadioCard": [
+    {
+      "name": "hideIndicator",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "title",
+      "required": true
+    },
+    {
+      "name": "description",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    }
+  ],
+  "RadioCardGroup": [
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "name",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "RatingGroup": [
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "readOnly",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "Reasoning": [
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "streaming",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "duration",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "RelativeTime": [
+    {
+      "name": "date",
+      "required": true
+    },
+    {
+      "name": "sync",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "now",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "format",
+      "required": false
+    }
+  ],
+  "ReorderList": [
+    {
+      "name": "value",
+      "required": true
+    },
+    {
+      "name": "onValueChange",
+      "required": true
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Resizable": [
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "horizontal",
+        "vertical"
+      ]
+    },
+    {
+      "name": "defaultRatio",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "ratio",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "minRatio",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "maxRatio",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "onRatioChange",
+      "required": false
+    }
+  ],
+  "Sankey": [
+    {
+      "name": "nodes",
+      "required": true
+    },
+    {
+      "name": "links",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "ScatterChart": [
+    {
+      "name": "series",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "r",
+      "required": false
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "xTicks",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "yTicks",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "legend",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "annotations",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "required": false
+    },
+    {
+      "name": "glyph",
+      "required": false
+    },
+    {
+      "name": "renderer",
+      "required": false,
+      "enum": [
+        "svg",
+        "canvas",
+        "auto"
+      ]
+    },
+    {
+      "name": "visualMap",
+      "required": false
+    },
+    {
+      "name": "toolbox",
+      "required": false
+    },
+    {
+      "name": "format",
+      "required": false
+    }
+  ],
+  "ScrollArea": [
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "vertical",
+        "horizontal",
+        "both"
+      ]
+    },
+    {
+      "name": "edges",
+      "required": false,
+      "enum": [
+        "shadow",
+        "mask",
+        "none"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "Search": [
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "onSearch",
+      "required": false
+    },
+    {
+      "name": "debounceMs",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "placeholder",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "clearLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "id",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-labelledby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-describedby",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-invalid",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Section": [
+    {
+      "name": "width",
+      "required": false,
+      "enum": [
+        "content",
+        "wide",
+        "full"
+      ]
+    },
+    {
+      "name": "gap",
+      "required": false
+    }
+  ],
+  "SegmentedControl": [
+    {
+      "name": "options",
+      "required": true
+    },
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": true
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Select": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "hint",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "error",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "placeholder",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "options",
+      "required": true,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "disabled": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "value",
+            "label"
+          ]
+        }
+      }
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onChange",
+      "required": false
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Separator": [
+    {
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "horizontal",
+        "vertical"
+      ]
+    },
+    {
+      "name": "decorative",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "SettingsFormPage": [
+    {
+      "name": "onSave",
+      "required": false
+    }
+  ],
+  "SettingsLayout": [
+    {
+      "name": "menu",
+      "required": true
+    },
+    {
+      "name": "children",
+      "required": true
+    }
+  ],
+  "ShareMenu": [
+    {
+      "name": "url",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "text",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "items",
+      "required": false
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Sheet": [
+    {
+      "name": "open",
+      "required": true,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onClose",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": false
+    },
+    {
+      "name": "side",
+      "required": false,
+      "enum": [
+        "start",
+        "end",
+        "top",
+        "bottom"
+      ]
+    }
+  ],
+  "ShellHeader": [
+    {
+      "name": "brand",
+      "required": false
+    },
+    {
+      "name": "nav",
+      "required": false,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "href": {
+              "type": "string"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "href": {
+                    "type": "string"
+                  },
+                  "active": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "label",
+                  "href"
+                ]
+              }
+            },
+            "active": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "label"
+          ]
+        }
+      }
+    },
+    {
+      "name": "center",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "required": false,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "icon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "active": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "label",
+            "icon"
+          ]
+        }
+      }
+    },
+    {
+      "name": "end",
+      "required": false
+    },
+    {
+      "name": "onMenuClick",
+      "required": false
+    },
+    {
+      "name": "menuExpanded",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "skipToContentHref",
+      "required": false,
+      "primitives": [
+        "string",
+        "boolean"
+      ],
+      "shape": {
+        "anyOf": [
+          {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          {
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "ShimmerText": [
+    {
+      "name": "as",
+      "required": false,
+      "enum": [
+        "span",
+        "p",
+        "div"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "SideNav": [
+    {
+      "name": "groups",
+      "required": false
+    },
+    {
+      "name": "showCollapseToggle",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "items",
+      "required": false
+    },
+    {
+      "name": "collapsed",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "defaultCollapsed",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onCollapsedChange",
+      "required": false
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "collapseLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "expandLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "expandOnHover",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "header",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "SidebarApp": [],
+  "Skeleton": [
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "text",
+        "circle",
+        "rect"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "lines",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "ai",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "SkipNav": [
+    {
+      "name": "targetId",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "id",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Slider": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "min",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "step",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onChange",
+      "required": false
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Sources": [
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "Spacer": [
+    {
+      "name": "size",
+      "required": false
+    }
+  ],
+  "Sparkline": [
+    {
+      "name": "data",
+      "required": true
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "color",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "endDot",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "Spinner": [
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "SplitView": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "start",
+      "required": true
+    },
+    {
+      "name": "end",
+      "required": true
+    },
+    {
+      "name": "defaultRatio",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "min",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "aria-label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Stack": [
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Stat": [
+    {
+      "name": "card",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "label",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string",
+        "number"
+      ],
+      "shape": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      }
+    },
+    {
+      "name": "delta",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "trend",
+      "required": false,
+      "enum": [
+        "up",
+        "down",
+        "flat"
+      ]
+    },
+    {
+      "name": "goodDirection",
+      "required": false,
+      "enum": [
+        "up",
+        "down",
+        "neutral"
+      ]
+    },
+    {
+      "name": "helpText",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "visual",
+      "required": false
+    }
+  ],
+  "StatsBand": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "stats",
+      "required": true
+    },
+    {
+      "name": "aria-label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "StatsCards": [
+    {
+      "name": "stats",
+      "required": false
+    }
+  ],
+  "Status": [
+    {
+      "name": "status",
+      "required": false,
+      "enum": [
+        "success",
+        "warning",
+        "error",
+        "info",
+        "neutral"
+      ]
+    },
+    {
+      "name": "pulse",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "Steps": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "items",
+      "required": false,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "label"
+          ]
+        }
+      }
+    },
+    {
+      "name": "steps",
+      "required": false,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "label"
+          ]
+        }
+      }
+    },
+    {
+      "name": "activeStep",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "horizontal",
+        "vertical"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Stream": [
+    {
+      "name": "series",
+      "required": true
+    },
+    {
+      "name": "categories",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "enum": [
+        "silhouette",
+        "zero"
+      ]
+    },
+    {
+      "name": "curve",
+      "required": false
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "legend",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "format",
+      "required": false
+    }
+  ],
+  "StreamingText": [
+    {
+      "name": "text",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "speed",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "onComplete",
+      "required": false
+    }
+  ],
+  "StructuredList": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "headers",
+      "required": false
+    },
+    {
+      "name": "selectable",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onSelect",
+      "required": false
+    }
+  ],
+  "Sunburst": [
+    {
+      "name": "data",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "Swap": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "on",
+      "required": true
+    },
+    {
+      "name": "off",
+      "required": true
+    },
+    {
+      "name": "checked",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "mode",
+      "required": false,
+      "enum": [
+        "rotate",
+        "flip"
+      ]
+    },
+    {
+      "name": "aria-label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "SwipeItem": [
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "leadingActions",
+      "required": false
+    },
+    {
+      "name": "trailingActions",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Switcher": [
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Tabs": [
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "children",
+      "required": true
+    }
+  ],
+  "Tag": [
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "default",
+        "info",
+        "success",
+        "warning",
+        "error"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "onDismiss",
+      "required": false
+    },
+    {
+      "name": "dismissLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "TagsInput": [
+    {
+      "name": "value",
+      "required": true
+    },
+    {
+      "name": "onValueChange",
+      "required": true
+    },
+    {
+      "name": "placeholder",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "validate",
+      "required": false
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "id",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Terminal": [
+    {
+      "name": "lines",
+      "required": true
+    },
+    {
+      "name": "speed",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "loop",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onComplete",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "Text": [
+    {
+      "name": "as",
+      "required": false,
+      "enum": [
+        "p",
+        "span",
+        "div"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "enum": [
+        "normal",
+        "medium",
+        "semibold"
+      ]
+    },
+    {
+      "name": "muted",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    }
+  ],
+  "Textarea": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "hint",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "error",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "rows",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "resize",
+      "required": false,
+      "enum": [
+        "none",
+        "vertical",
+        "both"
+      ]
+    },
+    {
+      "name": "autosize",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onChange",
+      "required": false
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ai",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "Tile": [
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "selected",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "defaultSelected",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onSelect",
+      "required": false
+    },
+    {
+      "name": "selectable",
+      "required": false,
+      "enum": [
+        "single",
+        "multi"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "icon",
+      "required": false
+    },
+    {
+      "name": "asChild",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "children",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "TimePicker": [
+    {
+      "name": "value",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "defaultValue",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "min",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "max",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "step",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "hint",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "error",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Timeline": [
+    {
+      "name": "items",
+      "required": true,
+      "shape": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "description": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "time": {
+              "type": "string"
+            },
+            "icon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "status": {
+              "type": "string"
+            },
+            "tone": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "title"
+          ]
+        }
+      }
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "vertical",
+        "horizontal"
+      ]
+    }
+  ],
+  "Toast": [
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "variant",
+      "required": false,
+      "enum": [
+        "default",
+        "success",
+        "warning",
+        "destructive"
+      ]
+    },
+    {
+      "name": "duration",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    }
+  ],
+  "Toc": [
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "activeId",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onActiveChange",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "Toggle": [
+    {
+      "name": "checked",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "defaultChecked",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "ToggleGroup": [
+    {
+      "name": "type",
+      "required": true,
+      "enum": [
+        "single",
+        "multiple"
+      ]
+    },
+    {
+      "name": "value",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "enum": [
+        "horizontal",
+        "vertical"
+      ]
+    },
+    {
+      "name": "size",
+      "required": false,
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    {
+      "name": "disabled",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "Toggletip": [
+    {
+      "name": "trigger",
+      "required": true
+    },
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "placement",
+      "required": false,
+      "enum": [
+        "top",
+        "bottom",
+        "left",
+        "right",
+        "top-start",
+        "top-end",
+        "bottom-start",
+        "bottom-end"
+      ]
+    },
+    {
+      "name": "defaultOpen",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "open",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    },
+    {
+      "name": "onOpenChange",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "ToolCall": [
+    {
+      "name": "name",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "status",
+      "required": true,
+      "enum": [
+        "pending",
+        "running",
+        "awaiting-approval",
+        "complete",
+        "error",
+        "denied"
+      ]
+    },
+    {
+      "name": "input",
+      "required": false
+    },
+    {
+      "name": "output",
+      "required": false
+    },
+    {
+      "name": "error",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "required": false
+    },
+    {
+      "name": "labels",
+      "required": false
+    }
+  ],
+  "Tooltip": [
+    {
+      "name": "content",
+      "required": true
+    },
+    {
+      "name": "placement",
+      "required": false,
+      "enum": [
+        "top",
+        "right",
+        "bottom",
+        "left"
+      ]
+    },
+    {
+      "name": "children",
+      "required": true
+    },
+    {
+      "name": "delay",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    }
+  ],
+  "TreeView": [
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "aria-label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "selectionMode",
+      "required": false,
+      "enum": [
+        "single",
+        "multi"
+      ]
+    },
+    {
+      "name": "selected",
+      "required": false
+    },
+    {
+      "name": "defaultSelected",
+      "required": false
+    },
+    {
+      "name": "onSelectChange",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "required": false
+    },
+    {
+      "name": "expanded",
+      "required": false
+    },
+    {
+      "name": "defaultExpanded",
+      "required": false
+    },
+    {
+      "name": "onExpandedChange",
+      "required": false
+    }
+  ],
+  "Treemap": [
+    {
+      "name": "data",
+      "required": true
+    },
+    {
+      "name": "title",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "description",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "width",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "plain",
+      "required": false,
+      "primitives": [
+        "boolean"
+      ]
+    }
+  ],
+  "TypingIndicator": [
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "User": [
+    {
+      "name": "name",
+      "required": true
+    },
+    {
+      "name": "description",
+      "required": false
+    },
+    {
+      "name": "avatarProps",
+      "required": false
+    }
+  ],
+  "UsersTablePage": [
+    {
+      "name": "users",
+      "required": false
+    },
+    {
+      "name": "onInvite",
+      "required": false
+    }
+  ],
+  "VirtualList": [
+    {
+      "name": "items",
+      "required": true
+    },
+    {
+      "name": "itemHeight",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "height",
+      "required": true,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "renderItem",
+      "required": true
+    },
+    {
+      "name": "overscan",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ],
+  "VisuallyHidden": [
+    {
+      "name": "children",
+      "required": true
+    }
+  ],
+  "WheelPicker": [
+    {
+      "name": "options",
+      "required": true
+    },
+    {
+      "name": "value",
+      "required": true,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "onValueChange",
+      "required": true
+    },
+    {
+      "name": "visibleCount",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "itemHeight",
+      "required": false,
+      "primitives": [
+        "number"
+      ]
+    },
+    {
+      "name": "label",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    },
+    {
+      "name": "className",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
+    }
+  ]
 }

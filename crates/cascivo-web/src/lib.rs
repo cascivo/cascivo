@@ -18,6 +18,7 @@
 pub mod assets;
 #[cfg(feature = "axum")]
 mod axum;
+pub mod bundle;
 pub mod config;
 pub mod content;
 pub mod data;

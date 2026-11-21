@@ -3,39 +3,29 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button, Input, Join } from '@cascivo/react'
 
 const meta: Meta = {
-  title: 'Layout/Join',
+  title: "Layout/Join",
 }
 export default meta
 type Story = StoryObj
 
 export const SearchGroup: Story = {
-  name: 'Search group',
+  name: "Search group",
   render: () => (
-    <Join>
-      <Input placeholder="Search…" />
-      <Button>Go</Button>
-    </Join>
+    <Join><Input placeholder="Search…" /><Button>Go</Button></Join>
   ),
 }
 
 export const SegmentedButtons: Story = {
-  name: 'Segmented buttons',
+  name: "Segmented buttons",
   render: () => (
-    <Join>
-      <Button variant="secondary">Day</Button>
-      <Button variant="secondary">Week</Button>
-      <Button variant="secondary">Month</Button>
-    </Join>
+    <Join><Button variant="secondary">Day</Button><Button variant="secondary">Week</Button><Button variant="secondary">Month</Button></Join>
   ),
 }
 
 export const VerticalStack: Story = {
-  name: 'Vertical stack',
+  name: "Vertical stack",
   render: () => (
-    <Join orientation="vertical">
-      <Button>Top</Button>
-      <Button>Middle</Button>
-      <Button>Bottom</Button>
-    </Join>
+    <Join orientation="vertical"><Button>Top</Button><Button>Middle</Button><Button>Bottom</Button></Join>
   ),
 }
+

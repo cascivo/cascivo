@@ -11,6 +11,8 @@
  *   counts            { components, themes, charts }           registry.json + packages/themes/src
  *   figures           { gzip, partial, axeViolations, shadcnParity }  figures.ts, raw numbers
  *   formatted         the strings the hero/proof/reactivity bands print (`kb`, `toFixed(1)×`)
+ *   chart             { fills, ticks }  proof bar chart: lib-colors.ts ramp + the BarChart's own ticks
+ *   header            { popoverAnchor } the SSR anchor name usePopover gives the Resources menu
  *   heroStats         [{ value, label, tone }]                 PosterHero `stats`
  *   themes            selectable first-party theme names       PosterThemes FIRST_PARTY
  *   nav               { primary, resources, footer }           Header + Footer link maps
@@ -22,6 +24,8 @@ import { readFileSync, readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { FOOTER_COLUMNS, PRIMARY_LINKS, RESOURCE_LINKS } from './nav-data'
 import { SHOWCASE, displayHost } from './pages/showcase/data'
+import { LIB_COLOR } from './lib-colors'
+import { niceTicks } from '../../../../packages/charts/src/engine/scale'
 
 type RegistryComponent = { type?: string }
 
@@ -76,6 +80,9 @@ export interface WebData {
     gzip: { cascivo: string; shadcn: string; carbon: string } | null
     speedup: string | null
   }
+  /** Proof bar chart: one fill per bar (cascivo, shadcn/ui, Carbon) and the value-axis ticks. */
+  chart: { fills: string[]; ticks: number[] }
+  header: { popoverAnchor: string }
   heroStats: { value: string; label: string; tone: string }[]
   themes: string[]
   nav: {
@@ -96,6 +103,12 @@ export interface WebData {
   starters: unknown
   appBuilder: unknown
 }
+
+/** BarChart's default value-axis tick count (`resolvedXTicks ?? 5`). */
+const BAR_TICK_COUNT = 5
+
+/** `usePopover` names its anchor `--${useId('cascivo-popover')}`; React's SSR id for the header's first popover. */
+const HEADER_POPOVER_ANCHOR = '--cascivo-popover-P0-0'
 
 /** One decimal, the way every bundle figure on the site is written (figures.ts `kb`). */
 const kb = (n: number) => `${n.toFixed(1)} KB`
@@ -182,6 +195,15 @@ export function webData(root: string): WebData {
         : null,
       speedup: partial ? `${partial.speedup.toFixed(1)}×` : null,
     },
+    chart: {
+      fills: [LIB_COLOR.cascade, LIB_COLOR.shadcn, LIB_COLOR.carbon],
+      ticks: gzip
+        ? niceTicks(0, Math.max(gzip.cascivo, gzip.shadcn, gzip.carbon), BAR_TICK_COUNT).filter(
+            (t) => t <= Math.max(gzip.cascivo, gzip.shadcn, gzip.carbon),
+          )
+        : [],
+    },
+    header: { popoverAnchor: HEADER_POPOVER_ANCHOR },
     heroStats,
     themes: FIRST_PARTY_THEMES,
     nav: { primary: PRIMARY_LINKS, resources: RESOURCE_LINKS, footer: FOOTER_COLUMNS },

@@ -114,8 +114,7 @@ Add `THROTTLE=1` to the measure runs to get the LCP rows.
 
   `vp preview` speaks HTTP/1.1 with 6 connections per host, so under 150 ms RTT the extra sheets
   cost a round trip. Cloudflare serves HTTP/2, so they would multiplex. That is not measured here.
-- **Fix, not done:** emit one stylesheet for the home. Rolldown ignored `cssCodeSplit: false` for
-  shared sheets. The fix is a concat step in cascivo-web or the merge script.
+- **Fix: done in W6**, see "W6 follow-up" below.
 - Below-the-fold islands load their sheets with a non-blocking media swap. Putting them in the
   `<head>` cost about 100 ms more on mobile.
 
@@ -164,16 +163,70 @@ still renders the Preact home.
 - **Rust in the build image.** The CI build of the site now needs Rust. `ubuntu-latest` has it,
   and the first build compiles cascivo-web in about 45 s. Caching `target/` or downloading a
   release binary would remove that.
-- **Two sources of truth.** The section templates duplicate the poster JSX. Copy edits in
-  `poster/*.tsx` must be repeated in `apps/site/web`. Until the SPA home is deleted, a parity
-  check in CI (`measure-home` + `compare-home`) would catch drift. Not wired yet.
-- **Hard-coded values.**
-  - The proof chart's colour mixes and tick step are hard-coded in the template. Their sources
-    are `lib-colors.ts` and the charts nice-ticks.
-  - The header island fallback contains the SPA's popover anchor name (`--cascivo-popover-P0-0`).
-  - Static ids replace `useId` in the proof and themes fallbacks.
+- **Static ids.** Static ids replace `useId` in the proof and themes fallbacks.
 - **Image output.** `image` encodes WebP lossless only, so showcase images keep JPEG
   (`format="keep"`).
 - **Error messages.** The cascivo-web error for a failed `{% include %}` hides the underlying
   cause. It should be chained.
 - **Type check.** `apps/site` `tsc --noEmit` needs the workspace packages built first, as before.
+
+## W6 follow-up
+
+**1. One render-blocking stylesheet.** cascivo-web has a new template function,
+`css_bundle(hrefs, name="bundle")`. It reads the listed Vite CSS files from the manifest's dist
+directory and writes one `/_cw/<name>.<hash8>.css`. Rules:
+- Files keep the order given (`vite_css` gives dependencies first), each file once.
+- Top-level `@layer a, b;` statements are hoisted to the top of the bundle, deduplicated, in
+  first-seen order. That is the order separate sheets would have applied, so the cascade is
+  unchanged. Layer blocks and `@layer` inside `@media` or strings are left alone.
+- A relative `url()` fails the build, because it would resolve against `/_cw/` after the move.
+- It is unit-tested (hoisting, strings and comments, dist dir, relative urls) and integration-tested
+  on the `web` fixture (one hashed file, order, one layer statement).
+
+`apps/site/web/layouts/home.html` bundles the render-blocking set. The home now has one blocking
+stylesheet instead of 9 (the below-the-fold island sheets still load without blocking).
+`home-perf.css` also adds `content-visibility: auto` to the bands after the first two, only in the
+static pass. Without it first paint waited about 0.5 s on style and layout of the whole page.
+
+Mobile 390, throttled as above, final LCP, 9 runs each, **served with gzip**
+(`apps/site/scripts/serve-gz.mjs`, same HTML routing for all three):
+
+| Variant | Median | Range |
+|---|---|---|
+| SPA home | 808 ms | 752–960 |
+| cascivo-web, 9 sheets (no bundle) | 708 ms | 604–752 |
+| cascivo-web, bundled | **692 ms** | 632–756 |
+
+The goal (mobile LCP ≤ SPA) is met: −14 % against the SPA. Two caveats from the measuring:
+- **`vp preview` does not compress**, so the W4 numbers were measuring about 168 KB of raw CSS per
+  page, at a throttle that CDP applies per request. On that server splitting the CSS into
+  parallel requests looks faster than bundling (about 650 ms against about 1,000 ms), which is
+  an artefact of the setup. With gzip the bundle is on par with or slightly ahead of the split
+  version, and that is closer to Cloudflare. Bundling's gain over split sheets is small here
+  (within run-to-run noise); the gain over the SPA comes mostly from `content-visibility`.
+- The comparison of 692 ms with W4's 900 ms is not valid: different server. Use the table above.
+
+**2. Flaky `tests/dev.rs`.** It asserts only that an edit becomes visible without a rebuild, with
+a 30 s liveness bound. The latency is reported by `apps/bench/static-compare/measure.mjs`
+(22 / 39 ms median / max in W3) and is not gated in CI.
+
+**3. Copy drift.** Chosen: a deterministic test (`src/marketing/web-copy.test.ts`), not a shared
+data file. It parses each poster `.tsx` with the TypeScript compiler, takes the JSX text runs and
+`aria-label`/`alt`/`title` strings that read as prose (4+ words, mostly plain words), and requires
+each to appear in the section templates that port it (entities decoded, whitespace folded). Why not
+shared data: the copy is spread over 13 components and mixed into markup with inline `<code>` and
+links, so moving it means rewriting every component and template, in a design the SPA home will
+delete. The test costs 80 lines, touches nothing else, and a mutation check showed it fails on a
+one-word edit in `cta.html`. Its limit: it checks that JSX copy exists in the template, not the
+reverse, and skips text that only exists in data (counts, figures), which `web-data.test.ts`
+covers. PosterColocation (only on `/modern-css`), PosterLiveStrip (needs a Worker URL) and
+island-only files are not mapped.
+
+**4. Hard-coded values.** `webData` now emits `chart.fills` (from `lib-colors.ts`),
+`chart.ticks` (the charts engine's `niceTicks`, the same function and default count as
+`BarChart`) and `header.popoverAnchor`. The proof and header templates read them. Tests compare
+each with its source.
+
+**5. Runner label.** `macos-15-intel` is a valid GitHub-hosted Intel macOS label (listed in the
+GitHub-hosted runners reference, free for public repositories, no deprecation notice; the
+runner-images README lists it for macOS 15 x64). `macos-13` and `macos-14` are retired. No change.

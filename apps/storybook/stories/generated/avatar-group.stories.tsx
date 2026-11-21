@@ -3,18 +3,15 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Avatar, AvatarGroup } from '@cascivo/react'
 
 const meta: Meta = {
-  title: 'Display/AvatarGroup',
+  title: "Display/AvatarGroup",
 }
 export default meta
 type Story = StoryObj
 
 export const Basic: Story = {
-  name: 'Basic',
+  name: "Basic",
   render: () => (
-    <AvatarGroup>
-      <Avatar fallback="A" />
-      <Avatar fallback="B" />
-      <Avatar fallback="C" />
-    </AvatarGroup>
+    <AvatarGroup><Avatar fallback="A" /><Avatar fallback="B" /><Avatar fallback="C" /></AvatarGroup>
   ),
 }
+

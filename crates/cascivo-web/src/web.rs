@@ -1,5 +1,5 @@
 //! Template functions for sites that bring their own build (Vite) and assets: `head`, `asset`,
-//! `vite`, `vite_css`, `m`, `island`, `islands_script`, `theme_script`, `img`, the `highlight`
+//! `vite`, `vite_css`, `css_bundle`, `m`, `island`, `islands_script`, `theme_script`, `img`, the `highlight`
 //! filter and the `data` global. Each lives in its own module; this one holds the shared state
 //! (files the functions produce, the loaded Vite manifest, the image cache) and the wiring.
 
@@ -13,7 +13,7 @@ use minijinja::{Environment, ErrorKind, State, Value};
 use crate::config::Config;
 use crate::error::Error;
 use crate::site::{Site, to_value};
-use crate::{assets, data, head, highlight, images, islands, theme, vite};
+use crate::{assets, bundle, data, head, highlight, images, islands, theme, vite};
 
 pub(crate) type FnResult = std::result::Result<Value, minijinja::Error>;
 
@@ -215,6 +215,14 @@ pub(crate) fn register(
                     .collect::<Vec<_>>(),
             )
         })
+    });
+    let s = Arc::clone(&state);
+    env.add_function("css_bundle", move |rest: Rest<Value>, kw: Kwargs| {
+        let a = Args::parse("css_bundle", &["hrefs", "name"], &rest, Some(kw))?;
+        let hrefs = a
+            .strings("hrefs")?
+            .ok_or_else(|| err("css_bundle(): missing `hrefs`"))?;
+        safe(bundle::bundle(&s, &hrefs, &a.or("name", "bundle")?))
     });
     let s = Arc::clone(&state);
     env.add_function("m", move |module: String, class: String| {

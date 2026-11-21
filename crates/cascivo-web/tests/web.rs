@@ -37,6 +37,37 @@ fn renders_head_assets_vite_islands_images_highlight_and_data() {
     assert!(home.contains("<a href=\"/assets/home-123.js\">"));
     assert!(home.contains("class=\"_value_mwa4g_26\""));
 
+    // css_bundle: one hashed file, dependencies first, layer statements hoisted once
+    let b = out
+        .files
+        .keys()
+        .find(|k| k.starts_with("_cw/home.") && k.ends_with(".css"))
+        .expect("bundle written");
+    assert!(
+        home.contains(&format!("<link rel=\"stylesheet\" href=\"/{b}\">")),
+        "{home}"
+    );
+    let css = text(&out, b);
+    // encounter order = the order separate sheets would have applied
+    assert!(
+        css.starts_with("@layer base,component;\n@layer reset,base,component;\n.")
+            || css.starts_with(
+                "@layer base,component;\n@layer reset,base,component;\n@layer component"
+            ),
+        "{css}"
+    );
+    assert_eq!(
+        css.matches("@layer reset,base,component;").count(),
+        1,
+        "{css}"
+    );
+    let (sh, sig, hm) = (
+        css.find(".sh{").unwrap(),
+        css.find(".sig{").unwrap(),
+        css.find(".home{").unwrap(),
+    );
+    assert!(sh < sig && sig < hm, "{css}");
+
     // island + islands_script
     assert!(home.contains("data-island=\"signals\" data-client=\"idle\" data-src=\"/assets/signals-abc.js\" data-css=\"/assets/shared-def.css /assets/signals-abc.css\" data-props='{\"n\":12}'"), "{home}");
     assert!(home.contains("<script type=\"module\">document.querySelectorAll('[data-island]')"));

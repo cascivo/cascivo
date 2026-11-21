@@ -62,5 +62,5 @@ New dependencies: none. Message bundles use TOML, not Fluent. Static pages need 
   (`title` is per feed, not per locale).
 - Locales must be lowercase slugs (`pt-br`, not `pt-BR`) because they are URL segments.
   `hreflang` accepts the lowercase form.
-- `tests/dev.rs` (edit→render < 1 s) failed once under a parallel compile load, then passed. It is
-  timing-sensitive on a loaded machine.
+- `tests/dev.rs` used to assert edit→render < 1 s and failed once under load. Fixed in W6: it
+  asserts visibility with a 30 s liveness bound; latency is reported by `measure.mjs`.

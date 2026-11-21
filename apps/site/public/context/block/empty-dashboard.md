@@ -23,9 +23,9 @@ Provides a main landmark with a clear heading and actionable CTA.
 
 ## Props
 
-| Name           | Type         | Required | Default | Description                |
-| -------------- | ------------ | -------- | ------- | -------------------------- |
-| `onCreateItem` | `() => void` | No       | —       | Create item button handler |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onCreateItem` | `() => void` | No | — | Create item button handler |
 
 ## Examples
 

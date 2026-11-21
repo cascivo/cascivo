@@ -3,6 +3,8 @@ import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { chartCount, componentCount, themeCount, webData } from './web-data'
 import { SHOWCASE } from './pages/showcase/data'
+import { LIB_COLOR } from './lib-colors'
+import { niceTicks } from '../../../../packages/charts/src/engine/scale'
 
 const root = resolve(__dirname, '../../../..')
 const data = webData(root)
@@ -57,5 +59,29 @@ describe('webData', () => {
     expect(data.showcase[0]?.host).not.toMatch(/^https?:/)
     expect(data.themes).toHaveLength(12)
     expect(Array.isArray(data.starters)).toBe(true)
+  })
+})
+
+describe('webData chart and header values', () => {
+  it('chart fills are the site-wide library ramp, in bar order', () => {
+    expect(data.chart.fills).toEqual([LIB_COLOR.cascade, LIB_COLOR.shadcn, LIB_COLOR.carbon])
+  })
+
+  it('chart ticks are what BarChart computes for the same domain, within the data', () => {
+    const g = data.figures.gzip
+    if (!g) throw new Error('bench results missing gzip')
+    const max = Math.max(g.cascivo, g.shadcn, g.carbon)
+    expect(data.chart.ticks).toEqual(niceTicks(0, max, 5).filter((t) => t <= max))
+    expect(data.chart.ticks[0]).toBe(0)
+    expect(data.chart.ticks.length).toBeGreaterThan(2)
+  })
+
+  it('header popover anchor follows usePopover naming', () => {
+    const src = readFileSync(
+      resolve(root, 'packages/components/src/popover/use-popover.ts'),
+      'utf8',
+    )
+    expect(src).toContain("`--${useId('cascivo-popover')}`")
+    expect(data.header.popoverAnchor).toMatch(/^--cascivo-popover-[\w-]+$/)
   })
 })

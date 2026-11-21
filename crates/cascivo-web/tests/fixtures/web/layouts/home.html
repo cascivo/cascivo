@@ -6,6 +6,7 @@
 {{ theme_script() }}
 {% for u in vite_css('src/marketing/islands/home.css.ts') %}<link rel="stylesheet" href="{{ u }}">
 {% endfor %}
+<link rel="stylesheet" href="{{ css_bundle(vite_css('src/marketing/islands/signals.tsx') + vite_css('src/marketing/islands/home.css.ts'), name='home') }}">
 </head>
 <body>
 {% block body %}{% endblock %}

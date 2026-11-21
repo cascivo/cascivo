@@ -24,12 +24,12 @@ Renders a section with a heading and clearly labeled action controls.
 
 ## Props
 
-| Name           | Type          | Required | Default | Description                                     |
-| -------------- | ------------- | -------- | ------- | ----------------------------------------------- |
-| `title`        | `ReactNode`   | Yes      | —       | Primary heading of the CTA band                 |
-| `description`  | `ReactNode`   | No       | —       | Supporting text below the title                 |
-| `actions`      | `ReactNode`   | No       | —       | Buttons or links centered below the description |
-| `headingLevel` | `1 \| 2 \| 3` | No       | 2       | HTML heading level for document outline control |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `title` | `ReactNode` | Yes | — | Primary heading of the CTA band |
+| `description` | `ReactNode` | No | — | Supporting text below the title |
+| `actions` | `ReactNode` | No | — | Buttons or links centered below the description |
+| `headingLevel` | `1 \| 2 \| 3` | No | 2 | HTML heading level for document outline control |
 
 ## Tokens
 
@@ -48,16 +48,7 @@ Renders a section with a heading and clearly labeled action controls.
 Quiet bordered band with centered heading, description, and action buttons
 
 ```jsx
-<Cta
-  title="Ready to ship?"
-  description="Add Cascade to your project in minutes."
-  actions={
-    <>
-      <Button>Get started</Button>
-      <Button variant="ghost">View on GitHub</Button>
-    </>
-  }
-/>
+<Cta title="Ready to ship?" description="Add Cascade to your project in minutes." actions={<><Button>Get started</Button><Button variant="ghost">View on GitHub</Button></>} />
 ```
 
 ## AI context prompt

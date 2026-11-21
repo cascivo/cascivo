@@ -32,10 +32,10 @@ A native <details>/<summary> disclosure (Enter/Space) whose summary states the c
 
 ## Props
 
-| Name     | Type                   | Required | Default | Description                                                                                                                                                                         |
-| -------- | ---------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `items`  | `AiSource[]`           | Yes      | —       | The sources, in citation order. Each has `title`, `url` and an optional `description`. Only absolute http(s) URLs become links; anything else (e.g. `javascript:`) renders as text. |
-| `labels` | `{ summary?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n). `summary` may contain `{count}`.                                                                                         |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `AiSource[]` | Yes | — | The sources, in citation order. Each has `title`, `url` and an optional `description`. Only absolute http(s) URLs become links; anything else (e.g. `javascript:`) renders as text. |
+| `labels` | `{ summary?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). `summary` may contain `{count}`. |
 
 ## Object types
 
@@ -43,11 +43,11 @@ A native <details>/<summary> disclosure (Enter/Space) whose summary states the c
 
 One source an answer cites.
 
-| Field         | Type        | Required | Description                                                                  |
-| ------------- | ----------- | -------- | ---------------------------------------------------------------------------- |
-| `title`       | `string`    | Yes      | The source’s title.                                                          |
-| `url`         | `string`    | Yes      | Where it lives. Treated as untrusted: only absolute http(s) URLs are linked. |
-| `description` | `ReactNode` | No       | An excerpt or note shown under the title.                                    |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | `string` | Yes | The source’s title. |
+| `url` | `string` | Yes | Where it lives. Treated as untrusted: only absolute http(s) URLs are linked. |
+| `description` | `ReactNode` | No | An excerpt or note shown under the title. |
 
 ## Tokens
 
@@ -65,21 +65,17 @@ One source an answer cites.
 <Sources
   items={[
     { title: 'Refund policy', url: 'https://example.com/refunds' },
-    {
-      title: 'Terms of service',
-      url: 'https://example.com/terms',
-      description: '§4 covers cancellations.',
-    },
+    { title: 'Terms of service', url: 'https://example.com/terms', description: '§4 covers cancellations.' },
   ]}
 />
 ```
 
 ## Boundaries
 
-| Area         | Level    | Note                                                   |
-| ------------ | -------- | ------------------------------------------------------ |
-| summary text | flexible | Localise or reword via labels.summary (with {count})   |
-| URL handling | strict   | Do not bypass sourceHref() — model output is untrusted |
+| Area | Level | Note |
+|------|-------|------|
+| summary text | flexible | Localise or reword via labels.summary (with {count}) |
+| URL handling | strict | Do not bypass sourceHref() — model output is untrusted |
 
 ## AI context prompt
 

@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Filter } from '@cascivo/react'
 
 const meta: Meta = {
-  title: 'Inputs/Filter',
+  title: "Inputs/Filter",
 }
 export default meta
 type Story = StoryObj
 
 export const SingleSelect: Story = {
-  name: 'Single-select',
+  name: "Single-select",
   render: () => (
     <Filter
       options={[
@@ -23,7 +23,7 @@ export const SingleSelect: Story = {
 }
 
 export const MultiSelect: Story = {
-  name: 'Multi-select',
+  name: "Multi-select",
   render: () => (
     <Filter
       multi
@@ -38,15 +38,13 @@ export const MultiSelect: Story = {
 }
 
 export const OutlineVariant: Story = {
-  name: 'Outline variant',
+  name: "Outline variant",
   render: () => (
     <Filter
       variant="outline"
-      options={[
-        { label: 'React', value: 'react' },
-        { label: 'Vue', value: 'vue' },
-      ]}
+      options={[{ label: 'React', value: 'react' }, { label: 'Vue', value: 'vue' }]}
       aria-label="Filter by framework"
     />
   ),
 }
+

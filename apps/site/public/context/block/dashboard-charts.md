@@ -24,9 +24,9 @@ Charts within render with role="img" and titled labels for screen readers.
 
 ## Props
 
-| Name        | Type     | Required | Default | Description                                                              |
-| ----------- | -------- | -------- | ------- | ------------------------------------------------------------------------ |
-| `className` | `string` | No       | —       | Additional CSS class names merged onto the root DashboardLayout element. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `className` | `string` | No | — | Additional CSS class names merged onto the root DashboardLayout element. |
 
 ## Examples
 
