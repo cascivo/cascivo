@@ -34,10 +34,10 @@ Purely visual: the text stays real text, so it is read normally and never announ
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `as` | `'span' \| 'p' \| 'div'` | No | span | `span` for inline text, `p` for a paragraph, `div` for a block that imposes no semantics of its own. |
-| `children` | `ReactNode` | No | — | The label text the shimmer sweeps through. |
+| Name       | Type                     | Required | Default | Description                                                                                          |
+| ---------- | ------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------- |
+| `as`       | `'span' \| 'p' \| 'div'` | No       | span    | `span` for inline text, `p` for a paragraph, `div` for a block that imposes no semantics of its own. |
+| `children` | `ReactNode`              | No       | —       | The label text the shimmer sweeps through.                                                           |
 
 ## Tokens
 
@@ -63,10 +63,10 @@ Purely visual: the text stays real text, so it is read normally and never announ
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area    | Level    | Note                                                                                    |
+| ------- | -------- | --------------------------------------------------------------------------------------- |
 | colours | flexible | Override --cascivo-shimmer-text-color and --cascivo-shimmer-text-highlight per instance |
-| motion | strict | The sweep must stay inside the reduced-motion opt-in; never animate it unconditionally |
+| motion  | strict   | The sweep must stay inside the reduced-motion opt-in; never animate it unconditionally  |
 
 ## AI context prompt
 

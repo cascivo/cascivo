@@ -23,17 +23,17 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `axes` | `string[]` | Yes | — | Axis labels (one per dimension) |
-| `series` | `{ id: string; label: string; values: number[] }[]` | Yes | — | One value per axis per series |
-| `max` | `number` | No | — | Maximum value (defaults to data max) |
-| `title` | `string` | Yes | — | Title text for the component. |
-| `description` | `string` | No | — | Supporting description text. |
-| `width` | `number` | No | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height` | `number` | No | 320 | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | No | false | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Name          | Type                                                | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------- | --------------------------------------------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `axes`        | `string[]`                                          | Yes      | —       | Axis labels (one per dimension)                                                                                                                                                                                                                                                                                                                                                               |
+| `series`      | `{ id: string; label: string; values: number[] }[]` | Yes      | —       | One value per axis per series                                                                                                                                                                                                                                                                                                                                                                 |
+| `max`         | `number`                                            | No       | —       | Maximum value (defaults to data max)                                                                                                                                                                                                                                                                                                                                                          |
+| `title`       | `string`                                            | Yes      | —       | Title text for the component.                                                                                                                                                                                                                                                                                                                                                                 |
+| `description` | `string`                                            | No       | —       | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
+| `width`       | `number`                                            | No       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height`      | `number`                                            | No       | 320     | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
+| `className`   | `string`                                            | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
+| `plain`       | `boolean`                                           | No       | false   | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                         |
 
 ## Object types
 
@@ -41,11 +41,11 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 Shape of the `series` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | Yes | — |
-| `label` | `string` | Yes | — |
-| `values` | `number[]` | Yes | — |
+| Field    | Type       | Required | Description |
+| -------- | ---------- | -------- | ----------- |
+| `id`     | `string`   | Yes      | —           |
+| `label`  | `string`   | Yes      | —           |
+| `values` | `number[]` | Yes      | —           |
 
 ## Tokens
 

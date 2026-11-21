@@ -31,11 +31,11 @@ Plain text, never a live region, so a screen reader reads it on demand rather th
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `text` | `string` | Yes | — | The target text. Pass the accumulating reply as it streams; typing catches up as it grows, and restarts if it is replaced by a shorter string. |
-| `speed` | `number` | No | 2 | Characters revealed per animation frame. |
-| `onComplete` | `() => void` | No | — | Called when the displayed text has caught up with `text`. |
+| Name         | Type         | Required | Default | Description                                                                                                                                    |
+| ------------ | ------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `text`       | `string`     | Yes      | —       | The target text. Pass the accumulating reply as it streams; typing catches up as it grows, and restarts if it is replaced by a shorter string. |
+| `speed`      | `number`     | No       | 2       | Characters revealed per animation frame.                                                                                                       |
+| `onComplete` | `() => void` | No       | —       | Called when the displayed text has caught up with `text`.                                                                                      |
 
 ## Tokens
 
@@ -51,10 +51,10 @@ Plain text, never a live region, so a screen reader reads it on demand rather th
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| speed | flexible | Characters per frame |
-| announcements | strict | Do not add aria-live; announce completion separately |
+| Area          | Level    | Note                                                 |
+| ------------- | -------- | ---------------------------------------------------- |
+| speed         | flexible | Characters per frame                                 |
+| announcements | strict   | Do not add aria-live; announce completion separately |
 
 ## AI context prompt
 

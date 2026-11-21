@@ -17,25 +17,46 @@ export default meta
 type Story = StoryObj
 
 export const EdgePathTypes: Story = {
-  name: "Edge path types",
+  name: 'Edge path types',
   render: () => (
-  <div style={{ position: 'relative', height: 220 }}>
-    <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} type="bezier" label="bezier" />
-    <FlowEdge sourceX={20} sourceY={90} targetX={260} targetY={90} type="smoothstep" label="step" />
-    <FlowEdge sourceX={20} sourceY={150} targetX={260} targetY={150} animated label="animated" />
-  </div>
-),
+    <div style={{ position: 'relative', height: 220 }}>
+      <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} type="bezier" label="bezier" />
+      <FlowEdge
+        sourceX={20}
+        sourceY={90}
+        targetX={260}
+        targetY={90}
+        type="smoothstep"
+        label="step"
+      />
+      <FlowEdge sourceX={20} sourceY={150} targetX={260} targetY={150} animated label="animated" />
+    </div>
+  ),
 }
 
 export const ArrowDirection: Story = {
-  name: "Arrow direction",
+  name: 'Arrow direction',
   render: () => (
-  <div style={{ position: 'relative', height: 260 }}>
-    <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} label="forward" />
-    <FlowEdge sourceX={20} sourceY={90} targetX={260} targetY={90} markerEnd={false} markerStart label="backward" />
-    <FlowEdge sourceX={20} sourceY={150} targetX={260} targetY={150} markerStart label="both" />
-    <FlowEdge sourceX={20} sourceY={210} targetX={260} targetY={210} markerEnd={false} label="undirected" />
-  </div>
-),
+    <div style={{ position: 'relative', height: 260 }}>
+      <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} label="forward" />
+      <FlowEdge
+        sourceX={20}
+        sourceY={90}
+        targetX={260}
+        targetY={90}
+        markerEnd={false}
+        markerStart
+        label="backward"
+      />
+      <FlowEdge sourceX={20} sourceY={150} targetX={260} targetY={150} markerStart label="both" />
+      <FlowEdge
+        sourceX={20}
+        sourceY={210}
+        targetX={260}
+        targetY={210}
+        markerEnd={false}
+        label="undirected"
+      />
+    </div>
+  ),
 }
-

@@ -32,12 +32,12 @@ role="meter" with aria-valuenow/min/max and an aria-valuetext in full words ("12
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `number` | Yes | — | Tokens used so far. |
-| `max` | `number` | Yes | — | The context window size, in tokens. |
-| `label` | `string` | No | Context | The meter’s name, shown above the bar. Rendered on screen. |
-| `labels` | `{ usage?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). `usage` is the spoken value and may contain `{used}`, `{max}` and `{percent}`. |
+| Name     | Type                 | Required | Default | Description                                                                                                                               |
+| -------- | -------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`  | `number`             | Yes      | —       | Tokens used so far.                                                                                                                       |
+| `max`    | `number`             | Yes      | —       | The context window size, in tokens.                                                                                                       |
+| `label`  | `string`             | No       | Context | The meter’s name, shown above the bar. Rendered on screen.                                                                                |
+| `labels` | `{ usage?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n). `usage` is the spoken value and may contain `{used}`, `{max}` and `{percent}`. |
 
 ## Tokens
 
@@ -65,10 +65,10 @@ role="meter" with aria-valuenow/min/max and an aria-valuetext in full words ("12
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| label and wording | flexible | Rename via label; reword via labels.usage |
-| thresholds | strict | Warning at 80%, full at 95% — consistent across every meter |
+| Area              | Level    | Note                                                        |
+| ----------------- | -------- | ----------------------------------------------------------- |
+| label and wording | flexible | Rename via label; reword via labels.usage                   |
+| thresholds        | strict   | Warning at 80%, full at 95% — consistent across every meter |
 
 ## AI context prompt
 

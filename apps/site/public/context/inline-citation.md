@@ -31,11 +31,11 @@ A real link whose accessible name starts with the visible number and includes th
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `index` | `number` | Yes | — | The visible citation number — the source’s position in the matching Sources list. |
-| `source` | `AiSource` | Yes | — | The cited source (`title`, `url`, optional `description`). Only absolute http(s) URLs become links. |
-| `labels` | `{ source?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). `source` may contain `{index}`; the accessible name is "<source>: <title>". |
+| Name     | Type                  | Required | Default | Description                                                                                                                            |
+| -------- | --------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `index`  | `number`              | Yes      | —       | The visible citation number — the source’s position in the matching Sources list.                                                      |
+| `source` | `AiSource`            | Yes      | —       | The cited source (`title`, `url`, optional `description`). Only absolute http(s) URLs become links.                                    |
+| `labels` | `{ source?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n). `source` may contain `{index}`; the accessible name is "<source>: <title>". |
 
 ## Object types
 
@@ -43,11 +43,11 @@ A real link whose accessible name starts with the visible number and includes th
 
 One source an answer cites (shared with Sources).
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `title` | `string` | Yes | The source’s title. |
-| `url` | `string` | Yes | Treated as untrusted: only absolute http(s) URLs are linked. |
-| `description` | `ReactNode` | No | An excerpt shown in the hover card. |
+| Field         | Type        | Required | Description                                                  |
+| ------------- | ----------- | -------- | ------------------------------------------------------------ |
+| `title`       | `string`    | Yes      | The source’s title.                                          |
+| `url`         | `string`    | Yes      | Treated as untrusted: only absolute http(s) URLs are linked. |
+| `description` | `ReactNode` | No       | An excerpt shown in the hover card.                          |
 
 ## Tokens
 
@@ -65,16 +65,19 @@ One source an answer cites (shared with Sources).
 ```jsx
 <p>
   Refunds are available for 30 days.
-  <InlineCitation index={1} source={{ title: 'Refund policy', url: 'https://example.com/refunds' }} />
+  <InlineCitation
+    index={1}
+    source={{ title: 'Refund policy', url: 'https://example.com/refunds' }}
+  />
 </p>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area            | Level    | Note                                                        |
+| --------------- | -------- | ----------------------------------------------------------- |
 | preview content | flexible | description can be any node — an excerpt, a date, a favicon |
-| URL handling | strict | Do not bypass sourceHref() — model output is untrusted |
+| URL handling    | strict   | Do not bypass sourceHref() — model output is untrusted      |
 
 ## AI context prompt
 

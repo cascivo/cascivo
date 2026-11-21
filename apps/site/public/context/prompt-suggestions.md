@@ -32,11 +32,11 @@ A named group of real buttons whose names are the prompt text, operable with Tab
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `string[]` | Yes | — | The prompts, as the exact text each one sends. |
-| `onSelect` | `(value: string) => void` | Yes | — | Called with the chosen prompt — send it, or put it in the composer. |
-| `labels` | `{ group?: string }` | No | — | Overrides for the component’s user-visible strings (i18n) — `group` names the group for screen readers. |
+| Name       | Type                      | Required | Default | Description                                                                                             |
+| ---------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------- |
+| `items`    | `string[]`                | Yes      | —       | The prompts, as the exact text each one sends.                                                          |
+| `onSelect` | `(value: string) => void` | Yes      | —       | Called with the chosen prompt — send it, or put it in the composer.                                     |
+| `labels`   | `{ group?: string }`      | No       | —       | Overrides for the component’s user-visible strings (i18n) — `group` names the group for screen readers. |
 
 ## Tokens
 
@@ -60,10 +60,10 @@ A named group of real buttons whose names are the prompt text, operable with Tab
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| what selecting does | flexible | Send immediately, or fill the composer |
-| item text | strict | The visible text is the prompt; do not show one thing and send another |
+| Area                | Level    | Note                                                                   |
+| ------------------- | -------- | ---------------------------------------------------------------------- |
+| what selecting does | flexible | Send immediately, or fill the composer                                 |
+| item text           | strict   | The visible text is the prompt; do not show one thing and send another |
 
 ## AI context prompt
 

@@ -41,15 +41,15 @@ The component owns the scroll container, so the sticky bar and the scroll timeli
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `title` | `string` | Yes | — | The page title, rendered as the large heading and mirrored in the compact bar |
-| `children` | `React.ReactNode` | Yes | — | Content rendered inside the component. |
-| `leading` | `React.ReactNode` | No | — | Leading slot of the compact bar — typically a back control |
-| `actions` | `React.ReactNode` | No | — | Trailing slot of the compact bar — typically icon buttons |
-| `level` | `1 \| 2 \| 3` | No | 1 | Heading level for the title, mapping to h1–h3. |
-| `collapseDistance` | `number` | No | 48 | Scroll distance (px) over which the large title collapses into the bar. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name               | Type              | Required | Default | Description                                                                   |
+| ------------------ | ----------------- | -------- | ------- | ----------------------------------------------------------------------------- |
+| `title`            | `string`          | Yes      | —       | The page title, rendered as the large heading and mirrored in the compact bar |
+| `children`         | `React.ReactNode` | Yes      | —       | Content rendered inside the component.                                        |
+| `leading`          | `React.ReactNode` | No       | —       | Leading slot of the compact bar — typically a back control                    |
+| `actions`          | `React.ReactNode` | No       | —       | Trailing slot of the compact bar — typically icon buttons                     |
+| `level`            | `1 \| 2 \| 3`     | No       | 1       | Heading level for the title, mapping to h1–h3.                                |
+| `collapseDistance` | `number`          | No       | 48      | Scroll distance (px) over which the large title collapses into the bar.       |
+| `className`        | `string`          | No       | —       | Additional CSS class names merged onto the root element.                      |
 
 ## Tokens
 
@@ -87,7 +87,11 @@ Both slots stay in the compact bar and never scroll away.
 ```jsx
 <LargeTitleHeader
   title="Downloads"
-  leading={<IconButton label="Back" onClick={goBack}>←</IconButton>}
+  leading={
+    <IconButton label="Back" onClick={goBack}>
+      ←
+    </IconButton>
+  }
   actions={<IconButton label="Sort">⇅</IconButton>}
 >
   <FileList files={files} />
@@ -106,11 +110,11 @@ Stretches the reveal over more scroll distance.
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| collapseDistance | flexible | Scroll distance over which the title collapses (default 48px) |
-| level | flexible | Heading level is caller-controlled so the page outline stays correct |
-| collapse mechanism | strict | Always a CSS scroll-driven animation — there is no JavaScript fallback path |
+| Area               | Level    | Note                                                                        |
+| ------------------ | -------- | --------------------------------------------------------------------------- |
+| collapseDistance   | flexible | Scroll distance over which the title collapses (default 48px)               |
+| level              | flexible | Heading level is caller-controlled so the page outline stays correct        |
+| collapse mechanism | strict   | Always a CSS scroll-driven animation — there is no JavaScript fallback path |
 
 ## AI context prompt
 
