@@ -3,7 +3,7 @@
   "name": "editable",
   "type": "component",
   "description": "Inline click-to-edit text field",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/editable/editable.tsx"
