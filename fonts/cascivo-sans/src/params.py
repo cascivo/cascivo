@@ -45,25 +45,26 @@ def _pw(x, table):
 # so Bold is a master of its own that bends the sidebearing line (build.mid_master): it keeps the interpolated outline,
 # moved half the way its advance shortens, and so stores only a shift per glyph.
 # HEAVY_TIGHTEN and BOLD_TIGHTEN: the share of the stem sidebearing lost at Black and at Bold.
-HEAVY_TIGHTEN = 0.36
-BOLD_TIGHTEN = 0.25
-BOLD_TIGHTEN_ITALIC = 0.35
+HEAVY_TIGHTEN = 0.30
+BOLD_TIGHTEN = 0.22
+BOLD_TIGHTEN_ITALIC = 0.25
 # CN_TRIM: units the lowercase counters lose at Black (n's 150 -> 130), handed back to the sidebearings (HEAVY_TIGHTEN 0.53 -> 0.36,
 #   BOLD_TIGHTEN 0.35 -> 0.25, CH_BLACK 300 -> 280) at the same advance: Black's n gap over counter read 0.30 against Inter's 0.64, Bold's 0.38 against 0.62,
 #   and mn, hi, HI touched. m, a and K keep their width (p.trim): m's three stems closed its counters to slits, a's bowl met its
-#   stem at 25 deg (Inter 36 - 10) and K's arm cut a sliver. The italic keeps its counters for now (round 2 of JUDGING.md): trimmed
-#   by 5 to 12 its slanted arches met the h and u stems 2-6 deg under the join-angle floor and the s tips turned sharper.
-CN_TRIM = 20
-CN_TRIM_ITALIC = 0
-HEAVY_TIGHTEN_ITALIC = 0.53
+#   stem at 25 deg (Inter 36 - 10) and K's arm cut a sliver.
+# Round 2 (JUDGING.md): Black's trim is 26 with HEAVY_TIGHTEN 0.30 (n gap over counter 0.53), and the italic takes 20 with the upright's
+#   sidebearing shares (0.30 -> 0.47 at Black, 0.39 -> 0.50 at Bold) on a redrawn arch (glyphs.ARCH_LEAN); its a, g and s keep their width.
+CN_TRIM = 26
+CN_TRIM_ITALIC = 20
+HEAVY_TIGHTEN_ITALIC = 0.36
 # CH_THIN and CH_BLACK: the capitals' own counter (H's, in units; Regular's is 397, the lowercase n's scaled), at stem
 #   20 and at stem 194. Capitals set their sidebearings from the lowercase's (Sc = 1.3 S at every weight, as Inter and
 #   Geist keep them in proportion), so their width has to hold in the counter: it narrowed with n's, which cut an
 #   all-caps line by 12% at Black, and at Thin it ran wide (n's 374 would put H 4% over Regular's with 26% more white).
 CH_THIN = 470
 CHD_THIN = 0.93  # the same narrowing, as a share, for the round and diagonal capitals
-CH_BLACK = 280
-CH_BLACK_ITALIC = 300  # the italic is not trimmed yet (CN_TRIM_ITALIC)
+CH_BLACK = 272
+CH_BLACK_ITALIC = 280
 # DIAG_TRIM: units the diagonal letters v w x y z lose from their width at Black. Their counters are open white,
 #   not guarded, and they carried the widest ink growth beside the s and e.
 DIAG_TRIM = 90

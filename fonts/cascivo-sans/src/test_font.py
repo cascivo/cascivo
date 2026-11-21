@@ -744,11 +744,42 @@ class Font(unittest.TestCase):
     def test_heavy_n_gap_holds_against_its_counter(self):
         # JUDGING.md criterion 1: the white between two n's over the white inside one (rhythm.py). Bold read 0.38 and Black 0.30
         # against Inter's 0.62 / 0.64 and Regular's own 0.53, and mn, HI touched; the heavy trim (params.CN_TRIM) brought both to
-        # 0.46-0.47. The floor is round 1's pass mark.
+        # 0.46-0.47. Round 2 trimmed Black further (0.53) and gave the italic the same rebalance on a redrawn arch (it read 0.39
+        # and 0.30; glyphs.ARCH_LEAN): the floors are round 2's pass marks. Bold's is still round 1's: its outline is interpolated
+        # and its sidebearings are held by the +2% width rule.
         import rhythm
 
-        for w in (700, 900):
-            self.assertGreaterEqual(rhythm.ratio(VF, w), 0.45, f'n gap / counter at wght {w}')
+        for path, floors in ((VF, {700: 0.45, 900: 0.50}), (VFI, {700: 0.45, 900: 0.45})):
+            for w, floor in floors.items():
+                with self.subTest(font=os.path.basename(path), wght=w):
+                    self.assertGreaterEqual(rhythm.ratio(path, w), floor, 'n gap / counter')
+
+    def test_black_counters_hold_against_inter(self):
+        # JUDGING.md criterion 3: the Black counters that read small beside Inter's, as a share of the x-height squared (quality.counter_area).
+        # The e's eye was 0.78x Inter's under a bar as heavy as the H's, the 6 and 9 0.90x, b d p q 0.92x, and the A's counter 0.57x
+        # (Inter's reads 0.069 upright and 0.061 italic); o a g 8 0 were 1.0-1.2x already. quality.COUNTER_MIN_SHARE (0.70) stays the
+        # floor for the rest.
+        import quality
+
+        for path, sfx, a_ref in ((VF, '', 0.069), (VFI, '_italic', 0.061)):
+            for g, share in (('e', 0.95), ('six', 0.95), ('nine', 0.95), ('b', 0.92), ('d', 0.92), ('p', 0.92), ('q', 0.92)):
+                m = quality.raster(path, g, 900)
+                with self.subTest(font=os.path.basename(path), glyph=g):
+                    self.assertGreaterEqual(quality.counter_area(m, m.x_height), share * quality.REF['counter' + sfx][(g, 900)])
+            m = quality.raster(path, 'A', 900)
+            with self.subTest(font=os.path.basename(path), glyph='A'):
+                self.assertGreaterEqual(quality.counter_area(m, m.x_height), 0.85 * a_ref)
+
+    def test_parentheses_bow_and_stand_with_the_brackets(self):
+        # JUDGING.md defect 5: the parenthesis was 159 units wide at Regular (Inter 211, Geist 214), nearly straight, and 884 tall beside
+        # brackets of 974. It is at least 0.9x Inter's width at Regular and Black (305), and ( ) [ ] { } stand within 20 units of one height.
+        for path in (VF, VFI):
+            for wght, inter in ((400, 211), (900, 305)):
+                boxes = {ch: self._ink(path, wght, ch)[0] for ch in '()[]{}'}
+                with self.subTest(font=os.path.basename(path), wght=wght):
+                    self.assertGreaterEqual(boxes['('][2] - boxes['('][0], 0.9 * inter)
+                    heights = [b[3] - b[1] for b in boxes.values()]
+                    self.assertLessEqual(max(heights) - min(heights), 20)
 
     def test_heavy_question_mark_hook_clears_its_dot(self):
         # Black's dot was 227 units tall; with the hook ending at a fixed 27% of cap height, the two

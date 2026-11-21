@@ -47,15 +47,16 @@ REGULAR_S = P(400, 14).S  # Regular's stem sidebearing unit: the reference of ST
 # W+a -63, V+a -69, Y+round -138, A beside V/W/Y -88); those numbers are hand-set here, they are not derived. Without it the closest-point
 # floor is the only brake at Black, and W beside a round letter read -90 there (Inter -49) with the two nearly touching. Y's reach grows
 # with the weight because Inter's Y kerns harder as it gets heavier (-77 at Regular, -138 at Black); the others' stays put. (1.1: Black's
-# looser sidebearings, params.CN_TRIM, left Yo at 110 against the 0.8 x 138 floor at 1.0.)
+# looser sidebearings, params.CN_TRIM, left Yo at 110 against the 0.8 x 138 floor at 1.0; 1.3 and the A pairs' 0.8 after round 2's, which
+# left Yo at 108-110 and the italic's Bold AW at 56 against 57.6.)
 STRONG_CLASSES = [
     (['L', 'Lslash'], ['T'], 1.8, 0.0, 1.0, 96),
     (['T'], ['o', 'c', 'e', 'd', 'q', 'g', 'a', 's', 'ae', 'oe'], 1.4, 0.0, 1.0, 78),
     (['W'], ['a', 'c', 'e', 'o', 'd', 'ae', 'oe'], 2.4, 0.0, 1.1, 63),
     (['V'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 0.0, 1.0, 69),
-    (['Y'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 1.1, 1.0, 138),
-    (['A'], ['V', 'W', 'Y'], 1.2, 0.6, 1.0, 88),
-    (['V', 'W', 'Y'], ['A'], 1.2, 0.6, 1.0, 88),
+    (['Y'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 1.3, 1.0, 138),
+    (['A'], ['V', 'W', 'Y'], 1.2, 0.8, 1.0, 88),
+    (['V', 'W', 'Y'], ['A'], 1.2, 0.8, 1.0, 88),
 ]
 STRONG = {(a, b): (reach, more, gain, limit) for lefts, rights, reach, more, gain, limit in STRONG_CLASSES for a in lefts for b in rights}
 
@@ -502,7 +503,7 @@ def _strong_fix(o, vals, first_of, second_of):
 # rows read an edge a little long: 13 at the corners, 17 in text Black and for the Bold master (read at 700/14, where 700/48 is 2-3 units
 # tighter). Values are rounded up to steps of 4, which compresses better than exact ones.
 DIAG_CAPS = 'AVWXYKRZTHMN'
-DIAG_FLOOR = {'text': 17, 'corner': 13, 'bold': 17}  # units of white
+DIAG_FLOOR = {'text': 17, 'corner': 13, 'bold': 17, 'bold_italic': 19}  # units of white (the italic's Bold: with its looser sidebearings 700/48 reads 5-6 tighter than 700/14, and ZΔ kept 11)
 
 
 def _gap(o, a, b):
@@ -614,7 +615,7 @@ def _diagonal_fix(o, vals, classes, setup, firsts_fix, seconds_fix, fix):
     if loc.get('wght') == 900 and loc.get('opsz') == 14:
         where = [(o, DIAG_FLOOR['text'])] + [(c, DIAG_FLOOR['corner']) for c in _HEAVY[1:]]
     elif loc.get('wght') == MID_WGHT:
-        where = [(o, DIAG_FLOOR['bold'])]
+        where = [(o, DIAG_FLOOR['bold_italic' if o.p.italic else 'bold'])]
     else:
         return {}
     selected = set(_SELECTED)

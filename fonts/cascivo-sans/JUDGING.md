@@ -211,3 +211,63 @@ Re-ranked defects for rounds 2 and 3:
 3. The rest of the italic `f` hole at 600 to 700, and the italic `kl`.
 4. Upright 700 and 900 rhythm from 0.47 to 0.50 or more (round 2 gate). This needs 1 and 2 first.
 5. Then the round 2 and 3 items as listed: parentheses (5), Black capitals (7), opsz 48 (8), Thin W/V (9), serifed `I` (10), details (11).
+
+## Round 2 result
+
+Scored blind by an independent reviewer on 2026-11-21, from the round 1 and round 2 proof sheets and the rubric only. This
+reviewer is stricter than round 1's (it gives the round 1 sheets 5.8, not 7.1), so compare the two columns, not the rounds.
+`rhythm.py`: upright 0.50 / 0.53 / 0.47 / 0.53, italic 0.57 / 0.58 / 0.50 / 0.47 (round 1: italic 700 0.39, 900 0.30).
+
+| #   | Criterion          | Before  | After   | Note                                                                                                     |
+| --- | ------------------ | ------- | ------- | -------------------------------------------------------------------------------------------------------- |
+| 1   | Rhythm             | 4       | 5       | Italic 900 `HHH`, `mini` no longer fuse. Upright 800 and 900 are still too tight (gap a third of a stem) |
+| 2   | Weight axis        | 5       | 5.5     | 100 to 700 step evenly and the width holds. 900 still reads as one mass                                  |
+| 3   | Shape              | 6       | 6.5     | The brackets are no longer boxes and wedges. Black `e a s g 8 & B` still read small                      |
+| 4   | Proportions        | 6.5     | 7       | Parentheses have Inter's width and the brackets' height. Black is more condensed than Inter Black        |
+| 5   | Joins / terminals  | 6.5     | 6.5     | No change: Black `v w y` crotches fill, the `l` tail is cramped at 900                                   |
+| 6   | Paragraph colour   | 7       | 7.5     | `(a, b; c)` is no longer cramped. Commas, semicolon and quotes are dark spots at 400                     |
+| 7   | Small sizes        | 7.5     | 8       | At 12 px the parentheses keep their curve                                                                |
+| 8   | Italic             | 4       | 5.5     | 900 is tight but separated (`hij lm qr rs` touched). `ll` tails still crowd the next letter              |
+| 9   | Kerning            | 6       | 6.5     | `f)` is clear at 900. `AVATAR` and `Kv` still touch at 900                                               |
+| 10  | Optical sizes      | 6.5     | 6.5     | No change: Black at opsz 32 to 48 touches                                                                |
+| 11  | Character          | 7       | 7.5     | The box brackets are gone. The blocky Black quotes call attention to themselves                          |
+|     | **Weighted total** | **5.8** | **6.4** | Target 8.0 not met. 900 >= 0.50 is met, and no criterion went down                                       |
+
+Fixed (redrawn, not tuned):
+
+- The italic's Black arches `n h m u r`: the crown leans toward the stem the arch leaves, on a taller near quarter
+  (`glyphs._arch`, `ARCH_LEAN`). The far quarter is wider, so the ceiling still meets both stems round when the body narrows.
+  The italic then takes the upright's rebalance (`CN_TRIM_ITALIC` 20, `HEAVY_TIGHTEN_ITALIC` 0.36, `BOLD_TIGHTEN_ITALIC` 0.25).
+- Black `e` bar (eye 0.78x to 1.03x Inter's), Black `A` diagonals and bar (counter 0.57x to about 0.9x), lighter bowl tops and
+  bottoms on `b d p q 6 9`. Measured as a share of the x-height squared, `o a g 8 0 4 R P B D` were at 1.0x to 1.6x Inter's
+  already: they read small because the letters are narrower, not because the joins are heavy.
+- Upright Black: trim 26, `HEAVY_TIGHTEN` 0.30 (0.47 to 0.53).
+- Parentheses redrawn (a bow 123 deep; 209 wide at Regular, Inter 211), `( ) [ ] { }` at Inter's 908, wider sidebearings.
+- Italic `f` closer at 600 to 700; the italic Black `l` foot is longer and flatter.
+- New gates in `test_font.py`: rhythm floors (upright 900 0.50, italic 700 and 900 0.45), Black counters against Inter
+  (`e 6 9 b d p q A`), parenthesis width and bracket heights.
+
+Why the target was missed, and what needs the owner:
+
+- **Owner decision: the width gate blocks Black spacing and counters.** `test_weight_changes_do_not_reflow_text` (+5% at 800
+  and 900, +2% to 700) is what the reviewer's first two defects come from: at a fixed advance the sidebearings can grow
+  only by what the counters give up, and the counters are already the reviewer's second defect. Inter runs to 1.08x its
+  Regular width at Black and Geist to 1.11x (the test's own note); Cascivo is held to 1.05x. Bold's 0.47 is held the same way
+  (+1.8% of the 2%). A wider limit at 800 and 900 is the only way left to both.
+- **Owner decision: the join-angle gate blocks thinner upright arch joins.** `quality.py` asks the counter's ceiling to meet
+  the stem within 10 deg of Inter's (29 deg for the Black `n`). A join thinned to 0.6 reads 30 deg and gains no white; a real
+  notch (thinned to 0.45, as Inter's 0.45 join ratio) reads 25 deg. Cascivo's reads 43 with a join ratio of 0.79. To thin the
+  joins the angle floor must come down, or the measure must read the join's thickness and not the ceiling's slope.
+- **Owner decision: `test_advances_at_regular_match_a855b5e0` pins `[ ] { }` at Regular.** Their sidebearings stay 56 / 21
+  beside the parentheses' 70 / 31. Add 0x5B, 0x5D, 0x7B, 0x7D to `sized` to open them too.
+- Bytes: no budget was raised. Full 74,248 / 74,500, italic full 80,976 / 81,500, Latin[wght] 24,820 / 25,000.
+
+Re-ranked defects for round 3:
+
+1. Upright 800 to 900 spacing and counter size (needs the width decision above; without it, nothing more to gain).
+2. Black capital kerning: `AVATAR`, `Kv` touch at 900 upright and italic; italic Black figures `345` touch.
+3. Punctuation: `« »` chevrons overlap; comma, semicolon and quotes are heavy at 300 to 600; Black quotes are blocky.
+4. Black `e` aperture (a slit), `s`, `8`, `&` lower counter (0.54x Inter's), `2` beak.
+5. Black `v w y` crotches; italic Black `Y Z` corner spurs; italic `ll`, `lm` tails.
+6. Optical size 32 to 48 at Black touches.
+7. The rest of the earlier list: Thin `W V` kerning (9), the serifed `I` at Black (10), the details (11).

@@ -19,16 +19,16 @@ small-size strings, is at [cascivo.com/cascivo-sans/specimen](https://cascivo.co
 | `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 24.2 KB                    |
 | `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 30.3 KB                    |
 | `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 72.5 KB                    |
-| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 261.0 KB (desktop install) |
+| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 260.8 KB (desktop install) |
 | `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 27.0 KB                    |
 | `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 33.8 KB                    |
 | `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 79.1 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 271.2 KB (desktop install) |
-| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 24.5 KB                    |
-| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 137.6 KB (desktop, hinted) |
-| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 139.6 KB (desktop, hinted) |
-| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 140.9 KB (desktop, hinted) |
-| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 141.8 KB (desktop, hinted) |
+| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 270.0 KB (desktop install) |
+| `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 24.4 KB                    |
+| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 137.5 KB (desktop, hinted) |
+| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 139.3 KB (desktop, hinted) |
+| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 140.2 KB (desktop, hinted) |
+| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 141.2 KB (desktop, hinted) |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters, Vietnamese, Cyrillic, Greek and combining marks (stacked by
