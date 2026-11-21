@@ -67,4 +67,4 @@ would still be under 1.5×.
 - Date-picker has 20 B of budget headroom; any feature (clearable, today) needs a split or a
   budget decision.
 - Core gained `transition()` (published `@cascivo/core`, changeset added; `api-surface.json` updated).
-- Shared-CSS fixes change `@cascivo/react` output (changeset patch); `isolated:check` / `pack:check` not run.
+- Shared-CSS fixes change `@cascivo/react` output (changeset patch); `pack:check` and `isolated:check` pass.
