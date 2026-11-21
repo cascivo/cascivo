@@ -282,6 +282,12 @@ jobs:
       - name: RTL canary (logical properties actually mirror)
         run: pnpm run rtl:check
 
+      # Rust + HTML-first pilot (docs/plans/rust-html-stack-plan.md, W2): the custom elements
+      # in packages/elements against their kill criteria — gzip budgets, APG keyboard, axe,
+      # 320–414px coarse-target sweep and idiomorph-morph survival, in real Chromium.
+      - name: Elements pilot gate (size, a11y, touch, morph)
+        run: pnpm run elements:check
+
       # The bare-page leg: shipped styles.css and NOTHING else, full viewport, several
       # components stacked so hit-testing is meaningful. computed:check mounts one
       # component at a time in a styled 640px box, so it structurally cannot see a
