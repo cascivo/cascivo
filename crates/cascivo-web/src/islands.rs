@@ -54,8 +54,10 @@ pub fn attrs(state: &WebState, a: &Args) -> Result<String, String> {
 
 /// Hand-minified. Per `[data-island]`: wait (`load` now, `idle` requestIdleCallback or 200 ms,
 /// `visible` IntersectionObserver with 200px margin), add the missing stylesheets and wait for
-/// them, import the module and call its default export. Any failure leaves the fallback markup.
-const LOADER: &str = "document.querySelectorAll('[data-island]').forEach(e=>{const d=e.dataset;new Promise(r=>{const c=d.client;if(c=='load'||(c=='visible'&&!window.IntersectionObserver))r();else if(c=='idle')window.requestIdleCallback?requestIdleCallback(r):setTimeout(r,200);else{const o=new IntersectionObserver(a=>a.some(x=>x.isIntersecting)&&(o.disconnect(),r()),{rootMargin:'200px'});o.observe(e)}}).then(()=>Promise.all((d.css||'').split(' ').filter(Boolean).map(h=>[...document.querySelectorAll('link[rel=stylesheet]')].some(l=>l.getAttribute('href')==h)?0:new Promise(r=>{const l=document.createElement('link');l.rel='stylesheet';l.href=h;l.onload=l.onerror=r;document.head.append(l)})))).then(()=>import(d.src)).then(m=>m.default(e,JSON.parse(d.props||'{}'))).catch(()=>{})})";
+/// them, import the module and call its default export. Any failure leaves the fallback markup
+/// (and is logged). `visible` observes the first child: wrappers are `display: contents`, which
+/// has no box and so never intersects.
+const LOADER: &str = "document.querySelectorAll('[data-island]').forEach(e=>{const d=e.dataset;new Promise(r=>{const c=d.client;if(c=='load'||(c=='visible'&&!window.IntersectionObserver))r();else if(c=='idle')window.requestIdleCallback?requestIdleCallback(r):setTimeout(r,200);else{const o=new IntersectionObserver(a=>a.some(x=>x.isIntersecting)&&(o.disconnect(),r()),{rootMargin:'200px'});o.observe(e.firstElementChild||e)}}).then(()=>Promise.all((d.css||'').split(' ').filter(Boolean).map(h=>[...document.querySelectorAll('link[rel=stylesheet]')].some(l=>l.getAttribute('href')==h)?0:new Promise(r=>{const l=document.createElement('link');l.rel='stylesheet';l.href=h;l.onload=l.onerror=r;document.head.append(l)})))).then(()=>import(d.src)).then(m=>m.default(e,JSON.parse(d.props||'{}'))).catch(x=>console.error('island',d.island,x))})";
 
 pub fn script() -> String {
     format!("<script type=\"module\">{LOADER}</script>")
@@ -82,6 +84,9 @@ mod tests {
             "import(d.src)",
             "JSON.parse(d.props||'{}')",
             "catch",
+            // Island wrappers are `display: contents` (no box), so observe the fallback inside.
+            "o.observe(e.firstElementChild||e)",
+            "console.error",
         ] {
             assert!(LOADER.contains(p), "missing {p}");
         }

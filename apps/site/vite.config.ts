@@ -1129,11 +1129,14 @@ export default defineConfig({
     // dist/.vite/manifest.json: how cascivo-web finds each island's hashed JS + CSS.
     manifest: true,
     rollupOptions: {
+      // Vite app builds drop entry exports; the island loader calls each island's default export.
+      preserveEntrySignatures: 'exports-only',
       // Extra entries beside index.html: the home page's islands and its CSS-only entry.
       // index.html keeps loading only its own entry chunk; these are separate graphs
       // (shared code is split into common chunks, which the manifest lists as `imports`).
       input: {
         index: resolve(__dirname, 'index.html'),
+        'home-global': resolve(__dirname, 'src/marketing/islands/home-global.css'),
         'island-header': resolve(__dirname, 'src/marketing/islands/header.tsx'),
         'island-hero-frames': resolve(__dirname, 'src/marketing/islands/hero-frames.tsx'),
         'island-signals': resolve(__dirname, 'src/marketing/islands/signals.tsx'),

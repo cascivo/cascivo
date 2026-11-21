@@ -1,0 +1,32 @@
+{% set repo = "https://github.com/cascivo/cascivo/tree/main/apps/examples" %}
+{% set docs_repo = "https://github.com/cascivo/cascivo/blob/main/docs" %}
+{% set frameworks = [
+  {"name": "Next.js", "note": "App Router / RSC — components keep their \"use client\" boundary.", "href": repo ~ "/react-next", "label": "See the example ↗"},
+  {"name": "Vite + React", "note": "The reference setup — themes import once, component CSS rides along.", "href": repo ~ "/react-vite", "label": "See the example ↗"},
+  {"name": "Astro", "note": "Islands server-render styled; page content ships zero JS. Scaffold one with cascivo create --framework astro.", "href": docs_repo ~ "/USING-WITH-ASTRO.md", "label": "Read the Astro guide ↗"},
+  {"name": "Preact", "note": "Signals are natively reactive — no adapter, via preact/compat.", "href": docs_repo ~ "/USING-WITH-PREACT.md", "label": "Read the Preact guide ↗"},
+] %}
+<section class="pg-section" id="showcase" aria-label="In the wild">
+  <div class="pg-pad pg-head">
+    <h2 class="pg-display pg-display--section">Shipped, in production</h2>
+    <p class="pg-eyebrow">10 / built with cascivo</p>
+  </div>
+  <p class="pg-pad pg-note">So far these are all built by cascivo's maintainer — real products in production, but not independent adopters yet. Shipped something with cascivo? <a href="https://github.com/cascivo/cascivo/issues/new?title=Showcase%3A%20" target="_blank" rel="noopener noreferrer">Tell us and it goes here ↗</a></p>
+  <ul class="pg-tiles pg-tiles--4 pg-showcase">
+    {% for site in data.web.showcase %}<li class="pg-showcase-item">
+      <a class="pg-showcase-link" href="{{ site.url }}" target="_blank" rel="noopener noreferrer">
+        <div class="{{ m("aspect-ratio", "root") }} pg-showcase-shot" style="--cascivo-aspect-ratio: 1.6;"><div class="{{ m("aspect-ratio", "inner") }}">{{ img("showcase/" ~ site.slug ~ ".jpg", "Screenshot of " ~ site.name, widths=[480, 960], sizes="(min-width: 80rem) 25vw, (min-width: 40rem) 50vw, 100vw", loading="lazy", format="keep") }}</div></div>
+        <span class="pg-pad pg-showcase-meta"><span class="pg-display pg-display--sub">{{ site.name }}</span><span class="pg-showcase-cat pg-mono">{{ site.category }}</span><span class="pg-showcase-host">{{ site.host }} ↗</span></span>
+      </a>
+    </li>{% endfor %}
+  </ul>
+  <ul class="pg-tiles pg-tiles--4 pg-frameworks">
+    {% for fw in frameworks %}<li class="pg-pad pg-framework">
+      <p class="pg-display pg-display--sub">{{ fw.name }}</p>
+      <p class="pg-note">{{ fw.note }}</p>
+      <a class="pg-link" href="{{ fw.href }}" target="_blank" rel="noopener noreferrer">{{ fw.label }}</a>
+    </li>{% endfor %}
+  </ul>
+  <p class="pg-pad pg-note pg-frameworks-aside">Not a React app? <code>@cascivo/tokens</code> and <code>@cascivo/themes</code> are framework-agnostic CSS — the colour system, type scale and twelve themes work anywhere, components or not. There's a <a href="{{ docs_repo }}/USING-WITH-GHOST.md" target="_blank" rel="noopener noreferrer">Ghost (Handlebars) theme ↗</a> built entirely on them.</p>
+  <p class="pg-pad pg-showcase-more"><a class="pg-link" href="/showcase">All {{ data.web.showcaseTotal }} products →</a></p>
+</section>

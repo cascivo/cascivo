@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { chartCount, componentCount, themeCount, webData } from './web-data'
+import { SHOWCASE } from './pages/showcase/data'
 
 const root = resolve(__dirname, '../../../..')
 const data = webData(root)
@@ -52,6 +53,7 @@ describe('webData', () => {
     expect(data.nav.primary.map((l) => l.label)).toEqual(['Docs', 'Examples', 'Guides'])
     expect(data.nav.footer.length).toBeGreaterThan(0)
     expect(data.showcase).toHaveLength(4)
+    expect(data.showcaseTotal).toBe(SHOWCASE.length)
     expect(data.showcase[0]?.host).not.toMatch(/^https?:/)
     expect(data.themes).toHaveLength(12)
     expect(Array.isArray(data.starters)).toBe(true)

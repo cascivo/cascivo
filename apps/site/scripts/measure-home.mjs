@@ -3,7 +3,10 @@
 // (docs/plans/rust-html-stack-results-w4.md) to compare the Preact SPA home with the cascivo-web one.
 //
 //   node apps/site/scripts/measure-home.mjs <base-url> <out-dir>
-import { mkdirSync, writeFileSync } from 'node:fs'
+//
+// HOME_HTML=<file> serves that file for "/" instead (e.g. the SPA's own dist/index.html saved
+// before `build:web` replaced it), so both versions are measured against one server.
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { gzipSync } from 'node:zlib'
 import { chromium } from '@playwright/test'
@@ -41,16 +44,22 @@ for (const [vpName, viewport] of Object.entries(VIEWPORTS)) {
       localStorage.setItem('cascade-theme', JSON.stringify({ v: 1, value: t }))
     }, theme)
     const page = await ctx.newPage()
-    const bytes = new Map()
-    let phase = 'initial'
-    page.on('response', async (res) => {
-      const type = res.request().resourceType()
-      if (type !== 'script' && type !== 'stylesheet') return
-      try {
-        const body = await res.body()
-        bytes.set(res.url(), { type, phase, raw: body.length, gz: gzipSync(body).length })
-      } catch {}
-    })
+    if (process.env.THROTTLE) {
+      // Lighthouse-like mobile conditions: 150 ms RTT, 1.6 Mbps down, 4x CPU slowdown.
+      const cdp = await ctx.newCDPSession(page)
+      await cdp.send('Network.enable')
+      await cdp.send('Network.emulateNetworkConditions', {
+        offline: false,
+        latency: 150,
+        downloadThroughput: (1.6 * 1024 * 1024) / 8,
+        uploadThroughput: (750 * 1024) / 8,
+      })
+      await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 })
+    }
+    if (process.env.HOME_HTML) {
+      const html = readFileSync(process.env.HOME_HTML, 'utf8')
+      await page.route(base + '/', (r) => r.fulfill({ body: html, contentType: 'text/html' }))
+    }
     await page.goto(base + '/', { waitUntil: 'networkidle' })
     const lcp = await page.evaluate(
       () =>
@@ -59,11 +68,31 @@ for (const [vpName, viewport] of Object.entries(VIEWPORTS)) {
             const e = list.getEntries().at(-1)
             resolve(e ? Math.round(e.startTime) : null)
           }).observe({ type: 'largest-contentful-paint', buffered: true })
-          setTimeout(() => resolve(null), 3000)
+          setTimeout(() => resolve(null), 10000)
         }),
     )
-    phase = 'scrolled'
+    const scrollStart = await page.evaluate(() => performance.now())
     await settle(page)
+    // Resource Timing sees every script/stylesheet, cached or preloaded; sizes come from
+    // refetching each URL (the preview server does not compress, so gzip is computed here).
+    const entries = await page.evaluate(() =>
+      performance
+        .getEntriesByType('resource')
+        .filter((e) => e.initiatorType === 'script' || e.initiatorType === 'link' || e.name.endsWith('.js') || e.name.endsWith('.css'))
+        .map((e) => ({ url: e.name, start: e.startTime })),
+    )
+    const bytes = new Map()
+    for (const e of entries) {
+      const type = e.url.endsWith('.css') ? 'stylesheet' : e.url.endsWith('.js') ? 'script' : null
+      if (!type || bytes.has(e.url)) continue
+      const body = Buffer.from(await (await fetch(e.url)).arrayBuffer())
+      bytes.set(e.url, {
+        type,
+        phase: e.start < scrollStart ? 'initial' : 'scrolled',
+        raw: body.length,
+        gz: gzipSync(body).length,
+      })
+    }
     const sum = (filter) =>
       [...bytes.values()]
         .filter(filter)
@@ -80,6 +109,11 @@ for (const [vpName, viewport] of Object.entries(VIEWPORTS)) {
       jsTotal: sum((b) => b.type === 'script'),
       cssInitial: sum((b) => b.type === 'stylesheet' && b.phase === 'initial'),
       cssTotal: sum((b) => b.type === 'stylesheet'),
+      // The document itself: inline scripts (theme, island loader) and static markup live here.
+      html: await (async () => {
+        const body = Buffer.from(await page.content())
+        return { raw: body.length, gz: gzipSync(body).length }
+      })(),
       height: await page.evaluate(() => document.documentElement.scrollHeight),
     }
     await page.screenshot({

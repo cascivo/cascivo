@@ -1,0 +1,24 @@
+{% set tiles = [
+  {"title": "Charts", "body": data.web.counts.charts ~ " chart types with no dependencies. Keyboard-navigable points and a hidden data table for screen readers.", "tag": "@cascivo/charts", "href": "/charts"},
+  {"title": "Email", "body": "Transactional mail in the same " ~ data.web.counts.themes ~ " themes, resolved to plain sRGB and checked against the Can I email matrix.", "tag": "@cascivo/email", "href": "/docs/email"},
+  {"title": "Flow and editor", "body": "Node graphs with pan, zoom and a minimap, and a code editor built on a native textarea. Same tokens, same themes.", "tag": "flow · editor", "href": "/docs/flow"},
+  {"title": "Uses the browser", "body": "Menus and dialogs sit on native <dialog> and the Popover API — no positioning library, no JavaScript focus trap.", "tag": "platform css", "href": "/modern-css"},
+  {"title": "Upgrades you keep", "body": "cascivo update merges upstream fixes into the code you edited. doctor --drift reports what changed under you.", "tag": "cascivo update", "href": "/docs/upgrading"},
+  {"title": "Works with the shadcn CLI", "body": "Every component is also published in the shadcn registry format, so npx shadcn add can install it.", "tag": "registry interop", "href": "/docs/parity"},
+  {"title": "Agents operate the UI", "body": "Render any view as Markdown or a JSON snapshot, then let an agent act on it through WebMCP tools you gate with allow.", "tag": "machine mode · registerViewTools", "href": "/docs/machine-mode.md"},
+  {"title": "Templates", "body": "Whole-page starting points — dashboard, auth, landing — that install like a component and are yours to edit.", "tag": "@cascivo/dashboard", "href": "/docs/marketplace"},
+] %}
+<section class="pg-section" id="beyond" aria-label="Beyond components">
+  <div class="pg-pad pg-head">
+    <h2 class="pg-display pg-display--section">More than components</h2>
+    <p class="pg-eyebrow">07 / beyond components</p>
+  </div>
+  <div class="pg-tiles pg-tiles--4">
+    {% for t in tiles %}<div class="pg-pad pg-diff">
+      <p class="pg-diff-num">{{ "0" ~ loop.index if loop.index < 10 else loop.index }}</p>
+      <h3 class="pg-display pg-display--tile">{{ t.title }}</h3>
+      <p class="pg-body">{{ t.body }}</p>
+      <a class="pg-diff-tag" href="{{ t.href }}">{{ t.tag }}</a>
+    </div>{% endfor %}
+  </div>
+</section>

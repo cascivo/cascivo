@@ -22,8 +22,18 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
     {{ theme_script() }}
-    {% for href in vite_css("src/marketing/islands/home.css.ts") %}<link rel="stylesheet" href="{{ href }}">
+    {#- Render-blocking: the global sheets, the static markup's component modules and the header
+        island (above the fold). The other islands sit below the fold: their sheets load without
+        blocking first paint (media swap) and are styled long before they scroll into view; the
+        island loader finds them already present and does not add them twice. -#}
+    {%- set ns = namespace(now=[vite("src/marketing/islands/home-global.css")] + vite_css("src/marketing/islands/home.css.ts") + vite_css("src/marketing/islands/header.tsx"), later=[]) -%}
+    {%- for name in ["hero-frames", "signals", "themes", "app-builder"] -%}
+      {%- set ns.later = ns.later + vite_css("src/marketing/islands/" ~ name ~ ".tsx") -%}
+    {%- endfor %}
+    {% for href in ns.now | unique %}<link rel="stylesheet" href="{{ href }}">
     {% endfor %}
+    {%- for href in ns.later | unique %}{% if href not in ns.now %}<link rel="stylesheet" href="{{ href }}" media="print" onload="this.media='all'">
+    {% endif %}{% endfor %}
   </head>
   <body>
     {% block body %}{% endblock %}

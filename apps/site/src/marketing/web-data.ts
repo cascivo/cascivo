@@ -83,6 +83,8 @@ export interface WebData {
     resources: { label: string; href: string }[]
     footer: { label: string; links: { label: string; href: string; mono?: true }[] }[]
   }
+  /** SHOWCASE.length — the "All N products" link. */
+  showcaseTotal: number
   showcase: {
     slug: string
     url: string
@@ -183,6 +185,7 @@ export function webData(root: string): WebData {
     heroStats,
     themes: FIRST_PARTY_THEMES,
     nav: { primary: PRIMARY_LINKS, resources: RESOURCE_LINKS, footer: FOOTER_COLUMNS },
+    showcaseTotal: SHOWCASE.length,
     showcase: SHOWCASE.slice(0, 4).map((s) => ({ ...s, host: displayHost(s.url) })),
     starters: readJson(resolve(siteRoot, 'src/marketing/starter-cards.json')),
     appBuilder: readJson(resolve(siteRoot, 'src/marketing/app-builder.json')),

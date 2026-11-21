@@ -83,7 +83,7 @@ Template functions (positional or keyword arguments; unknown keywords are errors
 | `islands_script()`                                                                                      | the ~800 byte inline module loader that hydrates `[data-island]` with `mod.default(el, props)`; failures leave the fallback markup            |
 | `theme_script(storage_key="cascade-theme", attribute="data-theme", default_light="poster", default_dark="poster-dark", blocking=[…])` | inline no-flash theme script (versioned storage envelope, OS colour-scheme fallback)                               |
 | `img(src, alt, widths=[480, 960, 1440], sizes, class, loading="lazy", format="webp")`                   | `<img srcset>`; resized files at `/_cw/img/<stem>-<w>.<hash8>.<ext>`; never upscales; `format="keep"` keeps jpeg/png/webp                      |
-| `{{ code \| highlight("js") }}`                                                                         | `CodeSnippet`'s highlighted `<code>` body for `bash`, `css`, `js`, `ts`                                                                        |
+| `{{ code \| highlight("js") }}`                                                                         | the whole highlighted `<code class=…>` element (as `CodeSnippet` renders it) for `bash`, `css`, `js`, `ts`                                                                        |
 | `data.<name>`                                                                                           | the `[data]` files                                                                                                                             |
 
 Webp output is lossless (all the `image` crate encodes). Hashes are FNV-1a 64 of the file bytes.

@@ -1,9 +1,7 @@
 // CSS-only entry for the static home page. Same order as src/main.tsx (app.css first: it
 // reaches @cascivo/tokens, whose layers.css carries the one authoritative `@layer` statement).
-import '../../app.css'
-import '../landing.css'
-import '../poster.css'
-import '../poster-sections.css'
+// Global sheets are the separate CSS entry ./home-global.css: importing them here as well put
+// them in a chunk shared with index.html, outside this entry's manifest `css` list.
 
 // Component CSS modules the STATIC home markup uses (the islands bring their own with their
 // JS). cascivo-web prints the hashed class names from dist/.vite/css-modules.json, so the
