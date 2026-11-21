@@ -296,7 +296,9 @@ impl<'a> Renderer<'a> {
             page => page,
             content => content,
         };
-        t.render(ctx).map_err(|e| Errors(vec![tpl_err(file, &e)]))
+        self.web.take_preloads();
+        let html = t.render(ctx).map_err(|e| Errors(vec![tpl_err(file, &e)]))?;
+        Ok(with_preloads(html, &self.web.take_preloads()))
     }
 
     /// Renders this view's pages, (URL, HTML), and the files its template functions emitted.
@@ -450,6 +452,26 @@ fn config_value(c: &Config) -> Value {
     ]))
 }
 
+/// Puts `img(priority=true)` preloads at the top of `<head>`: before its first `<link>`,
+/// `<script>` or `<style>`, so the image is requested no later than the stylesheet.
+fn with_preloads(mut html: String, links: &[String]) -> String {
+    if links.is_empty() {
+        return html;
+    }
+    let tags = links.concat();
+    let head_end = html.find("</head>");
+    let first = ["<link", "<script", "<style"]
+        .iter()
+        .filter_map(|t| html.find(t))
+        .filter(|i| head_end.is_none_or(|h| *i < h))
+        .min();
+    match first.or(head_end) {
+        Some(i) => html.insert_str(i, &tags),
+        None => html.insert_str(0, &tags),
+    }
+    html
+}
+
 /// Links the shared stylesheet and appends component scripts, so layouts need neither.
 fn finish_html(html: &str, scripts: &str, css: bool) -> String {
     let link = if css {
@@ -522,6 +544,27 @@ mod tests {
     fn finish_without_cascivo_css_adds_no_link() {
         let h = finish_html("<html><head></head><body></body></html>", "", false);
         assert_eq!(h, "<html><head></head><body></body></html>");
+    }
+
+    #[test]
+    fn preloads_go_before_the_first_head_resource() {
+        let p = vec!["<P1>".to_string(), "<P2>".to_string()];
+        assert_eq!(
+            with_preloads(
+                "<html><head><title>t</title><link rel=\"stylesheet\"></head><body><link></body></html>".into(),
+                &p
+            ),
+            "<html><head><title>t</title><P1><P2><link rel=\"stylesheet\"></head><body><link></body></html>"
+        );
+        assert_eq!(
+            with_preloads(
+                "<head><title>t</title></head><body><script></script>".into(),
+                &p
+            ),
+            "<head><title>t</title><P1><P2></head><body><script></script>"
+        );
+        assert_eq!(with_preloads("<p>x</p>".into(), &p), "<P1><P2><p>x</p>");
+        assert_eq!(with_preloads("<p>x</p>".into(), &[]), "<p>x</p>");
     }
 
     #[test]

@@ -13,7 +13,9 @@
  *    sync with the persisted `cascade-theme` signal (localStorage, `{v:1,value}` envelope,
  *    OS preference as the default, deferred `themes-extra.css` loaded on first use of an extra
  *    theme). `Header` writes it through `setTheme`/`toggleScheme`.
- *  - search: the lazy `SearchDialogLazy` plus the Cmd/Ctrl+K shortcut. There is no router on
+ *  - search: the lazy `SearchDialogLazy` (its chunk prefetched on first hover/focus of the
+ *    search button, loaded on Cmd/Ctrl+K or click) plus the shortcut. The island mounts on
+ *    idle, not load: it is a ~150 ms task that would otherwise land before first input. There is no router on
  *    the static page, so a result navigates with a full page load.
  *  - link clicks: `Header` calls the SPA `navigate()` (pushState) from the drawer links; the
  *    capture listener below stops that handler so the browser performs a normal navigation.
@@ -27,9 +29,11 @@ import { initReveal } from '../reveal'
 import { searchOpen } from '../search/state'
 import { theme } from '../../theme'
 
-const SearchDialogLazy = lazy(() =>
-  import('../search/SearchDialogLazy').then((m) => ({ default: m.SearchDialogLazy })),
-)
+// One import shared by the prefetch and `lazy`: the chunk starts loading when the search
+// button is first hovered or focused, so the dialog is ready by the click.
+let searchChunk: Promise<typeof import('../search/SearchDialogLazy')> | undefined
+const loadSearch = () => (searchChunk ??= import('../search/SearchDialogLazy'))
+const SearchDialogLazy = lazy(() => loadSearch().then((m) => ({ default: m.SearchDialogLazy })))
 
 function HeaderIsland() {
   useSignals()
@@ -74,6 +78,14 @@ function HeaderIsland() {
 
 export default function mount(el: HTMLElement, _props: Record<string, unknown> = {}): void {
   el.replaceChildren()
+  const prefetch = (e: Event) => {
+    if (!(e.target as Element | null)?.closest?.('.header-search-btn')) return
+    el.removeEventListener('pointerover', prefetch)
+    el.removeEventListener('focusin', prefetch)
+    void loadSearch()
+  }
+  el.addEventListener('pointerover', prefetch, { passive: true })
+  el.addEventListener('focusin', prefetch)
   el.addEventListener(
     'click',
     (e) => {

@@ -231,3 +231,84 @@ each with its source.
 **5. Runner label.** `macos-15-intel` is a valid GitHub-hosted Intel macOS label (listed in the
 GitHub-hosted runners reference, free for public repositories, no deprecation notice; the
 runner-images README lists it for macOS 15 x64). `macos-13` and `macos-14` are retired. No change.
+
+## W7 follow-up: Lighthouse 100
+
+**Goal.** Lighthouse Performance 100 and Accessibility 100 on the cascivo-web home (desktop).
+The owner's run (Lighthouse 13.5, desktop, with browser extensions) gave 92 and 97. TBT was
+220 ms. It came from the two live pulse iframes (about 240 ms of boot each) and a 159 ms task
+on `/`.
+
+**Method.** Lighthouse 13.6, headless Chromium (`/opt/pw-browsers/chromium`), clean profile, no
+extensions. Default throttling: the `desktop` preset, and mobile (simulated 4× CPU, slow 4G).
+5 runs each, median. Server: `apps/site/scripts/serve-gz.mjs` (gzip) over the full
+`build:landing-demos` + `build:web` output. This machine is faster than the owner's, so
+desktop TBT is 0 here in both builds. The throttled mobile run shows the main-thread work
+that the owner's desktop run showed.
+
+| | Perf | A11y | FCP | LCP | TBT | CLS | SI |
+|---|---|---|---|---|---|---|---|
+| Desktop, before | 100 | 97 | 368 ms | 411 ms | 0 ms | 0 | 576 ms |
+| Desktop, after | **100** | **100** | 268 ms | 402 ms | 0 ms | 0 | 271 ms |
+| Mobile, before | 96 | 94 | 1,508 ms | 1,508 ms | 212 ms | 0 | 1,508 ms |
+| Mobile, after | **100** | 97 | 902 ms | 903 ms | 55 ms | 0 | 902 ms |
+
+**Changes.**
+1. **Hero frames.** The static fallback no longer contains the two iframes. It is the two poster
+   images only (it was a snapshot of the live state). The island mounts **one** iframe, the
+   front window in the current theme. It mounts on `pointerenter`, `focusin` or `touchstart`
+   on the figure. The window behind always stays a picture.
+   - Mounting on idle after `load` was measured and rejected. The pulse boot came back as
+     124 ms + 65 ms tasks, and mobile TBT went to 257 ms (perf 95).
+   - The frame box no longer changes size when the frame goes live. `[data-live]` no longer
+     sets the size, and on phones the box is 34rem tall from first paint. So there is no
+     layout shift.
+   - Keyboard: focusing the overlay link mounts the frame. The link stays while it has focus,
+     so focus is not lost when the frame becomes interactive.
+   - Tests: `HeroLiveFrames.test.tsx` (jsdom). A mutation that starts with the frame live
+     fails it.
+2. **Header island.** `client="load"` → `client="idle"`. The search dialog chunk is prefetched
+   on the first hover or focus of the search button. It is still loaded on Ctrl+K or click.
+3. **LCP image.** New in cascivo-web: `img(…, priority=true)`. It gives `loading="eager"`,
+   `fetchpriority="high"` and a `<link rel="preload" as="image" imagesrcset imagesizes>`.
+   - The preload goes at the top of `<head>`, before the first `<link>`, `<script>` or
+     `<style>`.
+   - `priority="<media query>"` preloads only where the query matches and keeps the `<img>`
+     lazy. On wide screens the back (dark) poster is the LCP element, because the front one
+     is offset lower. On phones CSS hides it, so it gets `priority='(min-width: 40rem)'`.
+   - `format="keep"` at the source width now copies the file byte for byte. Before, it
+     re-encoded lossy WebP as lossless, which made it several times larger.
+   - Unit tests cover these cases, and the `web` fixture test checks the preload position.
+4. **Critical CSS: not done.** As an experiment, the whole 168 KB (26 KB gzip) bundle was
+   inlined. FCP improved from 268 to 213 ms on desktop and from 902 to 799 ms on mobile. LCP
+   on desktop did not change. Scores did not change (already 100). Two costs:
+   - every page view would load the CSS again, because inlined CSS cannot be cached;
+   - an above-the-fold extractor (nesting, layers, media) is a large new feature.
+
+   So `css_bundle` is unchanged. Next step if FCP matters: inline the hero and header rules
+   only.
+5. **A11y.**
+   - The search button's label is now "Search, Ctrl K" ("Search, ⌘K" on Apple). It repeats
+     the visible keys. axe still reports `label-content-name-mismatch` for "Search (Ctrl K)":
+     the parentheses make it fail, so they were removed.
+   - `.pg-hero-aside-link` is underlined (link-in-text-block).
+   - The six Deploy buttons are now labelled "Deploy to Cloudflare: <starter>". The old label,
+     "Deploy <starter> to Cloudflare", did not contain the visible text. This changes both the
+     SPA and the template.
+
+**Parity.** `measure-home.mjs` + `compare-home.mjs` compared the cascivo-web home before and
+after. Page heights are unchanged (10,926 px desktop, 23,354 px mobile). Pixel differences
+(0.4–1.5 %) are only in the hero frame band. Before, the screenshot showed the running app;
+now it shows the poster until hover. The rest is the new underlines. `web-copy.test.ts` and
+`web-data.test.ts` pass.
+
+**Open.**
+- **Mobile a11y 97** is a false positive. axe reports `color-contrast` for three elements in
+  `#showcase`, with a background of `#030303`. Those elements are inside a
+  `content-visibility: auto` band that is not rendered yet. Scrolled into view, the same axe
+  run reports no violations. It was 94 before this change, with the same three elements.
+- **Mobile TBT.** The remaining 55 ms is the document's first style and layout, about 90 ms at
+  4× CPU. Hiding `#signals` cuts style work in half. Skipping it with `content-visibility` was
+  within noise (123 → 94 ms), so that change was not made.
+- **Shortcut before mount.** Ctrl+K pressed before the header island mounts (on idle) does
+  nothing.

@@ -1111,7 +1111,11 @@ export default defineConfig({
     // @testing-library/react, which needs jsdom and the React renderer; the Preact alias here breaks them
     // ("React Element from an older version of React"), so they stay out until they get their own config.
     // EvalsPage.test.tsx is the exception: it renders with Preact itself into jsdom, so the alias helps.
-    include: ['src/**/*.test.ts', 'src/marketing/pages/EvalsPage.test.tsx'],
+    include: [
+      'src/**/*.test.ts',
+      'src/marketing/pages/EvalsPage.test.tsx',
+      'src/marketing/poster/HeroLiveFrames.test.tsx',
+    ],
   },
   plugins: HOME_PASS
     ? [imagetools(), injectCounts(), guidesData(), benchData(), webArtifacts(cssModuleMap)]
