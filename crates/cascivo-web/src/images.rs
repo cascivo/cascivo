@@ -15,7 +15,7 @@ use crate::assets::{hash8, split_name};
 use crate::web::{Args, WebState};
 
 pub const PARAMS: &[&str] = &[
-    "src", "alt", "widths", "sizes", "class", "loading", "format",
+    "src", "alt", "widths", "sizes", "class", "loading", "format", "priority",
 ];
 const DEFAULT_WIDTHS: &[u32] = &[480, 960, 1440];
 const JPEG_QUALITY: u8 = 82;
@@ -37,9 +37,19 @@ impl Out {
     }
 }
 
+#[derive(PartialEq, Eq)]
+enum Priority {
+    No,
+    All,
+    Media(String),
+}
+
 struct Source {
     img: DynamicImage,
     format: ImageFormat,
+    /// The file as read: written unchanged for `format="keep"` at the source width, because the
+    /// encoder writes WebP lossless only and would grow a lossy source several times over.
+    bytes: Vec<u8>,
 }
 
 /// A written variant: URL, width, height.
@@ -59,7 +69,7 @@ fn decode(dir: &Path, rel: &str) -> Result<Source, String> {
     let format = image::guess_format(&bytes).map_err(|e| format!("img(): `{rel}`: {e}"))?;
     let img = image::load_from_memory_with_format(&bytes, format)
         .map_err(|e| format!("img(): `{rel}`: {e}"))?;
-    Ok(Source { img, format })
+    Ok(Source { img, format, bytes })
 }
 
 fn encode(img: &DynamicImage, out: Out) -> Result<Vec<u8>, String> {
@@ -118,7 +128,33 @@ pub fn render(state: &WebState, a: &Args) -> Result<String, String> {
     if widths.is_empty() {
         return Err("img(): widths is empty".into());
     }
-    let loading = a.or("loading", "lazy").map_err(e)?;
+    // `priority=true`: the LCP image everywhere (eager, preloaded). `priority="<media query>"`:
+    // the LCP image only where the query matches, e.g. a copy CSS hides on phones: the preload
+    // carries the query and the <img> keeps its loading (lazy by default), so where it is
+    // hidden nothing is fetched.
+    let priority = match a.value("priority") {
+        None => Priority::No,
+        Some(v) if v.kind() == minijinja::value::ValueKind::Bool => {
+            if v.is_true() {
+                Priority::All
+            } else {
+                Priority::No
+            }
+        }
+        Some(v) => match v.as_str() {
+            Some(m) if !m.trim().is_empty() => Priority::Media(m.to_string()),
+            _ => return Err("img(): priority must be true, false or a media query".into()),
+        },
+    };
+    let loading = match (&priority, a.str("loading").map_err(e)?) {
+        (Priority::All, Some(l)) if l != "eager" => {
+            return Err(format!(
+                "img(): priority=true loads eagerly; drop loading=\"{l}\""
+            ));
+        }
+        (Priority::All, _) => "eager".to_string(),
+        (_, l) => l.unwrap_or_else(|| "lazy".into()),
+    };
     let format = a.or("format", "webp").map_err(e)?;
     let rel = src_arg.trim_start_matches('/');
     if !is_safe_relative(rel) {
@@ -146,7 +182,15 @@ pub fn render(state: &WebState, a: &Args) -> Result<String, String> {
             continue;
         }
         let h = scaled_h(sw, sh, w);
-        let bytes = if w == sw {
+        let same_format = matches!(
+            (out, source.format),
+            (Out::Webp, ImageFormat::WebP)
+                | (Out::Jpeg, ImageFormat::Jpeg)
+                | (Out::Png, ImageFormat::Png)
+        );
+        let bytes = if w == sw && format == "keep" && same_format {
+            source.bytes.clone()
+        } else if w == sw {
             encode(&source.img, out)?
         } else {
             encode(&source.img.resize_exact(w, h, FilterType::Lanczos3), out)?
@@ -167,17 +211,41 @@ pub fn render(state: &WebState, a: &Args) -> Result<String, String> {
         .map(|(u, w, _)| format!("{u} {w}w"))
         .collect::<Vec<_>>()
         .join(", ");
+    let sizes = a.str("sizes").map_err(e)?;
+    if priority != Priority::No {
+        // The LCP image: preloaded from <head> (the page's finish step places it), so its
+        // fetch starts with the stylesheet instead of after the parser reaches the <img>.
+        let mut l = format!(
+            "<link rel=\"preload\" as=\"image\" href=\"{big_url}\" imagesrcset=\"{srcset}\""
+        );
+        if let Some(z) = &sizes {
+            l.push_str(" imagesizes=\"");
+            esc(&mut l, z);
+            l.push('"');
+        }
+        if let Priority::Media(m) = &priority {
+            l.push_str(" media=\"");
+            esc(&mut l, m);
+            l.push('"');
+        }
+        l.push_str(" fetchpriority=\"high\">");
+        state.preload(l);
+    }
     let mut s = format!("<img src=\"{big_url}\" srcset=\"{srcset}\"");
-    if let Some(z) = a.str("sizes").map_err(e)? {
+    if let Some(z) = &sizes {
         s.push_str(" sizes=\"");
-        esc(&mut s, &z);
+        esc(&mut s, z);
         s.push('"');
     }
     s.push_str(&format!(" width=\"{big_w}\" height=\"{big_h}\" alt=\""));
     esc(&mut s, &alt);
     s.push_str("\" loading=\"");
     esc(&mut s, &loading);
-    s.push_str("\" decoding=\"async\"");
+    s.push('"');
+    if priority != Priority::No {
+        s.push_str(" fetchpriority=\"high\"");
+    }
+    s.push_str(" decoding=\"async\"");
     if let Some(c) = a.str("class").map_err(e)? {
         s.push_str(" class=\"");
         esc(&mut s, &c);
@@ -308,6 +376,84 @@ mod tests {
         let files = st.take_files();
         let jpg = files.iter().find(|(k, _)| k.ends_with(".jpg")).unwrap().1;
         assert_eq!(image::guess_format(jpg).unwrap(), ImageFormat::Jpeg);
+        let _ = std::fs::remove_dir_all(d);
+    }
+
+    #[test]
+    fn priority_is_eager_high_and_queues_one_preload() {
+        let d = site_dir("prio");
+        let st = state(&d);
+        let call = "{{ img('pic.png', 'x', widths=[10, 20], sizes='50vw', priority=true) }}";
+        let h = run(&st, call).unwrap();
+        assert!(
+            h.contains(" loading=\"eager\" fetchpriority=\"high\" decoding=\"async\""),
+            "{h}"
+        );
+        // the same image twice on a page is preloaded once
+        run(&st, call).unwrap();
+        let pre = st.take_preloads();
+        assert_eq!(pre.len(), 1, "{pre:?}");
+        let files = st.take_files();
+        let n10 = files
+            .keys()
+            .find(|n| n.starts_with("_cw/img/pic-10."))
+            .unwrap();
+        let n20 = files
+            .keys()
+            .find(|n| n.starts_with("_cw/img/pic-20."))
+            .unwrap();
+        assert_eq!(
+            pre[0],
+            format!(
+                "<link rel=\"preload\" as=\"image\" href=\"/{n20}\" imagesrcset=\"/{n10} 10w, /{n20} 20w\" imagesizes=\"50vw\" fetchpriority=\"high\">"
+            )
+        );
+        // without priority: nothing queued, no fetchpriority
+        let l = run(&st, "{{ img('pic.png', 'x') }}").unwrap();
+        assert!(
+            !l.contains("fetchpriority") && st.take_preloads().is_empty(),
+            "{l}"
+        );
+        assert!(
+            run(
+                &st,
+                "{{ img('pic.png', 'x', priority=true, loading='lazy') }}"
+            )
+            .unwrap_err()
+            .contains("priority")
+        );
+        assert!(
+            run(&st, "{{ img('pic.png', 'x', priority=1) }}")
+                .unwrap_err()
+                .contains("priority")
+        );
+        // a media query: preload only where it matches, the <img> stays lazy
+        let m = run(
+            &st,
+            "{{ img('pic.png', 'x', widths=[20], priority='(min-width: 40rem)') }}",
+        )
+        .unwrap();
+        assert!(
+            m.contains(" loading=\"lazy\" fetchpriority=\"high\""),
+            "{m}"
+        );
+        let pre = st.take_preloads();
+        assert!(
+            pre.len() == 1
+                && pre[0].ends_with(" media=\"(min-width: 40rem)\" fetchpriority=\"high\">"),
+            "{pre:?}"
+        );
+        let _ = std::fs::remove_dir_all(d);
+    }
+
+    #[test]
+    fn keep_at_the_source_width_copies_the_file() {
+        let d = site_dir("copy");
+        let st = state(&d);
+        run(&st, "{{ img('pic.jpg', 'x', widths=[40], format='keep') }}").unwrap();
+        let files = st.take_files();
+        let (_, bytes) = files.iter().next().unwrap();
+        assert_eq!(bytes, &std::fs::read(d.join("assets/pic.jpg")).unwrap());
         let _ = std::fs::remove_dir_all(d);
     }
 

@@ -96,6 +96,25 @@ fn renders_head_assets_vite_islands_images_highlight_and_data() {
     assert_eq!(imgs.len(), 2, "{imgs:?}");
     assert!(home.contains("width=\"32\" height=\"16\" alt=\"Hero\" loading=\"lazy\" decoding=\"async\" class=\"hero\""), "{home}");
     assert!(home.contains("sizes=\"100vw\"") && home.contains(" 16w, ") && home.contains(" 32w\""));
+    // img(priority=true): eager + fetchpriority, and one preload in <head> ahead of the first
+    // head resource (the theme script), not in the body where the image is
+    let h16 = imgs
+        .iter()
+        .find(|k| k.starts_with("_cw/img/hero-16."))
+        .unwrap();
+    assert!(
+        home.contains("alt=\"Lead\" loading=\"eager\" fetchpriority=\"high\""),
+        "{home}"
+    );
+    let pre = format!(
+        "<link rel=\"preload\" as=\"image\" href=\"/{h16}\" imagesrcset=\"/{h16} 16w\" fetchpriority=\"high\">"
+    );
+    let at = home.find(&pre).expect("preload in the page");
+    assert_eq!(home.matches(&pre).count(), 1);
+    assert!(
+        at < home.find("<script").unwrap() && at < home.find("</head>").unwrap(),
+        "{home}"
+    );
 
     // highlight
     assert!(home.contains("<code class=\"_code_x9\"><span data-tok=\"keyword\">const</span><span> a = </span><span data-tok=\"number\">1</span><span> </span><span data-tok=\"comment\">// x</span></code>"), "{home}");

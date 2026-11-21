@@ -33,6 +33,7 @@ function postTheme(frame: HTMLIFrameElement | null, next: Theme) {
  */
 function Frame({
   slot,
+  poster,
   startTheme,
   frameRef,
   live,
@@ -40,6 +41,7 @@ function Frame({
   onReady,
 }: {
   slot: Slot
+  poster: HeroPosters
   /** The theme in the iframe's URL, fixed once it mounts: changing `src` would reload it. */
   startTheme: Theme | null
   frameRef: Ref<HTMLIFrameElement>
@@ -88,7 +90,7 @@ function Frame({
     >
       <img
         className="pg-hero-frame-poster"
-        src={`/hero/pulse-${isDarkTheme(theme) ? 'poster-dark' : 'poster'}.webp`}
+        src={isDarkTheme(theme) ? poster.dark : poster.light}
         alt=""
         width={1440}
         height={620}
@@ -109,76 +111,69 @@ function Frame({
   )
 }
 
+/** Poster URL per scheme. The static home passes its hashed `img()` copies. */
+export interface HeroPosters {
+  light: string
+  dark: string
+}
+
+const POSTERS: HeroPosters = {
+  light: '/hero/pulse-poster.webp',
+  dark: '/hero/pulse-poster-dark.webp',
+}
+
 /**
  * The hero's proof: the real pulse app, running, in the page's own theme — the front window
- * wears whatever theme the visitor picked, the back one its other half, and both follow a
- * switch live instead of reloading.
+ * wears whatever theme the visitor picked and follows a switch live instead of reloading; the
+ * back one is its other half, as a picture.
  *
- * Live rather than screenshots so it is sharp at every width and every pixel density, and
+ * Live rather than a screenshot so it is sharp at every width and every pixel density, and
  * because a responsive app re-laying itself out for a phone says more than a picture can.
- * The app is a separate document with its own ~110 KB of JS, so nothing is fetched until
- * the landing itself has finished loading and the figure is close to the viewport — the
- * hero's first paint costs exactly what it did with the screenshots.
+ * The app is a separate document with its own ~110 KB of JS and ~250 ms of boot on the main
+ * thread (same-origin frames share it), so the hero is only the screenshots until the visitor
+ * reaches for it: a pointer over it, focus inside it or a touch mounts one frame. Not on idle
+ * after load: measured, that put the app's boot (100–250 ms tasks) back into the page's
+ * Total Blocking Time window (docs/plans/rust-html-stack-results-w4.md, W7).
  *
  * With a mouse, the front window is the app itself: click through sections, change the
  * range, pause the simulation. On touch it stays a picture — inert, so it takes no focus,
  * no pointer and no scroll (an iframe that captured touch would trap a phone's page
- * scroll) — and one link laid over it goes to the full example. The dark window behind is
+ * scroll) — and one link laid over it goes to the full example. The window behind is
  * always a picture: only a sliver of it shows, and controls in a sliver read as a misclick.
  */
-export function HeroLiveFrames() {
+export function HeroLiveFrames({ posters = POSTERS }: { posters?: HeroPosters }) {
   useSignals()
   const live = useSignal(false)
-  // Below md the dark frame is hidden by CSS — a sliver behind a phone-width window is not
-  // worth a second running app — so it stays a (never-fetched, lazy) screenshot there.
-  const wide = useMediaQuery('(min-width: 40rem)')
   const desktop = useMediaQuery('(min-width: 40rem) and (pointer: fine)')
   // Interactive only once the app has actually painted: until then (or if it never does)
-  // the screenshot is all there is, and it should still link to the example.
+  // the screenshot is all there is, and it should still link to the example. While the link
+  // has keyboard focus it stays, so a frame that becomes ready under it does not drop focus.
   const frontReady = useSignal(false)
-  const interactive = desktop.value && frontReady.value
+  const linkFocused = useSignal(false)
+  const interactive = desktop.value && frontReady.value && !linkFocused.value
   const ref = useRef<HTMLDivElement>(null)
   const frontFrame = useRef<HTMLIFrameElement>(null)
-  const backFrame = useRef<HTMLIFrameElement>(null)
-  // Captured when the frames mount, never after: a new `src` would reload the app.
-  const startThemes = useSignal<Record<Slot, Theme> | null>(null)
+  // Captured when the frame mounts, never after: a new `src` would reload the app.
+  const startTheme = useSignal<Theme | null>(null)
 
   useSignalEffect(() => {
     postTheme(frontFrame.current, themeFor('light'))
-    postTheme(backFrame.current, themeFor('dark'))
   })
 
   useSignalEffect(() => {
     const el = ref.current
-    if (!el || typeof IntersectionObserver === 'undefined') return
-    let observer: IntersectionObserver | undefined
-    let idle = 0
-    const watch = () => {
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) return
-          startThemes.value = { light: themeFor('light'), dark: themeFor('dark') }
-          live.value = true
-          observer?.disconnect()
-        },
-        { rootMargin: '400px 0px' },
-      )
-      observer.observe(el)
+    if (!el) return
+    const events = ['pointerenter', 'focusin', 'touchstart'] as const
+    const stop = () => {
+      for (const type of events) el.removeEventListener(type, start)
     }
-    const afterLoad = () => {
-      idle =
-        typeof requestIdleCallback === 'function'
-          ? requestIdleCallback(watch, { timeout: 2000 })
-          : window.setTimeout(watch, 200)
+    function start() {
+      stop()
+      startTheme.value = themeFor('light')
+      live.value = true
     }
-    if (document.readyState === 'complete') afterLoad()
-    else window.addEventListener('load', afterLoad, { once: true })
-    return () => {
-      window.removeEventListener('load', afterLoad)
-      if (typeof cancelIdleCallback === 'function') cancelIdleCallback(idle)
-      else window.clearTimeout(idle)
-      observer?.disconnect()
-    }
+    for (const type of events) el.addEventListener(type, start, { passive: true })
+    return stop
   })
 
   return (
@@ -186,14 +181,16 @@ export function HeroLiveFrames() {
       <div className="pg-hero-frames-stack">
         <Frame
           slot="dark"
-          startTheme={startThemes.value?.dark ?? null}
-          frameRef={backFrame}
-          live={live.value && wide.value}
+          poster={posters}
+          startTheme={null}
+          frameRef={null}
+          live={false}
           interactive={false}
         />
         <Frame
           slot="light"
-          startTheme={startThemes.value?.light ?? null}
+          poster={posters}
+          startTheme={startTheme.value}
           frameRef={frontFrame}
           live={live.value}
           interactive={interactive}
@@ -202,7 +199,19 @@ export function HeroLiveFrames() {
           }}
         />
       </div>
-      {!interactive && <a className="pg-hero-shot-link" href={DETAIL} aria-label={ALT} />}
+      {!interactive && (
+        <a
+          className="pg-hero-shot-link"
+          href={DETAIL}
+          aria-label={ALT}
+          onFocus={() => {
+            linkFocused.value = true
+          }}
+          onBlur={() => {
+            linkFocused.value = false
+          }}
+        />
+      )}
     </div>
   )
 }

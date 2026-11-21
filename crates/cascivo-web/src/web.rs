@@ -129,9 +129,23 @@ pub struct WebState {
     files: Mutex<BTreeMap<String, Vec<u8>>>,
     pub(crate) vite: vite::Vite,
     pub(crate) images: Mutex<images::Cache>,
+    /// `<link rel=preload>` tags queued by `img(priority=true)` while one page renders.
+    preloads: Mutex<Vec<String>>,
 }
 
 impl WebState {
+    pub(crate) fn preload(&self, link: String) {
+        let mut p = self.preloads.lock().unwrap_or_else(PoisonError::into_inner);
+        if !p.contains(&link) {
+            p.push(link);
+        }
+    }
+
+    /// The preloads queued since the last call (pages render one at a time per state).
+    pub fn take_preloads(&self) -> Vec<String> {
+        std::mem::take(&mut *self.preloads.lock().unwrap_or_else(PoisonError::into_inner))
+    }
+
     pub(crate) fn emit(&self, rel: String, bytes: Vec<u8>) {
         self.files
             .lock()
@@ -147,6 +161,7 @@ impl WebState {
             files: Mutex::default(),
             vite,
             images: Mutex::default(),
+            preloads: Mutex::default(),
         }
     }
 
@@ -185,6 +200,7 @@ pub(crate) fn register(
         files: Mutex::default(),
         vite,
         images: Mutex::default(),
+        preloads: Mutex::default(),
     });
 
     match data::load(&site.root, &site.config.data, to_value) {
