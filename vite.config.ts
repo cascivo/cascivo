@@ -38,6 +38,10 @@ export default defineConfig({
       'crates/cascivo-html/tests/conformance/*.html',
       'crates/cascivo-html/examples/*.html',
       'crates/cascivo-html/src/*_gen.rs',
+      // cascivo-web sites: minijinja templates and `+++` TOML front matter, not HTML/Markdown
+      // the formatter understands (it split a `cv('…')` string literal across lines).
+      'crates/cascivo-web/tests/fixtures/**',
+      'apps/bench/static-compare/rust/**',
     ],
   },
   staged: {

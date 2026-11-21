@@ -3,6 +3,7 @@ packages:
   - 'apps/*'
   - 'apps/examples/*'
   - 'apps/bench/*'
+  - 'apps/bench/static-compare/*'
   # Consumer-shaped ESLint fixture: runs the adopter's real toolchain (ESLint +
   # eslint-plugin-react-hooks) over the source `cascivo add` copies. See
   # scripts/checks/host-lint/eslint/README.md for why a re-implementation is not enough.

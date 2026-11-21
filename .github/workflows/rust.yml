@@ -36,5 +36,7 @@ jobs:
             target
           key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
       - run: cargo fmt --check
-      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: cargo clippy --workspace --all-targets --all-features -- -D warnings
       - run: cargo test --workspace --locked
+      # cascivo-web's axum adapter is feature-gated; its integration test needs the feature on.
+      - run: cargo test -p cascivo-web --features axum --locked

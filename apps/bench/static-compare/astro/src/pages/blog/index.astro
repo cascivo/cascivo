@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content'
+import { PageHeader } from '@cascivo/react'
+import Layout from '../../layouts/Layout.astro'
+
+const posts = (await getCollection('posts')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+---
+
+<Layout title="Blog">
+  <PageHeader title="Blog" description="Fifteen posts." />
+  <ul>
+    {
+      posts.map((p) => (
+        <li>
+          <a href={`/blog/${p.id}/`}>{p.data.title}</a>{' '}
+          <time datetime={p.data.date.toISOString()}>{p.data.date.toISOString().slice(0, 10)}</time>
+        </li>
+      ))
+    }
+  </ul>
+</Layout>

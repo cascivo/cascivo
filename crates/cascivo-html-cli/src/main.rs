@@ -2,7 +2,7 @@
 //! filesystem, so all file access (and its confinement) lives here.
 
 use std::io::{Read, Write};
-use std::path::{Component, Path, PathBuf};
+use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use cascivo_html::{Diagnostic, Options, parse_brand_file};
@@ -158,10 +158,7 @@ fn set_input(a: &mut BuildArgs, f: &str) -> Result<(), Fail> {
 /// A path that stays inside `dir`: relative, no `..`, and (after symlinks) still under it.
 fn confined(dir: &Path, rel: &str) -> Result<PathBuf, String> {
     let p = Path::new(rel);
-    let ok = !rel.is_empty()
-        && p.components()
-            .all(|c| matches!(c, Component::Normal(_) | Component::CurDir));
-    if !ok {
+    if !cascivo_html::path::is_safe_relative(rel) {
         return Err(format!(
             "'{rel}' must be a relative path inside the input file's directory (no '..', no absolute paths)"
         ));
