@@ -1,5 +1,13 @@
 # @cascivo/docspack
 
+## 0.3.4
+
+### Patch Changes
+
+- b470493: New guide `using-cascivo-html`: render agent-written `.cv` text into one static, branded cascivo
+  HTML file with the Rust crate `cascivo-html` or its CLI. The AI rules and machine-mode guides now
+  point to it for static pages.
+
 ## 0.3.3
 
 ### Patch Changes
