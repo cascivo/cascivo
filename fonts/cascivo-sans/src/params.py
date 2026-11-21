@@ -89,7 +89,7 @@ class P:
             V -= 3
             contrast -= 0.05
             xh -= 10
-            spacing, counter, k, aperture = 0.88, 0.97, 0.60, -5.0  # 0.88: Display's tightening and Black's (HEAVY_TIGHTEN) add up at 900/48, and any tighter leaves the round pairs (OO oo ss SS) under their 12-unit floor and the italic GO overlapping
+            spacing, counter, k, aperture = 0.92, 0.97, 0.60, -5.0  # 0.92 (round 3; it was 0.88, and Black at opsz 32 to 48 set ns, st, rg, ef a few units apart). The earlier floor still holds: Display's tightening and Black's (HEAVY_TIGHTEN) add up at 900/48, and any tighter leaves the round pairs (OO oo ss SS) under their 12-unit floor and the italic GO overlapping
         self.V = V
         self.H = V * contrast
         # crossbars (e, A, H...) thin faster than bowls as weight rises, or heavy counters close

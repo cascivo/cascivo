@@ -77,19 +77,25 @@ class G:
         pen = (V, H)
         return self.stroke(segs, closed=True, pen=pen, **kw)
 
-    def hw(self, dx, dy, ws=1.0, w=None):
+    def hw(self, dx, dy, ws=1.0, w=None, exact=False):
         """Horizontal half-width of a straight stroke with direction (dx, dy)."""
-        t = norm((dx, dy))
-        w = pen_thickness(t, self.p.V, self.p.H) * ws if w is None else w
+        # `exact`: measured as the italic will draw it. The stroke is slanted before the pen expands it and the pen leans with it,
+        # so an end anchored by its edge with the upright's half-width misses by a few units in the italic (Z's diagonal stood out
+        # past its bars, Y's arms past the stem). A slant keeps horizontal distances, so the italic's half-width lands the edge
+        # exactly. Only ends that must meet another stroke's edge ask for it: every other diagonal keeps the upright's measure, and
+        # with it the italic's advances.
+        s = self.p.slant if exact else 0.0
+        t = norm((dx + dy * s, dy))
+        w = pen_thickness(t, self.p.V, self.p.H, s) * ws if w is None else w
         return w / 2 / max(abs(t[1]), 0.2)
 
-    def diag(self, x0, y0, x1, y1, a0='c', a1='c', ws=0.93, caps=('h', 'h'), **kw):
-        """Straight stroke whose end x positions name an edge: 'l' left edge, 'r' right, 'c' center."""
+    def diag(self, x0, y0, x1, y1, a0='c', a1='c', ws=0.93, caps=('h', 'h'), exact=(False, False), **kw):
+        """Straight stroke whose end x positions name an edge: 'l' left edge, 'r' right, 'c' center. `exact`, per end: see hw."""
         cx0, cx1 = x0, x1
         for _ in range(3):
-            h = self.hw(cx1 - cx0, y1 - y0, ws, kw.get('w'))
-            cx0 = x0 + (h if a0 == 'l' else -h if a0 == 'r' else 0)
-            cx1 = x1 + (h if a1 == 'l' else -h if a1 == 'r' else 0)
+            h0, h1 = (self.hw(cx1 - cx0, y1 - y0, ws, kw.get('w'), e) for e in exact)
+            cx0 = x0 + (h0 if a0 == 'l' else -h0 if a0 == 'r' else 0)
+            cx1 = x1 + (h1 if a1 == 'l' else -h1 if a1 == 'r' else 0)
         self.line((cx0, y0), (cx1, y1), ws=ws, caps=caps, **kw)
         return (cx0, y0), (cx1, y1)
 
@@ -124,10 +130,13 @@ def _I_ss02(g, p):  # plain I: opt-in, it is identical to l in most grotesques
 
 @glyph('I', 0x49)
 def _I(g, p):  # serifed by default, so I, l and 1 never read alike in text
-    e = p.cH * 0.30 + p.V * 0.2
+    # Black's slabs are shorter and thinner than the stroke: at the full bar, 0.72 of a stem each side, the I was a slab serif's
+    # beside H and J. Still a serif on both sides at every size, so it is never the l.
+    e = p.cH * 0.30 + p.V * (0.2 - 0.11 * p.heavy)
     w = p.V + 2 * e
+    h = p.H * (1 - 0.16 * p.heavy)
     g.vstem(e, 0, p.cap)
-    g.hbar(0, w, 0).hbar(0, w, p.cap - p.H)
+    g.hbar(0, w, 0, h).hbar(0, w, p.cap - h, h)
     g.ht = 'c'
     g.sb = (0.6, 0.6)
 
@@ -240,7 +249,7 @@ def _N(g, p):
 def _Z(g, p):
     w = p.Hd * 0.9
     g.hbar(w * 0.04, w, p.cap - p.H).hbar(0, w, 0)
-    g.diag(w, p.cap - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95)
+    g.diag(w, p.cap - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95, exact=(True, True))  # the italic's ends stood 10 to 25 units out past the bars
     g.ht = 'c'
     g.sb = (0.35, 0.35 + (0.3 if p.italic else 0) * p.heavy)  # as the italic L
 
@@ -262,8 +271,14 @@ def _Y(g, p):
     yj = p.cap * 0.43
     # arms at the full stroke: at 0.92-0.98 the Y carried 0.89-0.92x the ink of Inter, Geist and
     # Helvetica at every weight
-    g.diag(0, p.cap, c, yj, 'l', 'c', ws=1.0)
-    g.diag(w, p.cap, c, yj, 'r', 'c', ws=1.0)
+    # Each arm's outer edge meets the stem's edge at the join and the arm runs on inside the stem to its middle, where it ends on an
+    # upright face. Ended in a flat cut at the join, an arm is wider than the stem there, and its far corner stood out as a ledge on
+    # the other side (8 units at Regular, 16 at Black, 33 in the italic's Black).
+    for x0, xe, side in ((0, c - p.V / 2, 'l'), (w, c + p.V / 2, 'r')):
+        (ax, ay), (bx, by) = g.diag(x0, p.cap, xe, yj, side, side, ws=1.0, exact=(False, True))
+        g.strokes.pop()
+        xm = c + (1 if side == 'l' else -1)  # a unit past the middle, so the two faces overlap and leave no seam
+        g.line((ax, ay), (xm, by + (xm - bx) * (by - ay) / (bx - ax)), ws=1.0, caps=('h', 'v'))
     g.vstem(c - p.V / 2, 0, yj + 2)
     g.ht = 'c'
     g.sb = (0.08, 0.08)
@@ -628,7 +643,7 @@ def _l_ss02(g, p):  # plain l: opt-in
     g.ht = 'a'
 
 
-L_TOE, L_FLAT = 40, 0.35
+L_TOE, L_FLAT = 26, 0.35
 
 
 @glyph('l', 0x6C)
@@ -648,7 +663,7 @@ def _l(g, p):  # tailed by default
     cy = -p.ov * 0.4 + p.H / 2 + ry
     g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 270), caps=('b', 'v'))
     g.ht = 'a'
-    g.sb = (1, 0.28 + (0.08 + 0.7 * p.heavy if p.italic else 0.3 * p.heavy))
+    g.sb = (1, 0.28 + (0.08 + 0.95 * p.heavy if p.italic else 0.3 * p.heavy))
 
 
 @glyph('dotlessj', 0x237)
@@ -1037,11 +1052,18 @@ def _kra(g, p):
     g.sb = (1, 0.1)
 
 
+# Black's v w y: the diagonals met in a crotch 60 units deep under a nearly solid wedge (v 450 wide with two 170-unit strokes; Inter's
+# is 590). They are wider (what the width rule leaves: the reflow line holds one v) and their strokes lighter, as a drawn Black's
+# diagonals are, so the white reaches a third of the way down.
+V_WIDER, W_WIDER, V_LIGHTER = 34, 70, 0.10
+
+
 @glyph('v', 0x76)
 def _v(g, p):
-    w = p.dnw * 1.10  # diagonals need room: v was 0.9x the references' width at Regular and Black
-    g.diag(0, p.xh, w / 2, 0, 'l', 'c')
-    g.diag(w, p.xh, w / 2, 0, 'r', 'c')
+    w = p.dnw * 1.10 + V_WIDER * p.heavy  # diagonals need room: v was 0.9x the references' width at Regular and Black
+    ws = 0.93 - V_LIGHTER * p.heavy
+    g.diag(0, p.xh, w / 2, 0, 'l', 'c', ws=ws)
+    g.diag(w, p.xh, w / 2, 0, 'r', 'c', ws=ws)
     # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
     # about 15% tighter beside round and straight letters
     g.sb = (0.25, 0.25)
@@ -1049,8 +1071,8 @@ def _v(g, p):
 
 @glyph('w', 0x77)
 def _w(g, p):
-    w = p.dnw * 1.64  # v, w, x, y and z were 0.88-0.91x Geist's and Inter's width at Regular
-    ws = 0.86
+    w = p.dnw * 1.64 + W_WIDER * p.heavy  # v, w, x, y and z were 0.88-0.91x Geist's and Inter's width at Regular
+    ws = 0.86 - V_LIGHTER * p.heavy
     g.diag(0, p.xh, w * 0.25, 0, 'l', 'c', ws=ws)
     g.diag(w / 2, p.xh, w * 0.25, 0, 'c', 'c', ws=ws)
     g.diag(w / 2, p.xh, w * 0.75, 0, 'c', 'c', ws=ws)
@@ -1075,8 +1097,9 @@ def _x(g, p):
 
 @glyph('y', 0x79)
 def _y(g, p):
-    w = p.dnw * 1.10
-    a = g.diag(w, p.xh, w * 0.36, p.desc, 'r', 'c', caps=('h', 'h'))
+    w = p.dnw * 1.10 + V_WIDER * p.heavy
+    ws = 0.93 - V_LIGHTER * p.heavy
+    a = g.diag(w, p.xh, w * 0.36, p.desc, 'r', 'c', ws=ws, caps=('h', 'h'))
     if not p.italic:
         # The italic's curled tail, ending horizontal, on the upright too (Geist's curls as well): a straight
         # diagonal cut off flat read as chopped, and a bent wedge as a boot. The curl grows with weight, so
@@ -1091,7 +1114,7 @@ def _y(g, p):
         end = (lerp(x1, w * 0.06, reach), p.desc + p.H * 0.55)
         dist = math.hypot(q[0] - end[0], q[1] - end[1])
         tail = ('C', q, (q[0] + ux * dist * 0.45, q[1] + uy * dist * 0.45), (end[0] + dist * 0.4, end[1]), end)
-        g.stroke([L(a[0], q), tail], caps=('h', 'b'), ws=0.93)
+        g.stroke([L(a[0], q), tail], caps=('h', 'b'), ws=ws)
     if p.italic:  # the right stroke turns into a curved tail instead of a straight descender
         g.strokes.pop()
         (x0, y0), (x1, y1) = a
@@ -1102,11 +1125,11 @@ def _y(g, p):
         end = (w * 0.06, p.desc + p.H * 0.55)
         dist = math.hypot(q[0] - end[0], q[1] - end[1])
         tail = ('C', q, (q[0] + ux * dist * 0.45, q[1] + uy * dist * 0.45), (end[0] + dist * 0.4, end[1]), end)
-        g.stroke([L(a[0], q), tail], caps=('h', 'b'), ws=0.93)
+        g.stroke([L(a[0], q), tail], caps=('h', 'b'), ws=ws)
     # the left arm ends below the baseline, on the right stroke's centreline: a cut exactly at
     # the baseline leaves its corner showing at heavy weights
     yj = -p.H * 0.5
-    g.diag(0, p.xh, on_line(*a, yj), yj, 'l', 'c', caps=('h', 'b'))
+    g.diag(0, p.xh, on_line(*a, yj), yj, 'l', 'c', ws=ws, caps=('h', 'b'))
     # ỵ's dot below sits right of the descender, under where the arms meet (as Inter's); centred,
     # it disappeared into the descender
     g.anchors['bottom_x'] = on_line(*a, 0) + p.V * 0.5 + p.dot * 0.55
@@ -1207,7 +1230,9 @@ def _two(g, p):
     tgt = (g.hw(-0.12, -0.3), H)  # outer edge of the foot lands exactly on the bar's start
     d = math.hypot(tgt[0] - pe[0], tgt[1] - pe[1])
     spine = ('C', pe, (pe[0] + t[0] * d * 0.35, pe[1] + t[1] * d * 0.35), (tgt[0] + d * 0.12, tgt[1] + d * 0.3), tgt)
-    g.stroke(arc_ + [spine], caps=('b', 'h'))  # the spine's foot joins the base bar; only the top is a terminal
+    # the top ends in a near-flat face, as c s 3 do (cut 't'): turned to the vertical, the cut ran along a stroke that is itself
+    # steep there, and Black's 2 began with a beak
+    g.stroke(arc_ + [spine], caps=('b', 'h'), cut='t')  # the spine's foot joins the base bar; only the top is a terminal
     g.hbar(0, w, 0)
     g.tab = True
     g.ht = 'c'
@@ -1367,7 +1392,10 @@ def comma_depth(p):
     return lerp(3.15, 1.4, thin_blend(p)) - 0.55 * p.heavy
 
 
-def comma_shape(g, d, x, top, depth, swing=0.0):
+COMMA_HEAD = 0.5
+
+
+def comma_shape(g, d, x, top, depth, swing=0.0, head=COMMA_HEAD):
     """A grotesque comma: a square head one dot wide, then a tail that curves down and to the
     left and tapers. Every curly quote is built from this (’ ” raised, ‘ “ turned), so the
     curve is what tells them apart from the straight ' and ". A straight wedge read as ″."""
@@ -1378,7 +1406,11 @@ def comma_shape(g, d, x, top, depth, swing=0.0):
     f = thin_blend(p)
     w = d * (f + (1 - f) * min(1.0, 1.2 * p.V / p.dot))
     x -= (d - w) / 2
-    neck = top - d * 0.95
+    # The head is `head` (COMMA_HEAD; the Greek breathings keep 0.95, their own size) of a dot tall before the tail starts to taper, and the tail is longer by what the head gives up. At a
+    # full dot the head was a square with a short tail under it: , ; and the quotes built from it were the darkest marks in a
+    # paragraph at 300 to 600 (Inter's taper from the top), and Black's quotes were blocks.
+    neck = top - d * head
+    depth += d * (0.95 - head)
     end = (x - w * 0.6 - swing, neck - depth)
     tail = ('C', (x, neck), (x, neck - depth * 0.45), (x - w * 0.12 - swing * 0.3, neck - depth * 0.8), end)
     g.stroke([L((x, top), (x, neck)), tail], w=w, taper=(1, 0.15), caps=('b', 'b'))
@@ -1977,25 +2009,26 @@ def _ellipsis(g, p):
 
 
 def _guil(g, p, x0, flip, h=1.0):
-    # Regular's were 0.8x the references' size, Black's 0.88x and cramped
-    # then to Inter's box (296 x 461 at Regular, 224 x 461 at Thin, 398 x 461 at Black): the chevron's height is the opening's, plus the
-    # stroke. At Black the pair ran 1.11x Inter's width (« 725 x 452 against 653 x 461), but thinning its stroke to save width (0.9 -> 0.62
-    # of the stem) left it 0.82x Inter's ink with the chevrons 3-10 units apart. The stroke follows the weight (0.9 -> 0.76 of the stem:
-    # Black's ink is 0.93x Inter's, Bold's 0.98x), and the width comes from the shape instead: the chevron is as tall as Inter's (no
-    # height term at Black) and narrower (the width's Black term is 0.02, it was 0.18), so its arms are steeper and cut across less
-    # horizontal stroke; the second chevron nests only as far as leaves 45 units of white between the two (Inter's is 48). That makes the
-    # pair 1.08x Inter's width at Black, the price of keeping its ink and its white: the single chevron must stay >= 0.9x Inter's
-    # (italic), which stops the chevron narrowing further. The italic's second chevron sits 0.12 of the stem further out: its pen
-    # shears the stroke, and its white was 24 units at Black where the upright's is 48. The 0.054 is the height that lands the box on Inter's 461.
-    w = 207 + p.V * 0.45 + 0.02 * max(0.0, p.V - 84)
-    hh = p.xh * (0.365 + 0.04 * (1 - thin_blend(p)) - 0.054 * p.heavy) * h
+    # A chevron is drawn as its outline, not as two pen strokes: two arms with square ends met in a notched tip and ended in corners
+    # that pointed at the next chevron, so a Black pair read as one block with nicks in it. Now the tip and the inner corner are
+    # points and the arms end flat on a common top and bottom line, as Inter's and Helvetica's do.
+    # Geometry is Inter's, read off its boxes and ink (single chevron 224 / 296 / 398 wide at Thin / Regular / Black, 461 tall, ink
+    # 93,966 at Black): every weight's arm runs 200 units back from the tip, and only the arm's width follows the weight.
+    run = 200.0
+    th = 8 + p.V  # the arm's width along the line (its thickness across the stroke is about 0.75 of this)
+    hh = 231 * h
     cy = p.xh * 0.5
-    tip = x0 if not flip else x0 + w
-    back = x0 + w if not flip else x0
-    t = p.V * (0.9 - 0.14 * p.heavy)  # heavier than Regular's ratio would be, but not the full stem: at it Black's chevrons ran into each other
-    g.line((back, cy + hh), (tip, cy), ws=0.86, caps=('b', 'b'), w=t)
-    g.line((tip, cy), (back, cy - hh), ws=0.86, caps=('b', 'b'), w=t)
-    return w
+    d = -1 if flip else 1
+    tip = x0 + (run + th if flip else 0)
+    pts = [(tip, cy), (tip + d * run, cy + hh), (tip + d * (run + th), cy + hh), (tip + d * th, cy), (tip + d * (run + th), cy - hh), (tip + d * run, cy - hh)]
+    g.raw.append(orient([L(a, b) for a, b in zip(pts, pts[1:] + pts[:1])], outer=True))
+    return th
+
+
+def _guil_pair(g, p, flip):
+    # the white between the two chevrons, along the line: Inter's is 85 at Thin, about 105 at Regular and 51 at Black
+    th = _guil(g, p, 0, flip)
+    _guil(g, p, th + 105 - 20 * (1 - thin_blend(p)) - 50 * p.heavy, flip)
 
 
 @glyph('guilsinglleft', 0x2039)
@@ -2012,15 +2045,13 @@ def _guilsinglright(g, p):
 
 @glyph('guillemotleft', 0xAB)
 def _guillemotleft(g, p):
-    w = _guil(g, p, 0, False)
-    _guil(g, p, w * 0.8 + p.V * (0.5 + (0.17 if p.italic else 0.05) * p.heavy), False)
+    _guil_pair(g, p, False)
     g.sb = (0.5, 0.5)
 
 
 @glyph('guillemotright', 0xBB)
 def _guillemotright(g, p):
-    w = _guil(g, p, 0, True)
-    _guil(g, p, w * 0.8 + p.V * (0.5 + (0.17 if p.italic else 0.05) * p.heavy), True)
+    _guil_pair(g, p, True)
     g.sb = (0.5, 0.5)
 
 

@@ -781,6 +781,74 @@ class Font(unittest.TestCase):
                     heights = [b[3] - b[1] for b in boxes.values()]
                     self.assertLessEqual(max(heights) - min(heights), 20)
 
+    def test_diagonal_ends_meet_flush(self):
+        # Z's diagonal ends inside its bars and Y's arms run into its stem without a ledge, upright and italic. The italic's Z stood 4 to 9
+        # units out past each bar (its ends were placed with the upright's stroke width), and Y's arms were cut flat at the join, wider
+        # than the stem: a step of 9 units a side upright and 10 to 18 in the italic. Read on the outline's rows, 4 units below and above
+        # the join (0.43 of the cap height), where a clean arm moves 2 to 3 units.
+        for path in (VF, VFI):
+            for wght in (400, 900):
+                gs, _ = self._glyphs(path, wght)
+                z = {y: r for y, r in ink_rows(gs, 'Z') if r}
+                y_ = {y: r for y, r in ink_rows(gs, 'Y') if r}
+                with self.subTest(font=os.path.basename(path), wght=wght):
+                    self.assertLessEqual(min(z[y][0][0] for y in z if 0 < y <= 10) - min(r[0][0] for r in z.values()), 1, 'Z: ink left of the lower bar')
+                    self.assertLessEqual(max(r[-1][1] for r in z.values()) - max(z[y][-1][1] for y in z if y >= 690), 1, 'Z: ink right of the upper bar')
+                    self.assertLessEqual(abs(y_[297][0][0] - y_[305][0][0]), 5, 'Y: a ledge left of the join')
+                    self.assertLessEqual(abs(y_[297][-1][1] - y_[305][-1][1]), 5, 'Y: a ledge right of the join')
+                    self.assertEqual({len(y_[y]) for y in range(10, 295)}, {1}, 'Y: the stem is one stroke below the join')
+
+    def test_black_diagonals_keep_a_crotch(self):
+        # Black's v and y: the white between the arms is at least 20 units wide over 200 units of height (v 233, y 266; they were 142 and
+        # 163, a notch over a solid wedge), upright and italic. The letters are wider and their diagonals lighter (glyphs.V_WIDER, V_LIGHTER).
+        for path in (VF, VFI):
+            gs, _ = self._glyphs(path, 900)
+            for name in ('v', 'y'):
+                rows = [y for y, r in ink_rows(gs, name) if y > 0 and len(r) >= 2 and min(b[0] - a[1] for a, b in zip(r, r[1:])) >= 20]
+                with self.subTest(font=os.path.basename(path), glyph=name):
+                    self.assertGreaterEqual(len(rows), 200)
+
+    def test_black_double_quotes_stand_apart(self):
+        # The two marks of a Black double quote keep 90 units of white (103 upright, 98 italic): at 35 they read as one block
+        for path in (VF, VFI):
+            gs, _ = self._glyphs(path, 900)
+            for name in ('quotedblleft', 'quotedblright'):
+                with self.subTest(font=os.path.basename(path), glyph=name):
+                    self.assertGreaterEqual(chevron_white(ink_rows(gs, name)), 90)
+
+    def test_display_black_letters_keep_apart(self):
+        # 900 at opsz 48 is where Black's tightening and Display's add up: ns, st, ti, ge set a few units apart in a headline. With Display's
+        # spacing at 0.92 of text (params.P) the common pairs keep 28 units of white (they read 31 to 58), upright and italic.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        import io
+
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        for path in (VF, VFI):
+            f = instantiateVariableFont(TTFont(path), {'wght': 900, 'opsz': 48})
+            bio = io.BytesIO()
+            f.save(bio)
+            font = hb.Font(hb.Face(bio.getvalue()))
+            gs, order = f.getGlyphSet(), f.getGlyphOrder()
+            short = {}
+            for pair in ('ns', 'st', 'ti', 'ge', 'on', 'iv', 'ag', 'bu', 'am', 'ha', 'ur', 'mb'):
+                buf = hb.Buffer()
+                buf.add_str(pair)
+                buf.guess_segment_properties()
+                hb.shape(font, buf, {'kern': True})
+                (a, b), adv = [order[i.codepoint] for i in buf.glyph_infos], buf.glyph_positions[0].x_advance
+                ra, rb = InkRows(gs), InkRows(gs)
+                gs[a].draw(ra)
+                gs[b].draw(rb)
+                gap = round(min(adv + rb.out[k][0] - ra.out[k][1] for k in set(ra.out) & set(rb.out)))
+                if gap < 28:
+                    short[pair] = gap
+            with self.subTest(font=os.path.basename(path)):
+                self.assertEqual(short, {}, 'pairs with less than 28 units of white at 900 / opsz 48')
+
     def test_heavy_question_mark_hook_clears_its_dot(self):
         # Black's dot was 227 units tall; with the hook ending at a fixed 27% of cap height, the two
         # touched and read as a notch.
@@ -997,7 +1065,8 @@ class Font(unittest.TestCase):
         pairs = [a + b for a in caps for b in caps] + [a + b for a in 'AKRVWXYZ' + 'ÁÝКЖХУАΚΧΥΑΔ' for b in 'xvwyk']
         for path in (VF, VFI):
             # 800 and 850 at opsz 48 are between the masters: the kerning interpolates linearly where the white does not (italic Tk read 9 at 850/48)
-            for wght, opsz, floor in ((900, 48, 12), (900, 8, 12), (900, 14, 16), (700, 48, 12), (850, 48, 12), (800, 48, 12)):
+            # Round 3 (JUDGING.md): AVATAR and Kv still read as touching at 16 units, so the floors are 26 in text Black and 16 to 18 at the corners
+            for wght, opsz, floor in ((900, 48, 18), (900, 8, 18), (900, 14, 26), (700, 48, 16), (850, 48, 16), (800, 48, 16)):
                 f = instantiateVariableFont(TTFont(path), {'wght': wght, 'opsz': opsz})
                 bio = io.BytesIO()
                 f.save(bio)
@@ -1471,7 +1540,7 @@ class Font(unittest.TestCase):
                     with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz, glyph=ch):
                         self.assertGreaterEqual(ink_area(rows), 0.9 * copies * inter_area, 'ink area')
                         if copies == 2:
-                            self.assertGreaterEqual(chevron_white(rows), 40, 'white between the chevrons')
+                            self.assertGreaterEqual(chevron_white(rows), 45, 'white between the chevrons')  # 45: drawn as outlines with Inter's white (55 at Black)
 
     # --- Spacing and kerning (interface brief, Section 1 item 5) ---
 

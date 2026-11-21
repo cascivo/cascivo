@@ -503,7 +503,9 @@ def _strong_fix(o, vals, first_of, second_of):
 # rows read an edge a little long: 13 at the corners, 17 in text Black and for the Bold master (read at 700/14, where 700/48 is 2-3 units
 # tighter). Values are rounded up to steps of 4, which compresses better than exact ones.
 DIAG_CAPS = 'AVWXYKRZTHMN'
-DIAG_FLOOR = {'text': 17, 'corner': 13, 'bold': 17, 'bold_italic': 19}  # units of white (the italic's Bold: with its looser sidebearings 700/48 reads 5-6 tighter than 700/14, and ZΔ kept 11)
+# Round 3 (JUDGING.md): at 17 / 13 AVATAR and Kv still read as touching in a Black headline (0.8 px of white at 48 px), so the floors are 27 in
+# text Black, 19 at the corners and 21 / 23 for Bold; the test asks 26, 18 and 16.
+DIAG_FLOOR = {'text': 27, 'corner': 19, 'bold': 21, 'bold_italic': 23}  # units of white (the italic's Bold: with its looser sidebearings 700/48 reads 5-6 tighter than 700/14, and ZΔ kept 11)
 
 
 def _gap(o, a, b):
