@@ -304,7 +304,15 @@ export function parseIndexVersions(body: string): string[] {
   return out
 }
 
-/** Crates whose local version is absent from crates.io, in dependency order. */
+/** A crate at 0.0.0 is an unreleased placeholder: its first changeset bumps it, and merging that
+ * Version PR is the release decision. Nothing may publish or ship binaries for it before. */
+export const PLACEHOLDER_VERSION = '0.0.0'
+
+export function isPlaceholderVersion(version: string): boolean {
+  return version === PLACEHOLDER_VERSION
+}
+
+/** Crates whose local version is absent from crates.io, in dependency order (0.0.0 skipped). */
 export function publishPlan(
   crates: CrateInfo[],
   published: Map<string, string[]>,
@@ -312,10 +320,34 @@ export function publishPlan(
   const byName = new Map(crates.map((c) => [c.name, c]))
   return dependencyOrder(crates).flatMap((name) => {
     const c = byName.get(name)
-    return c && !(published.get(name) ?? []).includes(c.version)
+    return c && !isPlaceholderVersion(c.version) && !(published.get(name) ?? []).includes(c.version)
       ? [{ crate: name, version: c.version }]
       : []
   })
+}
+
+export type BinaryItem = { crate: string; version: string; bin: string; tag: string }
+
+/**
+ * Release binaries to build: one entry per `bin` target of every released crate. Skips 0.0.0
+ * placeholders and crates still in the publish plan (not on crates.io, so no release exists).
+ */
+export function binaryPlan(
+  packages: { name: string; version: string; bins: string[] }[],
+  unpublished: { crate: string }[],
+): BinaryItem[] {
+  const pending = new Set(unpublished.map((u) => u.crate))
+  return packages
+    .filter((p) => !isPlaceholderVersion(p.version) && !pending.has(p.name))
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .flatMap((p) =>
+      [...p.bins].sort().map((bin) => ({
+        crate: p.name,
+        version: p.version,
+        bin,
+        tag: `${p.name}@${p.version}`,
+      })),
+    )
 }
 
 /**

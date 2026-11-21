@@ -19,12 +19,16 @@
 mod axum;
 pub mod config;
 pub mod content;
+pub mod deploy;
 pub mod dev;
 pub mod error;
+pub mod i18n;
 pub mod markdown;
 pub mod out;
 pub mod routes;
+pub mod rss;
 pub mod site;
+pub mod starter;
 
 #[cfg(feature = "axum")]
 pub use crate::axum::router;

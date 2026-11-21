@@ -16,6 +16,12 @@ pub struct Config {
     /// A cascivo theme name (`light`, `dark`, `midnight`, …); picks the theme CSS shipped.
     #[serde(default = "theme")]
     pub theme: String,
+    /// `[i18n]`: locale routes; absent means a single-language site in `lang`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub i18n: Option<crate::i18n::I18n>,
+    /// `[[feeds]]`: one RSS file per entry.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub feeds: Vec<crate::rss::Feed>,
 }
 
 fn lang() -> String {

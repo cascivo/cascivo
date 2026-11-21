@@ -1,0 +1,7 @@
+// Cloudflare Workers Static Assets: `wrangler deploy` uploads ./dist and serves it from the edge.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "__NAME__",
+  "compatibility_date": "2026-11-01",
+  "assets": { "directory": "./dist", "not_found_handling": "404-page" }
+}

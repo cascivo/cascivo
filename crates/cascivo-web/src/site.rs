@@ -10,6 +10,7 @@ use minijinja::{Environment, Value};
 use crate::config::Config;
 use crate::content::{self, Collection, Entry, split_front_matter};
 use crate::error::{Error, Errors, Result};
+use crate::i18n::{self, View};
 use crate::markdown::{self, Rendered};
 use crate::out::Output;
 use crate::routes::{self, Kind, Route};
@@ -26,6 +27,8 @@ pub struct Site {
     pub layouts: BTreeMap<String, String>,
     /// `public/`-relative file → bytes, copied verbatim.
     pub public: BTreeMap<String, Vec<u8>>,
+    /// `i18n/<locale>.toml` message bundles, flattened.
+    pub messages: i18n::Messages,
 }
 
 fn read_tree(root: &Path, dir: &str) -> Result<BTreeMap<String, Vec<u8>>> {
@@ -66,6 +69,7 @@ impl Site {
             pages: BTreeMap::new(),
             layouts: BTreeMap::new(),
             public: BTreeMap::new(),
+            messages: i18n::Messages::new(),
         };
         keep(content::load(root).map(|c| site.collections = c));
         keep(routes::scan(root).map(|r| site.routes = r));
@@ -80,6 +84,7 @@ impl Site {
                 .map(|m| site.layouts = m),
         );
         keep(read_tree(root, "public").map(|m| site.public = m));
+        keep(i18n::load_messages(root).map(|m| site.messages = m));
         for r in &site.routes {
             if let Kind::Dynamic(c) = &r.kind
                 && !site.collections.contains_key(c)
@@ -91,6 +96,7 @@ impl Site {
                 ));
             }
         }
+        errs.extend(i18n::validate(&site));
         if errs.is_empty() {
             Ok(site)
         } else {
@@ -100,7 +106,24 @@ impl Site {
 
     /// Renders every page, the shared stylesheet, public files and the sitemap.
     pub fn render(&self) -> Result<Output> {
-        Renderer::new(self)?.run()
+        let views = i18n::views(self);
+        let alts = Arc::new(i18n::alternates(&views));
+        // One accumulator across locales: the shared stylesheet covers every locale's components.
+        let acc = Arc::new(Mutex::new(Rendered::default()));
+        let mut pages = Vec::new();
+        let mut errs = Vec::new();
+        for v in &views {
+            match Renderer::new(&v.site, Arc::clone(&acc), &v.locale, Arc::clone(&alts))
+                .and_then(Renderer::run)
+            {
+                Ok(p) => pages.extend(p),
+                Err(e) => errs.extend(e.0),
+            }
+        }
+        if !errs.is_empty() {
+            return Err(Errors(errs));
+        }
+        finish(self, &views, &pages, &acc, &alts)
     }
 }
 
@@ -131,6 +154,9 @@ struct Renderer<'a> {
     /// CSS units and scripts used anywhere, shared with the `cv()` template function.
     acc: Arc<Mutex<Rendered>>,
     collections: Value,
+    locale: String,
+    /// URL → its translations, from [`i18n::alternates`].
+    alts: Arc<BTreeMap<String, Vec<(String, String)>>>,
 }
 
 fn tpl_err(file: &str, e: &minijinja::Error) -> Error {
@@ -143,9 +169,21 @@ fn tpl_err(file: &str, e: &minijinja::Error) -> Error {
 }
 
 impl<'a> Renderer<'a> {
-    fn new(site: &'a Site) -> Result<Self> {
-        let acc = Arc::new(Mutex::new(Rendered::default()));
+    fn new(
+        site: &'a Site,
+        acc: Arc<Mutex<Rendered>>,
+        locale: &str,
+        alts: Arc<BTreeMap<String, Vec<(String, String)>>>,
+    ) -> Result<Self> {
         let mut env = Environment::new();
+        env.add_function(
+            "t",
+            i18n::t_function(
+                site.messages.clone(),
+                site.config.clone(),
+                locale.to_string(),
+            ),
+        );
         let mut errs = Vec::new();
         for (name, src) in &site.layouts {
             if let Err(e) = env.add_template_owned(name.clone(), src.clone()) {
@@ -178,6 +216,8 @@ impl<'a> Renderer<'a> {
             env,
             acc,
             collections: Value::UNDEFINED,
+            locale: locale.to_string(),
+            alts,
         };
         let mut colls = BTreeMap::new();
         for (name, c) in &site.collections {
@@ -232,7 +272,13 @@ impl<'a> Renderer<'a> {
             .env
             .get_template(tpl)
             .map_err(|e| Errors(vec![tpl_err(file, &e)]))?;
+        let url = page
+            .get_attr("url")
+            .map(|u| u.to_string())
+            .unwrap_or_default();
         let ctx = minijinja::context! {
+            locale => self.locale.as_str(),
+            alternates => i18n::alternates_value(&self.site.config.base_url, self.alts.get(&url)),
             site => config_value(&self.site.config),
             collections => self.collections.clone(),
             page => page,
@@ -241,7 +287,8 @@ impl<'a> Renderer<'a> {
         t.render(ctx).map_err(|e| Errors(vec![tpl_err(file, &e)]))
     }
 
-    fn run(self) -> Result<Output> {
+    /// Renders this view's pages: (URL, HTML).
+    fn run(self) -> Result<Vec<(String, String)>> {
         let mut pages: Vec<(String, String)> = Vec::new();
         let mut errs = Vec::new();
         for r in &self.site.routes {
@@ -269,41 +316,7 @@ impl<'a> Renderer<'a> {
         if !errs.is_empty() {
             return Err(Errors(errs));
         }
-        let acc = self
-            .acc
-            .lock()
-            .unwrap_or_else(PoisonError::into_inner)
-            .clone();
-        let mut out = Output::default();
-        let mut put = |rel: String, bytes: Vec<u8>| {
-            out.insert(rel, bytes)
-                .map_err(|m| Errors::one("dist", None, m))
-        };
-        let scripts: String = acc
-            .scripts
-            .iter()
-            .filter_map(|s| cascivo_html::script(s))
-            .map(|js| format!("<script>{js}</script>"))
-            .collect();
-        for (url, html) in &pages {
-            let rel = format!("{}index.html", url.trim_start_matches('/'));
-            put(rel, finish_html(html, &scripts).into_bytes())?;
-        }
-        put(
-            "cascivo.css".into(),
-            cascivo_html::stylesheet(&self.site.config.theme, &acc.used).into_bytes(),
-        )?;
-        for (rel, bytes) in &self.site.public {
-            put(rel.clone(), bytes.clone())?;
-        }
-        if !self.site.config.base_url.is_empty() {
-            let urls: Vec<&str> = pages.iter().map(|(u, _)| u.as_str()).collect();
-            put(
-                "sitemap.xml".into(),
-                sitemap(&self.site.config.base_url, &urls).into_bytes(),
-            )?;
-        }
-        Ok(out)
+        Ok(pages)
     }
 
     fn md_page(&self, r: &Route, file: &str, src: &str) -> Result<String> {
@@ -343,6 +356,72 @@ impl<'a> Renderer<'a> {
     }
 }
 
+/// Writes pages, the shared stylesheet, public files, the sitemap and feeds.
+fn finish(
+    site: &Site,
+    views: &[View],
+    pages: &[(String, String)],
+    acc: &Mutex<Rendered>,
+    alts: &BTreeMap<String, Vec<(String, String)>>,
+) -> Result<Output> {
+    let acc = acc.lock().unwrap_or_else(PoisonError::into_inner).clone();
+    let mut out = Output::default();
+    let mut put = |rel: String, bytes: Vec<u8>| {
+        out.insert(rel, bytes)
+            .map_err(|m| Errors::one("dist", None, m))
+    };
+    let scripts: String = acc
+        .scripts
+        .iter()
+        .filter_map(|s| cascivo_html::script(s))
+        .map(|js| format!("<script>{js}</script>"))
+        .collect();
+    for (url, html) in pages {
+        let rel = format!("{}index.html", url.trim_start_matches('/'));
+        put(rel, finish_html(html, &scripts).into_bytes())?;
+    }
+    put(
+        "cascivo.css".into(),
+        cascivo_html::stylesheet(&site.config.theme, &acc.used).into_bytes(),
+    )?;
+    for (rel, bytes) in &site.public {
+        put(rel.clone(), bytes.clone())?;
+    }
+    if !site.config.base_url.is_empty() {
+        let urls: Vec<&str> = pages.iter().map(|(u, _)| u.as_str()).collect();
+        let default = site.config.i18n.as_ref().map_or("", |i| i.default.as_str());
+        put(
+            "sitemap.xml".into(),
+            sitemap(&site.config.base_url, &urls, alts, default).into_bytes(),
+        )?;
+    }
+    for v in views {
+        for f in &site.config.feeds {
+            let localized = !v.prefix.is_empty();
+            let routed = v
+                .site
+                .routes
+                .iter()
+                .any(|r| r.kind == Kind::Dynamic(f.collection.clone()));
+            // A locale without that collection's pages (no fallback, no translation) has no feed.
+            if localized && !routed {
+                continue;
+            }
+            let xml = crate::rss::render(
+                &v.site.config,
+                f,
+                v.site.collections.get(&f.collection),
+                &v.site.routes,
+                &v.prefix,
+            )?;
+            // `/de` → `de/rss.xml`; the default locale writes `rss.xml`.
+            let rel = format!("{}/{}", v.prefix, f.path);
+            put(rel.trim_start_matches('/').to_string(), xml.into_bytes())?;
+        }
+    }
+    Ok(out)
+}
+
 fn config_value(c: &Config) -> Value {
     Value::from(BTreeMap::from([
         ("title", Value::from(c.title.as_str())),
@@ -368,16 +447,32 @@ fn finish_html(html: &str, scripts: &str) -> String {
     s
 }
 
-fn sitemap(base: &str, urls: &[&str]) -> String {
+fn sitemap(
+    base: &str,
+    urls: &[&str],
+    alts: &BTreeMap<String, Vec<(String, String)>>,
+    default: &str,
+) -> String {
     let base = base.trim_end_matches('/');
     let mut s = String::from(
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n",
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"",
     );
+    if !alts.is_empty() {
+        s.push_str(" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\"");
+    }
+    s.push_str(">\n");
     let set: BTreeSet<&&str> = urls.iter().collect();
     for u in set {
         s.push_str("  <url><loc>");
         cascivo_html::html::esc(&mut s, &format!("{base}{u}"));
-        s.push_str("</loc></url>\n");
+        match alts.get(*u as &str).filter(|g| g.len() > 1) {
+            Some(g) => {
+                s.push_str("</loc>\n");
+                s.push_str(&i18n::sitemap_links(base, g, default));
+                s.push_str("  </url>\n");
+            }
+            None => s.push_str("</loc></url>\n"),
+        }
     }
     s.push_str("</urlset>\n");
     s
@@ -401,7 +496,12 @@ mod tests {
 
     #[test]
     fn sitemap_is_sorted_absolute_and_escaped() {
-        let s = sitemap("https://x.dev/", &["/b/", "/", "/a&b/"]);
+        let s = sitemap(
+            "https://x.dev/",
+            &["/b/", "/", "/a&b/"],
+            &BTreeMap::new(),
+            "",
+        );
         let locs: Vec<&str> = s.lines().filter(|l| l.contains("<loc>")).collect();
         assert_eq!(locs[0], "  <url><loc>https://x.dev/</loc></url>");
         assert!(locs[1].contains("https://x.dev/a&amp;b/"), "{s}");
