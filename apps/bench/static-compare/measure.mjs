@@ -143,7 +143,12 @@ async function editLatency(site) {
     }
   } finally {
     writeFileSync(file, original)
-    process.kill(-proc.pid, 'SIGTERM')
+    // `astro dev` (v7) detaches into a daemon, so the spawned pid may already be gone.
+    try {
+      process.kill(-proc.pid, 'SIGTERM')
+    } catch {}
+    if (site.stop)
+      execFileSync(site.stop[0], site.stop.slice(1), { cwd: site.dir, stdio: 'ignore' })
   }
   return { median: median(ms), max: Math.max(...ms), samples: ms.map((x) => Math.round(x)) }
 }
@@ -183,6 +188,7 @@ const sites = [
     build: ['pnpm', 'exec', 'astro', 'build'],
     caches: ['.astro', 'node_modules/.vite', 'node_modules/.astro'],
     dev: ['pnpm', 'exec', 'astro', 'dev', '--port', '4402', '--host', '127.0.0.1'],
+    stop: ['pnpm', 'exec', 'astro', 'dev', 'stop'],
     port: 4402,
     postFile: 'src/content/posts/01-signals.mdx',
     isContent: (f) => f.includes('/src/content/') && !f.endsWith('content.config.ts'),
@@ -212,7 +218,10 @@ writeFileSync(join(HERE, 'results.json'), `${JSON.stringify(results, null, 2)}\n
 
 const rows = [
   ['cold build (ms, median)', (r) => r.coldBuildMs],
-  ['edit→render (ms, median / max)', (r) => `${Math.round(r.editToRenderMs.median)} / ${Math.round(r.editToRenderMs.max)}`],
+  [
+    'edit→render (ms, median / max)',
+    (r) => `${Math.round(r.editToRenderMs.median)} / ${Math.round(r.editToRenderMs.max)}`,
+  ],
   ['pages', (r) => r.pages],
   ['output bytes (raw / gzip)', (r) => `${r.totalBytes} / ${r.totalGzip}`],
   ['HTML bytes', (r) => r.htmlBytes],

@@ -15,7 +15,11 @@ path = "src/main.rs"
 [dependencies]
 axum = { version = "0.8.9", optional = true, default-features = false }
 cascivo-html = { path = "../cascivo-html" }
-minijinja = { version = "3.1.0", default-features = false, features = ["builtins", "multi_template", "macros"] }
+minijinja = { version = "3.1.0", default-features = false, features = [
+  "builtins",
+  "multi_template",
+  "macros",
+] }
 pulldown-cmark = { version = "0.13.6", default-features = false, features = ["html"] }
 serde = { version = "1.0.229", features = ["derive"] }
 toml = "1.2.2"

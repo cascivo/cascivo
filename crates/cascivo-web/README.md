@@ -12,14 +12,14 @@ cargo run -p cascivo-web -- dev path/to/site --port 4321    # serve + live reloa
 
 ## Site layout
 
-| Path | Meaning |
-| --- | --- |
-| `site.toml` | `title`, `base_url` (enables `sitemap.xml`), `lang`, `theme` |
-| `content/<name>/_schema.toml` | collection schema: `[fields] title = { type = "string", required = true }`; types `string int float bool date array`; unknown fields are errors |
-| `content/<name>/<slug>.md` | entry: TOML front matter between `+++` lines, Markdown body |
-| `layouts/*.html` | minijinja templates; Markdown pages pick one with `layout = "name"` (default `default`) |
-| `pages/**.md`, `pages/**.html` | routes: `index.md` → `/`, `about.md` → `/about/`, `blog/[posts].html` → `/blog/<slug>/` per `posts` entry |
-| `public/**` | copied verbatim |
+| Path                           | Meaning                                                                                                                                         |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `site.toml`                    | `title`, `base_url` (enables `sitemap.xml`), `lang`, `theme`                                                                                    |
+| `content/<name>/_schema.toml`  | collection schema: `[fields] title = { type = "string", required = true }`; types `string int float bool date array`; unknown fields are errors |
+| `content/<name>/<slug>.md`     | entry: TOML front matter between `+++` lines, Markdown body                                                                                     |
+| `layouts/*.html`               | minijinja templates; Markdown pages pick one with `layout = "name"` (default `default`)                                                         |
+| `pages/**.md`, `pages/**.html` | routes: `index.md` → `/`, `about.md` → `/about/`, `blog/[posts].html` → `/blog/<slug>/` per `posts` entry                                       |
+| `public/**`                    | copied verbatim                                                                                                                                 |
 
 Templates see `site`, `page` (front matter + `url`; the entry for dynamic routes), `content`
 (rendered HTML) and `collections.<name>` (entries with `slug`, `url`, `content`, front matter).

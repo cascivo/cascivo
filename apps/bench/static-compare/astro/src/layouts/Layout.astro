@@ -1,0 +1,25 @@
+---
+interface Props {
+  title: string
+}
+const { title } = Astro.props
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Static compare</title>
+  </head>
+  <body>
+    <main class="cv-doc">
+      <nav aria-label="Main">
+        <a href="/">Home</a> · <a href="/blog/">Blog</a> · <a href="/about/">About</a> ·
+        <a href="/changelog/">Changelog</a> · <a href="/contact/">Contact</a>
+      </nav>
+      <slot />
+      <footer>Static compare: a cascivo fixture.</footer>
+    </main>
+  </body>
+</html>
