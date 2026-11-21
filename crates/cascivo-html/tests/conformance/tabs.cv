@@ -1,0 +1,5 @@
+tabs
+  section "Overview"
+    text "First"
+  section "Details"
+    text "Second"

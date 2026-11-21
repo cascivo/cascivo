@@ -1,0 +1,11 @@
+{
+  "_doc": "Justified React-vs-Rust differences. Key: <case>|<facet>|<fact> or <case>|<facet>|* for a by-design structural difference. Facets: tree, role, aria, data, class, attr. An unlisted drift fact fails the parity test; a listed entry that no longer drifts also fails (stale).",
+  "entries": {
+    "tabs|tree|*": "Rust tabs are CSS-only (radio input + label + panel, no JS); React tabs are a button tablist with roving focus. Different element tree by design (crates/cascivo-html/tests/nav.rs).",
+    "tabs|role|*": "React uses role=tablist/tab/tabpanel via JS-managed ARIA; the CSS-only Rust tabs expose native radio semantics and role=group panels.",
+    "tabs|aria|*": "React aria-selected/aria-controls on buttons vs Rust aria-labelledby on panels; state is the radio's :checked instead of aria-selected.",
+    "tabs|data|*": "React data-state/data-value drive styling; Rust marks radio mode with data-radio and uses :checked.",
+    "tabs|class|*": "Class contract differs only where the element tree differs (list/trigger button vs input/label/content).",
+    "tabs|attr|*": "Native radio plumbing in Rust (type, name, for, checked, ids) versus React tabindex/type=button/ids."
+  }
+}
