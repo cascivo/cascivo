@@ -1,6 +1,6 @@
 # Rust + HTML-first stack: plan
 
-Status: Phase 0 (de-risk) in progress. Origin: analysis of (1) a Rust, Astro-class framework and
+Status: Phase 0 (de-risk) done; go for Phase 1. Criterion 6 (tool vs product) awaits the owner. Origin: analysis of (1) a Rust, Astro-class framework and
 (2) an HTML/CSS-first stack (htmx, custom elements). Both converge on one architecture.
 
 ## Target architecture
@@ -67,6 +67,22 @@ Three workstreams, independent, merged into one PR.
 ### Exit
 All gates green (`pnpm ready`, cargo test/clippy). Results file records pass/fail per criterion
 and a go/no-go recommendation for Phase 1.
+
+### Phase 0 results
+
+Details: `rust-html-stack-results-w1.md`, `-w2.md`, `-w3.md`.
+
+| # | Result | Verdict |
+|---|---|---|
+| 1 | 9/10 components zero structural drift; tabs diverges by design (Rust CSS-only radios vs React JS tablist), allowlisted | pass; `cv-tabs` must pick one contract |
+| 2 | axe WCAG 2.2 AA 0 violations, APG keyboard suites, 320–414 px touch sweep, idiomorph morph survival; 0.40× React LOC (subset: editable combobox, typeable date picker) | pass |
+| 3 | menu 1.1 KB, combobox 1.4 KB, date picker 3.05 KB gz (20 B headroom); page 8.8 KB | pass; date picker needs a split before growing |
+| 4 | edit→render 22 ms median in dev | pass |
+| 5 | 20-page site: build 6 ms vs 2.8 s, 71 KB vs 402 KB, 70 vs 145 authored LOC, 20 crates vs 920 npm packages; spike lacks images, i18n, RSS | pass with caveat |
+| 6 | open | owner decision |
+
+Side fixes found by the sweeps (also affect React): Menu trigger 24 px on coarse pointers; DatePicker
+calendar overflowed at 320/360 px (now a bottom sheet below 30rem).
 
 ## Later phases (not in this PR)
 
