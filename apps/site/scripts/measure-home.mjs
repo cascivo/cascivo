@@ -32,7 +32,11 @@ const browser = await chromium.launch(
 const result = { base, runs: [] }
 for (const [vpName, viewport] of Object.entries(VIEWPORTS)) {
   for (const theme of THEMES) {
-    const ctx = await browser.newContext({ viewport, reducedMotion: 'reduce', deviceScaleFactor: 1 })
+    const ctx = await browser.newContext({
+      viewport,
+      reducedMotion: 'reduce',
+      deviceScaleFactor: 1,
+    })
     await ctx.addInitScript((t) => {
       localStorage.setItem('cascade-theme', JSON.stringify({ v: 1, value: t }))
     }, theme)
@@ -61,10 +65,13 @@ for (const [vpName, viewport] of Object.entries(VIEWPORTS)) {
     phase = 'scrolled'
     await settle(page)
     const sum = (filter) =>
-      [...bytes.values()].filter(filter).reduce(
-        (a, b) => ({ raw: a.raw + b.raw, gz: a.gz + b.gz, n: a.n + 1 }),
-        { raw: 0, gz: 0, n: 0 },
-      )
+      [...bytes.values()]
+        .filter(filter)
+        .reduce((a, b) => ({ raw: a.raw + b.raw, gz: a.gz + b.gz, n: a.n + 1 }), {
+          raw: 0,
+          gz: 0,
+          n: 0,
+        })
     const run = {
       viewport: vpName,
       theme,

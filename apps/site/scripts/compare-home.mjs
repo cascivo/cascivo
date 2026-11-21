@@ -58,7 +58,8 @@ for (const name of readdirSync(a).filter((f) => f.endsWith('.png') && !f.startsW
       const blob = await c.convertToBlob({ type: 'image/png' })
       const buf = new Uint8Array(await blob.arrayBuffer())
       let bin = ''
-      for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode(...buf.subarray(i, i + 0x8000))
+      for (let i = 0; i < buf.length; i += 0x8000)
+        bin += String.fromCharCode(...buf.subarray(i, i + 0x8000))
       return {
         width: w,
         heightA: ia.height,
@@ -74,7 +75,10 @@ for (const name of readdirSync(a).filter((f) => f.endsWith('.png') && !f.startsW
   results.push({ name, ...r })
 }
 await browser.close()
-writeFileSync(join(outDir, 'compare.json'), JSON.stringify({ tolerance: TOLERANCE, results }, null, 2))
+writeFileSync(
+  join(outDir, 'compare.json'),
+  JSON.stringify({ tolerance: TOLERANCE, results }, null, 2),
+)
 for (const r of results)
   console.log(
     `${r.name}: ${(r.diffRatio * 100).toFixed(2)}% pixels differ, height ${r.heightA} → ${r.heightB}`,
