@@ -58,6 +58,12 @@ STRONG_CLASSES = [
     (['A'], ['V', 'W', 'Y'], 1.2, 0.8, 1.0, 88),
     (['V', 'W', 'Y'], ['A'], 1.2, 0.8, 1.0, 88),
 ]
+# Thin's V beside a round letter: a hairline diagonal leaves the widest white of any weight beside it, and the hole was counted no
+# deeper than Regular's, so Vo, Ve, Vc read 0.6 to 0.75x Inter's. The hole counts THIN_REACH Regular sidebearings deeper at Thin, fading
+# to none at Regular (whose values do not move): 0.8 to 1.08x Inter's now. W beside a round letter and A beside W do not answer to it
+# (tried with 4 and 1.5, and with a lower closest-point floor): their white is spread over every band, which the measure reads as
+# spacing, not as a hole. They stay in test_font.KERNING_SHORT.
+THIN_REACH = {('V', b): 2.0 for b in ['c', 'e', 'o', 'q', 'g', 'oe']}
 STRONG = {(a, b): (reach, more, gain, limit) for lefts, rights, reach, more, gain, limit in STRONG_CLASSES for a in lefts for b in rights}
 
 CHAR_GLYPH = {
@@ -211,6 +217,8 @@ def measure(o, left_glyph, right_glyph, most=40):
     ref = (p.Sc if is_cap(left_glyph) else p.S) + (p.Sc if is_cap(right_glyph) else p.S)
     reach, more, gain, limit = STRONG.get((left_glyph, right_glyph), (None, 0.0, 1.0, 140))
     depth = DEPTH * p.S if reach is None else (reach + more * p.heavy) * REGULAR_S
+    if reach is not None:
+        depth += THIN_REACH.get((left_glyph, right_glyph), 0.0) * max(0.0, (400 - p.wght) / 300) * REGULAR_S
     eff = sum(min(g, ref + depth) for g in gaps) / len(gaps)
     sa, sb = _slope(hi, bands), _slope(lo, bands)
     lean = min(abs(sa), abs(sb)) if sa * sb > 0 else 0.0

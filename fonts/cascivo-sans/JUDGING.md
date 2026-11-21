@@ -271,3 +271,61 @@ Re-ranked defects for round 3:
 5. Black `v w y` crotches; italic Black `Y Z` corner spurs; italic `ll`, `lm` tails.
 6. Optical size 32 to 48 at Black touches.
 7. The rest of the earlier list: Thin `W V` kerning (9), the serifed `I` at Black (10), the details (11).
+
+## Round 3 result / final
+
+One independent reviewer scored all four states blind in one sitting on 2026-11-21: the same proof set rendered from the committed fonts
+of main (baseline), `aafe2f9b` (round 1), `19acf8ac` (round 2) and round 3, under shuffled labels, with the rubric and one shared sheet
+of references only. This table replaces the round 1 and round 2 tables for comparison: their reviewers used different scales.
+`rhythm.py`: upright 0.50 / 0.53 / 0.47 / 0.53, italic 0.57 / 0.58 / 0.50 / 0.47 (unchanged from round 2).
+
+| #   | Criterion (weight)             | Baseline | Round 1 | Round 2 | Round 3 |
+| --- | ------------------------------ | -------- | ------- | ------- | ------- |
+| 1   | Rhythm and spacing (15)        | 4        | 6       | 7       | 7       |
+| 2   | Weight axis (12)               | 5.5      | 6.5     | 7       | 7       |
+| 3   | Shape and curve quality (15)   | 5        | 5.5     | 5.5     | 6.5     |
+| 4   | Proportions (8)                | 6        | 6.5     | 6.5     | 6.5     |
+| 5   | Joins, terminals, contrast (8) | 6        | 6       | 6       | 6       |
+| 6   | Paragraph colour (12)          | 7        | 7       | 7       | 7       |
+| 7   | Small sizes (10)               | 7        | 7       | 7       | 7       |
+| 8   | Italic (8)                     | 4.5      | 4.5     | 6.5     | 6.5     |
+| 9   | Kerning (5)                    | 4.5      | 5       | 5.5     | 5.5     |
+| 10  | Optical sizes (4)              | 6        | 7       | 7       | 7       |
+| 11  | Character (3)                  | 6.5      | 6.5     | 6.5     | 7       |
+|     | **Weighted total**             | **5.5**  | **6.1** | **6.5** | **6.7** |
+
+The targets (7.8 / 8.6 / 9.2) were not met on this scale. No criterion is under its baseline, and Regular text and the small sizes
+read the same in all four (the reviewer measured a mean pixel difference of 2 or less on the paragraphs).
+
+Fixed in round 3 (redrawn, each held by a test in `test_font.py`):
+
+- `Y`: the arms run into the stem and end on an upright face inside it. They were cut flat at the join, wider than the stem, and left
+  a ledge on both sides (9 units upright, 10 to 18 in the italic). Italic `Z`: the diagonal's ends are placed with the italic's own
+  stroke width (`G.hw(exact=True)`), so it no longer stands 4 to 9 units out past the bars.
+- Black `v w y`: wider (34 / 70 units) with diagonals a tenth lighter. The white between `v`'s arms is 233 units deep (142).
+- Guillemets drawn as outlines on Inter's geometry (a 200-unit run, the arm's width follows the weight): pointed tip, flat ends,
+  55 units of white at Black. Two pen strokes met in a notch and ended in corners that pointed at the next chevron.
+- Comma (and with it `;` and the curly quotes): the head is half a dot tall before the taper starts, at the same total height.
+  Black's double quotes stand 100 units apart (35).
+- Black `2` starts with a near-flat cut, not a beak. Black `I` has shorter, thinner slabs (the caps lines keep their width).
+- Capital diagonal pairs keep 26 units of white in text Black (16) and 16 to 18 at the corners and Bold.
+- Display spacing 0.92 of text (0.88): at 900 / opsz 48 the common pairs keep 28 units or more.
+- Italic Black `l`: shorter foot, more room after it. Thin `V` beside `c e o q g œ` kerns 0.8 to 1.08x Inter's (0.6 to 0.75x) and left
+  `KERNING_SHORT`.
+- Bytes: no budget raised. Full 73,904 / 74,500, Latin[wght] 24,696 / 25,000, italic full 80,528 / 81,500,
+  italic Latin[opsz,wght] 34,320 / 35,000, italic Latin[wght] 27,680 / 28,000.
+
+Known limits (the reviewer's list for round 3, most important first, with why each is still there):
+
+1. Upright and italic 800 to 900 are still tight (0.53 and 0.47 against Inter's 0.64) and the Black `e a` counters small. This is the
+   width gate (owner decision, round 2 result). It was not approved during round 3, so it is unchanged.
+2. Black `e` aperture is a slit. Opening it (`E_RUN` -14 to -6) turns the terminal into a wedge that `quality.py` rejects
+   (corners 135 / 68 deg, outside 90 +- 40). It needs a redrawn terminal, not a longer aperture.
+3. Black `We` and `Kv` still read as touching to the reviewer. `Kv` keeps the 26-unit floor; `We` is held by Inter's own limit (-63).
+4. `&`: the top counter is a dot at 700 to 900. `@` is light beside Black letters.
+5. Italic Black `z`: stepped corners on the right (the `exact` anchoring is applied to `Z` and `Y` only, because applying it to every
+   italic diagonal moves 60 pinned advances at Regular, `test_advances_at_regular_match_a855b5e0`).
+6. Black quotes are still large wedges; `ff` and `ft` open a little at 600 and at display size; Black `LY` is a little loose.
+7. Thin `W` beside a round letter and `A` beside `W` still kern 0.4 to 0.6x Inter's (the outline measure reads their white as spacing).
+8. Not started: thinner Black arch joins (join-angle gate, owner decision), `[ ] { }` sidebearings (pinned advances, owner decision),
+   Cyrillic `Ч Ћ Ђ ђ` and Greek `α` on the old arch, the `G` spur at Black, the `Q` tail at 400.

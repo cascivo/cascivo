@@ -184,8 +184,9 @@ KERNING_SHORT_FLOOR = 0.25  # of Inter's, for the pairs in KERNING_SHORT: the we
 # Where 0.25x is too high the pair keeps what it ships, less a unit: italic Thin AW kerns 3 (Inter 57), the weakest pair of all.
 KERNING_SHORT_UNITS = {('italic', 'AW', 100): 2}
 KERNING_SHORT = (
-    {('upright', pair, 100) for pair in ('Wc', 'We', 'Wo', 'Wœ', 'Vc', 'Ve', 'Vo', 'Vq', 'Vg', 'Vœ', 'AW', 'WA')}
-    | {('italic', pair, 100) for pair in ('Wa', 'Wc', 'We', 'Wo', 'Wæ', 'Wœ', 'Va', 'Vc', 'Ve', 'Vo', 'Vq', 'Vg', 'Væ', 'Vœ', 'AV', 'AW', 'AY', 'VA', 'WA', 'Yg')}
+    # (round 3: Thin's V beside c e o q g œ reaches 0.8x and left this list, upright and italic: kern.THIN_REACH)
+    {('upright', pair, 100) for pair in ('Wc', 'We', 'Wo', 'Wœ', 'AW', 'WA')}
+    | {('italic', pair, 100) for pair in ('Wa', 'Wc', 'We', 'Wo', 'Wæ', 'Wœ', 'Va', 'Væ', 'AV', 'AW', 'AY', 'VA', 'WA', 'Yg')}
     # A beside W at Regular: the upright reads -45 / -44 against Inter's -57 (0.79x, 0.77x) and the italic -27 / -34 (0.47x, 0.60x): the
     # shapes' own white is already as close as the measure's floor and reach allow, and the user accepted the italic's shortfall (spec,
     # Decisions). Italic Yg at Black stops at -109 (0.79x): the g's open top is the nearest ink
