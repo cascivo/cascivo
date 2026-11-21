@@ -7,7 +7,7 @@ of one build.
 
 ## Verdict
 
-**Pass on both kill criteria.**
+**Pass on both kill criteria, with one LCP regression on mobile (see Numbers).**
 
 - Visual parity is reached. Desktop differs by 0.06 % of pixels and mobile by 1.4–1.8 %. The
   mobile difference is a timing artefact of the baseline capture, not a regression (see below).
@@ -15,6 +15,12 @@ of one build.
   limit. Every other section is static HTML.
 
 ## What was built
+
+**Build: the SPA is untouched.** The islands and home CSS are a second Vite pass
+(`CASCIVO_SITE_PASS=home`) into the same `dist/`. Sharing one Rollup graph with `index.html`
+re-chunked the SPA's CSS, which inverted the cascade-layer order site-wide
+(`scripts/checks/site-layer-order` caught it). The SPA's output now has the same hashes as
+before W4.
 
 **cascivo-web: 9 new modules, about 2.1k lines including tests.**
 - `head`: title, description, canonical, robots, Open Graph, Twitter, theme-color and JSON-LD.
@@ -88,22 +94,30 @@ Add `THROTTLE=1` to the measure runs to get the LCP rows.
 
 | Metric (gzip) | SPA home | cascivo-web home | Change |
 |---|---|---|---|
-| JS before scrolling | 73.4 KB (32 files) | **32.1 KB** (11) | −56 % |
-| JS after a full scroll | 84.3 KB (42) | **51.4 KB** (29) | −39 % |
-| CSS before scrolling | 26.5 KB | 30.3 KB | +14 % (header island sheet is render-blocking) |
-| CSS after a full scroll | 38.4 KB | 38.0 KB | about the same |
+| JS before scrolling | 71.8 KB (22 files) | **30.8 KB** (10) | −57 % |
+| JS after a full scroll | 82.8 KB (32) | **47.0 KB** (16) | −43 % |
+| CSS before scrolling | 25.8 KB (5 files) | 29.6 KB (9) | +15 % (header island and component sheets are render-blocking) |
+| CSS after a full scroll | 37.7 KB | 37.3 KB | about the same |
 | HTML document | 2.3 KB (prerendered shell) | 16.5 KB (whole page) | +14 KB |
-| LCP, desktop 1280, throttled, median of 6 | 2,132 ms | **1,580 ms** | −26 % |
-| LCP, mobile 390, throttled, median of 6 | 904 ms | **894 ms** | equal |
+| LCP, desktop 1280, throttled, median of 6 | 1,756 ms | **1,552 ms** | −12 % |
+| LCP, mobile 390, throttled, median of 6 | **784 ms** | 900 ms | +15 % |
 | LCP, unthrottled | 130–250 ms | 140–240 ms | noise |
 | cascivo-web build of `/` | n/a | 0.8–1.0 s | almost all of it is resizing 4 showcase JPEGs to 2 widths |
 
 - Throttled means 150 ms RTT, 1.6 Mbps down and 4× CPU, via CDP. Lighthouse is not installed in
   the container.
-- One SPA run hit the 10 s LCP timeout and is left out of the median.
-- An earlier variant put all island CSS in the `<head>`. Its mobile LCP was 1,000 ms against the
-  SPA's 920 ms. Loading the sheets of below-the-fold islands with a non-blocking media swap
-  closed the gap.
+- **Mobile LCP is the one regression.** On mobile the SPA's LCP element is its prerendered
+  static body, which paints after one stylesheet. The static home blocks on 9 stylesheets:
+  - the global sheet,
+  - 5 component-module sheets,
+  - the header island's sheet.
+
+  `vp preview` speaks HTTP/1.1 with 6 connections per host, so under 150 ms RTT the extra sheets
+  cost a round trip. Cloudflare serves HTTP/2, so they would multiplex. That is not measured here.
+- **Fix, not done:** emit one stylesheet for the home. Rolldown ignored `cssCodeSplit: false` for
+  shared sheets. The fix is a concat step in cascivo-web or the merge script.
+- Below-the-fold islands load their sheets with a non-blocking media swap. Putting them in the
+  `<head>` cost about 100 ms more on mobile.
 
 **Visual parity.** Full-page screenshots at 1280×800 and 390×844 in `poster` and `poster-dark`,
 with reduced motion. A pixel differs when any RGB channel differs by more than 24. Run-to-run
@@ -127,7 +141,7 @@ band**; both pass.
 
 ## Integration with the Cloudflare build (documented, not deployed)
 
-1. `vp run @cascivo/site#build` runs as today.
+1. `vp run @cascivo/site#build` runs the SPA pass as today, then the home pass.
 2. `pnpm --filter @cascivo/site build:web` runs
    `cargo run --release -p cascivo-web -- build web --out dist-web`, then
    `scripts/merge-web-home.mjs`.
