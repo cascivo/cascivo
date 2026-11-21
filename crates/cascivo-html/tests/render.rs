@@ -128,3 +128,18 @@ fn stat_delta_infers_trend_from_sign() {
     // An explicit trend wins over the sign.
     assert!(h.contains("\u{25bc}</span>+1%"));
 }
+
+#[test]
+fn render_parts_reports_used_units_and_stylesheet_matches_render() {
+    let opts = cascivo_html::Options::default();
+    let f = cascivo_html::render_parts("badge \"New\"\n", &opts).unwrap();
+    assert!(f.html.contains("New") && f.used.contains("badge"));
+    let css = cascivo_html::stylesheet("light", &f.used);
+    let page = cascivo_html::render("badge \"New\"\n", &opts).unwrap();
+    assert!(
+        page.contains(&css),
+        "render inlines exactly the shared stylesheet"
+    );
+    assert!(cascivo_html::render_parts("nope\n", &opts).is_err());
+    assert!(cascivo_html::script("table-sort").is_some());
+}
