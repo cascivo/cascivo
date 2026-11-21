@@ -1,4 +1,7 @@
-{% extends "default.html" %}
-{% block body %}{{ cv('page-header "Blog"') }}
-<ul>{% for p in collections.posts|sort(attribute="date", reverse=true) %}<li><a href="{{ p.url }}">{{ p.title }}</a> {{ p.date }}</li>{% endfor %}</ul>
+{% extends "default.html" %} {% block body %}{{ cv('page-header "Blog"') }}
+<ul>
+  {% for p in collections.posts|sort(attribute="date", reverse=true) %}
+  <li><a href="{{ p.url }}">{{ p.title }}</a> {{ p.date }}</li>
+  {% endfor %}
+</ul>
 {% endblock %}

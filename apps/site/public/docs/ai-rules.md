@@ -636,4 +636,5 @@ see [USING-CASCIVO-TUI.md](/docs/using-cascivo-tui.md).
 - [TOKENS.md](/docs/tokens.md) — the full token catalog.
 - [MACHINE-MODE.md](/docs/machine-mode.md) — a rendered UI as a Markdown document.
 - [USING-CASCIVO-HTML.md](/docs/using-cascivo-html.md) — one static HTML file from `.cv` text.
+- [USING-CASCIVO-WEB.md](/docs/using-cascivo-web.md) — a static site (Markdown, collections, i18n, RSS) in Rust.
 - [USING-CASCIVO-TUI.md](/docs/using-cascivo-tui.md) — a terminal UI in Rust with cascivo themes.
