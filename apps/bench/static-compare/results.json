@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-21",
+  "runs": 3,
+  "sites": {
+    "rust (cascivo-web)": {
+      "coldBuildMs": 6,
+      "pages": 20,
+      "totalBytes": 71437,
+      "totalGzip": 22152,
+      "htmlBytes": 36505,
+      "cssBytes": 33442,
+      "jsFilesBytes": 0,
+      "postPageJsBytes": 0,
+      "editToRenderMs": {
+        "median": 22.446081999999933,
+        "max": 39.45408299999997,
+        "samples": [9, 39, 18, 26, 22]
+      },
+      "loc": {
+        "files": 24,
+        "content": 334,
+        "code": 70
+      },
+      "runtimeDeps": 20
+    },
+    "astro (@cascivo/astro)": {
+      "coldBuildMs": 2773,
+      "pages": 20,
+      "totalBytes": 402360,
+      "totalGzip": 112488,
+      "htmlBytes": 187778,
+      "cssBytes": 23002,
+      "jsFilesBytes": 191580,
+      "postPageJsBytes": 0,
+      "editToRenderMs": {
+        "median": 246.18864200000098,
+        "max": 268.117083000001,
+        "samples": [260, 246, 242, 238, 268]
+      },
+      "loc": {
+        "files": 25,
+        "content": 330,
+        "code": 145
+      },
+      "runtimeDeps": 920
+    }
+  }
+}

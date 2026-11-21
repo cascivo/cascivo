@@ -1,0 +1,33 @@
+---
+title: 'Notes on printing'
+date: 2026-07-02
+tags: ['printing', 'cascivo']
+---
+
+import { Alert, Columns, Stat } from '@cascivo/react'
+
+This post covers **printing** in a static site. It is part of a twenty-page fixture used to
+compare two ways of building the same site.
+
+## Why printing matters
+
+Static pages ship no framework runtime. The markup carries the design system classes, and the
+stylesheet does the rest.
+
+- First point about printing
+- Second point about printing
+- Third point, with `inline code`
+
+<Alert title="Tip" variant="warning">
+  Remember to test notes on printing.
+</Alert>
+
+## Numbers
+
+<Columns count={3}>
+  <Stat label="Reads" value={1680} />
+  <Stat label="Likes" value={98} />
+  <Stat label="Minutes" value={16} />
+</Columns>
+
+Read the [blog index](/blog/) for more posts.

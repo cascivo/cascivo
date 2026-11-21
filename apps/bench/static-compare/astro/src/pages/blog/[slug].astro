@@ -1,0 +1,24 @@
+---
+import { getCollection, render } from 'astro:content'
+import { Badge } from '@cascivo/react'
+import Layout from '../../layouts/Layout.astro'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts')
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }))
+}
+
+const { post } = Astro.props
+const { Content } = await render(post)
+---
+
+<Layout title={post.data.title}>
+  <article>
+    <h1>{post.data.title}</h1>
+    <p>
+      <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().slice(0, 10)}</time>
+      {post.data.tags?.map((t) => <><Badge variant="secondary">{t}</Badge>{' '}</>)}
+    </p>
+    <Content />
+  </article>
+</Layout>

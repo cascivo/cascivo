@@ -228,6 +228,29 @@
       min-inline-size: var(--cascivo-target-min-coarse, 2.75rem);
     }
   }
+
+  /* Seven 44px day targets plus two paddings do not fit a phone's width inside the page
+     gutters, so the calendar overflowed the viewport at 320/360px (found by the
+     @cascivo/elements touch sweep). There it becomes a sheet at the viewport's bottom edge,
+     centred, with the calendar's inline padding trimmed. */
+  /* viewport-query: the popup becomes position: fixed against the viewport, so the window's
+     width, not the slot's, decides whether the calendar fits. */
+  @media (pointer: coarse) and (width < 30rem) {
+    .popup {
+      position: fixed;
+      inset-inline: 0;
+      inset-block: auto 0;
+      margin-inline: auto;
+      inline-size: max-content;
+      max-inline-size: 100%;
+      padding: 0;
+
+      /* `[class]` outranks the Calendar's own `.calendar` padding whatever the load order. */
+      & > [class] {
+        padding-inline: var(--cascivo-space-1);
+      }
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

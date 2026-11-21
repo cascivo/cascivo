@@ -27,6 +27,7 @@ mod guide_gen;
 pub mod html;
 mod lex;
 mod parse;
+pub mod path;
 pub mod render;
 
 pub use ast::{BrandItem, Directive, Doc, Node, Value};
@@ -37,7 +38,10 @@ pub use catalog::{
 pub use diag::Diagnostic;
 pub use guide::{GUIDE, guide_for};
 pub use parse::parse;
-pub use render::{AssetResolver, BrandResolver, Cx, Options, render, render_fragment};
+pub use render::{
+    AssetResolver, BrandResolver, Cx, Fragment, Options, render, render_fragment, render_parts,
+    script, stylesheet,
+};
 
 /// Parse-only validation: every diagnostic in `src`, empty when it is valid.
 /// Brand files need a resolver, so they are checked by `render` instead.

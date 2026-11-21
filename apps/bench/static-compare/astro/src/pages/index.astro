@@ -1,0 +1,18 @@
+---
+import { PageHeader, Columns, Stat, Card } from '@cascivo/react'
+import Layout from '../layouts/Layout.astro'
+---
+
+<Layout title="Home">
+  <PageHeader title="Static compare" description="One site, two toolchains." />
+  <Columns count={3}>
+    <Stat label="Pages" value={20} />
+    <Stat label="Posts" value={15} />
+    <Stat label="Client JS" value="0 KB" />
+  </Columns>
+  <Card>
+    <h2>What this is</h2>
+    <p>A twenty-page fixture built with cascivo-web and with Astro.</p>
+  </Card>
+  <p>Start with the <a href="/blog/">blog</a> or read <a href="/about/">about</a> the experiment.</p>
+</Layout>

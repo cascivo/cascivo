@@ -1,0 +1,32 @@
+[package]
+name = "cascivo-web"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+description = "Spike: static sites from Markdown, content collections and cascivo-html components"
+license = "MIT"
+repository = "https://github.com/cascivo/cascivo"
+publish = false
+
+[[bin]]
+name = "cascivo-web"
+path = "src/main.rs"
+
+[dependencies]
+axum = { version = "0.8.9", optional = true, default-features = false }
+cascivo-html = { path = "../cascivo-html" }
+minijinja = { version = "3.1.0", default-features = false, features = [
+  "builtins",
+  "multi_template",
+  "macros",
+] }
+pulldown-cmark = { version = "0.13.6", default-features = false, features = ["html"] }
+serde = { version = "1.0.229", features = ["derive"] }
+toml = "1.2.2"
+
+[features]
+axum = ["dep:axum"]
+
+[dev-dependencies]
+tokio = { version = "1.54.1", features = ["macros", "rt"] }
+tower = { version = "0.5.3", features = ["util"] }

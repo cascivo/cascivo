@@ -46,7 +46,12 @@ export default defineConfig({
           globals: true,
           setupFiles: ['./src/setup.ts'],
           include: ['**/*.{test,spec}.?(c|m)[jt]s?(x)'],
-          exclude: ['**/node_modules/**', `**/${PREACT_TEST}`, '**/html-conformance.test.tsx'],
+          exclude: [
+            '**/node_modules/**',
+            `**/${PREACT_TEST}`,
+            '**/html-conformance.test.tsx',
+            '**/html-conformance.parity.test.tsx',
+          ],
         },
       },
       {
@@ -57,7 +62,7 @@ export default defineConfig({
           name: 'html-conformance',
           environment: 'node',
           css: { include: /.+/, modules: { classNameStrategy: 'non-scoped' } },
-          include: ['test/html-conformance.test.tsx'],
+          include: ['test/html-conformance.test.tsx', 'test/html-conformance.parity.test.tsx'],
         },
       },
       {

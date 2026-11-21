@@ -1,0 +1,10 @@
+{% extends "default.html" %}
+{% block title %}Blog{% endblock %}
+{% block body %}
+{{ cv('page-header "Blog" "Fifteen posts."') }}
+<ul>
+{% for p in collections.posts|sort(attribute="date", reverse=true) %}
+<li><a href="{{ p.url }}">{{ p.title }}</a> <time>{{ p.date }}</time></li>
+{% endfor %}
+</ul>
+{% endblock %}

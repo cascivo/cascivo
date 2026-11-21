@@ -1,4 +1,5 @@
 export { createMachine, useMachine } from './machine.ts'
+export { transition } from './fsm.ts'
 export {
   signal,
   computed,

@@ -71,6 +71,56 @@ fn emit_body(doc: &Doc, cx: &mut Cx<'_>) -> String {
     body
 }
 
+/// Base, theme, page-shell and per-component CSS for the given used units: what [`render`]
+/// inlines, so a multi-page site can ship it once as a shared stylesheet. Unknown themes fall
+/// back to the base tokens only.
+pub fn stylesheet(theme: &str, used: &BTreeSet<&'static str>) -> String {
+    let mut css = String::from(BASE_CSS);
+    if let Some((_, c)) = THEMES.iter().find(|(n, _)| *n == theme) {
+        css.push_str(c);
+    }
+    css.push_str(DOC_CSS);
+    for (unit, c) in COMPONENT_CSS.iter().chain(EXTRA_CSS) {
+        if used.contains(unit) {
+            css.push_str(c);
+        }
+    }
+    css
+}
+
+/// Inline script source an emitter asked for via [`Fragment::scripts`].
+pub fn script(name: &str) -> Option<&'static str> {
+    SCRIPTS.iter().find(|(n, _)| *n == name).map(|(_, js)| *js)
+}
+
+/// Body markup plus what it needs from [`stylesheet`] and [`script`].
+#[derive(Debug, Clone, Default)]
+pub struct Fragment {
+    pub html: String,
+    pub used: BTreeSet<&'static str>,
+    pub scripts: BTreeSet<&'static str>,
+}
+
+/// Like [`render_fragment`], but with asset options and the used CSS units and scripts, so a
+/// host (cascivo-web) can embed several fragments in its own page shell.
+pub fn render_parts(src: &str, opts: &Options) -> Result<Fragment, Vec<Diagnostic>> {
+    let doc = parse(src)?;
+    let mut cx = Cx {
+        opts: Some(opts),
+        ..Cx::default()
+    };
+    let html = emit_body(&doc, &mut cx);
+    if cx.diags.is_empty() {
+        Ok(Fragment {
+            html,
+            used: cx.used,
+            scripts: cx.scripts,
+        })
+    } else {
+        Err(cx.diags)
+    }
+}
+
 /// Body markup only (no document shell); used by conformance snapshots.
 pub fn render_fragment(src: &str) -> Result<String, Vec<Diagnostic>> {
     let doc = parse(src)?;
@@ -105,23 +155,14 @@ pub fn render(src: &str, opts: &Options) -> Result<String, Vec<Diagnostic>> {
         }
     }
     let theme = theme.as_deref().unwrap_or("light");
-
-    let mut css = String::from(BASE_CSS);
-    if let Some((_, c)) = THEMES.iter().find(|(n, _)| *n == theme) {
-        css.push_str(c);
-    }
-    css.push_str(&brand_css);
-    css.push_str(DOC_CSS);
-    for (unit, c) in COMPONENT_CSS {
-        if cx.used.contains(unit) {
-            css.push_str(c);
-        }
-    }
-    for (unit, c) in EXTRA_CSS {
-        if cx.used.contains(unit) {
-            css.push_str(c);
-        }
-    }
+    let mut css = stylesheet(theme, &cx.used);
+    // Brand CSS overrides theme tokens, so it goes after them but before the component modules.
+    let at = BASE_CSS.len()
+        + THEMES
+            .iter()
+            .find(|(n, _)| *n == theme)
+            .map_or(0, |(_, c)| c.len());
+    css.insert_str(at, &brand_css);
 
     let nl = if opts.minify_html { "" } else { "\n" };
     let mut out = String::with_capacity(css.len() + body.len() + 256);
