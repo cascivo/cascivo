@@ -105,7 +105,7 @@ impl Site {
 }
 
 /// TOML → template value; dates become ISO strings so templates can print and sort them.
-fn to_value(v: &toml::Value) -> Value {
+pub(crate) fn to_value(v: &toml::Value) -> Value {
     match v {
         toml::Value::String(s) => Value::from(s.as_str()),
         toml::Value::Integer(i) => Value::from(*i),
@@ -131,6 +131,7 @@ struct Renderer<'a> {
     /// CSS units and scripts used anywhere, shared with the `cv()` template function.
     acc: Arc<Mutex<Rendered>>,
     collections: Value,
+    web: Arc<crate::web::WebState>,
 }
 
 fn tpl_err(file: &str, e: &minijinja::Error) -> Error {
@@ -172,11 +173,13 @@ impl<'a> Renderer<'a> {
                     })
             },
         );
+        let web = crate::web::register(&mut env, site, &mut errs);
 
         let mut r = Renderer {
             site,
             env,
             acc,
+            web,
             collections: Value::UNDEFINED,
         };
         let mut colls = BTreeMap::new();
@@ -279,6 +282,7 @@ impl<'a> Renderer<'a> {
             out.insert(rel, bytes)
                 .map_err(|m| Errors::one("dist", None, m))
         };
+        let css = self.site.config.build.cascivo_css;
         let scripts: String = acc
             .scripts
             .iter()
@@ -287,12 +291,17 @@ impl<'a> Renderer<'a> {
             .collect();
         for (url, html) in &pages {
             let rel = format!("{}index.html", url.trim_start_matches('/'));
-            put(rel, finish_html(html, &scripts).into_bytes())?;
+            put(rel, finish_html(html, &scripts, css).into_bytes())?;
         }
-        put(
-            "cascivo.css".into(),
-            cascivo_html::stylesheet(&self.site.config.theme, &acc.used).into_bytes(),
-        )?;
+        if css {
+            put(
+                "cascivo.css".into(),
+                cascivo_html::stylesheet(&self.site.config.theme, &acc.used).into_bytes(),
+            )?;
+        }
+        for (rel, bytes) in self.web.take_files() {
+            put(rel, bytes)?;
+        }
         for (rel, bytes) in &self.site.public {
             put(rel.clone(), bytes.clone())?;
         }
@@ -353,8 +362,12 @@ fn config_value(c: &Config) -> Value {
 }
 
 /// Links the shared stylesheet and appends component scripts, so layouts need neither.
-fn finish_html(html: &str, scripts: &str) -> String {
-    let link = "<link rel=\"stylesheet\" href=\"/cascivo.css\">";
+fn finish_html(html: &str, scripts: &str, css: bool) -> String {
+    let link = if css {
+        "<link rel=\"stylesheet\" href=\"/cascivo.css\">"
+    } else {
+        ""
+    };
     let mut s = match html.find("</head>") {
         Some(i) => format!("{}{link}{}", &html[..i], &html[i..]),
         None => format!("{link}{html}"),
@@ -392,11 +405,18 @@ mod tests {
         let h = finish_html(
             "<html><head></head><body>x</body></html>",
             "<script>1</script>",
+            true,
         );
         assert_eq!(
             h,
             "<html><head><link rel=\"stylesheet\" href=\"/cascivo.css\"></head><body>x<script>1</script></body></html>"
         );
+    }
+
+    #[test]
+    fn finish_without_cascivo_css_adds_no_link() {
+        let h = finish_html("<html><head></head><body></body></html>", "", false);
+        assert_eq!(h, "<html><head></head><body></body></html>");
     }
 
     #[test]

@@ -1,0 +1,8 @@
+{% extends "home.html" %}
+{% block body %}
+<div class="{{ m('stat', 'value') }}" {{ island('signals', client='idle', props={'n': data.web.count}) }}>fallback</div>
+<p>{{ data.web.names | join(",") }} {{ data.web.nested.ok }}</p>
+{{ img('hero.png', 'Hero', widths=[16, 32, 500], sizes='100vw', class='hero') }}
+<pre>{{ "const a = 1 // x" | highlight("js") }}</pre>
+<a href="{{ vite('src/marketing/islands/home.css.ts') }}">js</a>
+{% endblock %}
