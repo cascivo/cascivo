@@ -266,7 +266,7 @@ def _Y(g, p):
 
 @glyph('K', 0x4B)
 def _K(g, p):
-    w = p.Hd * (0.98 + 0.08 * p.heavy)
+    w = (p.Hd + p.trim * 418 / 284) * (0.98 + 0.08 * p.heavy)  # untrimmed, see params.CN_TRIM
     g.vstem(0, 0, p.cap)
     a0, a1 = g.diag(p.V / 2, p.cap * (0.33 - 0.04 * p.heavy), w, p.cap, 'c', 'r', ws=0.92, caps=('v', 'h'))  # a steeper arm at Black: its tip at the cap height was a sliver (52 px^2, Inter's 46)
     t = 0.38
@@ -557,7 +557,7 @@ def _h(g, p):
 
 @glyph('m', 0x6D)
 def _m(g, p):
-    c = p.cn * 0.86
+    c = (p.cn + p.trim) * 0.86
     g.vstem(0, 0, p.xh)
     shoulder(g, 0, c + p.V, p.xh + p.ov * 0.4, ry_k=1.12)
     shoulder(g, c + p.V, 2 * c + 2 * p.V, p.xh + p.ov * 0.4, ry_k=1.12)
@@ -606,12 +606,13 @@ def _l(g, p):  # tailed by default
     # A short tail that grows slower than the stem: a long heavy tail turns ill into iʟʟ at Black. It
     # ends square (a vertical face, not the oblique butt of a stroke still rising) and inside its own
     # advance: the tail used to overhang by 12-21 units and met the next letter.
-    rx = 52 + p.V * 0.4
+    # Heavier, a little shorter and further from the next letter: Black's tail ran into m, l and u (lm, ll), and the italic's read as a ( beside k
+    rx = 52 + p.V * 0.4 - 12 * p.heavy  # -30 folded the inner edge of Black's tail into a spur (inner radius 3 units)
     ry = rx * 1.05
     cy = -p.ov * 0.4 + p.H / 2 + ry
     g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 270), caps=('b', 'v'))
     g.ht = 'a'
-    g.sb = (1, 0.28 + (0.08 + 0.5 * p.heavy if p.italic else 0))
+    g.sb = (1, 0.28 + (0.08 + 0.7 * p.heavy if p.italic else 0.3 * p.heavy))
 
 
 @glyph('dotlessj', 0x237)
@@ -677,7 +678,7 @@ def _q(g, p):
 
 @glyph('g', 0x67)
 def _g(g, p):
-    w = p.nw * 1.07
+    w = (p.nw + p.trim / 2) * 1.07  # as e
     V, H = p.V, p.H
     xr = w - V / 2
     rx = (w - V) / 2 * 0.98
@@ -746,7 +747,7 @@ def _e_body(g, p, x0, w):
 
 @glyph('e', 0x65)
 def _e(g, p):
-    _e_body(g, p, 0, p.nw * 1.06)
+    _e_body(g, p, 0, (p.nw + p.trim / 2) * 1.06)  # half the heavy trim (params.CN_TRIM): the whole closed Black's eye
     g.sb = (0.62, 0.5)
 
 
@@ -819,7 +820,7 @@ def _a(g, p):
         _bowl_lc(g, p, w, False)
         g.sb = (0.62, 1)
         return
-    w = p.nw * 0.98
+    w = (p.nw + p.trim) * 0.98  # untrimmed (params.CN_TRIM): the narrower bowl met its stem at 25 deg, under Inter's 36 - 10
     V, H = p.V, p.H
     xs = w - V / 2  # stem centre
     # top arc
@@ -888,7 +889,9 @@ def _f(g, p):
         # square ends (cut='n'): the heavy 'v' cut turned the descender's tip into a spike and left a sliver
         g.stroke(hook + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'), cut='n')
         # heavier, the hook ran into the feet of x, y, k, r; and the arm, 9% tight at Bold, met a T
-        g.sb = (-0.2 + 0.1 * p.heavy, 0.15 + 0.3 * p.heavy)
+        # The heavy hook is wider (_italic_descender) and pushed the stem right: ef, af, gef read as two words at 600-900. The f
+        # sits closer instead; kern.py keeps the hook off the feet of x, y, k, r.
+        g.sb = (-0.2 - 1.0 * p.heavy, 0.15 + 0.3 * p.heavy)
     else:
         g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'), cut='n')
         g.sb = (0.45, 0.2 + 0.4 * p.heavy)  # crossbar overhang, as for t (fo, ft sat 15% tighter than the references')

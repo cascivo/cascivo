@@ -46,13 +46,14 @@ REGULAR_S = P(400, 14).S  # Regular's stem sidebearing unit: the reference of ST
 # never closes harder than the hardest value Inter has for it at any weight (read from Inter 4.001 in the audit: LT -96, To -78,
 # W+a -63, V+a -69, Y+round -138, A beside V/W/Y -88); those numbers are hand-set here, they are not derived. Without it the closest-point
 # floor is the only brake at Black, and W beside a round letter read -90 there (Inter -49) with the two nearly touching. Y's reach grows
-# with the weight because Inter's Y kerns harder as it gets heavier (-77 at Regular, -138 at Black); the others' stays put.
+# with the weight because Inter's Y kerns harder as it gets heavier (-77 at Regular, -138 at Black); the others' stays put. (1.1: Black's
+# looser sidebearings, params.CN_TRIM, left Yo at 110 against the 0.8 x 138 floor at 1.0.)
 STRONG_CLASSES = [
     (['L', 'Lslash'], ['T'], 1.8, 0.0, 1.0, 96),
     (['T'], ['o', 'c', 'e', 'd', 'q', 'g', 'a', 's', 'ae', 'oe'], 1.4, 0.0, 1.0, 78),
     (['W'], ['a', 'c', 'e', 'o', 'd', 'ae', 'oe'], 2.4, 0.0, 1.1, 63),
     (['V'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 0.0, 1.0, 69),
-    (['Y'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 1.0, 1.0, 138),
+    (['Y'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 1.1, 1.0, 138),
     (['A'], ['V', 'W', 'Y'], 1.2, 0.6, 1.0, 88),
     (['V', 'W', 'Y'], ['A'], 1.2, 0.6, 1.0, 88),
 ]

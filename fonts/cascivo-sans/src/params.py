@@ -45,15 +45,25 @@ def _pw(x, table):
 # so Bold is a master of its own that bends the sidebearing line (build.mid_master): it keeps the interpolated outline,
 # moved half the way its advance shortens, and so stores only a shift per glyph.
 # HEAVY_TIGHTEN and BOLD_TIGHTEN: the share of the stem sidebearing lost at Black and at Bold.
-HEAVY_TIGHTEN = 0.53
-BOLD_TIGHTEN = 0.35
+HEAVY_TIGHTEN = 0.36
+BOLD_TIGHTEN = 0.25
+BOLD_TIGHTEN_ITALIC = 0.35
+# CN_TRIM: units the lowercase counters lose at Black (n's 150 -> 130), handed back to the sidebearings (HEAVY_TIGHTEN 0.53 -> 0.36,
+#   BOLD_TIGHTEN 0.35 -> 0.25, CH_BLACK 300 -> 280) at the same advance: Black's n gap over counter read 0.30 against Inter's 0.64, Bold's 0.38 against 0.62,
+#   and mn, hi, HI touched. m, a and K keep their width (p.trim): m's three stems closed its counters to slits, a's bowl met its
+#   stem at 25 deg (Inter 36 - 10) and K's arm cut a sliver. The italic keeps its counters for now (round 2 of JUDGING.md): trimmed
+#   by 5 to 12 its slanted arches met the h and u stems 2-6 deg under the join-angle floor and the s tips turned sharper.
+CN_TRIM = 20
+CN_TRIM_ITALIC = 0
+HEAVY_TIGHTEN_ITALIC = 0.53
 # CH_THIN and CH_BLACK: the capitals' own counter (H's, in units; Regular's is 397, the lowercase n's scaled), at stem
 #   20 and at stem 194. Capitals set their sidebearings from the lowercase's (Sc = 1.3 S at every weight, as Inter and
 #   Geist keep them in proportion), so their width has to hold in the counter: it narrowed with n's, which cut an
 #   all-caps line by 12% at Black, and at Thin it ran wide (n's 374 would put H 4% over Regular's with 26% more white).
 CH_THIN = 470
 CHD_THIN = 0.93  # the same narrowing, as a share, for the round and diagonal capitals
-CH_BLACK = 300
+CH_BLACK = 280
+CH_BLACK_ITALIC = 300  # the italic is not trimmed yet (CN_TRIM_ITALIC)
 # DIAG_TRIM: units the diagonal letters v w x y z lose from their width at Black. Their counters are open white,
 #   not guarded, and they carried the widest ink growth beside the s and e.
 DIAG_TRIM = 90
@@ -111,7 +121,7 @@ class P:
         self.S *= (0.97 - 0.04 * self.heavy) if italic else (0.91 + 0.04 * self.heavy)
         self.Sfig = self.S  # figures and math signs keep their ink: their advance is fixed, so a tighter S would widen them
         tighten = lambda bold, black: 1 - (_pw(wght, [(400, 0.0), (MID_WGHT, bold), (900, black)]) if wght >= 400 and not loose else 0.0)  # noqa: E731
-        self.S *= tighten(BOLD_TIGHTEN, HEAVY_TIGHTEN)
+        self.S *= tighten(*((BOLD_TIGHTEN_ITALIC, HEAVY_TIGHTEN_ITALIC) if italic else (BOLD_TIGHTEN, HEAVY_TIGHTEN)))
         self.Sc = self.S * 1.3  # capitals carry more space: their counters are bigger
         self.cw = counter
         # n is 0.82 x-heights wide at Regular (Geist 0.79, Inter 0.80). It was 0.88 with tighter
@@ -119,6 +129,8 @@ class P:
         self.cn = _pw(V, [(20, 374), (84, 270), (BLACK_STEM + 4, 145)]) * counter  # n counter
         if italic:
             self.cn *= 0.95  # italics run slightly narrower: the slant already adds movement
+        self.trim = (CN_TRIM_ITALIC if italic else CN_TRIM) * counter * self.heavy
+        self.cn -= self.trim
         # Capitals' counters: the straight-sided ones (H E N B ...) have their own curve, see CH_THIN; the round and diagonal ones
         # (O C G S A V W X Y Z J) follow n's, which they were fitted to, narrowing with the lowercase
         # The curves are read off the weight's own stem (V0), not the optical size's: Caption's stem is V0+5 and Display's V0-3,
@@ -127,7 +139,7 @@ class P:
         self.cHd = self.cn * 418 / 284 * _pw(V0, [(20, CHD_THIN), (84, 1.0), (BLACK_STEM + 4, 1.0)])
         n_curve = [(20, 374), (84, 270), (BLACK_STEM + 4, 145)]
         n_shift = _pw(V, n_curve) - _pw(V0, n_curve)
-        self.cH = (_pw(V0, [(20, CH_THIN), (84, 270 * 418 / 284), (BLACK_STEM + 4, CH_BLACK)]) + n_shift * 418 / 284) * counter * (0.95 if italic else 1.0)
+        self.cH = (_pw(V0, [(20, CH_THIN), (84, 270 * 418 / 284), (BLACK_STEM + 4, CH_BLACK_ITALIC if italic else CH_BLACK)]) + n_shift * 418 / 284) * counter * (0.95 if italic else 1.0)
         # i dot / period: never thinner than a readable square. Against Geist's and Inter's, a
         # stem-proportional dot made punctuation 0.89x their ink at Regular and 1.6x at Black
         # (commas 1.7x as tall): Regular's grows a little, the heavy ones much less.

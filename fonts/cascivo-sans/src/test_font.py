@@ -741,6 +741,15 @@ class Font(unittest.TestCase):
         self.assertLessEqual(n_sidebearing(black) / n_sidebearing(regular), 0.8)
         self.assertGreaterEqual(o_contrast(black), 0.68)
 
+    def test_heavy_n_gap_holds_against_its_counter(self):
+        # JUDGING.md criterion 1: the white between two n's over the white inside one (rhythm.py). Bold read 0.38 and Black 0.30
+        # against Inter's 0.62 / 0.64 and Regular's own 0.53, and mn, HI touched; the heavy trim (params.CN_TRIM) brought both to
+        # 0.46-0.47. The floor is round 1's pass mark.
+        import rhythm
+
+        for w in (700, 900):
+            self.assertGreaterEqual(rhythm.ratio(VF, w), 0.45, f'n gap / counter at wght {w}')
+
     def test_heavy_question_mark_hook_clears_its_dot(self):
         # Black's dot was 227 units tall; with the hook ending at a fixed 27% of cap height, the two
         # touched and read as a notch.
