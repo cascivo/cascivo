@@ -169,3 +169,45 @@ changelog entry.
 
 A round passes when it meets its target, when no criterion is lower than its baseline, and when
 `rhythm.py` at 900 is at least 0.45 after round 1 and at least 0.50 after round 2.
+
+## Round 1 result
+
+Scored by an independent reviewer from the proof sheets (before / after), on 2026-11-21. `rhythm.py` gives 100: 0.50,
+400: 0.53, 700: 0.46, 900: 0.47. Italic 900 is unchanged at 0.30.
+
+| #   | Criterion          | Before  | After   | Note                                                                                                     |
+| --- | ------------------ | ------- | ------- | -------------------------------------------------------------------------------------------------------- |
+| 1   | Rhythm             | 6       | 7       | `mn HI MN lm` no longer touch at 700 and 900. Still under 0.50                                           |
+| 2   | Weight axis        | 6       | 6       | Width holds. 800 and 900 are still dark, because the counters gave up white too                          |
+| 3   | Shape              | 7       | 7       | Black `e a g` counters are still pinched                                                                 |
+| 4   | Proportions        | 7       | 7       | No change                                                                                                |
+| 5   | Joins / terminals  | 7       | 7       | The Black `l` tail is shorter. The `a` slot is not changed                                               |
+| 6   | Paragraph colour   | 8       | 8       | No change                                                                                                |
+| 7   | Small sizes        | 8       | 8       | No change                                                                                                |
+| 8   | Italic             | 6       | 6       | The 900 `f` hole is closed. At 700 it is smaller, but it is still there. Italic counters are not trimmed |
+| 9   | Kerning            | 7       | 7       | 900 `AR` is fixed. Black `Y` + round letters kern a little harder                                        |
+| 10  | Optical sizes      | 7       | 8       | Black 48 no longer nearly touches                                                                        |
+| 11  | Character          | 7       | 7       | No change                                                                                                |
+|     | **Weighted total** | **6.9** | **7.1** | Target 7.8 not met. 900 ≥ 0.45 is met, and no criterion is under its baseline                            |
+
+Fixed: Black lowercase counters 20 units narrower (`CN_TRIM`). The units went to the sidebearings, so the advance did not
+change (`HEAVY_TIGHTEN` 0.36, `BOLD_TIGHTEN` 0.25, `CH_BLACK` 280). `m a K` keep their full width and `e g` keep half.
+The italic `f` moves left at the heavy weights. The `l` tail is shorter and has more RSB at Black. A new test holds the
+700 and 900 ratio at 0.45 or more. Bytes went down (Latin[wght] 24,808).
+
+Why the target was missed:
+
+- The italic trim failed the join-angle gate. A trim of 5 to 12 units put the h and u joins 1 to 6 degrees under the
+  floor, and the `s` tips turned sharper.
+- A larger upright trim made the `m` and `a` joins fail.
+- The sidebearings cannot grow without a narrower body, because of the width gates: Bold "Signals" is at +1.8% against
+  a 2% limit, and Black is at +4.5% against 5%.
+
+Re-ranked defects for rounds 2 and 3:
+
+1. Black counters `e a g s 4 6 9 &`. Open them with thinner joins and bars at 900 (defect 2), not with width.
+2. Italic heavy rhythm: italic 900 is still 0.30. Redraw the italic arch joins so that they keep their angle when they
+   are narrower, then trim the italic as the upright is trimmed.
+3. The rest of the italic `f` hole at 600 to 700, and the italic `kl`.
+4. Upright 700 and 900 rhythm from 0.47 to 0.50 or more (round 2 gate). This needs 1 and 2 first.
+5. Then the round 2 and 3 items as listed: parentheses (5), Black capitals (7), opsz 48 (8), Thin W/V (9), serifed `I` (10), details (11).
