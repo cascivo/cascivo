@@ -1,0 +1,33 @@
+{#- Bar chart: static replica of @cascivo/charts BarChart (horizontal) as rendered at 528.5px wide.
+    Geometry is computed from data.web.figures.gzip: x domain [0, max], plot area 445.5 x 108
+    (margins top 8 / left 71), band scale with inner = outer padding = 1/6, ticks every 50 KB.
+    Deviation: the SPA measures the container (ResizeObserver) and re-lays-out; here the svg keeps
+    the 528.5 x 140 viewBox and scales with width="100%", so text scales with the frame. -#}
+{%- macro fmt(v) -%}{{ v | int if v == (v | int) else v }}{%- endmacro -%}
+{%- set g = data.web.figures.gzip -%}
+{%- set names = ["cascivo", "shadcn/ui", "Carbon"] -%}
+{%- set vals = [g.cascivo, g.shadcn, g.carbon] -%}
+{%- set fills = ["var(--cascivo-color-foreground)", "color-mix(in oklch, var(--cascivo-color-foreground) 71%, var(--cascivo-color-bg))", "color-mix(in oklch, var(--cascivo-color-foreground) 42%, var(--cascivo-color-bg))"] -%}
+{%- set maxv = vals | max -%}
+{%- set pw = 445.5 -%}
+{%- set ph = 108 -%}
+{%- set scale = pw / maxv -%}
+{%- set bstep = ph / (3 - 1/6 + 2/6) -%}
+{%- set bw = bstep * 5 / 6 -%}
+{%- set tick_step = 50 -%}
+{%- set ticks = range(0, (maxv | int) + 1, tick_step) -%}
+{%- set f = data.web.formatted.gzip -%}
+{%- set a11y = [["0", "axe violations"], ["APG", "keyboard matrix"], ["CVD", "safe chart palettes"], ["320px", "zero overflow"]] -%}
+<section id="proof" aria-label="Proof" class="pg-section pg-cols"><div class="pg-pad pg-proof-col"><p class="pg-eyebrow">03 / proof</p><h2 class="pg-display pg-display--section pg-proof-head">Numbers,<br>not adjectives</h2><p class="pg-body pg-proof-body">Every figure is generated at build time from the component registry and the cross-library benchmark suite — methodology included, raw data committed.</p><div data-reveal="" class="pg-bars"><div style="display: flex; flex-direction: column; gap: 0.5rem;"><div class="{{ m('chart-frame','frame') }}"><svg role="img" aria-label="Total gzip size: cascivo vs shadcn/ui vs Carbon" aria-describedby="proof-bars-desc" width="100%" height="140" viewBox="0 0 528.5 140" style="max-inline-size: 100%; block-size: auto;"><desc id="proof-bars-desc">cascivo {{ f.cascivo }}, shadcn/ui {{ f.shadcn }}, Carbon {{ f.carbon }}</desc><g><g transform="translate(71,8)"><g aria-hidden="true">
+{%- for t in ticks %}{% set x = t * scale %}<line x1="{{ fmt(x) }}" y1="0" x2="{{ fmt(x) }}" y2="{{ ph }}" stroke="var(--cascivo-chart-grid)" stroke-width="1" stroke-dasharray="2 4"></line>{% endfor -%}
+</g>
+{%- for v in vals %}<g><rect x="0" y="{{ fmt(bstep / 6 + loop.index0 * bstep) }}" width="{{ fmt(v * scale) }}" height="{{ bw }}" fill="{{ fills[loop.index0] }}" rx="2" data-series="gzip" data-x="{{ names[loop.index0] }}"></rect></g>{% endfor -%}
+<g transform="translate(0,{{ ph }})" aria-hidden="true"><line x1="0" y1="0" x2="{{ pw }}" y2="0" stroke="var(--cascivo-chart-axis)" stroke-width="1"></line>
+{%- for t in ticks %}<g transform="translate({{ fmt(t * scale) }},0)"><line x1="0" y1="0" x2="0" y2="4" stroke="var(--cascivo-chart-axis)" stroke-width="1"></line><text x="0" y="16" text-anchor="middle" fill="var(--cascivo-chart-axis)" font-size="11">{{ t }}</text></g>{% endfor -%}
+</g><g aria-hidden="true"><line x1="0" y1="0" x2="0" y2="{{ ph }}" stroke="var(--cascivo-chart-axis)" stroke-width="1"></line>
+{%- for n in names %}<g transform="translate(0,{{ fmt(bstep / 6 + loop.index0 * bstep + bw / 2) }})"><line x1="0" y1="0" x2="-4" y2="0" stroke="var(--cascivo-chart-axis)" stroke-width="1"></line><text x="-8" y="4" text-anchor="end" fill="var(--cascivo-chart-axis)" font-size="11">{{ n }}</text></g>{% endfor -%}
+</g></g></g></svg><div class="{{ m('chart-frame','fallback') }}" style="position: absolute; inset-inline-start: -9999px; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;"><table><caption>Total gzip size: cascivo vs shadcn/ui vs Carbon</caption><thead><tr><th>Category</th><th>Total gzip (KB)</th></tr></thead><tbody>
+{%- for v in vals %}<tr><td>{{ names[loop.index0] }}</td><td>{{ v }}</td></tr>{% endfor -%}
+</tbody></table></div></div></div></div><p class="pg-note pg-mono pg-bars-caption">total gzip · full benchmark app · js + css</p><a href="/performance" class="pg-link">See the performance numbers →</a></div><div class="pg-pad pg-surface pg-proof-col"><p class="pg-eyebrow">accessibility</p><h2 class="pg-display pg-display--section pg-proof-head">WCAG 2.2 AA,<br>gated in CI</h2><p class="pg-body pg-proof-body">A published conformance statement, a keyboard and ARIA matrix generated from every manifest, and colour-blind-safe chart palettes. Table stakes too: {{ data.web.figures.axeViolations }} axe violations across four app states — the same scan run against shadcn and Carbon.</p><div class="pg-evidence">
+{%- for s in a11y %}<div class="pg-evidence-cell"><div class="{{ m('stat','stat') }} pg-stat pg-stat--sm"><span class="{{ m('stat','label') }}">{{ s[1] }}</span><span class="{{ m('stat','value') }}">{% if loop.first %}{{ data.web.figures.axeViolations }}{% else %}{{ s[0] }}{% endif %}</span></div></div>{% endfor -%}
+</div><a href="/accessibility" class="pg-link">See the accessibility evidence →</a></div></section>

@@ -1,0 +1,27 @@
+{%- set rows = [
+  {"f": "Tailwind", "us": "Not required", "them": "Required (v4)", "href": "/docs/platform"},
+  {"f": "Component styling", "us": "Design tokens + plain CSS", "them": "Utility classes", "href": "/modern-css"},
+  {"f": "Reactivity", "us": "Signals — targeted DOM updates", "them": "React state + re-render", "href": "/performance"},
+  {"f": "Theming", "us": "3-tier tokens · " ~ data.web.counts.themes ~ " themes · scope any subtree", "them": "CSS variables + .dark class", "href": "/create"},
+  {"f": "Prebuilt package", "us": "@cascivo/react — every component, versioned", "them": "Copy-paste", "href": "/docs/getting-started"},
+  {"f": "Internationalization", "us": "Built-in (@cascivo/i18n)", "them": "Not included", "href": none},
+  {"f": "Charts", "us": "Zero-dependency (@cascivo/charts)", "them": "Recharts", "href": "/docs/charts"},
+  {"f": "Tests with the source", "us": "Ship with each component", "them": "Not included", "href": none},
+  {"f": "Upgrades after you edit", "us": "Versioned registry + cascivo update", "them": "Manual diff against main", "href": "/docs/upgrading"},
+  {"f": "AI layer", "us": "Per-component manifests + semantic MCP + audit", "them": "MCP install + llms.txt", "href": "/docs/ai"}
+] -%}
+{%- set sx = [
+  ["Build step for styling", "None — CSS files", "Babel plugin, required"],
+  ["Cascade control", "Real @layer, seven canonical layers", "Computed priority + :not(##) polyfill"],
+  ["Token names", "--cascivo-color-accent — stable, typeable", "Hashed at build; needs an import"],
+  ["Wrong token caught", "Editor lint · satisfies type · CI audit", "Compiler error"],
+  ["Relational styling", "Native :has()", "stylex.when.* + marker elements"],
+  ["Components included", "The whole library", "None — styling only"],
+  ["Styles beside markup", "Separate .module.css", "Same file"]
+] -%}
+{%- set p = data.web.figures.shadcnParity -%}
+<section id="compare" aria-label="cascivo compared to shadcn/ui and StyleX" class="pg-section"><div class="pg-pad pg-head"><h2 class="pg-display pg-display--section">Same model, no tax</h2><p class="pg-eyebrow">04 / vs shadcn/ui</p></div><div class="pg-pad pg-compare-pad"><p class="pg-body pg-compare-lede">Like shadcn, you own the code the CLI copies in. The difference is what it is built on — no Tailwind dependency, signals instead of re-renders, and a token system, i18n, charts, and an AI layer in the box.</p><div role="region" aria-label="Feature comparison" tabindex="0" class="pg-scroll"><table class="pg-table"><caption class="visually-hidden">Feature-by-feature comparison of cascivo and shadcn/ui</caption><thead><tr><th scope="col">Feature</th><th scope="col" class="pg-table-us">cascivo</th><th scope="col">shadcn/ui</th></tr></thead><tbody>
+{%- for r in rows %}<tr><th scope="row">{% if r.href %}<a href="{{ r.href }}">{{ r.f }}</a>{% else %}{{ r.f }}{% endif %}</th><td class="pg-table-us">{{ r.us }}</td><td class="pg-table-them">{{ r.them }}</td></tr>{% endfor -%}
+</tbody></table></div><p class="pg-note pg-compare-foot">{{ p.covered }} of {{ p.total }} shadcn components have a cascivo equivalent — see the <a href="/docs/parity">parity matrix</a>. shadcn leads on ecosystem size and adoption today; cascivo's bet is the architecture.</p><h3 class="pg-display pg-display--tile pg-compare-sub">And versus StyleX</h3><p class="pg-body pg-compare-lede">Meta's StyleX compiles JavaScript style objects into atomic CSS, and it is right about the destination: build-time styles, typed tokens, a predictable cascade, constraints tight enough that an agent cannot invent a class name. cascivo agrees with all of it and disagrees about the compiler — it writes the CSS, uses real <code>@layer</code>, and ships token names you can type from memory.</p><div role="region" aria-label="StyleX comparison" tabindex="0" class="pg-scroll"><table class="pg-table"><caption class="visually-hidden">Feature-by-feature comparison of cascivo and StyleX</caption><thead><tr><th scope="col">Feature</th><th scope="col" class="pg-table-us">cascivo</th><th scope="col">StyleX</th></tr></thead><tbody>
+{%- for r in sx %}<tr><th scope="row">{{ r[0] }}</th><td class="pg-table-us">{{ r[1] }}</td><td class="pg-table-them">{{ r[2] }}</td></tr>{% endfor -%}
+</tbody></table></div><p class="pg-note pg-compare-foot">The last row is StyleX's, not ours — the full comparison below says why cascivo takes that trade, and where StyleX is the better pick.</p></div></section>
