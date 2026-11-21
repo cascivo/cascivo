@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="{{ site.lang }}" data-theme="poster-dark">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{ head(
+      title="cascivo — the CSS-native, signal-driven, AI-first React design system",
+      description="cascivo is the CSS-native, signal-driven, AI-first React design system: owned-code React components, " ~ data.web.counts.themes ~ " themes, an MCP server, and WCAG 2.2 AA — plus six functional example dashboards you can open and play with today.",
+      og_title="cascivo",
+      og_description="CSS-native, signal-driven, AI-first React design system. Browse components, explore context, and build with AI.",
+      og_image="/og.png",
+      og_image_alt="cascivo — the CSS-native, signal-driven, AI-first React design system",
+      og_image_width=1200,
+      og_image_height=630,
+      theme_color={"light": "#f9f4e4", "dark": "#0a0c10"},
+      jsonld=data.jsonld
+    ) }}
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable docs (install + component index)">
+    <link rel="alternate" type="text/markdown" href="/docs/getting-started.md" title="Getting started (markdown)">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    {{ theme_script() }}
+    {% for href in vite_css("src/marketing/islands/home.css.ts") %}<link rel="stylesheet" href="{{ href }}">
+    {% endfor %}
+  </head>
+  <body>
+    {% block body %}{% endblock %}
+    <script src="{{ asset('copy.js') }}" defer></script>
+    {{ islands_script() }}
+  </body>
+</html>

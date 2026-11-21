@@ -1,0 +1,23 @@
+# cascivo.com home ("/") built by cascivo-web from the Vite build's outputs (W4 landing pilot).
+# Build: `pnpm --filter @cascivo/site build:web` after the Vite build. Every other route stays on the SPA.
+title = "cascivo"
+base_url = "https://cascivo.com"
+lang = "en"
+theme = "light"
+
+[build]
+cascivo_css = false
+
+[assets]
+dir = "assets"
+
+[images]
+dir = "../public"
+
+[vite]
+manifest = "../dist/.vite/manifest.json"
+css_modules = "../dist/.vite/css-modules.json"
+
+[data]
+web = "../dist/.vite/web-data.json"
+jsonld = "data/jsonld.json"
