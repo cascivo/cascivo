@@ -141,6 +141,10 @@ The cascivo registry model is open — anyone can publish components and host th
 
 [`cascivo-tui`](crates/cascivo-tui) is a ratatui toolkit: build a terminal UI from a node tree styled with cascivo class strings (`"col gap-1 p-1 border rounded text-accent"`), eleven widgets (table, list, tabs, input, modal, toasts, ...) and the twelve cascivo themes, and test it headless with `TestApp`. Install: `cargo add cascivo-tui` (Rust 1.88+). Guide: [docs/USING-CASCIVO-TUI.md](docs/USING-CASCIVO-TUI.md); agent skill: [`skills/cascivo-tui`](skills/cascivo-tui/SKILL.md).
 
+### Static sites from Rust (`cascivo-web`)
+
+[`cascivo-web`](crates/cascivo-web) builds a static site from Markdown, content collections and templates, with cascivo components in the Markdown. Locales, RSS, a sitemap, a live-reload dev server and `deploy` to Cloudflare Workers Static Assets. One Rust binary, no Node build: `cargo install cascivo-web`. Guide: [docs/USING-CASCIVO-WEB.md](docs/USING-CASCIVO-WEB.md).
+
 ### Templates & marketplace
 
 Templates are whole-page compositions — a working page, the components it composes (`registryDependencies`), and its fixtures — that install through the same registry transport and that you own and adapt. The marketplace is a backend-free, GitHub-hosted, community catalog: registries are listed by PR, a CI job bakes a static `marketplace.json`, and a gallery renders it. A template is just a registry item with `type: "template"` — no parallel system.
@@ -174,7 +178,7 @@ cascivo/
 │   ├── search/       # registry search index
 │   ├── cli/          # cascivo CLI — init / add / list / update / audit
 │   └── mcp/          # @cascivo/mcp     — MCP server over the registry
-├── crates/           # Rust workspace — cascivo-html (.cv text → one static HTML file) + its CLI, cascivo-tui (ratatui toolkit), cascivo-blitz (native Blitz window)
+├── crates/           # Rust workspace — cascivo-html (.cv text → one static HTML file) + its CLI, cascivo-tui (ratatui toolkit), cascivo-blitz (native Blitz window), cascivo-web (static sites from Markdown)
 ├── apps/
 │   ├── site/         # cascivo.com — landing + docs, generated from manifests (dogfood)
 │   ├── storybook/    # storybook.cascivo.com — stories from manifests

@@ -10,9 +10,8 @@ binary: no React, no Node build. The same input gives the same files.
 cargo install cascivo-web
 ```
 
-Until the first release, install from a checkout of the repository:
-`cargo install --path crates/cascivo-web`. Prebuilt binaries are attached to GitHub releases
-`cascivo-web@<version>` once released.
+From a checkout of the repository: `cargo install --path crates/cascivo-web`. Prebuilt binaries
+are attached to GitHub releases `cascivo-web@<version>`.
 
 ## Quick start
 
@@ -35,8 +34,7 @@ cascivo-web build    # write dist/
 - Dev server with live reload; errors as `file:line: message`.
 - `cascivo-web deploy` for Cloudflare Workers Static Assets (`--dry-run` to preview).
 - Optional `axum` feature: `cascivo_web::router(&site)` serves the rendered site.
-
-Not included: an image pipeline (use URLs or `public/` files), syntax highlighting, islands.
+- Images (`img()`: resized WebP, `srcset`, preload), `asset()`, `highlight` for `bash`/`css`/`js`/`ts`, `head()` SEO tags, and optional Vite output (`vite()`, `css_bundle()`, `m()`, islands).
 
 ## Links
 

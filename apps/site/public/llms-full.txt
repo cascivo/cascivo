@@ -340,6 +340,7 @@ All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md
 - Static HTML from .cv text (cascivo-html Rust crate + CLI, no React): https://cascivo.com/docs/using-cascivo-html.md
 - Static sites from Markdown, collections, i18n and RSS (cascivo-web Rust CLI, no React): https://cascivo.com/docs/using-cascivo-web.md
 - Terminal UIs in Rust (cascivo-tui ratatui toolkit, class strings + themes): https://cascivo.com/docs/using-cascivo-tui.md
+- Native windows from .cv text (cascivo-blitz Rust crate on the Blitz engine, no browser): https://cascivo.com/docs/using-cascivo-blitz.md
 - Compatibility & support matrix: https://cascivo.com/docs/compatibility.md
 - Migrating from shadcn/ui: https://cascivo.com/docs/migrating-from-shadcn.md
 - Token reference: https://cascivo.com/docs/tokens.md
