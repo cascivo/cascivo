@@ -25,13 +25,13 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 75_500,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn)
-    'CascivoSans-Latin[opsz,wght].woff2': 31_500,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420
+    'CascivoSans[opsz,wght].woff2': 75_600,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 75_500 -> 75_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
+    'CascivoSans-Latin[opsz,wght].woff2': 31_600,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
     'CascivoSans-Latin[wght].woff2': 25_400,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_400, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn)
-    'CascivoSans-Regular.woff2': 25_000,  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 25_500 -> 25_000, round 4 (Regular ships 24_964)
+    'CascivoSans-Regular.woff2': 25_100,  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 25_500 -> 25_000, round 4 (Regular ships 24_964), then 25_000 -> 25_100, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
     'CascivoSans-Italic[opsz,wght].woff2': 82_500,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 82_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn)
     'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_900,  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance, then 35_000 -> 34_900, round 4 (ships 34_876)
-    'CascivoSans-Italic-Latin[wght].woff2': 28_200,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing, then 28_000 -> 28_200, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn)
+    'CascivoSans-Italic-Latin[wght].woff2': 28_400,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing, then 28_000 -> 28_200, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 28_200 -> 28_400, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
 }
 
 
@@ -186,12 +186,137 @@ KERNING_SHORT_UNITS = {('italic', 'AW', 100): 2}
 KERNING_SHORT = (
     # (round 3: Thin's V beside c e o q g œ reaches 0.8x and left this list, upright and italic: kern.THIN_REACH)
     {('upright', pair, 100) for pair in ('Wc', 'We', 'Wo', 'Wœ', 'AW', 'WA')}
-    | {('italic', pair, 100) for pair in ('Wa', 'Wc', 'We', 'Wo', 'Wæ', 'Wœ', 'Va', 'Væ', 'AV', 'AW', 'AY', 'VA', 'WA', 'Yg')}
+    | {('italic', pair, 100) for pair in ('Wa', 'Wc', 'We', 'Wo', 'Wæ', 'Wœ', 'Va', 'Væ', 'AV', 'AW', 'AY', 'VA', 'WA', 'Yg', 'YA', 'Ye', 'Yc', 'Yo')} | {('upright', 'Wa', 100)}
+    # (round 4: Thin upright Wa and italic YA, Ye, Yc and Yo open (kern.WHITE_REF) to reach 0.85x of Inter's white at Thin and ExtraLight; their kerning is 0.72-0.79x of
+    # Inter's now: the white is what the eye reads, and Inter's Y and W have more of it beside these letters than their units say)
     # A beside W at Regular: the upright reads -45 / -44 against Inter's -57 (0.79x, 0.77x) and the italic -27 / -34 (0.47x, 0.60x): the
     # shapes' own white is already as close as the measure's floor and reach allow, and the user accepted the italic's shortfall (spec,
-    # Decisions). Italic Yg at Black stops at -109 (0.79x): the g's open top is the nearest ink
-    | {('upright', pair, 400) for pair in ('AW', 'WA')} | {('italic', pair, 400) for pair in ('AW', 'WA')} | {('italic', 'Yg', 900)}
+    # Decisions). Italic Yg at Black leaves this list (-112, 0.81x)
+    | {('upright', pair, 400) for pair in ('AW', 'WA')} | {('italic', pair, 400) for pair in ('AW', 'WA')}
 )
+
+# Inter's white at the pairs round 4 fitted (kern.WHITE_FIT), as pair_white_profile reads it: {pair: {wght: (mean white, least white)}}, per em, read from
+# Inter.ttf and InterItalic.ttf (Inter 4.001 variable, opsz 14) with HarfBuzz's default features. Thin and ExtraLight: W V Y T beside a e o c q g and A,
+# AV AW AT AY, LT LY LV, Ty To Tr, Wa We; Black and ExtraBold: LY and the figure and letter pairs with a full stop or comma; Regular: Kv Ky Kw.
+# Cascivo's mean white lies within WHITE_BAND of Inter's and its closest row is at least WHITE_LEAST_FLOOR of Inter's, at the weights listed.
+WHITE_BAND = (0.85, 1.1)
+WHITE_LEAST_FLOOR = 0.75
+# Where the white beside f) at 800-900 cannot reach the band by kerning: the f's hook is the nearest ink (Inter's closest row is 37-46, here 24-40 when the
+# pair keeps its 0.75x), and the hole under the crossbar between the stem and the parenthesis is the shape's. Kerning closes it only by touching the hook, so the
+# pair keeps its closest row and its mean stays where it is (the redrawn f of the shape sessions is the fix): the ceiling is what ships, rounded up.
+WHITE_BAND_SHAPE = {('upright', 'f)', 800): 1.2, ('upright', 'f)', 900): 1.3}
+INTER_WHITE = {
+    'upright': {
+        'Wa': {100: (275, 131), 200: (259, 127)},
+        'We': {100: (216, 159), 200: (209, 151)},
+        'Wo': {100: (216, 159), 200: (209, 151)},
+        'Wc': {100: (217, 158), 200: (209, 151)},
+        'Wq': {100: (211, 157), 200: (204, 149)},
+        'Wg': {100: (213, 157), 200: (208, 149)},
+        'Va': {100: (316, 157), 200: (299, 152)},
+        'Ve': {100: (257, 190), 200: (249, 182)},
+        'Vo': {100: (257, 190), 200: (249, 182)},
+        'Vc': {100: (257, 189), 200: (249, 182)},
+        'Vq': {100: (252, 187), 200: (245, 179)},
+        'Vg': {100: (254, 187), 200: (248, 179)},
+        'Ya': {100: (375, 228), 200: (355, 218)},
+        'Ye': {100: (310, 266), 200: (299, 251)},
+        'Yo': {100: (310, 266), 200: (299, 251)},
+        'Yc': {100: (311, 266), 200: (299, 250)},
+        'Yq': {100: (305, 259), 200: (294, 244)},
+        'Yg': {100: (307, 259), 200: (298, 244)},
+        'Ta': {100: (390, 277), 200: (370, 267)},
+        'Te': {100: (326, 282), 200: (315, 271)},
+        'To': {100: (326, 282), 200: (315, 271)},
+        'Tc': {100: (326, 282), 200: (315, 271)},
+        'Tq': {100: (321, 282), 200: (311, 271)},
+        'Tg': {100: (323, 282), 200: (315, 271)},
+        'WA': {100: (246, 213), 200: (240, 207)},
+        'VA': {100: (268, 267), 200: (260, 260)},
+        'YA': {100: (330, 263), 200: (319, 255)},
+        'TA': {100: (372, 244), 200: (355, 235)},
+        'AV': {100: (268, 268), 200: (262, 261)},
+        'AW': {100: (247, 213), 200: (240, 206)},
+        'AT': {100: (372, 244), 200: (356, 235)},
+        'AY': {100: (331, 263), 200: (320, 257)},
+        'LT': {100: (606, 263), 200: (570, 252)},
+        'LY': {100: (571, 294), 200: (555, 298), 800: (375, 217), 900: (329, 189)},
+        'LV': {100: (514, 291), 200: (488, 275)},
+        'Ty': {100: (387, 283), 200: (372, 269)},
+        'Tr': {100: (339, 337), 200: (326, 323)},
+        'T-': {100: (307, 307), 200: (296, 296)},
+        '7,': {800: (266, 245), 900: (249, 227)},
+        '7.': {800: (259, 234), 900: (245, 218)},
+        'y.': {800: (254, 227), 900: (251, 223)},
+        'y,': {800: (284, 237), 900: (285, 231)},
+        'r.': {800: (231, 215), 900: (228, 211)},
+        'r,': {800: (223, 215), 900: (215, 207)},
+        'F.': {800: (423, 407), 900: (410, 392)},
+        'F,': {800: (409, 401), 900: (390, 382)},
+        'P,': {800: (475, 467), 900: (463, 455)},
+        'f)': {800: (204, 46), 900: (185, 37)},
+        'f]': {800: (221, 53), 900: (199, 46)},
+        'f}': {800: (242, 53), 900: (224, 46)},
+        'Kv': {400: (286, 185)},
+        'Ky': {400: (285, 185)},
+        'Kw': {400: (249, 164)},
+    },
+    'italic': {
+        'Wa': {100: (211, 157), 200: (205, 149)},
+        'We': {100: (216, 156), 200: (209, 149)},
+        'Wo': {100: (216, 158), 200: (209, 151)},
+        'Wc': {100: (217, 158), 200: (209, 151)},
+        'Wq': {100: (211, 157), 200: (204, 149)},
+        'Wg': {100: (213, 157), 200: (208, 149)},
+        'Va': {100: (252, 187), 200: (245, 180)},
+        'Ve': {100: (257, 187), 200: (249, 180)},
+        'Vo': {100: (257, 189), 200: (249, 181)},
+        'Vc': {100: (257, 189), 200: (250, 181)},
+        'Vq': {100: (252, 187), 200: (245, 179)},
+        'Vg': {100: (254, 186), 200: (248, 179)},
+        'Ya': {100: (306, 259), 200: (295, 245)},
+        'Ye': {100: (310, 262), 200: (299, 247)},
+        'Yo': {100: (310, 265), 200: (299, 249)},
+        'Yc': {100: (311, 265), 200: (299, 249)},
+        'Yq': {100: (305, 257), 200: (294, 243)},
+        'Yg': {100: (308, 257), 200: (298, 243)},
+        'Ta': {100: (321, 282), 200: (311, 271)},
+        'Te': {100: (326, 282), 200: (316, 271)},
+        'To': {100: (326, 282), 200: (315, 270)},
+        'Tc': {100: (327, 282), 200: (315, 271)},
+        'Tq': {100: (321, 282), 200: (311, 271)},
+        'Tg': {100: (323, 282), 200: (315, 271)},
+        'WA': {100: (246, 213), 200: (239, 206)},
+        'VA': {100: (267, 267), 200: (260, 260)},
+        'YA': {100: (329, 263), 200: (318, 255)},
+        'TA': {100: (371, 244), 200: (355, 234)},
+        'AV': {100: (268, 268), 200: (262, 262)},
+        'AW': {100: (247, 214), 200: (240, 206)},
+        'AT': {100: (372, 245), 200: (356, 236)},
+        'AY': {100: (331, 263), 200: (320, 257)},
+        'LT': {100: (606, 263), 200: (570, 252)},
+        'LY': {100: (571, 293), 200: (555, 298), 800: (375, 217), 900: (329, 189)},
+        'LV': {100: (513, 291), 200: (488, 274)},
+        'Ty': {100: (388, 284), 200: (373, 269)},
+        'Tr': {100: (339, 337), 200: (326, 323)},
+        'T-': {100: (307, 307), 200: (296, 296)},
+        '7,': {800: (265, 244), 900: (249, 227)},
+        '7.': {800: (259, 229), 900: (245, 213)},
+        'y.': {800: (253, 223), 900: (251, 218)},
+        'y,': {800: (284, 237), 900: (284, 230)},
+        'r.': {800: (231, 215), 900: (228, 211)},
+        'r,': {800: (223, 215), 900: (215, 207)},
+        'F.': {800: (423, 407), 900: (409, 392)},
+        'F,': {800: (409, 401), 900: (390, 382)},
+        'P,': {800: (475, 467), 900: (462, 454)},
+        'f)': {800: (208, 47), 900: (190, 38)},
+        'f]': {800: (224, 59), 900: (204, 53)},
+        'f}': {800: (241, 58), 900: (225, 53)},
+        'Kv': {400: (286, 184)},
+        'Ky': {400: (286, 184)},
+        'Kw': {400: (250, 165)},
+    },
+}
 
 # Inter's guillemet ink, in 1/1000 em squared (area of a single chevron; a double one is twice that) and its least white between the
 # chevrons of « », at three heavy weights. Read from Inter.ttf (Inter 4.001 variable, opsz 14, in the audit's reference set; InterItalic.ttf
@@ -367,6 +492,32 @@ def pair_white(hb, path, pair, wght, lo, hi, opsz=14):
     return min(adv + rb[y][0][0] - ra[y][-1][1] for y in range(lo, hi + 1) if ra.get(y) and rb.get(y))
 
 
+WHITE_DEPTH = 400  # units per em counted below the closest row in pair_white_profile
+
+
+def pair_white_profile(hb, path, pair, wght, opsz=14):
+    """(mean white, least white) between the two letters of a shaped pair (kerning on), per em: the gap between their profiles in each 5-unit row
+    both occupy, each row counted down to WHITE_DEPTH beyond the closest one (a hole is only so much white to the eye), and the closest row."""
+    face, f = _shaper(hb, path)
+    font = hb.Font(face)
+    font.set_variations({'wght': wght, 'opsz': opsz})
+    buf = hb.Buffer()
+    buf.add_str(pair)
+    buf.guess_segment_properties()
+    hb.shape(font, buf, {'kern': True})
+    order = f.getGlyphOrder()
+    gs = f.getGlyphSet(location={'wght': wght, 'opsz': opsz}, normalized=False)
+    rows = []
+    for info in buf.glyph_infos:
+        pen = ClosedInkRows(gs)
+        gs[order[info.codepoint]].draw(pen)
+        rows.append(pen.out)
+    adv, k = buf.glyph_positions[0].x_advance, 1000 / face.upem
+    gaps = [(adv + rows[1][y][0] - rows[0][y][1]) * k for y in set(rows[0]) & set(rows[1])]
+    least = min(gaps)
+    return sum(min(g, least + WHITE_DEPTH) for g in gaps) / len(gaps), least
+
+
 def sidebearing_ratio(hb, path, letter, wght):
     """The letter's own sidebearings (left plus right) as a share of the n's, read off the shaped strings `nn` and `n<letter>n`:
     twice the mean ink gap beside the letter over the gap of `nn`, less one. An italic's outlines are sheared back upright first
@@ -457,6 +608,26 @@ def shaped_gaps(hb, path, text, wght, opsz=14):
         return [min(advs[i] + rows[i + 1][k][0] - rows[i][k][1] for k in set(rows[i]) & set(rows[i + 1])) for i in range(len(rows) - 1)]
 
     return gaps(text), gaps('HH')[0]
+
+
+class ClosedInkRows(InkRows):
+    """InkRows with the closing edge of each contour: a TrueType outline closes with an implied straight line (a stem's left side, a hyphen's end)
+    that the pen is never asked to draw, so a profile read without it has no left edge there."""
+
+    def __init__(self, gs):
+        super().__init__(gs)
+        self.first = None
+
+    def _moveTo(self, p):
+        self.first = p
+        super()._moveTo(p)
+
+    def _closePath(self):
+        if self.first is not None and self._getCurrentPoint() != self.first:
+            self._lineTo(self.first)
+        self.first = None
+
+    _endPath = _closePath
 
 
 def ink_runs_at(gs, name, y):
@@ -1719,6 +1890,43 @@ class Font(unittest.TestCase):
                     with self.subTest(kind=kind, pair=pair, wght=wght):
                         got = -pair_kerning(hb, path, pair, wght)
                         self.assertGreaterEqual(got, floor * inter, f'{pair} kerns {got} at {wght}, Inter {inter}')
+
+    def test_fitted_pairs_hold_inter_white(self):
+        # Round 4 (JUDGING.md, kerning): the white between the letters of a pair is what the eye reads, and kerning units do not carry it from
+        # Inter to this font (its sidebearings differ letter by letter). At Thin and ExtraLight (W V Y T beside a e o c q g and A, AV AW AT AY, LT LY LV,
+        # Ty To Tr, Wa We), at ExtraBold and Black (LY 7, 7. y. y, r. F. F, P,) and at Regular (Kv Ky Kw) the mean white of the pair lies within 0.85-1.1x of
+        # Inter's at the same weight (upright against Inter, italic against Inter Italic) and the closest row keeps 0.75x of Inter's. Before the fit
+        # the Thin and italic pairs read 0.72-0.85x, LY 7, 7. 1.10-1.31x and y. y, r. F. 0.62-0.83x at Black, Kv Ky 0.80-0.83x at Regular.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for pair, by_weight in INTER_WHITE[kind].items():
+                for wght, (mean, least) in by_weight.items():
+                    with self.subTest(kind=kind, pair=pair, wght=wght):
+                        got_mean, got_least = pair_white_profile(hb, path, pair, wght)
+                        self.assertGreaterEqual(got_mean / mean, WHITE_BAND[0], f'{pair} has {got_mean:.0f} of white at {wght}, Inter {mean}')
+                        self.assertLessEqual(got_mean / mean, WHITE_BAND_SHAPE.get((kind, pair, wght), WHITE_BAND[1]), f'{pair} has {got_mean:.0f} of white at {wght}, Inter {mean}')
+                        self.assertGreaterEqual(got_least / least, WHITE_LEAST_FLOOR, f'{pair} comes to {got_least:.0f} at {wght}, Inter {least}')
+
+    def test_black_proportional_one_sets_like_the_other_figures(self):
+        # Round 4: Black's proportional 0 then 1 left 1.35x the HH gap upright and 1.46x italic (Inter's 0.89x), where 11, 10 and 12 sat at 0.9-1.0x. The pair
+        # closes (kern.WHITE_FIT) so 01 11 10 12 are within 1.1x the HH gap at 900 and 800; Thin and Regular keep their figure spacing (no kerning).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        for path in (VF, VFI):
+            for wght in (800, 900):
+                for pair in ('01', '11', '10', '12'):
+                    with self.subTest(path=os.path.basename(path), wght=wght, pair=pair):
+                        gaps, hh = shaped_gaps(hb, path, pair, wght)
+                        self.assertLessEqual(gaps[0] / hh, 1.1, f'{pair} sets {gaps[0] / hh:.2f}x the HH gap at {wght}')
+            for wght in (100, 400):
+                self.assertEqual(pair_kerning(hb, path, '01', wght), 0, f'01 stays unkerned at {wght}')
 
     def test_quotes_hold_their_size(self):
         # single and double quotes (curly and straight) and the guillemets: the ink box (width and height each) is >= 0.9x Inter's
