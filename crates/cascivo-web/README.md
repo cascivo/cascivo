@@ -10,9 +10,8 @@ binary: no React, no Node build. The same input gives the same files.
 cargo install cascivo-web
 ```
 
-Until the first release, install from a checkout of the repository:
-`cargo install --path crates/cascivo-web`. Prebuilt binaries are attached to GitHub releases
-`cascivo-web@<version>` once released.
+Prebuilt binaries are attached to GitHub releases `cascivo-web@<version>`. For unreleased
+changes, install from a checkout of the repository: `cargo install --path crates/cascivo-web`.
 
 ## Quick start
 
@@ -20,12 +19,17 @@ Until the first release, install from a checkout of the repository:
 cascivo-web new my-site
 cd my-site
 cascivo-web dev      # http://127.0.0.1:4321/ with live reload
-cascivo-web build    # write dist/
+cascivo-web build    # write dist/ (emptied first; --no-clean keeps old files)
 ```
 
 ## Features
 
-- File-based routes in `pages/`, including `pages/blog/[posts].html` once per collection entry.
+- File-based routes in `pages/`, including `pages/blog/[posts].html` once per collection entry
+  and `pages/404.html` (or `.md`) → `/404.html`, rendered with its layout, not in the sitemap.
+- `+++` TOML front matter on Markdown and `.html` pages (`page.<key>`); `sitemap = false` and
+  `lastmod = 2026-03-04` on pages and entries control `sitemap.xml`.
+- `public/` is copied as is, including `_headers`, `_redirects` and `.well-known/` (only
+  `.DS_Store`, `.git`, `Thumbs.db`, `desktop.ini`, `._*` are skipped).
 - Content collections: TOML front matter checked against a `_schema.toml`.
 - minijinja layouts with `site`, `page`, `content`, `collections`, `locale`, `alternates`, `t()` and `cv()`.
 - cascivo components in Markdown (`::alert[Text]{variant=info}` and ` ```cv ` fences).
@@ -33,7 +37,8 @@ cascivo-web build    # write dist/
 - Locales: `/de/...` routes, translated pages and entries, TOML message bundles, hreflang data.
 - RSS 2.0 feeds, also per locale, and a `sitemap.xml` with `xhtml:link` and `x-default`.
 - Dev server with live reload; errors as `file:line: message`.
-- `cascivo-web deploy` for Cloudflare Workers Static Assets (`--dry-run` to preview).
+- `cascivo-web deploy` for Cloudflare Workers Static Assets, or Cloudflare Pages with
+  `--pages --project-name <name>` (`wrangler pages deploy dist`); `--dry-run` to preview.
 - Optional `axum` feature: `cascivo_web::router(&site)` serves the rendered site.
 
 Not included: an image pipeline (use URLs or `public/` files), syntax highlighting, islands.
@@ -47,6 +52,13 @@ All tables are optional; paths are relative to the site root and may point outsi
 ```toml
 [build]
 cascivo_css = false          # default true; false: no cascivo.css, no <link> to it
+trailing_slash = false       # default true (/about/ → about/index.html); false: /about → about.html,
+                             # also for page.url, canonical, sitemap, hreflang and feeds
+[head]
+robots = ""                  # default robots of head() (default "index, follow"); "" omits it
+[deploy]
+target = "pages"             # "workers" (default, `wrangler deploy`) or "pages"
+project = "my-site"          # Pages --project-name
 [assets]
 dir = "assets"               # source folder of asset()
 [images]
@@ -63,7 +75,7 @@ Template functions (positional or keyword arguments; unknown keywords are errors
 
 | Call                                                                                                                                                                         | Result                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `head(title, description, canonical, og_title, og_description, og_image, og_image_alt, og_image_width, og_image_height, og_type, robots, twitter_card, jsonld, theme_color)` | title, description, canonical (default `base_url` + page url), robots, `og:*`, `twitter:*`, JSON-LD (`</` escaped); `theme_color` is a string or `{light, dark}`                                                                                                                                                                                                                                                                                                                         |
+| `head(title, description, canonical, og_title, og_description, og_image, og_image_alt, og_image_width, og_image_height, og_type, robots, twitter_card, jsonld, theme_color)` | title, description, canonical (default `base_url` + page url), robots (default `[head] robots`, `noindex` on `/404.html`; `robots=false` or `''` omits it), `og:*`, `twitter:*`, JSON-LD (`</` escaped); `theme_color` is a string or `{light, dark}`                                                                                                                                                                                                                                    |
 | `asset(path)`                                                                                                                                                                | copies `<assets.dir>/<path>` to `/_cw/<stem>.<hash8>.<ext>` and returns the URL                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `vite(entry)` / `vite_css(entry)`                                                                                                                                            | `/` + the manifest file / list of CSS URLs of the entry and its static imports (dependencies first, deduped)                                                                                                                                                                                                                                                                                                                                                                             |
 | `css_bundle(hrefs, name="bundle")`                                                                                                                                           | one content-hashed `/_cw/<name>.<hash>.css` from Vite CSS files (e.g. `vite_css(…)`), in order, with top-level `@layer a, b;` statements hoisted first; relative `url()` is an error                                                                                                                                                                                                                                                                                                     |

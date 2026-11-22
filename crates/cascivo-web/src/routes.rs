@@ -1,5 +1,6 @@
 //! File-based routes under `pages/`: `index.md` → `/`, `about.md` → `/about/`,
-//! `blog/index.html` → `/blog/`, `blog/[posts].html` → `/blog/<slug>/` per `posts` entry.
+//! `blog/index.html` → `/blog/`, `blog/[posts].html` → `/blog/<slug>/` per `posts` entry,
+//! `404.md`/`404.html` → `/404.html` (`de/404.html` → `/de/404.html`).
 
 use std::path::Path;
 
@@ -64,6 +65,7 @@ pub fn route_for(file: &str) -> std::result::Result<Route, String> {
     }
     let url = match last {
         "index" => format!("{prefix}/"),
+        "404" => format!("{prefix}/404.html"),
         s if valid_slug(s) => format!("{prefix}/{s}/"),
         s => return Err(format!("`{s}` must be a slug (a-z, 0-9, '-') or `index`")),
     };
@@ -74,12 +76,52 @@ pub fn route_for(file: &str) -> std::result::Result<Route, String> {
     })
 }
 
-fn walk(dir: &Path, rel: &str, out: &mut Vec<String>) -> std::io::Result<()> {
+/// `/about/` as served: unchanged with trailing slashes, else `/about` (`/` and `/x.html` stay).
+pub fn public_url(internal: &str, trailing_slash: bool) -> String {
+    if trailing_slash || internal == "/" || !internal.ends_with('/') {
+        internal.to_string()
+    } else {
+        internal.trim_end_matches('/').to_string()
+    }
+}
+
+/// The output file of an internal URL: `/about/` → `about/index.html` (or `about.html`).
+pub fn out_path(internal: &str, trailing_slash: bool) -> String {
+    let rel = internal.trim_start_matches('/');
+    if rel.is_empty() {
+        return "index.html".into();
+    }
+    if rel.ends_with(".html") {
+        return rel.into();
+    }
+    if trailing_slash {
+        format!("{rel}index.html")
+    } else {
+        format!("{}.html", rel.trim_end_matches('/'))
+    }
+}
+
+/// Which names a walk skips.
+#[derive(Clone, Copy)]
+enum Skip {
+    /// `.` and `_` names (drafts, partials).
+    Private,
+    /// Only OS and VCS clutter, for `public/` (`_headers`, `.well-known/` are copied).
+    Junk,
+}
+
+const JUNK: &[&str] = &[".DS_Store", ".git", "Thumbs.db", "desktop.ini"];
+
+fn walk(dir: &Path, rel: &str, skip: Skip, out: &mut Vec<String>) -> std::io::Result<()> {
     let mut items: Vec<_> = std::fs::read_dir(dir)?.flatten().collect();
     items.sort_by_key(std::fs::DirEntry::file_name);
     for e in items {
         let name = e.file_name().to_string_lossy().into_owned();
-        if name.starts_with('.') || name.starts_with('_') {
+        let skipped = match skip {
+            Skip::Private => name.starts_with('.') || name.starts_with('_'),
+            Skip::Junk => JUNK.contains(&name.as_str()) || name.starts_with("._"),
+        };
+        if skipped {
             continue;
         }
         let r = if rel.is_empty() {
@@ -90,7 +132,7 @@ fn walk(dir: &Path, rel: &str, out: &mut Vec<String>) -> std::io::Result<()> {
         let ft = e.file_type()?;
         // Symlinks are skipped so a page can never pull in a file from outside the site.
         if ft.is_dir() {
-            walk(&e.path(), &r, out)?;
+            walk(&e.path(), &r, skip, out)?;
         } else if ft.is_file() {
             out.push(r);
         }
@@ -100,9 +142,18 @@ fn walk(dir: &Path, rel: &str, out: &mut Vec<String>) -> std::io::Result<()> {
 
 /// Every file below `dir` (sorted, `/`-separated); dot- and underscore-files skipped.
 pub fn list_files(dir: &Path) -> std::io::Result<Vec<String>> {
+    list(dir, Skip::Private)
+}
+
+/// Every file below `dir` except OS/VCS clutter (`.DS_Store`, `.git`, `Thumbs.db`, `._*`).
+pub fn list_public(dir: &Path) -> std::io::Result<Vec<String>> {
+    list(dir, Skip::Junk)
+}
+
+fn list(dir: &Path, skip: Skip) -> std::io::Result<Vec<String>> {
     let mut out = Vec::new();
     if dir.is_dir() {
-        walk(dir, "", &mut out)?;
+        walk(dir, "", skip, &mut out)?;
     }
     Ok(out)
 }
@@ -150,6 +201,52 @@ mod tests {
         let d = route_for("blog/[posts].html").unwrap();
         assert_eq!(d.kind, Kind::Dynamic("posts".into()));
         assert_eq!(d.entry_url("hello"), "/blog/hello/");
+        assert_eq!(u("404.html"), "/404.html");
+        assert_eq!(u("404.md"), "/404.html");
+        assert_eq!(u("de/404.html"), "/de/404.html");
+    }
+
+    #[test]
+    fn trailing_slash_styles() {
+        assert_eq!(public_url("/a/b/", true), "/a/b/");
+        assert_eq!(public_url("/a/b/", false), "/a/b");
+        assert_eq!(public_url("/", false), "/");
+        assert_eq!(public_url("/404.html", false), "/404.html");
+        assert_eq!(out_path("/", false), "index.html");
+        assert_eq!(out_path("/a/b/", true), "a/b/index.html");
+        assert_eq!(out_path("/a/b/", false), "a/b.html");
+        assert_eq!(out_path("/de/404.html", true), "de/404.html");
+    }
+
+    #[test]
+    fn public_listing_keeps_dot_and_underscore_files() {
+        let dir = std::env::temp_dir().join(format!("cvweb-public-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(dir.join(".well-known")).unwrap();
+        std::fs::create_dir_all(dir.join(".git")).unwrap();
+        for f in [
+            "_headers",
+            "_redirects",
+            ".well-known/security.txt",
+            ".DS_Store",
+            ".git/HEAD",
+            "a.txt",
+        ] {
+            std::fs::write(dir.join(f), "x").unwrap();
+        }
+        let all = list_public(&dir).unwrap();
+        let private = list_files(&dir).unwrap();
+        std::fs::remove_dir_all(&dir).unwrap();
+        assert_eq!(
+            all,
+            [
+                ".well-known/security.txt",
+                "_headers",
+                "_redirects",
+                "a.txt"
+            ]
+        );
+        assert_eq!(private, ["a.txt"]);
     }
 
     #[test]

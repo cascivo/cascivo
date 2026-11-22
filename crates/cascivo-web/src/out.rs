@@ -55,6 +55,20 @@ impl Output {
         self.files
             .get_key_value(&key)
             .or_else(|| self.files.get_key_value(&format!("{key}/index.html")))
+            .or_else(|| self.files.get_key_value(&format!("{key}.html")))
+            .map(|(k, v)| (mime(k), v.as_slice()))
+    }
+
+    /// The 404 page for a missing `url`: `/<locale>/404.html` when the first segment has one,
+    /// else `/404.html`.
+    pub fn not_found(&self, url: &str) -> Option<(&str, &[u8])> {
+        let path = url.split(['?', '#']).next().unwrap_or("");
+        let first = path.trim_start_matches('/').split('/').next().unwrap_or("");
+        let local = format!("{first}/404.html");
+        [local.as_str(), "404.html"]
+            .into_iter()
+            .filter(|k| !k.starts_with('/'))
+            .find_map(|k| self.files.get_key_value(k))
             .map(|(k, v)| (mime(k), v.as_slice()))
     }
 
@@ -69,6 +83,51 @@ impl Output {
         }
         Ok(())
     }
+}
+
+/// Deletes `dist` before a build. Refuses anything that is not strictly inside `root` (the
+/// site folder), a symlink, or a folder holding site sources (`site.toml`, `pages/`, …).
+pub fn clean(root: &Path, dist: &Path) -> io::Result<()> {
+    let deny = |m: String| io::Error::new(io::ErrorKind::PermissionDenied, m);
+    let Ok(meta) = std::fs::symlink_metadata(dist) else {
+        return Ok(());
+    };
+    if meta.file_type().is_symlink() || !meta.is_dir() {
+        return Err(deny(format!(
+            "not cleaning {}: not a plain directory (use --no-clean)",
+            dist.display()
+        )));
+    }
+    let root = root.canonicalize()?;
+    let d = dist.canonicalize()?;
+    if d == root || !d.starts_with(&root) {
+        return Err(deny(format!(
+            "not cleaning {}: only a folder inside the site is cleaned (use --no-clean)",
+            dist.display()
+        )));
+    }
+    for src in [
+        "site.toml",
+        "pages",
+        "content",
+        "layouts",
+        "public",
+        "i18n",
+        ".git",
+    ] {
+        if d.join(src).exists()
+            || root
+                .join(src)
+                .canonicalize()
+                .is_ok_and(|s| s.starts_with(&d))
+        {
+            return Err(deny(format!(
+                "not cleaning {}: it holds site sources ({src}) (use --no-clean)",
+                dist.display()
+            )));
+        }
+    }
+    std::fs::remove_dir_all(&d)
 }
 
 fn checked_target(base: &Path, rel: &str) -> io::Result<PathBuf> {
@@ -117,6 +176,43 @@ mod tests {
         assert_eq!(o.get("/about").unwrap().1, b"about");
         assert_eq!(o.get("/cascivo.css").unwrap().0, "text/css; charset=utf-8");
         assert!(o.get("/../etc/passwd").is_none());
+    }
+
+    #[test]
+    fn get_resolves_html_files() {
+        let mut o = Output::default();
+        o.insert("about.html".into(), b"about".to_vec()).unwrap();
+        o.insert("404.html".into(), b"nf".to_vec()).unwrap();
+        assert_eq!(o.get("/about").unwrap().1, b"about");
+        assert_eq!(o.get("/404.html").unwrap().1, b"nf");
+        assert_eq!(o.not_found("/nope/x").unwrap().1, b"nf");
+        o.insert("de/404.html".into(), b"de".to_vec()).unwrap();
+        assert_eq!(o.not_found("/de/x?y").unwrap().1, b"de");
+        assert_eq!(o.not_found("/").unwrap().1, b"nf");
+    }
+
+    #[test]
+    fn clean_only_removes_a_folder_inside_the_site() {
+        let tmp = std::env::temp_dir().join(format!("cvweb-clean-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&tmp);
+        let root = tmp.join("site");
+        std::fs::create_dir_all(root.join("dist/old")).unwrap();
+        std::fs::create_dir_all(root.join("pages")).unwrap();
+        std::fs::write(root.join("site.toml"), "").unwrap();
+        std::fs::write(root.join("dist/old/stale.html"), "").unwrap();
+        let refuse = [
+            clean(&root, &root).is_err(),
+            clean(&root, &root.join("pages")).is_err(),
+            clean(&root, &tmp).is_err(),
+            clean(&root, &root.join("dist/..")).is_err(),
+        ];
+        clean(&root, &root.join("missing")).unwrap();
+        clean(&root, &root.join("dist")).unwrap();
+        let gone = !root.join("dist").exists();
+        let kept = root.join("site.toml").exists() && root.join("pages").exists();
+        std::fs::remove_dir_all(&tmp).unwrap();
+        assert_eq!(refuse, [true; 4]);
+        assert!(gone && kept);
     }
 
     #[cfg(unix)]

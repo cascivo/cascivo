@@ -30,6 +30,10 @@ pub struct Config {
     pub images: ImagesConfig,
     #[serde(default)]
     pub vite: ViteConfig,
+    #[serde(default)]
+    pub head: HeadConfig,
+    #[serde(default)]
+    pub deploy: DeployConfig,
     /// `name = "path"` (JSON or TOML by extension) → template global `data.<name>`.
     #[serde(default)]
     pub data: std::collections::BTreeMap<String, String>,
@@ -41,12 +45,53 @@ pub struct BuildConfig {
     /// `false`: neither write `cascivo.css` nor link it (the site brings its own CSS).
     #[serde(default = "yes")]
     pub cascivo_css: bool,
+    /// `true`: `/about/` (`about/index.html`); `false`: `/about` (`about.html`). Applies to
+    /// output files, `page.url`, entry URLs, canonical, sitemap, hreflang and feed links.
+    #[serde(default = "yes")]
+    pub trailing_slash: bool,
 }
 
 impl Default for BuildConfig {
     fn default() -> Self {
-        Self { cascivo_css: true }
+        Self {
+            cascivo_css: true,
+            trailing_slash: true,
+        }
     }
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct HeadConfig {
+    /// Default `robots` of `head()`; `""` omits the tag.
+    #[serde(default = "robots")]
+    pub robots: String,
+}
+
+impl Default for HeadConfig {
+    fn default() -> Self {
+        Self { robots: robots() }
+    }
+}
+
+#[derive(Debug, Clone, Copy, Default, Deserialize, Serialize, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum DeployTarget {
+    /// `wrangler deploy` (Workers Static Assets, needs a wrangler config).
+    #[default]
+    Workers,
+    /// `wrangler pages deploy <dist>` (Cloudflare Pages).
+    Pages,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct DeployConfig {
+    #[serde(default)]
+    pub target: DeployTarget,
+    /// Cloudflare Pages project (`--project-name`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub project: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
@@ -105,6 +150,10 @@ fn yes() -> bool {
     true
 }
 
+fn robots() -> String {
+    "index, follow".into()
+}
+
 fn assets_dir() -> String {
     "assets".into()
 }
@@ -128,6 +177,11 @@ impl Config {
             Errors::one("site.toml", line, e.message().to_string())
         })
     }
+
+    /// The public form of an internal route URL (`/about/`), per `build.trailing_slash`.
+    pub fn url(&self, internal: &str) -> String {
+        crate::routes::public_url(internal, self.build.trailing_slash)
+    }
 }
 
 /// 1-based line of a byte offset.
@@ -147,7 +201,9 @@ mod tests {
     fn defaults() {
         let c = Config::parse("title = \"Hi\"").unwrap();
         assert_eq!((c.lang.as_str(), c.theme.as_str()), ("en", "light"));
-        assert!(c.build.cascivo_css);
+        assert!(c.build.cascivo_css && c.build.trailing_slash);
+        assert_eq!(c.head.robots, "index, follow");
+        assert_eq!(c.deploy, DeployConfig::default());
         assert_eq!(
             (c.assets.dir.as_str(), c.images.dir.as_str()),
             ("assets", "assets")
@@ -171,6 +227,15 @@ mod tests {
         assert_eq!(c.vite.islands, "i/{name}.js");
         assert_eq!(c.data["web"], "w.json");
         assert!(Config::parse("title = \"x\"\n[vite]\nbogus = 1").is_err());
+        let c = Config::parse(
+            "title = \"x\"\n[build]\ntrailing_slash = false\n[head]\nrobots = \"\"\n[deploy]\ntarget = \"pages\"\nproject = \"p\"\n",
+        )
+        .unwrap();
+        assert!(!c.build.trailing_slash && c.head.robots.is_empty());
+        assert_eq!(c.deploy.target, DeployTarget::Pages);
+        assert_eq!(c.deploy.project.as_deref(), Some("p"));
+        assert_eq!((c.url("/"), c.url("/a/b/")), ("/".into(), "/a/b".into()));
+        assert!(Config::parse("title = \"x\"\n[deploy]\ntarget = \"x\"").is_err());
     }
 
     #[test]

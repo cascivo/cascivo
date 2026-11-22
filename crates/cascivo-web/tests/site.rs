@@ -105,3 +105,86 @@ fn build_writes_inside_dist_only() {
     assert!(dist.join("robots.txt").is_file());
     std::fs::remove_dir_all(&dir).unwrap();
 }
+
+#[test]
+fn public_dotfiles_404_page_and_sitemap_metadata() {
+    let dir = scratch("issue305");
+    let w = |f: &str, s: &str| {
+        let p = dir.join(f);
+        std::fs::create_dir_all(p.parent().unwrap()).unwrap();
+        std::fs::write(p, s).unwrap();
+    };
+    w("public/_headers", "/*\n  X-Frame-Options: DENY\n");
+    w("public/_redirects", "/old /new 301\n");
+    w("public/.well-known/security.txt", "Contact: x\n");
+    w("public/.DS_Store", "junk");
+    w(
+        "pages/404.html",
+        "+++\ntitle = \"Not found\"\n+++\n{% extends \"default.html\" %}{% block body %}<h1>{{ page.title }}</h1>{% endblock %}\n",
+    );
+    w(
+        "pages/about.html",
+        "+++\ntitle = \"About\"\nlastmod = 2026-03-04\n+++\n<p>{{ page.title }} {{ page.url }}</p>\n",
+    );
+    w(
+        "pages/hidden.md",
+        "+++\ntitle = \"Hidden\"\nsitemap = false\n+++\nx\n",
+    );
+    let out = Site::load(&dir).unwrap().render().unwrap();
+    for f in [
+        "_headers",
+        "_redirects",
+        ".well-known/security.txt",
+        "404.html",
+        "about/index.html",
+    ] {
+        assert!(out.files.contains_key(f), "missing {f}");
+    }
+    assert!(!out.files.contains_key(".DS_Store") && !out.files.contains_key("404/index.html"));
+    let nf = page(&out, "/404.html");
+    assert!(nf.contains("<title>Not found · Mini</title>") && nf.contains("<h1>Not found</h1>"));
+    assert!(page(&out, "/about/").contains("<p>About /about/</p>"));
+    let sm = page(&out, "/sitemap.xml");
+    assert!(!sm.contains("404") && !sm.contains("hidden"), "{sm}");
+    assert!(
+        sm.contains("<loc>https://mini.example/about/</loc><lastmod>2026-03-04</lastmod>"),
+        "{sm}"
+    );
+
+    w(
+        "site.toml",
+        "title = \"Mini\"\nbase_url = \"https://mini.example\"\n[build]\ntrailing_slash = false\n",
+    );
+    let out = Site::load(&dir).unwrap().render().unwrap();
+    std::fs::remove_dir_all(&dir).unwrap();
+    assert!(out.files.contains_key("about.html") && out.files.contains_key("blog/first.html"));
+    assert!(out.files.contains_key("index.html") && out.files.contains_key("404.html"));
+    assert!(page(&out, "/about").contains("<p>About /about</p>"));
+    assert!(page(&out, "/blog").contains("href=\"/blog/first\""));
+    let sm = page(&out, "/sitemap.xml");
+    assert!(
+        sm.contains("<loc>https://mini.example/blog/first</loc>")
+            && sm.contains("<loc>https://mini.example/</loc>"),
+        "{sm}"
+    );
+}
+
+#[test]
+fn bad_page_meta_and_template_front_matter_errors() {
+    let dir = scratch("badmeta");
+    std::fs::write(
+        dir.join("pages/x.html"),
+        "+++\nsitemap = \"no\"\n+++\n\n{{ nope( }}\n",
+    )
+    .unwrap();
+    let e = Site::load(&dir).unwrap().render().unwrap_err().to_string();
+    std::fs::write(
+        dir.join("pages/x.html"),
+        "+++\ntitle = 1\n+++\n\n{{ nope( }}\n",
+    )
+    .unwrap();
+    let e2 = Site::load(&dir).unwrap().render().unwrap_err().to_string();
+    std::fs::remove_dir_all(&dir).unwrap();
+    assert!(e.contains("pages/x.html") && e.contains("`sitemap`"), "{e}");
+    assert!(e2.starts_with("pages/x.html:5:"), "{e2}");
+}

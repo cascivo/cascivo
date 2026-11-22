@@ -375,17 +375,21 @@ pub fn alternates(views: &[View]) -> BTreeMap<String, Vec<(String, String)>> {
 
 /// The template value for `alternates`: a list of `{ locale, url, href }`; `href` is absolute
 /// (`base_url` + `url`, HTML-escaped) for `<link rel="alternate" hreflang>`.
-pub fn alternates_value(base: &str, alts: Option<&Vec<(String, String)>>) -> Value {
-    let base = base.trim_end_matches('/');
+pub fn alternates_value(
+    cfg: &crate::config::Config,
+    alts: Option<&Vec<(String, String)>>,
+) -> Value {
+    let base = cfg.base_url.trim_end_matches('/');
     let items: Vec<Value> = alts
         .into_iter()
         .flatten()
         .map(|(l, u)| {
+            let u = cfg.url(u);
             let mut href = String::new();
             cascivo_html::html::esc(&mut href, &format!("{base}{u}"));
             Value::from(BTreeMap::from([
                 ("locale", Value::from(l.as_str())),
-                ("url", Value::from_safe_string(u.clone())),
+                ("url", Value::from_safe_string(u)),
                 ("href", Value::from_safe_string(href)),
             ]))
         })
@@ -437,13 +441,18 @@ pub fn t_function(
 }
 
 /// Sitemap `<xhtml:link>` lines for one URL (with `x-default` → the default-locale URL).
-pub fn sitemap_links(base: &str, alts: &[(String, String)], default: &str) -> String {
+pub fn sitemap_links(
+    cfg: &crate::config::Config,
+    alts: &[(String, String)],
+    default: &str,
+) -> String {
+    let base = cfg.base_url.trim_end_matches('/');
     let mut s = String::new();
     let mut link = |lang: &str, url: &str| {
         s.push_str("    <xhtml:link rel=\"alternate\" hreflang=\"");
         cascivo_html::html::esc(&mut s, lang);
         s.push_str("\" href=\"");
-        cascivo_html::html::esc(&mut s, &format!("{base}{url}"));
+        cascivo_html::html::esc(&mut s, &format!("{base}{}", cfg.url(url)));
         s.push_str("\"/>\n");
     };
     for (l, u) in alts {
@@ -516,7 +525,9 @@ mod tests {
             ("en".to_string(), "/a/".to_string()),
             ("de".into(), "/de/a/".into()),
         ];
-        let s = sitemap_links("https://x.dev", &alts, "en");
+        let mut cfg =
+            crate::config::Config::parse("title = \"x\"\nbase_url = \"https://x.dev\"").unwrap();
+        let s = sitemap_links(&cfg, &alts, "en");
         assert!(
             s.contains("hreflang=\"de\" href=\"https://x.dev/de/a/\""),
             "{s}"
@@ -525,5 +536,8 @@ mod tests {
             s.contains("hreflang=\"x-default\" href=\"https://x.dev/a/\""),
             "{s}"
         );
+        cfg.build.trailing_slash = false;
+        let s = sitemap_links(&cfg, &alts, "en");
+        assert!(s.contains("href=\"https://x.dev/de/a\""), "{s}");
     }
 }

@@ -12,7 +12,7 @@ use std::thread;
 use std::time::{Duration, Instant};
 
 use crate::out::Output;
-use crate::routes::list_files;
+use crate::routes::{list_files, list_public};
 use crate::site::Site;
 
 const POLL: Duration = Duration::from_millis(20);
@@ -32,7 +32,12 @@ pub fn fingerprint(root: &Path) -> u64 {
     };
     add(&root.join("site.toml"), "site.toml");
     for dir in SOURCES {
-        for f in list_files(&root.join(dir)).unwrap_or_default() {
+        let list = if dir == "public" {
+            list_public
+        } else {
+            list_files
+        };
+        for f in list(&root.join(dir)).unwrap_or_default() {
             add(&root.join(dir).join(&f), &format!("{dir}/{f}"));
         }
     }
@@ -159,11 +164,18 @@ fn handle(mut s: TcpStream, st: &Shared) -> io::Result<()> {
                     ("200 OK", mime.to_string(), with_script(bytes, version))
                 }
                 Some((mime, bytes)) => ("200 OK", mime.to_string(), bytes.to_vec()),
-                None => (
-                    "404 Not Found",
-                    "text/plain".to_string(),
-                    b"not found".to_vec(),
-                ),
+                None => match out.not_found(path) {
+                    Some((mime, bytes)) => (
+                        "404 Not Found",
+                        mime.to_string(),
+                        with_script(bytes, version),
+                    ),
+                    None => (
+                        "404 Not Found",
+                        "text/plain".to_string(),
+                        b"not found".to_vec(),
+                    ),
+                },
             },
         }
     };

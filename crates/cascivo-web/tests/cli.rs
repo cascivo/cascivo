@@ -73,3 +73,41 @@ fn deploy_without_wrangler_config_fails_with_hint() {
     assert!(String::from_utf8_lossy(&o.stderr).contains("cascivo-web new"));
     let _ = std::fs::remove_dir_all(&t);
 }
+
+#[test]
+fn build_cleans_dist_unless_no_clean() {
+    let t = tmp("clean");
+    let site = t.join("site");
+    assert!(bin(&["new", s(&site)]).status.success());
+    std::fs::create_dir_all(site.join("dist")).unwrap();
+    std::fs::write(site.join("dist/stale.html"), "x").unwrap();
+    assert!(bin(&["build", s(&site), "--no-clean"]).status.success());
+    assert!(site.join("dist/stale.html").is_file());
+    assert!(bin(&["build", s(&site)]).status.success());
+    assert!(!site.join("dist/stale.html").exists());
+    assert!(site.join("dist/index.html").is_file());
+    let _ = std::fs::remove_dir_all(&t);
+}
+
+#[test]
+fn deploy_pages_needs_no_wrangler_config() {
+    let t = tmp("pages");
+    let site = t.join("site");
+    assert!(bin(&["new", s(&site)]).status.success());
+    std::fs::remove_file(site.join("wrangler.jsonc")).unwrap();
+    let o = bin(&[
+        "deploy",
+        s(&site),
+        "--pages",
+        "--project-name",
+        "my-site",
+        "--dry-run",
+    ]);
+    let out = String::from_utf8_lossy(&o.stdout);
+    assert!(o.status.success(), "{}", String::from_utf8_lossy(&o.stderr));
+    assert!(
+        out.contains("would run: npx wrangler pages deploy dist --project-name my-site"),
+        "{out}"
+    );
+    let _ = std::fs::remove_dir_all(&t);
+}
