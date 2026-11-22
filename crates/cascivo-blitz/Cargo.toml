@@ -5,6 +5,7 @@ edition.workspace = true
 # Blitz 0.3 beta needs 1.91.
 rust-version = "1.91"
 description = "Render cascivo .cv text in a native Blitz window, with no browser and no Dioxus"
+publish = false
 license = "MIT"
 repository = "https://github.com/cascivo/cascivo"
 homepage = "https://github.com/cascivo/cascivo/tree/main/crates/cascivo-blitz"

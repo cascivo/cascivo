@@ -14,9 +14,11 @@ Vello). It needs no browser and no Dioxus. The `.cv` format is the same as in
 
 ## Install
 
+Not on crates.io yet. It ships once Blitz 0.3 is stable. Until then, use a git dependency:
+
 ```sh
-cargo add cascivo-blitz                          # window + GPU renderer
-cargo add cascivo-blitz --no-default-features    # headless: build and style documents only
+cargo add cascivo-blitz --git https://github.com/cascivo/cascivo                          # window + GPU renderer
+cargo add cascivo-blitz --git https://github.com/cascivo/cascivo --no-default-features    # headless
 ```
 
 Rust 1.91 or newer. Blitz is pinned to a beta (`0.3.0-beta.4`).
