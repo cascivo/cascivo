@@ -3,6 +3,7 @@
 use std::collections::BTreeSet;
 
 use crate::ast::{Directive, Doc};
+use crate::blitz::{self, Target};
 use crate::brand::{Brand, document_brand};
 use crate::css_gen::{BASE_CSS, COMPONENT_CSS, THEMES};
 use crate::diag::Diagnostic;
@@ -29,6 +30,9 @@ pub struct Options {
     pub embed_urls: bool,
     /// Largest embeddable asset in bytes (default 2 MiB).
     pub max_asset_bytes: Option<usize>,
+    /// Where the output will be shown. [`Target::Browser`] (default) is the standard output;
+    /// [`Target::Blitz`] lowers CSS and SVG for the Blitz engine and omits inline scripts.
+    pub target: Target,
 }
 
 /// Per-document emit state. Ids come from a counter so output is deterministic.
@@ -61,7 +65,7 @@ const SCRIPTS: &[(&str, &str)] = &[("table-sort", include_str!("../assets/extra/
 
 /// Page shell: inline padding and a vertical rhythm from the brand's `gap` (default space-4).
 /// Mobile-first, no max-width: the document fills the viewport like a dashboard.
-const DOC_CSS: &str = "@layer cascivo.component{.cv-doc{display:flex;flex-direction:column;gap:var(--cascivo-gap-default,var(--cascivo-space-4));padding:var(--cascivo-space-4);min-inline-size:0}@media (min-width:40rem){.cv-doc{padding:var(--cascivo-space-6)}}@media (min-width:64rem){.cv-doc{padding:var(--cascivo-space-8)}}}";
+pub(crate) const DOC_CSS: &str = "@layer cascivo.component{.cv-doc{display:flex;flex-direction:column;gap:var(--cascivo-gap-default,var(--cascivo-space-4));padding:var(--cascivo-space-4);min-inline-size:0}@media (min-width:40rem){.cv-doc{padding:var(--cascivo-space-6)}}@media (min-width:64rem){.cv-doc{padding:var(--cascivo-space-8)}}}";
 
 fn emit_body(doc: &Doc, cx: &mut Cx<'_>) -> String {
     let mut body = String::new();
@@ -88,6 +92,18 @@ pub fn stylesheet(theme: &str, used: &BTreeSet<&'static str>) -> String {
     css
 }
 
+/// [`stylesheet`] with the brand's CSS after the theme tokens and before the component modules.
+fn full_css(theme: &str, brand_css: &str, used: &BTreeSet<&'static str>) -> String {
+    let mut css = stylesheet(theme, used);
+    let at = BASE_CSS.len()
+        + THEMES
+            .iter()
+            .find(|(n, _)| *n == theme)
+            .map_or(0, |(_, c)| c.len());
+    css.insert_str(at, brand_css);
+    css
+}
+
 /// Inline script source an emitter asked for via [`Fragment::scripts`].
 pub fn script(name: &str) -> Option<&'static str> {
     SCRIPTS.iter().find(|(n, _)| *n == name).map(|(_, js)| *js)
@@ -109,16 +125,22 @@ pub fn render_parts(src: &str, opts: &Options) -> Result<Fragment, Vec<Diagnosti
         opts: Some(opts),
         ..Cx::default()
     };
-    let html = emit_body(&doc, &mut cx);
-    if cx.diags.is_empty() {
-        Ok(Fragment {
-            html,
-            used: cx.used,
-            scripts: cx.scripts,
-        })
-    } else {
-        Err(cx.diags)
+    let mut html = emit_body(&doc, &mut cx);
+    if !cx.diags.is_empty() {
+        return Err(cx.diags);
     }
+    let mut scripts = cx.scripts;
+    if opts.target == Target::Blitz {
+        let (theme, brand_css) = document_brand(&doc, opts)?;
+        let css = full_css(theme.as_deref().unwrap_or("light"), &brand_css, &cx.used);
+        html = blitz::lower_svg(&html, &css);
+        scripts.clear();
+    }
+    Ok(Fragment {
+        html,
+        used: cx.used,
+        scripts,
+    })
 }
 
 /// Body markup only (no document shell); used by conformance snapshots.
@@ -155,14 +177,13 @@ pub fn render(src: &str, opts: &Options) -> Result<String, Vec<Diagnostic>> {
         }
     }
     let theme = theme.as_deref().unwrap_or("light");
-    let mut css = stylesheet(theme, &cx.used);
-    // Brand CSS overrides theme tokens, so it goes after them but before the component modules.
-    let at = BASE_CSS.len()
-        + THEMES
-            .iter()
-            .find(|(n, _)| *n == theme)
-            .map_or(0, |(_, c)| c.len());
-    css.insert_str(at, &brand_css);
+    let mut css = full_css(theme, &brand_css, &cx.used);
+    let mut body = body;
+    if opts.target == Target::Blitz {
+        body = blitz::lower_svg(&body, &css);
+        css = blitz::lower_css(&css);
+        cx.scripts.clear();
+    }
 
     let nl = if opts.minify_html { "" } else { "\n" };
     let mut out = String::with_capacity(css.len() + body.len() + 256);

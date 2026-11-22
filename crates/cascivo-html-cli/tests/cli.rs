@@ -338,3 +338,39 @@ fn fetch_embeds_urls_with_a_size_cap() {
     let o = child.wait_with_output().unwrap();
     assert_eq!(o.status.code(), Some(1));
 }
+
+#[test]
+fn target_blitz_lowers_css() {
+    let src = "grid\n  button \"Go\"\n";
+    let browser = run(&["render"], src, None);
+    assert!(browser.stdout.contains("@container") && browser.stdout.contains(":focus-visible"));
+    let blitz = run(&["render", "--target", "blitz"], src, None);
+    assert_eq!(blitz.code, 0, "{}", blitz.stderr);
+    assert!(!blitz.stdout.contains("@container") && !blitz.stdout.contains(":focus-visible"));
+    assert_eq!(
+        run(&["render", "--target", "browser"], src, None).stdout,
+        browser.stdout
+    );
+}
+
+#[test]
+fn check_target_blitz_warns_but_exits_zero() {
+    let o = run(&["check", "--target", "blitz"], "spinner\n", None);
+    assert_eq!(o.code, 0);
+    assert!(
+        o.stderr.contains("<stdin>:1:1: warning: spinner:"),
+        "{}",
+        o.stderr
+    );
+    let quiet = run(&["check"], "spinner\n", None);
+    assert!(quiet.stderr.is_empty());
+    let bad = run(&["check", "--target", "blitz"], "crad \"x\"\n", None);
+    assert_eq!(bad.code, 1);
+}
+
+#[test]
+fn bad_target_is_a_usage_error() {
+    let o = run(&["check", "--target", "tui"], "", None);
+    assert_eq!(o.code, 2);
+    assert!(o.stderr.contains("--target needs"));
+}
