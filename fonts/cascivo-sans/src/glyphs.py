@@ -522,7 +522,16 @@ def _s_extra(p):
     return 1.1 * max(0.0, p.V - 90)
 
 
-S_BOWL = 0.03
+# Black's S (round 4, cycle 2): its upper bowl takes 0.03 - S_BOWL more of the height (S_BOWL was 0.03, which put the spine's middle
+# 0.56 up and left the upper counter 0.47x the lower, Inter's 0.91x) and its lower terminal runs S_RUN_CAP degrees round, not 34, so
+# the smaller lower bowl keeps its counter (upper / lower 0.95 upright and 0.94 italic). No master's outline crosses itself.
+S_BOWL = -0.15
+S_RUN_CAP = 32
+# Black's s: see _s. S_LIGHT: its horizontals are this much lighter (the upper counter's throat read 0.70x Inter's).
+S_FLAT_IT = 0.2
+S_WIDE, S_WIDE_IT, S_SB = 0.04, 0.06, 0.1
+S_LIGHT, S_LIGHT_IT = 0.14, 0.25
+S_RUN = (14, 0, 4, -2)
 
 
 @glyph('S', 0x53)
@@ -531,9 +540,8 @@ def _S_(g, p):
     # and heavier horizontals: Black's top and bottom were 12% thinner than theirs, and the S
     # carried 0.86x their ink
     # (Regular's terminals sit 14° further round too: the S carried 0.80x their ink at Regular)
-    # Black's upper bowl is S_BOWL of the height smaller than the s's share (0.50 of it), and its terminal runs 20 degrees round, not 34:
-    # the S stood top-heavy beside Inter's, its upper terminal a long beak (run on as far round, the smaller bowl's inner edge folded)
-    _S(g, p, p.Hd * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=34, close=26, bowl=0.03 - S_BOWL, run_up=20)
+    # Black's upper terminal runs 20 degrees round, not 34: run on as far, its inner edge folded into a long beak (see S_BOWL)
+    _S(g, p, p.Hd * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=S_RUN_CAP, close=26, bowl=0.03 - S_BOWL, run_up=20)
     g.ht = 'c'
     g.sb = (0.5, 0.5)
 
@@ -541,6 +549,11 @@ def _S_(g, p):
 # ============================================================================================
 # Lowercase
 # ============================================================================================
+
+
+def caption(p):
+    """1 at the Caption master (opsz 8), 0 elsewhere."""
+    return 1.0 if p.opsz == 8 else 0.0
 
 
 def join_taper(p):
@@ -584,9 +597,16 @@ AEI_A, AEI_E = -0.04, 0.14  # the italic's single-storey a half is a little narr
 A_ARC_IN = 0.24  # Black's top arc starts this many stems further right: its terminal sat 0.15 x-heights left of the bowl, a beak (Inter's sits inside)
 A_BOWL_SLOPE = 0.15  # extra slope of the bowl's top at Black, so its counter rises toward the stem like Inter's (Black read 3.6 deg, Inter 12)
 A_BOWL_WALL = -0.06  # Black's bowl wall is thinner than the stem (as Inter's is), so the counter is a wide teardrop and not a slot
-A_BOWL_LOW = 0.015  # Black's bowl top sits this share of the x-height lower than the +0.05 lift, and
+A_BOWL_LOW, A_BOWL_LOW_AE = 0.02, 0.015  # Black's bowl top sits this share of the x-height lower than the +0.05 lift (0.015 -> 0.02 opens the a's mouth 46 -> 49, Inter 51; æ keeps 0.015), and
 A_BOWL_FLOOR = 0.14  # its floor is this much of a bar thicker (not thinner): the counter stays short against its width, as Inter's does, which keeps its area under the cap
 A_FILLET = 0.18  # extra share of a stem in the radius where the bowl's top meets the stem at Black: a steeper top left a spur there, not a U
+A_TOP_LIFT = 0.35  # how far up the stem the counter's top meets it, in the round's radius (none at Black, where it rises along the slope)
+A_TOP_ROUND, A_TOP_HANDLE = 0.12, 0.5  # the bowl top's round into the stem, at least this share of the x-height; its handle at the crown, a share of the run to the stem
+A_FOOT, A_NOTCH = (0.13, 0.12), (70, 40)  # (Regular, Black): where the bowl's bottom meets the stem's edge (x-heights up) and the angle it rises at there, as Inter's
+A_JOIN, A_FLOOR = (0.9, 0.7), (62, 80)  # (Regular, Black): see _a_bowl
+A_BELLY = 0.6  # see _a_bowl
+A_TIP = 5  # units: see _a_bowl
+A_TUCK = (0.6, 0.3)  # (Regular, Black) the italic a's last quarter: see _a
 A_ARC_END = 13  # the a's arc runs less far round than the g's tail: ending higher keeps its mouth open once the end moved inward
 
 
@@ -833,6 +853,9 @@ def _q(g, p):
     g.sb = (0.62, 1)
 
 
+G_TAPER = 0.6  # see _g
+
+
 @glyph('g', 0x67)
 def _g(g, p):
     w = p.nw * 1.07  # as e
@@ -849,7 +872,10 @@ def _g(g, p):
         ry *= 1 - 0.2 * p.heavy
         end, tilt = -152 + p.ap - 18 * p.heavy, 12
     cy = p.desc - p.ov * 0.5 + H / 2 + ry
-    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, end), caps=('b', 'b'), cut='t', tilt=tilt)
+    # The tail's end rises steeply, where the pen is a stem wide, from a floor a hairline thick: the inner edge turned up in a step
+    # just short of the cut (Black 137 -> 190 across the last quarter). The end thins by G_TAPER of that difference.
+    te = 1 - G_TAPER * (1 - p.H / p.V)
+    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, end), caps=('b', 'b'), cut='t', tilt=tilt, taper=(1, te))
     cx, cy2, rx2, ry2 = g.box(0, 18, w, p.xh + p.ov)
     g.stroke(bowl_arc(g, cx, cy2, rx2, ry2, False), taper=(join_taper(p),) * 2, reach=(join_reach(p),) * 2)
     g.sb = (0.62, 1.15 if p.italic else 1)  # the italic sat 10% tighter on its right than Inter's and Plex's
@@ -863,6 +889,9 @@ def _o(g, p):
     g.sb = (0.62, 0.62)
 
 
+C_RUN, C_RUN_IT, C_TILT = 12, (30, 6), 12
+
+
 @glyph('c', 0x63)
 def _c(g, p):
     # Regular's c was 0.81x Geist's and Inter's width. Heavier it narrows a little, as the e: on Black's untrimmed n (round 4)
@@ -871,7 +900,11 @@ def _c(g, p):
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
     # terminals sit 14° further round than they first did, at every weight: the open aperture left
     # the c at 0.78x Geist's and Inter's ink at Regular and 0.77x at Black, and Bold inherited it
-    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap, 330 - p.ap), caps=('b', 'b'), cut='h')
+    # Black's terminals run C_RUN (italic C_RUN_IT, upper and lower) further round: short of that, the mouth read 2.3x Inter's
+    # beside an e and s at 0.7-1.0x. The upright's end in near-flat faces as the e's do (cut 't', C_TILT); the italic's keep the
+    # half-way cut, whose faces lean as Inter's (cut 't', its lower face lay 3.7 deg off flat). Regular's cut is square either way.
+    ru, rl = C_RUN_IT if p.italic else (C_RUN, C_RUN)
+    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy), caps=('b', 'b'), cut='h' if p.italic else 't', tilt=C_TILT)
     g.sb = (0.62, 0.42)
 
 
@@ -882,16 +915,24 @@ def _c(g, p):
 E_END, E_RUN, E_RUN_IT, E_TILT, E_SQUARE, E_WIDE = 322, -8, -12, 12, 0.14, 0.0
 # Black's bar is this much thinner than the other crossbars and drops this share of a bar below the middle: its eye read 0.78x Inter's
 # (as a share of the x-height squared) while o a g read 1.0-1.2x, so the e was the dark spot of a Black word
-E_BAR, E_DROP = 0.2, 0.5
+E_BAR, E_DROP = 0.32, 0.35
+E_BAR_IT = 0.06  # the italic's bar is lighter still: its eye read 0.98x Inter Italic's at E_BAR
+AE_BAR = (0.2, 0.5)  # the e half of æ keeps the bar E_BAR and E_DROP were before round 4, cycle 2: its counter tip against the a half is held to that drawing's
+# Caption (opsz 8) draws its horizontals 0.94 of a stem against Regular's 0.87, which closed the e's eye and the a's counter
+# (0.109 and 0.124 of the x-height squared, Regular's 0.123 and 0.137) and, through the Caption delta, Black's at opsz 8 (0.046
+# and 0.044 against 0.053 and 0.050 at 14). The e's bar and the a's bowl are lighter there by these shares.
+E_CAP8, A_CAP8 = 0.25, 0.25
+E_TRIM = 0.03  # stems the heavy bar stops short of the outer edge, so its corner sits inside the curve
 
 
-def _e_body(g, p, x0, w):
+def _e_body(g, p, x0, w, bar_k=None):
     """The e's bowl and bar in a box from x0, w wide: shared by e and by the e half of æ."""
     cx, cy, rx, ry = g.box(x0, -p.ov, x0 + w, p.xh + p.ov)
     # flush with where the bowl stroke ends, or its butt end shows below the bar; heavy bars drop
     # half their height (still covering that end) so the eye above stays open
-    bar = p.bar * (1 - E_BAR * p.heavy)
-    yb = cy - p.bar * E_DROP * p.heavy
+    thin, drop = bar_k or (E_BAR + (E_BAR_IT if p.italic else 0), E_DROP)
+    bar = p.bar * (1 - thin * p.heavy - E_CAP8 * caption(p))
+    yb = cy - p.bar * drop * p.heavy
     # the italic's narrower, slanted eye closed to 0.69x Inter's and Plex's at Regular: its bar
     # sits lower at every weight short of Black (every italic master starts with the one cubic)
     if p.italic:
@@ -907,7 +948,11 @@ def _e_body(g, p, x0, w):
     g.stroke(first + g.arc(cx, cy, rx, ry, 90, 270) + g.arc(cx, cy, rx, ry, 270, E_END - (E_RUN_IT if p.italic else E_RUN) * p.heavy - p.ap, p.k + E_SQUARE * p.heavy), caps=('h', 'b'), cut='t', tilt=E_TILT)
     # ends on the bowl's centreline, so the bowl stroke covers it; in the italic the stroke's end
     # is cut on a slant, so the bar stops short of it
-    g.hbar(cx - rx, cx + rx - (p.V * 0.18 if p.italic else 0), yb, h=bar)
+    # A heavy bar drops below the middle, where the bowl's outer edge has already turned in: its lower right corner stopped at
+    # the centreline and stood out past the bowl, a step at the aperture (Black). It now stops on the outer edge at that height.
+    dy = min(1.0, (cy - yb) / (ry + p.H / 2))
+    x1 = min(cx + rx, cx + (rx + p.V / 2) * math.sqrt(1 - dy * dy) - E_TRIM * p.V * p.heavy)
+    g.hbar(cx - rx, x1 - (p.V * 0.18 if p.italic else 0), yb, h=bar)
 
 
 @glyph('e', 0x65)
@@ -916,8 +961,8 @@ def _e(g, p):
     g.sb = (0.62, 0.5)
 
 
-def _a_bowl(g, p, xs, wf):
-    """The double-storey a's bowl, left of a stem centred on xs (in æ, the e's left stroke).
+def _a_bowl(g, p, xs, wf, stem=True):
+    """The double-storey a's bowl, left of a stem centred on xs (in æ, the e's left stroke: `stem` False).
 
     An outer shape and a counter drawn directly, not a stroke. As a stroke, the bowl's thickness
     followed the pen and its diagonal join into the stem, and at Black the counter shrank to a
@@ -929,16 +974,15 @@ def _a_bowl(g, p, xs, wf):
     V = p.V
     h = p.heavy
     k = p.k
-    ybt = p.xh * (0.57 + 0.05 * h - A_BOWL_LOW * h)  # top of the bowl
+    ybt = p.xh * (0.57 + 0.05 * h - (A_BOWL_LOW if stem else A_BOWL_LOW_AE) * h)  # top of the bowl
     yb0 = -p.ov  # bottom of the bowl
     xe = xs - V / 2  # stem's left edge
     rxb = (xs - V / 2) / 2 * wf
     cxb = V / 2 + rxb  # horizontal centre of the bowl's round left half
-    th = p.bar  # top and bottom of the bowl
+    th = p.bar * (1 - A_CAP8 * caption(p))  # top and bottom of the bowl
     tl = V * (1 + A_BOWL_WALL * h)  # left side of the bowl
     cy = (ybt + yb0) / 2
     ry = (ybt - yb0) / 2
-    yjo = yb0 + (ybt - yb0) * (0.3 + 0.15 * h)  # where the outline meets the stem
     # the bowl's top rises toward the stem, as Inter's and Geist's do: a flat top meeting a vertical
     # stem read as a slab at Black
     slope = 0.07 + A_BOWL_SLOPE * h
@@ -946,34 +990,76 @@ def _a_bowl(g, p, xs, wf):
     # The top ends against the stem's left edge in a rounded corner, so the aperture closes in a U
     # (Inter's) and not in a spur where the line crossed the arc's inner round
     # (clamped to the room left of the stem: in the narrower æ half a bigger round ran the top backwards)
-    fr = max(0.32 * V, min((0.32 + A_FILLET * h) * V, 0.8 * (xe - cxb)))
-    xf = xe - fr
+    fr = max(A_TOP_ROUND * p.xh, min((0.32 + A_FILLET * h) * V, 0.8 * (xe - cxb)))
     yE = ybt + rise_i
-    yf = ybt + slope * (xf - cxb)
     yq = yE + fr * 0.6
+    # The top leaves the stem as one curve, tangent to the stem's edge, and turns into the sloped top at the bowl's crown, as
+    # Inter's does: a fillet of a third of a stem (7 units at Thin) on a straight top read as a ruled line into the stem.
+    xh_ = (xe - cxb) * A_TOP_HANDLE
+    # The bottom meets the stem's edge at A_FOOT of the x-height, rising at A_NOTCH degrees: a clean notch over a foot, as Inter's.
+    # Arriving vertically at the stem's centre it crossed the edge at 20 degrees, 0.09 x-heights up (a sliver of white over a stub).
+    tn = math.radians(A_NOTCH[0] + (A_NOTCH[1] - A_NOTCH[0]) * h)
+    yx = p.xh * (A_FOOT[0] + (A_FOOT[1] - A_FOOT[0]) * h)
+    # Black's bowl is lowest A_BELLY of the way to the stem, not at cxb (0.76 of the way): from there it had 75 units to turn
+    # through 60 degrees into the notch, and turned in a corner (a chin); Inter's is lowest about half way
+    xb = cxb + (min(cxb, A_BELLY * xe) - cxb) * h
+    xX = xe - (yx - yb0) / math.tan(tn)  # where the bottom's tangent meets the notch's: the curve between stays convex
+    # the notch's tip is a round of A_TIP units at Black (1 at Regular): a sharp one is a slit of white the spur check reads (2.9 units^2 at Black)
+    tip = 1 + (A_TIP - 1) * h
+    tt = tip / math.tan(math.radians(45) - tn / 2)
+    t1 = (xe - tt * math.cos(tn), yx - tt * math.sin(tn))
+    hk = 4 / 3 * math.tan((math.pi / 2 + tn) / 4) * tip
+    dt = 0.55 * (yx - yb0) / math.sin(tn)
     outer = [
         L((xs, yq), (xe, yq)),
-        ('C', (xe, yq), (xe, yq - fr * 0.55), (xf + fr * 0.55, yf + slope * fr * 0.55), (xf, yf)),
-        L((xf, yf), (cxb, ybt)),
+        ('C', (xe, yq), (xe, yq - fr * 0.9), (cxb + xh_, ybt + slope * xh_), (cxb, ybt)),
         ('C', (cxb, ybt), (cxb - cxb * k, ybt - slope * cxb * k), (0, cy + ry * k), (0, cy)),  # leaves the sloped top along its own direction
-        ('C', (0, cy), (0, cy - ry * k), (cxb - cxb * k, yb0), (cxb, yb0)),
-        ('C', (cxb, yb0), (cxb + (xs - cxb) * 0.6, yb0), (xs, yjo - (yjo - yb0) * 0.6), (xs, yjo)),
-        L((xs, yjo), (xs, yq)),
+        ('C', (0, cy), (0, cy - ry * k), (xb - xb * k, yb0), (xb, yb0)),
+        ('C', (xb, yb0), (xb + (xX - xb) * 0.8, yb0), (t1[0] - dt * math.cos(tn), t1[1] - dt * math.sin(tn)), t1),
+        ('C', t1, (t1[0] + hk * math.cos(tn), t1[1] + hk * math.sin(tn)), (xe, yx - tt + hk), (xe, yx - tt)),
+        L((xe, yx - tt), (xs, yq)),
     ]
     yti, ybi = ybt - th, yb0 + th * (1 + A_BOWL_FLOOR * h)  # a heavy bowl's floor is thicker, as Inter's
     cyi, ryi = (yti + ybi) / 2, (yti - ybi) / 2
     rxi = cxb - tl
-    yji = ybi + (yti - ybi) * 0.62  # where the counter's round bottom meets the stem
-    # At Thin the two joins must meet at one height: with the counter's ending above the outline's
-    # the wall between them swells into a dark wedge beside the stem, thicker than the stem itself.
-    yji = lerp(yjo, yji, thin_blend(p))
+    # The counter's floor meets the stem A_JOIN[0] (Regular) to A_JOIN[1] (Black) stems above the outline's notch, rising at
+    # A_FLOOR degrees, as Inter's (62 and 36 read by quality.counter_join_angle): the bowl is one stroke of even weight curving
+    # into the stem. It used to arrive along the stem 0.62 of the counter up, which with the notch lower left a dark wedge.
+    yji = yx + V * (A_JOIN[0] + (A_JOIN[1] - A_JOIN[0]) * h)
+    ti = math.radians(A_FLOOR[0] + (A_FLOOR[1] - A_FLOOR[0]) * h)
+    yi0, di0 = yti + rise_i + fr * A_TOP_LIFT * (1 - h), fr * 0.5
+    di = (yji - ybi) * (0.5 + 0.35 * h) / math.sin(ti)
     inner = [
-        L((xe, yti + rise_i), (cxb, yti)),
+        # the counter's top rises into the stem with the outline's round, so the stroke keeps its weight through the join
+        ('C', (xe, yi0), (xe - di0 * 0.7, yi0 - di0 * 0.7 * lerp(1.0, slope, h)), (cxb + xh_ * 0.8, yti + slope * xh_ * 0.8), (cxb, yti)),
         ('C', (cxb, yti), (cxb - rxi * k, yti - slope * rxi * k), (tl, cyi + ryi * k), (tl, cyi)),
         ('C', (tl, cyi), (tl, cyi - ryi * k), (cxb - rxi * k, ybi), (cxb, ybi)),
-        ('C', (cxb, ybi), (cxb + (xe - cxb) * 0.5, ybi), (xe, yji - (yji - ybi) * 0.85), (xe, yji)),  # arrives along the stem, as b's and d's bowls do
-        L((xe, yji), (xe, yti + rise_i)),
+        ('C', (cxb, ybi), (cxb + (xe - cxb) * 0.6, ybi), (xe - di * math.cos(ti), yji - di * math.sin(ti)), (xe, yji)),
+        L((xe, yji), (xe, yi0)),
     ]
+    if not stem:
+        # æ: the e's round left side has no foot to notch, and no edge to curve the top into: the round-4 joins (a straight top
+        # with a fillet, a bottom arriving vertically inside the e's stroke) stay
+        fr = max(0.32 * V, min((0.32 + A_FILLET * h) * V, 0.8 * (xe - cxb)))
+        xf, yf, yq = xe - fr, ybt + slope * (xe - fr - cxb), yE + fr * 0.6
+        yjo = yb0 + (ybt - yb0) * (0.3 + 0.15 * h)
+        yji = lerp(yjo, ybi + (yti - ybi) * 0.62, thin_blend(p))
+        outer = [
+            L((xs, yq), (xe, yq)),
+            ('C', (xe, yq), (xe, yq - fr * 0.55), (xf + fr * 0.55, yf + slope * fr * 0.55), (xf, yf)),
+            L((xf, yf), (cxb, ybt)),
+            outer[2],
+            ('C', (0, cy), (0, cy - ry * k), (cxb - cxb * k, yb0), (cxb, yb0)),
+            ('C', (cxb, yb0), (cxb + (xs - cxb) * 0.6, yb0), (xs, yjo - (yjo - yb0) * 0.6), (xs, yjo)),
+            L((xs, yjo), (xs, yq)),
+        ]
+        inner = [
+            L((xe, yti + rise_i), (cxb, yti)),
+            inner[1],
+            inner[2],
+            ('C', (cxb, ybi), (cxb + (xe - cxb) * 0.5, ybi), (xe, yji - (yji - ybi) * 0.85), (xe, yji)),
+            L((xe, yji), (xe, yti + rise_i)),
+        ]
     g.raw += [orient(outer, outer=True), orient(inner, outer=False)]
 
 
@@ -982,7 +1068,16 @@ def _a(g, p):
     if p.italic:  # single-storey: a bowl closed by a stem at x-height, as in Plex and Source italics
         w = p.nw * 1.04
         g.vstem(w - p.V, 0, p.xh)
-        _bowl_lc(g, p, w, False)
+        # The bowl's last quarter runs A_TUCK stems inside d's (bowl_arc) and swings out into the stem only at its end, so its outer
+        # edge crosses the stem's edge steeply, a clean notch over a foot as in the upright and in Inter Italic. d's quarter ran
+        # tangent into the stem and crossed its edge 0.04 x-heights up at Black: a sliver of white over a stub of stem.
+        cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
+        tuck = (A_TUCK[0] + (A_TUCK[1] - A_TUCK[0]) * p.heavy) * p.V
+        q = g.arc(cx, cy, rx - join_flush(p, join_taper(p)) - tuck, ry, 270, 360 - JOIN_RUN)[0]
+        last = [(q[0], q[1], q[2], (q[3][0] + tuck, q[3][1]), (q[4][0] + tuck, q[4][1]))]
+        taper = join_taper(p)
+        segs = bowl_arc(g, cx, cy, rx, ry, False)[:-1] + last
+        g.stroke(segs, taper=(taper,) * 2, pen=(p.V, bowl_pen(p)[1] * (1 - A_CAP8 * caption(p))), reach=(join_reach(p),) * 2)
         g.sb = (0.62, 1)
         return
     w = p.nw * 0.98  # no narrower at Black: a narrower bowl met its stem at 25 deg, under Inter's 36 - 10
@@ -1008,8 +1103,12 @@ def _s(g, p):
     # Regular's terminals also sit 14° further round, and its s is 4% wider: it carried 0.77x
     # Geist's and Inter's ink at 0.90x their width
     # Black takes 0.10 off (0.04 before round 4): on the untrimmed n its s set 21% over its Regular (Inter's 11%)
-    _S(g, p, p.nw * (0.92 - 0.10 * p.heavy) + _s_extra(p) * 0.7, p.xh, p.ov, run=10 if p.italic else 18, run_up=8 if p.italic else 16, close=26, bowl=0.22, flat=0.1, deep=70)
-    g.sb = (0.55, 0.55)
+    # Round 4, cycle 2: Black's s read narrow beside Inter's with slits for counters (upper throat 0.70x Inter's, italic spine
+    # 0.85x): it is S_WIDE of the n wider (S_SB of the sidebearing pays for most of it), its terminals end S_RUN higher (upright,
+    # upright upper, italic, italic upper; they were 18, 16, 10, 8) and the italic's spine lies flatter (S_FLAT_IT; 0.1)
+    w = p.nw * (0.92 - (0.10 - (S_WIDE_IT if p.italic else S_WIDE)) * p.heavy) + _s_extra(p) * 0.7
+    _S(g, p, w, p.xh, p.ov, run=S_RUN[2] if p.italic else S_RUN[0], run_up=S_RUN[3] if p.italic else S_RUN[1], close=26, bowl=0.22, flat=S_FLAT_IT if p.italic else 0.1, deep=70, pen=(p.V, p.H * (1 - (S_LIGHT_IT if p.italic else S_LIGHT) * p.heavy)))
+    g.sb = (0.55 - S_SB * p.heavy,) * 2
 
 
 F_BOLD_TUCK, F_BOLD_OPEN = 1.0, 0.5
@@ -2146,7 +2245,8 @@ def _currency(g, p):
 def _cent(g, p):
     w = fw(p) * 0.92
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov + 40)
-    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap, 330 - p.ap), caps=('b', 'b'), cut='h')  # as c
+    ru, rl = C_RUN_IT if p.italic else (C_RUN, C_RUN)
+    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy), caps=('b', 'b'), cut='h' if p.italic else 't', tilt=C_TILT)  # as c
     g.line((w * 0.53, -110), (w * 0.53, p.xh + 150), w=p.V * 0.72)
     g.tab = True
 
@@ -2439,14 +2539,14 @@ def _ae(g, p):
     ryt = p.xh * 0.26
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
     g.stroke([L((xs, p.xh * 0.35), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap + A_END * p.heavy), caps=('b', 'b'), cut='t')
-    _a_bowl(g, p, xs, 1.0)
+    _a_bowl(g, p, xs, 1.0, stem=False)
     _ae_e(g, p, xs - V / 2)
     g.sb = (0.55, 0.5)
 
 
 def _ae_e(g, p, x0):
     """The e half of æ, its left side sharing the a's stem."""
-    _e_body(g, p, x0, p.nw * (0.96 + (AEI_E if p.italic else AE_E) * p.heavy))
+    _e_body(g, p, x0, p.nw * (0.96 + (AEI_E if p.italic else AE_E) * p.heavy), AE_BAR)
 
 
 @glyph('Eng', 0x14A)
