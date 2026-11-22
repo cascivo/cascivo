@@ -534,6 +534,7 @@ dependencies = [
  "blitz-shell",
  "blitz-traits",
  "cascivo-html",
+ "keyboard-types",
  "stylo_static_prefs",
 ]
 

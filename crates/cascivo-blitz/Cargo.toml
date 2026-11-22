@@ -23,10 +23,15 @@ cascivo-html = { path = "../cascivo-html", version = "0.2.0" }
 blitz-dom = { version = "=0.3.0-beta.4", default-features = false, features = ["svg", "woff", "system-fonts"] }
 blitz-html = { version = "=0.3.0-beta.4", default-features = false }
 blitz-traits = { version = "=0.3.0-beta.4", default-features = false }
+keyboard-types = { version = "0.8", default-features = false }
 style_config = { version = "0.22", package = "stylo_static_prefs" }
 blitz-shell = { version = "=0.3.0-beta.4", default-features = false, optional = true }
 anyrender_vello = { version = "0.15", optional = true }
 
 [[example]]
 name = "hello"
+required-features = ["window"]
+
+[[example]]
+name = "interactive"
 required-features = ["window"]

@@ -3,6 +3,9 @@
 //! [`document_from_cv`] builds a Blitz [`HtmlDocument`] and works headless (no GPU, no window).
 //! With the default `window` feature, [`launch_cv`] opens it.
 //!
+//! For interactivity use [`App`]: Rust handlers by selector, [`Signal`] bindings, and native
+//! replacements for what Blitz lacks (table sort, tabs, `<dialog>`, `<select>`).
+//!
 //! ```
 //! # fn main() -> Result<(), cascivo_blitz::Error> {
 //! let src = "h1 \"Hello\"\nbutton \"Go\" primary\n";
@@ -23,7 +26,18 @@ use std::sync::Once;
 use blitz_dom::DocumentConfig;
 pub use blitz_html::HtmlDocument;
 pub use blitz_traits::shell::{ColorScheme, Viewport};
-pub use cascivo_html::Diagnostic;
+pub use cascivo_html::{Diagnostic, Target};
+pub use keyboard_types::{Key, Modifiers, NamedKey};
+
+mod app;
+pub mod behaviors;
+mod dom;
+pub mod reactive;
+
+pub use app::{App, Ctx, Event, InteractiveDocument};
+pub use behaviors::Behaviors;
+pub use dom::Dom;
+pub use reactive::{Computed, Effect, Signal, batch, computed, effect, untracked};
 
 /// How to build the document.
 #[derive(Clone)]
@@ -36,8 +50,10 @@ pub struct Options {
     pub color_scheme: ColorScheme,
     /// Initial size in physical pixels. A window overrides it with its own size.
     pub viewport: Viewport,
-    /// Passed to `cascivo_html`: assets, brand files.
+    /// Passed to `cascivo_html`: assets, brand files. The target defaults to [`Target::Blitz`].
     pub html: cascivo_html::Options,
+    /// Collect `cascivo_html::lint` warnings for [`App`] (see [`InteractiveDocument::warnings`]).
+    pub lint: bool,
 }
 
 impl Default for Options {
@@ -46,7 +62,11 @@ impl Default for Options {
             theme: None,
             color_scheme: ColorScheme::Light,
             viewport: Viewport::new(1024, 768, 1.0, ColorScheme::Light),
-            html: cascivo_html::Options::default(),
+            html: cascivo_html::Options {
+                target: Target::Blitz,
+                ..cascivo_html::Options::default()
+            },
+            lint: true,
         }
     }
 }
@@ -101,13 +121,21 @@ pub fn html_from_cv(src: &str, opts: &Options) -> Result<String, Error> {
         return Ok(cascivo_html::render(src, &opts.html)?);
     };
     let frag = cascivo_html::render_parts(src, &opts.html)?;
-    let css = cascivo_html::stylesheet(theme, &frag.used);
+    let mut css = cascivo_html::stylesheet(theme, &frag.used);
+    if opts.html.target == Target::Blitz {
+        css = cascivo_html::lower_css(&css);
+    }
     let theme = escape_attr(theme);
     Ok(format!(
         "<!doctype html><html lang=\"en\" data-theme=\"{theme}\"><head><meta charset=\"utf-8\">\
          <style>{css}</style></head><body><main class=\"cv-doc\">{}</main></body></html>",
         frag.html
     ))
+}
+
+/// Compatibility warnings for `src` on `opts.html.target` (see `cascivo_html::lint`).
+pub fn lint_cv(src: &str, opts: &Options) -> Result<Vec<Diagnostic>, Error> {
+    Ok(cascivo_html::lint(src, opts.html.target)?)
 }
 
 /// Build a Blitz document from `.cv` text. Headless: nothing is drawn, call
@@ -131,9 +159,15 @@ pub fn document_from_cv(src: &str, opts: &Options) -> Result<HtmlDocument, Error
 /// Open `src` in a native window and block until it closes.
 #[cfg(feature = "window")]
 pub fn launch_cv(src: &str, opts: Options) -> Result<(), Error> {
+    let doc = document_from_cv(src, &opts)?;
+    launch_document(doc)
+}
+
+/// Open any Blitz document in a native window and block until it closes.
+#[cfg(feature = "window")]
+pub fn launch_document(doc: impl blitz_dom::Document) -> Result<(), Error> {
     use blitz_shell::{BlitzApplication, BlitzShellProxy, WindowConfig, create_default_event_loop};
 
-    let doc = document_from_cv(src, &opts)?;
     let event_loop = create_default_event_loop();
     let (proxy, events) = BlitzShellProxy::new(event_loop.create_proxy());
     let mut app = BlitzApplication::new(proxy, events);
