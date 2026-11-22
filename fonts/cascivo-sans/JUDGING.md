@@ -45,19 +45,19 @@ Give each criterion a score from 0 to 10. The total is the weighted mean. The sc
 only small corrections; 6 = good, but with defects that a designer sees immediately; 4 = defects
 that a reader notices. Score each criterion at the worst place on its sheets, not at the average.
 
-| #   | Criterion (weight)             | Sheet: what to look at                                                                                                                         | Measurable proxy                                                                                                                                                       |
-| --- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Rhythm and spacing (15)        | `spacing`, `glyphs_*`: is the white between letters equal to the white inside them, and the same at every weight? Look for `nnn`, `HHH`, `oo`. | `rhythm.py`: the n gap/counter ratio at 100, 400, 700 and 900. 10 = flat, within ±0.06 of Inter (0.56-0.64). Subtract 1 for each 0.05 that 700 or 900 falls below 0.50 |
-| 2   | Weight axis (12)               | `weights`: do the weights step evenly? Do the heavy weights stay open? Does the width hold?                                                    | `test_font.py` (stem steps 20-22, width ±2% from 100 to 700 and ±5% at 800 and 900); `rhythm.py` at 700 and 900                                                        |
-| 3   | Shape and curve quality (15)   | `glyphs_*` at 64 px and `display`: smooth curvature, no flats or kinks, open counters, balanced `a e g s S G R 2 3 5 6 9 &`                    | `lint.py` / `quality.py` (joins, notches, counters, terminals) must pass. The proxy is a floor only: judge by eye                                                      |
-| 4   | Proportions (8)                | Caps, lowercase and figures together: x-height and cap widths, round against straight, figure widths, punctuation size                         | `compare.py --cascivo-only` (x-height, widths against `comparison.json`)                                                                                               |
-| 5   | Joins, terminals, contrast (8) | Bowl-to-stem joins at 700 and 900, terminal cuts, crotches of `v w y k x`                                                                      | `quality.py` (join_ratio, CUT_MAX_DEG, notch)                                                                                                                          |
-| 6   | Paragraph colour (12)          | `text`: even grey, no dark spots or holes, word space against letter space; compare with Inter in the row below                                | None. Squint at it, or blur it 3 px, and look for blotches                                                                                                             |
-| 7   | Small sizes (10)               | `small_1x` enlarged 3x with nearest-neighbour: `Il1 O0`, `e c a s` stay open, 600 does not clot                                                | `test_font.py` (opsz stem gates); README Light ink against Inter 0.94-0.99                                                                                             |
-| 8   | Italic (8)                     | `glyphs_italic`, `weights` italic, italic `text`: flow, the `f` and `l` tails, spacing, counters at 900                                        | `rhythm.py` on the italic TTF (400: 0.58, 900: 0.30)                                                                                                                   |
-| 9   | Kerning (5)                    | `kerning`: no holes or collisions, the same at 100, 400 and 900                                                                                | `test_font.py` (pairs at least 0.8x Inter's, `KERNING_SHORT`)                                                                                                          |
-| 10  | Optical sizes (4)              | `opsz`: a monotone, smooth change from 8 to 48; 48 is tight but not touching                                                                   | `test_font.py` (opsz stems)                                                                                                                                            |
-| 11  | Character without gimmick (3)  | All sheets: does it look like one family, quiet, with a clear identity (`l` tail, serifed `I`)? Does any feature call attention to itself?     | None                                                                                                                                                                   |
+| #   | Criterion (weight)             | Sheet: what to look at                                                                                                                         | Measurable proxy                                                                                                                                                              |
+| --- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Rhythm and spacing (15)        | `spacing`, `glyphs_*`: is the white between letters equal to the white inside them, and the same at every weight? Look for `nnn`, `HHH`, `oo`. | `rhythm.py`: the n gap/counter ratio at 100, 400, 700 and 900. 10 = flat, within ±0.06 of Inter (0.56-0.64). Subtract 1 for each 0.05 that 700 or 900 falls below 0.50        |
+| 2   | Weight axis (12)               | `weights`: do the weights step evenly? Do the heavy weights stay open? Does the width hold?                                                    | `test_font.py` (stem steps 20-22, width within ±2% of Regular from 100 to 600, up to +4% at 700 and +10% at 900, linear between, never under −2%); `rhythm.py` at 700 and 900 |
+| 3   | Shape and curve quality (15)   | `glyphs_*` at 64 px and `display`: smooth curvature, no flats or kinks, open counters, balanced `a e g s S G R 2 3 5 6 9 &`                    | `lint.py` / `quality.py` (joins, notches, counters, terminals) must pass. The proxy is a floor only: judge by eye                                                             |
+| 4   | Proportions (8)                | Caps, lowercase and figures together: x-height and cap widths, round against straight, figure widths, punctuation size                         | `compare.py --cascivo-only` (x-height, widths against `comparison.json`)                                                                                                      |
+| 5   | Joins, terminals, contrast (8) | Bowl-to-stem joins at 700 and 900, terminal cuts, crotches of `v w y k x`                                                                      | `quality.py` (join_ratio, CUT_MAX_DEG, notch)                                                                                                                                 |
+| 6   | Paragraph colour (12)          | `text`: even grey, no dark spots or holes, word space against letter space; compare with Inter in the row below                                | None. Squint at it, or blur it 3 px, and look for blotches                                                                                                                    |
+| 7   | Small sizes (10)               | `small_1x` enlarged 3x with nearest-neighbour: `Il1 O0`, `e c a s` stay open, 600 does not clot                                                | `test_font.py` (opsz stem gates); README Light ink against Inter 0.94-0.99                                                                                                    |
+| 8   | Italic (8)                     | `glyphs_italic`, `weights` italic, italic `text`: flow, the `f` and `l` tails, spacing, counters at 900                                        | `rhythm.py` on the italic TTF (400: 0.58, 900: 0.30)                                                                                                                          |
+| 9   | Kerning (5)                    | `kerning`: no holes or collisions, the same at 100, 400 and 900                                                                                | `test_font.py` (pairs at least 0.8x Inter's, `KERNING_SHORT`)                                                                                                                 |
+| 10  | Optical sizes (4)              | `opsz`: a monotone, smooth change from 8 to 48; 48 is tight but not touching                                                                   | `test_font.py` (opsz stems)                                                                                                                                                   |
+| 11  | Character without gimmick (3)  | All sheets: does it look like one family, quiet, with a clear identity (`l` tail, serifed `I`)? Does any feature call attention to itself?     | None                                                                                                                                                                          |
 
 ## Must not regress
 
@@ -85,8 +85,9 @@ cd ../.. && pnpm fonts:site:sync && pnpm meta:check     # the site copies must m
 - **Script coverage**: Latin Extended-A, Vietnamese, Cyrillic (`locl` bg, sr, mk), Greek
   (polytonic). Every shape change to a Latin base must be checked in its accented, Cyrillic and
   Greek forms.
-- **Width across weights**: within 2% from 100 to 700, and within 5% at 800 and 900. This rule is
-  the cause of defect 1. To relax it is an owner decision. Do not relax it to fix the defect.
+- **Width across weights**: within ±2% of Regular from 100 to 600; up to +4% at 700 and +10% at 900, linear
+  between; never under −2% (owner decision, round 4; it was ±2% to 700 and ±5% at 800 and 900). The old rule was
+  the cause of defect 1. To relax it further is an owner decision.
 
 ## Baseline (0.6.1 + Unreleased)
 
@@ -329,3 +330,58 @@ Known limits (the reviewer's list for round 3, most important first, with why ea
 7. Thin `W` beside a round letter and `A` beside `W` still kern 0.4 to 0.6x Inter's (the outline measure reads their white as spacing).
 8. Not started: thinner Black arch joins (join-angle gate, owner decision), `[ ] { }` sidebearings (pinned advances, owner decision),
    Cyrillic `Ч Ћ Ђ ђ` and Greek `α` on the old arch, the `G` spur at Black, the `Q` tail at 400.
+
+## Round 4 result / final
+
+One fresh reviewer scored five states blind in one sitting on 2026-11-22: main, `aafe2f9b` (round 1), `19acf8ac` (round 2),
+`08d7ce960` (round 3) and the round 4 fonts, rendered from the committed fonts with the same `proofs.cjs`, under shuffled labels. The
+reviewer read only the "Proof set" and "Rubric" sections, scored each criterion at its worst place and viewed crops at 1:1. Before the
+sitting the weight-axis row was reworded to the owner's round 4 width decision. This table replaces the round 3 table for comparison:
+the reviewer's scale is stricter. `rhythm.py`: upright 0.50 / 0.53 / 0.55 / 0.59, italic 0.57 / 0.58 / 0.59 / 0.60 (100 / 400 / 700 / 900).
+
+| #   | Criterion (weight)             | Baseline | Round 1 | Round 2 | Round 3 | Round 4 |
+| --- | ------------------------------ | -------- | ------- | ------- | ------- | ------- |
+| 1   | Rhythm and spacing (15)        | 3        | 4       | 5       | 6       | 8       |
+| 2   | Weight axis (12)               | 4        | 5       | 5       | 6       | 8       |
+| 3   | Shape and curve quality (15)   | 4        | 4       | 4       | 5       | 6       |
+| 4   | Proportions (8)                | 5        | 5       | 5       | 6       | 7       |
+| 5   | Joins, terminals, contrast (8) | 4        | 4       | 5       | 5       | 6       |
+| 6   | Paragraph colour (12)          | 6        | 6       | 7       | 7       | 7       |
+| 7   | Small sizes (10)               | 7        | 7       | 7       | 7       | 7       |
+| 8   | Italic (8)                     | 3        | 3       | 4       | 5       | 6       |
+| 9   | Kerning (5)                    | 3        | 4       | 5       | 6       | 7       |
+| 10  | Optical sizes (4)              | 4        | 5       | 5       | 6       | 8       |
+| 11  | Character (3)                  | 5        | 5       | 6       | 6       | 7       |
+|     | **Weighted total**             | **4.4**  | **4.7** | **5.2** | **5.9** | **7.0** |
+
+An earlier sitting the same day (another reviewer) scored round 4 at its first merge 6.7 against round 3's 6.2. The target 9 was not
+met. No criterion is under its baseline.
+
+Round 4 did (each change held by a test in `test_font.py` or a gate in `quality.py`):
+
+- Width gate released for the heavy weights (owner decision): Bold and Black keep open counters and Inter-like spacing; the tightest
+  string runs +1.98% at 600, +3.1% at 700, +9.9% at 900.
+- Black arch and bowl joins thinned (`quality.py` judges them by join thickness, owner decision); `b d p q u µ` joins run round into
+  the stem with no mid-height kink.
+- Kerning fitted to Inter's white from the master outlines (`kern.WHITE_REF`), Bold refitted on its own outlines.
+- Redrawn at the heavy weights: `a e c g s S`, `f` (hook, crossbar, italic tail cut flat), `l` tail (one concave curve), `t` foot,
+  `k` leg, `r` beak, `z Z` bars, the italic bars of `E F L T Z z B D P R 7` (no step past the line), italic `v w V W M A` feet and apex,
+  squarer Black `o O Q 0`, a lighter `€`, guillemets, quotes, `%`, `@ ( ) [ ] { } &`, Black `T V W X Y Z`, `2 5`.
+- Bytes (budgets raised by the user within the round 4 caps): full 76,508 / 76,600, Latin[opsz,wght] 32,080 / 32,100,
+  Latin[wght] 25,692 / 25,700, Regular 25,040 / 25,100, italic full 82,904 / 83,000, italic Latin[opsz,wght] 35,284 / 35,300,
+  italic Latin[wght] 28,316 / 28,400. Latin[wght] is 58 bytes under its cap: the next redraw that adds points must find bytes first.
+
+Known limits (the reviewer's ranked list, with why each is still there):
+
+1. Italic Black `c` aperture near shut, italic `e` eye and `a` counter small. The cycle-3 redraw of the italic `c` and `s` terminals
+   failed `quality.py`'s terminal gates (lean, corners, thickness) and was reverted; it needs a new terminal construction.
+2. Black `a`: a notch where the bowl's foot meets the stem; Black `S`: slit upper counter, heavy spine, step at the lower terminal.
+3. Punctuation `, ; “ ”` reads heavier than the letters in 400 and 600 text.
+4. `f)` at 900 still near touching: the hook is the closest ink (`WHITE_BAND_SHAPE` allows 1.17-1.26x Inter's mean white at 800-900).
+5. Black `l` tail: a small flat on its inner curve; Black `r` arm join thin.
+6. Width at 700: the reviewer measured +4.8% on the `weights` sentence (the gate's measured strings: +3.1%).
+7. Thin: `nnn` and `HHH` loose (0.47 against Inter's 0.40 on the sheet), `T-` and `Kv` loose; 300 pale at 11 px.
+8. Italic `f` descender hook reads as fussy at 400; one contact at 900, opsz 32.
+9. Carried over: `u`/`µ` arch test at 24 px between masters (IUP tolerance), `KERNING_SHORT` upright `Wa` and italic `YA Ye Yc Yo`
+   at 100, the `f` hook weak at 12 to 13 px, Cyrillic `Ч Ћ Ђ ђ` and Greek `α` on the old arch, the Black `3` bump, the italic `g`
+   counter flat against the stem, the italic `6 9` stem corner, the italic `b` foot notch and Black `ft` (1.2-1.3x Inter's white).
