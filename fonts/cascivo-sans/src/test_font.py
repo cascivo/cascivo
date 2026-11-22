@@ -25,13 +25,13 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 76_400,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 75_500 -> 75_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 75_600 -> 76_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
-    'CascivoSans-Latin[opsz,wght].woff2': 32_000,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 31_600 -> 32_000, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
-    'CascivoSans-Latin[wght].woff2': 25_600,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_400, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 25_400 -> 25_600, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
+    'CascivoSans[opsz,wght].woff2': 76_600,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 75_500 -> 75_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 75_600 -> 76_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 76_400 -> 76_600, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Latin[opsz,wght].woff2': 32_100,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 31_600 -> 32_000, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 32_000 -> 32_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Latin[wght].woff2': 25_700,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_400, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 25_400 -> 25_600, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 25_600 -> 25_700, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
     'CascivoSans-Regular.woff2': 25_100,  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 25_500 -> 25_000, round 4 (Regular ships 24_964), then 25_000 -> 25_100, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
-    'CascivoSans-Italic[opsz,wght].woff2': 82_800,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 82_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 82_500 -> 82_800, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
-    'CascivoSans-Italic-Latin[opsz,wght].woff2': 35_400,  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance, then 35_000 -> 34_900, round 4 (ships 34_876), then 34_900 -> 35_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
-    'CascivoSans-Italic-Latin[wght].woff2': 28_500,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing, then 28_000 -> 28_200, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 28_200 -> 28_400, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 28_400 -> 28_500, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
+    'CascivoSans-Italic[opsz,wght].woff2': 83_000,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 82_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 82_500 -> 82_800, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 82_800 -> 83_000, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Italic-Latin[opsz,wght].woff2': 35_300,  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance, then 35_000 -> 34_900, round 4 (ships 34_876), then 34_900 -> 35_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 35_400 -> 35_300, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds): the build ships under the old budget
+    'CascivoSans-Italic-Latin[wght].woff2': 28_400,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing, then 28_000 -> 28_200, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 28_200 -> 28_400, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 28_400 -> 28_500, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 28_500 -> 28_400, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds): the build ships under the old budget
 }
 
 
@@ -1226,6 +1226,110 @@ class Font(unittest.TestCase):
             bar = (rows[470][0][0] - sh, rows[470][0][1] - sh)
             with self.subTest(font=os.path.basename(path)):
                 self.assertGreaterEqual(bar[1] - stem[1], stem[0] - bar[0])
+
+    def _black_rows(self, italic, ch, wght=900):
+        """A Black (or other weight) letter's ink rows, the italic's sheared upright about mid x-height (tan 10 deg), so its stems are
+        vertical and their edges compare as the upright's do."""
+        gs, cmap = self._glyphs(VFI if italic else VF, wght)
+        rows = dict(ink_rows(gs, cmap[ord(ch)]))
+        if italic:
+            rows = {y: [(a - (y - 264) * 0.1763, b - (y - 264) * 0.1763) for a, b in v] for y, v in rows.items()}
+        return rows
+
+    def test_black_l_tail_and_t_foot_turn_in_one_curve(self):
+        # Round 4 cycle 3: at 300 px the Black l's tail rose off the stem in a step (its right edge stood on the stem's line for all but
+        # 8 rows, then jumped out) and the t's inner corner was a near-square notch (8-9 rows of fillet). Both now turn in one concave
+        # curve: the l's right edge never steps back inward going up and leaves the stem over >= 50 rows (upright 82, italic 61), the
+        # t's inner edge over >= 20 (27).
+        for italic in (False, True):
+            with self.subTest(italic=italic, glyph='l'):
+                r = self._black_rows(italic, 'l')
+                re = {y: r[y][-1][1] for y in r if r[y]}
+                stem = sorted(re[y] for y in range(300, 500))[100]
+                toe = max(re[y] for y in range(0, 40))
+                self.assertLessEqual(max(re[y + 1] - re[y] for y in range(0, 300)), 0.5)
+                self.assertGreaterEqual(sum(1 for y in range(0, 300) if stem + 3 < re[y] < toe - 3), 50)
+            with self.subTest(italic=italic, glyph='t'):
+                r = self._black_rows(italic, 't')
+                re = {y: r[y][0][1] for y in r if r[y]}
+                stem = sorted(re[y] for y in range(200, 300))[50]
+                foot = max(re[y] for y in range(10, 60))
+                self.assertGreaterEqual(sum(1 for y in range(0, 300) if stem + 2 < re[y] < foot - 2), 20)
+
+    def test_black_strokes_end_clean(self):
+        # Round 4 cycle 3: the Black (and Bold) shapes had nibs where a stroke ends against another. The f's hook overhung its crossbar
+        # by 35-44 units at 700-900 (now 25, 13 and 2), the italic f's descending tail ended in a 67-unit wedge (now a flat cut,
+        # <= 5), the k's leg bowed 11 units off its line (<= 2), the r's beak hung 33-37 units below its face (<= 12) and z / Z stepped
+        # 48-51 units in from the bar to the diagonal (<= 15).
+        for w, most in ((700, 30), (800, 18), (900, 5)):
+            with self.subTest(glyph='f', wght=w):
+                r = self._black_rows(False, 'f', w)
+                hook = max(v[-1][1] for y, v in r.items() if y > 560 and v)
+                bar = max(v[-1][1] for y, v in r.items() if 400 < y < 520 and v)
+                self.assertLessEqual(hook - bar, most)
+        r = self._black_rows(True, 'f')
+        lo = min(y for y in r if y < -2 and r[y])
+        xs = [r[y][0][0] for y in range(lo + 3, lo + int(0.6 * -lo))]
+        self.assertLessEqual(max(xs) - min(xs), 5, 'italic f tail tip')
+        for italic in (False, True):
+            with self.subTest(italic=italic, glyph='k'):
+                r = self._black_rows(italic, 'k')
+                pts = [(y, r[y][1][0]) for y in range(10, 180) if len(r[y]) >= 2]
+                (y0, x0), (y1, x1) = pts[0], pts[-1]
+                self.assertLessEqual(max(abs(x - (x0 + (x1 - x0) * (y - y0) / (y1 - y0))) for y, x in pts), 2)
+            with self.subTest(italic=italic, glyph='r'):
+                r = self._black_rows(italic, 'r')
+                face = max(v[-1][1] for v in r.values() if v)
+                yf = min(y for y, v in r.items() if v and v[-1][1] >= face - 2)
+                yin = min(y for y, v in r.items() if v and any(a <= face - 40 <= b for a, b in v))
+                self.assertLessEqual(yin - yf, 12)
+            for ch in 'zZ':
+                with self.subTest(italic=italic, glyph=ch):
+                    r = self._black_rows(italic, ch)
+                    left = min(v[0][0] for y, v in r.items() if 2 < y < 60 and v)
+                    top = max(y for y, v in r.items() if y < 250 and v and v[0][0] <= left + 2)
+                    self.assertLessEqual(r[top + 3][0][0] - left, 15)
+
+    def test_black_italic_bars_and_feet_are_flat(self):
+        # Round 4 cycle 3: the Black italic's horizontal bars ended 3 units past the baseline and cap height (a step where the
+        # slanted stem met them) and the feet of v w V W M and the apex of A ended in 6-11 unit spurs past the stroke's edge line. Bars
+        # now sit on the line (no ink below 0 or above the cap height, 699), and no foot or apex reaches more than 1 unit past its edge.
+        for ch in 'EFLTZzBDPR7':
+            with self.subTest(glyph=ch):
+                ys = [y for y, v in self._black_rows(True, ch).items() if v]
+                self.assertGreaterEqual(min(ys), 0)
+                self.assertLessEqual(max(ys), 699)
+        for ch, top in (('v', False), ('w', False), ('V', False), ('W', False), ('M', False), ('A', True)):
+            with self.subTest(glyph=ch):
+                r = self._black_rows(True, ch)
+                ys = sorted(y for y, v in r.items() if v)
+                y_end = ys[-2] if top else ys[1]
+                fit = [y_end - k for k in range(12, 36)] if top else [y_end + k for k in range(12, 36)]
+                n = len(r[y_end])
+                self.assertTrue(all(len(r[y]) == n for y in fit))
+                out = 0
+                for i in range(n):
+                    for side, sgn in ((0, -1), (1, 1)):
+                        (ya, xa), (yb, xb) = (fit[0], r[fit[0]][i][side]), (fit[-1], r[fit[-1]][i][side])
+                        out = max(out, sgn * (r[y_end][i][side] - (xa + (xb - xa) * (y_end - ya) / (yb - ya))))
+                self.assertLessEqual(out, 1)
+
+    def test_black_rounds_square_up_and_the_euro_lightens(self):
+        # Round 4 cycle 3: at 900 the o O Q 0 were near-ellipses, so their counters were pinched at the four diagonals next to Inter's
+        # superelliptic Black, and the euro's two bars filled 64% of its box, a dark blot in a row of figures. The Black rounds are
+        # squarer (glyphs.O_SQUARE, CAP_O_SQUARE): counter white per ink row o 42.4k -> 45.3k, O 125k -> 133k, 0 78k -> 84k
+        # (italic o 40.3k -> 43.2k, O 119k -> 125k, 0 77k -> 82k); the euro's bars are lighter: 0.50 of its box (Inter 0.52).
+        for path, floors in ((VF, (44_000, 130_000, 81_000)), (VFI, (42_000, 122_000, 80_000))):
+            gs, cmap = self._glyphs(path, 900)
+            for ch, least in zip('oO0', floors):
+                rows = dict(ink_rows(gs, cmap[ord(ch)]))
+                white = sum(v[i + 1][0] - v[i][1] for v in rows.values() for i in range(len(v) - 1))
+                with self.subTest(font=os.path.basename(path), glyph=ch):
+                    self.assertGreaterEqual(white, least)
+            rows = dict(ink_rows(gs, cmap[ord('\u20ac')]))
+            box = (max(v[-1][1] for v in rows.values() if v) - min(v[0][0] for v in rows.values() if v)) * (max(y for y, v in rows.items() if v) - min(y for y, v in rows.items() if v))
+            with self.subTest(font=os.path.basename(path), glyph='euro'):
+                self.assertLessEqual(ink_area(rows.items()) / box, 0.55)
 
     def test_black_double_quotes_stand_apart(self):
         # The two marks of a Black double quote keep 90 units of white (103 upright, 98 italic): at 35 they read as one block
