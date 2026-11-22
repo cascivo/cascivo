@@ -540,11 +540,11 @@ dependencies = [
 
 [[package]]
 name = "cascivo-html"
-version = "0.2.0"
+version = "0.3.0"
 
 [[package]]
 name = "cascivo-html-cli"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "cascivo-html",
  "ureq",
@@ -559,7 +559,7 @@ dependencies = [
 
 [[package]]
 name = "cascivo-web"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "axum",
  "cascivo-html",

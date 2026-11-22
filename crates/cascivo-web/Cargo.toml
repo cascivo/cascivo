@@ -1,6 +1,6 @@
 [package]
 name = "cascivo-web"
-version = "0.2.0"
+version = "0.2.1"
 edition.workspace = true
 rust-version.workspace = true
 description = "Static sites from Markdown and content collections, with cascivo-html components, i18n and RSS"
@@ -22,7 +22,7 @@ path = "src/main.rs"
 
 [dependencies]
 axum = { version = "0.8.9", optional = true, default-features = false }
-cascivo-html = { path = "../cascivo-html", version = "0.2.0" }
+cascivo-html = { path = "../cascivo-html", version = "0.3.0" }
 minijinja = { version = "3.1.0", default-features = false, features = [
   "builtins",
   "multi_template",
