@@ -13,9 +13,32 @@ DEFAULT = dict(wght=400, opsz=14)
 # Black's stem: 36% of the x-height, as Geist's and Inter's Black. At 178 (34%) Black was
 # visibly lighter than both.
 BLACK_STEM = 190
-THIN_STEM = 24  # Thin sits 2 above the old 22 so the first weight step is a full 20 (build.NAMED_STEMS)
-BOLD_STEM = 146  # build.NAMED_STEMS at 700
-MID_WGHT = round(400 + (BOLD_STEM - 84) / (BLACK_STEM - 84) * 500, 1)  # Bold's design coordinate (build._wght_map)
+THIN_STEM = 24  # Thin sits 2 above the old 22 so the first weight step is a full 20 (NAMED_STEMS)
+BOLD_STEM = 146  # NAMED_STEMS at 700
+MID_WGHT = round(400 + (BOLD_STEM - 84) / (BLACK_STEM - 84) * 500, 1)  # Bold's design coordinate (_wght_map)
+# Stem at each named weight (Regular 84 and Black are the masters). Every step is 20-22 units,
+# as in Inter (19-26): the old light half held equal stem *ratios* (13 units from Thin to
+# ExtraLight, 31 from Light to Regular), which read as a stall then a jump. Thin starts at 24, a
+# touch above the old Thin master (22), so it stays a legible stroke and the first step is a full 20;
+# the heavy half still front-loads weight as Geist and Inter do (Bold reads clearly bold).
+NAMED_STEMS = [(100, THIN_STEM), (200, 44), (300, 64), (400, 84), (500, 104), (600, 124), (700, 146), (800, 168), (900, BLACK_STEM)]
+
+
+def _wght_map():
+    """avar segments: user weight -> the design coordinate whose linear master stem is the target."""
+    out = []
+    for w, stem in NAMED_STEMS:
+        if stem <= 84:
+            d = 100 + (stem - THIN_STEM) / (84 - THIN_STEM) * 300
+        else:
+            d = 400 + (stem - 84) / (BLACK_STEM - 84) * 500
+        out.append((w, round(d, 1)))
+    return out
+
+
+WGHT_MAP = _wght_map()
+
+
 DOT_MIN_EM = 0.05  # the smallest dot (period, colon, i dot, ...) at wght 100, in em
 DOT_FLOOR = DOT_MIN_EM * 1000 + 3 * 1.12 * 1.06  # units; see P.dot
 ITALIC_ANGLE = 10  # degrees; Plex and Inter italics sit near 10-11
@@ -48,9 +71,10 @@ def _pw(x, table):
 # narrowed by BOLD_SQUEEZE (build.counter_squeeze). 600 interpolates Regular and Bold, two thirds of the way: 600's +2% caps Bold at
 # about +3%, and the interpolated counters (n's 196) would leave Bold's gap over counter at 0.51 there; narrowed to 179 it is 0.55.
 # HEAVY_TIGHTEN and BOLD_TIGHTEN: the share of the stem sidebearing lost at Black and at Bold (0.30 / 0.22 before round 4,
-#   italic 0.36 / 0.25): n's sidebearing 44 at Black, 51 at Bold.
+#   italic 0.36 / 0.25): n's sidebearing 44 at Black, 51 at Bold. Upright Bold 0.12 -> 0.125 (round 4, merge 2): the redrawn f, bowls,
+#   a c e g s S and T-Z set 'Overview Activity...' at +2.03% at 600 against the +2% cap; 0.125 takes the excess back from every letter.
 HEAVY_TIGHTEN = 0.08
-BOLD_TIGHTEN = 0.12
+BOLD_TIGHTEN = 0.125
 BOLD_TIGHTEN_ITALIC = 0.13
 HEAVY_TIGHTEN_ITALIC = 0.09
 # BOLD_SQUEEZE: the share of each lowercase counter's width Bold gives up against the interpolated outline; capitals keep theirs

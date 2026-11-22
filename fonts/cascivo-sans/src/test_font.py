@@ -25,13 +25,13 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 75_600,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 75_500 -> 75_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
-    'CascivoSans-Latin[opsz,wght].woff2': 31_600,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
-    'CascivoSans-Latin[wght].woff2': 25_400,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_400, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn)
+    'CascivoSans[opsz,wght].woff2': 76_400,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 75_500 -> 75_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 75_600 -> 76_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
+    'CascivoSans-Latin[opsz,wght].woff2': 32_000,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 31_600 -> 32_000, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
+    'CascivoSans-Latin[wght].woff2': 25_600,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_400, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 25_400 -> 25_600, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
     'CascivoSans-Regular.woff2': 25_100,  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 25_500 -> 25_000, round 4 (Regular ships 24_964), then 25_000 -> 25_100, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
-    'CascivoSans-Italic[opsz,wght].woff2': 82_500,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 82_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn)
-    'CascivoSans-Italic-Latin[opsz,wght].woff2': 34_900,  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance, then 35_000 -> 34_900, round 4 (ships 34_876)
-    'CascivoSans-Italic-Latin[wght].woff2': 28_400,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing, then 28_000 -> 28_200, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 28_200 -> 28_400, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
+    'CascivoSans-Italic[opsz,wght].woff2': 82_800,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 82_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 82_500 -> 82_800, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
+    'CascivoSans-Italic-Latin[opsz,wght].woff2': 35_400,  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance, then 35_000 -> 34_900, round 4 (ships 34_876), then 34_900 -> 35_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
+    'CascivoSans-Italic-Latin[wght].woff2': 28_500,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing, then 28_000 -> 28_200, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 28_200 -> 28_400, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 28_400 -> 28_500, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white)
 }
 
 
@@ -197,14 +197,17 @@ KERNING_SHORT = (
 
 # Inter's white at the pairs round 4 fitted (kern.WHITE_FIT), as pair_white_profile reads it: {pair: {wght: (mean white, least white)}}, per em, read from
 # Inter.ttf and InterItalic.ttf (Inter 4.001 variable, opsz 14) with HarfBuzz's default features. Thin and ExtraLight: W V Y T beside a e o c q g and A,
-# AV AW AT AY, LT LY LV, Ty To Tr, Wa We; Black and ExtraBold: LY and the figure and letter pairs with a full stop or comma; Regular: Kv Ky Kw.
+# AV AW AT AY, LT LY LV, Ty To Tr, Wa We; Black and ExtraBold: LY and the figure and letter pairs with a full stop or comma; Regular: Kv Ky Kw;
+# upright 400-700: ff fl ft cf (merge 2).
 # Cascivo's mean white lies within WHITE_BAND of Inter's and its closest row is at least WHITE_LEAST_FLOOR of Inter's, at the weights listed.
 WHITE_BAND = (0.85, 1.1)
 WHITE_LEAST_FLOOR = 0.75
 # Where the white beside f) at 800-900 cannot reach the band by kerning: the f's hook is the nearest ink (Inter's closest row is 37-46, here 24-40 when the
 # pair keeps its 0.75x), and the hole under the crossbar between the stem and the parenthesis is the shape's. Kerning closes it only by touching the hook, so the
 # pair keeps its closest row and its mean stays where it is (the redrawn f of the shape sessions is the fix): the ceiling is what ships, rounded up.
-WHITE_BAND_SHAPE = {('upright', 'f)', 800): 1.2, ('upright', 'f)', 900): 1.3}
+# Round 4, merge 2: the redrawn f (hook 136 units past the stem at Black, Inter's 125; this f's right edge, as Inter's crossbar is not) and Bold's own fit
+# (kern._fit_white_bold) leave 1.17x and 1.25x (1.2 and 1.3 before).
+WHITE_BAND_SHAPE = {('upright', 'f)', 800): 1.17, ('upright', 'f)', 900): 1.26}
 INTER_WHITE = {
     'upright': {
         'Wa': {100: (275, 131), 200: (259, 127)},
@@ -257,6 +260,10 @@ INTER_WHITE = {
         'f)': {800: (204, 46), 900: (185, 37)},
         'f]': {800: (221, 53), 900: (199, 46)},
         'f}': {800: (242, 53), 900: (224, 46)},
+        'ff': {400: (208, 10), 500: (194, 6), 600: (179, 3), 700: (166, 0)},
+        'fl': {500: (202, 91), 600: (188, 84), 700: (174, 76)},
+        'ft': {700: (157, 2)},
+        'cf': {700: (248, 69)},
         'Kv': {400: (286, 185)},
         'Ky': {400: (285, 185)},
         'Kw': {400: (249, 164)},
@@ -2069,6 +2076,7 @@ class Font(unittest.TestCase):
         # Ty To Tr, Wa We), at ExtraBold and Black (LY 7, 7. y. y, r. F. F, P,) and at Regular (Kv Ky Kw) the mean white of the pair lies within 0.85-1.1x of
         # Inter's at the same weight (upright against Inter, italic against Inter Italic) and the closest row keeps 0.75x of Inter's. Before the fit
         # the Thin and italic pairs read 0.72-0.85x, LY 7, 7. 1.10-1.31x and y. y, r. F. 0.62-0.83x at Black, Kv Ky 0.80-0.83x at Regular.
+        # Round 4, merge 2, upright: ff fl at 500-700 and ff at 400, ft and cf at 700 (ft read 1.15-1.16x).
         try:
             import uharfbuzz as hb
         except ImportError:
@@ -2081,11 +2089,12 @@ class Font(unittest.TestCase):
                         got_mean, got_least = pair_white_profile(hb, path, pair, wght)
                         self.assertGreaterEqual(got_mean / mean, WHITE_BAND[0], f'{pair} has {got_mean:.0f} of white at {wght}, Inter {mean}')
                         self.assertLessEqual(got_mean / mean, WHITE_BAND_SHAPE.get((kind, pair, wght), WHITE_BAND[1]), f'{pair} has {got_mean:.0f} of white at {wght}, Inter {mean}')
-                        self.assertGreaterEqual(got_least / least, WHITE_LEAST_FLOOR, f'{pair} comes to {got_least:.0f} at {wght}, Inter {least}')
+                        self.assertGreaterEqual(got_least, WHITE_LEAST_FLOOR * least, f'{pair} comes to {got_least:.0f} at {wght}, Inter {least}')  # Inter's ff at 700: 0
 
     def test_black_proportional_one_sets_like_the_other_figures(self):
         # Round 4: Black's proportional 0 then 1 left 1.35x the HH gap upright and 1.46x italic (Inter's 0.89x), where 11, 10 and 12 sat at 0.9-1.0x. The pair
         # closes (kern.WHITE_FIT) so 01 11 10 12 are within 1.1x the HH gap at 900 and 800; Thin and Regular keep their figure spacing (no kerning).
+        # 02 the same (round 4, merge 2: 1.16x and 1.18x the HH gap at 800 and 900 upright).
         try:
             import uharfbuzz as hb
         except ImportError:
@@ -2093,12 +2102,13 @@ class Font(unittest.TestCase):
 
         for path in (VF, VFI):
             for wght in (800, 900):
-                for pair in ('01', '11', '10', '12'):
+                for pair in ('01', '11', '10', '12', '02'):
                     with self.subTest(path=os.path.basename(path), wght=wght, pair=pair):
                         gaps, hh = shaped_gaps(hb, path, pair, wght)
                         self.assertLessEqual(gaps[0] / hh, 1.1, f'{pair} sets {gaps[0] / hh:.2f}x the HH gap at {wght}')
             for wght in (100, 400):
-                self.assertEqual(pair_kerning(hb, path, '01', wght), 0, f'01 stays unkerned at {wght}')
+                for pair in ('01', '02'):
+                    self.assertEqual(pair_kerning(hb, path, pair, wght), 0, f'{pair} stays unkerned at {wght}')
 
     def test_quotes_hold_their_size(self):
         # single and double quotes (curly and straight) and the guillemets: the ink box (width and height each) is >= 0.9x Inter's

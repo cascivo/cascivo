@@ -47,7 +47,7 @@ from geom import contour_bounds, expand, flatten, transform_contour  # noqa: E40
 import kern  # noqa: E402
 from kern import kern_fea  # noqa: E402
 from fontTools.varLib.models import VariationModel  # noqa: E402
-from params import BOLD_SQUEEZE, BOLD_SQUEEZE_CAP, MID_WGHT, BLACK_STEM, THIN_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa: E402
+from params import BOLD_SQUEEZE, BOLD_SQUEEZE_CAP, MID_WGHT, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, WGHT_MAP, P  # noqa: E402
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
@@ -1005,27 +1005,6 @@ def build_master_font(o, glyf, order):
     return fb.font
 
 
-# Stem at each named weight (Regular 84 and Black are the masters). Every step is 20-22 units,
-# as in Inter (19-26): the old light half held equal stem *ratios* (13 units from Thin to
-# ExtraLight, 31 from Light to Regular), which read as a stall then a jump. Thin starts at 24, a
-# touch above the old Thin master (22), so it stays a legible stroke and the first step is a full 20;
-# the heavy half still front-loads weight as Geist and Inter do (Bold reads clearly bold).
-NAMED_STEMS = [(100, THIN_STEM), (200, 44), (300, 64), (400, 84), (500, 104), (600, 124), (700, 146), (800, 168), (900, BLACK_STEM)]
-
-
-def _wght_map():
-    """avar segments: user weight -> the design coordinate whose linear master stem is the target."""
-    out = []
-    for w, stem in NAMED_STEMS:
-        if stem <= 84:
-            d = 100 + (stem - THIN_STEM) / (84 - THIN_STEM) * 300
-        else:
-            d = 400 + (stem - 84) / (BLACK_STEM - 84) * 500
-        out.append((w, round(d, 1)))
-    return out
-
-
-WGHT_MAP = _wght_map()
 
 
 def _bold_after_black(sort_key):

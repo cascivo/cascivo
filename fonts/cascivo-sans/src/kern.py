@@ -23,7 +23,7 @@ import math
 import os
 import unicodedata
 
-from params import MID_WGHT, P  # noqa: E402
+from params import MID_WGHT, WGHT_MAP, P  # noqa: E402
 from composites import ALIAS, GREEK_ACCENTED, GREEK_POLY, accented_chars, glyph_name, is_cap, script_glyph
 from geom import seg_point
 
@@ -74,9 +74,17 @@ STRONG = {(a, b): (reach, more, gain, limit) for lefts, rights, reach, more, gai
 # brings the weights the table lists inside a narrower band (AIM_BAND, AIM_LEAST: margin for the interpolation and the rounding). Only the
 # reference is hand-set, like STRONG's limits: Inter 4.001's mean and closest white of the pair at the weight, {pair: {wght: (mean, least)}}. A
 # redrawn T, V, W, Y or f changes the white and the value follows; nothing here is a unit count. Thin (100) carries the weights up to 400, Black (900) the
-# ones above, Regular (400) its own; between masters the white interpolates linearly (200 is 2/3 Thin, 800 is 4/5 Black), as the kerning does.
+# ones above, Regular (400) its own; between masters the white interpolates linearly in the design space (200 is 2/3 Thin; above 400 the avar map),
+# and Bold, whose outlines are its own, refits 500-800 against Regular and Black (_fit_white_bold).
+# Round 4, merge 2: ff fl at 500-700, ft at 700 and cf at 700 (upright), after the f was redrawn; ff at 400 too, which OWN_CLOSING_PAIRS closes
+# (1.04x Inter's: its -32 stays). ft read 1.15-1.16x Inter's white at 500-700. Inter lets ft's crossbars nearly meet (closest row 2-10 units), this
+# f keeps them 0.3x the nn gap apart (test_font.test_heavy_f_leaves_no_hole), so ft closes at Bold only as far as AIM_OWN's 1.09x: at the 1.06x aim
+# they came to 0.28x, and with 500-600 listed too (Regular's -33 holds them; Bold carries 600 two-thirds, 500 one-third) to 0.19x. Not fi: its closest
+# row is the hook over the i's dot (0.56-0.71x Inter's at 500-700: this f's hook is its right edge, Inter's crossbar reaches past it), and
+# opening it to the 0.75x floor (+22 at Bold) set the stems 1.23x Inter's white apart (test_ff_and_its_pairs_fit_like_inter: under 1.2x).
 WHITE_DEPTH, WHITE_BAND, WHITE_LEAST = 400, (0.85, 1.1), 0.75
 AIM_BAND, AIM_LEAST = (0.88, 1.06), 0.78
+AIM_OWN = {('f', 't'): (0.88, 1.09)}
 WHITE_REF = {
     'upright': {
         'Wa': {100: (275, 131), 200: (259, 127)},
@@ -129,6 +137,10 @@ WHITE_REF = {
         'f)': {800: (204, 46), 900: (185, 37)},
         'f]': {800: (221, 53), 900: (199, 46)},
         'f}': {800: (242, 53), 900: (224, 46)},
+        'ff': {400: (208, 10), 500: (194, 6), 600: (179, 3), 700: (166, 0)},
+        'fl': {500: (202, 91), 600: (188, 84), 700: (174, 76)},
+        'ft': {700: (157, 2)},
+        'cf': {700: (248, 69)},
         'Kv': {400: (286, 185)},
         'Ky': {400: (285, 185)},
         'Kw': {400: (249, 164)},
@@ -191,7 +203,11 @@ WHITE_REF = {
 }
 # Black's proportional 0 then 1 left 1.35x the HH gap upright and 1.46x italic (Inter 0.89x): it closes by what its closest white has beyond FIT_HH x
 # the HH gap, at Black only (Thin and Regular keep their figure spacing; the pair is no reference list's).
-FIT_HH = {('zero.pnum', 'one.pnum'): 1.04}
+# Pairs no list kerned before WHITE_REF named them (fl cf, round 4, merge 2): they start from no kerning on every master, so only the fit moves them,
+# and Thin and Regular keep theirs (none).
+WHITE_ONLY = {('f', 'l'), ('c', 'f')}
+# 0 then 2 the same (round 4, merge 2: 1.18x the HH gap at Black upright; the italic's 1.02x stays unkerned).
+FIT_HH = {('zero.pnum', 'one.pnum'): 1.04, ('zero.pnum', 'two.pnum'): 1.04}
 FIT_HEAVY_ONLY = set(FIT_HH)
 
 
@@ -471,6 +487,7 @@ def reset():
     global _SELECTED, _REGULAR, _BLACK, _GROUPS, _FIX, _DIAG
     _SELECTED = _REGULAR = _BLACK = _GROUPS = _FIX = _DIAG = None
     _WHITE0.clear()
+    _FIT_O.clear()
 
 
 def _non_latin(name):
@@ -553,9 +570,42 @@ def _white0(o, a, b):
     return sum(min(g, least + WHITE_DEPTH) for g in gaps) / len(gaps), least
 
 
+def _design(w):
+    """The design coordinate of a user weight (the avar map): 800 sits halfway between Bold (700) and Black, not 4/5 of the way to Black."""
+    for (u0, d0), (u1, d1) in zip(WGHT_MAP, WGHT_MAP[1:]):
+        if u0 <= w <= u1:
+            return d0 + (d1 - d0) * (w - u0) / (u1 - u0)
+    raise ValueError(w)
+
+
+def _clamp_white(refs, value, mean0, least0, share, aim=AIM_BAND):
+    """The value nearest `value` that puts the white inside AIM_BAND of Inter's at the weights `share` reads, and its closest row over AIM_LEAST.
+    share(w) is None for a weight this master does not carry, else (this master's share of it, the other master's mean and least, kerned)."""
+    def bounds(band, least_aim):
+        lo, hi = -math.inf, math.inf
+        for w, (i_mean, i_least) in refs.items():
+            s = share(w)
+            if s is None:
+                continue
+            f, base_mean, base_least = s
+            lo = max(lo, (band[0] * i_mean - base_mean) / f - mean0, (least_aim * i_least - base_least) / f - least0)
+            hi = min(hi, (band[1] * i_mean - base_mean) / f - mean0)
+        return lo, hi
+
+    aim_lo, aim_hi = lo, hi = bounds(aim, AIM_LEAST)
+    if lo > hi:  # a pair whose closest row and whose mean pull apart at two weights: the margins go before the band does
+        lo, hi = bounds(WHITE_BAND, WHITE_LEAST + 0.01)
+    if lo > hi:  # and when they still do, the shapes decide (f) at Black: its hook is the nearest ink and the hole under the bar stays): the closest row wins
+        lo = hi = aim_lo
+    if lo > -math.inf or hi < math.inf:
+        return int(round(min(max(value, lo), hi)))
+    return value
+
+
 def _fit_white(o, vals, loc):
     """Move each WHITE_REF pair's value on this master (Thin, Regular or Black) the least that puts the white at the weights it carries inside
-    AIM_BAND of Inter's, and its closest row over AIM_LEAST. The weights between a master and Regular read an interpolation of the two."""
+    AIM_BAND of Inter's, and its closest row over AIM_LEAST. The weights between a master and Regular read an interpolation of the two (Black's
+    estimate: Bold, a master of its own outlines, refits the weights from 500 to 800 in _fit_white_bold)."""
     w0 = loc.get('wght')
     if w0 not in (100, 400, 900):
         return
@@ -563,29 +613,22 @@ def _fit_white(o, vals, loc):
         if (a, b) not in vals or a not in o.adv or b not in o.adv:
             continue
         mean0, least0 = _white0(o, a, b)
-        def bounds(band, least_aim):
-            lo, hi = -math.inf, math.inf
-            for w, (i_mean, i_least) in refs.items():
-                if (w > 400) - (w < 400) != (w0 > 400) - (w0 < 400):
-                    continue
-                if w0 == 400:
-                    f, base_mean, base_least = 1.0, 0.0, 0.0
-                else:
-                    f = (400 - w) / 300 if w < 400 else (w - 400) / 500
-                    m4, l4, v4 = _WHITE0[(a, b), 400]
-                    base_mean, base_least = (1 - f) * (m4 + v4), (1 - f) * (l4 + v4)
-                lo = max(lo, (band[0] * i_mean - base_mean) / f - mean0, (least_aim * i_least - base_least) / f - least0)
-                hi = min(hi, (band[1] * i_mean - base_mean) / f - mean0)
-            return lo, hi
 
-        aim_lo, aim_hi = lo, hi = bounds(AIM_BAND, AIM_LEAST)
-        if lo > hi:  # a pair whose closest row and whose mean pull apart at two weights: the margins go before the band does
-            lo, hi = bounds(WHITE_BAND, WHITE_LEAST + 0.01)
-        if lo > hi:  # and when they still do, the shapes decide (f) at Black: its hook is the nearest ink and the hole under the bar stays): the closest row wins
-            lo = hi = aim_lo
-        if lo > -math.inf or hi < math.inf:
-            vals[(a, b)] = int(round(min(max(vals[(a, b)], lo), hi)))
+        def share(w):
+            if (w > 400) - (w < 400) != (w0 > 400) - (w0 < 400):
+                return None
+            if w0 == 400:
+                return 1.0, 0.0, 0.0
+            d = _design(w)
+            if MID_WGHT >= d > 400:  # Bold's own (_fit_white_bold)
+                return None
+            f = (400 - d) / 300 if w < 400 else (d - 400) / 500
+            m4, l4, v4 = _WHITE0[(a, b), 400]
+            return f, (1 - f) * (m4 + v4), (1 - f) * (l4 + v4)
+
+        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, AIM_OWN.get((a, b), AIM_BAND))
         _WHITE0[(a, b), w0] = (mean0, least0, vals[(a, b)])
+    _FIT_O[w0] = o
     for (a, b), by in FIT_HH.items():
         if (a, b) in vals:
             vals[(a, b)] = 0
@@ -594,6 +637,55 @@ def _fit_white(o, vals, loc):
                 lo_h, _ = _cached_fine(o, 'H')
                 hh = min(o.adv['H'] - hi_h[x] + lo_h[x] for x in set(hi_h) & set(lo_h))
                 vals[(a, b)] = -max(0, int(round(_gap(o, a, b) - by * hh)))
+
+
+_FIT_O = {}  # wght -> the master _fit_white last fitted there (Regular, Black): _fit_white_bold reads the outlines between them and Bold
+
+
+class _Between:
+    """The glyphs a pair draws, interpolated a share t of the way from master o to master p: what the font draws at a weight between two masters."""
+
+    def __init__(self, o, p, t, names):
+        self.contours, self.comps, self.adv = {}, {}, {}
+        lerp = lambda u, v: u + (v - u) * t  # noqa: E731
+        todo = list(names)
+        while todo:
+            g = todo.pop()
+            if g in self.adv:
+                continue
+            self.adv[g] = lerp(o.adv[g], p.adv[g])
+            self.contours[g] = [[(s[0],) + tuple((lerp(u[0], v[0]), lerp(u[1], v[1])) for u, v in zip(s[1:], q[1:])) for s, q in zip(c, d)]
+                                for c, d in zip(o.contours.get(g, []), p.contours.get(g, []))]
+            self.comps[g] = [(c, lerp(x, x2), lerp(y, y2), lerp(k, k2)) for (c, x, y, k), (_, x2, y2, k2) in zip(o.comps.get(g, []), p.comps.get(g, []))]
+            todo += [c for c, *_ in self.comps[g]]
+
+
+def _fit_white_bold(o, vals):
+    """Bold's outlines are not Regular's and Black's interpolated (its own spacing and counters, build.mid_master), so the white of a WHITE_REF pair
+    between 400 and 900 bends at 700: 500-600 read Regular and Bold, 800 Bold and Black. Bold's value moves the least that puts those weights inside
+    AIM_BAND (f) at 800 read 0.73x Inter's closest row with the straight-line estimate)."""
+    for (a, b), refs in white_ref(o.p.italic).items():
+        if (a, b) not in vals or a not in o.adv or b not in o.adv or ((a, b), 400) not in _WHITE0 or ((a, b), 900) not in _WHITE0:
+            continue
+        mean0, least0 = _white0(o, a, b)
+        m4, l4, v4 = _WHITE0[(a, b), 400]
+        m9, l9, v9 = _WHITE0[(a, b), 900]
+
+        def share(w):
+            # the white of the outlines the font draws there, unkerned, plus the kerning interpolated: Bold's share f of it is this value
+            d = _design(w)
+            if not 400 < d < 900:
+                return None
+            if d == MID_WGHT:
+                return 1.0, 0.0, 0.0
+            if d < MID_WGHT:
+                f, other, v_other = (d - 400) / (MID_WGHT - 400), _FIT_O[400], v4
+            else:
+                f, other, v_other = (900 - d) / (900 - MID_WGHT), _FIT_O[900], v9
+            mean_d, least_d = _white0(_Between(other, o, f, (a, b)), a, b)
+            return f, mean_d + (1 - f) * v_other - f * mean0, least_d + (1 - f) * v_other - f * least0
+
+        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, AIM_OWN.get((a, b), AIM_BAND))
 
 
 def _values(o, pairs):
@@ -612,6 +704,7 @@ def _values(o, pairs):
     vals = {k: round(v[0] * (1 if k in STRONG else boost)) if v[0] < 0 else v[0] for k, v in pairs.items()}
     if o.p.wght <= 400:
         vals.update({k: 0 for k in _HEAVY_KEYS if k in vals})
+    vals.update({k: 0 for k in WHITE_ONLY if k in vals})
     loc = getattr(o, 'loc', {'wght': 400, 'opsz': 14})
     if loc.get('opsz') == 14:
         _fit_white(o, vals, loc)
@@ -642,6 +735,7 @@ def _values(o, pairs):
         # its own spacing (tighter than that line) would bring too close is opened by what it needs
         t = (MID_WGHT - 400) / 500
         out = {k: round(_REGULAR[k] + (_BLACK[k] - _REGULAR[k]) * t) for k in vals}
+        _fit_white_bold(o, out)
         for k in pairs:
             if k in OWN_SHAPE_PAIRS or k[0] in I_WIDE or k[1] in I_WIDE:
                 out[k] = max(out[k], _need(o, *k))
