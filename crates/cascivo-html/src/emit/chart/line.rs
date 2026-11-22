@@ -63,7 +63,7 @@ pub(super) fn emit_xy(node: &Node, cx: &mut Cx, out: &mut String, area: bool) {
     let ys = Linear::new((y_min, y_max), (ih, 0.0));
 
     let show_legend = !c.plain && c.legend.unwrap_or(ns > 1);
-    open(out, &c.frame(), show_legend);
+    open(out, cx, &c.frame(), show_legend);
     out.push_str("<g>");
     // A lone non-stacked area gets the gradient fill React defaults to.
     let gradient = area
@@ -132,7 +132,9 @@ pub(super) fn emit_xy(node: &Node, cx: &mut Cx, out: &mut String, area: bool) {
                 } else {
                     "var(--cascivo-chart-fill-opacity-overlap, 0.12)"
                 };
-                (col.clone(), format!(" style=\"fill-opacity:{opacity}\""))
+                let mut style = String::new();
+                cx.style(&mut style, &format!("fill-opacity:{opacity}"));
+                (col.clone(), style)
             };
             let _ = write!(
                 out,
@@ -148,6 +150,7 @@ pub(super) fn emit_xy(node: &Node, cx: &mut Cx, out: &mut String, area: bool) {
             for (i, p) in top.iter().enumerate() {
                 data_label(
                     out,
+                    cx,
                     p.0,
                     p.1 - 8.0,
                     &label_num(s.values.get(i).copied().unwrap_or(0.0)),

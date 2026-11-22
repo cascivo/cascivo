@@ -1,13 +1,13 @@
 //! Document assembly: parse → brand → emit → one self-contained HTML string.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use crate::ast::{Directive, Doc};
 use crate::brand::{Brand, document_brand};
 use crate::css_gen::{BASE_CSS, COMPONENT_CSS, THEMES};
 use crate::diag::Diagnostic;
 use crate::emit::emit;
-use crate::html::esc;
+use crate::html::{attr, esc};
 use crate::parse::parse;
 
 /// Resolves `@brand-file` paths. The library itself never touches the filesystem.
@@ -16,7 +16,7 @@ pub type BrandResolver = &'static dyn Fn(&str) -> Result<String, String>;
 /// Loads the bytes of an image/SVG source (a path or URL). Never called for `data:` URIs.
 pub type AssetResolver = &'static dyn Fn(&str) -> Result<Vec<u8>, String>;
 
-#[derive(Clone, Default)]
+#[derive(Clone)]
 pub struct Options {
     pub brand: Option<Brand>,
     pub brand_resolver: Option<BrandResolver>,
@@ -29,6 +29,30 @@ pub struct Options {
     pub embed_urls: bool,
     /// Largest embeddable asset in bytes (default 2 MiB).
     pub max_asset_bytes: Option<usize>,
+    /// Default `true`. When `false` (CSP-safe), no element gets a `style=""` attribute: each
+    /// declaration block becomes a `data-cv-style="<hash>"` hook whose rule is in
+    /// [`Fragment::styles`] (serialize with [`style_rules`]); [`render`] adds those rules to its
+    /// `<style>`. Markup inside author-supplied `svg` keeps its own `style`.
+    pub inline_styles: bool,
+    /// When set, [`render`] references scripts with `<script src="…" defer>` instead of inlining
+    /// them; serve [`script_bundle`] (or [`script`] per name) at that URL.
+    pub script_src: Option<String>,
+}
+
+impl Default for Options {
+    fn default() -> Self {
+        Self {
+            brand: None,
+            brand_resolver: None,
+            minify_html: false,
+            assets: Vec::new(),
+            asset_resolver: None,
+            embed_urls: false,
+            max_asset_bytes: None,
+            inline_styles: true,
+            script_src: None,
+        }
+    }
 }
 
 /// Per-document emit state. Ids come from a counter so output is deterministic.
@@ -39,6 +63,8 @@ pub struct Cx<'a> {
     pub(crate) diags: Vec<Diagnostic>,
     pub used: BTreeSet<&'static str>,
     pub scripts: BTreeSet<&'static str>,
+    /// CSP-safe mode only: `data-cv-style` key → declarations.
+    pub styles: BTreeMap<String, String>,
 }
 
 impl Cx<'_> {
@@ -47,6 +73,55 @@ impl Cx<'_> {
         self.next_id += 1;
         format!("cv-{}", self.next_id)
     }
+
+    /// Writes ` style="decls"`, or in CSP-safe mode ([`Options::inline_styles`] off) a
+    /// ` data-cv-style="<key>"` hook whose rule [`style_rules`] emits. Empty `decls` write nothing.
+    pub fn style(&mut self, out: &mut String, decls: &str) {
+        if let Some(key) = self.style_key(decls) {
+            attr(out, "data-cv-style", &key);
+        } else if !decls.is_empty() {
+            attr(out, "style", decls);
+        }
+    }
+
+    /// The `data-cv-style` key for `decls` in CSP-safe mode (recording its rule), else `None`.
+    pub fn style_key(&mut self, decls: &str) -> Option<String> {
+        if decls.is_empty() || self.opts.is_none_or(|o| o.inline_styles) {
+            return None;
+        }
+        // FNV-1a: stable across runs and platforms, so the output stays deterministic.
+        let mut h: u64 = 0xcbf2_9ce4_8422_2325;
+        for b in decls.bytes() {
+            h = (h ^ u64::from(b)).wrapping_mul(0x0100_0000_01b3);
+        }
+        let key = format!("{h:016x}");
+        self.styles.insert(key.clone(), decls.to_string());
+        Some(key)
+    }
+}
+
+/// CSS for CSP-safe mode: one `[data-cv-style="<key>"]` rule per entry of [`Fragment::styles`]
+/// (merge the maps of several pages first), in `@layer cascivo.override` so it wins over the
+/// component CSS like the inline style it replaces. Declarations that could break out of their
+/// rule are dropped.
+pub fn style_rules(styles: &BTreeMap<String, String>) -> String {
+    if styles.is_empty() {
+        return String::new();
+    }
+    let mut css = String::from("@layer cascivo.override{");
+    for (key, decls) in styles {
+        if key.bytes().all(|b| b.is_ascii_alphanumeric())
+            && !decls.contains(['{', '}', '<', '>', '\\', '@'])
+        {
+            css.push_str("[data-cv-style=\"");
+            css.push_str(key);
+            css.push_str("\"]{");
+            css.push_str(decls);
+            css.push('}');
+        }
+    }
+    css.push('}');
+    css
 }
 
 /// CSS that only some emitters need beyond the per-component module (inside `@layer cascivo.component`).
@@ -93,12 +168,33 @@ pub fn script(name: &str) -> Option<&'static str> {
     SCRIPTS.iter().find(|(n, _)| *n == name).map(|(_, js)| *js)
 }
 
+/// Every script name [`script`] knows, in bundle order.
+pub fn script_names() -> impl Iterator<Item = &'static str> {
+    SCRIPTS.iter().map(|(n, _)| *n)
+}
+
+/// One external file's worth of script (for [`Options::script_src`], e.g. `/cascivo.js`): the
+/// named scripts (unknown names skipped), or every script when `names` is `None`. Each is a
+/// self-contained IIFE that works with `defer`.
+pub fn script_bundle(names: Option<&BTreeSet<&str>>) -> String {
+    let mut js = String::new();
+    for (n, src) in SCRIPTS {
+        if names.is_none_or(|s| s.contains(n)) {
+            js.push_str(src.trim_end());
+            js.push('\n');
+        }
+    }
+    js
+}
+
 /// Body markup plus what it needs from [`stylesheet`] and [`script`].
 #[derive(Debug, Clone, Default)]
 pub struct Fragment {
     pub html: String,
     pub used: BTreeSet<&'static str>,
     pub scripts: BTreeSet<&'static str>,
+    /// CSP-safe mode only: rules for the `data-cv-style` hooks in `html`; see [`style_rules`].
+    pub styles: BTreeMap<String, String>,
 }
 
 /// Like [`render_fragment`], but with asset options and the used CSS units and scripts, so a
@@ -115,6 +211,7 @@ pub fn render_parts(src: &str, opts: &Options) -> Result<Fragment, Vec<Diagnosti
             html,
             used: cx.used,
             scripts: cx.scripts,
+            styles: cx.styles,
         })
     } else {
         Err(cx.diags)
@@ -163,6 +260,7 @@ pub fn render(src: &str, opts: &Options) -> Result<String, Vec<Diagnostic>> {
             .find(|(n, _)| *n == theme)
             .map_or(0, |(_, c)| c.len());
     css.insert_str(at, &brand_css);
+    css.push_str(&style_rules(&cx.styles));
 
     let nl = if opts.minify_html { "" } else { "\n" };
     let mut out = String::with_capacity(css.len() + body.len() + 256);
@@ -181,11 +279,21 @@ pub fn render(src: &str, opts: &Options) -> Result<String, Vec<Diagnostic>> {
     out.push_str("<body><main class=\"cv-doc\">");
     out.push_str(&body);
     out.push_str("</main></body>");
-    for (name, js) in SCRIPTS {
-        if cx.scripts.contains(name) {
-            out.push_str("<script>");
-            out.push_str(js);
-            out.push_str("</script>");
+    match &opts.script_src {
+        Some(src) if !cx.scripts.is_empty() => {
+            out.push_str("<script");
+            attr(&mut out, "src", src);
+            out.push_str(" defer></script>");
+        }
+        Some(_) => {}
+        None => {
+            for (name, js) in SCRIPTS {
+                if cx.scripts.contains(name) {
+                    out.push_str("<script>");
+                    out.push_str(js);
+                    out.push_str("</script>");
+                }
+            }
         }
     }
     out.push_str("</html>");

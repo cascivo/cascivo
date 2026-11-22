@@ -40,7 +40,7 @@ pub use guide::{GUIDE, guide_for};
 pub use parse::parse;
 pub use render::{
     AssetResolver, BrandResolver, Cx, Fragment, Options, render, render_fragment, render_parts,
-    script, stylesheet,
+    script, script_bundle, script_names, style_rules, stylesheet,
 };
 
 /// Parse-only validation: every diagnostic in `src`, empty when it is valid.

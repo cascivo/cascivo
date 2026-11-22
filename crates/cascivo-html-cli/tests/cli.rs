@@ -338,3 +338,33 @@ fn fetch_embeds_urls_with_a_size_cap() {
     let o = child.wait_with_output().unwrap();
     assert_eq!(o.status.code(), Some(1));
 }
+
+#[test]
+fn csp_flags_and_script_command() {
+    let src = "row gap=2\n  text \"a\"\ntable sort A | b\n";
+    let o = run(
+        &[
+            "render",
+            "--no-inline-styles",
+            "--script-src",
+            "/cascivo.js",
+        ],
+        src,
+        None,
+    );
+    assert_eq!(o.code, 0, "{}", o.stderr);
+    let body = &o.stdout[o.stdout.find("<body>").unwrap()..];
+    assert!(!body.contains(" style="), "{body}");
+    assert!(body.contains("data-cv-style="));
+    assert!(o.stdout.contains("[data-cv-style="));
+    assert!(
+        o.stdout
+            .contains("<script src=\"/cascivo.js\" defer></script>")
+    );
+    assert!(!o.stdout.contains("<script>"));
+    assert_eq!(run(&["render", "--script-src"], src, None).code, 2);
+    assert_eq!(run(&["check", "--no-inline-styles"], src, None).code, 2);
+    let js = run(&["script"], "", None);
+    assert_eq!(js.code, 0);
+    assert!(js.stdout.contains("aria-sort"));
+}
