@@ -377,6 +377,30 @@ class StartingPoint(unittest.TestCase):
                 (_, _, _, top), _ = Q._glyph_bounds(Q.instance(path, w, 14), 'one')
                 self.assertLessEqual(top, 700 + Q.ONE_TOP_SLACK, f'1 at wght {w}')
 
+    def test_black_two_neck_is_round(self):
+        """The 2's counter turned from the vertical to the diagonal on a radius of 13 at Black (the bowl's ellipse has a side radius of
+        108 under a 190 pen): a corner at the neck, 19 / 12 / 11 degrees read at 900 / 800 upright and 900 italic (Inter's 7.8). The
+        read in that region is under 10 at 700, 800 and 900, upright and italic."""
+        for path in (VF, VFI):
+            for w in (700, 800, 900):
+                self.assertLessEqual(Q.concave_turn(path, 'two', w, (0.6, 0.9, 0.25, 0.4)), 10.0, f'{os.path.basename(path)} at {w}')
+
+    def test_black_five_tail_ends_blunt_and_high(self):
+        """The Black 5's bowl ended in a wedge, its outer corner 126 up beside Inter's 221 (700: 114 beside 204): the leftmost ink of
+        the lower half, read at its top, is >= 0.8x Inter's at 900 (187 now, italic 197) and >= 0.7x at 700 (Bold interpolates Regular's tail; 151), and the
+        tail's cut stays >= 0.8x Inter's terminal thickness (192 at 900, 145 at 700; Inter's 5 is a full stroke there)."""
+        inter = {700: (204, 145), 900: (221, 192)}
+        for path in (VF, VFI):
+            for w, (corner, thick) in inter.items():
+                m = Q.raster(path, 'five', w)
+                a = np.asarray(m)
+                low = [(m.baseline - i, np.nonzero(r)[0].min()) for i, r in enumerate(a) if r.any() and 0 <= m.baseline - i <= 300]
+                left = min(x for _, x in low)
+                top = max(y for y, x in low if x <= left + 4)
+                with self.subTest(font=os.path.basename(path), wght=w):
+                    self.assertGreaterEqual(top, (0.8 if w == 900 else 0.7) * corner)
+                    self.assertGreaterEqual(min(t for _, t in Q.terminal_thickness(path, 'five', w)), 0.8 * thick)
+
     def test_black_s_counters_are_open(self):
         for path, suffix in ((VF, ''), (VFI, '_italic')):
             ref = Q.REF['pocket' + suffix]['s']

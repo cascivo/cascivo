@@ -569,7 +569,7 @@ def _lerp_contours(a, b, t):
 
 FIG_OPEN = 0.3
 BOLD_UNSQUEEZED = {'a'}  # its bowl, narrowed, met the stem in a counter tip 5 degrees sharper than quality.py's base at 750 (28 against 23)
-BOLD_OWN = {'minus'}  # the minus is 0.456 em at 700 and the plus's bar at Black; the straight line would put Bold at 0.52 em, as long as the en dash
+BOLD_OWN = {'minus', 'T', 'V', 'W', 'X', 'Y', 'Z'}  # the minus is 0.456 em at 700 and the plus's bar at Black; the straight line would put Bold at 0.52 em, as long as the en dash. T V W X Y Z: Black's widening starts at Bold (glyphs.capw), not at Regular
 
 
 def counter_squeeze(cs, p, share):
@@ -666,11 +666,17 @@ def mid_master(reg, black, nat):
         o.topleft[name] += dx + f(o.topleft[name])
         ra, ba = reg.anchors.get(name, {}), black.anchors.get(name, {})
         o.anchors[name] = {k: (lerp(ra[k][0], ba[k][0]) + dx + f(lerp(ra[k][0], ba[k][0])), lerp(ra[k][1], ba[k][1])) for k in ra}
+        if name in BOLD_OWN and name in letters:  # a letter drawn for Bold keeps its own advance, ink and anchors, and the accents on it follow
+            shift[name] = o.shift[name] = 0.0
+            o.adv[name], o.bounds[name], o.topleft[name], o.anchors[name] = nat.adv[name], nat.bounds[name], nat.topleft[name], dict(nat.anchors.get(name, {}))
     add_composites(o)
     for name, parts in reg.comps.items():  # offsets interpolate too: a rounded one per master would be a delta of its own
         base = shift.get(parts[0][0], 0.0)  # the letter the marks sit on moved with its outline
         sq = o.squeeze.get(parts[0][0])
         out = []
+        if parts[0][0] in BOLD_OWN and parts[0][0] in letters:
+            o.comps[name] = nat.comps[name]
+            continue
         for i, ((g, ox, oy, a), (_, bx, by, ba_)) in enumerate(zip(parts, black.comps[name])):
             x = lerp(ox, bx)
             if i and o.kind.get(g) == 'mark':  # a mark follows its base, and the anchor it sits on

@@ -1684,6 +1684,75 @@ class Font(unittest.TestCase):
                         if copies == 2:
                             self.assertGreaterEqual(chevron_white(rows), 45, 'white between the chevrons')  # 45: drawn as outlines with Inter's white (55 at Black)
 
+    def test_heavy_guillemets_match_inters_size_and_centre(self):
+        # Round 4 (cycle 2): the chevrons at 700-900 stood 462 tall around 264, Inter's 461 around 301 (0.55 of its x-height, ours 0.50) on a
+        # smaller x-height, so beside the text they read oversized and low. Height, width, arm width (the ink run just under the top face)
+        # and the vertical centre are 0.95-1.05x Inter's at 700 and 900, upright and italic, single and double. Read from Inter 4.001
+        # (opsz 14) as INTER_QUOTE_BOX: the arm is 156 / 202 wide at 700 / 900 (155 / 202 italic), the centre 301 up.
+        arm = {'upright': {700: 156, 900: 202}, 'italic': {700: 155, 900: 202}}
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for wght in (700, 900):
+                gs, cmap = self._glyphs(path, wght)
+                for ch, name in (('\u2039', 'guilsinglleft'), ('\u203a', 'guilsinglright'), ('\u00ab', 'guillemotleft'), ('\u00bb', 'guillemotright')):
+                    iw, ih = INTER_QUOTE_BOX[kind][name][wght]
+                    b, _ = self._ink(path, wght, name)
+                    run = ink_runs_at(gs, cmap[ord(ch)], b[3] - 8)[0]
+                    with self.subTest(kind=kind, wght=wght, glyph=name):
+                        for label, got, want in (('width', b[2] - b[0], iw), ('height', b[3] - b[1], ih), ('centre', (b[1] + b[3]) / 2, 301), ('arm', run[1] - run[0], arm[kind][wght])):
+                            self.assertGreaterEqual(got, 0.95 * want, label)
+                            self.assertLessEqual(got, 1.05 * want, label)
+
+    def test_thin_percent_rings_are_equal_and_inters_size(self):
+        # Thin's rings stood 0.51 of the cap tall and 0.32 wide, touching: tall ovals, the lower one reading smaller beside the slash. They
+        # are one size now (within 2 units), 0.42 / 0.43 of the cap tall at 100 / 200 (Inter's 306 and 316 of 728, 0.42 and 0.43) and
+        # at least 0.7 as wide as tall (Inter 0.78), with a white gap between them.
+        inter = {100: 306 / 728, 200: 316 / 728}
+        for path in (VF, VFI):
+            cap = self._ink(path, 400, 'H')[0][3]
+            for wght, share in inter.items():
+                boxes = self._contour_boxes(path, wght, 'percent')
+                total = max(b[2] for b in boxes) - min(b[0] for b in boxes)
+                rings = sorted((b for b in boxes if b[2] - b[0] < 0.5 * total), key=lambda b: b[3] - b[1], reverse=True)[:2]
+                rings.sort(key=lambda b: -b[1])
+                (u, l) = rings
+                with self.subTest(font=os.path.basename(path), wght=wght):
+                    self.assertAlmostEqual(u[3] - u[1], l[3] - l[1], delta=2)
+                    self.assertAlmostEqual(u[2] - u[0], l[2] - l[0], delta=2)
+                    self.assertGreaterEqual((u[3] - u[1]) / cap, 0.95 * share)
+                    self.assertLessEqual((u[3] - u[1]) / cap, 1.1 * share)
+                    self.assertGreaterEqual((u[2] - u[0]) / (u[3] - u[1]), 0.7)
+                    self.assertGreater(u[1] - l[3], 0.08 * cap)
+
+    def test_thin_dots_hold_inters_size_to_stem_ratio(self):
+        # Thin's dot against its own stem: Inter's is 52 on a stem of 22 at 100 (2.36) and 78 on 44 at 200 (1.77). This font's runs
+        # 0.95x those; the floor is 0.9x, for . : ; ! ? upright and italic
+        inter = {100: 52 / 22, 200: 78 / 44}
+        for path in (VF, VFI):
+            for wght, ratio in inter.items():
+                gs, cmap = self._glyphs(path, wght)
+                stem = (lambda r: r[1] - r[0])(ink_runs_at(gs, cmap[ord('H')], 200)[0])
+                for ch in '.:;!?':
+                    boxes = self._contour_boxes(path, wght, ch)
+                    dot = min(b[3] - b[1] for b in boxes)
+                    with self.subTest(font=os.path.basename(path), wght=wght, glyph=ch):
+                        self.assertGreaterEqual(dot / stem, 0.9 * ratio)
+
+    def test_black_diagonal_capitals_keep_inters_width(self):
+        # Round 4 (cycle 2): Black's T V W X Y Z stood 0.84-0.90x Inter's ink width over H's (T 0.852 beside 0.963, W 1.405 beside 1.580);
+        # 0.94x or more now at 900, upright and italic (700 and below keep their widths: 600 is at the +2% gate on 'OVERVIEW ACTIVITY
+        # SETTINGS', so the widening starts at Bold). Inter's ratios (ink width / ink width of H) read from Inter 4.001.
+        inter = {
+            'upright': {700: dict(T=.965, V=1.136, W=1.609, X=1.119, Y=1.110, Z=.901), 900: dict(T=.963, V=1.143, W=1.580, X=1.129, Y=1.113, Z=.906)},
+            'italic': {700: dict(T=.835, V=.950, W=1.345, X=1.070, Y=.928, Z=.914), 900: dict(T=.847, V=.965, W=1.335, X=1.073, Y=.940, Z=.921)},
+        }
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for wght, floor in ((900, 0.94),):
+                hb = self._ink(path, wght, 'H')[0]
+                for ch, want in inter[kind][wght].items():
+                    b = self._ink(path, wght, ch)[0]
+                    with self.subTest(kind=kind, wght=wght, glyph=ch):
+                        self.assertGreaterEqual((b[2] - b[0]) / (hb[2] - hb[0]), floor * want)
+
     # --- Spacing and kerning (interface brief, Section 1 item 5) ---
 
     def test_tight_letters_open_up(self):

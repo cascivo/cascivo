@@ -174,10 +174,21 @@ def _F(g, p):
     g.sb = (1, 0.4)
 
 
+# CAPW_BLACK: the share of Hd the capitals T V W X Y Z gain at Black, (upright, italic). Their ink width over H's stood 0.84-0.90x
+# Inter's (T 0.852 of H's width beside Inter's 0.963, W 1.405 beside 1.580); they are widened to 0.95x at 900. The italic's X was
+# 0.94x already, hence its small step. The widening starts at Bold (capw: 0 up to 692, 1 at 900) and the six letters are drawn for Bold
+# (build.BOLD_OWN): interpolated from Regular, it came in at 0.58 of the way, which put 600 at +2.6% (limit 2%) on all-caps words.
+CAPW_BLACK = {'T': (0.072, 0.118), 'V': (0.067, 0.066), 'W': (0.110, 0.113), 'X': (0.102, 0.017), 'Y': (0.114, 0.113), 'Z': (0.080, 0.115)}
+
+
+def capw(p):
+    return max(0.0, (p.wght - MID_WGHT) / (900 - MID_WGHT))
+
+
 @glyph('T', 0x54)
 def _T(g, p):
     # wider, as Geist's and Inter's: it carried 0.92x their ink at every weight
-    w = p.Hd * 0.97
+    w = p.Hd * (0.97 + CAPW_BLACK['T'][p.italic] * capw(p))
     g.hbar(0, w, p.cap - p.H).vstem((w - p.V) / 2, 0, p.cap - p.H / 2)
     g.ht = 'c'
     g.sb = (0.18, 0.18)
@@ -208,7 +219,7 @@ def _A(g, p):
 
 @glyph('V', 0x56)
 def _V(g, p):
-    w = p.Hd * (1.07 + 0.1 * p.heavy)
+    w = p.Hd * (1.07 + 0.1 * p.heavy + CAPW_BLACK['V'][p.italic] * capw(p))
     c = w / 2
     # Regular's diagonals heavier: 0.82-0.91x the ink of Inter, Geist and Helvetica (Black kept)
     g.diag(0, p.cap, c, 0, 'l', 'c', ws=1.0 - 0.07 * p.heavy)
@@ -219,7 +230,7 @@ def _V(g, p):
 
 @glyph('W', 0x57)
 def _W(g, p):
-    w = p.Hd * 1.6
+    w = p.Hd * (1.6 + CAPW_BLACK['W'][p.italic] * capw(p))
     # Regular's diagonals were too light (the W carried 0.85x Geist's and Inter's ink against a
     # 0.94x Regular overall); Black's weight is unchanged
     ws = 0.96 - 0.1 * p.heavy
@@ -252,7 +263,7 @@ def _N(g, p):
 
 @glyph('Z', 0x5A)
 def _Z(g, p):
-    w = p.Hd * 0.9
+    w = p.Hd * (0.9 + CAPW_BLACK['Z'][p.italic] * capw(p))
     g.hbar(w * 0.04, w, p.cap - p.H).hbar(0, w, 0)
     g.diag(w, p.cap - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95, exact=(True, True))  # the italic's ends stood 10 to 25 units out past the bars
     g.ht = 'c'
@@ -261,7 +272,7 @@ def _Z(g, p):
 
 @glyph('X', 0x58)
 def _X(g, p):
-    w = p.Hd * (1.02 + 0.1 * p.heavy)
+    w = p.Hd * (1.02 + 0.1 * p.heavy + CAPW_BLACK['X'][p.italic] * capw(p))
     # Regular's diagonals heavier: 0.80-0.90x the ink of Inter, Geist and Helvetica (Black kept)
     g.diag(0, p.cap, w, 0, 'l', 'r', ws=1.0 - 0.07 * p.heavy)
     g.diag(w, p.cap, 0, 0, 'r', 'l', ws=0.97 - 0.07 * p.heavy)
@@ -271,7 +282,7 @@ def _X(g, p):
 
 @glyph('Y', 0x59)
 def _Y(g, p):
-    w = p.Hd * (1.04 + 0.05 * p.heavy)  # Black's was 0.87x Inter's width
+    w = p.Hd * (1.04 + 0.05 * p.heavy + CAPW_BLACK['Y'][p.italic] * capw(p))  # Black's was 0.87x Inter's width
     c = w / 2
     yj = p.cap * 0.43
     # arms at the full stroke: at 0.92-0.98 the Y carried 0.89-0.92x the ink of Inter, Geist and
@@ -1317,19 +1328,25 @@ def _one(g, p):
     g.ht = 'c'
 
 
+TWO_HEAD = (23, 0.15, 0.07)  # at Black: degrees the bowl's end moves back, the spine's first handle's growth (share of its length) and the bowl's drop (share of the cap)
+
+
 @glyph('two', 0x32)
 def _two(g, p):
     w = fw(p)
     V, H = p.V, p.H
-    cx, cy, rx, ry = g.box(w * 0.03, p.cap * 0.42, w, p.cap + p.ov)
-    end = -38
+    cx, cy, rx, ry = g.box(w * 0.03, p.cap * (0.42 - TWO_HEAD[2] * p.heavy), w, p.cap + p.ov)
+    # Black's bowl ends earlier on the ellipse and the spine takes the turn on a longer handle: the ellipse's side has a radius of 108
+    # under a pen of 190, so the counter's inner edge turned from the vertical to the diagonal on a radius of 13 and showed a corner
+    # at the neck (Inter's counter is round there)
+    end = -38 + TWO_HEAD[0] * p.heavy
     arc_ = g.arc(cx, cy, rx, ry, 158 - p.ap, end)
     pe = arc_[-1][-1]
     tx, ty = arc_[-1][-1][0] - arc_[-1][-2][0], arc_[-1][-1][1] - arc_[-1][-2][1]
     t = norm((tx, ty))
     tgt = (g.hw(-0.12, -0.3), H)  # outer edge of the foot lands exactly on the bar's start
     d = math.hypot(tgt[0] - pe[0], tgt[1] - pe[1])
-    spine = ('C', pe, (pe[0] + t[0] * d * 0.35, pe[1] + t[1] * d * 0.35), (tgt[0] + d * 0.12, tgt[1] + d * 0.3), tgt)
+    spine = ('C', pe, (pe[0] + t[0] * d * (0.35 + TWO_HEAD[1] * p.heavy), pe[1] + t[1] * d * (0.35 + TWO_HEAD[1] * p.heavy)), (tgt[0] + d * 0.12, tgt[1] + d * 0.3), tgt)
     # the top ends in a near-flat face, as c s 3 do (cut 't'): turned to the vertical, the cut ran along a stroke that is itself
     # steep there, and Black's 2 began with a beak
     g.stroke(arc_ + [spine], caps=('b', 'h'), cut='t')  # the spine's foot joins the base bar; only the top is a terminal
@@ -1379,6 +1396,13 @@ def _four(g, p):
     g.ht = 'c'
 
 
+# FIVE_TAIL: degrees Black's bowl runs on round the lower left (it ends at -174). It stopped at -160 and ended in a wedge with a long
+# sloping face, its outer corner 126 up beside Inter's 221; now the end is blunt, the outer edge near vertical under a near-flat cut, the
+# corner 187 up, and the face the full stroke thick (187 against Inter's 192). The end stays above -180, where the arc would gain a
+# segment, and 28 (-178) cost 140 bytes more in the full font.
+FIVE_TAIL = 24
+
+
 @glyph('five', 0x35)
 def _five(g, p):
     w = fw(p)
@@ -1397,7 +1421,7 @@ def _five(g, p):
     g.line((xsm + 10, p.cap - H / 2), (xsm, ps[1] - 0.25 * V * (1 - p.heavy)), caps=('h', 'h'))
     # Black's bowl starts a third of a stem right of the stem's centre: from the centre its thin start left a small hook
     # below the stem's foot, from there it leaves a clean step under it (Inter's)
-    g.stroke(g.arc(cx, cy, rx, ry, a0, -150 + p.ap - 10 * p.heavy), taper=(0.6 + 0.3 * p.heavy, 1), caps=('h', 'b'), cut='h')
+    g.stroke(g.arc(cx, cy, rx, ry, a0, -150 + p.ap - FIVE_TAIL * p.heavy), taper=(0.6 + 0.3 * p.heavy, 1), caps=('h', 'b'), cut='h')
     g.tab = True
     g.ht = 'c'
 
@@ -1889,6 +1913,7 @@ def _dollar(g, p):
 
 
 PCT_RING, PCT_SLASH = 0.05, 0.22
+PCT_THIN = (0.02, 0.085)  # ring width share and the gap's half height (share of the cap) Thin adds
 
 
 @glyph('percent', 0x25)
@@ -1896,10 +1921,14 @@ def _percent(g, p):
     # Black's rings are wider (PCT_RING) and its slash lighter (PCT_SLASH): its rings, capped at a third of their size, read 0.51 of
     # a stem beside a slash of 0.93 (Inter's 0.63 and 0.59), light circles under a heavy bar
     w = p.Hw * (1.2 + PCT_RING * p.heavy)
-    r = 0.36 + PCT_RING * p.heavy
+    # Thin's rings (PCT_THIN) stood 0.51 of the cap tall and 0.32 wide, tall narrow ovals that read as a small lower zero beside the
+    # slash: Inter's are 0.42 tall (0.43 at 200) and 0.33 wide, a white gap between them. They fade back to Regular's over 100-400.
+    thin = 1 - thin_blend(p)
+    r = 0.36 + PCT_RING * p.heavy + PCT_THIN[0] * thin
+    gap = p.cap * PCT_THIN[1] * thin
     pen = (p.V * 0.82, p.H * 0.82)
-    g.oval(0, p.cap * 0.5, w * r, p.cap + p.ov * 0.6, V=pen[0], H=pen[1])
-    g.oval(w * (1 - r), -p.ov * 0.6, w, p.cap * 0.5, V=pen[0], H=pen[1])
+    g.oval(0, p.cap * 0.5 + gap, w * r, p.cap + p.ov * 0.6, V=pen[0], H=pen[1])
+    g.oval(w * (1 - r), -p.ov * 0.6, w, p.cap * 0.5 - gap, V=pen[0], H=pen[1])
     g.diag(w * 0.82, p.cap, w * 0.18, 0, 'c', 'c', ws=0.8 - PCT_SLASH * p.heavy)
     g.sb = (0.5, 0.5)
     g.ht = 'c'
@@ -2162,16 +2191,24 @@ def _ellipsis(g, p):
     g.sb = (0.9, 0.9)
 
 
+GUIL_HEAVY = (7.0, 8.0, 0.075)  # run and half height shortened, centre raised (share of the x-height), at Bold and Black
+
+
 def _guil(g, p, x0, flip, h=1.0):
     # A chevron is drawn as its outline, not as two pen strokes: two arms with square ends met in a notched tip and ended in corners
     # that pointed at the next chevron, so a Black pair read as one block with nicks in it. Now the tip and the inner corner are
     # points and the arms end flat on a common top and bottom line, as Inter's and Helvetica's do.
     # Geometry is Inter's, read off its boxes and ink (single chevron 224 / 296 / 398 wide at Thin / Regular / Black, 461 tall, ink
     # 93,966 at Black): every weight's arm runs 200 units back from the tip, and only the arm's width follows the weight.
-    run = 200.0
+    # Bold and Black (GUIL_HEAVY): Inter's chevron is 0.84 of its x-height tall and its centre 0.55 of it up; at Black's x-height of 528
+    # that is 446 tall (it was 462, 0.875), and the arm keeps its width (0.98x Inter's at 900), so the pair stops calling attention to
+    # itself. The centre goes to 0.575 (304 up, Inter's 301; it was 264, 0.50) so that Bold, which interpolates Regular and Black 58% of the
+    # way, lands at 287 (0.95x Inter's). k fades the change in over 400-Bold, so Regular and lighter stay as they were.
+    k = max(0.0, min(1.0, (p.wght - 400) / (MID_WGHT - 400)))
+    run = 200.0 - GUIL_HEAVY[0] * k
     th = 8 + p.V  # the arm's width along the line (its thickness across the stroke is about 0.75 of this)
-    hh = 231 * h
-    cy = p.xh * 0.5
+    hh = (231 - GUIL_HEAVY[1] * k) * h
+    cy = p.xh * (0.5 + GUIL_HEAVY[2] * k)
     d = -1 if flip else 1
     tip = x0 + (run + th if flip else 0)
     pts = [(tip, cy), (tip + d * run, cy + hh), (tip + d * (run + th), cy + hh), (tip + d * th, cy), (tip + d * (run + th), cy - hh), (tip + d * run, cy - hh)]
