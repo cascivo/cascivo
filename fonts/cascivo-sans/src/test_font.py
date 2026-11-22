@@ -351,6 +351,22 @@ def pair_kerning(hb, path, pair, wght):
     return round((advance(True) - advance(False)) * 1000 / face.upem)
 
 
+def pair_white(hb, path, pair, wght, lo, hi, opsz=14):
+    """The least white between the two letters of a shaped pair (kerning on) in the rows lo to hi (units above the baseline)."""
+    face, f = _shaper(hb, path)
+    font = hb.Font(face)
+    font.set_variations({'wght': wght, 'opsz': opsz})
+    buf = hb.Buffer()
+    buf.add_str(pair)
+    buf.guess_segment_properties()
+    hb.shape(font, buf, {'kern': True})
+    order = f.getGlyphOrder()
+    (a, b), adv = [order[i.codepoint] for i in buf.glyph_infos], buf.glyph_positions[0].x_advance
+    gs = f.getGlyphSet(location={'wght': wght, 'opsz': opsz}, normalized=False)
+    ra, rb = dict(ink_rows(gs, a)), dict(ink_rows(gs, b))
+    return min(adv + rb[y][0][0] - ra[y][-1][1] for y in range(lo, hi + 1) if ra.get(y) and rb.get(y))
+
+
 def sidebearing_ratio(hb, path, letter, wght):
     """The letter's own sidebearings (left plus right) as a share of the n's, read off the shaped strings `nn` and `n<letter>n`:
     twice the mean ink gap beside the letter over the gap of `nn`, less one. An italic's outlines are sheared back upright first
@@ -762,11 +778,12 @@ class Font(unittest.TestCase):
         # The e's eye was 0.78x Inter's under a bar as heavy as the H's, the 6 and 9 0.90x, b d p q 0.92x, and the A's counter 0.57x
         # (Inter's reads 0.069 upright and 0.061 italic); o a g 8 0 were 1.0-1.2x already. quality.COUNTER_MIN_SHARE (0.70) stays the
         # floor for the rest. Round 4 untrimmed Black's counters: e 1.05x / 0.98x (upright / italic), 6 and 9 1.11x / 1.06x, b d p q
-        # 1.17x / 1.08x (round 3: 0.98x / 0.93x), A 1.26x / 1.59x; the floors sit just under the italic's.
+        # 1.17x / 1.08x (round 3: 0.98x / 0.93x), A 1.26x / 1.59x; the floors sit just under the italic's. Round 4's opened e
+        # (glyphs.E_RUN, E_WIDE): 1.11x / 1.05x, its floor 0.96 -> 1.03.
         import quality
 
         for path, sfx, a_ref in ((VF, '', 0.069), (VFI, '_italic', 0.061)):
-            for g, share in (('e', 0.96), ('six', 1.04), ('nine', 1.04), ('b', 1.05), ('d', 1.05), ('p', 1.05), ('q', 1.05)):
+            for g, share in (('e', 1.03), ('six', 1.04), ('nine', 1.04), ('b', 1.05), ('d', 1.05), ('p', 1.05), ('q', 1.05)):
                 m = quality.raster(path, g, 900)
                 with self.subTest(font=os.path.basename(path), glyph=g):
                     self.assertGreaterEqual(quality.counter_area(m, m.x_height), share * quality.REF['counter' + sfx][(g, 900)])
@@ -801,6 +818,10 @@ class Font(unittest.TestCase):
                     self.assertLessEqual(abs(y_[297][0][0] - y_[305][0][0]), 5, 'Y: a ledge left of the join')
                     self.assertLessEqual(abs(y_[297][-1][1] - y_[305][-1][1]), 5, 'Y: a ledge right of the join')
                     self.assertEqual({len(y_[y]) for y in range(10, 295)}, {1}, 'Y: the stem is one stroke below the join')
+                # round 4: the italic z took Z's anchoring, its Black right corners stepped (owner decision 3); its lower bar is the wider
+                zl = {y: r for y, r in ink_rows(gs, 'z') if r}
+                self.assertLessEqual(min(zl[y][0][0] for y in zl if 0 < y <= 10) - min(zl[y][0][0] for y in zl if y <= 264), 1, 'z: ink left of the lower bar')
+                self.assertLessEqual(max(zl[y][-1][1] for y in zl if y >= 264) - max(zl[y][-1][1] for y in zl if y >= 518), 1, 'z: ink right of the upper bar')
 
     def test_black_diagonals_keep_a_crotch(self):
         # Black's v and y: the white between the arms is at least 20 units wide over 200 units of height (v 233, y 266; they were 142 and
@@ -811,6 +832,89 @@ class Font(unittest.TestCase):
                 rows = [y for y, r in ink_rows(gs, name) if y > 0 and len(r) >= 2 and min(b[0] - a[1] for a, b in zip(r, r[1:])) >= 20]
                 with self.subTest(font=os.path.basename(path), glyph=name):
                     self.assertGreaterEqual(len(rows), 200)
+
+    def test_heavy_f_leaves_no_hole(self):
+        # Round 4: Black's f was 41% wider than Regular's (Inter's 14%). Its stem sat right of the crossbar's middle (arms 129 / 57 units,
+        # Inter's 84 / 101), its hook overhung the crossbar by 92 (Inter's 20) and it was spaced from the hook: the white after the
+        # crossbar read 1.5-1.9x the nn gap at 600-900 ("craf t", "of f"), and the italic's wide descender pushed its stem right, a hole
+        # on both sides ("e f g"). At 500-900 the white beside the crossbar (rows 422-517) is 0.85-1.15x the nn gap at mid x-height,
+        # after it (fu) and, in the italic, before it (ef), as Regular's 0.9-1.0x; ft and ff keep apart (they ran 0.3-0.8x).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        for path in (VF, VFI):
+            for w in (500, 600, 700, 800, 900):
+                nn = pair_white(hb, path, 'nn', w, 238, 290)
+                pairs = ('fu', 'ef') if path == VFI else ('fu',)
+                for pair in pairs:
+                    with self.subTest(font=os.path.basename(path), wght=w, pair=pair):
+                        self.assertTrue(0.85 <= pair_white(hb, path, pair, w, 422, 517) / nn <= 1.15)
+                for pair in ('ft', 'ff'):
+                    with self.subTest(font=os.path.basename(path), wght=w, pair=pair):
+                        self.assertGreaterEqual(pair_white(hb, path, pair, w, 422, 517), 0.3 * nn)
+
+    def test_l_tail_reads_and_keeps_its_white(self):
+        # Round 4: at 700-900 the upright l's tail read as a ( and crowded the next letter (klm, ll, illumination): as tall as it was
+        # long, with 0.7-0.8x the nn gap after it. Flatter (glyphs.L_FLAT_UP) and spaced further (L_RSB, L_BOLD_OPEN), the white
+        # after its tail is >= 0.82-0.86x the nn gap at 700-800 and 0.92x at 900 (0.94) and the tail still reaches 15 units past the stem at 900 (21), the family's signature. At
+        # Regular the outline stays; l + space opens by half what the tail takes off n's sidebearing (kern.l_space: 25 units), or
+        # "small sizes" read as one word at 16 px.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        for w, floor in ((700, 0.82), (800, 0.86), (900, 0.92)):
+            with self.subTest(wght=w):
+                self.assertGreaterEqual(pair_white(hb, VF, 'ln', w, 0, 100), floor * pair_white(hb, VF, 'nn', w, 238, 290))
+        gs, _ = self._glyphs(VF, 900)
+        rows = dict(ink_rows(gs, 'l'))
+        self.assertGreaterEqual(max(rows[y][-1][1] for y in range(0, 60)) - max(rows[y][-1][1] for y in range(300, 500)), 15, 'the tail')
+        for path in (VF, VFI):
+            with self.subTest(font=os.path.basename(path)):
+                self.assertGreaterEqual(pair_kerning(hb, path, 'l ', 400), 20)
+                self.assertGreaterEqual(pair_kerning(hb, path, 'l ', 900), 0)
+
+    def test_black_e_opens(self):
+        # Round 4 (JUDGING.md known limit 2): Black's e eye was small and its aperture a slit. Its terminal ends lower on a squarer last
+        # quarter (glyphs.E_RUN, E_SQUARE), so the cut stays near flat with square corners (quality's terminal checks), and the e is 2%
+        # wider: the rows whose right quarter is open (the mouth at the right edge) are >= 55 at 900 upright (39 -> 63) and italic (59).
+        for path in (VF, VFI):
+            gs, _ = self._glyphs(path, 900)
+            rows = dict(ink_rows(gs, 'e'))
+            right = max(r[-1][1] for r in rows.values() if r)
+            width = right - min(r[0][0] for r in rows.values() if r)
+            mouth = [y for y in range(60, 470) if rows.get(y) and rows[y][-1][1] < right - 0.25 * width]
+            with self.subTest(font=os.path.basename(path)):
+                self.assertGreaterEqual(len(mouth), 55)
+
+    def test_black_arch_joins_are_thin(self):
+        # Round 4 (owner decision 2): Black's arches and bowls met the stem at full weight, join_ratio 0.76-0.81 upright and 0.83-0.90
+        # italic (Inter's 0.45-0.46 and 0.38-0.42), the crotches dark and blunt. They thin across both quarters next to the stem
+        # (glyphs.BLACK_JOIN, join_reach, join_flush): upright n m h u 0.56-0.59 and b d p q 0.69, italic 0.69-0.74. quality.py judges
+        # them by that thickness now (JOIN_THIN_MAX); here the arches hold what ships, and Bold's rhythm stays 0.53-0.58.
+        import quality
+        import rhythm
+
+        for path, arch, bowl in ((VF, 0.61, 0.71), (VFI, 0.75, 0.75)):
+            for g in 'nmhubdpq':
+                m = quality.raster(path, g, 900)
+                with self.subTest(font=os.path.basename(path), glyph=g):
+                    self.assertLessEqual(quality.join_ratio(m, quality.JOIN_GLYPHS[g]), arch if g in 'nmhu' else bowl)
+            with self.subTest(font=os.path.basename(path), rhythm=700):
+                self.assertTrue(0.53 <= rhythm.ratio(path, 700) <= 0.58)
+
+    def test_black_t_reaches_right(self):
+        # Round 4: Black's t stem sat right of its crossbar's middle (arms 117 / 69 units, Inter's 67 / 91), as the f's did, and the t
+        # read narrow on the right. The right arm is now at least as long as the left (glyphs.T_STEM_IN).
+        for path in (VF, VFI):
+            gs, _ = self._glyphs(path, 900)
+            rows = dict(ink_rows(gs, 't'))
+            sh = 0.1763 * 170 if path == VFI else 0.0  # the italic's crossbar row sheared back over the stem's (tan 10 deg)
+            stem = rows[300][0]
+            bar = (rows[470][0][0] - sh, rows[470][0][1] - sh)
+            with self.subTest(font=os.path.basename(path)):
+                self.assertGreaterEqual(bar[1] - stem[1], stem[0] - bar[0])
 
     def test_black_double_quotes_stand_apart(self):
         # The two marks of a Black double quote keep 90 units of white (103 upright, 98 italic): at 35 they read as one block

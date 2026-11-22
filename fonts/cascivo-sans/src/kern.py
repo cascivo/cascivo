@@ -647,6 +647,18 @@ def _diagonal_fix(o, vals, classes, setup, firsts_fix, seconds_fix, fix):
     return out
 
 
+# The tailed l before a word space: its tail sits L_SPACE_SHARE of the n's sidebearing closer to the space than the n's stem does
+# (Regular: 20 units of white against 70), and "small sizes" read as one word at 16 px. It opens by L_SPACE_SHARE of the difference,
+# so the white after the tail and after the stem split it (Regular +25: tail 0.93x n + space, stem 1.06x).
+L_TAILED = 'lĺļł'
+L_SPACE_SHARE = 0.5
+
+
+def l_space(o):
+    rsb = lambda g: o.adv[g] - o.bounds[g][2]  # noqa: E731
+    return max(0, round(L_SPACE_SHARE * (rsb('n') - rsb('l'))))
+
+
 def kern_fea(o):
     """Same pair set for every master (structure must match); values measured per master."""
     global _SELECTED, _GROUPS, _HEAVY_KEYS, _DIAG
@@ -711,5 +723,10 @@ def kern_fea(o):
     lines.append('  lookup DIAGONAL_FIX {')
     lines += [f'    pos @dR_{i} @dL_{j} {diag.get((i, j), 0)};' for i, j in pairs_diag]
     lines.append('  } DIAGONAL_FIX;')
+    lines.append('  lookup L_SPACE {')
+    tailed = [o.cmap[ord(c)] for c in L_TAILED if ord(c) in o.cmap]
+    spaces = [o.cmap[c] for c in (0x20, 0xA0) if c in o.cmap]
+    lines.append(f'    pos [{" ".join(tailed)}] [{" ".join(spaces)}] {l_space(o)};')
+    lines.append('  } L_SPACE;')
     lines.append('} kern;')
     return '\n'.join(lines)

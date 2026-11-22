@@ -183,9 +183,12 @@ class Stroke:
          'n' not at all (a square end: Georgian's traced terminals, where a turned cut stepped).
     tilt: degrees from horizontal a cut='t' terminal's face may lie within, instead of HEAVY_TILT: the
           flatter ends of g and 6/9 (None keeps the shared angle; the a uses it).
+    reach: per end, how many segments the taper ramps across (None: the end segment's first 1/1.6, `_ease`). Black's
+           arches and bowls thin across both quarters next to the stem, as a drawn heavy arch does (glyphs.join_reach).
     """
 
-    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0, cut='v', tilt=None):
+    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0, cut='v', tilt=None, reach=(None, None)):
+        self.reach = reach
         self.segs = segs
         self.tilt = tilt
         self.cut = cut
@@ -199,7 +202,7 @@ class Stroke:
 
     def transformed(self, f, slant=None):
         segs = [(s[0],) + tuple(f(p) for p in s[1:]) for s in self.segs]
-        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen, self.slant if slant is None else slant, self.cut, self.tilt)
+        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen, self.slant if slant is None else slant, self.cut, self.tilt, self.reach)
 
 
 def pen_thickness(tangent, V, H, slant=0.0):
@@ -218,11 +221,21 @@ def _thick(stroke, i, t, tan, V, H):
         pv, ph = stroke.pen if stroke.pen else (V, H)
         w = pen_thickness(tan, pv, ph, stroke.slant) * stroke.ws
     n = len(stroke.segs)
-    if i == 0 and stroke.taper[0] != 1.0:
+    r0, r1 = stroke.reach
+    if r0 is not None and stroke.taper[0] != 1.0:
+        w *= lerp(stroke.taper[0], 1.0, _smooth((i + t) / r0))
+    elif i == 0 and stroke.taper[0] != 1.0:
         w *= lerp(stroke.taper[0], 1.0, _ease(t, stroke.segs[i][0]))
-    if i == n - 1 and stroke.taper[1] != 1.0:
+    if r1 is not None and stroke.taper[1] != 1.0:
+        w *= lerp(stroke.taper[1], 1.0, _smooth((n - 1 - i + 1 - t) / r1))
+    elif i == n - 1 and stroke.taper[1] != 1.0:
         w *= lerp(stroke.taper[1], 1.0, _ease(1 - t, stroke.segs[i][0]))
     return w
+
+
+def _smooth(u):
+    u = min(1.0, u)
+    return u * u * (3 - 2 * u)
 
 
 def _ease(t, kind):

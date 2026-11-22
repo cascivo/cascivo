@@ -54,6 +54,14 @@ ANGLE_JUNCTIONS = {
 }
 ITALIC_TAN = 0.1763  # tan 10 deg: Inter Italic's and ours; measured stems lean 10-11
 ANGLE_SLACK = 10.0  # degrees counter_join_angle may sit under Inter's
+# Black's arch and bowl joins are judged by their thickness, not the ceiling's slope (the owner's decision, round 4): thinned to
+# Inter's join (its n reads 0.45 at 900), a counter's corner leaves the stem flatter than Inter's (n 51-55 deg against 37-39 upright,
+# r 28 against 44). At 900 these glyphs take ANGLE_SLACK_THIN, which still catches a square corner, and their join_ratio must sit
+# at or under JOIN_THIN_MAX: it was 0.76-0.98 (n 0.76, b 0.81), the crotches dark and blunt. The r's own join_ratio reads its arm,
+# thinned with it, and is not judged.
+ARCH_THICK_GLYPHS = set('nmhurbdpq')
+ANGLE_SLACK_THIN = 25.0
+JOIN_THIN_MAX = 0.75
 COUNTER_GLYPHS = ['o', 'e', 'a', 'g', 'b', 'd', 'p', 'q', 'zero', 'six', 'eight', 'nine']
 FLAT_TERMINALS = ['a', 'g', 'nine', 'six']  # their Black terminals end in a flatter face than the rest (Inter's end under 10 deg)
 FLAT_MAX_DEG = 21.0
@@ -1233,6 +1241,8 @@ def check_all(upright_vf, italic_vf):
                 v = join_ratio(raster(path, g, w), side, at=ROW.get(g, 0.5))
                 if not v >= ref - JOIN_SLACK:
                     fails.append(f'{label}join: {g} at wght {w} is {v:.2f}, under Inter {ref:.2f} - {JOIN_SLACK}')
+                if w == 900 and g in ARCH_THICK_GLYPHS and not v <= JOIN_THIN_MAX:
+                    fails.append(f'{label}join: {g} at wght {w} is {v:.2f} thick, over {JOIN_THIN_MAX}: the crotch reads dark')
         notch_ref = REF['notch' + suffix]
         for w in JOIN_WEIGHTS:
             for g, side in JOIN_GLYPHS.items():
@@ -1251,8 +1261,9 @@ def check_all(upright_vf, italic_vf):
                     if ref is None:
                         continue
                     v = counter_join_angle(raster(path, g, w), side, end, ITALIC_TAN if italic else 0.0, at=ROW.get(g, 0.5))
-                    if not v >= ref - ANGLE_SLACK:
-                        fails.append(f'{label}join angle: {g} at wght {w} meets its stem ({side} {end}) at {v:.0f} deg, under Inter {ref:.0f} - {ANGLE_SLACK:.0f}')
+                    slack = ANGLE_SLACK_THIN if w == 900 and g in ARCH_THICK_GLYPHS else ANGLE_SLACK
+                    if not v >= ref - slack:
+                        fails.append(f'{label}join angle: {g} at wght {w} meets its stem ({side} {end}) at {v:.0f} deg, under Inter {ref:.0f} - {slack:.0f}')
         for g in APERTURE_GLYPHS:
             for length, deg in cut_faces(path, g, 900):
                 if deg > CUT_MAX_DEG:

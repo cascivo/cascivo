@@ -523,8 +523,16 @@ def join_taper(p):
     3 deg under Inter's tolerance and 0.8 at Black left the counter's corner a chamfer again (38 deg
     against Inter's 48). The tangent join cuts no V at Black, so it needs little thinning."""
     V = min(max(p.V, 22.0), 190.0)
-    return 1.0 - 0.17 * (V - 22) / (84 - 22) if V <= 84 else 0.83 + 0.12 * (V - 84) / (190 - 84)
+    return 1.0 - 0.17 * (V - 22) / (84 - 22) if V <= 84 else 0.83 + (BLACK_JOIN - 0.83) * (V - 84) / (190 - 84)
 
+
+# Black's arch and bowl joins (round 4). At 0.95 an arch left the stem at full weight and its counter's crotch read dark and blunt
+# (quality.join_ratio 0.76-0.81 against Inter's 0.45-0.46): the taper only thinned the end buried in the stem, since the stroke
+# ramped back to full weight in the first sixth of its quarter (geom._ease). Black now thins to BLACK_JOIN and ramps back across
+# JOIN_REACH quarters (join_reach), and the near quarter starts JOIN_FLUSH of half the thinning off the stem's centre (join_flush),
+# so the inner edge still leaves the stem low and round and the thinning comes off the outside: n 0.57, m 0.59, b 0.69 (italic
+# 0.71-0.74), the counters' corners 51-61 deg. Regular is unchanged (join_reach and join_flush are Regular's at heavy 0).
+BLACK_JOIN, JOIN_REACH, JOIN_FLUSH = 0.45, 2.0, 1.0
 
 # n h u: arch height over its half-width (m's is 1.12). At 0.93 the counter's ceiling met the stem at
 # 51 deg at Regular where Inter's meets it at 66: a squat arch turns its corner too early.
@@ -558,12 +566,31 @@ A_ARC_END = 13  # the a's arc runs less far round than the g's tail: ending high
 # (round 2's counter trim): on the half-ellipse, slanted, a body trimmed by 5 to 12 units met the h's far stem and the u's
 # near one 1-6 deg under quality.py's join-angle floor, which kept the italic's Black counters as wide as Regular's stems
 # allowed and its rhythm at 0.30. The upright keeps the half-ellipse: thinned to 0.6 its join read 30 deg (floor 29) for no
-# gain in white.
-ARCH_JOIN, ARCH_DEEP, ARCH_LEAN = 0.85, 0.2, -0.18
+# gain in white. ARCH_JOIN 0.85 -> 0.4 (round 4), ramped and set off the stem as the upright's (BLACK_JOIN): join 0.88 -> 0.71.
+ARCH_JOIN, ARCH_DEEP, ARCH_LEAN = 0.4, 0.2, -0.18
 
 
 def arch_join(p):
     return lerp(join_taper(p), ARCH_JOIN, p.heavy) if p.italic else join_taper(p)
+
+
+def join_flush(p, taper):
+    """How far off its stem's centre a thinned arch or bowl starts (see _arch): half what the taper takes off, at Black."""
+    return p.V * (1 - taper) / 2 * p.heavy * JOIN_FLUSH
+
+
+def bowl_arc(g, cx, cy, rx, ry, stem_left):
+    """A bowl closing on a stem, its two quarters at the stem narrowed by join_flush (b p left, d q g right)."""
+    d = join_flush(g.p, join_taper(g.p))
+    if stem_left:
+        return g.arc(cx, cy, rx - d, ry, 180 - JOIN_RUN, 90) + g.arc(cx, cy, rx, ry, 90, -90) + g.arc(cx, cy, rx - d, ry, -90, -180 + JOIN_RUN)
+    return g.arc(cx, cy, rx - d, ry, JOIN_RUN, 90) + g.arc(cx, cy, rx, ry, 90, 270) + g.arc(cx, cy, rx - d, ry, 270, 360 - JOIN_RUN)
+
+
+def join_reach(p):
+    """Segments an arch's or bowl's thinning ramps across from its stem: Regular's first 1/1.6 of the quarter at the stem
+    (geom._ease), Black's JOIN_REACH quarters."""
+    return lerp(1 / 1.6, JOIN_REACH, p.heavy)
 
 
 def _arch(g, a, b, y, ry, up=True):
@@ -573,7 +600,10 @@ def _arch(g, a, b, y, ry, up=True):
     cx = a + rx * (1 + ARCH_LEAN * h)
     s = 1 if up else -1
     ryl = ry * (1 + ARCH_DEEP * h)
-    return g.arc(cx, y - s * ryl, cx - a, ryl, s * (180 - JOIN_RUN), s * 90) + g.arc(cx, y - s * ry, b - cx, ry, s * 90, 0), y - s * ry
+    # the near quarter leaves the stem off its centre by half what the taper takes off, so the thinned stroke's inner edge still
+    # leaves the stem's edge low and the counter's corner stays round: the thinning comes off the outside (see BLACK_JOIN)
+    a1 = a + join_flush(g.p, arch_join(g.p))
+    return g.arc(cx, y - s * ryl, cx - a1, ryl, s * (180 - JOIN_RUN), s * 90) + g.arc(cx, y - s * ry, b - cx, ry, s * 90, 0), y - s * ry
 
 
 def shoulder(g, xl, xr, top, ry_k=None):
@@ -582,7 +612,7 @@ def shoulder(g, xl, xr, top, ry_k=None):
     a, b = xl + p.V / 2, xr + p.V / 2
     ry = (b - a) / 2 * (ARCH_RY if ry_k is None else ry_k)
     segs, cy = _arch(g, a, b, top - p.H / 2, ry)
-    g.stroke(segs + [L((b, cy), (b, 0))], taper=(arch_join(p), 1))
+    g.stroke(segs + [L((b, cy), (b, 0))], taper=(arch_join(p), 1), reach=(join_reach(p), None))
 
 
 @glyph('n', 0x6E)
@@ -613,7 +643,7 @@ def _u(g, p):
     # the n's arch turned half a turn: it leaves the right stem and runs down into the left one
     segs, cy = _arch(g, a, b, -p.ov * 0.4 + p.H / 2, (b - a) / 2 * ARCH_RY, up=False)
     segs = [(s[0],) + tuple((a + b - q[0], q[1]) for q in s[1:]) for s in segs]
-    g.stroke([L((a, p.xh), (a, cy))] + [reverse_seg(s) for s in reversed(segs)], taper=(1, arch_join(p)))
+    g.stroke([L((a, p.xh), (a, cy))] + [reverse_seg(s) for s in reversed(segs)], taper=(1, arch_join(p)), reach=(None, join_reach(p)))
     g.vstem(w - p.V, 0, p.xh)
     g.anchors['horn_x'], g.anchors['horn_y'] = w - p.V * 0.35, p.xh - p.V * 0.3  # ư
 
@@ -628,7 +658,7 @@ def _r(g, p):
     rx = w - a - p.V * 0.2
     ry = p.xh * 0.42
     cy = p.xh + p.ov * 0.4 - p.H / 2 - ry
-    g.stroke(g.arc(a + rx, cy, rx, ry, 180 - JOIN_RUN, 62 - p.ap * 0.5), taper=(arch_join(p), 1), caps=('b', 'b'))
+    g.stroke(g.arc(a + rx, cy, rx, ry, 180 - JOIN_RUN, 62 - p.ap * 0.5), taper=(arch_join(p), 1), caps=('b', 'b'), reach=(join_reach(p), None))
     g.sb = (1, 0.35 + (0.25 if p.italic else 0) * p.heavy)  # ra, re, ro sat 10% tighter than in the references
 
 
@@ -644,6 +674,10 @@ def _l_ss02(g, p):  # plain l: opt-in
 
 
 L_TOE, L_FLAT = 26, 0.35
+# The upright's Black tail is flatter (its height L_FLAT_UP of its reach shorter) and the white after it L_RSB stems wider: as
+# round as it was long it read as a ( at 700-900 and crowded the next letter (klm, ll). After it now the nn gap (0.80 -> 1.0).
+# Bold's own L_BOLD_OPEN (the h (1 - h) term is nothing at Regular and Black): on the line between them 700 kept 0.79 (now 0.84).
+L_FLAT_UP, L_RSB, L_BOLD_OPEN = 0.35, 0.6, 0.8
 
 
 @glyph('l', 0x6C)
@@ -654,7 +688,7 @@ def _l(g, p):  # tailed by default
     # advance: the tail used to overhang by 12-21 units and met the next letter.
     # Heavier, a little shorter and further from the next letter: Black's tail ran into m, l and u (lm, ll), and the italic's read as a ( beside k
     rx = 52 + p.V * 0.4 - 12 * p.heavy  # -30 folded the inner edge of Black's tail into a spur (inner radius 3 units)
-    ry = rx * 1.05
+    ry = rx * (1.05 - L_FLAT_UP * p.heavy)
     if p.italic:
         # The italic's Black tail is longer and flatter: at the upright's size it was a rounded corner with a toe a ninth of a stem long
         # under a leaning stem, and the l read as a ( in Il1 and klm. A toe a quarter of a stem long on a quick turn reads as a foot.
@@ -663,7 +697,7 @@ def _l(g, p):  # tailed by default
     cy = -p.ov * 0.4 + p.H / 2 + ry
     g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 270), caps=('b', 'v'))
     g.ht = 'a'
-    g.sb = (1, 0.28 + (0.08 + 0.95 * p.heavy if p.italic else 0.3 * p.heavy))
+    g.sb = (1, 0.28 + (0.08 + 0.95 * p.heavy if p.italic else L_RSB * p.heavy + L_BOLD_OPEN * p.heavy * (1 - p.heavy)))
 
 
 @glyph('dotlessj', 0x237)
@@ -693,10 +727,10 @@ def _bowl_lc(g, p, w, stem_left):
     if stem_left:
         x0, x1 = V / 2 - V / 2, w  # left centerline sits on the stem centre
         cx, cy, rx, ry = g.box(x0, -p.ov, x1, p.xh + p.ov)
-        g.stroke(g.arc(cx, cy, rx, ry, 180 - JOIN_RUN, -180 + JOIN_RUN), taper=(join_taper(p),) * 2, pen=bowl_pen(p))
+        g.stroke(bowl_arc(g, cx, cy, rx, ry, True), taper=(join_taper(p),) * 2, pen=bowl_pen(p), reach=(join_reach(p),) * 2)
     else:
         cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
-        g.stroke(g.arc(cx, cy, rx, ry, JOIN_RUN, 360 - JOIN_RUN), taper=(join_taper(p),) * 2, pen=bowl_pen(p))
+        g.stroke(bowl_arc(g, cx, cy, rx, ry, False), taper=(join_taper(p),) * 2, pen=bowl_pen(p), reach=(join_reach(p),) * 2)
 
 
 @glyph('b', 0x62)
@@ -754,7 +788,7 @@ def _g(g, p):
     cy = p.desc - p.ov * 0.5 + H / 2 + ry
     g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, end), caps=('b', 'b'), cut='t', tilt=tilt)
     cx, cy2, rx2, ry2 = g.box(0, 18, w, p.xh + p.ov)
-    g.stroke(g.arc(cx, cy2, rx2, ry2, JOIN_RUN, 360 - JOIN_RUN), taper=(join_taper(p),) * 2)
+    g.stroke(bowl_arc(g, cx, cy2, rx2, ry2, False), taper=(join_taper(p),) * 2, reach=(join_reach(p),) * 2)
     g.sb = (0.62, 1.15 if p.italic else 1)  # the italic sat 10% tighter on its right than Inter's and Plex's
 
 
@@ -778,7 +812,11 @@ def _c(g, p):
     g.sb = (0.62, 0.42)
 
 
-E_END, E_RUN, E_TILT = 322, -14, 12
+# Black's terminal: E_RUN -14 -> -8 (italic -12) ends it lower, so the aperture opens from a slit; its last quarter is E_SQUARE
+# squarer, so the stroke still rises steeply at the cut and the near-flat face (E_TILT) leaves square corners (upright 124 / 76,
+# italic 125 / 73; at -6 on the round quarter they were 135 / 68). E_WIDE: Black's e keeps Regular's share of the n, not 2% less,
+# so the eye grows with the width the round-4 gate allows (counter 0.0496 -> 0.0525, Inter 0.0471); at +0.02 600 ran +2.1%.
+E_END, E_RUN, E_RUN_IT, E_TILT, E_SQUARE, E_WIDE = 322, -8, -12, 12, 0.14, 0.0
 # Black's bar is this much thinner than the other crossbars and drops this share of a bar below the middle: its eye read 0.78x Inter's
 # (as a share of the x-height squared) while o a g read 1.0-1.2x, so the e was the dark spot of a Black word
 E_BAR, E_DROP = 0.2, 0.5
@@ -803,7 +841,7 @@ def _e_body(g, p, x0, w):
     a0 = -math.degrees(math.asin(min(1.0, (cy - yb) / ry)))
     first = [_ell_seg(cx, cy, rx, ry, a0, 90, p.k)] if a0 < 0 else g.arc(cx, cy, rx, ry, 0, 90)
     # the start is a join hidden in the bar, cut flat along the bar's underside, not a terminal
-    g.stroke(first + g.arc(cx, cy, rx, ry, 90, E_END - E_RUN * p.heavy - p.ap), caps=('h', 'b'), cut='t', tilt=E_TILT)
+    g.stroke(first + g.arc(cx, cy, rx, ry, 90, 270) + g.arc(cx, cy, rx, ry, 270, E_END - (E_RUN_IT if p.italic else E_RUN) * p.heavy - p.ap, p.k + E_SQUARE * p.heavy), caps=('h', 'b'), cut='t', tilt=E_TILT)
     # ends on the bowl's centreline, so the bowl stroke covers it; in the italic the stroke's end
     # is cut on a slant, so the bar stops short of it
     g.hbar(cx - rx, cx + rx - (p.V * 0.18 if p.italic else 0), yb, h=bar)
@@ -811,7 +849,7 @@ def _e_body(g, p, x0, w):
 
 @glyph('e', 0x65)
 def _e(g, p):
-    _e_body(g, p, 0, p.nw * (1.06 - 0.02 * p.heavy))  # 0.02 narrower at Black: on the untrimmed n (round 4) the e set 13% over its Regular (Inter's 4%); its eye is round 3's
+    _e_body(g, p, 0, p.nw * (1.06 + E_WIDE * p.heavy))
     g.sb = (0.62, 0.5)
 
 
@@ -911,21 +949,27 @@ def _s(g, p):
     g.sb = (0.55, 0.55)
 
 
-F_BOLD_TUCK = 1.8
+F_BOLD_TUCK, F_BOLD_OPEN = 1.0, 0.5
+F_STEM_IN, F_HOOK_IN, F_HOOK_IN_IT, F_RSB, F_TAIL = 0.23, 0.10, 0.25, 0.2, 0.35
 
 
 def _f_hook(p):
     """The f's width, stem position, hook end angle and hook radius."""
     w = p.cn * 0.47 + p.V * 1.69  # heavier stems need a wider f, or the hook has no room to turn
-    xs = w * 0.28 + p.V * 0.1
+    # Black's stem sits F_STEM_IN stems further left: on Regular's share the crossbar's left arm ran 129 units and its right 57
+    # (Inter's Black 84 and 101), so the white under the right arm sat past the hook, a hole before the next letter ("craf t")
+    xs = w * 0.28 + p.V * (0.1 - F_STEM_IN * p.heavy)
     # size the hook so its terminal ends above the crossbar's end: a wider hook overhangs empty
     # space and opens a gap before the next letter ("def ault")
     # Heavier weights end the hook higher: near its tip the hook turns tighter than half a Black
     # stroke, and the inner edge folds into a pinhole. The angle stays in one quadrant, so the
     # outline structure (and master compatibility) is unchanged.
     end = 38 + (24 if p.italic else 30) * p.heavy
-    # the upright's hook is wider at Black, so its inner edge stays clear of the stem; the italic's keeps its own
-    rx = (w * 0.96 - xs - p.V / 2) / (1 + math.cos(math.radians(end))) + p.V * (0.15 + (0 if p.italic else 0.12) * p.heavy)
+    # The hook reaches 0.15 stems past the crossbar's end at Regular and F_HOOK_IN less at Black (the italic F_HOOK_IN_IT, its slant
+    # carries the hook further out): Black's +0.12 overhung its crossbar by 92 units (Inter's 20), and the f is spaced from the hook,
+    # so the white under it was a hole after the f. Now 35 (italic 40). With the stem moved left the hook's own radius is about as
+    # wide as before (151 at Black, 160 with the old +0.12 stems), so its inner edge stays clear of the stem.
+    rx = (w * 0.96 - xs - p.V / 2) / (1 + math.cos(math.radians(end))) + p.V * (0.15 - (F_HOOK_IN_IT if p.italic else F_HOOK_IN) * p.heavy)
     return w, xs, end, rx
 
 
@@ -935,8 +979,9 @@ def _italic_descender(g, p, x):
     the stem."""
     rx = _f_hook(p)[3]
     # a wider hook at Black, turned a little less far: at Regular's size the inner edge of Black's hook curled up
-    # against the stem and nicked it
-    rxb, ryb = rx * (0.9 + 0.5 * p.heavy), rx * (0.99 + 0.2 * p.heavy)
+    # against the stem and nicked it. F_TAIL 0.5 -> 0.35 (round 4): it ran 303 units left of the stem (Inter's 193), and the f,
+    # spaced from it, stood 82 units right of Inter's with a hole before it ("e f g")
+    rxb, ryb = rx * (0.9 + F_TAIL * p.heavy), rx * (0.99 + 0.2 * p.heavy)
     cyb = p.desc + p.H / 2 + ryb
     return g.arc(x - rxb, cyb, rxb, ryb, -140 + 20 * p.heavy, 0), cyb
 
@@ -960,12 +1005,18 @@ def _f(g, p):
         # The heavy hook is wider (_italic_descender) and pushed the stem right: ef, af, gef read as two words at 600-900. The f
         # sits closer instead; kern.py keeps the hook off the feet of x, y, k, r.
         # Bold sits closer still (the h (1 - h) term is nothing at Regular and at Black): between the two masters the hole was back at 600-700
-        g.sb = (-0.2 - 1.0 * p.heavy - F_BOLD_TUCK * p.heavy * (1 - p.heavy), 0.15 + 0.3 * p.heavy)
+        # Round 4 (narrower top hook and tail): -1.0 / +0.3 -> -1.6 / +0.8 at Black, so the white after the crossbar matches Regular's
+        # (fu 0.68 -> 0.95 of the nn gap) and the stem sits as close to the letter before as Inter's; Bold's tuck 1.8 -> 1.0 and its
+        # right side F_BOLD_OPEN wider, or 700 set ef and fu at 0.79 and 0.83 of the nn gap (Regular 0.91, 0.93)
+        g.sb = (-0.2 - 1.6 * p.heavy - F_BOLD_TUCK * p.heavy * (1 - p.heavy), 0.15 + 0.8 * p.heavy + F_BOLD_OPEN * p.heavy * (1 - p.heavy))
     else:
         g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'), cut='n')
-        g.sb = (0.45, 0.2 + 0.4 * p.heavy)  # crossbar overhang, as for t (fo, ft sat 15% tighter than the references')
+        g.sb = (0.45, 0.2 + F_RSB * p.heavy)  # crossbar overhang, as for t (fo, ft sat 15% tighter than the references'); F_RSB 0.4 -> 0.2 with the shorter hook (round 4)
     g.hbar(0, w * 0.96, p.xh - H)
     g.ht = 'a'
+
+
+T_STEM_IN = 0.25
 
 
 @glyph('t', 0x74)
@@ -974,7 +1025,9 @@ def _t(g, p):
     # Heavy t's widen so the crossbar still reaches past the stem on the right.
     w = p.nw * (0.6 + 0.14 * heavy)
     V, H = p.V, p.H
-    xs = w * 0.24 + V * 0.12
+    # Black's stem sits T_STEM_IN stems further left, as the f's: its crossbar's left arm ran 117 units and its right 69 (Inter's
+    # Black 67 and 91), so the t read narrow on the right with white before it
+    xs = w * 0.24 + V * (0.12 - T_STEM_IN * heavy)
     g.hbar(0, w * 0.96, p.xh - H)
     # Stem and foot are one outline, drawn directly rather than as a stroke: a stroke turning a
     # corner tighter than half its width folds on the inside, and Geist's and Inter's heavy t
@@ -1024,7 +1077,7 @@ def _t(g, p):
     # the italic t sat 15-25% looser than Inter's and Plex's on both sides, and Bold's left side
     # 15% looser in both styles. Where that brings a diagonal's foot against the crossbar at
     # Black, kerning opens the pair (kern.OWN_SHAPE_PAIRS).
-    g.sb = ((0.4 - 0.3 * heavy) if p.italic else (0.55 - 0.25 * heavy), (0.05 + 0.25 * heavy) if p.italic else (0.25 + 0.2 * heavy))
+    g.sb = ((0.4 - 0.3 * heavy) if p.italic else (0.55 - 0.25 * heavy), (0.05 + 0.25 * heavy) if p.italic else (0.25 + 0.35 * heavy))  # Black's right 0.2 -> 0.35 with the longer right arm (T_STEM_IN): tu 0.73 -> 0.8 of the nn gap, Inter's 0.80
     g.anchors['topright_x'] = xs + V + p.S * 0.4
     g.anchors['topright_y'] = p.asc  # ť's comma reaches the ascender, as ď's and ľ's (and Inter's, Geist's)
 
@@ -1146,7 +1199,7 @@ def _y(g, p):
 def _z(g, p):
     w = p.dnw * 0.95 + Z_WIDER * p.heavy
     g.hbar(w * 0.04, w * 0.98, p.xh - p.H).hbar(0, w, 0)
-    g.diag(w * 0.98, p.xh - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95)
+    g.diag(w * 0.98, p.xh - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95, exact=(True, True))  # as Z's: the italic's ends stood out past the bars at Black, a step on the right
     # the italic's baseline bar slants out under the next letter: heavy, it met X and A
     g.sb = (0.64, 0.64 + ((0.12 + 1.0 * p.heavy) if p.italic else 0))
 
@@ -2252,7 +2305,7 @@ def _eng(g, p):
     cy = p.xh + p.ov * 0.4 - H / 2 - ry
     r2 = 60 + V * 0.3
     cy2 = p.desc + H / 2 + r2 * 1.1
-    g.stroke(g.arc(a + rx, cy, rx, ry, 180 - JOIN_RUN, 0) + [L((b, cy), (b, cy2))] + g.arc(b - r2, cy2, r2, r2 * 1.1, 0, -90) + [L((b - r2, p.desc + H / 2), (b - r2 - 20, p.desc + H / 2))], taper=(join_taper(p), 1))
+    g.stroke(g.arc(a + rx, cy, rx - join_flush(p, join_taper(p)), ry, 180 - JOIN_RUN, 90) + g.arc(a + rx, cy, rx, ry, 90, 0) + [L((b, cy), (b, cy2))] + g.arc(b - r2, cy2, r2, r2 * 1.1, 0, -90) + [L((b - r2, p.desc + H / 2), (b - r2 - 20, p.desc + H / 2))], taper=(join_taper(p), 1), reach=(join_reach(p), None))
 
 
 @glyph('longs', 0x17F)
@@ -2284,7 +2337,10 @@ def _mu(g, p):
     ry = rx * ARCH_RY  # u's bowl and join
     cy = -p.ov * 0.4 + p.H / 2 + ry
     g.vstem(0, p.desc, p.xh)
-    g.stroke(g.arc(a + rx, cy, rx, ry, 180 + JOIN_RUN, 360 - JOIN_RUN), taper=(join_taper(p),) * 2)
+    # the right join is u's (thinned, ramped and set off its stem); the left, into a separate stem, keeps the pre-round-4 taper,
+    # so the counter, and with it Bold's squeeze (build.counter_squeeze), is u's
+    left = join_taper(p) if p.V <= 84 else 0.83 + 0.12 * (min(p.V, 190) - 84) / 106
+    g.stroke(g.arc(a + rx, cy, rx, ry, 180 + JOIN_RUN, 270) + g.arc(a + rx, cy, rx - join_flush(p, arch_join(p)), ry, 270, 360 - JOIN_RUN), taper=(left, arch_join(p)), reach=(None, join_reach(p)))
     g.vstem(w - p.V, 0, p.xh)
 
 
