@@ -595,9 +595,7 @@ fn image(node: &Node, cx: &mut Cx<'_>, out: &mut String) {
             .copied()
             .collect::<Vec<_>>()
             .join(";");
-        if !both.is_empty() {
-            attr(out, "style", &both);
-        }
+        cx.style(out, &both);
         out.push('>');
         return;
     }
@@ -611,9 +609,7 @@ fn image(node: &Node, cx: &mut Cx<'_>, out: &mut String) {
         attr(out, "data-blurred", "true");
     }
     attr(out, "class", "cv-image-wrapper");
-    if !style.is_empty() {
-        attr(out, "style", &style);
-    }
+    cx.style(out, &style);
     out.push_str("><span");
     attr(out, "class", "cv-image-placeholder");
     attr(out, "aria-hidden", "true");
@@ -621,9 +617,7 @@ fn image(node: &Node, cx: &mut Cx<'_>, out: &mut String) {
     attr(out, "class", "cv-image-image");
     attr(out, "src", &src);
     attr(out, "alt", &alt);
-    if !img_style.is_empty() {
-        attr(out, "style", &img_style);
-    }
+    cx.style(out, &img_style);
     out.push_str("></span>");
 }
 
@@ -665,9 +659,11 @@ fn svg(node: &Node, cx: &mut Cx<'_>, out: &mut String) {
     let alt = node.arg_str(1);
     let fit = node.prop_str("fit");
     let style = style.join(";");
+    let key = cx.style_key(&style);
     let opts = SvgOpts {
         alt: alt.as_deref(),
-        style: &style,
+        style: if key.is_some() { "" } else { &style },
+        style_key: key.as_deref(),
         fit: fit.as_deref(),
         id_prefix: &prefix,
     };
@@ -1020,7 +1016,15 @@ fn link(node: &Node, out: &mut String) {
 
 fn button(node: &Node, cx: &mut Cx, out: &mut String) {
     let loading = node.prop_bool("loading");
-    out.push_str("<button");
+    let disabled = node.prop_bool("disabled") || loading;
+    // `href` renders the `asChild` link form; a disabled or loading one stays a disabled button.
+    let href = node
+        .prop_str("href")
+        .and_then(|h| safe_url(&h, false))
+        .filter(|_| !disabled);
+    let tag = if href.is_some() { "a" } else { "button" };
+    out.push('<');
+    out.push_str(tag);
     attr(out, "data-variant", &prop_or(node, "variant", "primary"));
     attr(out, "data-size", &prop_or(node, "size", "md"));
     attr(out, "data-state", if loading { "loading" } else { "idle" });
@@ -1028,8 +1032,11 @@ fn button(node: &Node, cx: &mut Cx, out: &mut String) {
         attr(out, "aria-busy", "true");
     }
     attr(out, "class", "cv-button-button");
+    if let Some(h) = &href {
+        attr(out, "href", h);
+    }
     // A loading button is disabled, like the component's `disabled || loading`.
-    if node.prop_bool("disabled") || loading {
+    if disabled {
         flag(out, "disabled");
     }
     out.push('>');
@@ -1048,5 +1055,7 @@ fn button(node: &Node, cx: &mut Cx, out: &mut String) {
     attr(out, "class", "cv-button-label");
     out.push('>');
     esc(out, raw_text(node));
-    out.push_str("</span></button>");
+    out.push_str("</span></");
+    out.push_str(tag);
+    out.push('>');
 }

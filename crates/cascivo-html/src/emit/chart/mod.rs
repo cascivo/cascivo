@@ -180,19 +180,25 @@ pub(crate) struct Frame<'a> {
 /// Frame styles are inline: the only chart CSS shipped is the legend's.
 const FRAME_STYLE: &str = "position:relative;inline-size:100%;min-inline-size:0";
 
-pub(crate) fn open(out: &mut String, f: &Frame, wrap: bool) {
+pub(crate) fn open(out: &mut String, cx: &mut Cx, f: &Frame, wrap: bool) {
     if wrap {
-        out.push_str("<div style=\"display:flex;flex-direction:column;gap:0.5rem\">");
+        out.push_str("<div");
+        cx.style(out, "display:flex;flex-direction:column;gap:0.5rem");
+        out.push('>');
     }
     let width = if f.fixed { fmt_num(f.w) } else { "100%".into() };
+    out.push_str("<div");
+    cx.style(out, FRAME_STYLE);
     let _ = write!(
         out,
-        "<div style=\"{FRAME_STYLE}\"><svg role=\"img\" aria-label=\"{t}\" width=\"{width}\" viewBox=\"0 0 {w} {h}\" \
-preserveAspectRatio=\"xMidYMid meet\" style=\"max-inline-size:100%;block-size:auto\"><title>{t}</title>",
+        "><svg role=\"img\" aria-label=\"{t}\" width=\"{width}\" viewBox=\"0 0 {w} {h}\" \
+preserveAspectRatio=\"xMidYMid meet\"",
         t = esc(f.title),
         w = fmt_num(f.w),
         h = fmt_num(f.h),
     );
+    cx.style(out, "max-inline-size:100%;block-size:auto");
+    let _ = write!(out, "><title>{}</title>", esc(f.title));
     if let Some(d) = f.desc {
         let _ = write!(out, "<desc>{}</desc>", esc(d));
     }
@@ -216,24 +222,31 @@ pub(crate) fn legend(out: &mut String, cx: &mut Cx, items: &[(String, String)]) 
         "<div class=\"cv-chart-legend-legend\" role=\"group\" aria-label=\"Chart legend\">",
     );
     for (name, c) in items {
-        let _ = write!(
-            out,
-            "<span class=\"cv-chart-legend-item\"><span class=\"cv-chart-legend-swatch\" style=\"background:{c}\" aria-hidden=\"true\"></span>{}</span>",
-            esc(name)
-        );
+        out.push_str("<span class=\"cv-chart-legend-item\"><span class=\"cv-chart-legend-swatch\"");
+        cx.style(out, &format!("background:{c}"));
+        let _ = write!(out, " aria-hidden=\"true\"></span>{}</span>", esc(name));
     }
     out.push_str("</div>");
 }
 
-pub(crate) fn data_label(out: &mut String, x: f64, y: f64, text: &str, muted: bool, anchor: &str) {
+pub(crate) fn data_label(
+    out: &mut String,
+    cx: &mut Cx,
+    x: f64,
+    y: f64,
+    text: &str,
+    muted: bool,
+    anchor: &str,
+) {
     let fill = if muted { "background" } else { "foreground" };
     let _ = write!(
         out,
-        "<text x=\"{}\" y=\"{}\" text-anchor=\"{anchor}\" font-size=\"0.6875rem\" font-weight=\"500\" fill=\"var(--cascivo-color-{fill})\" aria-hidden=\"true\" data-data-label=\"\" style=\"pointer-events:none\">{}</text>",
+        "<text x=\"{}\" y=\"{}\" text-anchor=\"{anchor}\" font-size=\"0.6875rem\" font-weight=\"500\" fill=\"var(--cascivo-color-{fill})\" aria-hidden=\"true\" data-data-label=\"\"",
         fmt_num(x),
         fmt_num(y),
-        esc(text)
     );
+    cx.style(out, "pointer-events:none");
+    let _ = write!(out, ">{}</text>", esc(text));
 }
 
 // ---- cartesian chrome -------------------------------------------------------------------

@@ -17,7 +17,7 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         "page-header" => page_header(node, cx, out),
         "dashboard-layout" => dashboard_layout(node, cx, out),
         "separator" => separator(node, out),
-        "spacer" => spacer(node, out),
+        "spacer" => spacer(node, cx, out),
         _ => emit_children(node, cx, out),
     }
 }
@@ -41,7 +41,7 @@ fn flex(node: &Node, cx: &mut Cx, out: &mut String) {
             flag(out, "data-truncate");
         }
         if let Some(b) = node.prop_str("basis").and_then(|b| css_len(&b)) {
-            attr(out, "style", &format!("flex-basis:{b}"));
+            cx.style(out, &format!("flex-basis:{b}"));
         }
         out.push('>');
         emit_children(node, cx, out);
@@ -79,7 +79,7 @@ fn flex(node: &Node, cx: &mut Cx, out: &mut String) {
     if node.prop_bool("wrap") {
         flag(out, "data-wrap");
     }
-    attr(out, "style", &style);
+    cx.style(out, &style);
     out.push('>');
     emit_children(node, cx, out);
     out.push_str("</div>");
@@ -103,7 +103,7 @@ fn grid(node: &Node, cx: &mut Cx, out: &mut String) {
     // The outer element is the query container; the inner one hosts the column rules.
     out.push_str("<div");
     attr(out, "class", "cv-grid-grid-container");
-    attr(out, "style", &style);
+    cx.style(out, &style);
     out.push_str("><div");
     attr(out, "class", "cv-grid-grid");
     if node.prop_bool("alignRows") {
@@ -123,7 +123,7 @@ fn columns(node: &Node, cx: &mut Cx, out: &mut String) {
     );
     out.push_str("<div");
     attr(out, "class", "cv-columns-columns-container");
-    attr(out, "style", &style);
+    cx.style(out, &style);
     out.push_str("><div");
     attr(out, "class", "cv-columns-columns");
     out.push('>');
@@ -139,7 +139,7 @@ fn auto_grid(node: &Node, cx: &mut Cx, out: &mut String) {
     let style = format!("--_min:{min};--_gap:{}", space(&gap_of(node, "gap", "4")));
     out.push_str("<div");
     attr(out, "class", "cv-auto-grid-auto-grid");
-    attr(out, "style", &style);
+    cx.style(out, &style);
     out.push('>');
     emit_children(node, cx, out);
     out.push_str("</div>");
@@ -152,7 +152,7 @@ fn center(node: &Node, cx: &mut Cx, out: &mut String) {
         .unwrap_or_else(|| "48rem".into());
     out.push_str("<div");
     attr(out, "class", "cv-center-center");
-    attr(out, "style", &format!("--_center-max:{max}"));
+    cx.style(out, &format!("--_center-max:{max}"));
     out.push('>');
     emit_children(node, cx, out);
     out.push_str("</div>");
@@ -167,7 +167,7 @@ fn section(node: &Node, cx: &mut Cx, out: &mut String) {
     if let Some(t) = node.arg_str(0) {
         attr(out, "aria-label", &t);
     }
-    attr(out, "style", &style);
+    cx.style(out, &style);
     out.push_str("><div");
     attr(out, "class", "cv-section-inner");
     out.push('>');
@@ -266,13 +266,12 @@ fn separator(node: &Node, out: &mut String) {
     out.push_str("></div>");
 }
 
-fn spacer(node: &Node, out: &mut String) {
+fn spacer(node: &Node, cx: &mut Cx, out: &mut String) {
     out.push_str("<div");
     attr(out, "role", "none");
     attr(out, "class", "cv-spacer-spacer");
-    attr(
+    cx.style(
         out,
-        "style",
         &format!("--_spacer-size:{}", space(&gap_of(node, "size", "4"))),
     );
     out.push_str("></div>");

@@ -40,7 +40,7 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
     let ys = Linear::new((y_min, y_max), (ih, 0.0));
 
     let show_legend = !c.plain && c.legend.unwrap_or(false);
-    open(out, &c.frame(), show_legend);
+    open(out, cx, &c.frame(), show_legend);
     let _ = write!(
         out,
         "<g><g transform=\"translate({},{})\">",

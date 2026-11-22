@@ -36,7 +36,7 @@ const SYNTAX = `# .cv — one node per line, 2-space indent = children
 name [args] [key=value] [flag] ["text"]
 - Strings: bare word or "quoted with spaces". A trailing "text" is the node's text.
 - Props: key=value (gap=4, variant=primary). A bare word that is an enum value or a bool prop name is a flag (button Save primary).
-- Data: bar Q1:12 Q2:18 | line 3 5 8 | table Name,Age | Ann,31 | Bob,42 (first row = header; props go BEFORE the rows).
+- Data: bar Q1:12 Q2:18 | line 3 5 8 | table Name,Age | Ann,31 | Bob,42 (first row = header; props go BEFORE the rows). In a cell, \\, is a literal comma, \\| a bar.
 - 3x card "x" repeats a node. # comment lines. Only two-space indents.
 - Directives: @title "T" @lang de @brand … @brand-file brand.cv
 - Pictures: image logo.png "Alt" w=64 | svg icons/a.svg "Alt" fit=cover | svg "<svg …>". Paths are relative to the .cv file (CLI: --assets <dir> adds roots, --fetch embeds https URLs); files are embedded, svg inlined so currentColor follows the theme.
