@@ -1,5 +1,12 @@
 # @cascivo/docspack
 
+## 0.3.5
+
+### Patch Changes
+
+- 9f0d78d: Bundle the new `using-cascivo-blitz.md` guide (native HTML rendering with cascivo-blitz).
+- 4e0caf8: Regenerate the bundled `using-cascivo-web.md` doc so its header matches registry v1.11.0.
+
 ## 0.3.4
 
 ### Patch Changes
