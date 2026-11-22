@@ -2,7 +2,7 @@
 
 `cascivo-web` builds a static website from a folder of Markdown, content collections and
 templates. Components from cascivo-html work inside Markdown. It also does locales (`/de/...`),
-RSS feeds and a sitemap, and it deploys to Cloudflare Workers Static Assets. It needs no React,
+RSS feeds and a sitemap, and it deploys to Cloudflare Workers Static Assets or Cloudflare Pages. It needs no React,
 no Node build and no JavaScript runtime to build the site. The same input gives the same files.
 
 It is a command-line tool and a Rust library.
@@ -17,21 +17,13 @@ It is a command-line tool and a Rust library.
 
 ## Install
 
-`cascivo-web` is not released yet (it is at `0.0.0`). Until the first release, install it from a
-checkout of the repository:
-
-```sh
-cargo install --path crates/cascivo-web
-```
-
-After the first release:
-
 ```sh
 cargo install cascivo-web
 ```
 
-Prebuilt binaries are then attached to the GitHub release `cascivo-web@<version>`. See
-[RELEASING.md](RELEASING.md).
+Prebuilt binaries are attached to each GitHub release `cascivo-web@<version>`. See
+[RELEASING.md](RELEASING.md). To run the latest unreleased code, install from a checkout of the
+repository: `cargo install --path crates/cascivo-web`.
 
 ## Quick start
 
@@ -60,8 +52,9 @@ public/**                       copied as is
 wrangler.jsonc                  deploy config
 ```
 
-Files and folders that start with `.` or `_` in `pages/` and `public/` are skipped. Symlinks are
-not followed. Slugs and page folders use only `a-z`, `0-9` and `-`.
+Files and folders that start with `.` or `_` in `pages/` are skipped. Everything in `public/` is
+copied, including `_headers`, `_redirects` and `.well-known/`; only `.DS_Store`, `.git`,
+`Thumbs.db`, `desktop.ini` and `._*` are skipped. Symlinks are not followed. Slugs and page folders use only `a-z`, `0-9` and `-`.
 
 ## site.toml
 
@@ -93,6 +86,11 @@ limit = 20
 | `[i18n] default` | Default locale, served at `/`. Must be in `locales`. |
 | `[i18n] locales` | All locales. Others are served at `/<locale>/`. |
 | `[i18n] fallback` | Default `true`. See [Locales](#locales). |
+| `[build] trailing_slash` | Default `true`: `/about/` (`about/index.html`). `false`: `/about` (`about.html`) in output files, `page.url`, entry URLs, canonical, sitemap, hreflang and feeds. |
+| `[build] cascivo_css` | Default `true`. `false`: no `cascivo.css` and no link to it. |
+| `[head] robots` | Default `robots` of `head()`. Default `"index, follow"`; `""` omits the tag. |
+| `[deploy] target` | `"workers"` (default) or `"pages"`. See [Deploy](#deploy-to-cloudflare). |
+| `[deploy] project` | Cloudflare Pages project name (`--project-name`). |
 | `[[feeds]] collection` | Required. The collection to publish. |
 | `path` | Feed file. Default `rss.xml`. |
 | `title` | Feed title. Default: the site title. |
@@ -148,11 +146,24 @@ Files in `pages/` become routes.
 | `pages/about.md` | `/about/` |
 | `pages/blog/index.html` | `/blog/` |
 | `pages/blog/[posts].html` | `/blog/<slug>/`, once per entry of `posts` |
+| `pages/404.md` or `pages/404.html` | `/404.html` (`pages/de/404.html` gives `/de/404.html`) |
 
-A Markdown page has optional front matter. `layout = "post"` picks `layouts/post.html`; the
-default is `default`. Other front matter keys are available as `page.<key>`. A `.html` page is a
-template. A dynamic route `[collection].html` must be a `.html` template, and the collection
+Markdown and `.html` pages have optional `+++` TOML front matter. In a Markdown page,
+`layout = "post"` picks `layouts/post.html`; the default is `default`. Front matter keys are
+available as `page.<key>`, for example `{{ head(page.title, page.description) }}`. A `.html` page
+is a template. A dynamic route `[collection].html` must be a `.html` template, and the collection
 must exist. Two files that give the same URL are an error.
+
+Two front matter keys control the sitemap, on pages and on collection entries (no schema field
+needed):
+
+| Key | Meaning |
+| --- | ------- |
+| `sitemap = false` | Leave the page out of `sitemap.xml`. On a `[collection].html` template it leaves out every entry. |
+| `lastmod = 2026-03-04` | Adds `<lastmod>` to its sitemap entry. A TOML date or a `YYYY-MM-DD` string. |
+
+The 404 page renders with its layout like any page and is never in the sitemap. `head()` gives
+it `robots` `noindex` by default. `cascivo-web dev` serves it, with status 404, for unknown URLs.
 
 ## Layouts and templates
 
@@ -286,6 +297,15 @@ one the command fails before it builds. You need Node (for `npx`) and a Cloudfla
 `npx wrangler login`, or `CLOUDFLARE_API_TOKEN` in the environment. If you use `--out`, point
 `assets.directory` at the same folder (the tool warns when they differ).
 
+**Cloudflare Pages.** `--pages` (or `[deploy] target = "pages"`) runs
+`npx wrangler pages deploy <dist> --project-name <name>` instead; no wrangler config is needed.
+The project name comes from `--project-name` or `[deploy] project`. `_headers` and `_redirects`
+in `public/` are copied to `dist/`, so Pages applies them.
+
+```sh
+cascivo-web deploy --pages --project-name my-site --dry-run
+```
+
 ## Dev server
 
 `cascivo-web dev [site] [--port 4321]` serves the site on `127.0.0.1`. It checks your files every
@@ -296,12 +316,14 @@ A broken build prints the errors in the terminal and in the browser; fix the fil
 
 ```text
 cascivo-web new <dir>
-cascivo-web build [site] [--out <dir>]
+cascivo-web build [site] [--out <dir>] [--no-clean]
 cascivo-web dev [site] [--port <n>]
-cascivo-web deploy [site] [--out <dir>] [--dry-run] [-- <wrangler args>]
+cascivo-web deploy [site] [--out <dir>] [--no-clean] [--pages] [--project-name <name>] [--dry-run] [-- <wrangler args>]
 ```
 
-`site` defaults to `.` and `--out` to `<site>/dist`. Exit code is `0` on success and `1` on error.
+`site` defaults to `.` and `--out` to `<site>/dist`. `build` and `deploy` delete the output folder
+first, so removed pages do not linger; `--no-clean` keeps it. Only a plain folder inside the site
+that holds no sources is deleted; any other `--out` prints a warning and is not cleaned. Exit code is `0` on success and `1` on error.
 
 ## Errors
 
