@@ -102,8 +102,8 @@ svg "<svg viewBox='0 0 8 8'><circle cx='4' cy='4' r='3' fill='currentColor'/></s
 
 ```sh
 cascivo-html guide [component]                 # the agent cheat sheet, or one component
-cascivo-html check [in.cv|-] [--brand f]       # validate only
-cascivo-html render [in.cv|-] [-o out.html] [--brand f] [--assets dir] [--fetch] [--max-asset n]
+cascivo-html check [in.cv|-] [--brand f] [--target t]   # validate only
+cascivo-html render [in.cv|-] [-o out.html] [--brand f] [--target t] [--assets dir] [--fetch] [--max-asset n]
 ```
 
 `-` or no input reads stdin. Without `-o`, the HTML goes to stdout. Exit codes: `0` ok, `1`
@@ -114,6 +114,27 @@ The loop for an agent: read `guide`, write `page.cv`, run `check` until it exits
 `render page.cv -o page.html`. The skill [`cascivo-html`](https://github.com/cascivo/cascivo/blob/main/skills/cascivo-html/SKILL.md) wraps
 this loop.
 
+## Render for Blitz
+
+[Blitz](https://github.com/DioxusLabs/blitz) is a native HTML/CSS engine with no JavaScript. Pass
+`--target blitz` (library: `Options { target: Target::Blitz, .. }`) to lower the output for it.
+The default, `browser`, changes nothing.
+
+| Blitz gap                                                            | What `--target blitz` does                                                                                                                                                                   |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@container` never matches                                           | Rewrites it to the same `@media` query on the viewport. Right for page-level layouts; a narrow container in a wide window still follows the window. `scroll-state()` containers are dropped. |
+| `:focus-visible` never matches                                       | Rewrites it to `:focus`. Pointer focus shows the ring too.                                                                                                                                   |
+| SVG ignores CSS `fill`, `stroke`, `transform`, `var()` and `oklch()` | Moves them to presentation attributes with `rgb()` values from the page theme and brand (`meter`, `progress-circle` and every chart).                                                        |
+| No `<script>`                                                        | Does not emit the table-sort script. `[data-sortable]` stays for a host handler.                                                                                                             |
+
+`overflow:auto` needs no change: Blitz treats it as `scroll`. `:has()` needs the engine pref
+`layout.css.has-selector.enabled`; the host sets it.
+
+`cascivo-html check --target blitz page.cv` prints what still degrades as
+`file:line:col: warning: component: message` on stderr. Warnings do not change the exit code.
+The same lint is `cascivo_html::lint(src, Target::Blitz)`. The pieces are public too:
+`lower_css(&css)` and `lower_svg(&html, &css)`.
+
 ## The library
 
 ```rust
@@ -122,7 +143,7 @@ use cascivo_html::{render, Options};
 let html = render("card \"Hi\"\n", &Options::default())?;
 ```
 
-- `render`, `parse`, `check`, and `GUIDE` / `guide_for(name)` for the cheat sheet text.
+- `render`, `parse`, `check`, `lint`, and `GUIDE` / `guide_for(name)` for the cheat sheet text.
 - The library does no file I/O. Give it files through `Options::assets` (a list of
   `(path, bytes)`), `Options::asset_resolver` and `Options::brand_resolver`. The CLI does this for you.
 - `Options::max_asset_bytes` sets the size limit; `Options::embed_urls` sends `http(s)` sources to

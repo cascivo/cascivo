@@ -80,6 +80,7 @@ for pasting into an agent's context window.
 | [USING-CASCIVO-HTML.md](USING-CASCIVO-HTML.md) | `cascivo-html` (Rust crate + CLI) — write `.cv` text, get one static, branded, self-contained HTML file. For agents and for people. |
 | [USING-CASCIVO-WEB.md](USING-CASCIVO-WEB.md) | `cascivo-web` (Rust CLI) — static sites from Markdown, content collections, locales and RSS; deploy to Cloudflare. |
 | [USING-CASCIVO-TUI.md](USING-CASCIVO-TUI.md) | `cascivo-tui` (Rust crate) — terminal UIs on ratatui with class strings, widgets and the cascivo themes; testing with `TestApp`. |
+| [USING-CASCIVO-BLITZ.md](USING-CASCIVO-BLITZ.md) | `cascivo-blitz` (Rust crate) — render `.cv` in a native Blitz window with no browser: signals, event handlers, native table-sort/tabs/dialog/select. |
 | [MACHINE-MODE.md](MACHINE-MODE.md) | Render a UI as Markdown, or list its operable nodes with `snapshot()`, with `@cascivo/text` — for agents. |
 | [CHART-LIBRARIES.md](CHART-LIBRARIES.md) | `@cascivo/charts` compared to Chart.js and Apache ECharts. |
 | [RECIPE-SOCIAL.md](RECIPE-SOCIAL.md) | Sign in with GitHub, Google or LinkedIn; connect Bluesky, Mastodon, LinkedIn, Threads and Buffer; post now or scheduled; a Share button for readers. |
