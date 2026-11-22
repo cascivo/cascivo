@@ -173,7 +173,7 @@ class Stroke:
 
     caps: per end, 'b' butt (perpendicular; every curved terminal uses it), 'h' cut along a
           horizontal through the end point (straight strokes, joins),
-          'v' cut along a vertical through the end point.
+          'v' cut along a vertical through the end point, 's' along the italic's slant through it (a bar's end in the italic).
     taper: per end, thickness multiplier at that end (ramps to 1 across the end segment) —
            used for the thinned joins where an arch leaves a stem.
     w: constant thickness override (dots, hairline marks); ws: scale on the angle pen.
@@ -475,6 +475,13 @@ def _open_sides(stroke, V, H):
             limit = _thick(stroke, 0 if at_start else n - 1, t, tan, V, H) * 0.6
             left = _move_end(left, at_start, axis, c[axis], limit)
             right = _move_end(right, at_start, axis, c[axis], limit)
+        elif cap == 's':
+            t = 0.0 if at_start else 1.0
+            tan = seg_tangent(stroke.segs[0] if at_start else stroke.segs[-1], t)
+            axis = norm((1.0, -stroke.slant))
+            limit = _thick(stroke, 0 if at_start else n - 1, t, tan, V, H) * 0.6
+            left = _move_end(left, at_start, axis, _dot(c, axis), limit)
+            right = _move_end(right, at_start, axis, _dot(c, axis), limit)
         elif cap == 'b' and V > HEAVY_FROM and stroke.cut != 'n':
             seg = stroke.segs[0] if at_start else stroke.segs[-1]
             if seg[0] != 'C':

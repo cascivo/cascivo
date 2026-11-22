@@ -1055,10 +1055,109 @@ class Font(unittest.TestCase):
                     with self.subTest(font=os.path.basename(path), wght=w, pair=pair):
                         self.assertGreaterEqual(pair_white(hb, path, pair, w, 422, 517), 0.3 * nn)
 
+    def test_italic_f_crossbar_clears_the_letter_before(self):
+        # Round 4, cycle 2: the italic f's crossbar reached under the letter before it at 800-900 (Black's a, c, g, r at 0.44-0.61x
+        # Inter Italic's white before the crossbar, as shares of the nn gap; t 23 units). Its left arm is shorter at Black and its left
+        # end follows the slant (glyphs.F_ARM_IT): at 500-900 the white before the crossbar (rows 412-523) is >= 0.85x Inter Italic's
+        # (measured on Inter Italic 4.1, in its own nn gaps, below) and never under 26 units.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        inter = {500: dict(a=0.57, c=0.64, e=0.72, o=0.83, r=0.34, g=0.57), 600: dict(a=0.57, c=0.61, e=0.68, o=0.79, r=0.36, g=0.57),
+                 700: dict(a=0.58, c=0.58, e=0.65, o=0.77, r=0.38, g=0.58), 800: dict(a=0.59, c=0.57, e=0.63, o=0.77, r=0.42, g=0.59),
+                 900: dict(a=0.60, c=0.62, e=0.64, o=0.83, r=0.47, g=0.60)}
+        for w, ref in inter.items():
+            nn = pair_white(hb, VFI, 'nn', w, 238, 290)
+            for c in 'aceorgt':
+                with self.subTest(wght=w, pair=c + 'f'):
+                    self.assertGreaterEqual(pair_white(hb, VFI, c + 'f', w, 412, 523), max(26, 0.85 * ref.get(c, 0) * nn))
+
+    def test_ff_and_its_pairs_fit_like_inter(self):
+        # Round 4, cycle 2: "off" read with a hole at 13-16 px, 600: the white between the two stems (rows 53-317) was 1.41x Inter's at
+        # 600 and 1.54x at 700, as shares of each font's nn gap (Inter kerns ff -41; kern.OWN_CLOSING_PAIRS now closes it too), and the
+        # white after the f (fi, fl) 1.11-1.26x. At 500-700 ff, fi and fl sit 0.9-1.2x Inter's (ff 1.13-1.18, fi 1.06-1.09, fl
+        # 1.09-1.18) and ft under 1.4x (1.23-1.36: it waits on the t's left side and kerning). Inter's, in its nn gaps, below.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        inter = {500: dict(ff=1.60, fi=1.62, fl=1.60, ft=1.47), 600: dict(ff=1.64, fi=1.68, fl=1.63, ft=1.50), 700: dict(ff=1.69, fi=1.73, fl=1.67, ft=1.53)}
+        for w, ref in inter.items():
+            nn = pair_white(hb, VF, 'nn', w, 238, 290)
+            for pair, r in ref.items():
+                with self.subTest(wght=w, pair=pair):
+                    ratio = pair_white(hb, VF, pair, w, 53, 317) / nn / r
+                    self.assertTrue(0.9 <= ratio <= (1.4 if pair == 'ft' else 1.2), f'{ratio:.2f}x Inter')
+
+    def test_caption_f_hook_reaches(self):
+        # Round 4, cycle 2: at 12-13 px "of" read close to "ot": the hook's overhang past the stem was Inter's at opsz 14 (148 / 149
+        # units at 400, 143 / 141 at 600) and only 4% longer at opsz 8. The Caption master's hook is longer (glyphs.F_HOOK_CAP): >= 1.2x
+        # Inter's opsz-14 hook at opsz 8 and >= 1.05x at opsz 12, while Regular's (opsz 14) is unchanged; the advance holds.
+        for w, inter in ((400, 149), (600, 141)):
+            for opsz, k in ((8, 1.2), (12, 1.05)):
+                gs, cmap = self._glyphs(VF, w, opsz)
+                rows = dict(ink_rows(gs, cmap[ord('f')]))
+                stem = max(rows[y][-1][1] for y in range(160, 320) if rows.get(y))
+                hook = max(r[-1][1] for y, r in rows.items() if y > 560 and r)
+                with self.subTest(wght=w, opsz=opsz):
+                    self.assertGreaterEqual(hook - stem, k * inter)
+
+    def test_black_bowls_round_into_the_stem(self):
+        # Round 4, cycle 2: Black's b d p q counters were chamfered on the stem side (glyphs.bowl_arc, round_in): a quarter of the way
+        # from the counter's top or bottom, its stem side stood 1.1-1.4% of the counter's height further in than its far side, the corner
+        # cut off and the inner edge run straight into the stem. Now the two sides are within 0.5% (Inter's oval: 0.4%).
+        for ch in 'bdpq':
+            gs, cmap = self._glyphs(VF, 900)
+            rows = dict(ink_rows(gs, cmap[ord(ch)]))
+            ys = [264]
+            while len(rows.get(ys[-1] + 1, [])) == 2:
+                ys.append(ys[-1] + 1)
+            while len(rows.get(ys[0] - 1, [])) == 2:
+                ys.insert(0, ys[0] - 1)
+            left = {y: rows[y][0][1] for y in ys}
+            right = {y: rows[y][1][0] for y in ys}
+            h = ys[-1] - ys[0]
+            for fr in (0.15, 0.25, 0.75, 0.85):
+                y = ys[0] + round(fr * h)
+                stem_in, far_in = (left[y] - min(left.values()), max(right.values()) - right[y])
+                if ch in 'dq':
+                    stem_in, far_in = far_in, stem_in
+                with self.subTest(glyph=ch, at=fr):
+                    self.assertLessEqual(stem_in - far_in, 0.005 * h)
+
+    def test_italic_black_arch_leaves_no_notch(self):
+        # Round 4, cycle 2: the italic's Black arches thin across both quarters, which took 18 units off the crown's outside: the crown
+        # sat under the x-height and the stem's corner stood above it, a notch at display sizes (n h m; the u's floor above the baseline).
+        # The crown sits higher by what the thinning takes off (glyphs.ARCH_LIFT): it reaches past the x-height, the u's floor under 0.
+        gs, cmap = self._glyphs(VFI, 900)
+        for ch in 'nhm':
+            with self.subTest(glyph=ch):
+                self.assertGreater(max(y for y, r in ink_rows(gs, cmap[ord(ch)]) if r and r[-1][1] > 330 and y < 650), 528)
+        self.assertLess(min(y for y, r in ink_rows(gs, cmap[ord('u')]) if r), 0)
+
+    def test_black_crotches_open_like_inter(self):
+        # Round 4, cycle 2: Black's k and w crotches were clotted (glyphs.K_JOIN, W_JOIN thin the strokes into the joints). The white
+        # between the k's stem and arm (rows with a gap of 20 units or more above 0.25 x-heights) and below the w's top crotches reached
+        # 0.29 and 0.50 x-heights down at Black upright, 0.24 in the italic k (Inter's 0.38, 0.59, 0.38). At 700-900 each is >= 0.9x
+        # Inter's (Inter 4.1 and Inter Italic 4.1, below).
+        inter = {(VF, 'k'): {700: 0.494, 800: 0.439, 900: 0.377}, (VFI, 'k'): {700: 0.495, 800: 0.44, 900: 0.377}, (VF, 'w'): {700: 0.661, 800: 0.627, 900: 0.589}}
+        for (path, ch), ref in inter.items():
+            for w, r in ref.items():
+                gs, cmap = self._glyphs(path, w)
+                rows = [(y, run) for y, run in ink_rows(gs, cmap[ord(ch)]) if run]
+                if ch == 'k':
+                    depth = sum(1 for y, run in rows if 528 * 0.25 < y < 528 and len(run) >= 2 and run[1][0] - run[0][1] >= 20)
+                else:
+                    depth = sum(1 for y, run in rows if 0 < y < 528 and len(run) >= 3 and run[1][0] - run[0][1] >= 20)
+                with self.subTest(font=os.path.basename(path), glyph=ch, wght=w):
+                    self.assertGreaterEqual(depth / 528, 0.9 * r)
+
     def test_l_tail_reads_and_keeps_its_white(self):
         # Round 4: at 700-900 the upright l's tail read as a ( and crowded the next letter (klm, ll, illumination): as tall as it was
         # long, with 0.7-0.8x the nn gap after it. Flatter (glyphs.L_FLAT_UP) and spaced further (L_RSB, L_BOLD_OPEN), the white
-        # after its tail is >= 0.82-0.86x the nn gap at 700-800 and 0.92x at 900 (0.94) and the tail still reaches 15 units past the stem at 900 (21), the family's signature. At
+        # after its tail is >= 0.82-0.86x the nn gap at 700-800 and 0.92x at 900 (0.94) and the tail still reaches 28 units past the stem at 900, the family's signature
+        # (cycle 2: 21, a nib, now 30 on a lighter toe; glyphs.L_LONG), its inner edge never folding back into the stem's by more than 3 units (it did by 7). At
         # Regular the outline stays; l + space opens by half what the tail takes off n's sidebearing (kern.l_space: 25 units), or
         # "small sizes" read as one word at 16 px.
         try:
@@ -1070,7 +1169,9 @@ class Font(unittest.TestCase):
                 self.assertGreaterEqual(pair_white(hb, VF, 'ln', w, 0, 100), floor * pair_white(hb, VF, 'nn', w, 238, 290))
         gs, _ = self._glyphs(VF, 900)
         rows = dict(ink_rows(gs, 'l'))
-        self.assertGreaterEqual(max(rows[y][-1][1] for y in range(0, 60)) - max(rows[y][-1][1] for y in range(300, 500)), 15, 'the tail')
+        self.assertGreaterEqual(max(rows[y][-1][1] for y in range(0, 60)) - max(rows[y][-1][1] for y in range(300, 500)), 28, 'the tail')
+        stem = max(rows[y][-1][1] for y in range(300, 500))
+        self.assertGreaterEqual(min(rows[y][-1][1] for y in range(0, 300)), stem - 3, 'the inner edge folds')
         for path in (VF, VFI):
             with self.subTest(font=os.path.basename(path)):
                 self.assertGreaterEqual(pair_kerning(hb, path, 'l ', 400), 20)
@@ -1093,7 +1194,9 @@ class Font(unittest.TestCase):
         # Round 4 (owner decision 2): Black's arches and bowls met the stem at full weight, join_ratio 0.76-0.81 upright and 0.83-0.90
         # italic (Inter's 0.45-0.46 and 0.38-0.42), the crotches dark and blunt. They thin across both quarters next to the stem
         # (glyphs.BLACK_JOIN, join_reach, join_flush): upright n m h u 0.56-0.59 and b d p q 0.69, italic 0.69-0.74. quality.py judges
-        # them by that thickness now (JOIN_THIN_MAX); here the arches hold what ships, and Bold's rhythm stays 0.53-0.58.
+        # them by that thickness now (JOIN_THIN_MAX); here the arches hold what ships, and Bold's rhythm stays 0.53-0.59 (cycle 2: the
+        # italic's crown sits 7 units higher, glyphs.ARCH_LIFT, which moves rhythm.py's scanline and reads one pixel more gap at 400 px,
+        # 0.575 -> 0.589; the n's counter and gap are unchanged to the unit).
         import quality
         import rhythm
 
@@ -1103,7 +1206,7 @@ class Font(unittest.TestCase):
                 with self.subTest(font=os.path.basename(path), glyph=g):
                     self.assertLessEqual(quality.join_ratio(m, quality.JOIN_GLYPHS[g]), arch if g in 'nmhu' else bowl)
             with self.subTest(font=os.path.basename(path), rhythm=700):
-                self.assertTrue(0.53 <= rhythm.ratio(path, 700) <= 0.58)
+                self.assertTrue(0.53 <= rhythm.ratio(path, 700) <= 0.59)
 
     def test_black_t_reaches_right(self):
         # Round 4: Black's t stem sat right of its crossbar's middle (arms 117 / 69 units, Inter's 67 / 91), as the f's did, and the t

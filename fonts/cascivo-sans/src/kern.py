@@ -255,8 +255,12 @@ TRACED_NEIGHBOURS = ['period', 'comma', 'ellipsis', 'colon', 'semicolon', 'excla
 # crossbars Inter and Plex let nearly meet (ours sat 1.3x their white at Bold); f before a closing
 # bracket, whose white under the crossbar opened into a hole at Black once its sidebearing did (round 4): heavy masters only, as
 # HEAVY_ONLY, so Regular's f) is unchanged.
+# And ff (round 4, cycle 2), as tt: Inter lets its crossbars nearly meet (ff -39 at 400, -41 at 600). With the white beside each f's
+# crossbar held for the letters before and after it, the white between the two stems read 1.26x Inter's at 400 and 1.41x at 600,
+# a hole in "off"; kerned, 1.1-1.2x. Upright only (UPRIGHT_ONLY): the italic's crossbars, closer already, came within 0.28x the nn gap.
 F_BRACKETS = {('f', 'parenright'), ('f', 'bracketright'), ('f', 'braceright')}
-OWN_CLOSING_PAIRS = {('t', 't'): -1, **{k: -1 for k in F_BRACKETS}}
+UPRIGHT_ONLY = {('f', 'f')}
+OWN_CLOSING_PAIRS = {('t', 't'): -1, ('f', 'f'): -1, **{k: -1 for k in F_BRACKETS}}
 
 
 def _glyph(ch):
@@ -438,7 +442,7 @@ def kern_pairs(o):
             if b == 'i':
                 cands.setdefault((a, w), v)
     cands.update(OWN_SHAPE_PAIRS)
-    cands.update(OWN_CLOSING_PAIRS)
+    cands.update({k: v for k, v in OWN_CLOSING_PAIRS.items() if not (o.p.italic and k in UPRIGHT_ONLY)})
     cands.update({k: -1 for k in list(white_ref(o.p.italic)) + list(FIT_HH) if k[0] in glyphs and k[1] in glyphs})
     # Georgian and Armenian against punctuation and figures: neither Noto nor DejaVu kerns these,
     # but at Black შ's and წ's curls reach a dash's height (–შ touched at Display Black italic).
