@@ -23,21 +23,12 @@ It is a command-line tool and a Rust library.
 
 ## Install
 
-`cascivo-web` is not released yet (it is at `0.0.0`). Until the first release, install it from a
-checkout of the repository:
-
-```sh
-cargo install --path crates/cascivo-web
-```
-
-After the first release:
-
 ```sh
 cargo install cascivo-web
 ```
 
-Prebuilt binaries are then attached to the GitHub release `cascivo-web@<version>`. See
-[RELEASING.md](https://github.com/cascivo/cascivo/blob/main/docs/RELEASING.md).
+Prebuilt binaries are attached to the GitHub release `cascivo-web@<version>`. See
+[RELEASING.md](https://github.com/cascivo/cascivo/blob/main/docs/RELEASING.md). From a checkout: `cargo install --path crates/cascivo-web`.
 
 ## Quick start
 
@@ -192,6 +183,48 @@ Every page links one shared `/cascivo.css`. It holds the base styles, the theme 
 component CSS the site uses. Layouts need no link tag. Component scripts are added to the page
 for you.
 
+## Head, images, assets and Vite
+
+Template functions take positional or keyword arguments. An unknown keyword is an error.
+
+| Call                                                                                                                                                                         | Result                                                                                                                                                                                                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `head(title, description, canonical, og_title, og_description, og_image, og_image_alt, og_image_width, og_image_height, og_type, robots, twitter_card, jsonld, theme_color)` | `<title>`, description, canonical, robots, `og:*`, `twitter:*` and JSON-LD tags. Canonical defaults to `base_url` + the page URL; there is none without `base_url`. `theme_color` is a string or `{light, dark}`.                                                                                 |
+| `img(src, alt, widths=[480, 960, 1440], sizes, class, loading="lazy", format="webp", priority=false)`                                                                        | An `<img srcset>`. Resized, content-hashed copies go to `/_cw/img/`. It never upscales. `format="keep"` keeps JPEG, PNG or WebP. `priority=true` is for the LCP image: eager, `fetchpriority="high"` and a preload in `<head>`. `priority="<media query>"` preloads only where the query matches. |
+| `asset(path)`                                                                                                                                                                | Copies a file from `[assets] dir` to `/_cw/<stem>.<hash>.<ext>` and returns the URL.                                                                                                                                                                                                              |
+| `code \| highlight("ts")`                                                                                                                                                    | A highlighted `<code>` element for `bash`, `css`, `js` or `ts`. Another language is an error.                                                                                                                                                                                                     |
+| `theme_script(storage_key="cascade-theme", attribute="data-theme", default_light="poster", default_dark="poster-dark", blocking=[...])`                                      | An inline script that sets the theme before paint.                                                                                                                                                                                                                                                |
+| `data.<name>`                                                                                                                                                                | A file listed in `[data]` (JSON or TOML).                                                                                                                                                                                                                                                         |
+
+WebP output is lossless. `img()` and `asset()` read from `[images] dir` and `[assets] dir`
+(default `assets`, relative to the site root).
+
+A site that has its own Vite build can use its output. Set it in `site.toml`; paths are relative
+to the site root, may point outside it, and are read-only:
+
+```toml
+[build]
+cascivo_css = false     # default true; false: write and link no cascivo.css
+[vite]
+manifest = "../dist/.vite/manifest.json"
+css_modules = "../dist/.vite/css-modules.json"   # { "<x.module.css path>": { local: hashed } }
+islands = "src/islands/{name}.tsx"               # manifest key of an island
+[data]
+web = "../dist/.vite/web-data.json"
+```
+
+| Call                                         | Result                                                                                                                                                |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `vite(entry)`                                | `/` + the hashed file of a manifest entry.                                                                                                            |
+| `vite_css(entry)`                            | CSS URLs of the entry and its static imports, dependencies first.                                                                                     |
+| `css_bundle(hrefs, name="bundle")`           | One content-hashed `/_cw/<name>.<hash>.css` from those files, in order. Top-level `@layer a, b;` statements go first. A relative `url()` is an error. |
+| `m(module, class)`                           | The hashed class of a CSS module. `module` is the `x.module.css` stem.                                                                                |
+| `island(name, client="visible", props=none)` | The `data-island`, `data-client`, `data-src`, `data-css` and `data-props` attributes. `client` is `visible`, `idle` or `load`.                        |
+| `islands_script()`                           | A small inline module that loads each island and calls its default export `(el, props)`. A failure leaves the static markup.                          |
+
+Write the static fallback markup inside the island element. The loader replaces it only when the
+module loads.
+
 ## Components in Markdown
 
 A line `::name[text]{attrs}` is one component. An attribute named like a positional argument fills
@@ -338,10 +371,9 @@ rendered site from memory. Mount it with `merge` or `nest`.
 
 ## Limits
 
-- No image pipeline. Images need a URL, a `data:` URI or a file in `public/` that you link
-  yourself.
-- No syntax highlighting, no islands or client-side hydration, and no custom `<head>` management
-  beyond what your layout writes.
+- Islands are loaded by a small script. There is no server rendering of them and no bundler:
+  Vite builds the modules.
+- Syntax highlighting covers `bash`, `css`, `js` and `ts`. WebP output is lossless.
 - No Markdown inside components.
 - Output is static: no forms and no run-time data.
 

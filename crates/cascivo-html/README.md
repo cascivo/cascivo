@@ -51,8 +51,12 @@ fn main() {
 ```
 
 CLI options: `render [in.cv|-] [-o out.html] [--brand brand.cv] [--assets dir] [--fetch]
-[--max-asset bytes]`, `check`, `guide [name]`. Exit codes: `0` ok, `1` invalid `.cv`, `2` usage or
-I/O error.
+[--max-asset bytes] [--target browser|blitz]`, `check`, `guide [name]`. Exit codes: `0` ok, `1`
+invalid `.cv`, `2` usage or I/O error.
+
+`--target blitz` lowers the output for the [Blitz](https://github.com/DioxusLabs/blitz) native
+engine (`@container`, `:focus-visible`, SVG styling); `check --target blitz` warns about
+components that still degrade there. See the guide.
 
 ## Library notes
 

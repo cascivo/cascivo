@@ -38,6 +38,7 @@ export const GUIDES: { src: string; slug: string; route?: string }[] = [
   { src: 'USING-CASCIVO-HTML.md', slug: 'using-cascivo-html' },
   { src: 'USING-CASCIVO-WEB.md', slug: 'using-cascivo-web' },
   { src: 'USING-CASCIVO-TUI.md', slug: 'using-cascivo-tui' },
+  { src: 'USING-CASCIVO-BLITZ.md', slug: 'using-cascivo-blitz' },
   { src: 'STYLING-INTERNALS.md', slug: 'styling-internals' },
   { src: 'MOTION.md', slug: 'motion' },
   { src: 'CSS-LAYERS-PITFALL.md', slug: 'css-layers-pitfall' },

@@ -16,6 +16,7 @@
 
 pub mod asset;
 pub mod ast;
+pub mod blitz;
 pub mod brand;
 pub mod catalog;
 mod catalog_gen;
@@ -31,6 +32,7 @@ pub mod path;
 pub mod render;
 
 pub use ast::{BrandItem, Directive, Doc, Node, Value};
+pub use blitz::{Target, lint, lower_css, lower_svg};
 pub use brand::{Brand, parse_brand_file};
 pub use catalog::{
     ArgKind, ArgSpec, Children, ClientJs, CompSpec, PropKind, PropSpec, lookup, suggest,

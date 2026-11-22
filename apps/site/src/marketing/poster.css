@@ -93,6 +93,10 @@
   border-block-start: var(--pg-rule);
 }
 
+.pg-tiles + .pg-cols {
+  border-block-start: var(--pg-rule);
+}
+
 @media (min-width: 40rem) {
   .pg-tiles {
     grid-template-columns: repeat(2, minmax(0, 1fr));
