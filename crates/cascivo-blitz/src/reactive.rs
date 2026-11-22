@@ -13,6 +13,37 @@ thread_local! {
     static NEXT_ID: Cell<usize> = const { Cell::new(1) };
 }
 
+// Restore thread-local state on unwind too, so a panicking handler cannot leave effects stuck
+// in a batch or reading under the wrong observer.
+struct ObserverGuard(Option<Rc<EffectInner>>);
+
+impl ObserverGuard {
+    fn set(next: Option<Rc<EffectInner>>) -> Self {
+        ObserverGuard(OBSERVER.with(|o| o.replace(next)))
+    }
+}
+
+impl Drop for ObserverGuard {
+    fn drop(&mut self) {
+        OBSERVER.with(|o| *o.borrow_mut() = self.0.take());
+    }
+}
+
+struct DepthGuard;
+
+impl DepthGuard {
+    fn enter() -> Self {
+        DEPTH.with(|d| d.set(d.get() + 1));
+        DepthGuard
+    }
+}
+
+impl Drop for DepthGuard {
+    fn drop(&mut self) {
+        DEPTH.with(|d| d.set(d.get() - 1));
+    }
+}
+
 trait Source {
     fn unsubscribe(&self, id: usize);
 }
@@ -42,9 +73,10 @@ impl EffectInner {
         };
         self.clear_sources();
         self.running.set(true);
-        let prev = OBSERVER.with(|o| o.replace(Some(self.clone())));
-        f();
-        OBSERVER.with(|o| *o.borrow_mut() = prev);
+        {
+            let _observer = ObserverGuard::set(Some(self.clone()));
+            f();
+        }
         self.running.set(false);
         if self.alive.get() {
             *self.run.borrow_mut() = Some(f);
@@ -244,13 +276,11 @@ pub fn computed<T: PartialEq + 'static>(mut f: impl FnMut() -> T + 'static) -> C
 
 /// Group writes: effects run once, after `f` returns.
 pub fn batch<R>(f: impl FnOnce() -> R) -> R {
-    DEPTH.with(|d| d.set(d.get() + 1));
-    let out = f();
-    let outermost = DEPTH.with(|d| {
-        d.set(d.get() - 1);
-        d.get() == 0
-    });
-    if outermost {
+    let out = {
+        let _depth = DepthGuard::enter();
+        f()
+    };
+    if DEPTH.with(Cell::get) == 0 {
         loop {
             let next = PENDING.with(|p| {
                 let mut p = p.borrow_mut();
@@ -259,9 +289,8 @@ pub fn batch<R>(f: impl FnOnce() -> R) -> R {
             let Some(eff) = next else { break };
             eff.queued.set(false);
             // Effects that write signals run their dependents in a nested batch.
-            DEPTH.with(|d| d.set(d.get() + 1));
+            let _depth = DepthGuard::enter();
             eff.execute();
-            DEPTH.with(|d| d.set(d.get() - 1));
         }
     }
     out
@@ -269,10 +298,8 @@ pub fn batch<R>(f: impl FnOnce() -> R) -> R {
 
 /// Read signals inside `f` without subscribing the running effect.
 pub fn untracked<R>(f: impl FnOnce() -> R) -> R {
-    let prev = OBSERVER.with(|o| o.borrow_mut().take());
-    let out = f();
-    OBSERVER.with(|o| *o.borrow_mut() = prev);
-    out
+    let _observer = ObserverGuard::set(None);
+    f()
 }
 
 #[cfg(test)]
@@ -354,5 +381,17 @@ mod tests {
         b.set(2);
         a.set(9);
         assert_eq!(n.get(), 3);
+    }
+
+    #[test]
+    fn panic_in_batch_does_not_stick_the_batch() {
+        let s = Signal::new(0);
+        let seen = Rc::new(Cell::new(0));
+        let (s2, seen2) = (s.clone(), seen.clone());
+        let _e = effect(move || seen2.set(s2.get()));
+        let r = std::panic::catch_unwind(|| batch(|| panic!("boom")));
+        assert!(r.is_err());
+        s.set(5);
+        assert_eq!(seen.get(), 5);
     }
 }
