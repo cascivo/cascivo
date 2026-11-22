@@ -10,8 +10,8 @@ that changes the *number* of strokes or segments. Parameters may only move point
 
 import math
 
-from params import MID_WGHT
-from geom import L, lerp, Stroke, arc, contour_bounds, norm, orient, pen_thickness, reverse_seg
+from params import ITALIC_ANGLE, MID_WGHT
+from geom import L, lerp, Stroke, _smooth, arc, contour_bounds, norm, orient, pen_thickness, reverse_seg
 
 GLYPHS = {}  # name -> (codepoints, fn)
 ORDER = []
@@ -597,7 +597,7 @@ A_ARC_END = 13  # the a's arc runs less far round than the g's tail: ending high
 # near one 1-6 deg under quality.py's join-angle floor, which kept the italic's Black counters as wide as Regular's stems
 # allowed and its rhythm at 0.30. The upright keeps the half-ellipse: thinned to 0.6 its join read 30 deg (floor 29) for no
 # gain in white. ARCH_JOIN 0.85 -> 0.4 (round 4), ramped and set off the stem as the upright's (BLACK_JOIN): join 0.88 -> 0.71.
-ARCH_JOIN, ARCH_DEEP, ARCH_LEAN = 0.4, 0.2, -0.18
+ARCH_JOIN, ARCH_DEEP, ARCH_LEAN, ARCH_LIFT = 0.4, 0.2, -0.18, 1.0
 
 
 def arch_join(p):
@@ -609,12 +609,30 @@ def join_flush(p, taper):
     return p.V * (1 - taper) / 2 * p.heavy * JOIN_FLUSH
 
 
-def bowl_arc(g, cx, cy, rx, ry, stem_left):
-    """A bowl closing on a stem, its two quarters at the stem narrowed by join_flush (b p left, d q g right)."""
+def bowl_arc(g, cx, cy, rx, ry, stem_left, round_in=False):
+    """A bowl closing on a stem, its two quarters at the stem narrowed by join_flush (b p left, d q g right).
+
+    `round_in` (b d p q): the narrowed quarters keep the full quarter's handle at the top and bottom, so they narrow only toward the
+    stem. Narrowed all along, the counter's corners on the stem side were cut off at Black (its inner edge 10 units in at 45 degrees,
+    where the far side is round), a chamfer and a straight run into the stem; now the counter is round on both sides, as Inter's."""
     d = join_flush(g.p, join_taper(g.p))
+    near = (lambda a0, a1: _round_in(g.arc(cx, cy, rx - d, ry, a0, a1), cx, rx / (rx - d))) if round_in else (lambda a0, a1: g.arc(cx, cy, rx - d, ry, a0, a1))
     if stem_left:
-        return g.arc(cx, cy, rx - d, ry, 180 - JOIN_RUN, 90) + g.arc(cx, cy, rx, ry, 90, -90) + g.arc(cx, cy, rx - d, ry, -90, -180 + JOIN_RUN)
-    return g.arc(cx, cy, rx - d, ry, JOIN_RUN, 90) + g.arc(cx, cy, rx, ry, 90, 270) + g.arc(cx, cy, rx - d, ry, 270, 360 - JOIN_RUN)
+        return near(180 - JOIN_RUN, 90) + g.arc(cx, cy, rx, ry, 90, -90) + near(-90, -180 + JOIN_RUN)
+    return near(JOIN_RUN, 90) + g.arc(cx, cy, rx, ry, 90, 270) + near(270, 360 - JOIN_RUN)
+
+
+def _round_in(segs, cx, k):
+    """A narrowed quarter's handle at its top or bottom (the end on x = cx) lengthened by k, as the full quarter's."""
+    out = []
+    for sg in segs:
+        q0, q1, q2, q3 = sg[1:]
+        if abs(q3[0] - cx) < 1e-6:
+            q2 = (cx + (q2[0] - cx) * k, q2[1])
+        if abs(q0[0] - cx) < 1e-6:
+            q1 = (cx + (q1[0] - cx) * k, q1[1])
+        out.append((sg[0], q0, q1, q2, q3))
+    return out
 
 
 def join_reach(p):
@@ -633,6 +651,10 @@ def _arch(g, a, b, y, ry, up=True):
     # the near quarter leaves the stem off its centre by half what the taper takes off, so the thinned stroke's inner edge still
     # leaves the stem's edge low and the counter's corner stays round: the thinning comes off the outside (see BLACK_JOIN)
     a1 = a + join_flush(g.p, arch_join(g.p))
+    # The italic's Black crown sits higher (the u's floor lower) by what the thinning takes off its outside (ARCH_LIFT of it): thinned
+    # across both quarters, the crown's outer edge came 18 units under the stem's end, and the stem's corner stood above the arch as a
+    # notch at display sizes. The counter is that much taller.
+    y += s * ARCH_LIFT * h * (1 - lerp(arch_join(g.p), 1.0, _smooth(1 / join_reach(g.p)))) * g.p.H / 2
     return g.arc(cx, y - s * ryl, cx - a1, ryl, s * (180 - JOIN_RUN), s * 90) + g.arc(cx, y - s * ry, b - cx, ry, s * 90, 0), y - s * ry
 
 
@@ -707,7 +729,13 @@ L_TOE, L_FLAT = 26, 0.35
 # The upright's Black tail is flatter (its height L_FLAT_UP of its reach shorter) and the white after it L_RSB stems wider: as
 # round as it was long it read as a ( at 700-900 and crowded the next letter (klm, ll). After it now the nn gap (0.80 -> 1.0).
 # Bold's own L_BOLD_OPEN (the h (1 - h) term is nothing at Regular and Black): on the line between them 700 kept 0.79 (now 0.84).
-L_FLAT_UP, L_RSB, L_BOLD_OPEN = 0.35, 0.6, 0.8
+L_FLAT_UP, L_RSB, L_BOLD_OPEN = 0.15, 0.6, 0.8
+# Round 4, cycle 2: the upright's Black tail ran 21 units past the stem as a toe as tall as a bar, and its inner edge folded
+# back 7 units where it left the stem: a nib stuck on the stem at display sizes. It reaches L_LONG further (30 units, Bold's 31
+# before) on a toe L_TOE_THIN lighter than the bar, and L_FLAT_UP 0.35 -> 0.15 gives the turn the room it needs (an ellipse
+# flatter than that folds a 190-unit pen's inner edge): it reads as a tail, as 700's does. Each unit it reaches is a unit of
+# advance (the white after it holds), and 600 sets "Billing" within 7 units of its +2%.
+L_LONG, L_TOE_THIN = 9, 0.2
 
 
 @glyph('l', 0x6C)
@@ -719,13 +747,18 @@ def _l(g, p):  # tailed by default
     # Heavier, a little shorter and further from the next letter: Black's tail ran into m, l and u (lm, ll), and the italic's read as a ( beside k
     rx = 52 + p.V * 0.4 - 12 * p.heavy  # -30 folded the inner edge of Black's tail into a spur (inner radius 3 units)
     ry = rx * (1.05 - L_FLAT_UP * p.heavy)
+    toe = p.H
     if p.italic:
         # The italic's Black tail is longer and flatter: at the upright's size it was a rounded corner with a toe a ninth of a stem long
         # under a leaning stem, and the l read as a ( in Il1 and klm. A toe a quarter of a stem long on a quick turn reads as a foot.
         rx += L_TOE * p.heavy
         ry = rx * (1.05 - L_FLAT * p.heavy)
-    cy = -p.ov * 0.4 + p.H / 2 + ry
-    g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 270), caps=('b', 'v'))
+    else:
+        rx += L_LONG * p.heavy
+        ry += L_LONG * p.heavy * (1.05 - L_FLAT_UP)
+        toe *= 1 - L_TOE_THIN * p.heavy
+    cy = -p.ov * 0.4 + toe / 2 + ry
+    g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 270), caps=('b', 'v'), pen=(p.V, toe))
     g.ht = 'a'
     g.sb = (1, 0.28 + (0.08 + 0.95 * p.heavy if p.italic else L_RSB * p.heavy + L_BOLD_OPEN * p.heavy * (1 - p.heavy)))
 
@@ -757,10 +790,10 @@ def _bowl_lc(g, p, w, stem_left):
     if stem_left:
         x0, x1 = V / 2 - V / 2, w  # left centerline sits on the stem centre
         cx, cy, rx, ry = g.box(x0, -p.ov, x1, p.xh + p.ov)
-        g.stroke(bowl_arc(g, cx, cy, rx, ry, True), taper=(join_taper(p),) * 2, pen=bowl_pen(p), reach=(join_reach(p),) * 2)
+        g.stroke(bowl_arc(g, cx, cy, rx, ry, True, True), taper=(join_taper(p),) * 2, pen=bowl_pen(p), reach=(join_reach(p),) * 2)
     else:
         cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
-        g.stroke(bowl_arc(g, cx, cy, rx, ry, False), taper=(join_taper(p),) * 2, pen=bowl_pen(p), reach=(join_reach(p),) * 2)
+        g.stroke(bowl_arc(g, cx, cy, rx, ry, False, True), taper=(join_taper(p),) * 2, pen=bowl_pen(p), reach=(join_reach(p),) * 2)
 
 
 @glyph('b', 0x62)
@@ -980,7 +1013,15 @@ def _s(g, p):
 
 
 F_BOLD_TUCK, F_BOLD_OPEN = 1.0, 0.5
-F_STEM_IN, F_HOOK_IN, F_HOOK_IN_IT, F_RSB, F_TAIL = 0.23, 0.10, 0.25, 0.2, 0.35
+F_STEM_IN, F_HOOK_IN, F_HOOK_IN_IT, F_RSB, F_TAIL = 0.23, 0.10, 0.25, -0.25, 0.35
+# Round 4, cycle 2. F_ARM, F_ARM_IT: stems the crossbar's left arm is shorter by at Black. The italic's reached under the letter
+#   before it (Black's a, c, g at 0.44-0.56x Inter Italic's white before the crossbar, as shares of the nn gap; now >= 0.85x); the
+#   upright's stem moves with it, closer to the letter before, so f's white sits nearer Inter's (ff 1.6x Inter's at Black).
+# F_BOLD_RSB: Bold's right sidebearing (the h (1 - h) term is nothing at Regular and Black). With F_RSB 0.2 -> -0.14 the white
+#   after the crossbar, fu, is 0.92-0.95x the nn gap at 600-900 (it was 1.04-1.09x, Inter's 0.75x), fi and fl 1.0-1.1x Inter's.
+# F_HOOK_CAP: stems the hook's radius grows by at the Caption master (opsz 8), its height held: a longer, flatter hook that reads
+#   at 12-13 px, where "of" read as "ot". The right sidebearing gives it back, so the advance holds and the hook overhangs.
+F_ARM, F_ARM_IT, F_BOLD_RSB, F_HOOK_CAP = 0.14, 0.145, -0.5, 0.25
 
 
 def _f_hook(p):
@@ -1025,7 +1066,9 @@ def _f(g, p):
     top = p.asc + p.ov * 0.3
     cy = top - H / 2 - ry
     sx = xs + V / 2
-    top_hook = g.arc(sx + rx, cy, rx, ry, 180, end)
+    ext = F_HOOK_CAP * V * max(0.0, p.ap) / 7  # Caption only (ap 7); Regular and Display are unchanged
+    give = ext * (1 + math.cos(math.radians(end))) / p.S  # what the longer hook adds to the ink's width, in sidebearings
+    top_hook = g.arc(sx + rx + ext, cy, rx + ext, ry, 180, end)
     if p.italic:
         # the italic f descends and hooks left under the preceding letter
         hook, cyb = _italic_descender(g, p, sx)
@@ -1038,11 +1081,19 @@ def _f(g, p):
         # Round 4 (narrower top hook and tail): -1.0 / +0.3 -> -1.6 / +0.8 at Black, so the white after the crossbar matches Regular's
         # (fu 0.68 -> 0.95 of the nn gap) and the stem sits as close to the letter before as Inter's; Bold's tuck 1.8 -> 1.0 and its
         # right side F_BOLD_OPEN wider, or 700 set ef and fu at 0.79 and 0.83 of the nn gap (Regular 0.91, 0.93)
-        g.sb = (-0.2 - 1.6 * p.heavy - F_BOLD_TUCK * p.heavy * (1 - p.heavy), 0.15 + 0.8 * p.heavy + F_BOLD_OPEN * p.heavy * (1 - p.heavy))
+        g.sb = (-0.2 - 1.6 * p.heavy - F_BOLD_TUCK * p.heavy * (1 - p.heavy), 0.15 + 0.8 * p.heavy + F_BOLD_OPEN * p.heavy * (1 - p.heavy) - give)
+        arm = F_ARM_IT * V * p.heavy
+        # Heavy, the crossbar's left end follows the slant (as Inter Italic's does), so its top corner stands back from an r's arm
+        # (rf 0.61x Inter Italic's white at Black, now 0.97x) while its bottom one keeps the e's (ef at most 1.15x the nn gap). The
+        # right end stays square: slanted, its top corner closed ft to 0.26x the nn gap.
+        g.hbar(arm, w * 0.96, p.xh - H, caps=('s' if p.heavy else 'b', 'b'))
+        g.ht = 'a'
+        return
     else:
         g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'), cut='n')
-        g.sb = (0.45, 0.2 + F_RSB * p.heavy)  # crossbar overhang, as for t (fo, ft sat 15% tighter than the references'); F_RSB 0.4 -> 0.2 with the shorter hook (round 4)
-    g.hbar(0, w * 0.96, p.xh - H)
+        g.sb = (0.45, 0.2 + F_RSB * p.heavy + F_BOLD_RSB * p.heavy * (1 - p.heavy) - give)  # crossbar overhang, as for t (fo, ft sat 15% tighter than the references'); F_RSB 0.4 -> 0.2 with the shorter hook (round 4)
+        arm = F_ARM * V * p.heavy
+    g.hbar(arm, w * 0.96, p.xh - H)
     g.ht = 'a'
 
 
@@ -1112,14 +1163,34 @@ def _t(g, p):
     g.anchors['topright_y'] = p.asc  # ť's comma reaches the ascender, as ď's and ľ's (and Inter's, Geist's)
 
 
+# Black's k and w thin their strokes into the joints, as Inter's do: the arm toward the stem and the leg toward the arm (K_JOIN of
+# the stroke at that end, on a straight taper), the w's four strokes toward their feet (W_JOIN). At full weight the crotches
+# were clotted: the white between the k's stem and arm reached 0.29 x-heights down at Black (Inter's 0.38; the italic's 0.24), the
+# w's top crotches 0.50 (Inter's 0.59). The italic's arm leans closer over its stem, so it thins further (K_JOIN_IT) and along its
+# whole length (the italic's sliver allowance, Inter Italic's 62, has the room).
+K_JOIN, K_JOIN_IT, W_JOIN = 0.55, 0.65, 0.8
+
+
+def _k_taper(g, kj, reach):
+    """The last diagonal drawn, thinned to kj at its start over `reach` halves of it: the upright's over its first half only, as
+    tapered all along its arm's far end turned into a wedge at Black (quality's sliver 52 against Inter's 46)."""
+    st = g.strokes.pop()
+    (_, q0, q1), = st.segs
+    m = ((q0[0] + q1[0]) / 2, (q0[1] + q1[1]) / 2)
+    g.stroke([L(q0, m), L(m, q1)], ws=st.ws, caps=st.caps, taper=(kj, 1), reach=(reach, None))
+
+
 @glyph('k', 0x6B)
 def _k(g, p):
     w = p.nw * (0.94 + 0.08 * p.heavy)
     g.vstem(0, 0, p.asc)
+    kj = 1 - (1 - (K_JOIN_IT if p.italic else K_JOIN)) * p.heavy
     a0, a1 = g.diag(p.V / 2, p.xh * (0.3 - 0.04 * p.heavy), w - 6, p.xh, 'c', 'r', ws=0.92, caps=('v', 'h'))  # as K
+    _k_taper(g, kj, 2 if p.italic else 1)
     t = 0.42
     j = (a0[0] + (a1[0] - a0[0]) * t, a0[1] + (a1[1] - a0[1]) * t)
     g.diag(j[0], j[1], w, 0, 'c', 'r', ws=0.95, caps=('b', 'h'))
+    _k_taper(g, kj, 2 if p.italic else 1)
     g.ht = 'a'
     g.sb = (1, 0.28 + (0.02 + 0.25 * p.heavy if p.italic else 0))  # ke, ky sat 20% tighter than in Geist and Inter
 
@@ -1156,10 +1227,11 @@ def _v(g, p):
 def _w(g, p):
     w = p.dnw * 1.64 + W_WIDER * p.heavy  # v, w, x, y and z were 0.88-0.91x Geist's and Inter's width at Regular
     ws = 0.86 - V_LIGHTER * p.heavy
-    g.diag(0, p.xh, w * 0.25, 0, 'l', 'c', ws=ws)
-    g.diag(w / 2, p.xh, w * 0.25, 0, 'c', 'c', ws=ws)
-    g.diag(w / 2, p.xh, w * 0.75, 0, 'c', 'c', ws=ws)
-    g.diag(w, p.xh, w * 0.75, 0, 'r', 'c', ws=ws)
+    wj = 1 - (1 - W_JOIN) * p.heavy
+    g.diag(0, p.xh, w * 0.25, 0, 'l', 'c', ws=ws, taper=(1, wj))
+    g.diag(w / 2, p.xh, w * 0.25, 0, 'c', 'c', ws=ws, taper=(1, wj))
+    g.diag(w / 2, p.xh, w * 0.75, 0, 'c', 'c', ws=ws, taper=(1, wj))
+    g.diag(w, p.xh, w * 0.75, 0, 'r', 'c', ws=ws, taper=(1, wj))
     # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
     # about 18% tighter beside round and straight letters
     g.sb = (0.36, 0.36)
