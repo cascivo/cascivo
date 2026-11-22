@@ -384,11 +384,13 @@ def add_composites(o):
     # figures: proportional, superior/inferior, numerator/denominator — all from the same outlines
     figs = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
     # figures keep their untightened sidebearing: Black's tighter S closed '13' into a clot (their advances are tabular-fixed)
+    # Black's proportional figures open by FIG_OPEN of it a side (round 4): 34 and 45 set 0.52x the HH gap upright and 0.45x in the
+    # italic, where they nearly touched (Inter's 0.80x)
     k = 0.6
     sup_y = p.cap - p.cap * k
     for f in figs:
         b = o.bounds[f]
-        tight = {'one': 0.9}.get(f, 0.62)
+        tight = {'one': 0.9}.get(f, 0.62) + FIG_OPEN * p.heavy
         l = p.Sfig * tight
         comp(f + '.pnum', [(f, l - b[0], 0, 1)], l + (b[2] - b[0]) + p.Sfig * tight)
         sw = o.adv[f] * k * 0.92
@@ -397,9 +399,9 @@ def add_composites(o):
         comp(f + '.sinf', [(f, lx, -p.cap * 0.14, k)], sw)
         comp(f + '.numr', [(f, lx, sup_y, k)], sw)
         comp(f + '.dnom', [(f, lx, 0, k)], sw)
-    comp('zero.zero.pnum', [('zero.slash', p.Sfig * 0.62 - o.bounds['zero.slash'][0], 0, 1)], o.adv['zero.pnum'])
+    comp('zero.zero.pnum', [('zero.slash', p.Sfig * (0.62 + FIG_OPEN * p.heavy) - o.bounds['zero.slash'][0], 0, 1)], o.adv['zero.pnum'])
     # the dotted zero (ss01): zero.dot.tf is drawn at the tabular advance, zero.dot is the proportional one, set as zero.pnum is
-    comp('zero.dot', [('zero.dot.tf', p.Sfig * 0.62 - o.bounds['zero.dot.tf'][0], 0, 1)], o.adv['zero.pnum'])
+    comp('zero.dot', [('zero.dot.tf', p.Sfig * (0.62 + FIG_OPEN * p.heavy) - o.bounds['zero.dot.tf'][0], 0, 1)], o.adv['zero.pnum'])
     # old-style figures: 0 1 2 drawn short (glyphs.py), 3 4 5 7 9 the lining figure hung below
     # the line so its top meets the short ones', tabular and proportional
     drop = p.cap - p.xh * GL.OSF_HEIGHT
@@ -408,7 +410,7 @@ def add_composites(o):
             comp(f + '.osf', [(f, 0, -drop, 1)], o.adv[f])
         src, dy = (f + '.osf', 0) if f + '.osf' in o.bounds else (f, -drop)
         b = o.bounds[src]
-        tight = {'one': 0.9}.get(f, 0.62)
+        tight = {'one': 0.9}.get(f, 0.62) + FIG_OPEN * p.heavy
         comp(f + '.osf.pnum', [(src, p.Sfig * tight - b[0], dy, 1)], p.Sfig * tight + (b[2] - b[0]) + p.Sfig * tight)
     # 1. Proportional figures by default: running text is the common case, and a tabular "1"
     # in a sentence leaves a hole ("$1, 117"). Tables opt in with font-variant-numeric:
@@ -565,6 +567,7 @@ def _lerp_contours(a, b, t):
     return [[(sa[0],) + tuple((pa[0] + (pb[0] - pa[0]) * t, pa[1] + (pb[1] - pa[1]) * t) for pa, pb in zip(sa[1:], sb[1:])) for sa, sb in zip(ca, cb)] for ca, cb in zip(a, b)]
 
 
+FIG_OPEN = 0.3
 BOLD_UNSQUEEZED = {'a'}  # its bowl, narrowed, met the stem in a counter tip 5 degrees sharper than quality.py's base at 750 (28 against 23)
 BOLD_OWN = {'minus'}  # the minus is 0.456 em at 700 and the plus's bar at Black; the straight line would put Bold at 0.52 em, as long as the en dash
 

@@ -435,6 +435,36 @@ class InkRows(BasePen):
             self._add(u * u * x0 + 2 * u * t * c[0] + t * t * p[0], u * u * y0 + 2 * u * t * c[1] + t * t * p[1])
 
 
+def shaped_gaps(hb, path, text, wght, opsz=14):
+    """The least white between each two neighbours of a shaped string (kerned), read on the outlines' 5-unit rows, and the HH gap
+    at the same location: ([gap, ...], HH)."""
+    face, f = _shaper(hb, path)
+    font = hb.Font(face)
+    font.set_variations({'wght': wght, 'opsz': opsz})
+    gs, order = f.getGlyphSet(location={'wght': wght, 'opsz': opsz}, normalized=False), f.getGlyphOrder()
+
+    def gaps(txt):
+        buf = hb.Buffer()
+        buf.add_str(txt)
+        buf.guess_segment_properties()
+        hb.shape(font, buf, {'kern': True})
+        rows = []
+        for info in buf.glyph_infos:
+            pen = InkRows(gs)
+            gs[order[info.codepoint]].draw(pen)
+            rows.append(pen.out)
+        advs = [p.x_advance for p in buf.glyph_positions]
+        return [min(advs[i] + rows[i + 1][k][0] - rows[i][k][1] for k in set(rows[i]) & set(rows[i + 1])) for i in range(len(rows) - 1)]
+
+    return gaps(text), gaps('HH')[0]
+
+
+def ink_runs_at(gs, name, y):
+    """The ink runs (x0, x1) of a glyph on the row nearest height y."""
+    rows = dict(ink_rows(gs, name))
+    return rows[min(rows, key=lambda r: abs(r - y))]
+
+
 class Font(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -1105,13 +1135,17 @@ class Font(unittest.TestCase):
         # forms, the ij and dz-lj-nj digraphs, ŀ ł, Cyrillic ј, dotless j)
         opened = {0x6A, 0x6B, 0x6C, 0x7A, 0x133, 0x135, 0x137, 0x13A, 0x13C, 0x13E, 0x140, 0x142, 0x17A, 0x17C, 0x17E, 0x1C5, 0x1C6, 0x1C8, 0x1C9,
                   0x1CB, 0x1CC, 0x237, 0x458}
-        allowed = {'upright': sized | opened, 'italic': sized | opened}
+        # Round 4 (owner decision 3): [ ] { } open their sidebearings (glyphs._bracket_sb), 56 / 21 beside the parentheses' 70 / 31. Their
+        # new advances are pinned here instead of the fixture's (upright 264 and 334, italic 269 and 338)
+        reopened = {'upright': {0x5B: 296, 0x5D: 296, 0x7B: 369, 0x7D: 369}, 'italic': {0x5B: 303, 0x5D: 303, 0x7B: 375, 0x7D: 375}}
+        allowed = {'upright': sized | opened | set(reopened['upright']), 'italic': sized | opened | set(reopened['italic'])}
         for kind, path in (('upright', VF), ('italic', VFI)):
             f = instantiateVariableFont(TTFont(path), {'wght': 400, 'opsz': 14})
             cmap, hmtx = f.getBestCmap(), f['hmtx']
             self.assertEqual(set(cmap), {int(cp) for cp in ref[kind]} | added[kind], f'{kind}: codepoints gained or lost since a855b5e0')
             moved = {cp: (ref[kind][str(cp)], hmtx[n][0]) for cp, n in cmap.items() if str(cp) in ref[kind] and hmtx[n][0] != ref[kind][str(cp)] and cp not in allowed.get(kind, ())}
             self.assertEqual(moved, {}, f'{kind}: advances that moved since a855b5e0 (codepoint: was, now)')
+            self.assertEqual({cp: hmtx[cmap[cp]][0] for cp in reopened[kind]}, reopened[kind], f'{kind}: the reopened brackets')
 
     def test_pairs_keep_their_clearance_at_the_black_corners(self):
         # Display Black is the tightest corner: Black's spacing plus Display's deltas. Dï and Bî must keep kern.py's
@@ -1758,6 +1792,171 @@ class Font(unittest.TestCase):
         # Regular and heavier keep their dot: the floor only acts below it
         self.assertEqual(round(params.P(400, 14).dot), 115)
         self.assertGreaterEqual(params.P(100, 14).dot, params.DOT_MIN_EM * 1000)
+
+    # -- round 4, capitals, figures and punctuation at 600-900 ------------------------------------------------------------------
+
+    def test_heavy_at_tracks_the_weight(self):
+        # Black's @ was a hairline ring beside its letters: 1.44x its H's ink (Inter's 1.68x) and 1.23 cap heights tall (Inter's 1.32), its
+        # foot high. At 700 and 900 it carries at least 0.95x Inter's share and height, upright and italic, and the white in its ring stays
+        # open (one enclosed counter, the bowl's: at 900 the stem's top met the deeper ring and closed it). 100 and 400 are unchanged.
+        from fontTools.pens.boundsPen import BoundsPen
+
+        inter = {700: (1.67, 1.280), 900: (1.68, 1.322)}
+        for path in (VF, VFI):
+            for wght, (share, height) in inter.items():
+                gs, cmap = self._glyphs(path, wght)
+                boxes = {}
+                for ch in 'H@':
+                    pen = BoundsPen(gs)
+                    gs[cmap[ord(ch)]].draw(pen)
+                    boxes[ch] = pen.bounds
+                cap = boxes['H'][3] - boxes['H'][1]
+                area = ink_area(ink_rows(gs, cmap[ord('@')])) / ink_area(ink_rows(gs, cmap[ord('H')]))
+                with self.subTest(font=os.path.basename(path), wght=wght):
+                    self.assertGreaterEqual(area, 0.95 * share)
+                    self.assertGreaterEqual((boxes['@'][3] - boxes['@'][1]) / cap, 0.97 * height)
+                    self.assertEqual(len(self._enclosed(path, '@', wght)), 1)
+
+    def _enclosed(self, path, ch, wght, opsz=14):
+        """Areas of the white regions a glyph encloses, as FreeType fills it (nonzero), at 1000 px per em, largest first."""
+        import numpy as np
+        from PIL import Image, ImageDraw, ImageFont
+        from scipy import ndimage as ndi
+
+        f = ImageFont.truetype(path, 1000)
+        f.set_variation_by_axes([wght, opsz])
+        im = Image.new('L', (1600, 1500), 255)
+        ImageDraw.Draw(im).text((300, 150), ch, font=f, fill=0)
+        labels, n = ndi.label(~(np.asarray(im) < 128))
+        border = set(np.unique(np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])))
+        return sorted((int((labels == j).sum()) for j in range(1, n + 1) if j not in border), reverse=True)
+
+    def test_heavy_brackets_carry_a_stem_and_stand_apart(self):
+        # Black's parentheses were 0.86 of a stem at the belly (Inter's 1.01) and its braces 0.90: light rules beside Black letters. At 900
+        # ( is >= 0.98 of the H's stem and {'s upright stroke >= 0.95. In `!()[]{}` the marks that face away from each other keep the HH gap
+        # (the italic's `]{` and `}(` sat 0.72x and 0.86x it, `[]` 0.52x); `[]` and `{}` keep 0.9x. At Regular `[]` is 77 apart, Inter's.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        for path in (VF, VFI):
+            gs, cmap = self._glyphs(path, 900)
+            stem = (lambda r: r[1] - r[0])(ink_runs_at(gs, cmap[ord('H')], 200)[0])
+            g, hh = shaped_gaps(hb, path, '!()[]{}', 900)
+            with self.subTest(font=os.path.basename(path)):
+                self.assertGreaterEqual((lambda r: r[1] - r[0])(ink_runs_at(gs, cmap[ord('(')], 295)[0]), 0.98 * stem)
+                self.assertGreaterEqual((lambda r: r[1] - r[0])(ink_runs_at(gs, cmap[ord('{')], 495)[0]), 0.95 * stem)
+                for i in (0, 2, 4):  # !( )[ ]{
+                    self.assertGreaterEqual(g[i], 0.99 * hh, '!()[]{}'[i:i + 2])
+                for i in (3, 5):  # [] {}
+                    self.assertGreaterEqual(g[i], 0.9 * hh, '!()[]{}'[i:i + 2])
+                self.assertGreaterEqual(shaped_gaps(hb, path, '[]', 400)[0][0], 77)
+
+    def test_heavy_ampersand_keeps_both_counters_open(self):
+        # Black's & had a dot for its upper counter (10,660 px at 1000 px per em, upright) and a lower one 0.54x Inter's. Its loop is larger
+        # and lighter and its leg and bowl lighter than its stem: both counters stay over 20,000 px at 700 and 900, text and Display sizes.
+        for path in (VF, VFI):
+            for wght in (700, 900):
+                for opsz in (14, 48):
+                    areas = self._enclosed(path, '&', wght, opsz)
+                    with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz):
+                        self.assertEqual(len(areas), 2)
+                        self.assertGreaterEqual(min(areas), 20_000)
+
+    def test_black_quotes_asterisk_and_percent_match_inter(self):
+        # Black's curly quotes and comma stood 337 tall, 0.48 of the cap height (Inter's 325 of 728, 0.45): large wedges. They stand within
+        # Inter's share now (306); the floor of test_quotes_hold_their_size still holds them up. The asterisk was 0.90x Inter's ink width and
+        # 0.86x its height at Black: >= 0.95x now. The percent's rings were 0.51 of a stem beside a 0.93 slash (Inter's 0.63 and 0.59):
+        # rings >= 0.58, the slash at most 0.75.
+        from fontTools.pens.boundsPen import BoundsPen
+
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            gs, cmap = self._glyphs(path, 900)
+
+            def box(ch):
+                pen = BoundsPen(gs)
+                gs[cmap[ord(ch)]].draw(pen)
+                return pen.bounds
+
+            cap = box('H')[3] - box('H')[1]
+            stem = (lambda r: r[1] - r[0])(ink_runs_at(gs, cmap[ord('H')], 200)[0])
+            with self.subTest(kind=kind):
+                for ch in '\u201c\u201d\u2018\u2019,':
+                    b = box(ch)
+                    self.assertLessEqual((b[3] - b[1]) / cap, 325 / 728, ch)
+                b = box('*')
+                self.assertGreaterEqual(b[2] - b[0], 0.95 * (412 if kind == 'upright' else 429))
+                self.assertGreaterEqual(b[3] - b[1], 0.95 * 409)
+                rings = ink_runs_at(gs, cmap[ord('%')], 700 * 0.76)
+                self.assertGreaterEqual(min(r[1] - r[0] for r in rings[:2]), 0.58 * stem)
+                self.assertLessEqual(min(r[1] - r[0] for r in ink_runs_at(gs, cmap[ord('%')], 700 * 0.6)), 0.75 * stem)
+
+    def test_black_capitals_keep_inter_proportions(self):
+        # Round 4 released the width; H took its counter back and the round capitals stayed narrow beside it. Ink width over H's at 900,
+        # upright, within 0.03 of Inter's: O was 1.03 (Inter 1.08), C 1.01 (1.04), G 0.98 (1.04), M 1.24 (1.31); B P R D stood wide at
+        # 0.97, 0.98, 0.98, 1.02 (0.91, 0.89, 0.93, 0.98), their counters wide boxes.
+        from fontTools.pens.boundsPen import BoundsPen
+
+        inter = {'O': 1.078, 'C': 1.040, 'G': 1.043, 'Q': 1.078, 'M': 1.314, 'B': 0.911, 'P': 0.890, 'R': 0.927, 'D': 0.979}
+        gs, cmap = self._glyphs(VF, 900)
+
+        def width(ch):
+            pen = BoundsPen(gs)
+            gs[cmap[ord(ch)]].draw(pen)
+            return pen.bounds[2] - pen.bounds[0]
+
+        for ch, share in inter.items():
+            with self.subTest(glyph=ch):
+                self.assertAlmostEqual(width(ch) / width('H'), share, delta=0.03)
+
+    def test_q_tail_reaches_below_the_line(self):
+        # The Q's tail stopped 55 under the baseline at Regular and 94 at Black (Inter's 56 and 70 of a 728 cap height, its tail longer and
+        # steeper): 83 and 123 now, at the same advance
+        for path in (VF, VFI):
+            for wght, depth in ((400, 75), (900, 110)):
+                b, _ = self._ink(path, wght, 'Q')
+                with self.subTest(font=os.path.basename(path), wght=wght):
+                    self.assertLessEqual(b[1], -depth)
+
+    def test_heavy_capitals_keep_apart(self):
+        # Black's serifed I, K's foot, L's foot and J's hook crowded their neighbours: KL sat 0.55x the HH gap upright and 0.48x italic, LM
+        # 0.68x / 0.73x, IJ 0.50x / 0.62x, HI 0.80x / 0.71x (Inter's KL 0.73x, LM 0.79x, IJ 0.70x, HI 1.0x). Each is >= 0.65x now (HI 0.7x),
+        # and the I's slabs no heavier than the H's bar.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        for path in (VF, VFI):
+            g, hh = shaped_gaps(hb, path, 'KLMHIJ', 900)
+            with self.subTest(font=os.path.basename(path)):
+                for i, pair in ((0, 'KL'), (1, 'LM'), (4, 'IJ')):
+                    self.assertGreaterEqual(g[i] / hh, 0.65, pair)
+                self.assertGreaterEqual(g[3] / hh, 0.7, 'HI')
+                gs, cmap = self._glyphs(path, 900)
+                slab = [y for y, r in ink_rows(gs, cmap[ord('I')]) if r and r[-1][1] - r[0][0] > 300]
+                bar = [y for y, r in ink_rows(gs, cmap[ord('H')]) if len(r) == 1]
+                self.assertLessEqual(len([y for y in slab if y < 350]), len(bar) + 2)
+
+    def test_black_figures_balance_and_keep_apart(self):
+        # Black figures: the proportional 3 4 5 set 0.51x-0.54x the HH gap upright and 0.44x-0.47x italic, where 34 and 45 nearly touched
+        # (Inter's 0.80x): >= 0.7x now. The 8's upper counter was a slot, 0.79x its lower one: the two within 0.85x of each other. The 1's
+        # flag met the stem 60 units under its top, a notch over a separate block: 40 under the top it reaches 40 left of the stem.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        for path in (VF, VFI):
+            g, hh = shaped_gaps(hb, path, '3456', 900)
+            gs, cmap = self._glyphs(path, 900)
+            slant = 0.1763 if path == VFI else 0.0
+            eight = self._enclosed(path, '8', 900)
+            one = dict(ink_rows(gs, cmap[ord('1')]))
+            top = max(y for y, r in one.items() if r)
+            with self.subTest(font=os.path.basename(path)):
+                self.assertGreaterEqual(min(g) / hh, 0.7)
+                self.assertEqual(len(eight), 2)
+                self.assertGreaterEqual(eight[1] / eight[0], 0.85)
+                self.assertGreaterEqual(one[200][0][0] + (top - 240) * slant - one[top - 40][0][0], 40)
 
     def test_comparison_data_is_current(self):
         """The /cascivo-sans table shows comparison.json; its Cascivo entry must match the
