@@ -21,7 +21,11 @@ window = ["dep:blitz-shell", "dep:anyrender_vello"]
 
 [dependencies]
 cascivo-html = { path = "../cascivo-html", version = "0.2.0" }
-blitz-dom = { version = "=0.3.0-beta.4", default-features = false, features = ["svg", "woff", "system-fonts"] }
+blitz-dom = { version = "=0.3.0-beta.4", default-features = false, features = [
+  "svg",
+  "woff",
+  "system-fonts",
+] }
 blitz-html = { version = "=0.3.0-beta.4", default-features = false }
 blitz-traits = { version = "=0.3.0-beta.4", default-features = false }
 keyboard-types = { version = "0.8", default-features = false }
