@@ -132,13 +132,18 @@ def _I_ss02(g, p):  # plain I: opt-in, it is identical to l in most grotesques
 def _I(g, p):  # serifed by default, so I, l and 1 never read alike in text
     # Black's slabs are shorter and thinner than the stroke: at the full bar, 0.72 of a stem each side, the I was a slab serif's
     # beside H and J. Still a serif on both sides at every size, so it is never the l.
-    e = p.cH * 0.30 + p.V * (0.2 - 0.11 * p.heavy)
+    # Round 4: Black's slabs shorter again (0.11 -> 0.2 of a stem off each) and thinner (0.16 -> 0.26 off the bar): at 107 a side and
+    # 115 thick, heavier than H's bar (107), they still read slab-serif beside H and J, and set HI and IJ 0.71x and 0.63x the HH gap
+    e = p.cH * 0.30 + p.V * (0.2 - 0.2 * p.heavy)
     w = p.V + 2 * e
-    h = p.H * (1 - 0.16 * p.heavy)
+    h = p.H * (1 - 0.26 * p.heavy)
     g.vstem(e, 0, p.cap)
     g.hbar(0, w, 0, h).hbar(0, w, p.cap - h, h)
     g.ht = 'c'
     g.sb = (0.6, 0.6)
+
+
+K_FOOT, L_FOOT, J_HOOK = 0.35, 0.2, 0.35
 
 
 @glyph('L', 0x4C)
@@ -147,7 +152,7 @@ def _L(g, p):
     g.vstem(0, 0, p.cap).hbar(p.V / 2, w, 0)
     g.ht = 'c'
     # the italic's foot slants out under the next capital: heavy, it met X
-    g.sb = (1, 0.35 + (0.3 if p.italic else 0) * p.heavy)
+    g.sb = (1, 0.35 + ((0.3 if p.italic else 0) + L_FOOT) * p.heavy)  # L_FOOT: Black's LM sat 0.68x / 0.73x the HH gap (Inter 0.79x)
     g.anchors['top_x'] = p.V / 2 + 0.12 * w  # over the stem, as Inter's, Geist's and Plex's Ĺ
 
 
@@ -229,7 +234,7 @@ def _W(g, p):
 
 @glyph('M', 0x4D)
 def _M(g, p):
-    w = p.Hw * 1.24
+    w = p.Hw * (1.24 + M_BLACK * p.heavy)
     g.vstem(0, 0, p.cap).vstem(w - p.V, 0, p.cap)
     # heavier diagonals at Regular (0.87x the references' ink) and, less, at Black (0.88-0.92x)
     g.diag(0, p.cap, w / 2, 0, 'l', 'c', ws=0.94 - 0.04 * p.heavy)
@@ -293,30 +298,44 @@ def _K(g, p):
     j = (a0[0] + (a1[0] - a0[0]) * t, a0[1] + (a1[1] - a0[1]) * t)
     g.diag(j[0], j[1], w + 4, 0, 'c', 'r', ws=0.95, caps=('b', 'h'))
     g.ht = 'c'
-    g.sb = (1, 0.1)
+    g.sb = (1, 0.1 + K_FOOT * p.heavy)  # Black's foot stands further off (K_FOOT): KL set 0.55x the HH gap upright, 0.49x italic (Inter 0.73x)
+
+
+# Black's round capitals widen against H (O_BLACK, C_BLACK, G_BLACK, M_BLACK, shares of their round width): released from the width
+# gate in round 4, H took its counter back but O C G Q M stayed narrow beside it. Black's O was 1.03x its H's ink width (Inter's 1.08x),
+# C 1.01x (1.04x), G 0.98x (1.04x), M 1.24x (1.31x).
+# The bowled ones narrow by as much (BOWL_NARROW): Black's B P R D stood 0.97x, 0.98x, 0.98x and 1.02x its H (Inter's 0.91x, 0.89x,
+# 0.93x, 0.98x), their counters wide boxes, and the room they give back keeps a mixed-case line inside the width gate.
+O_BLACK, C_BLACK, G_BLACK, M_BLACK = 0.045, 0.033, 0.068, 0.055
+BOWL_NARROW = {'B': 0.06, 'P': 0.09, 'R': 0.05, 'D': 0.04}
 
 
 @glyph('O', 0x4F)
 def _O(g, p):
-    w = p.Hd * 1.17
+    w = p.Hd * (1.17 + O_BLACK * p.heavy)
     g.oval(0, -p.ov, w, p.cap + p.ov)
     g.anchors['horn_x'], g.anchors['horn_y'] = _horn_on_bowl(p, w, p.cap)  # Ơ
     g.ht = 'c'
     g.sb = (0.62, 0.62)
 
 
+Q_TAIL = 30
+
+
 @glyph('Q', 0x51)
 def _Q(g, p):
-    w = p.Hd * 1.17
+    w = p.Hd * (1.17 + O_BLACK * p.heavy)
     g.oval(0, -p.ov, w, p.cap + p.ov)
-    g.diag(w * 0.6, p.cap * 0.2 - 60 * p.heavy, w + p.V * 0.2 + 30 * p.heavy, -p.ov - 40 + 0.32 * p.V - 40 * p.heavy, 'c', 'r', ws=0.9, caps=('b', 'b'))  # a square end: the flat cut left a sliver at its lower corner; Black's starts lower and ends longer, in the ring's wall: its square start poked a spur into the counter
+    # the tail ends Q_TAIL lower than it did, at every weight (its right edge and the advance stay): it stopped 27 under the baseline
+    # at Regular and 32 at Black, a stub beside Inter's 56 and 70
+    g.diag(w * 0.6, p.cap * 0.2 - 60 * p.heavy, w + p.V * 0.2 + 30 * p.heavy, -p.ov - 40 + 0.32 * p.V - 40 * p.heavy - Q_TAIL, 'c', 'r', ws=0.9, caps=('b', 'b'))  # a square end: the flat cut left a sliver at its lower corner; Black's starts lower and ends longer, in the ring's wall: its square start poked a spur into the counter
     g.ht = 'c'
     g.sb = (0.62, 0.5)
 
 
 @glyph('C', 0x43)
 def _C(g, p):
-    w = p.Hd * (1.12 + 0.07 * p.heavy)  # Black's C was 0.75x Geist's and Inter's width, Regular's 0.88x
+    w = p.Hd * (1.12 + (0.07 + C_BLACK) * p.heavy)  # Black's C was 0.75x Geist's and Inter's width, Regular's 0.88x
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
     # terminals sit 14° further round than they first did, at every weight, as in Geist and Inter:
     # the open aperture left the C at 0.79x their ink at Regular and 0.71x at Black; and 6° more
@@ -326,12 +345,18 @@ def _C(g, p):
     g.sb = (0.62, 0.45)
 
 
+G_SPUR = 0.12
+
+
 @glyph('G', 0x47)
 def _G(g, p):
-    w = p.Hd * 1.12
+    w = p.Hd * (1.12 + G_BLACK * p.heavy)
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
     # the top terminal sits where the C's does, at every weight (it was 14° more open at Regular)
-    g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap, 360), caps=('b', 'b'), cut='h')  # aligned with C
+    # Black's last quarter, under the bar, is squarer (G_SPUR): its inner edge curved away under the bar and left a notch where they
+    # met; squared, the side stands near upright to the bar as Inter's spur does
+    k = p.k + G_SPUR * p.heavy
+    g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap, 270) + g.arc(cx, cy, rx, ry, 270, 360, k=k), caps=('b', 'b'), cut='h')  # aligned with C
     xr = cx + rx
     # ends inside the curve's stroke: run to its outer edge, the bar overhung where the curve
     # turns inward below it
@@ -342,7 +367,7 @@ def _G(g, p):
 
 @glyph('D', 0x44)
 def _D(g, p):
-    w = p.Hw * (1.06 - 0.04 * p.heavy)  # as b
+    w = p.Hw * (1.06 - (0.04 + BOWL_NARROW['D']) * p.heavy)  # as b
     V, H = p.V, p.H
     xr = w - V / 2
     ry = (p.cap - H) / 2
@@ -366,7 +391,7 @@ def _bowl_right(g, x0, xr, ytop, ybot, ratio=1.0):
 
 @glyph('P', 0x50)
 def _P(g, p):
-    w = p.Hw * (0.93 + 0.05 * p.heavy)  # heavy P's bowl grows, or its counter closes
+    w = p.Hw * (0.93 + (0.05 - BOWL_NARROW['P']) * p.heavy)  # heavy P's bowl grew, or its counter closed: now it is wider than Inter's
     V, H = p.V, p.H
     g.vstem(0, 0, p.cap)
     _bowl_right(g, V / 2, w - V / 2, p.cap - H / 2, p.cap * (0.44 - 0.04 * p.heavy) + H / 2, 1.05)
@@ -376,7 +401,7 @@ def _P(g, p):
 
 @glyph('R', 0x52)
 def _R(g, p):
-    w = p.Hw * 0.98
+    w = p.Hw * (0.98 - BOWL_NARROW['R'] * p.heavy)
     if p.italic:  # as the italic A: Black's bowl closed to 0.86x the upright's
         w *= 1 + 0.06 * p.heavy
     V, H = p.V, p.H
@@ -390,7 +415,7 @@ def _R(g, p):
 
 @glyph('B', 0x42)
 def _B(g, p):
-    w = p.Hw * 0.97
+    w = p.Hw * (0.97 - BOWL_NARROW['B'] * p.heavy)
     V, H = p.V, p.H
     g.vstem(0, 0, p.cap)
     ym = p.cap * 0.535
@@ -427,7 +452,7 @@ def _J(g, p):
     # is unchanged
     g.stroke([L((xr, p.cap), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, max(-179.0, -178 + 20 * p.heavy + p.ap)), caps=('b', 'b'))  # short of -180°: same segments in every master
     g.ht = 'c'
-    g.sb = (0.4, 0.9)
+    g.sb = (0.4 + J_HOOK * p.heavy, 0.9)  # J_HOOK: Black's hook reached under the I's slab, IJ 0.51x the HH gap upright (Inter's 0.70x)
 
 
 def _ell_seg(cx, cy, rx, ry, a0, a1, k):
@@ -497,13 +522,18 @@ def _s_extra(p):
     return 1.1 * max(0.0, p.V - 90)
 
 
+S_BOWL = 0.03
+
+
 @glyph('S', 0x53)
 def _S_(g, p):
     # capitals have room, so half the s's extra width; a heavier spine, as Geist's and Inter's S
     # and heavier horizontals: Black's top and bottom were 12% thinner than theirs, and the S
     # carried 0.86x their ink
     # (Regular's terminals sit 14° further round too: the S carried 0.80x their ink at Regular)
-    _S(g, p, p.Hd * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=34, close=26)
+    # Black's upper bowl is S_BOWL of the height smaller than the s's share (0.50 of it), and its terminal runs 20 degrees round, not 34:
+    # the S stood top-heavy beside Inter's, its upper terminal a long beak (run on as far round, the smaller bowl's inner edge folded)
+    _S(g, p, p.Hd * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=34, close=26, bowl=0.03 - S_BOWL, run_up=20)
     g.ht = 'c'
     g.sb = (0.5, 0.5)
 
@@ -1211,12 +1241,25 @@ def _osf(fn):
     return draw
 
 
+ONE_FLUSH = 1.0
+
+
 @glyph('one', 0x31)
 def _one(g, p):
     w = fw(p)
     xs = w * 0.55
     g.vstem(xs - p.V / 2, 0, p.cap)
-    g.diag(xs, p.cap - p.H * (0.4 + 0.5 * p.heavy), w * 0.12 + 6 + 12 * p.heavy, p.cap * 0.74, 'c', 'c', ws=0.82, caps=('b', 'b'))  # Black's flag reached 10% further left than Inter's; Black's flag starts lower: its square start poked a spur above the stem top (2 units upright, 5 italic)
+    end = (w * 0.12 + 6 + 20 * p.heavy, p.cap * 0.74)  # Black's flag reached 10% further left than Inter's (12 -> 20 once it started at the top)
+    start = (xs, p.cap - p.H * (0.4 + 0.5 * p.heavy))  # Black's flag starts lower: its square start poked a spur above the stem top (2 units upright, 5 italic)
+    # Black's flag moves up (ONE_FLUSH of the way) until its upper corner sits on the stem's top left corner, as Inter's does: from
+    # 123 under the top the stem stood 60 units proud of the flag, a notch over a separate block
+    flush = start
+    for _ in range(4):
+        t = norm((flush[0] - end[0], flush[1] - end[1]))
+        half = pen_thickness(t, p.V, p.H) * 0.82 / 2
+        flush = (xs - p.V / 2 + 3 + t[1] * half, p.cap - 3 - t[0] * half)
+    start = (lerp(start[0], flush[0], ONE_FLUSH * p.heavy), lerp(start[1], flush[1], ONE_FLUSH * p.heavy))
+    g.line(start, end, ws=0.82, caps=('b', 'b'))
     g.tab = True
     g.ht = 'c'
 
@@ -1347,11 +1390,16 @@ def _seven(g, p):
     g.ht = 'c'
 
 
+EIGHT_WAIST = 0.03
+
+
 @glyph('eight', 0x38)
 def _eight(g, p):
     w = fw(p)
-    ym = p.cap * 0.55
-    g.oval(w * 0.06, ym - p.H, w * 0.94, p.cap + p.ov)
+    # Black's waist sits EIGHT_WAIST higher and its upper bowl is wider by as much a side: its upper counter was a slot 0.6x as
+    # wide as Inter's over a flat lower one
+    ym = p.cap * (0.55 + EIGHT_WAIST * p.heavy)
+    g.oval(w * (0.06 - EIGHT_WAIST * p.heavy), ym - p.H, w * (0.94 + EIGHT_WAIST * p.heavy), p.cap + p.ov)
     g.oval(0, -p.ov, w, ym)
     g.tab = True
     g.ht = 'c'
@@ -1394,7 +1442,9 @@ def comma_depth(p):
     # in dots; Black's tail ran 1.7x as deep as Geist's and Inter's. Thin's dot is small, so a tail
     # that long in dots is a speck at 14 px (it read as a period): 3.4 dots is 139 units, which
     # reaches Inter's proportions (it descends 0.27 x-heights) and fades to Regular's by wght 400.
-    return lerp(3.15, 1.4, thin_blend(p)) - 0.55 * p.heavy
+    # Black's is 0.72 shorter (0.55 until round 4): 337 tall at opsz 14 and 329 at 48, 1.04x and 1.10x Inter's 325 and 298, which against
+    # a cap height 0.96x Inter's made the quotes large wedges beside the letters. 306 now.
+    return lerp(3.15, 1.4, thin_blend(p)) - 0.72 * p.heavy
 
 
 COMMA_HEAD = 0.5
@@ -1659,26 +1709,39 @@ def _brokenbar(g, p):
 # Parentheses, brackets and braces share one height, Inter's 908, centred on 295 (between the x-height's middle and the cap height's,
 # which `case` lifts to the caps): the parentheses stood 884 beside brackets of 974.
 BRACKET_Y = (295 - 454, 295 + 454)
+# Black's stand BRACKET_SHORT shorter: 912 of a 700 cap height is 1.04x Inter's 908 of 728, and beside Black capitals the light, tall
+# parentheses read as rules
+BRACKET_SHORT = 0.03
+
+
+def _bracket_y(p):
+    h = (BRACKET_Y[1] - BRACKET_Y[0]) / 2 * (1 - BRACKET_SHORT * p.heavy)
+    c = sum(BRACKET_Y) / 2
+    return c - h, c + h
 
 
 def _bracket_sb(p, outer, inner, flip):
     """Sidebearings of a bracket, in stem sidebearings. Black's are wider by 0.6 (outer) and 1.2 (inner) of themselves: the letters'
-    sidebearing halves by Black, and at that the parentheses touched the letter they enclose and `!(` and `)[` ran together.
-    Regular's [ ] { } keep 0.8 / 0.3 and 0.5 / 0.4: test_advances_at_regular_match_a855b5e0 pins their advance."""
+    sidebearing halves by Black, and at that the parentheses touched the letter they enclose and `!(` and `)[` ran together."""
     sb = (outer * (1 + 0.6 * p.heavy), inner * (1 + 1.2 * p.heavy))
     return sb[::-1] if flip else sb
+
+
+PAREN_BLACK = 1.0
 
 
 def _paren(g, p, flip):
     # The arc spans 2 sin 58 = 1.7 of its vertical radius and 0.47 of its horizontal one. That one is 262 at every weight, a bow
     # 123 deep: at 150 + 0.2 V the parenthesis was 159 wide at Regular against Inter's 211 and Geist's 214, an almost straight
     # stroke that read as a bracket, and with sidebearings of 53 and 21 (Inter 106 and 47) it clustered in `!(`, `)[`, `f)`.
-    cy = sum(BRACKET_Y) / 2
-    ry = (BRACKET_Y[1] - BRACKET_Y[0]) / (2 * math.sin(math.radians(58)))
+    y0, y1 = _bracket_y(p)
+    cy = (y0 + y1) / 2
+    ry = (y1 - y0) / (2 * math.sin(math.radians(58)))
     rx = 262
     cx = rx + p.V / 2
     segs = g.arc(cx, cy, rx, ry, 122, 238, k=0.56)
-    s = Stroke(segs, caps=('h', 'h'), ws=0.92 - 0.06 * p.heavy)
+    # Black's belly is a full stem (PAREN_BLACK), as Inter's: at 0.86 of one the parentheses read light beside Black letters
+    s = Stroke(segs, caps=('h', 'h'), ws=0.92 + (PAREN_BLACK - 0.92) * p.heavy)
     if flip:
         s = s.transformed(lambda q: (-q[0], q[1]))
     g.strokes.append(s)
@@ -1696,7 +1759,7 @@ def _parenright(g, p):
 
 
 def _bracket(g, p, flip):
-    h0, h1 = BRACKET_Y
+    h0, h1 = _bracket_y(p)
     w = 120 + p.V * 0.8
     pts = [(0, h0), (0, h1)]
     s1 = Stroke([L((p.V / 2, h0), (p.V / 2, h1))])
@@ -1705,7 +1768,7 @@ def _bracket(g, p, flip):
     del pts
     for s in (s1, s2, s3):
         g.strokes.append(s.transformed(lambda q: (-q[0], q[1])) if flip else s)
-    g.sb = _bracket_sb(p, 0.8, 0.3, flip)
+    g.sb = _bracket_sb(p, 1.0, 0.55, flip)  # 0.8 / 0.3 until round 4: 56 / 21 at Regular beside the parentheses' 70 / 31, and `[]` 39 apart (Inter's 77)
 
 
 @glyph('bracketleft', 0x5B)
@@ -1718,20 +1781,25 @@ def _bracketright(g, p):
     _bracket(g, p, True)
 
 
+BRACE_BLACK = 0.08
+
+
 def _brace(g, p, flip):
-    V, H = p.V, p.H
-    h0, h1 = BRACKET_Y
+    # Black's brace is heavier (BRACE_BLACK on the pen's width, twice that on its height, which the curled ends show): at 0.9 of a
+    # stem and the bar's contrast it read light beside Black letters, Inter's runs 0.93 of its stem and its ends a full one
+    V, H = p.V, p.H * (1 + 2 * BRACE_BLACK * p.heavy)
+    h0, h1 = _bracket_y(p)
     cy = (h0 + h1) / 2
-    x = 70 + V * 0.5
+    x = 70 + p.V * 0.5
     r = 110 + V * 0.3  # at 60 + 0.2 V the braces were half as wide as Geist's and Inter's
     xs = x + V / 2 * 0.0
     up = [L((xs + r, h1 - H / 2), (xs + r * 0.98, h1 - H / 2))]
     del up
-    s_top = Stroke(g.arc(xs + r, h1 - H / 2 - r, r, r, 90, 180) + [L((xs, h1 - H / 2 - r), (xs, cy + r))] + g.arc(xs - r, cy + r, r, r, 0, -90), ws=0.9)
-    s_bot = Stroke(g.arc(xs - r, cy - r, r, r, 90, 0) + [L((xs, cy - r), (xs, h0 + H / 2 + r))] + g.arc(xs + r, h0 + H / 2 + r, r, r, 180, 270), ws=0.9)
+    s_top = Stroke(g.arc(xs + r, h1 - H / 2 - r, r, r, 90, 180) + [L((xs, h1 - H / 2 - r), (xs, cy + r))] + g.arc(xs - r, cy + r, r, r, 0, -90), ws=0.9 + BRACE_BLACK * p.heavy, pen=(V, H))
+    s_bot = Stroke(g.arc(xs - r, cy - r, r, r, 90, 0) + [L((xs, cy - r), (xs, h0 + H / 2 + r))] + g.arc(xs + r, h0 + H / 2 + r, r, r, 180, 270), ws=0.9 + BRACE_BLACK * p.heavy, pen=(V, H))
     for s in (s_top, s_bot):
         g.strokes.append(s.transformed(lambda q: (-q[0], q[1])) if flip else s)
-    g.sb = _bracket_sb(p, 0.5, 0.4, flip)
+    g.sb = _bracket_sb(p, 0.8, 0.6, flip)  # 0.5 / 0.4 until round 4: 35 / 28 at Regular (Inter's 70 / 60), `]{` 84 apart (Inter's 132)
 
 
 @glyph('braceleft', 0x7B)
@@ -1767,28 +1835,39 @@ def _dollar(g, p):
     g.ht = 'c'
 
 
+PCT_RING, PCT_SLASH = 0.05, 0.22
+
+
 @glyph('percent', 0x25)
 def _percent(g, p):
-    w = p.Hw * 1.2
+    # Black's rings are wider (PCT_RING) and its slash lighter (PCT_SLASH): its rings, capped at a third of their size, read 0.51 of
+    # a stem beside a slash of 0.93 (Inter's 0.63 and 0.59), light circles under a heavy bar
+    w = p.Hw * (1.2 + PCT_RING * p.heavy)
+    r = 0.36 + PCT_RING * p.heavy
     pen = (p.V * 0.82, p.H * 0.82)
-    g.oval(0, p.cap * 0.5, w * 0.36, p.cap + p.ov * 0.6, V=pen[0], H=pen[1])
-    g.oval(w * 0.64, -p.ov * 0.6, w, p.cap * 0.5, V=pen[0], H=pen[1])
-    g.diag(w * 0.82, p.cap, w * 0.18, 0, 'c', 'c', ws=0.8)
+    g.oval(0, p.cap * 0.5, w * r, p.cap + p.ov * 0.6, V=pen[0], H=pen[1])
+    g.oval(w * (1 - r), -p.ov * 0.6, w, p.cap * 0.5, V=pen[0], H=pen[1])
+    g.diag(w * 0.82, p.cap, w * 0.18, 0, 'c', 'c', ws=0.8 - PCT_SLASH * p.heavy)
     g.sb = (0.5, 0.5)
     g.ht = 'c'
+
+
+AMP_LOOP, AMP_LOOP_PEN, AMP_LEG, AMP_BOWL, AMP_START = 0.05, 0.06, 0.2, 0.14, 22
 
 
 @glyph('ampersand', 0x26)
 def _ampersand(g, p):
     w = p.Hw * 1.1
     V = p.V
+    hv = p.heavy
     top = p.cap + p.ov
-    # upper loop: a closed oval sitting left of centre
-    lx0, lx1, ly0 = w * 0.1, w * 0.6, p.cap * 0.58
-    g.oval(lx0, ly0, lx1, top)
+    # upper loop: a closed oval sitting left of centre. Black's is larger and lighter (AMP_LOOP, AMP_LOOP_PEN): its counter was a dot
+    # (Inter's an open eye) under a pen of a third of the loop's size
+    lx0, lx1, ly0 = w * 0.1, w * (0.6 + AMP_LOOP * hv), p.cap * (0.58 - AMP_LOOP * hv)
     # the loop's own centreline: oval() caps its pen for small rings, so a box with the full pen
     # put the leg's start inside the counter
-    Vo, Ho = min(V, (lx1 - lx0) * 0.33), min(p.H, (top - ly0) * 0.33)
+    Vo, Ho = min(V, (lx1 - lx0) * (0.33 - AMP_LOOP_PEN * hv)), min(p.H, (top - ly0) * (0.33 - AMP_LOOP_PEN * hv))
+    g.oval(lx0, ly0, lx1, top, V=Vo, H=Ho)
     cx, cy, rx, ry = g.box(lx0, ly0, lx1, top, Vo, Ho)
     # leg: leaves the loop's lower left where it runs tangent to the loop, so its square start
     # lies buried in the loop's own stroke. Started inside the loop, it poked into the small
@@ -1813,13 +1892,16 @@ def _ampersand(g, p):
     # the leg is wider than the capped loop, so it starts at the loop's width and widens toward
     # the foot: started at full width, one corner of its square end poked into the counter
     d = norm((foot[0] - start[0], foot[1] - start[1]))
-    k0 = min(1.0, pen_thickness(d, Vo, Ho) / (pen_thickness(d, V, p.H) * 0.96))
-    g.line(start, foot, ws=0.96, caps=('b', 'h'), taper=(k0, 1))
+    # Black's leg and bowl are lighter than its stem (AMP_LEG, AMP_BOWL), as Inter's: at the full pen the lower counter was 0.54x Inter's
+    ws = 0.96 - AMP_LEG * hv
+    k0 = min(1.0, pen_thickness(d, Vo, Ho) / (pen_thickness(d, V, p.H) * ws))
+    g.line(start, foot, ws=ws, caps=('b', 'h'), taper=(k0, 1))
     # lower bowl: from under the loop, round the bottom, and on into the arm in one stroke. A
     # separate arm met the bowl end to end at an angle and showed as a broken wedge at Black.
     bx0, bx1 = 0, w * 0.86
-    bcx, bcy, brx, bry = g.box(bx0, -p.ov, bx1, p.cap * 0.64)
-    bowl = g.arc(bcx, bcy, brx, bry, 62, 340)
+    Vb, Hb = V * (1 - AMP_BOWL * hv), p.H * (1 - AMP_BOWL * hv)
+    bcx, bcy, brx, bry = g.box(bx0, -p.ov, bx1, p.cap * 0.64, V=Vb, H=Hb)
+    bowl = g.arc(bcx, bcy, brx, bry, 62 + AMP_START * hv, 340)  # Black's starts further round, under the loop: at 62 its square end stood out past the loop
     e = bowl[-1][-1]
     # the arm rises steeply and ends on a flat cut, as in Geist and Inter: run out at a shallow
     # angle, it ended in a long flag at heavy weights
@@ -1829,36 +1911,50 @@ def _ampersand(g, p):
     tx, ty = -brx * math.sin(t), bry * math.cos(t)
     tl = math.hypot(tx, ty)
     swing = ('C', e, (e[0] + tx / tl * d * 0.4, e[1] + ty / tl * d * 0.4), (arm[0] - V * 0.1, arm[1] - d * 0.35), arm)
-    g.stroke(bowl + [swing], caps=('b', 'h'), taper=(0.7, 1))
+    g.stroke(bowl + [swing], caps=('b', 'h'), taper=(0.7, 1), pen=(Vb, Hb))
     g.sb = (0.55, 0.12)
     g.ht = 'c'
 
 
+ASTERISK_BLACK = 26
+
+
 @glyph('asterisk', 0x2A)
 def _asterisk(g, p):
-    r = 176  # Regular's was 0.78x the references' size, and sat high; Black's 0.94x
+    # Regular's was 0.78x the references' size, and sat high; Black's 0.94x. Black's arms are ASTERISK_BLACK longer and a little
+    # heavier (0.60 -> 0.64 of a stem): at 176 its ink box was 0.90x Inter's width and 0.86x its height, a small star beside Black letters
+    r = 176 + ASTERISK_BLACK * p.heavy
     cy = p.cap - r
     c = r
     for ang in (90, 18, -54, -126, 162):
         a = math.radians(ang)
-        g.line((c, cy), (c + r * math.cos(a), cy + r * math.sin(a)), w=p.V * (0.82 - 0.22 * p.heavy), caps=('b', 'b'))  # Black's filled in
+        g.line((c, cy), (c + r * math.cos(a), cy + r * math.sin(a)), w=p.V * (0.82 - 0.18 * p.heavy), caps=('b', 'b'))  # Black's filled in at 0.82
     g.sb = (0.45, 0.45)
     g.ht = 'c'
+
+
+AT_PEN, AT_PEN_H, AT_DEEP, AT_BOWL, AT_END, AT_LEFT = 0.03, 0.1, 0.27, 0.1, 14, 0.05
 
 
 @glyph('at', 0x40)
 def _at(g, p):
     w = p.Hw * 1.45
-    pen = (min(p.V * 0.8, w * 0.13), min(p.H * 0.8, w * 0.11))  # @ is mostly counter: cap the pen at heavy weights
-    cx, cy, rx, ry = g.box(0, p.desc * 0.7, w, p.cap + p.ov, V=pen[0], H=pen[1])
-    xs = w * 0.7
-    # inner bowl
-    g.oval(w * 0.3, p.cap * 0.12, xs + pen[0] / 2, p.cap * 0.72, V=pen[0], H=pen[1])
+    # @ is mostly counter: cap the pen at heavy weights. Black's cap rises (w 0.13 -> AT_PEN, H 0.8 -> 0.8 + AT_PEN_H of itself) and
+    # its ring reaches AT_DEEP further down: at 128 x 108 under a 190 stem its ring was a hairline beside the letters (Inter's Black @
+    # carries 1.68x its H's ink, ours 1.44x) and it stood 0.93x Inter's height, its foot high.
+    pen = (min(p.V * 0.8, w * (0.13 + AT_PEN * p.heavy)), min(p.H * (0.8 + AT_PEN_H * p.heavy), w * (0.11 + AT_PEN * p.heavy)))
+    cx, cy, rx, ry = g.box(0, p.desc * (0.7 + AT_DEEP * p.heavy), w, p.cap + p.ov, V=pen[0], H=pen[1])
+    # inner bowl. Black's reaches AT_BOWL of the cap height lower (Inter's runs 0.08 to 0.78), so its counter holds under the heavier
+    # pen, and it sits AT_LEFT of the width further left and a little lower: where it was, the stem's top met the deeper ring
+    xs = w * (0.7 - AT_LEFT * p.heavy)
+    y0, y1 = p.cap * (0.12 - AT_BOWL * p.heavy), p.cap * (0.72 - 0.02 * p.heavy)
+    g.oval(w * (0.3 - 0.6 * AT_LEFT * p.heavy), y0, xs + pen[0] / 2, y1, V=pen[0], H=pen[1])
     # stem continuing into the outer ring
     r = (cx + rx - xs) / 2
-    yb = p.cap * 0.12 + r + 6
-    tail = [L((xs, p.cap * 0.72), (xs, yb))] + g.arc(xs + r, yb, r, r, 180, 360) + [L((cx + rx, yb), (cx + rx, cy))]
-    outer = g.arc(cx, cy, rx, ry, 0, 300)
+    yb = y0 + r + 6
+    tail = [L((xs, y1), (xs, yb))] + g.arc(xs + r, yb, r, r, 180, 360) + [L((cx + rx, yb), (cx + rx, cy))]
+    # Black's ring stops AT_END degrees short, or its end met the stem's curl and closed the white inside the ring
+    outer = g.arc(cx, cy, rx, ry, 0, 300 - AT_END * p.heavy)
     g.stroke(tail + outer, pen=pen, caps=('b', 'b'))
     g.sb = (0.55, 0.55)
     g.ht = 'c'
