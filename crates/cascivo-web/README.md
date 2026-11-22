@@ -43,8 +43,7 @@ cascivo-web build    # write dist/ (emptied first; --no-clean keeps old files)
 - `cascivo-web deploy` for Cloudflare Workers Static Assets, or Cloudflare Pages with
   `--pages --project-name <name>` (`wrangler pages deploy dist`); `--dry-run` to preview.
 - Optional `axum` feature: `cascivo_web::router(&site)` serves the rendered site.
-
-Not included: an image pipeline (use URLs or `public/` files), syntax highlighting, islands.
+- Images (`img()`: resized WebP, `srcset`, preload), `asset()`, `highlight` for `bash`/`css`/`js`/`ts`, `head()` SEO tags, and optional Vite output (`vite()`, `css_bundle()`, `m()`, islands).
 
 ## Links
 

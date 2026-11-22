@@ -210,7 +210,10 @@ fn strict_csp_build_has_no_inline_styles_or_scripts() {
     for (rel, bytes) in &out.files {
         if rel.ends_with(".html") {
             let h = String::from_utf8_lossy(bytes);
-            assert!(!h.contains(" style=") && !h.contains("<style"), "{rel}: {h}");
+            assert!(
+                !h.contains(" style=") && !h.contains("<style"),
+                "{rel}: {h}"
+            );
             assert!(
                 !h.contains("<script>") && !h.contains("<script type=\"module\">"),
                 "{rel}: {h}"
