@@ -286,7 +286,7 @@ def _Y(g, p):
 
 @glyph('K', 0x4B)
 def _K(g, p):
-    w = (p.Hd + p.trim * 418 / 284) * (0.98 + 0.08 * p.heavy)  # untrimmed, see params.CN_TRIM
+    w = p.Hd * (0.98 + 0.08 * p.heavy)
     g.vstem(0, 0, p.cap)
     a0, a1 = g.diag(p.V / 2, p.cap * (0.33 - 0.04 * p.heavy), w, p.cap, 'c', 'r', ws=0.92, caps=('v', 'h'))  # a steeper arm at Black: its tip at the cap height was a sliver (52 px^2, Inter's 46)
     t = 0.38
@@ -555,7 +555,7 @@ A_ARC_END = 13  # the a's arc runs less far round than the g's tail: ending high
 # The italic's Black arches (n h m u r) are not the upright's half-ellipse. Their crown sits ARCH_LEAN of the half-span toward
 # the stem they leave, on a quarter ARCH_DEEP taller than the far one, and they leave that stem thinned to ARCH_JOIN. The far
 # quarter is then the wider one, so the counter's ceiling still comes down round into the far stem when the body narrows
-# (params.CN_TRIM_ITALIC): on the half-ellipse, slanted, a body trimmed by 5 to 12 units met the h's far stem and the u's
+# (round 2's counter trim): on the half-ellipse, slanted, a body trimmed by 5 to 12 units met the h's far stem and the u's
 # near one 1-6 deg under quality.py's join-angle floor, which kept the italic's Black counters as wide as Regular's stems
 # allowed and its rhythm at 0.30. The upright keeps the half-ellipse: thinned to 0.6 its join read 30 deg (floor 29) for no
 # gain in white.
@@ -600,7 +600,7 @@ def _h(g, p):
 
 @glyph('m', 0x6D)
 def _m(g, p):
-    c = (p.cn + p.trim) * 0.86
+    c = p.cn * 0.86
     g.vstem(0, 0, p.xh)
     shoulder(g, 0, c + p.V, p.xh + p.ov * 0.4, ry_k=1.12)
     shoulder(g, c + p.V, 2 * c + 2 * p.V, p.xh + p.ov * 0.4, ry_k=1.12)
@@ -738,7 +738,7 @@ def _q(g, p):
 
 @glyph('g', 0x67)
 def _g(g, p):
-    w = (p.nw + p.trim * (1.0 if p.italic else 0.5)) * 1.07  # as e; the italic's is untrimmed, or its bowl meets the stem under the join-angle floor
+    w = p.nw * 1.07  # as e
     V, H = p.V, p.H
     xr = w - V / 2
     rx = (w - V) / 2 * 0.98
@@ -768,9 +768,9 @@ def _o(g, p):
 
 @glyph('c', 0x63)
 def _c(g, p):
-    # Regular's c was 0.81x Geist's and Inter's width; heavier, it widens a little more, or its
-    # counter pinches
-    w = p.nw * (1.04 + 0.02 * p.heavy)
+    # Regular's c was 0.81x Geist's and Inter's width. Heavier it narrows a little, as the e: on Black's untrimmed n (round 4)
+    # the +0.02 it had widened by set c 10% over its Regular at Black (n 7%, Inter's c 6%)
+    w = p.nw * (1.04 - 0.02 * p.heavy)
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
     # terminals sit 14° further round than they first did, at every weight: the open aperture left
     # the c at 0.78x Geist's and Inter's ink at Regular and 0.77x at Black, and Bold inherited it
@@ -811,7 +811,7 @@ def _e_body(g, p, x0, w):
 
 @glyph('e', 0x65)
 def _e(g, p):
-    _e_body(g, p, 0, (p.nw + p.trim / 2) * 1.06)  # half the heavy trim (params.CN_TRIM): the whole closed Black's eye
+    _e_body(g, p, 0, p.nw * (1.06 - 0.02 * p.heavy))  # 0.02 narrower at Black: on the untrimmed n (round 4) the e set 13% over its Regular (Inter's 4%); its eye is round 3's
     g.sb = (0.62, 0.5)
 
 
@@ -879,12 +879,12 @@ def _a_bowl(g, p, xs, wf):
 @glyph('a', 0x61)
 def _a(g, p):
     if p.italic:  # single-storey: a bowl closed by a stem at x-height, as in Plex and Source italics
-        w = (p.nw + p.trim) * 1.04  # untrimmed, as the upright's: trimmed, its join was too short for quality.py to read
+        w = p.nw * 1.04
         g.vstem(w - p.V, 0, p.xh)
         _bowl_lc(g, p, w, False)
         g.sb = (0.62, 1)
         return
-    w = (p.nw + p.trim) * 0.98  # untrimmed (params.CN_TRIM): the narrower bowl met its stem at 25 deg, under Inter's 36 - 10
+    w = p.nw * 0.98  # no narrower at Black: a narrower bowl met its stem at 25 deg, under Inter's 36 - 10
     V, H = p.V, p.H
     xs = w - V / 2  # stem centre
     # top arc
@@ -906,8 +906,8 @@ def _s(g, p):
     # slanted), and they carry part of the extra width's job, so the s takes 70% of it.
     # Regular's terminals also sit 14° further round, and its s is 4% wider: it carried 0.77x
     # Geist's and Inter's ink at 0.90x their width
-    # the italic's is untrimmed (params.CN_TRIM_ITALIC): narrower, its counter tips turned 4-6 deg sharper than quality.py's TIP_BASE at 750-900
-    _S(g, p, (p.nw + (p.trim if p.italic else 0)) * (0.92 - 0.04 * p.heavy) + _s_extra(p) * 0.7, p.xh, p.ov, run=10 if p.italic else 18, run_up=8 if p.italic else 16, close=26, bowl=0.22, flat=0.1, deep=70)
+    # Black takes 0.10 off (0.04 before round 4): on the untrimmed n its s set 21% over its Regular (Inter's 11%)
+    _S(g, p, p.nw * (0.92 - 0.10 * p.heavy) + _s_extra(p) * 0.7, p.xh, p.ov, run=10 if p.italic else 18, run_up=8 if p.italic else 16, close=26, bowl=0.22, flat=0.1, deep=70)
     g.sb = (0.55, 0.55)
 
 
@@ -1055,7 +1055,7 @@ def _kra(g, p):
 # Black's v w y: the diagonals met in a crotch 60 units deep under a nearly solid wedge (v 450 wide with two 170-unit strokes; Inter's
 # is 590). They are wider (what the width rule leaves: the reflow line holds one v) and their strokes lighter, as a drawn Black's
 # diagonals are, so the white reaches a third of the way down.
-V_WIDER, W_WIDER, V_LIGHTER = 34, 70, 0.10
+V_WIDER, W_WIDER, V_LIGHTER = 34, 35, 0.10  # W_WIDER 70 -> 35 (round 4): with DIAG_TRIM halved, Black's w ran 1.46x its n (Inter's 1.35x)
 
 
 @glyph('v', 0x76)
@@ -1082,9 +1082,13 @@ def _w(g, p):
     g.sb = (0.36, 0.36)
 
 
+# Black's x and z were 0.87x and 0.84x of its n (Inter's 0.94x, 0.91x): the diagonal trim (params.DIAG_TRIM) pinched them beside n and o
+X_WIDER, Z_WIDER = 35, 30
+
+
 @glyph('x', 0x78)
 def _x(g, p):
-    w = p.dnw * 1.07
+    w = p.dnw * 1.07 + X_WIDER * p.heavy
     g.diag(0, p.xh, w, 0, 'l', 'r', ws=0.93)
     g.diag(w, p.xh, 0, 0, 'r', 'l', ws=0.9)
     # spaced against Geist's and Inter's (and Inter's and Plex's italics) pair by pair: it sat
@@ -1140,7 +1144,7 @@ def _y(g, p):
 
 @glyph('z', 0x7A)
 def _z(g, p):
-    w = p.dnw * 0.95
+    w = p.dnw * 0.95 + Z_WIDER * p.heavy
     g.hbar(w * 0.04, w * 0.98, p.xh - p.H).hbar(0, w, 0)
     g.diag(w * 0.98, p.xh - p.H / 2, 0, p.H / 2, 'r', 'l', ws=0.95)
     # the italic's baseline bar slants out under the next letter: heavy, it met X and A
@@ -1360,12 +1364,13 @@ def _eight(g, p):
 
 @glyph('space', 0x20)
 def _space(g, p):
-    g.adv_fixed = round(p.Sfig * 2 + 128)
+    # 28 shorter at Black (round 4): its letters' looser sidebearings set the word gap 1.1x Inter's; Inter's space loses 29% by Black
+    g.adv_fixed = round(p.Sfig * 2 + 128 - 28 * p.heavy)
 
 
 @glyph('nbspace', 0xA0)
 def _nbsp(g, p):
-    g.adv_fixed = round(p.Sfig * 2 + 128)
+    g.adv_fixed = round(p.Sfig * 2 + 128 - 28 * p.heavy)  # as the space
 
 
 @glyph('period', 0x2E)

@@ -28,7 +28,7 @@ from composites import ALIAS, GREEK_ACCENTED, GREEK_POLY, accented_chars, glyph_
 from geom import seg_point
 
 BAND = 10
-# Black's sidebearing is ~20 units (params.HEAVY_TIGHTEN), so 0.55 S would keep pairs 11 units apart, and a band
+# Black's sidebearing was ~20 units before round 4 (params.HEAVY_TIGHTEN; 44 now), so 0.55 S would keep pairs 11 units apart, and a band
 # profile reads +-2: the closest point never gets nearer than this, whatever S is.
 KEEP_CLEAR = 16
 MIN_KERN = 10  # units; smaller corrections are invisible at text sizes
@@ -47,16 +47,16 @@ REGULAR_S = P(400, 14).S  # Regular's stem sidebearing unit: the reference of ST
 # W+a -63, V+a -69, Y+round -138, A beside V/W/Y -88); those numbers are hand-set here, they are not derived. Without it the closest-point
 # floor is the only brake at Black, and W beside a round letter read -90 there (Inter -49) with the two nearly touching. Y's reach grows
 # with the weight because Inter's Y kerns harder as it gets heavier (-77 at Regular, -138 at Black); the others' stays put. (1.1: Black's
-# looser sidebearings, params.CN_TRIM, left Yo at 110 against the 0.8 x 138 floor at 1.0; 1.3 and the A pairs' 0.8 after round 2's, which
-# left Yo at 108-110 and the italic's Bold AW at 56 against 57.6.)
+# looser sidebearings (round 1's counter trim) left Yo at 110 against the 0.8 x 138 floor at 1.0; 1.3 and the A pairs' 0.8 after round 2's, which
+# left Yo at 108-110 and the italic's Bold AW at 56 against 57.6; the A pairs' 1.4 after round 4's looser Bold, whose italic AW read 54.)
 STRONG_CLASSES = [
     (['L', 'Lslash'], ['T'], 1.8, 0.0, 1.0, 96),
     (['T'], ['o', 'c', 'e', 'd', 'q', 'g', 'a', 's', 'ae', 'oe'], 1.4, 0.0, 1.0, 78),
     (['W'], ['a', 'c', 'e', 'o', 'd', 'ae', 'oe'], 2.4, 0.0, 1.1, 63),
     (['V'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 0.0, 1.0, 69),
     (['Y'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 1.3, 1.0, 138),
-    (['A'], ['V', 'W', 'Y'], 1.2, 0.8, 1.0, 88),
-    (['V', 'W', 'Y'], ['A'], 1.2, 0.8, 1.0, 88),
+    (['A'], ['V', 'W', 'Y'], 1.2, 1.4, 1.0, 88),
+    (['V', 'W', 'Y'], ['A'], 1.2, 1.4, 1.0, 88),
 ]
 # Thin's V beside a round letter: a hairline diagonal leaves the widest white of any weight beside it, and the hole was counted no
 # deeper than Regular's, so Vo, Ve, Vc read 0.6 to 0.75x Inter's. The hole counts THIN_REACH Regular sidebearings deeper at Thin, fading
@@ -123,8 +123,11 @@ TRACED_NEIGHBOURS = ['period', 'comma', 'ellipsis', 'colon', 'semicolon', 'excla
                       'quoteleft', 'quoteright', 'quotedblleft', 'quotedblright', 'quotedblbase', 'quotesingle', 'quotedbl'] + [f + '.pnum' for f in FIGS]
 
 # Closing pairs no reference list carries, kept when the measurement agrees: tt, whose two
-# crossbars Inter and Plex let nearly meet (ours sat 1.3x their white at Bold).
-OWN_CLOSING_PAIRS = {('t', 't'): -1}
+# crossbars Inter and Plex let nearly meet (ours sat 1.3x their white at Bold); f before a closing
+# bracket, whose white under the crossbar opened into a hole at Black once its sidebearing did (round 4): heavy masters only, as
+# HEAVY_ONLY, so Regular's f) is unchanged.
+F_BRACKETS = {('f', 'parenright'), ('f', 'bracketright'), ('f', 'braceright')}
+OWN_CLOSING_PAIRS = {('t', 't'): -1, **{k: -1 for k in F_BRACKETS}}
 
 
 def _glyph(ch):
@@ -683,7 +686,7 @@ def kern_fea(o):
     cls = lambda g: g.replace('.', '_')  # noqa: E731
     lines = [f'@kR_{cls(g)} = [{" ".join(_members(g, glyphs, acc) + sorted(joined_r.get(g, [])))}];' for g in firsts]
     lines += [f'@kL_{cls(g)} = [{" ".join(_members(g, glyphs, acc) + sorted(joined_l.get(g, [])))}];' for g in seconds]
-    _HEAVY_KEYS = {(rr(a), rl(b)) for a, b in HEAVY_ONLY} | HEAVY_ONLY
+    _HEAVY_KEYS = {(rr(a), rl(b)) for a, b in HEAVY_ONLY | F_BRACKETS} | HEAVY_ONLY | F_BRACKETS
     vals = _values(o, pairs)
     first_of = lambda ra: _members(ra, glyphs, acc) + sorted(joined_r.get(ra, []))  # noqa: E731
     second_of = lambda rb: _members(rb, glyphs, acc) + sorted(joined_l.get(rb, []))  # noqa: E731

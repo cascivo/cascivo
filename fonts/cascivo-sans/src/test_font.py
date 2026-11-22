@@ -25,13 +25,13 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 74_500,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike)
+    'CascivoSans[opsz,wght].woff2': 76_000,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 76_000, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed)
     'CascivoSans-Latin[opsz,wght].woff2': 31_500,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike)
-    'CascivoSans-Latin[wght].woff2': 25_000,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing
+    'CascivoSans-Latin[wght].woff2': 25_500,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_500, raised by the user, round 4 (Bold's counters narrowed)
     'CascivoSans-Regular.woff2': 25_500,  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek
-    'CascivoSans-Italic[opsz,wght].woff2': 81_500,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek
+    'CascivoSans-Italic[opsz,wght].woff2': 83_000,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 83_000, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed)
     'CascivoSans-Italic-Latin[opsz,wght].woff2': 35_000,  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance
-    'CascivoSans-Italic-Latin[wght].woff2': 28_000,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing
+    'CascivoSans-Italic-Latin[wght].woff2': 28_500,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing, then 28_000 -> 28_500, raised by the user, round 4 (Bold's counters narrowed)
 }
 
 
@@ -536,9 +536,9 @@ class Font(unittest.TestCase):
 
     def test_weight_changes_do_not_reflow_text(self):
         # Bold on hover or an active tab must not rewrap a line. Shaped with kerning, a UI string stays within
-        # 2% of its Regular width from 100 to 700, upright and italic. The heavier weights are display weights and
-        # may run wider, up to +5% (-2%) from 750: 750 starts the range because it is the first named step
-        # between Bold's master and Black's, where the width is already climbing to Black's.
+        # 2% of its Regular width from 100 to 600, upright and italic. Bold may run to +4% and Black to +10%, on a
+        # straight line between (650 +3%, 800 +7%); never under -2% (the owner's decision, round 4: under +2% / +5%
+        # Black's counters and sidebearings were squeezed until it set 6% narrower than Inter's Black at the same stem).
         # (Geist spans 0.96x-1.11x of its Regular width from Thin to Black, Inter 0.94x-1.08x; this font was 1.11x.)
         try:
             import uharfbuzz as hb
@@ -550,34 +550,35 @@ class Font(unittest.TestCase):
                 row = shaped_widths(hb, path, text)
                 for w, width in row.items():
                     ratio = width / row[400] - 1
-                    limit = 0.02 if w <= 700 else 0.05
-                    self.assertTrue(-0.02 <= ratio <= limit, f'{os.path.basename(path)} {text[:10]!r} wght {w}: {ratio:+.1%} against 400, limit {limit:+.0%}')
+                    limit = 0.02 if w <= 600 else 0.02 + 0.02 * (w - 600) / 100 if w <= 700 else 0.04 + 0.06 * (w - 700) / 200
+                    self.assertTrue(-0.02 <= ratio <= limit, f'{os.path.basename(path)} {text[:10]!r} wght {w}: {ratio:+.1%} against 400, limit {limit:+.1%}')
 
     def test_heavy_spacing_stays_open(self):
         # A text line at 800 and 900 must keep its words and letters apart, measured as the ink gap on shaped
         # text (the advance of a space says little: Black's words fused at 14 px with a space of 190 units,
         # because the letters beside it had tightened). References are Inter's and Inter Italic's own 800 and 900,
         # read the same way on the same text, in 1000 units per em.
-        # Shipped: word gap 0.99x Inter's at 900 (255 against 257) and 0.96x at 800; letter gap 0.43x (30 against
-        # 69) and 0.50x (40 against 79). The letter gap cannot reach Inter's: Black's stems add 11% to a line, the
-        # guarded counters give back nothing, and the width limit (+5%) leaves sidebearings of ~22 units against
-        # Inter's 50. So the limits sit just under what ships and stop a return to the 215 / 26 that fused the
-        # paragraph: words at 0.90x Inter's, upright letters at 0.40x. An italic's boxes overlap its neighbours, so
-        # its letter gap reads negative in both fonts: it is held to Inter Italic's less 40 (Cascivo reads 36 under).
+        # Round 3 shipped letter gaps of 0.43x Inter's at 900 (30 against 69) and 0.50x at 800, as tight as the old width
+        # limit (+5%) allowed. Round 4 (Black may run to +10%) ships 0.87x (60 against 69) and 0.81x (64 against 79), words
+        # 0.98x and 0.95x (252 against 257, 272 against 287). The limits sit just under what ships: upright letters at 0.85x
+        # Inter's at 900 and 0.78x at 800, words at 0.90x (the 215 / 26 that once fused the paragraph). An italic's boxes
+        # overlap its neighbours, so its letter gap reads negative in both fonts: it is held to Inter Italic's less 12
+        # (Cascivo reads 4 under at 900 and 10 at 800; round 3 read 36 under).
         try:
             import uharfbuzz as hb
         except ImportError:
             self.skipTest('pip install uharfbuzz')
 
         inter = {(VF, 800): (287, 79), (VF, 900): (257, 69), (VFI, 800): (263, 18), (VFI, 900): (233, 7)}  # word gap, letter gap
+        letter_floor = {800: 0.78, 900: 0.85}
         for (path, w), (inter_word, inter_letter) in inter.items():
             word, letter = ink_gaps(hb, path, w)
             name = f'{os.path.basename(path)} wght {w}'
             self.assertGreaterEqual(word, 0.90 * inter_word, f'{name}: gap across a word space')
             if path == VF:
-                self.assertGreaterEqual(letter, 0.40 * inter_letter, f'{name}: mean letter gap')
+                self.assertGreaterEqual(letter, letter_floor[w] * inter_letter, f'{name}: mean letter gap')
             else:
-                self.assertGreaterEqual(letter, inter_letter - 40, f'{name}: mean letter gap')
+                self.assertGreaterEqual(letter, inter_letter - 12, f'{name}: mean letter gap')
 
     def test_capitals_keep_their_sidebearings_in_proportion(self):
         # A capital's sidebearings stay 1.3x the lowercase's at every weight (Inter 1.17 / 1.05 / 0.94 at Thin / Bold /
@@ -744,13 +745,14 @@ class Font(unittest.TestCase):
 
     def test_heavy_n_gap_holds_against_its_counter(self):
         # JUDGING.md criterion 1: the white between two n's over the white inside one (rhythm.py). Bold read 0.38 and Black 0.30
-        # against Inter's 0.62 / 0.64 and Regular's own 0.53, and mn, HI touched; the heavy trim (params.CN_TRIM) brought both to
+        # against Inter's 0.62 / 0.64 and Regular's own 0.53, and mn, HI touched; the heavy trim (round 1's CN_TRIM) brought both to
         # 0.46-0.47. Round 2 trimmed Black further (0.53) and gave the italic the same rebalance on a redrawn arch (it read 0.39
-        # and 0.30; glyphs.ARCH_LEAN): the floors are round 2's pass marks. Bold's is still round 1's: its outline is interpolated
-        # and its sidebearings are held by the +2% width rule.
+        # and 0.30; glyphs.ARCH_LEAN). Round 4 (Black may run to +10%, Bold to +4%) untrimmed Black's counters and opened its
+        # sidebearings, and narrowed Bold's counters (params.BOLD_SQUEEZE): upright 0.55 / 0.59 at 700 / 900, italic 0.58 / 0.60,
+        # rising from Bold to Black as Inter's (0.62 / 0.64). The floors sit 0.02 under what ships.
         import rhythm
 
-        for path, floors in ((VF, {700: 0.45, 900: 0.50}), (VFI, {700: 0.45, 900: 0.45})):
+        for path, floors in ((VF, {700: 0.53, 900: 0.57}), (VFI, {700: 0.56, 900: 0.57})):
             for w, floor in floors.items():
                 with self.subTest(font=os.path.basename(path), wght=w):
                     self.assertGreaterEqual(rhythm.ratio(path, w), floor, 'n gap / counter')
@@ -759,17 +761,18 @@ class Font(unittest.TestCase):
         # JUDGING.md criterion 3: the Black counters that read small beside Inter's, as a share of the x-height squared (quality.counter_area).
         # The e's eye was 0.78x Inter's under a bar as heavy as the H's, the 6 and 9 0.90x, b d p q 0.92x, and the A's counter 0.57x
         # (Inter's reads 0.069 upright and 0.061 italic); o a g 8 0 were 1.0-1.2x already. quality.COUNTER_MIN_SHARE (0.70) stays the
-        # floor for the rest.
+        # floor for the rest. Round 4 untrimmed Black's counters: e 1.05x / 0.98x (upright / italic), 6 and 9 1.11x / 1.06x, b d p q
+        # 1.17x / 1.08x (round 3: 0.98x / 0.93x), A 1.26x / 1.59x; the floors sit just under the italic's.
         import quality
 
         for path, sfx, a_ref in ((VF, '', 0.069), (VFI, '_italic', 0.061)):
-            for g, share in (('e', 0.95), ('six', 0.95), ('nine', 0.95), ('b', 0.92), ('d', 0.92), ('p', 0.92), ('q', 0.92)):
+            for g, share in (('e', 0.96), ('six', 1.04), ('nine', 1.04), ('b', 1.05), ('d', 1.05), ('p', 1.05), ('q', 1.05)):
                 m = quality.raster(path, g, 900)
                 with self.subTest(font=os.path.basename(path), glyph=g):
                     self.assertGreaterEqual(quality.counter_area(m, m.x_height), share * quality.REF['counter' + sfx][(g, 900)])
             m = quality.raster(path, 'A', 900)
             with self.subTest(font=os.path.basename(path), glyph='A'):
-                self.assertGreaterEqual(quality.counter_area(m, m.x_height), 0.85 * a_ref)
+                self.assertGreaterEqual(quality.counter_area(m, m.x_height), 1.2 * a_ref)
 
     def test_parentheses_bow_and_stand_with_the_brackets(self):
         # JUDGING.md defect 5: the parenthesis was 159 units wide at Regular (Inter 211, Geist 214), nearly straight, and 884 tall beside

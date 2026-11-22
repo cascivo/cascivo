@@ -38,36 +38,38 @@ def _pw(x, table):
     raise ValueError(x)
 
 
-# Width across weights: 100-700 stay within +-2% of Regular's, 750-900 within +5% (-2%), for mixed case and all caps. Stems
-# add ~11% to a text line by Black; the sidebearings give back what they can and the guarded counters give back nothing.
-# What that leaves at Black: a word gap 0.99x Inter's and a letter gap 0.43x (n sidebearing 22 against Inter's 50): as
-# tight as the +5% allows. Interpolation between Regular and Black would put Bold (700) 58% of the way up Black's gain,
-# so Bold is a master of its own that bends the sidebearing line (build.mid_master): it keeps the interpolated outline,
-# moved half the way its advance shortens, and so stores only a shift per glyph.
-# HEAVY_TIGHTEN and BOLD_TIGHTEN: the share of the stem sidebearing lost at Black and at Bold.
-HEAVY_TIGHTEN = 0.30
-BOLD_TIGHTEN = 0.22
-BOLD_TIGHTEN_ITALIC = 0.25
-# CN_TRIM: units the lowercase counters lose at Black (n's 150 -> 130), handed back to the sidebearings (HEAVY_TIGHTEN 0.53 -> 0.36,
-#   BOLD_TIGHTEN 0.35 -> 0.25, CH_BLACK 300 -> 280) at the same advance: Black's n gap over counter read 0.30 against Inter's 0.64, Bold's 0.38 against 0.62,
-#   and mn, hi, HI touched. m, a and K keep their width (p.trim): m's three stems closed its counters to slits, a's bowl met its
-#   stem at 25 deg (Inter 36 - 10) and K's arm cut a sliver.
-# Round 2 (JUDGING.md): Black's trim is 26 with HEAVY_TIGHTEN 0.30 (n gap over counter 0.53), and the italic takes 20 with the upright's
-#   sidebearing shares (0.30 -> 0.47 at Black, 0.39 -> 0.50 at Bold) on a redrawn arch (glyphs.ARCH_LEAN); its a, g and s keep their width.
-CN_TRIM = 26
-CN_TRIM_ITALIC = 20
-HEAVY_TIGHTEN_ITALIC = 0.36
+# Width across weights: 100-600 stay within +-2% of Regular's, Bold (700) within +4% and Black within +10%, on a straight line
+# between (800 +7%), never under -2%, for mixed case and all caps (the owner's decision, round 4; it was +2% to 700 and +5% to 900).
+# Under the old rule three rounds squeezed Black's counters (CN_TRIM, 26 units off n's) and sidebearings (HEAVY_TIGHTEN 0.30, n's
+# 34 against Inter's 50) until it set 6% narrower than Inter's Black at the same stem. Round 4 spends the room on both: n's counter
+# untrimmed (123 -> 149), its sidebearing 34 -> 44, a text line +8-10% at Black (Inter +6-8%), n gap over counter 0.59 (Inter 0.64).
+# Interpolation between Regular and Black would put Bold (700) 58% of the way up Black's gain, so Bold is a master of its own that
+# bends the line (build.mid_master): it keeps the interpolated outline, moved half the way its advance shortens, and its counters
+# narrowed by BOLD_SQUEEZE (build.counter_squeeze). 600 interpolates Regular and Bold, two thirds of the way: 600's +2% caps Bold at
+# about +3%, and the interpolated counters (n's 196) would leave Bold's gap over counter at 0.51 there; narrowed to 179 it is 0.55.
+# HEAVY_TIGHTEN and BOLD_TIGHTEN: the share of the stem sidebearing lost at Black and at Bold (0.30 / 0.22 before round 4,
+#   italic 0.36 / 0.25): n's sidebearing 44 at Black, 51 at Bold.
+HEAVY_TIGHTEN = 0.08
+BOLD_TIGHTEN = 0.12
+BOLD_TIGHTEN_ITALIC = 0.13
+HEAVY_TIGHTEN_ITALIC = 0.09
+# BOLD_SQUEEZE: the share of each lowercase counter's width Bold gives up against the interpolated outline; capitals keep theirs
+#   (an all-caps line sat under Regular's at 700 and is +2.7% now, Inter's +2.9%).
+BOLD_SQUEEZE = 0.085
+BOLD_SQUEEZE_CAP = 0.0
 # CH_THIN and CH_BLACK: the capitals' own counter (H's, in units; Regular's is 397, the lowercase n's scaled), at stem
 #   20 and at stem 194. Capitals set their sidebearings from the lowercase's (Sc = 1.3 S at every weight, as Inter and
 #   Geist keep them in proportion), so their width has to hold in the counter: it narrowed with n's, which cut an
 #   all-caps line by 12% at Black, and at Thin it ran wide (n's 374 would put H 4% over Regular's with 26% more white).
+#   Round 4: 272 -> 300 (italic 280 -> 305), an all-caps line +6% at Black (it was -1%; Inter's +2-5%).
 CH_THIN = 470
 CHD_THIN = 0.93  # the same narrowing, as a share, for the round and diagonal capitals
-CH_BLACK = 272
-CH_BLACK_ITALIC = 280
+CH_BLACK = 300
+CH_BLACK_ITALIC = 305
 # DIAG_TRIM: units the diagonal letters v w x y z lose from their width at Black. Their counters are open white,
-#   not guarded, and they carried the widest ink growth beside the s and e.
-DIAG_TRIM = 90
+#   not guarded, and they carried the widest ink growth beside the s and e. 90 -> 45 (round 4): at 90 Black's v sat 0.89x its n
+#   and x z 0.80x (Inter's 0.97x, 0.94x, 0.91x).
+DIAG_TRIM = 45
 THIN_OPEN = 0.30  # share of the stem sidebearing Thin opens by, see P.__init__; 0.30 is held by the italic mixed-case line at Thin (-2.7% at 0.23), which the reflow test covers
 
 
@@ -104,7 +106,7 @@ class P:
         self.k = k
         self.ap = aperture  # degrees added to terminal angles: + opens c/e/s/a
         # Width across weights: a UI font must not reflow when text turns bold (hover, active
-        # tab), so total width may grow only ~5% per 300 weight units (Geist: 0.96x Thin, 1.11x
+        # tab), so total width may grow only 2% by 600, 4% by Bold and 10% by Black (Geist: 0.96x Thin, 1.11x
         # Black). Counters absorb most of the stem growth, and spacing tightens to keep rhythm.
         # Sidebearings tighten as stems thicken, as in every heavy grotesque: Geist and Inter lose
         # about 30% of their Regular sidebearing by Black. Held nearly constant, Black's gaps
@@ -130,8 +132,6 @@ class P:
         self.cn = _pw(V, [(20, 374), (84, 270), (BLACK_STEM + 4, 145)]) * counter  # n counter
         if italic:
             self.cn *= 0.95  # italics run slightly narrower: the slant already adds movement
-        self.trim = (CN_TRIM_ITALIC if italic else CN_TRIM) * counter * self.heavy
-        self.cn -= self.trim
         # Capitals' counters: the straight-sided ones (H E N B ...) have their own curve, see CH_THIN; the round and diagonal ones
         # (O C G S A V W X Y Z J) follow n's, which they were fitted to, narrowing with the lowercase
         # The curves are read off the weight's own stem (V0), not the optical size's: Caption's stem is V0+5 and Display's V0-3,
