@@ -213,6 +213,13 @@ fn sitemap_meta(page: &Value, tpl: Option<&toml::Table>) -> (bool, Option<String
         .map(|v| v.to_string());
     (listed, lastmod)
 }
+fn cv_options(cfg: &Config) -> cascivo_html::Options {
+    cascivo_html::Options {
+        inline_styles: cfg.build.inline_styles,
+        ..cascivo_html::Options::default()
+    }
+}
+
 /// Output path → bytes emitted by template functions (`asset()`, `img()`).
 type Files = BTreeMap<String, Vec<u8>>;
 
@@ -278,11 +285,16 @@ impl<'a> Renderer<'a> {
             }
         }
         let a = Arc::clone(&acc);
+        let inline_styles = site.config.build.inline_styles;
         env.add_function(
             "cv",
             move |src: String| -> std::result::Result<Value, minijinja::Error> {
                 let mut acc = a.lock().unwrap_or_else(PoisonError::into_inner);
-                markdown::cv(&src, "cv()", 1, &mut acc)
+                let opts = cascivo_html::Options {
+                    inline_styles,
+                    ..cascivo_html::Options::default()
+                };
+                markdown::cv(&src, "cv()", 1, &mut acc, &opts)
                     .map(Value::from_safe_string)
                     .map_err(|e| {
                         minijinja::Error::new(minijinja::ErrorKind::InvalidOperation, e.to_string())
@@ -325,11 +337,12 @@ impl<'a> Renderer<'a> {
     }
 
     fn markdown(&self, md: &str, file: &str, line: u32) -> Result<String> {
-        let r = markdown::render(md, file, line)?;
+        let r = markdown::render_with(md, file, line, &cv_options(&self.site.config))?;
         let mut acc = self.acc.lock().unwrap_or_else(PoisonError::into_inner);
         acc.used.extend(&r.used);
         acc.used.insert("prose");
         acc.scripts.extend(&r.scripts);
+        acc.styles.extend(r.styles);
         Ok(format!("<div class=\"cv-prose-prose\">{}</div>", r.html))
     }
 
@@ -465,22 +478,39 @@ fn finish(
         out.insert(rel, bytes)
             .map_err(|m| Errors::one("dist", None, m))
     };
-    let scripts: String = acc
-        .scripts
-        .iter()
-        .filter_map(|s| cascivo_html::script(s))
-        .map(|js| format!("<script>{js}</script>"))
-        .collect();
-    let css = site.config.build.cascivo_css;
-    let slash = site.config.build.trailing_slash;
+    let build = &site.config.build;
+    let scripts = if acc.scripts.is_empty() {
+        String::new()
+    } else if build.external_scripts {
+        let names: std::collections::BTreeSet<&str> = acc.scripts.iter().copied().collect();
+        let js = cascivo_html::script_bundle(Some(&names));
+        let rel = crate::assets::out_name(build, "cascivo.js", js.as_bytes());
+        let mut tag = String::from("<script");
+        cascivo_html::html::attr(&mut tag, "src", &format!("/{rel}"));
+        tag.push_str(" defer></script>");
+        put(rel, js.into_bytes())?;
+        tag
+    } else {
+        acc.scripts
+            .iter()
+            .filter_map(|s| cascivo_html::script(s))
+            .map(|js| format!("<script>{js}</script>"))
+            .collect()
+    };
+    let css_href = if build.cascivo_css {
+        let css = crate::theme::site_css(&site.config, &acc.used, &acc.styles);
+        let rel = crate::assets::out_name(build, "cascivo.css", css.as_bytes());
+        put(rel.clone(), css.into_bytes())?;
+        Some(format!("/{rel}"))
+    } else {
+        None
+    };
+    let slash = build.trailing_slash;
     for p in pages {
         let rel = routes::out_path(&p.url, slash);
-        put(rel, finish_html(&p.html, &scripts, css).into_bytes())?;
-    }
-    if css {
         put(
-            "cascivo.css".into(),
-            cascivo_html::stylesheet(&site.config.theme, &acc.used).into_bytes(),
+            rel,
+            finish_html(&p.html, &scripts, css_href.as_deref()).into_bytes(),
         )?;
     }
     for (rel, bytes) in files {
@@ -558,12 +588,13 @@ fn with_preloads(mut html: String, links: &[String]) -> String {
 }
 
 /// Links the shared stylesheet and appends component scripts, so layouts need neither.
-fn finish_html(html: &str, scripts: &str, css: bool) -> String {
-    let link = if css {
-        "<link rel=\"stylesheet\" href=\"/cascivo.css\">"
-    } else {
-        ""
-    };
+fn finish_html(html: &str, scripts: &str, css_href: Option<&str>) -> String {
+    let link = css_href.map_or_else(String::new, |h| {
+        let mut l = String::from("<link rel=\"stylesheet\"");
+        cascivo_html::html::attr(&mut l, "href", h);
+        l.push('>');
+        l
+    });
     let mut s = match html.find("</head>") {
         Some(i) => format!("{}{link}{}", &html[..i], &html[i..]),
         None => format!("{link}{html}"),
@@ -626,7 +657,7 @@ mod tests {
         let h = finish_html(
             "<html><head></head><body>x</body></html>",
             "<script>1</script>",
-            true,
+            Some("/cascivo.css"),
         );
         assert_eq!(
             h,
@@ -636,7 +667,7 @@ mod tests {
 
     #[test]
     fn finish_without_cascivo_css_adds_no_link() {
-        let h = finish_html("<html><head></head><body></body></html>", "", false);
+        let h = finish_html("<html><head></head><body></body></html>", "", None);
         assert_eq!(h, "<html><head></head><body></body></html>");
     }
 

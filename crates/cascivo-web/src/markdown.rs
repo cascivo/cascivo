@@ -1,7 +1,7 @@
 //! Markdown → HTML with cascivo components: a ` ```cv ` fence holds `.cv` text, and a line
 //! `::name[text]{key=value flag}` is one component. Both render through cascivo-html.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use pulldown_cmark::{CodeBlockKind, Event, Options, Parser, Tag, TagEnd, html};
 
@@ -14,19 +14,28 @@ pub struct Rendered {
     pub html: String,
     pub used: BTreeSet<&'static str>,
     pub scripts: BTreeSet<&'static str>,
+    /// `[build] inline_styles = false` only: `data-cv-style` rules for `cascivo.css`.
+    pub styles: BTreeMap<String, String>,
 }
 
 impl Rendered {
     pub fn absorb(&mut self, f: cascivo_html::Fragment) -> String {
         self.used.extend(f.used);
         self.scripts.extend(f.scripts);
+        self.styles.extend(f.styles);
         f.html
     }
 }
 
 /// Renders `.cv` text; diagnostics are shifted to `first_line` of `file`.
-pub fn cv(src: &str, file: &str, first_line: u32, out: &mut Rendered) -> Result<String> {
-    cascivo_html::render_parts(src, &cascivo_html::Options::default())
+pub fn cv(
+    src: &str,
+    file: &str,
+    first_line: u32,
+    out: &mut Rendered,
+    opts: &cascivo_html::Options,
+) -> Result<String> {
+    cascivo_html::render_parts(src, opts)
         .map(|f| out.absorb(f))
         .map_err(|ds| {
             Errors(
@@ -175,6 +184,16 @@ fn mark_directives(md: &str) -> (String, Vec<(u32, String)>) {
 
 /// Renders a Markdown body. `first_line` is where it starts in `file` (after front matter).
 pub fn render(md: &str, file: &str, first_line: u32) -> Result<Rendered> {
+    render_with(md, file, first_line, &cascivo_html::Options::default())
+}
+
+/// [`render`] with cascivo-html options (`inline_styles`).
+pub fn render_with(
+    md: &str,
+    file: &str,
+    first_line: u32,
+    cv_opts: &cascivo_html::Options,
+) -> Result<Rendered> {
     let (md, directives) = mark_directives(md);
     let mut out = Rendered::default();
     let mut errs = Vec::new();
@@ -195,7 +214,7 @@ pub fn render(md: &str, file: &str, first_line: u32) -> Result<Rendered> {
             }
             Event::End(TagEnd::CodeBlock) if fence.is_some() => {
                 let (at, src) = fence.take().unwrap_or_default();
-                match cv(&src, file, at, &mut out) {
+                match cv(&src, file, at, &mut out, cv_opts) {
                     Ok(h) => events.push(Event::Html(h.into())),
                     Err(e) => errs.extend(e.0),
                 }
@@ -206,7 +225,7 @@ pub fn render(md: &str, file: &str, first_line: u32) -> Result<Rendered> {
                 };
                 let at = first_line + rel;
                 match directive_to_cv(&src) {
-                    Ok(c) => match cv(&c, file, at, &mut out) {
+                    Ok(c) => match cv(&c, file, at, &mut out, cv_opts) {
                         Ok(h) => events.push(Event::Html(h.into())),
                         // Columns point into the generated line, so report the line only.
                         Err(e) => errs.extend(e.0.into_iter().map(|mut x| {

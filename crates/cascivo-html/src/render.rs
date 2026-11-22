@@ -163,6 +163,16 @@ pub fn stylesheet(theme: &str, used: &BTreeSet<&'static str>) -> String {
     css
 }
 
+/// The CSS of one built-in theme (`@layer cascivo.theme{[data-theme=<name>]{…}}`).
+pub fn theme_css(name: &str) -> Option<&'static str> {
+    THEMES.iter().find(|(n, _)| *n == name).map(|(_, c)| *c)
+}
+
+/// Every built-in theme name.
+pub fn theme_names() -> impl Iterator<Item = &'static str> {
+    THEMES.iter().map(|(n, _)| *n)
+}
+
 /// Inline script source an emitter asked for via [`Fragment::scripts`].
 pub fn script(name: &str) -> Option<&'static str> {
     SCRIPTS.iter().find(|(n, _)| *n == name).map(|(_, js)| *js)

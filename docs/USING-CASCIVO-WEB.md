@@ -83,11 +83,16 @@ limit = 20
 | `base_url` | Absolute origin. Default empty. Without it there is no `sitemap.xml`, and feeds fail. |
 | `lang` | Language of the site. Default `en`. |
 | `theme` | A cascivo theme name. Default `light`. |
+| `dark_theme` | Optional second theme. `cascivo.css` applies it under `prefers-color-scheme: dark` to pages whose `<html>` has no `data-theme` (then `theme` applies to them otherwise). `[data-theme=<name>]` still works for both. |
+| `[brand]` | Token overrides: `primary`, `accent` (`#rgb` or `#rrggbb`), `radius` (px, 0–64), `gap` (space step), `density` (`compact`, `normal`, `comfy`), `font`, `mono`. The same keys as `@brand` in cascivo-html. See [Theming](#theming). |
 | `[i18n] default` | Default locale, served at `/`. Must be in `locales`. |
 | `[i18n] locales` | All locales. Others are served at `/<locale>/`. |
 | `[i18n] fallback` | Default `true`. See [Locales](#locales). |
 | `[build] trailing_slash` | Default `true`: `/about/` (`about/index.html`). `false`: `/about` (`about.html`) in output files, `page.url`, entry URLs, canonical, sitemap, hreflang and feeds. |
 | `[build] cascivo_css` | Default `true`. `false`: no `cascivo.css` and no link to it. |
+| `[build] inline_styles` | Default `true`. `false`: components write no `style=""`. They get `data-cv-style` hooks, and the rules go into `cascivo.css`. See [Strict CSP](#strict-csp). |
+| `[build] external_scripts` | Default `false`. `true`: component scripts, `theme_script()` and `islands_script()` go into `.js` files with `<script src>`. |
+| `[build] hash_assets` | Default `false`. `true`: `cascivo.css` and the generated `.js` files get content-hashed names under `/_cw/`, like `asset()`. |
 | `[head] robots` | Default `robots` of `head()`. Default `"index, follow"`; `""` omits the tag. |
 | `[deploy] target` | `"workers"` (default) or `"pages"`. See [Deploy](#deploy-to-cloudflare). |
 | `[deploy] project` | Cloudflare Pages project name (`--project-name`). |
@@ -98,6 +103,48 @@ limit = 20
 | `limit` | Newest items to include. Default `20`. |
 
 An unknown key is an error with the line number.
+
+## Theming
+
+`theme` picks the cascivo theme in `cascivo.css`. Add `dark_theme` to follow the OS colour
+scheme, and `[brand]` to change the tokens:
+
+```toml
+theme = "light"
+dark_theme = "dark"
+
+[brand]
+primary = "#4f46e5"
+accent = "#f59e0b"
+radius = 8
+font = "Inter"
+```
+
+`[brand]` writes `--cascivo-color-*` scales (and radius, gap, density and font tokens) into
+`cascivo.css`. With `dark_theme`, the brand colours also get a dark variant in the media query.
+The `prefers-color-scheme` rules apply only when `<html>` has no `data-theme`. Leave it off the
+layout, or let `theme_script()` set it.
+
+## Strict CSP
+
+For a policy like `default-src 'self'` (no `'unsafe-inline'` for styles or scripts):
+
+```toml
+[build]
+inline_styles = false
+external_scripts = true
+hash_assets = true    # optional: /_cw/cascivo.<hash>.css, safe to cache as immutable
+```
+
+- Components (columns, grid, charts, gauges, sized images, …) get `data-cv-style="<hash>"`
+  instead of `style=""`. `cascivo.css` holds one rule per hash, in `@layer cascivo.override`.
+- Component scripts (sortable tables) go into `/cascivo.js` with `defer`.
+- `islands_script()` gives `<script type="module" src="/cascivo-islands.js">`.
+- `theme_script()` gives `<script src="/cascivo-theme.js">`. It has no `defer`: it must set
+  `data-theme` before the first paint, so keep it in `<head>`. Without `hash_assets`, every page
+  must call it with the same arguments.
+
+Your own layouts must also have no inline `style` or `<script>`.
 
 ## Content collections
 

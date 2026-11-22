@@ -1,3 +1,3 @@
 import { Notification } from '../../src/notification/notification'
 
-export default <Notification title={'<b>&"'} description={'<i>&"'} actions={'<u>&"'} />
+export default <Notification role="note" title={'<b>&"'} description={'<i>&"'} actions={'<u>&"'} />

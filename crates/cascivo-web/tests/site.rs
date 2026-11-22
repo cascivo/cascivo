@@ -170,6 +170,139 @@ fn public_dotfiles_404_page_and_sitemap_metadata() {
 }
 
 #[test]
+fn strict_csp_build_has_no_inline_styles_or_scripts() {
+    let dir = scratch("csp305");
+    let w = |f: &str, s: &str| {
+        let p = dir.join(f);
+        std::fs::create_dir_all(p.parent().unwrap()).unwrap();
+        std::fs::write(p, s).unwrap();
+    };
+    w(
+        "layouts/default.html",
+        "<!doctype html><html><head>{{ theme_script() }}<title>{{ page.title }}</title></head><body>{% block body %}{{ content }}{% endblock %}{{ islands_script() }}</body></html>\n",
+    );
+    w(
+        "pages/data.md",
+        "+++\ntitle = \"Data\"\n+++\n```cv\ntable sort Name | Ann\n```\n",
+    );
+    let base = "title = \"Mini\"\nbase_url = \"https://mini.example\"\n";
+    w("site.toml", base);
+    let out = Site::load(&dir).unwrap().render().unwrap();
+    let home = page(&out, "/");
+    assert!(
+        home.contains(" style=\"") && home.contains("<script>"),
+        "{home}"
+    );
+
+    w(
+        "site.toml",
+        &format!("{base}[build]\ninline_styles = false\nexternal_scripts = true\n"),
+    );
+    let out = Site::load(&dir).unwrap().render().unwrap();
+    for f in [
+        "cascivo.css",
+        "cascivo.js",
+        "cascivo-theme.js",
+        "cascivo-islands.js",
+    ] {
+        assert!(out.files.contains_key(f), "missing {f}");
+    }
+    for (rel, bytes) in &out.files {
+        if rel.ends_with(".html") {
+            let h = String::from_utf8_lossy(bytes);
+            assert!(!h.contains(" style=") && !h.contains("<style"), "{rel}: {h}");
+            assert!(
+                !h.contains("<script>") && !h.contains("<script type=\"module\">"),
+                "{rel}: {h}"
+            );
+        }
+    }
+    let home = page(&out, "/");
+    // The theme script stays render-blocking in <head>; the others are deferred.
+    assert!(
+        home.contains("<head><script src=\"/cascivo-theme.js\"></script>"),
+        "{home}"
+    );
+    assert!(home.contains("<script type=\"module\" src=\"/cascivo-islands.js\"></script>"));
+    assert!(page(&out, "/data/").contains("<script src=\"/cascivo.js\" defer></script>"));
+    assert!(home.contains("data-cv-style=\""), "{home}");
+    let css = page(&out, "/cascivo.css");
+    assert!(
+        css.contains("@layer cascivo.override{[data-cv-style=\""),
+        "no style rules"
+    );
+    assert!(page(&out, "/cascivo.js").contains("data-sortable"));
+    assert!(page(&out, "/cascivo-theme.js").contains("prefers-color-scheme"));
+
+    w(
+        "site.toml",
+        &format!(
+            "{base}[build]\ninline_styles = false\nexternal_scripts = true\nhash_assets = true\n"
+        ),
+    );
+    let out = Site::load(&dir).unwrap().render().unwrap();
+    std::fs::remove_dir_all(&dir).unwrap();
+    let hashed: Vec<&str> = out
+        .files
+        .keys()
+        .map(String::as_str)
+        .filter(|k| k.starts_with("_cw/"))
+        .collect();
+    assert_eq!(hashed.len(), 4, "{hashed:?}");
+    assert!(!out.files.contains_key("cascivo.css") && !out.files.contains_key("cascivo.js"));
+    let home = page(&out, "/");
+    for k in &hashed {
+        let (stem, ext) = (
+            k[4..].split('.').next().unwrap(),
+            k.rsplit('.').next().unwrap(),
+        );
+        assert!(ext == "css" || ext == "js", "{k}");
+        if stem != "cascivo" || ext == "css" {
+            assert!(
+                home.contains(&format!("\"/{k}\"")),
+                "{k} not linked: {home}"
+            );
+        }
+    }
+}
+
+#[test]
+fn dark_theme_and_brand_generate_overrides() {
+    let dir = scratch("theme305");
+    std::fs::write(
+        dir.join("site.toml"),
+        "title = \"Mini\"\ntheme = \"warm\"\ndark_theme = \"midnight\"\n[brand]\nprimary = \"#4f46e5\"\nradius = 6\n",
+    )
+    .unwrap();
+    let out = Site::load(&dir).unwrap().render().unwrap();
+    std::fs::write(
+        dir.join("site.toml"),
+        "title = \"Mini\"\n[brand]\nprimary = \"nope\"\n",
+    )
+    .unwrap();
+    let e = Site::load(&dir).unwrap_err().to_string();
+    std::fs::remove_dir_all(&dir).unwrap();
+    assert!(e.contains("site.toml") && e.contains("not a color"), "{e}");
+    let css = page(&out, "/cascivo.css");
+    let media = css
+        .find("@media (prefers-color-scheme:dark){@layer cascivo.theme{:root:not([data-theme]){")
+        .expect("dark media query");
+    assert!(css.contains("[data-theme=warm]{") && css.contains("[data-theme=midnight]{"));
+    assert!(
+        css[..media].contains(":root:not([data-theme]){color-scheme:light"),
+        "warm is the no-attribute default"
+    );
+    let brand = css
+        .rfind("@layer cascivo.theme{:root:root{")
+        .expect("brand block");
+    assert!(brand > media && css[brand..].contains("--cascivo-radius-base:6px"));
+    assert!(
+        css[brand..].contains("@media (prefers-color-scheme:dark){:root:root{"),
+        "brand follows the OS scheme"
+    );
+}
+
+#[test]
 fn bad_page_meta_and_template_front_matter_errors() {
     let dir = scratch("badmeta");
     std::fs::write(

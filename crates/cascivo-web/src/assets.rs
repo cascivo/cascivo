@@ -46,6 +46,16 @@ pub fn hashed_name(rel: &str, bytes: &[u8]) -> String {
     }
 }
 
+/// Output path of a generated file (`cascivo.css`, `cascivo.js`): `_cw/<stem>.<hash8>.<ext>`
+/// with `[build] hash_assets`, else `file` itself.
+pub fn out_name(build: &crate::config::BuildConfig, file: &str, bytes: &[u8]) -> String {
+    if build.hash_assets {
+        hashed_name(file, bytes)
+    } else {
+        file.to_string()
+    }
+}
+
 pub fn asset(state: &WebState, path: &str) -> Result<String, String> {
     let rel = path.trim_start_matches('/');
     if !is_safe_relative(rel) {
@@ -74,6 +84,14 @@ mod tests {
         assert_eq!(hash8(b"a"), hash8(b"a"));
         assert_ne!(hash8(b"a"), hash8(b"b"));
         assert_eq!(hash8(b"x").len(), 8);
+    }
+
+    #[test]
+    fn out_name_hashes_only_when_asked() {
+        let mut b = crate::config::BuildConfig::default();
+        assert_eq!(out_name(&b, "cascivo.css", b""), "cascivo.css");
+        b.hash_assets = true;
+        assert_eq!(out_name(&b, "cascivo.css", b""), "_cw/cascivo.cbf29ce4.css");
     }
 
     #[test]

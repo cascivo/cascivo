@@ -146,6 +146,29 @@ impl WebState {
         std::mem::take(&mut *self.preloads.lock().unwrap_or_else(PoisonError::into_inner))
     }
 
+    /// `<script{attrs}>js</script>`, or with `[build] external_scripts` a `<script{attrs} src>`
+    /// to `js` written as `<name>.js` (hashed with `hash_assets`). Unhashed, one name holds one
+    /// script: a second, different body is an error.
+    pub(crate) fn script(&self, name: &str, js: &str, attrs: &str) -> Result<String, String> {
+        if !self.cfg.build.external_scripts {
+            return Ok(format!("<script{attrs}>{}</script>", head::script_json(js)));
+        }
+        let rel = assets::out_name(&self.cfg.build, &format!("{name}.js"), js.as_bytes());
+        {
+            let mut files = self.files.lock().unwrap_or_else(PoisonError::into_inner);
+            if files.get(&rel).is_some_and(|b| b != js.as_bytes()) {
+                return Err(format!(
+                    "`/{rel}` would get two different scripts; use the same arguments on every page or set `[build] hash_assets = true`"
+                ));
+            }
+            files.insert(rel.clone(), js.as_bytes().to_vec());
+        }
+        let mut s = format!("<script{attrs}");
+        cascivo_html::html::attr(&mut s, "src", &format!("/{rel}"));
+        s.push_str("></script>");
+        Ok(s)
+    }
+
     pub(crate) fn emit(&self, rel: String, bytes: Vec<u8>) {
         self.files
             .lock()
@@ -249,12 +272,15 @@ pub(crate) fn register(
         let a = Args::parse("island", islands::PARAMS, &rest, Some(kw))?;
         safe(islands::attrs(&s, &a))
     });
-    env.add_function("islands_script", || {
-        Value::from_safe_string(islands::script())
+    let s = Arc::clone(&state);
+    env.add_function("islands_script", move || {
+        safe(s.script("cascivo-islands", islands::LOADER, " type=\"module\""))
     });
-    env.add_function("theme_script", |rest: Rest<Value>, kw: Kwargs| {
+    let s = Arc::clone(&state);
+    // Stays blocking (no `defer`) even as a file: it must set `data-theme` before first paint.
+    env.add_function("theme_script", move |rest: Rest<Value>, kw: Kwargs| {
         let a = Args::parse("theme_script", theme::PARAMS, &rest, Some(kw))?;
-        safe(theme::script(&a))
+        safe(theme::body(&a).and_then(|js| s.script("cascivo-theme", &js, "")))
     });
     let s = Arc::clone(&state);
     env.add_function("img", move |rest: Rest<Value>, kw: Kwargs| {
