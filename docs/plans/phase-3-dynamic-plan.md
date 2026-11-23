@@ -337,3 +337,10 @@ Datastar feature, the polish of the `--target` matrix, crates.io release of
    confirm, so the "no mixed-framework islands" non-goal holds.
 8. `cv-tabs` contract: is the APG tablist element with a CSS fallback acceptable, given the W1
    divergence?
+
+### Working assumptions until the owner answers (2026-11-23)
+
+Started in parallel with Phase 1. S0 and K wait for the owner's app. Defaults: session auth with
+passwords (Argon2) plus OAuth hooks; data on D1/SQLite; Cloudflare = Workers if X1 passes
+checkpoint α, else Containers; htmx first, Datastar as an optional feature later; no Durable
+Objects fan-out; Solid is the only island framework.
