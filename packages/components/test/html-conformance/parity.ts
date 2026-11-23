@@ -29,6 +29,13 @@ export const PARITY_COMPONENTS = [
   'password-input',
   'search',
   'contained-list',
+  'ai-badge',
+  'ai-status',
+  'chain-of-thought',
+  'reasoning',
+  'sources',
+  'tool-call',
+  'prompt-suggestions',
 ] as const
 
 export type Fact = { facet: Facet; text: string }
