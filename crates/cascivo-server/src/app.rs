@@ -7,13 +7,24 @@ use axum::response::{IntoResponse, Response};
 use cascivo_web::{Engine, Flash};
 use minijinja::Value;
 
+use crate::auth::AuthRt;
+use crate::csrf::CsrfRt;
 use crate::headers::Compiled;
+use crate::session::SessionRt;
+use crate::util::Local;
 use crate::view::Req;
-use crate::{AppError, Headers, Hx, Nonce, View};
+use crate::{
+    AppError, Authenticator, Csrf, Headers, Hx, LocalPath, Nonce, SessionConfig, SessionStore, View,
+};
 
-/// Per-request template facts besides path and nonce. A layer outside the [`App`] router
-/// (sessions, auth) puts them in the request extensions; a handler or inner layer may override
-/// them for its response with `Extension(facts)`. `locale` empty = the default locale.
+type Wrap = Box<dyn FnOnce(Router) -> Router>;
+
+/// Per-request template facts besides path and nonce. The session layer ([`App::sessions`])
+/// puts them in the request extensions (`Extension<Facts>`; `user` from [`App::auth`]) and,
+/// for a [`View`] response, the current ones (CSRF token after a rotation, flash taken from
+/// the session) in the response extensions. A handler may set its own with
+/// `Extension(facts)`; the session fills the fields it leaves empty. `locale` empty = the
+/// default locale (the session's `locale` key sets it).
 #[derive(Debug, Clone, Default)]
 pub struct Facts {
     pub locale: String,
@@ -31,6 +42,9 @@ pub struct App<S = ()> {
     stateless: Router,
     headers: Headers,
     toaster: Option<(&'static str, &'static str)>,
+    sessions: Option<Wrap>,
+    auth: Option<Wrap>,
+    csrf: Csrf,
 }
 
 impl App<()> {
@@ -42,6 +56,9 @@ impl App<()> {
             stateless: Router::new(),
             headers: Headers::default(),
             toaster: None,
+            sessions: None,
+            auth: None,
+            csrf: Csrf::default(),
         }
     }
 }
@@ -56,6 +73,9 @@ impl<S: Clone + Send + Sync + 'static> App<S> {
             stateless: self.stateless.merge(self.router.with_state(self.state)),
             headers: self.headers,
             toaster: self.toaster,
+            sessions: self.sessions,
+            auth: self.auth,
+            csrf: self.csrf,
         }
     }
 
@@ -77,9 +97,46 @@ impl<S: Clone + Send + Sync + 'static> App<S> {
         self
     }
 
+    /// Sessions in `store`: the [`Session`](crate::Session) extractor, CSRF tokens, flash
+    /// messages and [`Facts`]. Turns on the CSRF token check ([`csrf`](Self::csrf)).
+    pub fn sessions<St: SessionStore>(mut self, store: St, cfg: SessionConfig) -> Self {
+        let rt = Local(Arc::new(SessionRt {
+            store,
+            name: cfg.cookie_name(),
+            cfg,
+        }));
+        self.sessions = Some(Box::new(move |r: Router| {
+            r.layer(from_fn_with_state(rt, crate::session::layer::<St>))
+        }));
+        self
+    }
+
+    /// The user behind each request ([`User`](crate::User), [`MaybeUser`](crate::MaybeUser),
+    /// `user` in templates). Needs [`sessions`](Self::sessions).
+    ///
+    /// # Panics
+    /// When `A::LOGIN` is not a [`LocalPath`].
+    pub fn auth<A: Authenticator>(mut self, auth: A) -> Self {
+        let login = LocalPath::parse(A::LOGIN)
+            .unwrap_or_else(|_| panic!("cascivo-server: LOGIN {:?} is not a local path", A::LOGIN));
+        let rt = Local(Arc::new(AuthRt { auth, login }));
+        self.auth = Some(Box::new(move |r: Router| {
+            r.layer(from_fn_with_state(rt, crate::auth::layer::<A>))
+        }));
+        self
+    }
+
+    /// Replaces the default CSRF settings (on for every unsafe method; opt routes out with
+    /// [`Csrf::exempt`]).
+    pub fn csrf(mut self, cfg: Csrf) -> Self {
+        self.csrf = cfg;
+        self
+    }
+
     /// # Panics
     /// When a [`Headers`] value is not a valid header value: failing at startup beats
-    /// serving without a CSP.
+    /// serving without a CSP. When [`auth`](Self::auth) is set without
+    /// [`sessions`](Self::sessions).
     pub fn into_router(self) -> Router {
         let headers = self
             .headers
@@ -90,10 +147,26 @@ impl<S: Clone + Send + Sync + 'static> App<S> {
             headers,
             toaster: self.toaster,
         });
+        assert!(
+            self.auth.is_none() || self.sessions.is_some(),
+            "cascivo-server: App::auth needs App::sessions"
+        );
+        let csrf = Arc::new(CsrfRt {
+            cfg: self.csrf,
+            tokens: self.sessions.is_some(),
+        });
         let router: Router = self.router.with_state(self.state);
-        router
+        // Outermost first: render (nonce, headers) → session → auth → CSRF → routes.
+        let mut r = router
             .merge(self.stateless)
-            .layer(from_fn_with_state(rt, layer))
+            .layer(from_fn_with_state(csrf, crate::csrf::layer));
+        if let Some(auth) = self.auth {
+            r = auth(r);
+        }
+        if let Some(sessions) = self.sessions {
+            r = sessions(r);
+        }
+        r.layer(from_fn_with_state(rt, layer))
     }
 
     /// Binds `addr` and serves until the process ends.

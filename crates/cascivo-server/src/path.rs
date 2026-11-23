@@ -8,8 +8,10 @@ use crate::Hx;
 /// A same-origin path (`/…`, with an optional query and fragment): the only redirect target
 /// cascivo-server accepts, so user input (`?next=`) cannot send a visitor off-site.
 /// Rejected: anything not starting with one `/` (`//evil`, `https:`, `evil`), any `\` (browsers
-/// read `/\evil` as `//evil`), whitespace, control and non-ASCII characters (percent-encode
-/// them), and more than 2048 bytes.
+/// read `/\evil` as `//evil`), an encoded `/` or `\` right after the first `/` (`/%2F/evil`,
+/// which a decoding proxy turns into `//evil`), whitespace, control and non-ASCII characters
+/// (percent-encode them), and more than 2048 bytes. Deserializing parses too, so a form or
+/// query field typed `LocalPath` is safe to redirect to.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct LocalPath(String);
 
@@ -29,6 +31,9 @@ impl LocalPath {
         let b = s.as_bytes();
         let ok = b.first() == Some(&b'/')
             && !matches!(b.get(1), Some(b'/' | b'\\'))
+            && !b
+                .get(1..4)
+                .is_some_and(|p| p.eq_ignore_ascii_case(b"%2f") || p.eq_ignore_ascii_case(b"%5c"))
             && b.len() <= 2048
             && b.iter().all(|c| c.is_ascii_graphic() && *c != b'\\');
         if ok {
@@ -36,6 +41,12 @@ impl LocalPath {
         } else {
             Err(LocalPathError)
         }
+    }
+
+    /// `s` if it is a local path, else `/` (a `?next=` that may be missing or hostile).
+    pub fn parse_or_root(s: Option<&str>) -> Self {
+        s.and_then(|s| Self::parse(s).ok())
+            .unwrap_or_else(|| Self("/".into()))
     }
 
     pub fn as_str(&self) -> &str {
@@ -52,6 +63,19 @@ impl TryFrom<&str> for LocalPath {
     type Error = LocalPathError;
     fn try_from(s: &str) -> Result<Self, Self::Error> {
         Self::parse(s)
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for LocalPath {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = <std::borrow::Cow<'de, str>>::deserialize(d)?;
+        Self::parse(&s).map_err(serde::de::Error::custom)
+    }
+}
+
+impl serde::Serialize for LocalPath {
+    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        s.serialize_str(&self.0)
     }
 }
 
@@ -94,6 +118,17 @@ mod tests {
     }
 
     #[test]
+    fn parse_or_root_and_serde() {
+        assert_eq!(LocalPath::parse_or_root(Some("/a")).as_str(), "/a");
+        assert_eq!(LocalPath::parse_or_root(Some("//evil")).as_str(), "/");
+        assert_eq!(LocalPath::parse_or_root(None).as_str(), "/");
+        let ok: LocalPath = serde_json::from_str("\"/a?b=1\"").unwrap();
+        assert_eq!(ok.as_str(), "/a?b=1");
+        assert!(serde_json::from_str::<LocalPath>("\"//evil\"").is_err());
+        assert_eq!(serde_json::to_string(&ok).unwrap(), "\"/a?b=1\"");
+    }
+
+    #[test]
     fn rejects_everything_else() {
         let long = format!("/{}", "a".repeat(2048));
         for p in [
@@ -109,6 +144,10 @@ mod tests {
             "/a\tb",
             "/a\nb",
             "/é",
+            "/%2F/evil.example",
+            "/%2fevil.example",
+            "/%5Cevil.example",
+            "/%5c/evil.example",
             long.as_str(),
         ] {
             assert_eq!(LocalPath::parse(p), Err(LocalPathError), "{p:?}");
