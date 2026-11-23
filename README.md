@@ -375,6 +375,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | [`@cascivo/example-react-vite`](apps/examples/react-vite)         | Vite + React example app using cascivo                                                                                     |
 | [`@cascivo/example-react-vite-ssr`](apps/examples/react-vite-ssr) | Vite SSR (TanStack Start / Remix / workerd) example — server-renders cascivo through the built dist                        |
 | [`@cascivo/registry-starter`](apps/examples/registry-starter)     | Starter template for publishing a third-party cascivo component registry                                                   |
+| [`@cascivo/example-solid-htmx`](apps/examples/solid-htmx)         | axum + htmx + one Solid island on the @cascivo/css markup contract                                                         |
 | [`@cascivo/example-stage`](apps/examples/stage)                   | Example app — live Q&A and polls for talks, on Cloudflare Durable Objects, built with @cascivo/app and Preact              |
 | [`@cascivo/template-starter`](apps/examples/template-starter)     | Starter template for publishing a cascivo template to the marketplace                                                      |
 | [`@cascivo/example-track`](apps/examples/track)                   | Example app — a Linear-style keyboard-first issue tracker built with cascivo                                               |
