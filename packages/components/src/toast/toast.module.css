@@ -60,8 +60,9 @@
         var(--cascivo-color-border)
       );
     }
-    &[data-variant='success'] .icon,
-    &[data-variant='success'] .title {
+    /* Icon only: status colours fail AA as text on the overlay surface (axe color-contrast),
+       so the title keeps the body text colour. */
+    &[data-variant='success'] .icon {
       color: var(--cascivo-color-success);
     }
 
@@ -72,8 +73,7 @@
         var(--cascivo-color-border)
       );
     }
-    &[data-variant='warning'] .icon,
-    &[data-variant='warning'] .title {
+    &[data-variant='warning'] .icon {
       color: var(--cascivo-color-warning);
     }
 
@@ -84,8 +84,7 @@
         var(--cascivo-color-border)
       );
     }
-    &[data-variant='destructive'] .icon,
-    &[data-variant='destructive'] .title {
+    &[data-variant='destructive'] .icon {
       color: var(--cascivo-color-destructive);
     }
   }
@@ -142,6 +141,11 @@
     &:focus-visible {
       outline: none;
       box-shadow: var(--cascivo-focus-ring);
+    }
+
+    @media (pointer: coarse) {
+      inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+      block-size: var(--cascivo-target-min-coarse, 2.75rem);
     }
   }
 }

@@ -24,11 +24,11 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { gzipSync } from 'node:zlib'
 import { buildBase, buildTheme } from '../html-kit/build-css.ts'
 import { chromiumNote, resolveChromium } from './lib/chromium.ts'
-import { PILOT } from '../../packages/elements/test/pilot.ts'
+import { PILOT, PILOT_DYNAMIC } from '../../packages/elements/test/pilot.ts'
 
 const PKG = fileURLToPath(new URL('../../packages/elements/', import.meta.url))
 const DIST = join(PKG, 'dist')
-const ELEMENTS = ['menu', 'tabs', 'combobox', 'date-picker'] as const
+const ELEMENTS = ['menu', 'tabs', 'combobox', 'date-picker', 'dialog', 'toaster', 'htmx'] as const
 const ELEMENT_BUDGET = 3 * 1024
 /** `cv-tabs` is the smallest element; its contract budget (phase-1-contract-plan §6) is 0.8 KB. */
 const BUDGET: Record<string, number> = { tabs: 819 }
@@ -69,7 +69,7 @@ describe('@cascivo/elements size budget', () => {
     })
   }
 
-  it('pilot page (all four + runtime) ≤ 15 KB gz', () => {
+  it('pilot page (all elements + glue + runtime) ≤ 15 KB gz', () => {
     const all = new Set(ELEMENTS.flatMap((e) => [...closures.get(e)!]))
     const runtime = [...all].filter((f) => reach(f) > 1)
     const total = [...all].reduce((n, f) => n + gz(f), 0)
@@ -95,12 +95,15 @@ describe('@cascivo/elements in Chromium', () => {
   import { define as tabs } from '/tabs.js'
   import { define as combobox } from '/combobox.js'
   import { define as datePicker } from '/date-picker.js'
+  import { define as dialog } from '/dialog.js'
+  import { define as toaster } from '/toaster.js'
+  import '/htmx.js'
   window.events = []
   for (const type of ['cv-select', 'cv-value-change', 'input', 'change'])
     document.addEventListener(type, (e) => events.push({ type, target: e.target.id, detail: e.detail }))
-  menu(); menu(); tabs(); combobox(); datePicker()
+  menu(); menu(); tabs(); combobox(); datePicker(); dialog(); toaster()
   window.ready = true
-</script></head><body><main>${PILOT}</main></body></html>`
+</script></head><body><main>${PILOT}${PILOT_DYNAMIC}</main></body></html>`
 
   const files: Record<string, () => string | Buffer> = {
     'idiomorph.js': () => readFileSync(require.resolve('idiomorph/dist/idiomorph.js')),
@@ -387,8 +390,11 @@ describe('@cascivo/elements in Chromium', () => {
   it('axe: no WCAG 2.2 AA violations, closed and with each popup open', async () => {
     const { page, close } = await open()
     await page.addScriptTag({ url: '/axe.js' })
+    // Settle first: a popover that just closed is still fading out, and axe measures the
+    // half-transparent text mid-transition (the old flaky color-contrast on menu items).
     const run = () =>
       page.evaluate(async () => {
+        await Promise.all(document.getAnimations().map((a) => a.finished.catch(() => {})))
         const r = await (window as any).axe.run(document, {
           runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'],
         })
@@ -401,12 +407,15 @@ describe('@cascivo/elements in Chromium', () => {
       '#actions [aria-haspopup]',
       '#fruit-input',
       '#due .cv-date-picker-openButton',
+      '#edit-open',
     ]) {
       await page.click(trigger)
       if (trigger === '#fruit-input') await page.keyboard.press('ArrowDown')
       assert.deepEqual(await run(), [], `open via ${trigger}`)
       await page.keyboard.press('Escape')
     }
+    // Toast pending (server-rendered, duration 0).
+    assert.deepEqual(await run(), [], 'toast shown')
     await close()
   })
 
@@ -422,6 +431,10 @@ describe('@cascivo/elements in Chromium', () => {
         'coarse pointer emulated',
       )
       const check = async (state: string, selector: string) => {
+        // A dialog or popup scales in; measure the settled size, not frame 1 of the transition.
+        await page.evaluate(() =>
+          Promise.all(document.getAnimations().map((a) => a.finished.catch(() => {}))),
+        )
         const scroll = await page.evaluate(() => document.documentElement.scrollWidth)
         assert.ok(scroll <= width, `${state}: page scrolls horizontally (${scroll} > ${width})`)
         const small = await page.$$eval(selector, (els: HTMLElement[]) =>
@@ -460,6 +473,10 @@ describe('@cascivo/elements in Chromium', () => {
       await page.keyboard.press('Escape')
       await page.tap('#due .cv-date-picker-openButton')
       await check('calendar open', '#due [role=dialog] button')
+      await page.keyboard.press('Escape')
+      await check('toast', '.cv-toast-close')
+      await page.tap('#edit-open')
+      await check('dialog open', '#edit button, #edit input')
       await close()
     })
   }
@@ -508,6 +525,138 @@ describe('@cascivo/elements in Chromium', () => {
       await page.evaluate(() => (document.activeElement as HTMLElement).dataset['day']),
       '2027-01-02',
     )
+    await close()
+  })
+
+  it('cv-dialog: native showModal, focus trap, Escape, focus return, backdrop', async () => {
+    const { page, close } = await open()
+    const active = () => page.evaluate(() => document.activeElement?.id)
+    const isOpen = () => page.$eval('#edit dialog', (d: HTMLDialogElement) => d.matches(':modal'))
+    await page.focus('#edit-open')
+    await page.keyboard.press('Enter')
+    assert.equal(await isOpen(), true, 'showModal')
+    assert.equal(await attr(page, '#edit', 'open'), '')
+    assert.equal(
+      await page.evaluate(() => document.activeElement?.closest('dialog') !== null),
+      true,
+    )
+    // Trap: Tab cycles inside the dialog, never reaches the page behind it.
+    for (let i = 0; i < 8; i++) {
+      await page.keyboard.press('Tab')
+      assert.equal(
+        await page.evaluate(() => document.activeElement?.closest('dialog') !== null),
+        true,
+        'Tab stays inside',
+      )
+    }
+    await page.keyboard.press('Escape')
+    assert.equal(await isOpen(), false)
+    assert.equal(await attr(page, '#edit', 'open'), null)
+    assert.equal(await active(), 'edit-open', 'focus returns to the opener')
+    await page.click('#edit-open')
+    await page.click('#edit-cancel')
+    assert.equal(await active(), 'edit-open', 'close control returns focus')
+    await page.click('#edit-open')
+    await page.mouse.click(2, 2)
+    assert.equal(await isOpen(), false, 'backdrop click closes')
+    await close()
+  })
+
+  it('cv-toaster: toast event, pause on focus, dismiss keeps focus off <body>', async () => {
+    const { page, close } = await open()
+    const toasts = () => page.$$eval('.cv-toast-toast', (e: Element[]) => e.length)
+    assert.equal(await toasts(), 1, 'server-rendered toast kept')
+    await page.evaluate(() =>
+      document.getElementById('edit-open')!.dispatchEvent(
+        new CustomEvent('cv-toast', {
+          bubbles: true,
+          detail: { value: [{ kind: 'danger', message: 'Failed' }] },
+        }),
+      ),
+    )
+    assert.equal(await toasts(), 2)
+    assert.equal(await attr(page, '.cv-toast-toast:last-child', 'role'), 'alert')
+    await page.focus('.cv-toast-toast:last-child .cv-toast-close')
+    await page.keyboard.press('Enter')
+    assert.equal(await toasts(), 1)
+    assert.notEqual(
+      await page.evaluate(() => document.activeElement?.tagName),
+      'BODY',
+      'focus handed on',
+    )
+    await page.focus('.cv-toast-close')
+    await page.keyboard.press('Escape')
+    assert.equal(await toasts(), 0)
+    assert.notEqual(await page.evaluate(() => document.activeElement?.tagName), 'BODY')
+    // Timed toasts dismiss on their own (duration attribute), paused while hovered.
+    await page.evaluate(() => {
+      const t = document.getElementById('cv-toaster') as any
+      t.setAttribute('duration', '300')
+      t.add({ message: 'Soon gone' })
+    })
+    await page.hover('.cv-toast-toast')
+    await page.waitForTimeout(600)
+    assert.equal(await toasts(), 1, 'paused while hovered')
+    await page.mouse.move(2, 2)
+    await page.waitForFunction(() => document.querySelectorAll('.cv-toast-toast').length === 0)
+    await close()
+  })
+
+  it('htmx swap: dialog and toaster survive; focus is never lost to <body> (checkpoint γ)', async () => {
+    const { page, close } = await open()
+    const notBody = () => page.evaluate(() => document.activeElement !== document.body)
+    // Dialog open, then the whole region is morphed back to the server markup.
+    await page.click('#edit-open')
+    await page.fill('#edit-name', 'Ada')
+    await page.evaluate((html: string) => {
+      ;(window as any).Idiomorph.morph(document.getElementById('dyn'), html)
+    }, PILOT_DYNAMIC)
+    await tick(page)
+    assert.equal(
+      await page.$eval('#edit dialog', (d: HTMLDialogElement) => d.matches(':modal')),
+      true,
+      'still modal',
+    )
+    assert.equal(await page.$eval('#edit-name', (i: HTMLInputElement) => i.value), 'Ada')
+    assert.equal(await page.evaluate(() => document.activeElement?.id), 'edit-name')
+    // A swap that replaces the focused control (htmx innerHTML swap): glue refocuses by id.
+    await page.keyboard.press('Escape')
+    await page.focus('#edit-open')
+    await page.evaluate(() => {
+      document.dispatchEvent(new CustomEvent('htmx:beforeSwap', { bubbles: true }))
+      document.getElementById('dyn')!.innerHTML = document
+        .getElementById('dyn')!
+        .innerHTML.replace('Edit profile</button>', 'Edit</button>')
+      document.dispatchEvent(
+        new CustomEvent('htmx:afterSettle', {
+          bubbles: true,
+          detail: { target: document.getElementById('dyn') },
+        }),
+      )
+    })
+    await tick(page)
+    assert.ok(await notBody(), 'focus kept after a swap that rebuilt the dialog')
+    // Server closes the dialog with HX-Trigger: cv-dialog-close.
+    await page.click('#edit-open')
+    await page.evaluate(() =>
+      document.dispatchEvent(new CustomEvent('cv-dialog-close', { bubbles: true })),
+    )
+    await tick(page)
+    assert.equal(await page.$eval('#edit dialog', (d: HTMLDialogElement) => d.open), false)
+    assert.equal(await page.evaluate(() => document.activeElement?.id), 'edit-open')
+    // Swapping the dialog out while it has focus never strands focus on <body>.
+    await page.click('#edit-open')
+    await page.evaluate(() => {
+      document.dispatchEvent(new CustomEvent('htmx:beforeSwap', { bubbles: true }))
+      document.getElementById('dyn')!.innerHTML = '<p>gone</p>'
+      document.dispatchEvent(
+        new CustomEvent('htmx:afterSettle', {
+          bubbles: true,
+          detail: { target: document.getElementById('dyn') },
+        }),
+      )
+    })
+    assert.ok(await notBody(), 'focus kept when the dialog itself was swapped out')
     await close()
   })
 })

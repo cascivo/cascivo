@@ -19,6 +19,7 @@ mod form_pick;
 mod form_text;
 mod layout;
 mod nav;
+mod overlay;
 
 pub use chart::emit_chart;
 
@@ -51,6 +52,7 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         "breadcrumb" | "steps" | "accordion" | "collapsible" | "tabs" | "table" => {
             nav::emit(node, cx, out);
         }
+        "dialog" | "dialog-trigger" | "toaster" | "toast" => overlay::emit(node, cx, out),
         "field" | "input" | "textarea" | "select" | "checkbox" => form::emit(node, cx, out),
         "checkbox-card" | "radio" | "radio-card" | "rating-group" | "slider" | "native-select" => {
             form_pick::emit(node, cx, out);

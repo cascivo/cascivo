@@ -57,3 +57,25 @@ export const PILOT = `<form id="pilot">
   </div>
 </cv-date-picker>
 </form>`
+
+/**
+ * Outside the form (a dialog's controls must not submit it): the markup `Modal` renders in a
+ * `cv-dialog`, its opener, and a `cv-toaster` holding one server-rendered toast (the no-JS
+ * flash fallback); `duration="0"` keeps it for the gate.
+ */
+export const PILOT_DYNAMIC = `<div id="dyn">
+<button type="button" id="edit-open" class="cv-button-button" data-size="md" data-variant="secondary" data-cv-dialog-open="edit">Edit profile</button>
+<cv-dialog id="edit">
+  <dialog class="cv-modal-dialog" data-size="md" aria-labelledby="edit-title" aria-describedby="edit-desc">
+    <div class="cv-modal-panel">
+      <div class="cv-modal-header"><h2 class="cv-modal-title" id="edit-title">Edit profile</h2><button type="button" class="cv-modal-close" data-cv-dialog-close aria-label="Close modal">×</button></div>
+      <p class="cv-modal-description" id="edit-desc">Change how you appear.</p>
+      <div class="cv-modal-body"><div class="cv-input-wrapper" data-size="md"><label class="cv-input-label" for="edit-name">Name</label><input id="edit-name" class="cv-input-input" type="text" autocomplete="name"></div></div>
+      <div class="cv-modal-footer"><button type="button" class="cv-button-button" data-size="md" data-variant="secondary" data-cv-dialog-close id="edit-cancel">Cancel</button><button type="button" class="cv-button-button" data-size="md" data-variant="secondary" id="edit-save">Save</button></div>
+    </div>
+  </dialog>
+</cv-dialog>
+<cv-toaster id="cv-toaster" class="cv-toast-viewport" aria-label="Notifications" duration="0">
+  <div class="cv-toast-toast" role="status" data-variant="success" data-state="visible"><span class="cv-toast-icon" aria-hidden="true">✓</span><div class="cv-toast-body"><div class="cv-toast-title">Saved</div></div><button type="button" class="cv-toast-close" aria-label="Dismiss notification">×</button></div>
+</cv-toaster>
+</div>`

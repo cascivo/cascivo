@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 import { THEME_NAMES, buildAll, repoRoot } from './build-css.ts'
 import { CV_SPEC, packagesRoot, unitDirs, type CvEntry } from './cv-spec.ts'
-import { buildCvTabsJs } from './build-cv-tabs.ts'
+import { buildCvDialogJs, buildCvTabsJs, buildCvToasterJs } from './build-cv-tabs.ts'
 import { genGuide } from './gen-guide.ts'
 import { genAutoRs, genContractRs, loadUnits, readEmbeds, type AutoTarget } from './gen-contract.ts'
 
@@ -179,6 +179,8 @@ function genEntry(e: CvEntry, meta: Meta): string {
 export async function generateAll(): Promise<Map<string, string>> {
   const out = buildAll()
   out.set('assets/extra/cv-tabs.js', await buildCvTabsJs())
+  out.set('assets/extra/cv-dialog.js', await buildCvDialogJs())
+  out.set('assets/extra/cv-toaster.js', await buildCvToasterJs())
   const sorted = [...CV_SPEC].sort((a, b) => (a.cv < b.cv ? -1 : a.cv > b.cv ? 1 : 0))
   const metas = await Promise.all(sorted.map((e) => loadMeta(e)))
   const entries = sorted.map((e, i) => genEntry(e, metas[i]!))

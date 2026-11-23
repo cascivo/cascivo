@@ -2,7 +2,7 @@
   "name": "@cascivo/elements",
   "version": "0.0.0",
   "private": true,
-  "description": "Light-DOM custom elements (cv-menu, cv-tabs, cv-combobox, cv-date-picker) that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure",
+  "description": "Light-DOM custom elements (cv-menu, cv-tabs, cv-combobox, cv-date-picker, cv-dialog, cv-toaster) and the htmx glue that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -12,6 +12,9 @@
     "./tabs": "./dist/tabs.js",
     "./combobox": "./dist/combobox.js",
     "./date-picker": "./dist/date-picker.js",
+    "./dialog": "./dist/dialog.js",
+    "./toaster": "./dist/toaster.js",
+    "./htmx": "./dist/htmx.js",
     "./elements.css": "./dist/elements.css",
     "./custom-elements.json": "./dist/custom-elements.json"
   },
@@ -26,6 +29,7 @@
     "@preact/signals-core": "^1.14.3"
   },
   "devDependencies": {
+    "@cascivo/css": "workspace:*",
     "@types/node": "catalog:",
     "axe-core": "4.11.4",
     "idiomorph": "^0.8.0",

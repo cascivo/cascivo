@@ -1878,6 +1878,9 @@ importers:
         specifier: ^1.14.3
         version: 1.14.3
     devDependencies:
+      '@cascivo/css':
+        specifier: workspace:*
+        version: link:../css
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.2
