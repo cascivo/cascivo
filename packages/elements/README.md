@@ -3,7 +3,7 @@
 <div align="center">
   <a href="https://cascivo.com"><img src="https://cascivo.com/logo-mark-img-accent.svg" width="72" height="72" alt="cascivo logo"></a>
   <h1>@cascivo/elements</h1>
-  <p><strong>Light-DOM custom elements (cv-menu, cv-combobox, cv-date-picker) that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure</strong></p>
+  <p><strong>Light-DOM custom elements (cv-menu, cv-tabs, cv-combobox, cv-date-picker) that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure</strong></p>
 
 ![workspace](https://img.shields.io/badge/workspace-private-64748b?style=flat-square)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)

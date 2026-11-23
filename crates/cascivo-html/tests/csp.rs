@@ -136,14 +136,21 @@ fn scripts_inline_by_default_or_reference_script_src() {
 #[test]
 fn script_bundle_covers_every_script() {
     let names: Vec<_> = script_names().collect();
-    assert!(names.contains(&"table-sort"));
+    assert!(names.contains(&"table-sort") && names.contains(&"cv-tabs"));
     let all = script_bundle(None);
     for n in &names {
         assert!(all.contains(script(n).unwrap().trim_end()));
     }
-    let used = render_parts("table sort A | b\n", &Options::default()).unwrap();
+    let used = render_parts(
+        "table sort A | b\ntabs\n  text \"x\"\n",
+        &Options::default(),
+    )
+    .unwrap();
     let set: BTreeSet<&str> = used.scripts.iter().copied().collect();
     assert_eq!(script_bundle(Some(&set)), all);
+    let sort_only = render_parts("table sort A | b\n", &Options::default()).unwrap();
+    let set: BTreeSet<&str> = sort_only.scripts.iter().copied().collect();
+    assert_eq!(script_bundle(Some(&set)), script("table-sort").unwrap());
     assert_eq!(script_bundle(Some(&BTreeSet::new())), "");
 }
 

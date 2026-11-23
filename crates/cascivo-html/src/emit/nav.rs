@@ -1,7 +1,7 @@
 //! Navigation and table emitters. Breadcrumb, steps, collapsible and table mirror the DOM of
 //! `packages/components/src/<unit>/<unit>.tsx`. Accordion mirrors it too (it is already
-//! `<details>`). Tabs deliberately differ: React drives `role="tab"` buttons from a signal, so
-//! the static form uses radio inputs + labels + panels switched by CSS (`assets/extra/tabs.css`).
+//! `<details>`). Tabs emit React's ARIA tablist inside `<cv-tabs>`; the script (`assets/extra/cv-tabs.js`)
+//! switches panels, and without it the panels stack (the CSS `cv-tabs:not(:defined)` rule).
 
 use super::{NodeExt, emit_children};
 use crate::ast::Node;
@@ -284,39 +284,80 @@ fn tabs(node: &Node, cx: &mut Cx, out: &mut String) {
             })
         })
         .unwrap_or(0);
-    out.push_str("<div");
+    let values = tab_values(&labels);
+    cx.scripts.insert("cv-tabs");
+    out.push_str("<cv-tabs><div");
     attr(out, "class", "cv-tabs-tabs");
-    attr(out, "data-radio", "");
+    out.push_str("><div");
+    attr(out, "class", "cv-tabs-list");
+    attr(out, "role", "tablist");
     out.push('>');
-    for (i, child) in node.children.iter().enumerate() {
-        let (title, unwrap) = labels.get(i).cloned().unwrap_or_default();
-        let id = format!("{base}-{i}");
-        out.push_str("<input");
-        attr(out, "type", "radio");
-        attr(out, "class", "cv-tabs-input");
-        attr(out, "name", &base);
-        attr(out, "id", &id);
-        if i == checked {
-            flag(out, "checked");
-        }
-        out.push('>');
-        out.push_str("<label");
+    for (i, (title, _)) in labels.iter().enumerate() {
+        let value = &values[i];
+        out.push_str("<button");
+        attr(out, "type", "button");
+        attr(out, "role", "tab");
+        attr(out, "id", &format!("{base}-trigger-{value}"));
+        attr(
+            out,
+            "aria-selected",
+            if i == checked { "true" } else { "false" },
+        );
+        attr(out, "aria-controls", &format!("{base}-content-{value}"));
+        attr(out, "tabindex", if i == checked { "0" } else { "-1" });
+        attr(
+            out,
+            "data-state",
+            if i == checked { "active" } else { "inactive" },
+        );
+        attr(out, "data-value", value);
         attr(out, "class", "cv-tabs-trigger");
-        attr(out, "for", &id);
-        attr(out, "id", &format!("{id}-label"));
         out.push('>');
-        esc(out, &title);
-        out.push_str("</label>");
+        esc(out, title);
+        out.push_str("</button>");
+    }
+    out.push_str("</div>");
+    for (i, child) in node.children.iter().enumerate() {
+        let unwrap = labels.get(i).is_some_and(|(_, u)| *u);
+        let value = &values[i];
         out.push_str("<div");
+        attr(out, "role", "tabpanel");
+        attr(out, "id", &format!("{base}-content-{value}"));
+        attr(out, "aria-labelledby", &format!("{base}-trigger-{value}"));
+        attr(out, "tabindex", "0");
         attr(out, "class", "cv-tabs-content");
-        attr(out, "role", "group");
-        attr(out, "id", &format!("{id}-panel"));
-        attr(out, "aria-labelledby", &format!("{id}-label"));
+        // Without the script (`cv-tabs:not(:defined)`) the CSS shows every panel stacked.
+        if i != checked {
+            flag(out, "hidden");
+        }
         out.push('>');
         emit_content(child, unwrap, cx, out);
         out.push_str("</div>");
     }
-    out.push_str("</div>");
+    out.push_str("</div></cv-tabs>");
+}
+
+/// Tab values: the label as a lowercase slug (`Overview` is `overview`, like a React `value`),
+/// numbered when it is empty or repeats, so ids stay unique and attribute-safe.
+fn tab_values(labels: &[(String, bool)]) -> Vec<String> {
+    let mut seen: Vec<String> = Vec::new();
+    for (i, (title, _)) in labels.iter().enumerate() {
+        let mut slug = String::new();
+        for c in title.chars().flat_map(char::to_lowercase) {
+            if c.is_ascii_alphanumeric() {
+                slug.push(c);
+            } else if !slug.is_empty() && !slug.ends_with('-') {
+                slug.push('-');
+            }
+        }
+        let slug = slug.trim_end_matches('-').to_string();
+        seen.push(if slug.is_empty() || seen.contains(&slug) {
+            format!("{slug}{}{}", if slug.is_empty() { "" } else { "-" }, i + 1)
+        } else {
+            slug
+        });
+    }
+    seen
 }
 
 // --------------------------------------------------------------------- table

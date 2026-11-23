@@ -12,7 +12,18 @@ const option = (value: string, label: string, disabled = false) =>
 const item = (value: string, label: string, disabled = false) =>
   `<div class="cv-menu-item" role="menuitem" data-value="${value}"${disabled ? ' aria-disabled="true"' : ''}>${label}</div>`
 
+const tab = (v: string, label: string, on: boolean, disabled = false) =>
+  `<button type="button" class="cv-tabs-trigger" role="tab" id="plan-trigger-${v}" aria-selected="${on}" aria-controls="plan-content-${v}" tabindex="${on ? 0 : -1}" data-state="${on ? 'active' : 'inactive'}" data-value="${v}"${disabled ? ' disabled' : ''}>${label}</button>`
+const tabPanel = (v: string, on: boolean) =>
+  `<div class="cv-tabs-content" role="tabpanel" id="plan-content-${v}" aria-labelledby="plan-trigger-${v}" tabindex="0" data-state="${on ? 'active' : 'inactive'}"${on ? '' : ' hidden'}>${v} panel</div>`
+
 export const PILOT = `<form id="pilot">
+<cv-tabs id="plan">
+  <div class="cv-tabs-tabs">
+    <div class="cv-tabs-list" role="tablist" aria-label="Plan">${tab('overview', 'Overview', true)}${tab('details', 'Info', false)}${tab('billing', 'Bill', false, true)}${tab('history', 'Log', false)}</div>
+    ${tabPanel('overview', true)}${tabPanel('details', false)}${tabPanel('billing', false)}${tabPanel('history', false)}
+  </div>
+</cv-tabs>
 <cv-menu id="actions">
   <button type="button" class="cv-menu-trigger" aria-haspopup="menu" aria-expanded="false" aria-label="Actions">⋯</button>
   <div class="cv-menu-panel" role="menu" popover="auto" data-state="closed">

@@ -177,7 +177,7 @@ that sends htmx fragments rendered with `cascivo-html`, plus one Solid island fo
 import '@cascivo/themes/default.css'
 import '@cascivo/css/cascivo.css'
 import { classes as c } from '@cascivo/css'
-import '@cascivo/elements/tabs' // behaviour only, the markup is ours
+// behaviour only, the markup is ours: load the cv-tabs script (`@cascivo/elements/tabs`, not yet published)
 
 export function SaveBar(props: { saving: boolean; onSave: () => void }) {
   return (

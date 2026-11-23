@@ -28,8 +28,10 @@ import { PILOT } from '../../packages/elements/test/pilot.ts'
 
 const PKG = fileURLToPath(new URL('../../packages/elements/', import.meta.url))
 const DIST = join(PKG, 'dist')
-const ELEMENTS = ['menu', 'combobox', 'date-picker'] as const
+const ELEMENTS = ['menu', 'tabs', 'combobox', 'date-picker'] as const
 const ELEMENT_BUDGET = 3 * 1024
+/** `cv-tabs` is the smallest element; its contract budget (phase-1-contract-plan §6) is 0.8 KB. */
+const BUDGET: Record<string, number> = { tabs: 819 }
 const PAGE_BUDGET = 15 * 1024
 const require = createRequire(join(PKG, 'package.json'))
 
@@ -58,15 +60,16 @@ describe('@cascivo/elements size budget', () => {
   const sizes: Record<string, number> = {}
 
   for (const el of ELEMENTS) {
-    it(`${el}: own code ≤ 3 KB gz`, () => {
+    it(`${el}: own code ≤ ${el === 'tabs' ? '0.8' : '3'} KB gz`, () => {
       const own = [...closures.get(el)!].filter((f) => reach(f) === 1)
       const total = own.reduce((n, f) => n + gz(f), 0)
       sizes[el] = total
-      assert.ok(total <= ELEMENT_BUDGET, `${el}: ${total} B gz (${own.join(', ')}) > 3072`)
+      const budget = BUDGET[el] ?? ELEMENT_BUDGET
+      assert.ok(total <= budget, `${el}: ${total} B gz (${own.join(', ')}) > ${budget}`)
     })
   }
 
-  it('pilot page (all three + runtime) ≤ 15 KB gz', () => {
+  it('pilot page (all four + runtime) ≤ 15 KB gz', () => {
     const all = new Set(ELEMENTS.flatMap((e) => [...closures.get(e)!]))
     const runtime = [...all].filter((f) => reach(f) > 1)
     const total = [...all].reduce((n, f) => n + gz(f), 0)
@@ -89,12 +92,13 @@ describe('@cascivo/elements in Chromium', () => {
 <script src="/idiomorph.js"></script>
 <script type="module">
   import { define as menu } from '/menu.js'
+  import { define as tabs } from '/tabs.js'
   import { define as combobox } from '/combobox.js'
   import { define as datePicker } from '/date-picker.js'
   window.events = []
   for (const type of ['cv-select', 'cv-value-change', 'input', 'change'])
     document.addEventListener(type, (e) => events.push({ type, target: e.target.id, detail: e.detail }))
-  menu(); menu(); combobox(); datePicker()
+  menu(); menu(); tabs(); combobox(); datePicker()
   window.ready = true
 </script></head><body><main>${PILOT}</main></body></html>`
 
@@ -193,6 +197,47 @@ describe('@cascivo/elements in Chromium', () => {
       (sel: string) => document.querySelector(sel)?.getAttribute('aria-expanded') === 'false',
       trigger,
     )
+    await close()
+  })
+
+  it('cv-tabs: APG tabs keyboard, cv-value-change, roving tabindex', async () => {
+    const { page, close } = await open()
+    const tabId = (id: string) => `#plan-trigger-${id}`
+    const shown = () =>
+      page.$$eval('#plan [role=tabpanel]', (els: HTMLElement[]) =>
+        els.filter((e) => !e.hidden).map((e) => e.id),
+      )
+    assert.deepEqual(await shown(), ['plan-content-overview'])
+    await page.focus(tabId('overview'))
+    await page.keyboard.press('ArrowRight')
+    assert.equal(await attr(page, tabId('details'), 'aria-selected'), 'true', 'arrows activate')
+    assert.equal(await attr(page, tabId('details'), 'tabindex'), '0')
+    assert.equal(await attr(page, tabId('overview'), 'tabindex'), '-1')
+    assert.deepEqual(await shown(), ['plan-content-details'])
+    await page.keyboard.press('ArrowRight')
+    assert.equal(
+      await page.evaluate(() => document.activeElement?.id),
+      'plan-trigger-history',
+      'disabled tab skipped',
+    )
+    await page.keyboard.press('ArrowRight')
+    assert.equal(await page.evaluate(() => document.activeElement?.id), 'plan-trigger-overview')
+    await page.keyboard.press('End')
+    assert.equal(await page.evaluate(() => document.activeElement?.id), 'plan-trigger-history')
+    await page.keyboard.press('Home')
+    assert.equal(await attr(page, tabId('overview'), 'aria-selected'), 'true')
+    await page.keyboard.press('Tab')
+    assert.equal(
+      await page.evaluate(() => document.activeElement?.getAttribute('role')),
+      'tabpanel',
+      'Tab leaves the tablist for the panel',
+    )
+    await page.click(tabId('history'))
+    assert.deepEqual(await shown(), ['plan-content-history'])
+    const events = (await page.evaluate(() => (window as any).events)).filter(
+      (e: any) => e.type === 'cv-value-change' && e.target === 'plan',
+    )
+    assert.deepEqual(events.at(-1).detail, { value: 'history' })
     await close()
   })
 
@@ -427,6 +472,7 @@ describe('@cascivo/elements in Chromium', () => {
     await page.keyboard.press('Enter')
     await page.fill('#due-input', '1/2/2027')
     await page.keyboard.press('Enter')
+    await page.click('#plan-trigger-history')
     await page.click('#actions [aria-haspopup]')
     const before = await formData(page)
     assert.deepEqual(before, { fruit: 'grape', due: '2027-01-02' })
@@ -449,6 +495,9 @@ describe('@cascivo/elements in Chromium', () => {
       'menu stays open',
     )
     assert.equal(await attr(page, '#actions [role=menu]', 'data-state'), 'open')
+    assert.equal(await attr(page, '#plan-trigger-history', 'aria-selected'), 'true', 'tab stays')
+    assert.equal(await attr(page, '#plan-content-history', 'hidden'), null)
+    assert.equal(await attr(page, '#plan-content-overview', 'hidden'), '')
     assert.ok(await attr(page, '#fruit-input', 'aria-controls'), 'ARIA wiring is repaired')
     // And still interactive after the morph.
     await page.keyboard.press('Escape')

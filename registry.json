@@ -21252,7 +21252,7 @@
       "fileHashes": {
         "tabs.tsx": "sha256-0626acd8cee309bdef946633e23d040a0b1a81206e3a27b3de62d4ef87c71fe5",
         "index.ts": "sha256-9dd19a218ef88f01cab5cbe7d82fa98b8b6e87ed5992b3eb6cb25735f2d94cc1",
-        "tabs.module.css": "sha256-fac5d943843ba4a6f4843370aae9d570e1cf4425a0e29bc4e9553e0599d1e2d5",
+        "tabs.module.css": "sha256-2fddde0a67406287926c5f6c0cabd1c5e81896e2fe4414b4224dc6dbc9963872",
         "tabs.meta.ts": "sha256-97553d26d1f40a0ed0d5016b0bc930fe67aa943d07efc3204d6b3ba908794bca"
       },
       "dependencies": ["@cascivo/core"],
