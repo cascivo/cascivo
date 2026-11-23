@@ -32,3 +32,8 @@ kv = []
 cascivo-web = { path = "../cascivo-web", default-features = false }
 tokio = { version = "1.54.1", features = ["macros", "rt"] }
 tower = { version = "0.5.3", features = ["util"] }
+
+# Exercises `KvStore`, which only exists with the `kv` feature (CI also lints `--no-default-features`).
+[[test]]
+name = "sessions"
+required-features = ["kv"]
