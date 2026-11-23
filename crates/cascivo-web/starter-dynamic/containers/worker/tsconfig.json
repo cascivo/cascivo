@@ -1,1 +1,10 @@
-{ "compilerOptions": { "target": "es2022", "module": "esnext", "moduleResolution": "bundler", "strict": true, "types": ["@cloudflare/workers-types"], "noEmit": true } }
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "types": ["@cloudflare/workers-types"],
+    "noEmit": true
+  }
+}

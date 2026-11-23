@@ -41,7 +41,7 @@ let app = App::new(engine)
 - Stores: `CookieStore` (encrypted, stateless, key list for rotation), `MemoryStore`,
   `SqliteStore` (`sqlite`), or your own `SessionStore` (records keyed by
   `SessionId::storage_key()`). Cookie `__Host-cv-session; HttpOnly; Secure; SameSite=Lax;
-  Path=/`; idle and absolute TTLs; unknown ids are never adopted; `rotate_id()` on login,
+Path=/`; idle and absolute TTLs; unknown ids are never adopted; `rotate_id()` on login,
   `destroy()` on logout.
 - CSRF on every unsafe method: `Sec-Fetch-Site`/`Origin` must be same-origin, and with sessions
   the token (`request.csrf`) must arrive as form field `csrf` or header `X-CSRF-Token`

@@ -9,7 +9,8 @@
   <body>
     <main>{% block main %}{% endblock %}</main>
     <div id="cv-toaster" aria-live="polite">{% block toaster %}{% endblock %}</div>
-    {# The Worker serves /htmx.min.js from the edge (worker/public); the nonce keeps the CSP strict. #}
+    {# The Worker serves /htmx.min.js from the edge (worker/public); the nonce keeps the CSP strict.
+    #}
     <script nonce="{{ request.nonce }}" src="/htmx.min.js"></script>
   </body>
 </html>

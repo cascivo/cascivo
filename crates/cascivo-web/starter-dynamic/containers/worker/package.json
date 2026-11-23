@@ -2,7 +2,16 @@
   "name": "__NAME__-worker",
   "private": true,
   "type": "module",
-  "scripts": { "dev": "wrangler dev", "deploy": "wrangler deploy" },
-  "dependencies": { "@cloudflare/containers": "^0.0.30" },
-  "devDependencies": { "wrangler": "^4", "typescript": "^5", "@cloudflare/workers-types": "^4" }
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@cloudflare/containers": "^0.0.30"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4",
+    "typescript": "^5",
+    "wrangler": "^4"
+  }
 }

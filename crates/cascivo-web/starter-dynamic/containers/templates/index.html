@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% block main %}
+{% extends "base.html" %} {% block main %}
 <h1>{{ site.title }}</h1>
 <p>Served by a container behind a Cloudflare Worker.</p>
 <button hx-get="/visits" hx-target="#visits" hx-swap="innerHTML">Count a visit</button>

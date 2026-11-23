@@ -7,8 +7,8 @@
   // Static assets stay at the edge; only requests with no matching file reach the container.
   "assets": { "directory": "./public" },
   "containers": [
-    { "class_name": "App", "image": "../Dockerfile", "max_instances": 2, "instance_type": "basic" }
+    { "class_name": "App", "image": "../Dockerfile", "max_instances": 2, "instance_type": "basic" },
   ],
   "durable_objects": { "bindings": [{ "name": "APP", "class_name": "App" }] },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["App"] }]
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["App"] }],
 }

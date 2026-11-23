@@ -1,4 +1,4 @@
-# __NAME__ (Cloudflare Containers)
+# **NAME** (Cloudflare Containers)
 
 A `cascivo-server` app in a distroless container, behind a Worker + Durable Object.
 Pick this target for tokio, native SQLite, long SSE, or a bundle too big for wasm.

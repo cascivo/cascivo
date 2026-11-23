@@ -8,7 +8,9 @@ publish = false
 [dependencies]
 axum = { version = "0.8", default-features = false }
 cascivo-server = { git = "https://github.com/cascivo/cascivo", features = ["native"] }
-cascivo-web = { git = "https://github.com/cascivo/cascivo", default-features = false, features = ["fs"] }
+cascivo-web = { git = "https://github.com/cascivo/cascivo", default-features = false, features = [
+  "fs",
+] }
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 

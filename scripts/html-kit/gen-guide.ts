@@ -25,10 +25,11 @@ export function signature(e: CvEntry): string {
 }
 
 /** A short clause of the manifest summary: cut at the first dash/comma/"with", then at 44 chars. */
+// 28 chars keeps the 101-component list under the 6000-char GUIDE budget (tests/guide.rs).
 export function shortSummary(s: string): string {
   const clause = s.split(/ [—–-] |, | with /)[0]!.replace(/\.$/, '')
-  if (clause.length <= 44) return clause
-  const cut = clause.slice(0, 44)
+  if (clause.length <= 28) return clause
+  const cut = clause.slice(0, 28)
   return cut.slice(0, cut.lastIndexOf(' ')).trimEnd()
 }
 
