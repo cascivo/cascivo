@@ -1,18 +1,18 @@
 import '@cascivo/themes/light.css'
 import '@cascivo/css/cascivo.css'
-import 'htmx.org'
 import { classes as c } from '@cascivo/css'
+import { defineIsland } from '@cascivo/solid'
 import { createSignal } from 'solid-js'
-import { render } from 'solid-js/web'
 
 // The island owns client state only; the markup is the contract's, so `c.button.lable` would be
-// a type error. Everything else on the page is server-rendered HTML that htmx swaps.
-function SaveBar() {
+// a type error. The server renders the same-shaped fallback (a badge) inside `#save-bar`; the
+// loader imports this module's default export, which replaces it and survives htmx swaps.
+function SaveBar(props: { initial?: string }) {
   const [saving, setSaving] = createSignal(false)
   return (
     <div class={c.card.card}>
       <span class={c.badge.badge} data-variant="secondary">
-        {saving() ? 'Saving' : 'Draft'}
+        {saving() ? 'Saving' : (props.initial ?? 'Draft')}
       </span>
       <button
         type="button"
@@ -27,5 +27,4 @@ function SaveBar() {
   )
 }
 
-const mount = document.getElementById('save-bar')
-if (mount) render(() => <SaveBar />, mount)
+export default defineIsland(SaveBar)

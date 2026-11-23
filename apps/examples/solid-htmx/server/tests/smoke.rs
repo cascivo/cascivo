@@ -78,8 +78,10 @@ async fn htmx_post_returns_only_the_fragment() {
 }
 
 #[tokio::test]
-async fn serves_only_the_island_files() {
+async fn serves_only_the_built_files() {
     assert_eq!(call(get("/assets/island.js")).await.0, StatusCode::OK);
+    std::fs::write(std::env::temp_dir().join("solid-htmx-smoke/htmx.js"), "1").unwrap();
+    assert_eq!(call(get("/assets/htmx.js")).await.0, StatusCode::OK);
     assert_eq!(
         call(get("/assets/island.css")).await.0,
         StatusCode::NOT_FOUND
