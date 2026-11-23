@@ -1,0 +1,16 @@
+[package]
+name = "__NAME__"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+# `cascivo-server` is unreleased: depend on the repository until it is published.
+[dependencies]
+axum = { version = "0.8", default-features = false }
+cascivo-server = { git = "https://github.com/cascivo/cascivo", features = ["native"] }
+cascivo-web = { git = "https://github.com/cascivo/cascivo", default-features = false, features = ["fs"] }
+serde = { version = "1", features = ["derive"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+
+[dev-dependencies]
+tower = { version = "0.5", features = ["util"] }

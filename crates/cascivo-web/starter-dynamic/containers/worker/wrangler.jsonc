@@ -1,0 +1,14 @@
+// Containers need a paid Workers plan. `wrangler deploy` builds ../Dockerfile and pushes it.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "__NAME__",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  // Static assets stay at the edge; only requests with no matching file reach the container.
+  "assets": { "directory": "./public" },
+  "containers": [
+    { "class_name": "App", "image": "../Dockerfile", "max_instances": 2, "instance_type": "basic" }
+  ],
+  "durable_objects": { "bindings": [{ "name": "APP", "class_name": "App" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["App"] }]
+}
