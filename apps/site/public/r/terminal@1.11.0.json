@@ -28,6 +28,35 @@
     "category": "display",
     "clientJs": "required",
     "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "root",
+        "role": "group",
+        "aria": ["aria-label"],
+        "children": ["line"]
+      },
+      "parts": {
+        "line": {
+          "element": "div",
+          "data": {
+            "data-type": ["command", "output", "error", "comment"]
+          },
+          "children": ["prefix", "text", "cursor"]
+        },
+        "prefix": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "text": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "cursor": {
+          "element": "span"
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

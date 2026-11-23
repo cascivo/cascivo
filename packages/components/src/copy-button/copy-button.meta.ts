@@ -7,6 +7,19 @@ export const meta: ComponentMeta = {
   // Writing to the clipboard is its only job, and that is a browser API.
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'button',
+      local: 'copyButton',
+      data: { 'data-state': ['idle', 'copied'], 'data-size': ['sm', 'md'] },
+      aria: ['aria-label'],
+      children: ['icon'],
+    },
+    parts: {
+      // Swaps between a copy glyph and a check glyph.
+      icon: { element: 'svg', aria: ['aria-hidden'] },
+    },
+  },
   states: ['idle', 'copied'],
   variants: [],
   sizes: ['sm', 'md'],

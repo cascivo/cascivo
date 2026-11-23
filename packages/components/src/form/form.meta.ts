@@ -8,6 +8,9 @@ export const meta: ComponentMeta = {
   // A signal-based form store with sync/async validation; it is client state by definition.
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'form', local: 'form', children: ['$slot'] },
+  },
   states: ['idle', 'submitting'],
   variants: [],
   sizes: [],

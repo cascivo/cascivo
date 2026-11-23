@@ -51,6 +51,9 @@
         "content": {
           "element": "div",
           "role": "tabpanel",
+          "data": {
+            "data-state": ["active", "inactive"]
+          },
           "aria": ["aria-labelledby"],
           "children": ["$slot"]
         }

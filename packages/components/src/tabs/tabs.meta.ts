@@ -23,6 +23,8 @@ export const meta: ComponentMeta = {
       content: {
         element: 'div',
         role: 'tabpanel',
+        // React renders only the active panel; cascivo-html and `cv-tabs` also keep hidden ones.
+        data: { 'data-state': ['active', 'inactive'] },
         aria: ['aria-labelledby'],
         children: ['$slot'],
       },

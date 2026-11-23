@@ -27,6 +27,49 @@
     "category": "display",
     "clientJs": "required",
     "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "root",
+        "data": {
+          "data-state": ["closed", "leading", "trailing"]
+        },
+        "children": ["panel", "content"]
+      },
+      "parts": {
+        "panel": {
+          "element": "div",
+          "modifiers": {
+            "leading": "side === 'leading'",
+            "trailing": "side === 'trailing'"
+          },
+          "children": ["action"]
+        },
+        "action": {
+          "element": "button",
+          "data": {
+            "data-destructive": "boolean"
+          },
+          "children": ["actionIcon", "actionLabel"]
+        },
+        "actionIcon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$slot"]
+        },
+        "actionLabel": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "content": {
+          "element": "div",
+          "data": {
+            "data-dragging": "boolean"
+          },
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": ["closed", "leading", "trailing"],
     "variants": [],
     "sizes": [],

@@ -28,6 +28,23 @@
     "category": "overlay",
     "clientJs": "required",
     "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "span",
+        "local": "trigger",
+        "children": ["$slot", "content"]
+      },
+      "parts": {
+        "content": {
+          "element": "div",
+          "role": "complementary",
+          "data": {
+            "data-state": ["open", "closed"]
+          },
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": ["open", "closed"],
     "variants": [],
     "sizes": [],

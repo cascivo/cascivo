@@ -8,6 +8,22 @@ export const meta: ComponentMeta = {
   // and paste splitting.
   clientJs: 'enhancement',
   contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      role: 'group',
+      aria: ['aria-label'],
+      children: ['slot'],
+    },
+    parts: {
+      slot: {
+        element: 'input',
+        data: { 'data-filled': 'boolean' },
+        aria: ['aria-label'],
+      },
+    },
+  },
   states: ['idle', 'focused', 'filled', 'disabled'],
   variants: [],
   sizes: [],

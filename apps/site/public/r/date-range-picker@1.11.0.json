@@ -28,6 +28,78 @@
     "category": "inputs",
     "clientJs": "required",
     "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "wrapper",
+        "data": {
+          "data-size": ["sm", "md", "lg"]
+        },
+        "children": ["trigger", "panel"]
+      },
+      "parts": {
+        "trigger": {
+          "element": "button",
+          "role": "combobox",
+          "aria": ["aria-expanded", "aria-haspopup", "aria-label"],
+          "children": ["value", "icon"]
+        },
+        "value": {
+          "element": "span",
+          "children": ["$text"],
+          "modifiers": {
+            "placeholder": "!displayValue"
+          }
+        },
+        "icon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$text"]
+        },
+        "panel": {
+          "element": "div",
+          "role": "dialog",
+          "data": {
+            "data-state": ["open", "closed"]
+          },
+          "children": ["presets", "calendars", "footer"]
+        },
+        "presets": {
+          "element": "div",
+          "when": "presets",
+          "children": ["preset"]
+        },
+        "preset": {
+          "element": "button",
+          "children": ["$text"]
+        },
+        "calendars": {
+          "element": "div",
+          "children": ["calNav", "@calendar"]
+        },
+        "calNav": {
+          "element": "div",
+          "children": ["navButton"]
+        },
+        "navButton": {
+          "element": "button",
+          "aria": ["aria-label"],
+          "children": ["$text"]
+        },
+        "footer": {
+          "element": "div",
+          "children": ["clearBtn", "applyBtn"]
+        },
+        "clearBtn": {
+          "element": "button",
+          "children": ["$text"]
+        },
+        "applyBtn": {
+          "element": "button",
+          "children": ["$text"]
+        }
+      }
+    },
     "states": ["default", "open", "selecting"],
     "variants": [],
     "sizes": ["sm", "md", "lg"],

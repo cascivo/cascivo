@@ -7,6 +7,30 @@ export const meta: ComponentMeta = {
   category: 'overlay',
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'div', local: 'overlay', children: ['sheet'] },
+    parts: {
+      sheet: {
+        element: 'div',
+        role: 'menu',
+        aria: ['aria-label', 'aria-labelledby', 'aria-describedby'],
+        children: ['group'],
+      },
+      group: { element: 'div', children: ['heading', 'item'] },
+      heading: { element: 'div', role: 'presentation', children: ['title', 'description'] },
+      title: { element: 'p', children: ['$slot'] },
+      description: { element: 'p', children: ['$slot'] },
+      // The cancel button is an `item` in its own trailing group.
+      item: {
+        element: 'button',
+        role: 'menuitem',
+        data: { 'data-destructive': 'string' },
+        aria: ['aria-disabled'],
+        modifiers: { cancel: 'cancel button' },
+        children: ['$slot'],
+      },
+    },
+  },
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

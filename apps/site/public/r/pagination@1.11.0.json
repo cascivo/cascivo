@@ -27,6 +27,41 @@
     "category": "navigation",
     "clientJs": "required",
     "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "nav",
+        "aria": ["aria-label"],
+        "children": ["group", "range", "buttons"]
+      },
+      "parts": {
+        "group": {
+          "element": ["label", "div"],
+          "children": ["label", "select"]
+        },
+        "label": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$text"]
+        },
+        "select": {
+          "element": "select",
+          "aria": ["aria-label"]
+        },
+        "range": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "buttons": {
+          "element": "div",
+          "children": ["button"]
+        },
+        "button": {
+          "element": "button",
+          "aria": ["aria-label"],
+          "children": ["$text"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

@@ -10,6 +10,34 @@ export const meta: ComponentMeta = {
   // system share sheet need script and appear once it runs.
   clientJs: 'enhancement',
   contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'span', local: 'root', children: ['trigger', 'panel'] },
+    parts: {
+      trigger: {
+        element: 'button',
+        data: { 'data-size': ['sm', 'md'] },
+        aria: ['aria-expanded'],
+        children: ['icon', '$text'],
+      },
+      icon: { element: 'svg', aria: ['aria-hidden'] },
+      // Native popover opened by `popovertarget`.
+      panel: { element: 'div', aria: ['aria-label'], children: ['list'] },
+      list: { element: 'ul', children: ['server', 'item', 'divided'] },
+      server: { element: 'form', children: ['serverLabel', 'serverRow'] },
+      serverLabel: { element: 'label', children: ['$text'] },
+      serverRow: { element: 'span', children: ['serverInput', 'item'] },
+      serverInput: { element: 'input' },
+      item: {
+        element: ['a', 'button'],
+        data: {
+          'data-network': ['bluesky', 'mastodon', 'threads', 'linkedin', 'x'],
+          'data-state': ['idle', 'copied'],
+        },
+        children: ['$text'],
+      },
+      divided: { element: 'li', children: ['item'] },
+    },
+  },
   states: ['closed', 'open', 'copied'],
   variants: [],
   sizes: ['sm', 'md'],

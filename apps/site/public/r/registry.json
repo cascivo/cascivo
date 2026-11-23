@@ -155,6 +155,50 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "overlay",
+            "children": ["sheet"]
+          },
+          "parts": {
+            "sheet": {
+              "element": "div",
+              "role": "menu",
+              "aria": ["aria-label", "aria-labelledby", "aria-describedby"],
+              "children": ["group"]
+            },
+            "group": {
+              "element": "div",
+              "children": ["heading", "item"]
+            },
+            "heading": {
+              "element": "div",
+              "role": "presentation",
+              "children": ["title", "description"]
+            },
+            "title": {
+              "element": "p",
+              "children": ["$slot"]
+            },
+            "description": {
+              "element": "p",
+              "children": ["$slot"]
+            },
+            "item": {
+              "element": "button",
+              "role": "menuitem",
+              "data": {
+                "data-destructive": "string"
+              },
+              "aria": ["aria-disabled"],
+              "modifiers": {
+                "cancel": "cancel button"
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -886,6 +930,45 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "dialog",
+            "role": "alertdialog",
+            "data": {
+              "data-state": ["open", "closed"],
+              "data-variant": ["default", "destructive"]
+            },
+            "aria": ["aria-modal", "aria-labelledby", "aria-describedby"],
+            "children": ["content"]
+          },
+          "parts": {
+            "content": {
+              "element": "div",
+              "children": ["title", "description", "actions"]
+            },
+            "title": {
+              "element": "p",
+              "children": ["$text"]
+            },
+            "description": {
+              "element": "p",
+              "children": ["$text"]
+            },
+            "actions": {
+              "element": "div",
+              "children": ["cancel", "confirm"]
+            },
+            "cancel": {
+              "element": "button",
+              "children": ["$text"]
+            },
+            "confirm": {
+              "element": "button",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": ["default", "destructive"],
         "sizes": [],
@@ -2731,6 +2814,58 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "overlay",
+            "children": ["panel"]
+          },
+          "parts": {
+            "panel": {
+              "element": "div",
+              "role": "dialog",
+              "data": {
+                "data-dragging": "string"
+              },
+              "aria": ["aria-modal", "aria-labelledby", "aria-describedby"],
+              "children": ["header", "body"]
+            },
+            "header": {
+              "element": "div",
+              "children": ["handle", "heading", "close"]
+            },
+            "handle": {
+              "element": "div",
+              "role": "separator",
+              "aria": ["aria-label", "aria-orientation"]
+            },
+            "heading": {
+              "element": "div",
+              "children": ["title", "description"]
+            },
+            "title": {
+              "element": "h2",
+              "children": ["$slot"]
+            },
+            "description": {
+              "element": "p",
+              "children": ["$slot"]
+            },
+            "close": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["closeIcon"]
+            },
+            "closeIcon": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            },
+            "body": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed", "dragging"],
         "variants": [],
         "sizes": [],
@@ -3473,6 +3608,84 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-size": ["sm", "md", "lg"]
+            },
+            "children": ["header", "grid", "footer", "srOnly"]
+          },
+          "parts": {
+            "header": {
+              "element": "div",
+              "children": ["navButton", "navSpacer", "monthLabel"]
+            },
+            "navButton": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"]
+            },
+            "navSpacer": {
+              "element": "span"
+            },
+            "monthLabel": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "grid": {
+              "element": "table",
+              "role": "grid",
+              "aria": ["aria-label"],
+              "children": ["weekday", "weekNumber", "empty", "cell"]
+            },
+            "weekday": {
+              "element": "th",
+              "children": ["srOnly", "$text"]
+            },
+            "weekNumber": {
+              "element": "th",
+              "children": ["$text"]
+            },
+            "empty": {
+              "element": "td",
+              "role": "gridcell"
+            },
+            "cell": {
+              "element": "td",
+              "role": "presentation",
+              "children": ["day"]
+            },
+            "day": {
+              "element": "button",
+              "role": "gridcell",
+              "data": {
+                "data-day": "string",
+                "data-selected": "string",
+                "data-today": "string",
+                "data-in-range": "string",
+                "data-range-start": "string",
+                "data-range-end": "string"
+              },
+              "aria": ["aria-label", "aria-selected", "aria-current", "aria-disabled"],
+              "children": ["$text"]
+            },
+            "footer": {
+              "element": "div",
+              "when": "showToday",
+              "children": ["todayButton"]
+            },
+            "todayButton": {
+              "element": "button",
+              "children": ["$text"]
+            },
+            "srOnly": {
+              "element": "span",
+              "aria": ["aria-live"],
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["default", "selected", "today", "disabled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -3885,6 +4098,78 @@
         "category": "display",
         "clientJs": "enhancement",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "section",
+            "aria": ["aria-roledescription", "aria-label"],
+            "children": ["viewport", "controls"]
+          },
+          "parts": {
+            "viewport": {
+              "element": "div",
+              "children": ["nav", "track"]
+            },
+            "nav": {
+              "element": "button",
+              "aria": ["aria-label", "aria-controls"],
+              "modifiers": {
+                "prev": "previous button",
+                "next": "next button"
+              },
+              "children": ["chevron"]
+            },
+            "chevron": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "modifiers": {
+                "chevronPrev": "previous button",
+                "chevronNext": "next button"
+              }
+            },
+            "track": {
+              "element": "div",
+              "aria": ["aria-live"],
+              "children": ["slide"]
+            },
+            "slide": {
+              "element": "div",
+              "role": "group",
+              "aria": ["aria-roledescription", "aria-label"],
+              "children": ["$slot"]
+            },
+            "controls": {
+              "element": "div",
+              "children": ["playPause", "dots"]
+            },
+            "playPause": {
+              "element": "button",
+              "when": "autoplay",
+              "aria": ["aria-label"],
+              "children": ["pauseGlyph", "playGlyph"]
+            },
+            "pauseGlyph": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "playGlyph": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "dots": {
+              "element": "div",
+              "role": "group",
+              "aria": ["aria-label"],
+              "children": ["dot"]
+            },
+            "dot": {
+              "element": "button",
+              "data": {
+                "data-active": "string"
+              },
+              "aria": ["aria-label", "aria-current"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -9643,6 +9928,82 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-size": ["sm", "md", "lg"],
+              "data-disabled": "string"
+            },
+            "children": ["label", "area", "sliders", "row", "presets", "srOnly"]
+          },
+          "parts": {
+            "label": {
+              "element": "label",
+              "children": ["$text"]
+            },
+            "area": {
+              "element": "div",
+              "role": "group",
+              "aria": ["aria-label"],
+              "children": ["axis", "thumb"]
+            },
+            "axis": {
+              "element": "input",
+              "aria": ["aria-label", "aria-valuetext"]
+            },
+            "thumb": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "sliders": {
+              "element": "div",
+              "children": ["slider"]
+            },
+            "slider": {
+              "element": "input",
+              "aria": ["aria-label", "aria-valuetext"],
+              "modifiers": {
+                "hue": "hue slider",
+                "alpha": "alpha slider"
+              }
+            },
+            "row": {
+              "element": "div",
+              "children": ["preview", "hex", "eyedropper"]
+            },
+            "preview": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "hex": {
+              "element": "input",
+              "aria": ["aria-label", "aria-labelledby", "aria-describedby", "aria-invalid"]
+            },
+            "eyedropper": {
+              "element": "button",
+              "when": "EyeDropper support",
+              "aria": ["aria-label"]
+            },
+            "presets": {
+              "element": "div",
+              "role": "group",
+              "aria": ["aria-label"],
+              "children": ["preset"]
+            },
+            "preset": {
+              "element": "button",
+              "aria": ["aria-label", "aria-pressed"]
+            },
+            "srOnly": {
+              "element": "span",
+              "role": "status",
+              "aria": ["aria-live"],
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["default", "disabled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -9866,6 +10227,132 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-state": ["closed", "open", "error"],
+              "data-size": ["sm", "md", "lg"]
+            },
+            "children": ["label", "field", "popup", "srOnly", "error", "hint"]
+          },
+          "parts": {
+            "label": {
+              "element": "label",
+              "children": ["$text"]
+            },
+            "field": {
+              "element": "div",
+              "children": ["trigger", "clear", "chevron"]
+            },
+            "trigger": {
+              "element": ["input", "button"],
+              "aria": [
+                "aria-expanded",
+                "aria-controls",
+                "aria-haspopup",
+                "aria-activedescendant",
+                "aria-labelledby",
+                "aria-label",
+                "aria-invalid",
+                "aria-describedby",
+                "aria-required",
+                "aria-autocomplete"
+              ],
+              "children": ["value"]
+            },
+            "value": {
+              "element": "span",
+              "modifiers": {
+                "placeholder": "no option selected"
+              },
+              "children": ["$text"]
+            },
+            "clear": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["clearGlyph"]
+            },
+            "clearGlyph": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "chevron": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "popup": {
+              "element": "div",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "children": ["listbox", "empty"]
+            },
+            "listbox": {
+              "element": "div",
+              "role": "listbox",
+              "aria": ["aria-label", "aria-busy"],
+              "children": ["group", "option"]
+            },
+            "group": {
+              "element": "div",
+              "role": "group",
+              "aria": ["aria-label"],
+              "children": ["groupLabel", "option"]
+            },
+            "groupLabel": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$text"]
+            },
+            "option": {
+              "element": "div",
+              "role": "option",
+              "data": {
+                "data-state": ["active"],
+                "data-disabled": "string"
+              },
+              "aria": ["aria-selected", "aria-disabled"],
+              "modifiers": {
+                "create": "creatable"
+              },
+              "children": ["optionLabel", "check", "$text"]
+            },
+            "optionLabel": {
+              "element": "span",
+              "children": ["match", "$text"]
+            },
+            "match": {
+              "element": "mark",
+              "children": ["$text"]
+            },
+            "check": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "empty": {
+              "element": "div",
+              "role": "status",
+              "children": ["$text"]
+            },
+            "srOnly": {
+              "element": "span",
+              "role": "status",
+              "aria": ["aria-live"],
+              "children": ["$text"]
+            },
+            "error": {
+              "element": "span",
+              "role": "alert",
+              "children": ["$text"]
+            },
+            "hint": {
+              "element": "span",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["closed", "open", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -10188,6 +10675,159 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "dialog",
+            "local": "dialog",
+            "aria": ["aria-label"],
+            "children": ["panel"]
+          },
+          "parts": {
+            "panel": {
+              "element": "div",
+              "children": ["search", "scopes", "list", "footer"]
+            },
+            "search": {
+              "element": "div",
+              "children": ["searchIcon", "scopeChip", "input"]
+            },
+            "searchIcon": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            },
+            "scopeChip": {
+              "element": "span",
+              "children": ["$text", "scopeClear"]
+            },
+            "scopeClear": {
+              "element": "button",
+              "aria": ["aria-label"]
+            },
+            "input": {
+              "element": "input",
+              "role": "combobox",
+              "aria": [
+                "aria-expanded",
+                "aria-controls",
+                "aria-activedescendant",
+                "aria-autocomplete",
+                "aria-label"
+              ]
+            },
+            "scopes": {
+              "element": "div",
+              "children": ["scopesLabel", "scopePill"]
+            },
+            "scopesLabel": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "scopePill": {
+              "element": "button",
+              "data": {
+                "data-active": "string"
+              },
+              "children": ["scopePrefix", "$text"]
+            },
+            "scopePrefix": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "list": {
+              "element": "div",
+              "children": ["group", "empty"]
+            },
+            "group": {
+              "element": "div",
+              "role": "group",
+              "aria": ["aria-label"],
+              "children": ["heading", "option"]
+            },
+            "heading": {
+              "element": "div",
+              "aria": ["aria-hidden"],
+              "children": ["$text", "count"]
+            },
+            "count": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "option": {
+              "element": "div",
+              "role": "option",
+              "data": {
+                "data-state": ["active"],
+                "data-disabled": "string"
+              },
+              "aria": ["aria-selected", "aria-disabled"],
+              "children": ["icon", "text", "status", "actions", "shortcut"]
+            },
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "text": {
+              "element": "span",
+              "children": ["label", "description"]
+            },
+            "label": {
+              "element": "span",
+              "children": ["match", "$text"]
+            },
+            "match": {
+              "element": "mark",
+              "children": ["$text"]
+            },
+            "description": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "status": {
+              "element": "span",
+              "data": {
+                "data-tone": "string"
+              },
+              "children": ["statusDot", "$text"]
+            },
+            "statusDot": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "actions": {
+              "element": "span",
+              "children": ["action"]
+            },
+            "action": {
+              "element": "span",
+              "children": ["$text", "actionKeys"]
+            },
+            "actionKeys": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["@kbd"]
+            },
+            "shortcut": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["@kbd"]
+            },
+            "empty": {
+              "element": "div",
+              "role": "status",
+              "children": ["@spinner", "$text"]
+            },
+            "footer": {
+              "element": "div",
+              "aria": ["aria-hidden"],
+              "children": ["hint"]
+            },
+            "hint": {
+              "element": "span",
+              "children": ["@kbd", "$text"]
+            }
+          }
+        },
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -10416,6 +11056,42 @@
         "category": "display",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-orientation": ["horizontal", "vertical"],
+              "data-dragging": "string"
+            },
+            "children": ["item", "before", "divider"]
+          },
+          "parts": {
+            "item": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "before": {
+              "element": "div",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "divider": {
+              "element": "div",
+              "children": ["handle"]
+            },
+            "handle": {
+              "element": "div",
+              "role": "slider",
+              "aria": [
+                "aria-label",
+                "aria-orientation",
+                "aria-valuemin",
+                "aria-valuemax",
+                "aria-valuenow"
+              ]
+            }
+          }
+        },
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -10696,6 +11372,29 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "children": ["$slot", "menu"]
+          },
+          "parts": {
+            "menu": {
+              "element": "div",
+              "role": "menu",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "children": ["item"]
+            },
+            "item": {
+              "element": "div",
+              "role": "menuitem",
+              "aria": ["aria-disabled"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -10919,6 +11618,24 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "button",
+            "local": "copyButton",
+            "data": {
+              "data-state": ["idle", "copied"],
+              "data-size": ["sm", "md"]
+            },
+            "aria": ["aria-label"],
+            "children": ["icon"]
+          },
+          "parts": {
+            "icon": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": ["idle", "copied"],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -12138,6 +12855,86 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-state": ["default", "open", "error", "disabled"],
+              "data-size": ["sm", "md", "lg"]
+            },
+            "children": ["label", "field", "popup", "error", "hint"]
+          },
+          "parts": {
+            "label": {
+              "element": "label",
+              "children": ["$text"]
+            },
+            "field": {
+              "element": "div",
+              "children": ["trigger", "clear", "openButton"]
+            },
+            "trigger": {
+              "element": ["input", "button"],
+              "aria": [
+                "aria-expanded",
+                "aria-controls",
+                "aria-haspopup",
+                "aria-labelledby",
+                "aria-label",
+                "aria-invalid",
+                "aria-describedby",
+                "aria-required"
+              ],
+              "children": ["value"]
+            },
+            "value": {
+              "element": "span",
+              "children": ["$text"],
+              "modifiers": {
+                "placeholder": "!displayValue"
+              }
+            },
+            "clear": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["clearGlyph"]
+            },
+            "clearGlyph": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "openButton": {
+              "element": "button",
+              "aria": ["aria-label", "aria-expanded", "aria-controls"],
+              "children": ["calendarGlyph"]
+            },
+            "calendarGlyph": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "popup": {
+              "element": "div",
+              "role": "dialog",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-label"],
+              "children": ["@calendar"]
+            },
+            "error": {
+              "element": "span",
+              "role": "alert",
+              "when": "error",
+              "children": ["$text"]
+            },
+            "hint": {
+              "element": "span",
+              "when": "hint",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["default", "open", "error", "disabled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -12423,6 +13220,78 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-size": ["sm", "md", "lg"]
+            },
+            "children": ["trigger", "panel"]
+          },
+          "parts": {
+            "trigger": {
+              "element": "button",
+              "role": "combobox",
+              "aria": ["aria-expanded", "aria-haspopup", "aria-label"],
+              "children": ["value", "icon"]
+            },
+            "value": {
+              "element": "span",
+              "children": ["$text"],
+              "modifiers": {
+                "placeholder": "!displayValue"
+              }
+            },
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$text"]
+            },
+            "panel": {
+              "element": "div",
+              "role": "dialog",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "children": ["presets", "calendars", "footer"]
+            },
+            "presets": {
+              "element": "div",
+              "when": "presets",
+              "children": ["preset"]
+            },
+            "preset": {
+              "element": "button",
+              "children": ["$text"]
+            },
+            "calendars": {
+              "element": "div",
+              "children": ["calNav", "@calendar"]
+            },
+            "calNav": {
+              "element": "div",
+              "children": ["navButton"]
+            },
+            "navButton": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"]
+            },
+            "footer": {
+              "element": "div",
+              "children": ["clearBtn", "applyBtn"]
+            },
+            "clearBtn": {
+              "element": "button",
+              "children": ["$text"]
+            },
+            "applyBtn": {
+              "element": "button",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["default", "open", "selecting"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -12730,6 +13599,63 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "overlay",
+            "data": {
+              "data-side": ["left", "right", "top", "bottom"]
+            },
+            "children": ["panel"]
+          },
+          "parts": {
+            "panel": {
+              "element": "div",
+              "role": "dialog",
+              "data": {
+                "data-side": ["left", "right", "top", "bottom"],
+                "data-dragging": "string"
+              },
+              "aria": ["aria-modal", "aria-labelledby", "aria-describedby"],
+              "children": ["header", "body"]
+            },
+            "header": {
+              "element": "div",
+              "when": "title || description",
+              "children": ["heading", "close"]
+            },
+            "heading": {
+              "element": "div",
+              "children": ["title", "description"]
+            },
+            "title": {
+              "element": "h2",
+              "when": "title",
+              "children": ["$text"]
+            },
+            "description": {
+              "element": "p",
+              "when": "description",
+              "children": ["$text"]
+            },
+            "close": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["closeIcon"]
+            },
+            "closeIcon": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            },
+            "body": {
+              "element": "div",
+              "data": {
+                "data-cascivo-drawer-body": "string"
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -12901,6 +13827,39 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "children": ["$slot", "menu"]
+          },
+          "parts": {
+            "menu": {
+              "element": "div",
+              "role": "menu",
+              "data": {
+                "data-placement": "string",
+                "data-state": ["open", "closed"]
+              },
+              "children": ["item", "separator"]
+            },
+            "item": {
+              "element": "button",
+              "role": "menuitem",
+              "children": ["icon", "$text"]
+            },
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "when": "item.icon",
+              "children": ["$slot"]
+            },
+            "separator": {
+              "element": "div",
+              "role": "separator"
+            }
+          }
+        },
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -13088,6 +14047,42 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-disabled": "string"
+            },
+            "modifiers": {
+              "editing": "isEditing"
+            },
+            "children": ["input", "preview"]
+          },
+          "parts": {
+            "input": {
+              "element": "input",
+              "aria": ["aria-label", "aria-labelledby", "aria-describedby"]
+            },
+            "preview": {
+              "element": "button",
+              "aria": ["aria-label", "aria-labelledby", "aria-describedby"],
+              "children": ["preview-text", "edit-icon"]
+            },
+            "preview-text": {
+              "element": "span",
+              "children": ["$text", "placeholder"]
+            },
+            "placeholder": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "edit-icon": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": ["preview", "editing", "disabled"],
         "variants": [],
         "sizes": [],
@@ -13799,6 +14794,58 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "data": {
+              "data-position": "string"
+            },
+            "children": ["dial", "fab"]
+          },
+          "parts": {
+            "dial": {
+              "element": "menu",
+              "role": "menu",
+              "aria": ["aria-label"],
+              "when": "actions",
+              "children": ["dialItem"]
+            },
+            "dialItem": {
+              "element": "li",
+              "role": "presentation",
+              "children": ["action"]
+            },
+            "action": {
+              "element": "button",
+              "role": "menuitem",
+              "aria": ["aria-disabled"],
+              "children": ["actionLabel", "actionIcon"]
+            },
+            "actionLabel": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "actionIcon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "fab": {
+              "element": "button",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-label", "aria-haspopup", "aria-expanded", "aria-controls"],
+              "children": ["icon"]
+            },
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["default", "open", "closed"],
         "variants": [],
         "sizes": [],
@@ -14155,6 +15202,92 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "uploader",
+            "children": ["label", "input", "zone", "hint", "srOnly", "list"]
+          },
+          "parts": {
+            "label": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "input": {
+              "element": "input",
+              "aria": ["aria-labelledby"]
+            },
+            "zone": {
+              "element": "button",
+              "data": {
+                "data-state": ["idle", "dragover"]
+              },
+              "aria": ["aria-labelledby", "aria-label", "aria-describedby"],
+              "children": ["zoneText"]
+            },
+            "zoneText": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "hint": {
+              "element": "span",
+              "when": "hint",
+              "children": ["$text"]
+            },
+            "srOnly": {
+              "element": "span",
+              "role": "status",
+              "aria": ["aria-live"],
+              "children": ["$text"]
+            },
+            "list": {
+              "element": "ul",
+              "when": "files.length",
+              "children": ["file"]
+            },
+            "file": {
+              "element": "li",
+              "data": {
+                "data-state": "string"
+              },
+              "children": ["status", "name", "size", "remove", "error-message"]
+            },
+            "status": {
+              "element": "span",
+              "children": ["@spinner", "glyph-complete", "glyph-error"]
+            },
+            "glyph-complete": {
+              "element": "span",
+              "role": "img",
+              "aria": ["aria-label"],
+              "children": ["$text"]
+            },
+            "glyph-error": {
+              "element": "span",
+              "role": "img",
+              "aria": ["aria-label"],
+              "children": ["$text"]
+            },
+            "name": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "size": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "remove": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"]
+            },
+            "error-message": {
+              "element": "span",
+              "role": "alert",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["idle", "dragover", "uploading", "complete", "error", "disabled"],
         "variants": [],
         "sizes": [],
@@ -14342,6 +15475,28 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "filter",
+            "role": "group",
+            "data": {
+              "data-variant": ["pill", "outline"]
+            },
+            "aria": ["aria-label"],
+            "children": ["item"]
+          },
+          "parts": {
+            "item": {
+              "element": "button",
+              "data": {
+                "data-selected": "boolean"
+              },
+              "aria": ["aria-pressed"],
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["default", "selected", "hover", "focus"],
         "variants": ["pill", "outline"],
         "sizes": [],
@@ -16337,6 +17492,13 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "form",
+            "local": "form",
+            "children": ["$slot"]
+          }
+        },
         "states": ["idle", "submitting"],
         "variants": [],
         "sizes": [],
@@ -16588,6 +17750,36 @@
         "category": "navigation",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "panel",
+            "role": "region",
+            "data": {
+              "data-state": ["open", "closed"]
+            },
+            "aria": ["aria-label"],
+            "children": ["header", "body"]
+          },
+          "parts": {
+            "header": {
+              "element": "div",
+              "children": ["title", "close"]
+            },
+            "title": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "close": {
+              "element": "button",
+              "aria": ["aria-label"]
+            },
+            "body": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -16844,6 +18036,23 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "local": "trigger",
+            "children": ["$slot", "content"]
+          },
+          "parts": {
+            "content": {
+              "element": "div",
+              "role": "complementary",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -17381,6 +18590,25 @@
         "category": "feedback",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "children": ["status", "button"]
+          },
+          "parts": {
+            "status": {
+              "element": "span",
+              "role": "status",
+              "when": "loading",
+              "children": ["@spinner", "$text"]
+            },
+            "button": {
+              "element": "button",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["idle", "loading", "disabled"],
         "variants": [],
         "sizes": [],
@@ -20368,6 +21596,73 @@
         "category": "display",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "children": ["toolbar", "scroll"]
+          },
+          "parts": {
+            "toolbar": {
+              "element": "div",
+              "children": ["search", "count", "spacer", "toggle", "copy"]
+            },
+            "search": {
+              "element": "input",
+              "aria": ["aria-label"]
+            },
+            "count": {
+              "element": "span",
+              "aria": ["aria-live"],
+              "when": "search query",
+              "children": ["$text"]
+            },
+            "spacer": {
+              "element": "span"
+            },
+            "toggle": {
+              "element": "button",
+              "aria": ["aria-pressed"],
+              "children": ["$text"]
+            },
+            "copy": {
+              "element": "button",
+              "children": ["$text"]
+            },
+            "scroll": {
+              "element": "div",
+              "role": "log",
+              "aria": ["aria-live", "aria-label"],
+              "children": ["empty", "sizer"]
+            },
+            "empty": {
+              "element": "div",
+              "children": ["$text"]
+            },
+            "sizer": {
+              "element": "div",
+              "children": ["line"]
+            },
+            "line": {
+              "element": "div",
+              "data": {
+                "data-level": ["info", "warn", "error", "debug"]
+              },
+              "children": ["timestamp", "ansi", "$text"]
+            },
+            "timestamp": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "ansi": {
+              "element": "span",
+              "data": {
+                "data-ansi": "string"
+              },
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["following", "paused", "empty"],
         "variants": [],
         "sizes": [],
@@ -20542,6 +21837,34 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "panel",
+            "role": "menu",
+            "data": {
+              "data-state": ["open", "closed"]
+            },
+            "children": ["trigger", "item", "separator"]
+          },
+          "parts": {
+            "trigger": {
+              "element": "button",
+              "aria": ["aria-haspopup", "aria-expanded", "aria-label"],
+              "children": ["$slot"]
+            },
+            "item": {
+              "element": "div",
+              "role": "menuitem",
+              "aria": ["aria-disabled"],
+              "children": ["$slot"]
+            },
+            "separator": {
+              "element": "div",
+              "role": "separator"
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -20656,6 +21979,40 @@
         "category": "navigation",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "children": ["trigger", "menu"]
+          },
+          "parts": {
+            "trigger": {
+              "element": "button",
+              "data": {
+                "data-variant": ["primary", "secondary", "ghost"],
+                "data-size": ["sm", "md", "lg"]
+              },
+              "aria": ["aria-haspopup", "aria-expanded", "aria-controls", "aria-label"],
+              "children": ["$slot"]
+            },
+            "menu": {
+              "element": "div",
+              "role": "menu",
+              "data": {
+                "data-state": ["open"],
+                "data-align": ["start", "end"]
+              },
+              "when": "open",
+              "children": ["item"]
+            },
+            "item": {
+              "element": "div",
+              "role": "menuitem",
+              "aria": ["aria-disabled"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": ["primary", "secondary", "ghost"],
         "sizes": ["sm", "md", "lg"],
@@ -20831,6 +22188,38 @@
         "category": "navigation",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "menubar",
+            "role": "menubar",
+            "aria": ["aria-label"],
+            "children": ["trigger"]
+          },
+          "parts": {
+            "trigger": {
+              "element": "button",
+              "role": "menuitem",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-haspopup", "aria-expanded", "aria-controls"],
+              "children": ["$text", "panel"]
+            },
+            "panel": {
+              "element": "div",
+              "role": "menu",
+              "aria": ["aria-label"],
+              "children": ["item"]
+            },
+            "item": {
+              "element": "div",
+              "role": "menuitem",
+              "aria": ["aria-disabled"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -20965,6 +22354,28 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "actions",
+            "role": "group",
+            "aria": ["aria-label"],
+            "children": ["rate"]
+          },
+          "parts": {
+            "rate": {
+              "element": "button",
+              "data": {
+                "data-active": "boolean"
+              },
+              "aria": ["aria-pressed", "aria-label"],
+              "children": ["down"]
+            },
+            "down": {
+              "element": "svg"
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -21336,6 +22747,162 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-state": ["closed", "open", "error"],
+              "data-size": ["sm", "md", "lg"]
+            },
+            "children": ["label", "field", "panel", "sr-only", "error", "hint"]
+          },
+          "parts": {
+            "label": {
+              "element": "label",
+              "children": ["$text"]
+            },
+            "field": {
+              "element": "div",
+              "data": {
+                "data-display": ["count", "chips"]
+              },
+              "children": ["chip", "trigger", "clear"]
+            },
+            "chip": {
+              "element": "span",
+              "when": "display === 'chips'",
+              "children": ["chip-label", "chip-remove"]
+            },
+            "chip-label": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "chip-remove": {
+              "element": "button",
+              "aria": ["aria-label"]
+            },
+            "trigger": {
+              "element": "button",
+              "aria": [
+                "aria-haspopup",
+                "aria-expanded",
+                "aria-controls",
+                "aria-labelledby",
+                "aria-label",
+                "aria-invalid",
+                "aria-describedby"
+              ],
+              "children": ["trigger-label", "chevron"]
+            },
+            "trigger-label": {
+              "element": "span",
+              "data": {
+                "data-empty": "boolean"
+              },
+              "children": ["sr-only", "$text"]
+            },
+            "chevron": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "clear": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["clear-glyph"]
+            },
+            "clear-glyph": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "panel": {
+              "element": "div",
+              "children": ["search-row", "select-all", "options", "status"]
+            },
+            "search-row": {
+              "element": "div",
+              "children": ["search"]
+            },
+            "search": {
+              "element": "input",
+              "role": "combobox",
+              "aria": [
+                "aria-label",
+                "aria-expanded",
+                "aria-controls",
+                "aria-autocomplete",
+                "aria-activedescendant"
+              ]
+            },
+            "select-all": {
+              "element": "button",
+              "children": ["$text"]
+            },
+            "options": {
+              "element": "div",
+              "role": "listbox",
+              "aria": ["aria-multiselectable", "aria-label", "aria-busy", "aria-activedescendant"],
+              "children": ["group", "option"]
+            },
+            "group": {
+              "element": "div",
+              "role": "group",
+              "aria": ["aria-label"],
+              "children": ["group-label", "option"]
+            },
+            "group-label": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$text"]
+            },
+            "option": {
+              "element": "div",
+              "role": "option",
+              "data": {
+                "data-active": "boolean",
+                "data-selected": "boolean",
+                "data-disabled": "boolean"
+              },
+              "aria": ["aria-selected", "aria-disabled"],
+              "modifiers": {
+                "create": "create option"
+              },
+              "children": ["checkbox", "option-label"]
+            },
+            "checkbox": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "option-label": {
+              "element": "span",
+              "children": ["match", "$text"]
+            },
+            "match": {
+              "element": "mark",
+              "children": ["$text"]
+            },
+            "status": {
+              "element": "div",
+              "role": "status",
+              "children": ["$text"]
+            },
+            "sr-only": {
+              "element": "span",
+              "role": "status",
+              "aria": ["aria-live"],
+              "children": ["$text"]
+            },
+            "error": {
+              "element": "span",
+              "role": "alert",
+              "children": ["$text"]
+            },
+            "hint": {
+              "element": "span",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["closed", "open", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -21826,6 +23393,44 @@
         "category": "navigation",
         "clientJs": "enhancement",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "nav",
+            "local": "nav",
+            "data": {
+              "data-orientation": ["horizontal", "vertical", "both"]
+            },
+            "aria": ["aria-label"],
+            "children": ["list"]
+          },
+          "parts": {
+            "list": {
+              "element": "ul",
+              "role": "list",
+              "children": ["item"]
+            },
+            "item": {
+              "element": "li",
+              "children": ["link", "trigger"]
+            },
+            "link": {
+              "element": "a",
+              "children": ["$text"]
+            },
+            "trigger": {
+              "element": "button",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-expanded", "aria-controls"],
+              "children": ["$text", "panel"]
+            },
+            "panel": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -22330,6 +23935,24 @@
         "category": "inputs",
         "clientJs": "enhancement",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "role": "group",
+            "aria": ["aria-label"],
+            "children": ["slot"]
+          },
+          "parts": {
+            "slot": {
+              "element": "input",
+              "data": {
+                "data-filled": "boolean"
+              },
+              "aria": ["aria-label"]
+            }
+          }
+        },
         "states": ["idle", "focused", "filled", "disabled"],
         "variants": [],
         "sizes": [],
@@ -22460,6 +24083,26 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "children": ["trigger", "destructive-flag"]
+          },
+          "parts": {
+            "trigger": {
+              "element": "button",
+              "data": {
+                "data-size": ["sm", "md"]
+              },
+              "aria": ["aria-label"]
+            },
+            "destructive-flag": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": ["closed", "open"],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -22632,6 +24275,41 @@
         "category": "navigation",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "nav",
+            "aria": ["aria-label"],
+            "children": ["group", "range", "buttons"]
+          },
+          "parts": {
+            "group": {
+              "element": ["label", "div"],
+              "children": ["label", "select"]
+            },
+            "label": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$text"]
+            },
+            "select": {
+              "element": "select",
+              "aria": ["aria-label"]
+            },
+            "range": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "buttons": {
+              "element": "div",
+              "children": ["button"]
+            },
+            "button": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -22929,6 +24607,24 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "content",
+            "role": "dialog",
+            "data": {
+              "data-state": ["open", "closed"]
+            },
+            "children": ["$slot", "trigger"]
+          },
+          "parts": {
+            "trigger": {
+              "element": ["button", "a"],
+              "aria": ["aria-expanded", "aria-haspopup"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -23846,6 +25542,42 @@
         "category": "feedback",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "children": ["indicator", "srOnly", "viewport"]
+          },
+          "parts": {
+            "indicator": {
+              "element": "div",
+              "data": {
+                "data-dragging": "boolean"
+              },
+              "children": ["arrow", "@spinner"]
+            },
+            "arrow": {
+              "element": "svg",
+              "data": {
+                "data-ready": "boolean"
+              },
+              "aria": ["aria-hidden"]
+            },
+            "srOnly": {
+              "element": "span",
+              "role": "status",
+              "aria": ["aria-live"],
+              "children": ["$text"]
+            },
+            "viewport": {
+              "element": "div",
+              "data": {
+                "data-dragging": "boolean"
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["idle", "pulling", "ready", "refreshing"],
         "variants": [],
         "sizes": [],
@@ -24934,6 +26666,46 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "children": ["list", "srOnly"]
+          },
+          "parts": {
+            "list": {
+              "element": "ul",
+              "children": ["row"]
+            },
+            "row": {
+              "element": "li",
+              "data": {
+                "data-reorder-row": "string",
+                "data-active": "boolean"
+              },
+              "children": ["handle", "label"]
+            },
+            "handle": {
+              "element": "button",
+              "aria": ["aria-label", "aria-pressed"],
+              "children": ["grip"]
+            },
+            "grip": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            },
+            "label": {
+              "element": "span",
+              "children": ["$slot"]
+            },
+            "srOnly": {
+              "element": "span",
+              "role": "status",
+              "aria": ["aria-live"],
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["idle", "grabbed", "disabled"],
         "variants": [],
         "sizes": [],
@@ -25106,6 +26878,37 @@
         "category": "layout",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-orientation": ["horizontal", "vertical"]
+            },
+            "children": ["pane", "handle"]
+          },
+          "parts": {
+            "pane": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "handle": {
+              "element": "div",
+              "role": "separator",
+              "aria": [
+                "aria-orientation",
+                "aria-label",
+                "aria-valuenow",
+                "aria-valuemin",
+                "aria-valuemax"
+              ],
+              "children": ["grip"]
+            },
+            "grip": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -26220,6 +28023,31 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "role": "group",
+            "data": {
+              "data-size": ["sm", "md", "lg"],
+              "data-disabled": "boolean"
+            },
+            "aria": ["aria-label"],
+            "children": ["segment"]
+          },
+          "parts": {
+            "segment": {
+              "element": "button",
+              "role": "radio",
+              "data": {
+                "data-selected": "boolean",
+                "data-size": ["sm", "md", "lg"]
+              },
+              "aria": ["aria-checked"],
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["idle", "selected", "disabled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -26699,6 +28527,63 @@
         "category": "overlay",
         "clientJs": "enhancement",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "local": "root",
+            "children": ["trigger", "panel"]
+          },
+          "parts": {
+            "trigger": {
+              "element": "button",
+              "data": {
+                "data-size": ["sm", "md"]
+              },
+              "aria": ["aria-expanded"],
+              "children": ["icon", "$text"]
+            },
+            "icon": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            },
+            "panel": {
+              "element": "div",
+              "aria": ["aria-label"],
+              "children": ["list"]
+            },
+            "list": {
+              "element": "ul",
+              "children": ["server", "item", "divided"]
+            },
+            "server": {
+              "element": "form",
+              "children": ["serverLabel", "serverRow"]
+            },
+            "serverLabel": {
+              "element": "label",
+              "children": ["$text"]
+            },
+            "serverRow": {
+              "element": "span",
+              "children": ["serverInput", "item"]
+            },
+            "serverInput": {
+              "element": "input"
+            },
+            "item": {
+              "element": ["a", "button"],
+              "data": {
+                "data-network": ["bluesky", "mastodon", "threads", "linkedin", "x"],
+                "data-state": ["idle", "copied"]
+              },
+              "children": ["$text"]
+            },
+            "divided": {
+              "element": "li",
+              "children": ["item"]
+            }
+          }
+        },
         "states": ["closed", "open", "copied"],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -26864,6 +28749,41 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "sheet",
+            "role": "dialog",
+            "data": {
+              "data-state": ["open", "closed"],
+              "data-side": ["start", "end", "top", "bottom"]
+            },
+            "aria": ["aria-modal", "aria-labelledby"],
+            "children": ["header", "body"]
+          },
+          "parts": {
+            "header": {
+              "element": "div",
+              "children": ["title", "close"]
+            },
+            "title": {
+              "element": "span",
+              "children": ["$slot"]
+            },
+            "close": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"]
+            },
+            "body": {
+              "element": "div",
+              "data": {
+                "data-cascivo-sheet-body": "string"
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -26987,6 +28907,126 @@
         "category": "navigation",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "header",
+            "local": "header",
+            "role": "banner",
+            "children": [
+              "skipLink",
+              "menuButton",
+              "brand",
+              "nav",
+              "center",
+              "spacer",
+              "actions",
+              "end"
+            ]
+          },
+          "parts": {
+            "skipLink": {
+              "element": "a",
+              "children": ["$text"]
+            },
+            "menuButton": {
+              "element": "button",
+              "aria": ["aria-label", "aria-expanded"],
+              "children": ["$slot"]
+            },
+            "brand": {
+              "element": ["a", "div"],
+              "aria": ["aria-label"],
+              "children": ["brandPrefix", "brandName", "$slot"]
+            },
+            "brandPrefix": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "brandName": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "nav": {
+              "element": "nav",
+              "aria": ["aria-label"],
+              "children": ["navList"]
+            },
+            "navList": {
+              "element": "ul",
+              "children": ["navLink", "navMenuWrapper"]
+            },
+            "navLink": {
+              "element": "a",
+              "data": {
+                "data-state": ["active"]
+              },
+              "aria": ["aria-current"],
+              "children": ["$text"]
+            },
+            "navMenuWrapper": {
+              "element": "li",
+              "children": ["navMenuTrigger", "navMenuPanel"]
+            },
+            "navMenuTrigger": {
+              "element": "button",
+              "data": {
+                "data-state": ["active"]
+              },
+              "aria": ["aria-haspopup", "aria-expanded"],
+              "children": ["$text", "chevron"]
+            },
+            "chevron": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            },
+            "navMenuPanel": {
+              "element": "div",
+              "role": "menu",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-label"],
+              "children": ["navMenuItem"]
+            },
+            "navMenuItem": {
+              "element": "a",
+              "role": "menuitem",
+              "data": {
+                "data-state": ["active"]
+              },
+              "aria": ["aria-current"],
+              "children": ["$text"]
+            },
+            "center": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "spacer": {
+              "element": "div"
+            },
+            "actions": {
+              "element": "div",
+              "children": ["action"]
+            },
+            "action": {
+              "element": "button",
+              "data": {
+                "data-state": ["active"]
+              },
+              "aria": ["aria-label", "aria-pressed"],
+              "children": ["actionIcon"]
+            },
+            "actionIcon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "end": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -27361,6 +29401,149 @@
         "category": "navigation",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "nav",
+            "local": "sideNav",
+            "data": {
+              "data-state": ["expanded", "collapsed"],
+              "data-expand-on-hover": "string"
+            },
+            "aria": ["aria-label"],
+            "children": ["header", "list", "footer", "collapseToggle"]
+          },
+          "parts": {
+            "header": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "list": {
+              "element": "ul",
+              "children": ["group"]
+            },
+            "group": {
+              "element": "li",
+              "children": ["groupLabel", "groupItems"]
+            },
+            "groupLabel": {
+              "element": "h3",
+              "children": ["$text"]
+            },
+            "groupItems": {
+              "element": "ul",
+              "children": ["link", "groupTrigger", "railFlyout", "sublist", "customItem"]
+            },
+            "link": {
+              "element": ["a", "button"],
+              "role": "menuitem",
+              "modifiers": {
+                "sublink": "sub item",
+                "flyoutItem": "in rail flyout"
+              },
+              "data": {
+                "data-state": ["active"],
+                "data-tone": ["danger", "warning", "success"],
+                "data-selected": "boolean"
+              },
+              "aria": ["aria-current", "aria-label", "aria-disabled"],
+              "children": ["icon", "fallbackIcon", "label", "trailing", "checkMark"]
+            },
+            "groupTrigger": {
+              "element": "button",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-expanded", "aria-controls", "aria-haspopup", "aria-label"],
+              "children": ["icon", "fallbackIcon", "label", "groupIndicator"]
+            },
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "fallbackIcon": {
+              "element": "span",
+              "data": {
+                "data-fallback-icon": "boolean"
+              },
+              "aria": ["aria-hidden"],
+              "children": ["$text"]
+            },
+            "label": {
+              "element": "span",
+              "data": {
+                "data-rail-hidden": "boolean"
+              },
+              "children": ["$text"]
+            },
+            "trailing": {
+              "element": "span",
+              "data": {
+                "data-rail-hidden": "boolean"
+              },
+              "children": ["$slot"]
+            },
+            "checkMark": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            },
+            "groupIndicator": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            },
+            "sublist": {
+              "element": "div",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "children": ["sublistInner"]
+            },
+            "sublistInner": {
+              "element": "ul",
+              "children": ["subSeparator", "subGroupLabel", "link"]
+            },
+            "subSeparator": {
+              "element": "li",
+              "role": "separator"
+            },
+            "subGroupLabel": {
+              "element": "li",
+              "children": ["$text"]
+            },
+            "railFlyout": {
+              "element": "div",
+              "role": "menu",
+              "aria": ["aria-label"],
+              "children": ["railFlyoutCaption", "flyoutSeparator", "link"]
+            },
+            "railFlyoutCaption": {
+              "element": "div",
+              "aria": ["aria-hidden"],
+              "children": ["$text"]
+            },
+            "flyoutSeparator": {
+              "element": "div",
+              "role": "separator"
+            },
+            "customItem": {
+              "element": "li",
+              "children": ["$slot"]
+            },
+            "footer": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "collapseToggle": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["collapseIcon"]
+            },
+            "collapseIcon": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": ["expanded", "collapsed"],
         "variants": [],
         "sizes": [],
@@ -28794,6 +30977,19 @@
         "category": "display",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "local": "root",
+            "children": ["$text", "cursor"]
+          },
+          "parts": {
+            "cursor": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -29055,6 +31251,31 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "button",
+            "local": "swap",
+            "role": "switch",
+            "data": {
+              "data-checked": "boolean",
+              "data-mode": ["rotate", "flip"]
+            },
+            "aria": ["aria-checked", "aria-label"],
+            "children": ["on", "off"]
+          },
+          "parts": {
+            "on": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "off": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["unchecked", "checked"],
         "variants": ["rotate", "flip"],
         "sizes": [],
@@ -29207,6 +31428,49 @@
         "category": "display",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "data": {
+              "data-state": ["closed", "leading", "trailing"]
+            },
+            "children": ["panel", "content"]
+          },
+          "parts": {
+            "panel": {
+              "element": "div",
+              "modifiers": {
+                "leading": "side === 'leading'",
+                "trailing": "side === 'trailing'"
+              },
+              "children": ["action"]
+            },
+            "action": {
+              "element": "button",
+              "data": {
+                "data-destructive": "boolean"
+              },
+              "children": ["actionIcon", "actionLabel"]
+            },
+            "actionIcon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "actionLabel": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "content": {
+              "element": "div",
+              "data": {
+                "data-dragging": "boolean"
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["closed", "leading", "trailing"],
         "variants": [],
         "sizes": [],
@@ -29472,6 +31736,9 @@
             "content": {
               "element": "div",
               "role": "tabpanel",
+              "data": {
+                "data-state": ["active", "inactive"]
+              },
               "aria": ["aria-labelledby"],
               "children": ["$slot"]
             }
@@ -29745,6 +32012,34 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-disabled": "boolean"
+            },
+            "children": ["tag", "input"]
+          },
+          "parts": {
+            "tag": {
+              "element": "span",
+              "data": {
+                "data-state": ["invalid"]
+              },
+              "children": ["$text", "dismiss"]
+            },
+            "dismiss": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"]
+            },
+            "input": {
+              "element": "input",
+              "aria": ["aria-labelledby", "aria-describedby", "aria-invalid", "aria-label"]
+            }
+          }
+        },
         "states": ["idle", "focused", "disabled"],
         "variants": [],
         "sizes": [],
@@ -29904,6 +32199,35 @@
         "category": "display",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "role": "group",
+            "aria": ["aria-label"],
+            "children": ["line"]
+          },
+          "parts": {
+            "line": {
+              "element": "div",
+              "data": {
+                "data-type": ["command", "output", "error", "comment"]
+              },
+              "children": ["prefix", "text", "cursor"]
+            },
+            "prefix": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "text": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "cursor": {
+              "element": "span"
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -30377,6 +32701,30 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "tile",
+            "role": "checkbox",
+            "data": {
+              "data-selected": "boolean",
+              "data-disabled": "boolean"
+            },
+            "aria": ["aria-checked", "aria-disabled"],
+            "children": ["icon", "body"]
+          },
+          "parts": {
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "body": {
+              "element": "span",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["default", "selected", "focus", "disabled"],
         "variants": ["single", "multi"],
         "sizes": [],
@@ -30541,6 +32889,36 @@
         "category": "inputs",
         "clientJs": "enhancement",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-state": ["idle", "focused", "error"],
+              "data-size": ["sm", "md", "lg"]
+            },
+            "children": ["label", "input", "error", "hint"]
+          },
+          "parts": {
+            "label": {
+              "element": "label",
+              "children": ["$text"]
+            },
+            "input": {
+              "element": "input",
+              "aria": ["aria-invalid", "aria-describedby", "aria-label"]
+            },
+            "error": {
+              "element": "span",
+              "role": "alert",
+              "children": ["$text"]
+            },
+            "hint": {
+              "element": "span",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -30854,7 +33232,9 @@
             },
             "icon": {
               "element": "span",
-              "when": "false"
+              "aria": ["aria-hidden"],
+              "children": ["$text"],
+              "when": "variant !== 'default'"
             },
             "body": {
               "element": "div",
@@ -31135,6 +33515,33 @@
         "category": "inputs",
         "clientJs": "enhancement",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "button",
+            "local": "toggle",
+            "role": "switch",
+            "data": {
+              "data-state": ["off", "on"],
+              "data-size": ["sm", "md"]
+            },
+            "aria": ["aria-checked", "aria-label"],
+            "children": ["track", "label"]
+          },
+          "parts": {
+            "track": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["thumb"]
+            },
+            "thumb": {
+              "element": "span"
+            },
+            "label": {
+              "element": "span",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["off", "on"],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -31293,6 +33700,28 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "toggleGroup",
+            "role": "group",
+            "data": {
+              "data-orientation": ["horizontal", "vertical"],
+              "data-size": ["sm", "md", "lg"]
+            },
+            "children": ["item"]
+          },
+          "parts": {
+            "item": {
+              "element": "button",
+              "data": {
+                "data-state": ["on", "off"]
+              },
+              "aria": ["aria-checked", "aria-pressed", "aria-label"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["on", "off"],
         "variants": ["single", "multiple"],
         "sizes": ["sm", "md", "lg"],
@@ -31457,6 +33886,29 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "local": "root",
+            "children": ["trigger", "bubble"]
+          },
+          "parts": {
+            "trigger": {
+              "element": "button",
+              "aria": ["aria-expanded", "aria-controls", "aria-label"],
+              "children": ["$slot"]
+            },
+            "bubble": {
+              "element": "div",
+              "role": "status",
+              "data": {
+                "data-state": ["open"],
+                "data-placement": "string"
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -31772,6 +34224,25 @@
         "category": "overlay",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "local": "root",
+            "children": ["$slot", "tooltip"]
+          },
+          "parts": {
+            "tooltip": {
+              "element": "span",
+              "role": "tooltip",
+              "data": {
+                "data-state": ["visible", "hidden"],
+                "data-placement": "string",
+                "data-anchor": "string"
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["hidden", "visible"],
         "variants": [],
         "sizes": [],
@@ -31904,6 +34375,73 @@
         "category": "display",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "ul",
+            "local": "tree",
+            "role": "tree",
+            "aria": ["aria-multiselectable", "aria-label"],
+            "children": ["item"]
+          },
+          "parts": {
+            "item": {
+              "element": "li",
+              "role": "treeitem",
+              "data": {
+                "data-state": ["open", "closed"],
+                "data-selected": "boolean",
+                "data-disabled": "boolean"
+              },
+              "aria": [
+                "aria-labelledby",
+                "aria-level",
+                "aria-posinset",
+                "aria-setsize",
+                "aria-selected",
+                "aria-expanded",
+                "aria-disabled"
+              ],
+              "children": ["row", "groupWrap"]
+            },
+            "row": {
+              "element": "span",
+              "children": ["twisty", "twistySpacer", "icon", "label"]
+            },
+            "twisty": {
+              "element": "span",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-hidden"]
+            },
+            "twistySpacer": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "label": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "groupWrap": {
+              "element": "div",
+              "role": "presentation",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "children": ["group"]
+            },
+            "group": {
+              "element": "ul",
+              "role": "group",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["default", "expanded", "collapsed", "selected"],
         "variants": ["single", "multi"],
         "sizes": [],
@@ -32331,6 +34869,27 @@
         "category": "display",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "viewport",
+            "role": "list",
+            "aria": ["aria-label"],
+            "children": ["canvas"]
+          },
+          "parts": {
+            "canvas": {
+              "element": "div",
+              "children": ["row"]
+            },
+            "row": {
+              "element": "div",
+              "role": "listitem",
+              "aria": ["aria-setsize", "aria-posinset"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -32580,6 +35139,31 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "children": ["column", "band"]
+          },
+          "parts": {
+            "column": {
+              "element": "div",
+              "role": "listbox",
+              "aria": ["aria-label", "aria-activedescendant"],
+              "children": ["option"]
+            },
+            "option": {
+              "element": "div",
+              "role": "option",
+              "aria": ["aria-selected"],
+              "children": ["$text"]
+            },
+            "band": {
+              "element": "div",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": ["idle", "focused", "scrolling"],
         "variants": [],
         "sizes": [],

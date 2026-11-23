@@ -6,6 +6,22 @@ export const meta: ComponentMeta = {
   category: 'overlay',
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'sheet',
+      role: 'dialog',
+      data: { 'data-state': ['open', 'closed'], 'data-side': ['start', 'end', 'top', 'bottom'] },
+      aria: ['aria-modal', 'aria-labelledby'],
+      children: ['header', 'body'],
+    },
+    parts: {
+      header: { element: 'div', children: ['title', 'close'] },
+      title: { element: 'span', children: ['$slot'] },
+      close: { element: 'button', aria: ['aria-label'], children: ['$text'] },
+      body: { element: 'div', data: { 'data-cascivo-sheet-body': 'string' }, children: ['$slot'] },
+    },
+  },
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

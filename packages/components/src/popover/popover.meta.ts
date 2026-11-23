@@ -6,6 +6,22 @@ export const meta: ComponentMeta = {
   category: 'overlay',
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'content',
+      role: 'dialog',
+      data: { 'data-state': ['open', 'closed'] },
+      children: ['$slot', 'trigger'],
+    },
+    parts: {
+      trigger: {
+        element: ['button', 'a'],
+        aria: ['aria-expanded', 'aria-haspopup'],
+        children: ['$slot'],
+      },
+    },
+  },
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

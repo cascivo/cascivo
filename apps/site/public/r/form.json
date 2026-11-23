@@ -30,6 +30,13 @@
     "category": "inputs",
     "clientJs": "required",
     "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "form",
+        "local": "form",
+        "children": ["$slot"]
+      }
+    },
     "states": ["idle", "submitting"],
     "variants": [],
     "sizes": [],
