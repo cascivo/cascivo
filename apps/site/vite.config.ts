@@ -1114,6 +1114,7 @@ export default defineConfig({
     include: [
       'src/**/*.test.ts',
       'src/marketing/pages/EvalsPage.test.tsx',
+      'src/marketing/pages/cascivo-sans/WeightWaterfall.test.tsx',
       'src/marketing/poster/HeroLiveFrames.test.tsx',
     ],
   },

@@ -85,6 +85,12 @@ STRONG = {(a, b): (reach, more, gain, limit) for lefts, rights, reach, more, gai
 WHITE_DEPTH, WHITE_BAND, WHITE_LEAST = 400, (0.85, 1.1), 0.75
 AIM_BAND, AIM_LEAST = (0.88, 1.06), 0.78
 AIM_OWN = {('f', 't'): (0.88, 1.09)}
+# Round 5, upright f) at 800-900: its closest row is the hook (35 units at Black, 0.95x Inter's 37), and at the band's mean the pair read
+# as touching. Its closest row aims at AIM_LEAST_OWN of Inter's and its mean may run to AIM_OWN_UPRIGHT's ceiling (under test_font's
+# WHITE_BAND_SHAPE: 1.17 at 800, 1.26 at 900), so the kerning closes the hole under the crossbar only as far as the hook allows:
+# Black's f) kerns -34 (it was -46), the hook 47 units clear (mean white 1.16x Inter's), 800's 53 (1.14x).
+AIM_OWN_UPRIGHT = {('f', 'parenright'): (0.88, 1.17)}
+AIM_LEAST_OWN = {('f', 'parenright'): 1.15}
 WHITE_REF = {
     'upright': {
         'Wa': {100: (275, 131), 200: (259, 127)},
@@ -144,6 +150,11 @@ WHITE_REF = {
         'Kv': {400: (286, 185)},
         'Ky': {400: (285, 185)},
         'Kw': {400: (249, 164)},
+        # Round 5 (2): a quote before or after A, Inter's white at 400 and the heavy weights (Black's “A read 1.42x it, A” 1.16x: the quotes floated)
+        '“A': {400: (203, 174), 800: (180, 149), 900: (172, 141)},
+        '‘A': {400: (203, 174), 800: (180, 149), 900: (172, 141)},
+        'A”': {400: (239, 167), 800: (220, 145), 900: (215, 138)},
+        'A’': {400: (239, 167), 800: (220, 145), 900: (215, 138)},
     },
     'italic': {
         'Wa': {100: (211, 157), 200: (205, 149)},
@@ -208,7 +219,11 @@ WHITE_REF = {
 WHITE_ONLY = {('f', 'l'), ('c', 'f')}
 # 0 then 2 the same (round 4, merge 2: 1.18x the HH gap at Black upright; the italic's 1.02x stays unkerned).
 FIT_HH = {('zero.pnum', 'one.pnum'): 1.04, ('zero.pnum', 'two.pnum'): 1.04}
-FIT_HEAVY_ONLY = set(FIT_HH)
+# Round 5, italic 2: the italic e's right sidebearing opens at Black (glyphs.E_RSB_IT), and beside an f's crossbar that white read 1.25x the nn
+# gap (test_font.test_heavy_f_leaves_no_hole allows 0.85-1.15x; it was 1.14x). The pair closes at Black by what its least white in the
+# crossbar's rows (from, to, in units) has beyond `by` x the n pair's least white at mid x-height, italic only, nothing at Regular.
+FIT_ROWS_ITALIC = {('e', 'f'): (1.08, 422, 517)}
+FIT_HEAVY_ONLY = set(FIT_HH) | set(FIT_ROWS_ITALIC)
 
 
 CHAR_GLYPH = {
@@ -231,6 +246,9 @@ for _i, _n in enumerate(FIGS):
 # feet of diagonal letters and r. Only a pair whose measurement opens it is kept.
 OWN_SHAPE_PAIRS = {(a, b): 1 for a, b in [('l', 'period'), ('l', 'comma'), ('l', 'ellipsis'), ('l', 'A'), ('l', 'X'), ('l', 'x')]}
 OWN_SHAPE_PAIRS.update({(a, 'f'): 1 for a in 'kvwxyr'})
+# and into the descenders of g, j and q (round 5): Black's qf kept 9-15 units of white and jf 15-20, a touch at display sizes. The
+# upright f does not descend: its pairs measure open and are not kept.
+OWN_SHAPE_PAIRS.update({(a, 'f'): 1 for a in 'gjq'})
 # Clear at Regular but closing at the heavy corners (Display Black: the opsz and weight deltas add
 # up): the tailed l into z, the italic t's crossbar under a diagonal, top-heavy capitals into T.
 OWN_SHAPE_PAIRS.update({(a, b): 1 for a, b in [('l', 'z'), ('x', 't'), ('k', 't'), ('y', 't'), ('v', 't'), ('w', 't'), ('r', 't'), ('t', 'z'), ('V', 'T'), ('W', 'T'), ('Y', 'T'), ('X', 'T'), ('f', 'T')]})
@@ -459,7 +477,7 @@ def kern_pairs(o):
                 cands.setdefault((a, w), v)
     cands.update(OWN_SHAPE_PAIRS)
     cands.update({k: v for k, v in OWN_CLOSING_PAIRS.items() if not (o.p.italic and k in UPRIGHT_ONLY)})
-    cands.update({k: -1 for k in list(white_ref(o.p.italic)) + list(FIT_HH) if k[0] in glyphs and k[1] in glyphs})
+    cands.update({k: -1 for k in list(white_ref(o.p.italic)) + list(FIT_HH) + (list(FIT_ROWS_ITALIC) if o.p.italic else []) if k[0] in glyphs and k[1] in glyphs})
     # Georgian and Armenian against punctuation and figures: neither Noto nor DejaVu kerns these,
     # but at Black შ's and წ's curls reach a dash's height (–შ touched at Display Black italic).
     # Opening only. (։ and ֊ are the colon and hyphen themselves.)
@@ -578,7 +596,14 @@ def _design(w):
     raise ValueError(w)
 
 
-def _clamp_white(refs, value, mean0, least0, share, aim=AIM_BAND):
+def _aim(pair, italic):
+    """(mean band, closest-row aim) a WHITE_REF pair is fitted to."""
+    if not italic and pair in AIM_OWN_UPRIGHT:
+        return AIM_OWN_UPRIGHT[pair], AIM_LEAST_OWN.get(pair, AIM_LEAST)
+    return AIM_OWN.get(pair, AIM_BAND), AIM_LEAST
+
+
+def _clamp_white(refs, value, mean0, least0, share, aim=AIM_BAND, least_aim=AIM_LEAST):
     """The value nearest `value` that puts the white inside AIM_BAND of Inter's at the weights `share` reads, and its closest row over AIM_LEAST.
     share(w) is None for a weight this master does not carry, else (this master's share of it, the other master's mean and least, kerned)."""
     def bounds(band, least_aim):
@@ -592,7 +617,7 @@ def _clamp_white(refs, value, mean0, least0, share, aim=AIM_BAND):
             hi = min(hi, (band[1] * i_mean - base_mean) / f - mean0)
         return lo, hi
 
-    aim_lo, aim_hi = lo, hi = bounds(aim, AIM_LEAST)
+    aim_lo, aim_hi = lo, hi = bounds(aim, least_aim)
     if lo > hi:  # a pair whose closest row and whose mean pull apart at two weights: the margins go before the band does
         lo, hi = bounds(WHITE_BAND, WHITE_LEAST + 0.01)
     if lo > hi:  # and when they still do, the shapes decide (f) at Black: its hook is the nearest ink and the hole under the bar stays): the closest row wins
@@ -626,7 +651,7 @@ def _fit_white(o, vals, loc):
             m4, l4, v4 = _WHITE0[(a, b), 400]
             return f, (1 - f) * (m4 + v4), (1 - f) * (l4 + v4)
 
-        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, AIM_OWN.get((a, b), AIM_BAND))
+        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, *_aim((a, b), o.p.italic))
         _WHITE0[(a, b), w0] = (mean0, least0, vals[(a, b)])
     _FIT_O[w0] = o
     for (a, b), by in FIT_HH.items():
@@ -637,6 +662,11 @@ def _fit_white(o, vals, loc):
                 lo_h, _ = _cached_fine(o, 'H')
                 hh = min(o.adv['H'] - hi_h[x] + lo_h[x] for x in set(hi_h) & set(lo_h))
                 vals[(a, b)] = -max(0, int(round(_gap(o, a, b) - by * hh)))
+    for (a, b), (by, y0, y1) in FIT_ROWS_ITALIC.items() if o.p.italic else ():
+        if (a, b) in vals:
+            vals[(a, b)] = 0
+            if w0 == 900:
+                vals[(a, b)] = -max(0, int(round(_rows_gap(o, a, b, y0, y1) - by * _rows_gap(o, 'n', 'n', 238, 290))))
 
 
 _FIT_O = {}  # wght -> the master _fit_white last fitted there (Regular, Black): _fit_white_bold reads the outlines between them and Bold
@@ -685,7 +715,7 @@ def _fit_white_bold(o, vals):
             mean_d, least_d = _white0(_Between(other, o, f, (a, b)), a, b)
             return f, mean_d + (1 - f) * v_other - f * mean0, least_d + (1 - f) * v_other - f * least0
 
-        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, AIM_OWN.get((a, b), AIM_BAND))
+        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, *_aim((a, b), o.p.italic))
 
 
 def _values(o, pairs):
@@ -815,6 +845,13 @@ def _gap(o, a, b):
     lo, _ = _cached_fine(o, b)
     shared = [x for x in set(hi) & set(lo) if x >= 0]  # above the baseline: an ogonek or a descender hanging below it is not the letters' bodies meeting
     return min((o.adv[a] - hi[x]) + lo[x] for x in shared) if shared else None
+
+
+def _rows_gap(o, a, b, y0, y1):
+    """The least white between a and b, unkerned, in the 5-unit rows from y0 to y1 (units above the baseline)."""
+    _, hi = _cached_fine(o, a)
+    lo, _ = _cached_fine(o, b)
+    return min(o.adv[a] - hi[x] + lo[x] for x in set(hi) & set(lo) if y0 <= x * 5 <= y1)
 
 
 def _cached_fine(o, name):
@@ -977,7 +1014,7 @@ def kern_fea(o):
             elif (a, b) in OWN_SHAPE_PAIRS:
                 if k > 0 or not _HEAVY or any(_need(h, a, b) > 0 for h in _HEAVY):
                     keep.append((a, b))
-            elif (a, b) in white_ref(o.p.italic) or (a, b) in FIT_HH:
+            elif (a, b) in white_ref(o.p.italic) or (a, b) in FIT_HH or (o.p.italic and (a, b) in FIT_ROWS_ITALIC):
                 keep.append((a, b))
         _SELECTED = sorted(keep)
     firsts = sorted({a for a, _ in _SELECTED})
