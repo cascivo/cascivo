@@ -22,13 +22,13 @@ import { Terminal } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `lines` | `TerminalLine[]` | yes | — | The script. Each line has `text`, an optional `prefix` (e.g. `$`) and a `type` (`command \| output \| error \| comment`, default `output`). |
-| `speed` | `number` | no | `3` | Characters typed per animation frame. |
-| `loop` | `boolean` | no | `false` | Restart from the first line after the last one. |
-| `onComplete` | `() => void` | no | — | Called each time the last line finishes typing. |
-| `labels` | `{ label?: string }` | no | — | Overrides for the component’s user-visible strings (i18n) — `label` names the terminal for screen readers. |
+| Prop         | Type                 | Required | Default | Description                                                                                                                                 |
+| ------------ | -------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lines`      | `TerminalLine[]`     | yes      | —       | The script. Each line has `text`, an optional `prefix` (e.g. `$`) and a `type` (`command \| output \| error \| comment`, default `output`). |
+| `speed`      | `number`             | no       | `3`     | Characters typed per animation frame.                                                                                                       |
+| `loop`       | `boolean`            | no       | `false` | Restart from the first line after the last one.                                                                                             |
+| `onComplete` | `() => void`         | no       | —       | Called each time the last line finishes typing.                                                                                             |
+| `labels`     | `{ label?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n) — `label` names the terminal for screen readers.                                  |
 
 ## Object types
 
@@ -36,11 +36,11 @@ import { Terminal } from '@cascivo/react'
 
 One line of the script.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `text` | `string` | yes | What the line says. |
-| `prefix` | `string` | no | A prompt marker such as `$`, styled and not selectable. |
-| `type` | `'command' \| 'output' \| 'error' \| 'comment'` | no | Colours the line. Defaults to `output`. |
+| Field    | Type                                            | Required | Description                                             |
+| -------- | ----------------------------------------------- | -------- | ------------------------------------------------------- |
+| `text`   | `string`                                        | yes      | What the line says.                                     |
+| `prefix` | `string`                                        | no       | A prompt marker such as `$`, styled and not selectable. |
+| `type`   | `'command' \| 'output' \| 'error' \| 'comment'` | no       | Colours the line. Defaults to `output`.                 |
 
 ## Examples
 

@@ -27,20 +27,23 @@ import { Radio } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Text label for the control. Rendered on screen. |
-| `value` | `string` | yes | — | The controlled value. |
-| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
-| `name` | `string` | no | — | Form field name shared by the radio group. |
-| `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| Prop        | Type      | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                          |
+| ----------- | --------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`     | `string`  | no       | —       | Text label for the control. Rendered on screen.                                                                                                                                                                                                                                                                                                                                                      |
+| `value`     | `string`  | yes      | —       | The controlled value.                                                                                                                                                                                                                                                                                                                                                                                |
+| `disabled`  | `boolean` | no       | `false` | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
+| `name`      | `string`  | no       | —       | Form field name shared by the radio group.                                                                                                                                                                                                                                                                                                                                                           |
+| `ariaLabel` | `string`  | no       | —       | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Examples
 
 ### Group
 
 ```tsx
-<RadioGroup name="plan" defaultValue="pro"><Radio value="pro" label="Pro" /><Radio value="team" label="Team" /></RadioGroup>
+<RadioGroup name="plan" defaultValue="pro">
+  <Radio value="pro" label="Pro" />
+  <Radio value="team" label="Team" />
+</RadioGroup>
 ```
 
 ## Client JavaScript

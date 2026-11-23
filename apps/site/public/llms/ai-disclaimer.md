@@ -22,10 +22,10 @@ import { AiDisclaimer } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `ReactNode` | no | — | Replaces the default text — e.g. naming the model or what to double-check. |
-| `labels` | `{ text?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| Prop       | Type                | Required | Default | Description                                                                |
+| ---------- | ------------------- | -------- | ------- | -------------------------------------------------------------------------- |
+| `children` | `ReactNode`         | no       | —       | Replaces the default text — e.g. naming the model or what to double-check. |
+| `labels`   | `{ text?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).                 |
 
 ## Examples
 

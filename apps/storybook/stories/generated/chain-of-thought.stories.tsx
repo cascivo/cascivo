@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ChainOfThought } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Display/ChainOfThought",
+  title: 'Display/ChainOfThought',
 }
 export default meta
 type Story = StoryObj
 
 export const AgentSteps: Story = {
-  name: "Agent steps",
+  name: 'Agent steps',
   render: () => (
     <ChainOfThought
       items={[
@@ -22,7 +22,7 @@ export const AgentSteps: Story = {
 }
 
 export const WithCollapsibleDetail: Story = {
-  name: "With collapsible detail",
+  name: 'With collapsible detail',
   render: () => (
     <ChainOfThought
       items={[
@@ -30,11 +30,16 @@ export const WithCollapsibleDetail: Story = {
           id: 'search',
           title: 'Searched the web',
           status: 'complete',
-          detail: 'cascivo.com/docs · github.com/cascivo/cascivo · npmjs.com/package/@cascivo/react',
+          detail:
+            'cascivo.com/docs · github.com/cascivo/cascivo · npmjs.com/package/@cascivo/react',
         },
-        { id: 'fail', title: 'Fetch pricing page', description: 'The page returned 404.', status: 'error' },
+        {
+          id: 'fail',
+          title: 'Fetch pricing page',
+          description: 'The page returned 404.',
+          status: 'error',
+        },
       ]}
     />
   ),
 }
-

@@ -33,14 +33,14 @@ import { ShareMenu } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `url` | `string` | yes | — | The page being shared |
-| `text` | `string` | no | — | Text to post alongside the link (LinkedIn takes none; it reads the page) |
-| `items` | `Array<'bluesky' \| 'mastodon' \| 'threads' \| 'linkedin' \| 'x'>` | no | `['bluesky', 'mastodon', 'threads', 'linkedin', 'x']` | The networks offered, in order |
-| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `labels` | `{ share?: string; copyLink?: string; copied?: string; more?: string; server?: string; shareOn?: (network: string) => string }` | no | — | Overrides the built-in i18n labels per instance |
-| `className` | `string` | no | — | Class added to the root element |
+| Prop        | Type                                                                                                                            | Required | Default                                               | Description                                                              |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------- | ------------------------------------------------------------------------ |
+| `url`       | `string`                                                                                                                        | yes      | —                                                     | The page being shared                                                    |
+| `text`      | `string`                                                                                                                        | no       | —                                                     | Text to post alongside the link (LinkedIn takes none; it reads the page) |
+| `items`     | `Array<'bluesky' \| 'mastodon' \| 'threads' \| 'linkedin' \| 'x'>`                                                              | no       | `['bluesky', 'mastodon', 'threads', 'linkedin', 'x']` | The networks offered, in order                                           |
+| `size`      | `'sm' \| 'md'`                                                                                                                  | no       | `md`                                                  | Visual size of the component (e.g. 'sm', 'md', 'lg').                    |
+| `labels`    | `{ share?: string; copyLink?: string; copied?: string; more?: string; server?: string; shareOn?: (network: string) => string }` | no       | —                                                     | Overrides the built-in i18n labels per instance                          |
+| `className` | `string`                                                                                                                        | no       | —                                                     | Class added to the root element                                          |
 
 ## Examples
 
@@ -65,7 +65,7 @@ shareIntentUrl builds the same compose link for your own markup; it returns null
 ```tsx
 import { shareIntentUrl } from './share-menu'
 
-<a href={shareIntentUrl('bluesky', { url, text }) ?? undefined}>Post to Bluesky</a>
+;<a href={shareIntentUrl('bluesky', { url, text }) ?? undefined}>Post to Bluesky</a>
 ```
 
 ## Client JavaScript

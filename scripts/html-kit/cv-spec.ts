@@ -53,7 +53,6 @@ const liveRole: ExtraProp = {
 // Charts draw inline SVG; only the legend chrome has CSS.
 const chart = 'chart-legend'
 
-
 // Form controls submit with a form: the DOM attributes the React manifests leave to `...props`.
 const controlProps = (unit: 'input' | 'textarea' | 'select' | 'checkbox'): ExtraProp[] => [
   { name: 'name', type: 'string', summary: 'Field name sent with the form' },
@@ -163,7 +162,10 @@ export const CV_SPEC: readonly CvEntry[] = [
   // AI disclosure: handlers (revert, stop, select) and the toggletip need JS, so `.cv` renders
   // only the static, server-rendered state.
   e('ai-badge', { css: ['ai-badge', 'visually-hidden'] }),
-  e('ai-status', { args: [a('status', 'str', true), a('label', 'str')], css: ['ai-status', 'shimmer-text'] }),
+  e('ai-status', {
+    args: [a('status', 'str', true), a('label', 'str')],
+    css: ['ai-status', 'shimmer-text'],
+  }),
   e('chain-of-thought', {
     args: [a('items', 'rows', true)],
     css: ['chain-of-thought', 'shimmer-text', 'visually-hidden'],
@@ -184,14 +186,22 @@ export const CV_SPEC: readonly CvEntry[] = [
     extraProps: [
       { name: 'name', type: 'string', summary: 'Field name sent with the form' },
       { name: 'value', type: 'string', summary: 'Value sent when checked (default on)' },
-      { name: 'required', type: 'boolean', summary: 'The browser blocks submit until it is checked' },
+      {
+        name: 'required',
+        type: 'boolean',
+        summary: 'The browser blocks submit until it is checked',
+      },
     ],
   }),
   e('radio', {
     args: [a('label', 'str')],
     extraProps: [
       { name: 'checked', type: 'boolean', summary: 'Initially selected' },
-      { name: 'required', type: 'boolean', summary: 'The browser blocks submit until one is picked' },
+      {
+        name: 'required',
+        type: 'boolean',
+        summary: 'The browser blocks submit until one is picked',
+      },
     ],
   }),
   // One cv element is the whole group: rows are `value | title | description`.
@@ -213,7 +223,11 @@ export const CV_SPEC: readonly CvEntry[] = [
     args: [a('options', 'rows', true)],
     extraProps: [
       { name: 'name', type: 'string', summary: 'Field name sent with the form' },
-      { name: 'required', type: 'boolean', summary: 'The browser blocks submit while none is picked' },
+      {
+        name: 'required',
+        type: 'boolean',
+        summary: 'The browser blocks submit while none is picked',
+      },
     ],
   }),
   e('number-input', { args: [a('label', 'str')] }),
@@ -227,7 +241,9 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('contained-list', {
     children: 'nodes',
     args: [a('label', 'str', true)],
-    extraProps: [{ name: 'action', type: 'string', summary: 'Text shown in the header action slot' }],
+    extraProps: [
+      { name: 'action', type: 'string', summary: 'Text shown in the header action slot' },
+    ],
   }),
   // charts
   e('bar-chart', { cv: 'bar', args: [a('data', 'pairs', true)], css: [chart] }),

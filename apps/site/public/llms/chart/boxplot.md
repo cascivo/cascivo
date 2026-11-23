@@ -21,16 +21,16 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `series` | `{ id: string; label: string; values: number[] }[]` | yes | — | Array of series each with raw numeric values |
-| `title` | `string` | yes | — | Title text for the component. |
-| `description` | `string` | no | — | Supporting description text. |
-| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
-| `format` | `(value: number \| string \| Date) => string` | no | — | Format each category/x-axis tick label. |
+| Prop          | Type                                                | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------- | --------------------------------------------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `series`      | `{ id: string; label: string; values: number[] }[]` | yes      | —       | Array of series each with raw numeric values                                                                                                                                                                                                                                                                                                                                                  |
+| `title`       | `string`                                            | yes      | —       | Title text for the component.                                                                                                                                                                                                                                                                                                                                                                 |
+| `description` | `string`                                            | no       | —       | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
+| `width`       | `number`                                            | no       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height`      | `number`                                            | no       | `320`   | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
+| `className`   | `string`                                            | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
+| `plain`       | `boolean`                                           | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                         |
+| `format`      | `(value: number \| string \| Date) => string`       | no       | —       | Format each category/x-axis tick label.                                                                                                                                                                                                                                                                                                                                                       |
 
 ## Object types
 
@@ -38,11 +38,11 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 
 Shape of the `series` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | yes | — |
-| `label` | `string` | yes | — |
-| `values` | `number[]` | yes | — |
+| Field    | Type       | Required | Description |
+| -------- | ---------- | -------- | ----------- |
+| `id`     | `string`   | yes      | —           |
+| `label`  | `string`   | yes      | —           |
+| `values` | `number[]` | yes      | —           |
 
 ## Examples
 

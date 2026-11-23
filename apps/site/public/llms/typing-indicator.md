@@ -22,10 +22,10 @@ import { TypingIndicator } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | `Assistant is typing` | Accessible name announced by the status region. Not rendered — screen readers only. |
-| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name. Neither is deprecated. Not rendered — screen readers only. |
+| Prop        | Type     | Required | Default               | Description                                                                                                           |
+| ----------- | -------- | -------- | --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `ariaLabel` | `string` | no       | `Assistant is typing` | Accessible name announced by the status region. Not rendered — screen readers only.                                   |
+| `label`     | `string` | no       | —                     | Alias of `ariaLabel` — the same invisible accessible name. Neither is deprecated. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -38,7 +38,9 @@ import { TypingIndicator } from '@cascivo/react'
 ### In a chat bubble
 
 ```tsx
-<ChatBubble name="Assistant"><TypingIndicator /></ChatBubble>
+<ChatBubble name="Assistant">
+  <TypingIndicator />
+</ChatBubble>
 ```
 
 ### A person typing

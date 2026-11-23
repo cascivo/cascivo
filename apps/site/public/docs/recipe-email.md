@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/recipe-email.md
   registry v1.11.0 · generated 2026-11-21
 -->
+
 # Recipe: transactional email
 
 Render cascivo-themed email with `@cascivo/email`. Your product UI and the mail it sends
@@ -115,7 +116,17 @@ mail in a real client, with no service involved.
 Templates are ordinary compositions of the primitives:
 
 ```tsx
-import { Body, Button, Container, Head, Heading, Html, Preview, Section, Text } from '@cascivo/email'
+import {
+  Body,
+  Button,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Preview,
+  Section,
+  Text,
+} from '@cascivo/email'
 
 export function Invite({ href, team }: { href: string; team: string }) {
   return (
@@ -145,24 +156,24 @@ there is nothing to compose at build time. `Markdown` covers that case:
 ```tsx
 import { Markdown, Section } from '@cascivo/email'
 
-<Section padding={24}>
+;<Section padding={24}>
   <Markdown imageWidth={552}>{issue.preamble}</Markdown>
 </Section>
 ```
 
-| Markdown                   | Renders as                              |
-| -------------------------- | --------------------------------------- |
-| `# …` — `###### …`         | `Heading` at that level                 |
-| paragraph                  | `Text`                                  |
-| `**bold**`, `__bold__`     | `<strong>`                              |
-| `*italic*`, `_italic_`     | `<em>`                                  |
-| `` `code` ``               | `<code>` in the mono stack              |
-| ` ```fenced``` `           | `<pre>` in a padded cell                |
-| `[text](https://…)`, `<url>`     | `Link`                                  |
-| `![alt](https://…)`              | `Img`, at the `imageWidth` prop's width |
-| `- item`, `1. item`        | `List`                                  |
-| `> quote`                  | an accented block, nestable             |
-| `---`                      | `Hr`                                    |
+| Markdown                     | Renders as                              |
+| ---------------------------- | --------------------------------------- |
+| `# …` — `###### …`           | `Heading` at that level                 |
+| paragraph                    | `Text`                                  |
+| `**bold**`, `__bold__`       | `<strong>`                              |
+| `*italic*`, `_italic_`       | `<em>`                                  |
+| `` `code` ``                 | `<code>` in the mono stack              |
+| ` ```fenced``` `             | `<pre>` in a padded cell                |
+| `[text](https://…)`, `<url>` | `Link`                                  |
+| `![alt](https://…)`          | `Img`, at the `imageWidth` prop's width |
+| `- item`, `1. item`          | `List`                                  |
+| `> quote`                    | an accented block, nestable             |
+| `---`                        | `Hr`                                    |
 
 The allowlist is the point rather than a limitation. The reason there was no Markdown
 component for so long is that arbitrary Markdown produces arbitrary HTML, and the conformance
@@ -186,7 +197,7 @@ one — pass the inner width of your container. A fenced block does not wrap, be
 ## It has to survive a phone
 
 A 600px email in a 320px viewport is the most common way a template ships broken, and the
-one the conformance lint cannot catch — it reads CSS *feature support*, and this is layout.
+one the conformance lint cannot catch — it reads CSS _feature support_, and this is layout.
 `max-width: 100%` looks like it handles it and does not: a table will not lay out below the
 min-content width of what is inside it.
 
@@ -203,8 +214,12 @@ opts in:
 
 ```tsx
 <Row>
-  <Column width="50%" stack>…</Column>
-  <Column width="50%" stack>…</Column>
+  <Column width="50%" stack>
+    …
+  </Column>
+  <Column width="50%" stack>
+    …
+  </Column>
 </Row>
 ```
 
@@ -284,7 +299,7 @@ Your templates go through Vite, so edits hot-reload — the loop is edit, look, 
 
 You get a viewport switcher, all twelve themes, per-client simulation, a live encoded-byte
 gauge with the clip thresholds drawn on it, and an `.eml` download. That last one is the
-cheapest way to see an email in a *real* client: download it and drag it into Outlook, Apple
+cheapest way to see an email in a _real_ client: download it and drag it into Outlook, Apple
 Mail, or anything else on any device. No service, no account.
 
 A template can declare the palette it was designed in, beside `subject` and `previewProps`:
@@ -338,7 +353,7 @@ const findings = lint(html, indexFeatures(matrix), { allow: CASCIVO_ALLOW })
 ### See what a specific client sees
 
 `simulate()` is the other half, and the more interesting one. It takes a render and strips
-the declarations a named client does not support, so you get the document *that client*
+the declarations a named client does not support, so you get the document _that client_
 would lay out — which is how you find a layout that only holds together because of a feature
 Outlook lacks:
 

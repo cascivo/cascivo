@@ -38,11 +38,11 @@ Every primitive below also takes `children` (its content) and `style` — inline
 
 The root element.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `lang` | `string` | `'en'` | BCP 47 language tag. Also set on `<body>`, because some clients strip `<html>`. |
-| `dir` | `'ltr' \| 'rtl'` | `'ltr'` | Text direction. `rtl` flips the reading order; the primitives use no physical properties that would fight it. |
+| Prop       | Type             | Default | Notes                                                                                                         |
+| ---------- | ---------------- | ------- | ------------------------------------------------------------------------------------------------------------- |
+| `children` | `ReactNode`      | —       |                                                                                                               |
+| `lang`     | `string`         | `'en'`  | BCP 47 language tag. Also set on `<body>`, because some clients strip `<html>`.                               |
+| `dir`      | `'ltr' \| 'rtl'` | `'ltr'` | Text direction. `rtl` flips the reading order; the primitives use no physical properties that would fight it. |
 
 **The document shell**
 
@@ -66,10 +66,10 @@ Every email starts here. `Html` carries the XHTML doctype, the namespaces Outloo
 
 Document head.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `title` | `string` | — | Rendered as `<title>`. Some clients show it; most ignore it. |
+| Prop       | Type        | Default | Notes                                                        |
+| ---------- | ----------- | ------- | ------------------------------------------------------------ |
+| `children` | `ReactNode` | —       |                                                              |
+| `title`    | `string`    | —       | Rendered as `<title>`. Some clients show it; most ignore it. |
 
 **Title and client meta**
 
@@ -92,12 +92,12 @@ The `title` is what a browser tab and several webmail clients show. Everything e
 
 Document body, painted with the theme background.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `style` | `Style` | — |  |
-| `lang` | `string` | `'en'` | Repeated from `Html` — several clients strip `<html>` and graft the body into their own document. |
-| `dir` | `'ltr' \| 'rtl'` | `'ltr'` | Repeated from `Html`, for the same reason `lang` is. |
+| Prop       | Type             | Default | Notes                                                                                             |
+| ---------- | ---------------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `children` | `ReactNode`      | —       |                                                                                                   |
+| `style`    | `Style`          | —       |                                                                                                   |
+| `lang`     | `string`         | `'en'`  | Repeated from `Html` — several clients strip `<html>` and graft the body into their own document. |
+| `dir`      | `'ltr' \| 'rtl'` | `'ltr'` | Repeated from `Html`, for the same reason `lang` is.                                              |
 
 **Themed background**
 
@@ -121,9 +121,9 @@ The background and foreground come from the theme, resolved to literal sRGB — 
 
 The inbox preview text — the grey line beside the subject.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` **(required)** | `string` | — | The inbox preview line. Aim for under ~90 characters; clients truncate past that. |
+| Prop                      | Type     | Default | Notes                                                                             |
+| ------------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
+| `children` **(required)** | `string` | —       | The inbox preview line. Aim for under ~90 characters; clients truncate past that. |
 
 **The inbox line**
 
@@ -148,9 +148,9 @@ Deliberately invisible in the frame — it is the grey line the inbox shows besi
 
 A `<style>` block, hoisted into `<head>` by the renderer.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` **(required)** | `string` | — | CSS text. Written verbatim — it is authored, not user input. |
+| Prop                      | Type     | Default | Notes                                                        |
+| ------------------------- | -------- | ------- | ------------------------------------------------------------ |
+| `children` **(required)** | `string` | —       | CSS text. Written verbatim — it is authored, not user input. |
 
 **A rule inline styles cannot express**
 
@@ -162,9 +162,7 @@ Media queries and pseudo-classes are the only two things that need a stylesheet.
   <Body>
     <Container>
       <Section padding={24}>
-        <Style>
-          {'@media only screen and (max-width:600px){.hero{font-size:24px!important}}'}
-        </Style>
+        <Style>{'@media only screen and (max-width:600px){.hero{font-size:24px!important}}'}</Style>
         <Text className="hero" size="32px">
           Big on desktop, smaller on a phone
         </Text>
@@ -180,14 +178,14 @@ Media queries and pseudo-classes are the only two things that need a stylesheet.
 
 Centred fixed-width column — the outermost content wrapper.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `width` | `number` | `CONTENT_WIDTH` | Content width in pixels. |
-| `responsive` | `boolean` | `true` | Emit the width override that lets the container go fluid on a phone. |
-| `breakpoint` | `number` | — | Viewport width, in pixels, below which the container goes fluid. |
-| `className` | `string` | — | Extra class, for a rule of your own in a `Style` block. |
-| `style` | `Style` | — |  |
+| Prop         | Type        | Default         | Notes                                                                |
+| ------------ | ----------- | --------------- | -------------------------------------------------------------------- |
+| `children`   | `ReactNode` | —               |                                                                      |
+| `width`      | `number`    | `CONTENT_WIDTH` | Content width in pixels.                                             |
+| `responsive` | `boolean`   | `true`          | Emit the width override that lets the container go fluid on a phone. |
+| `breakpoint` | `number`    | —               | Viewport width, in pixels, below which the container goes fluid.     |
+| `className`  | `string`    | —               | Extra class, for a rule of your own in a `Style` block.              |
+| `style`      | `Style`     | —               |                                                                      |
 
 **The centred column**
 
@@ -207,14 +205,14 @@ Centred by both `margin: 0 auto` and `align="center"`, because neither works in 
 
 A full-width band of content.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `padding` | `number \| string` | `0` | Vertical padding in pixels, applied to the cell. |
-| `background` | `string` | — | Band colour. A literal — no client resolves a custom property, so pass a hex or call `token()`. |
-| `align` | `'left' \| 'center' \| 'right'` | — | Horizontal alignment of the cell's content, emitted as the `align` attribute so nested tables follow it too. |
-| `className` | `string` | — | Extra class, for a rule of your own in a `Style` block. |
-| `style` | `Style` | — |  |
+| Prop         | Type                            | Default | Notes                                                                                                        |
+| ------------ | ------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
+| `children`   | `ReactNode`                     | —       |                                                                                                              |
+| `padding`    | `number \| string`              | `0`     | Vertical padding in pixels, applied to the cell.                                                             |
+| `background` | `string`                        | —       | Band colour. A literal — no client resolves a custom property, so pass a hex or call `token()`.              |
+| `align`      | `'left' \| 'center' \| 'right'` | —       | Horizontal alignment of the cell's content, emitted as the `align` attribute so nested tables follow it too. |
+| `className`  | `string`                        | —       | Extra class, for a rule of your own in a `Style` block.                                                      |
+| `style`      | `Style`                         | —       |                                                                                                              |
 
 **Bands of content**
 
@@ -237,11 +235,11 @@ One table, one cell — padding on the cell, because Outlook drops padding on a 
 
 A horizontal group of Columns.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `className` | `string` | — | Extra class, for a rule of your own in a `Style` block. |
-| `style` | `Style` | — |  |
+| Prop        | Type        | Default | Notes                                                   |
+| ----------- | ----------- | ------- | ------------------------------------------------------- |
+| `children`  | `ReactNode` | —       |                                                         |
+| `className` | `string`    | —       | Extra class, for a rule of your own in a `Style` block. |
+| `style`     | `Style`     | —       |                                                         |
 
 **Columns side by side**
 
@@ -262,16 +260,16 @@ A `<tr>` that never inspects its children — it emits the row and trusts each `
 
 One cell of a Row.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `width` | `number \| string` | — | Width as a percentage or pixel count. Set both attribute and style. |
-| `align` | `'left' \| 'center' \| 'right'` | — | Horizontal alignment of the cell's content. A `Button` with no `align` of its own follows this. |
-| `valign` | `'top' \| 'middle' \| 'bottom'` | `'top'` | Vertical alignment within the row. |
-| `padding` | `number \| string` | — | Cell padding in pixels, or any CSS padding shorthand. |
-| `stack` | `boolean` | `false` | Become a full-width block below the breakpoint, so a row reflows into a stack. |
-| `className` | `string` | — | Extra class, for a rule of your own in a `Style` block. |
-| `style` | `Style` | — |  |
+| Prop        | Type                            | Default | Notes                                                                                           |
+| ----------- | ------------------------------- | ------- | ----------------------------------------------------------------------------------------------- |
+| `children`  | `ReactNode`                     | —       |                                                                                                 |
+| `width`     | `number \| string`              | —       | Width as a percentage or pixel count. Set both attribute and style.                             |
+| `align`     | `'left' \| 'center' \| 'right'` | —       | Horizontal alignment of the cell's content. A `Button` with no `align` of its own follows this. |
+| `valign`    | `'top' \| 'middle' \| 'bottom'` | `'top'` | Vertical alignment within the row.                                                              |
+| `padding`   | `number \| string`              | —       | Cell padding in pixels, or any CSS padding shorthand.                                           |
+| `stack`     | `boolean`                       | `false` | Become a full-width block below the breakpoint, so a row reflows into a stack.                  |
+| `className` | `string`                        | —       | Extra class, for a rule of your own in a `Style` block.                                         |
+| `style`     | `Style`                         | —       |                                                                                                 |
 
 **Alignment and stacking**
 
@@ -292,9 +290,9 @@ Set `stack` on each column that should become full-width on a phone — never on
 
 Vertical space.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `height` **(required)** | `number` | — | Height in pixels. |
+| Prop                    | Type     | Default | Notes             |
+| ----------------------- | -------- | ------- | ----------------- |
+| `height` **(required)** | `number` | —       | Height in pixels. |
 
 **Vertical space that survives Outlook**
 
@@ -316,10 +314,10 @@ A margin would be simpler and is not dependable — Outlook collapses and ignore
 
 A rule.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `style` | `Style` | — |  |
-| `spacing` | `number` | `0` | Space above and below, in pixels. |
+| Prop      | Type     | Default | Notes                             |
+| --------- | -------- | ------- | --------------------------------- |
+| `style`   | `Style`  | —       |                                   |
+| `spacing` | `number` | `0`     | Space above and below, in pixels. |
 
 **A rule**
 
@@ -339,13 +337,13 @@ Drawn as a bordered cell, not `<hr>` — Outlook gives `<hr>` its own inset 3D b
 
 A section heading.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `level` | `HeadingLevel` | `1` | Semantic level. Drives the element, and the default size unless `size` overrides it. |
-| `size` | `string` | — | Font size, overriding the one `level` implies. A CSS length — `rem` is unsupported in two floor clients, so use `px`. |
-| `align` | `'left' \| 'center' \| 'right'` | — |  |
-| `style` | `Style` | — |  |
+| Prop       | Type                            | Default | Notes                                                                                                                 |
+| ---------- | ------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
+| `children` | `ReactNode`                     | —       |                                                                                                                       |
+| `level`    | `HeadingLevel`                  | `1`     | Semantic level. Drives the element, and the default size unless `size` overrides it.                                  |
+| `size`     | `string`                        | —       | Font size, overriding the one `level` implies. A CSS length — `rem` is unsupported in two floor clients, so use `px`. |
+| `align`    | `'left' \| 'center' \| 'right'` | —       |                                                                                                                       |
+| `style`    | `Style`                         | —       |                                                                                                                       |
 
 **Levels**
 
@@ -365,14 +363,14 @@ The element follows `level`; `size` overrides the size alone, for the common cas
 
 A paragraph.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `size` | `string` | `'16px'` | Font size as a CSS length. Never below `14px`: iOS Mail inflates smaller text to its own minimum and the layout shifts under it. |
-| `variant` | `'default' \| 'muted'` | `'default'` | `muted` for secondary copy — reads from `--cascivo-color-text-muted`. |
-| `align` | `'left' \| 'center' \| 'right'` | — |  |
-| `className` | `string` | — | Extra class, for a rule of your own in a `Style` block. |
-| `style` | `Style` | — |  |
+| Prop        | Type                            | Default     | Notes                                                                                                                            |
+| ----------- | ------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `children`  | `ReactNode`                     | —           |                                                                                                                                  |
+| `size`      | `string`                        | `'16px'`    | Font size as a CSS length. Never below `14px`: iOS Mail inflates smaller text to its own minimum and the layout shifts under it. |
+| `variant`   | `'default' \| 'muted'`          | `'default'` | `muted` for secondary copy — reads from `--cascivo-color-text-muted`.                                                            |
+| `align`     | `'left' \| 'center' \| 'right'` | —           |                                                                                                                                  |
+| `className` | `string`                        | —           | Extra class, for a rule of your own in a `Style` block.                                                                          |
+| `style`     | `Style`                         | —           |                                                                                                                                  |
 
 **Body copy**
 
@@ -384,7 +382,9 @@ Never set a size below 14px: iOS Mail inflates smaller text to its own minimum a
   <Spacer height={12} />
   <Text variant="muted">Muted secondary copy for the supporting line.</Text>
   <Spacer height={12} />
-  <Text align="center" size="14px">Centred, and one step down.</Text>
+  <Text align="center" size="14px">
+    Centred, and one step down.
+  </Text>
 </Section>
 ```
 
@@ -392,12 +392,12 @@ Never set a size below 14px: iOS Mail inflates smaller text to its own minimum a
 
 An inline link.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `href` **(required)** | `string` | — | Absolute URL. A relative path resolves against the mail client's own host. |
-| `ping` | `string` | — | Click-beacon URLs, space-separated — the `ping` attribute. |
-| `style` | `Style` | — |  |
+| Prop                  | Type        | Default | Notes                                                                      |
+| --------------------- | ----------- | ------- | -------------------------------------------------------------------------- |
+| `children`            | `ReactNode` | —       |                                                                            |
+| `href` **(required)** | `string`    | —       | Absolute URL. A relative path resolves against the mail client's own host. |
+| `ping`                | `string`    | —       | Click-beacon URLs, space-separated — the `ping` attribute.                 |
+| `style`               | `Style`     | —       |                                                                            |
 
 **Inline link**
 
@@ -406,9 +406,8 @@ Reads `--cascivo-color-accent-text` rather than the accent fill — four of the 
 ```tsx
 <Section>
   <Text>
-    Trouble with the button? 
-    <Link href="https://cascivo.com/docs/email">Open the page directly</Link>
-    .
+    Trouble with the button?
+    <Link href="https://cascivo.com/docs/email">Open the page directly</Link>.
   </Text>
 </Section>
 ```
@@ -417,11 +416,11 @@ Reads `--cascivo-color-accent-text` rather than the accent fill — four of the 
 
 A bulleted or numbered list.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `items` **(required)** | `ReactNode[]` | — | One entry per list item. |
-| `ordered` | `boolean` | `false` | Render `<ol>` rather than `<ul>`. |
-| `style` | `Style` | — |  |
+| Prop                   | Type          | Default | Notes                             |
+| ---------------------- | ------------- | ------- | --------------------------------- |
+| `items` **(required)** | `ReactNode[]` | —       | One entry per list item.          |
+| `ordered`              | `boolean`     | `false` | Render `<ol>` rather than `<ul>`. |
+| `style`                | `Style`       | —       |                                   |
 
 **Bulleted and numbered**
 
@@ -439,10 +438,10 @@ Both `margin` and `padding` are stated because Outlook mis-indents a `<ul>` with
 
 The closing block — smaller, muted, centred.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `style` | `Style` | — |  |
+| Prop       | Type        | Default | Notes |
+| ---------- | ----------- | ------- | ----- |
+| `children` | `ReactNode` | —       |       |
+| `style`    | `Style`     | —       |       |
 
 **The closing block**
 
@@ -450,7 +449,9 @@ Smaller, muted and centred, with the padding on a cell. The unsubscribe line bel
 
 ```tsx
 <Footer>
-  <Text size="14px" variant="muted" align="center">Acme, Inc · Berlin</Text>
+  <Text size="14px" variant="muted" align="center">
+    Acme, Inc · Berlin
+  </Text>
   <Text size="14px" variant="muted" align="center">
     <Link href="https://example.com/unsubscribe">Unsubscribe</Link>
   </Text>
@@ -463,15 +464,15 @@ Smaller, muted and centred, with the padding on a cell. The unsubscribe line bel
 
 A call-to-action button.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `href` **(required)** | `string` | — | Absolute URL. A relative path resolves against the mail client's own host. |
-| `variant` | `'primary' \| 'secondary' \| 'destructive'` | `'primary'` | `primary` for the main action, `secondary` for a supporting one, `destructive` for anything that deletes. |
-| `align` | `'left' \| 'center' \| 'right'` | — | Horizontal placement. Omit it to follow the cell the button sits in. |
-| `block` | `boolean` | `false` | Full-width call to action. |
-| `ping` | `string` | — | Click-beacon URLs, space-separated — the `ping` attribute. Same caveats as `Link`'s. |
-| `style` | `Style` | — |  |
+| Prop                  | Type                                        | Default     | Notes                                                                                                     |
+| --------------------- | ------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------- |
+| `children`            | `ReactNode`                                 | —           |                                                                                                           |
+| `href` **(required)** | `string`                                    | —           | Absolute URL. A relative path resolves against the mail client's own host.                                |
+| `variant`             | `'primary' \| 'secondary' \| 'destructive'` | `'primary'` | `primary` for the main action, `secondary` for a supporting one, `destructive` for anything that deletes. |
+| `align`               | `'left' \| 'center' \| 'right'`             | —           | Horizontal placement. Omit it to follow the cell the button sits in.                                      |
+| `block`               | `boolean`                                   | `false`     | Full-width call to action.                                                                                |
+| `ping`                | `string`                                    | —           | Click-beacon URLs, space-separated — the `ping` attribute. Same caveats as `Link`'s.                      |
+| `style`               | `Style`                                     | —           |                                                                                                           |
 
 **Variants**
 
@@ -481,7 +482,9 @@ An `<a>` painted as a block inside its own table — a `<button>` does nothing i
 <Section>
   <Button href="https://example.com">Primary</Button>
   <Spacer height={12} />
-  <Button href="https://example.com" variant="secondary">Secondary</Button>
+  <Button href="https://example.com" variant="secondary">
+    Secondary
+  </Button>
   <Spacer height={12} />
   <Button href="https://example.com" variant="destructive">
     Destructive
@@ -495,7 +498,9 @@ Omit `align` and the button follows the `align` of the `Column` or `Section` aro
 
 ```tsx
 <Section>
-  <Button href="https://example.com" block>Confirm your address</Button>
+  <Button href="https://example.com" block>
+    Confirm your address
+  </Button>
   <Spacer height={12} />
   <Section align="center">
     <Button href="https://example.com" variant="secondary">
@@ -509,12 +514,12 @@ Omit `align` and the button follows the `align` of the `Column` or `Section` aro
 
 A bordered surface.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `padding` | `number` | `24` | Inset in pixels, applied to the cell — padding on a `<div>` is dropped in Outlook Windows. |
-| `className` | `string` | — | Extra class, for a rule of your own in a `Style` block. |
-| `style` | `Style` | — |  |
+| Prop        | Type        | Default | Notes                                                                                      |
+| ----------- | ----------- | ------- | ------------------------------------------------------------------------------------------ |
+| `children`  | `ReactNode` | —       |                                                                                            |
+| `padding`   | `number`    | `24`    | Inset in pixels, applied to the cell — padding on a `<div>` is dropped in Outlook Windows. |
+| `className` | `string`    | —       | Extra class, for a rule of your own in a `Style` block.                                    |
+| `style`     | `Style`     | —       |                                                                                            |
 
 **A bordered surface**
 
@@ -534,12 +539,12 @@ One table, one cell, border and padding both on the cell — the only arrangemen
 
 A callout.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `tone` | `'info' \| 'success' \| 'warning' \| 'destructive'` | `'info'` | Drawn as a border and a tint, never an icon — images are blocked by default in a large share of clients. |
-| `title` | `string` | — | Optional bold lead-in above the body copy. |
-| `style` | `Style` | — |  |
+| Prop       | Type                                                | Default  | Notes                                                                                                    |
+| ---------- | --------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------- |
+| `children` | `ReactNode`                                         | —        |                                                                                                          |
+| `tone`     | `'info' \| 'success' \| 'warning' \| 'destructive'` | `'info'` | Drawn as a border and a tint, never an icon — images are blocked by default in a large share of clients. |
+| `title`    | `string`                                            | —        | Optional bold lead-in above the body copy.                                                               |
+| `style`    | `Style`                                             | —        |                                                                                                          |
 
 **Tones**
 
@@ -547,7 +552,9 @@ The tone is a 4px border plus a tint, never an icon — icons would have to be i
 
 ```tsx
 <Section>
-  <Alert tone="info" title="Heads up">Your trial ends on Friday.</Alert>
+  <Alert tone="info" title="Heads up">
+    Your trial ends on Friday.
+  </Alert>
   <Spacer height={12} />
   <Alert tone="success">Payment received.</Alert>
   <Spacer height={12} />
@@ -561,11 +568,11 @@ The tone is a 4px border plus a tint, never an icon — icons would have to be i
 
 A small status pill.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` | `ReactNode` | — |  |
-| `tone` | `'neutral' \| 'success' \| 'warning' \| 'destructive' \| 'info'` | `'neutral'` | Carried by colour alone, so pair it with a label that says the same thing. |
-| `style` | `Style` | — |  |
+| Prop       | Type                                                             | Default     | Notes                                                                      |
+| ---------- | ---------------------------------------------------------------- | ----------- | -------------------------------------------------------------------------- |
+| `children` | `ReactNode`                                                      | —           |                                                                            |
+| `tone`     | `'neutral' \| 'success' \| 'warning' \| 'destructive' \| 'info'` | `'neutral'` | Carried by colour alone, so pair it with a label that says the same thing. |
+| `style`    | `Style`                                                          | —           |                                                                            |
 
 **Tones**
 
@@ -574,15 +581,8 @@ The one primitive knowingly imperfect in Outlook Windows: a badge has to be inli
 ```tsx
 <Section>
   <Text>
-    <Badge tone="success">Paid</Badge>
-    {' '}
-    <Badge tone="warning">Pending</Badge>
-    {' '}
-    <Badge tone="destructive">Failed</Badge>
-    {' '}
-    <Badge tone="info">New</Badge>
-    {' '}
-    <Badge>Draft</Badge>
+    <Badge tone="success">Paid</Badge> <Badge tone="warning">Pending</Badge>{' '}
+    <Badge tone="destructive">Failed</Badge> <Badge tone="info">New</Badge> <Badge>Draft</Badge>
   </Text>
 </Section>
 ```
@@ -591,14 +591,14 @@ The one primitive knowingly imperfect in Outlook Windows: a badge has to be inli
 
 A raster image.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `src` **(required)** | `string` | — | Absolute URL. A relative path resolves against the client's own host and 404s. |
-| `alt` **(required)** | `string` | — | Required. An image with no alt text is unreadable in the ~40% of clients that block images by default. |
-| `width` **(required)** | `number` | — | Intrinsic display width in pixels. Required: Outlook sizes from the attribute and renders at intrinsic size without it. |
-| `height` | `number` | — | Fixed height, in pixels, emitted as the `height` attribute only. |
-| `href` | `string` | — | Wrap the image in a link. |
-| `style` | `Style` | — |  |
+| Prop                   | Type     | Default | Notes                                                                                                                   |
+| ---------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `src` **(required)**   | `string` | —       | Absolute URL. A relative path resolves against the client's own host and 404s.                                          |
+| `alt` **(required)**   | `string` | —       | Required. An image with no alt text is unreadable in the ~40% of clients that block images by default.                  |
+| `width` **(required)** | `number` | —       | Intrinsic display width in pixels. Required: Outlook sizes from the attribute and renders at intrinsic size without it. |
+| `height`               | `number` | —       | Fixed height, in pixels, emitted as the `height` attribute only.                                                        |
+| `href`                 | `string` | —       | Wrap the image in a link.                                                                                               |
+| `style`                | `Style`  | —       |                                                                                                                         |
 
 **A raster image**
 
@@ -606,12 +606,7 @@ A raster image.
 
 ```tsx
 <Section align="center">
-  <Img
-    src="https://cascivo.com/icon-192.png"
-    alt="cascivo"
-    width={96}
-    href="https://cascivo.com"
-   />
+  <Img src="https://cascivo.com/icon-192.png" alt="cascivo" width={96} href="https://cascivo.com" />
 </Section>
 ```
 
@@ -619,11 +614,11 @@ A raster image.
 
 Render a Markdown string through the cascivo email primitives.
 
-| Prop | Type | Default | Notes |
-| ---- | ---- | ------- | ----- |
-| `children` **(required)** | `string` | — | The Markdown source. |
-| `spacing` | `number` | `16` | Vertical space between blocks, in pixels. |
-| `imageWidth` | `number` | `CONTENT_WIDTH` | Width in pixels for `![alt](https://…)` images. |
+| Prop                      | Type     | Default         | Notes                                           |
+| ------------------------- | -------- | --------------- | ----------------------------------------------- |
+| `children` **(required)** | `string` | —               | The Markdown source.                            |
+| `spacing`                 | `number` | `16`            | Vertical space between blocks, in pixels.       |
+| `imageWidth`              | `number` | `CONTENT_WIDTH` | Width in pixels for `![alt](https://…)` images. |
 
 **Prose you do not have at build time**
 

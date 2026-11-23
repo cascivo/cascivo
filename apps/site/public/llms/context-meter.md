@@ -28,12 +28,12 @@ import { ContextMeter } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `number` | yes | — | Tokens used so far. |
-| `max` | `number` | yes | — | The context window size, in tokens. |
-| `label` | `string` | no | `Context` | The meter’s name, shown above the bar. Rendered on screen. |
-| `labels` | `{ usage?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). `usage` is the spoken value and may contain `{used}`, `{max}` and `{percent}`. |
+| Prop     | Type                 | Required | Default   | Description                                                                                                                               |
+| -------- | -------------------- | -------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`  | `number`             | yes      | —         | Tokens used so far.                                                                                                                       |
+| `max`    | `number`             | yes      | —         | The context window size, in tokens.                                                                                                       |
+| `label`  | `string`             | no       | `Context` | The meter’s name, shown above the bar. Rendered on screen.                                                                                |
+| `labels` | `{ usage?: string }` | no       | —         | Overrides for the component’s user-visible strings (i18n). `usage` is the spoken value and may contain `{used}`, `{max}` and `{percent}`. |
 
 ## Examples
 

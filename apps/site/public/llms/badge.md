@@ -38,11 +38,11 @@ import { Badge } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline' \| 'info' \| 'primary'` | no | `default` | Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral \| info \| success \| warning \| danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only). |
-| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `children` | `ReactNode` | no | — | Badge label |
+| Prop       | Type                                                                                                      | Required | Default   | Description                                                                                                                                                                                                                                                                                            |
+| ---------- | --------------------------------------------------------------------------------------------------------- | -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `variant`  | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline' \| 'info' \| 'primary'` | no       | `default` | Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral \| info \| success \| warning \| danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only). |
+| `size`     | `'sm' \| 'md'`                                                                                            | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                                                  |
+| `children` | `ReactNode`                                                                                               | no       | —         | Badge label                                                                                                                                                                                                                                                                                            |
 
 ## Examples
 

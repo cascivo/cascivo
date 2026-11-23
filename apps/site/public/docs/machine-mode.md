@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/machine-mode.md
   registry v1.11.0 · generated 2026-11-21
 -->
+
 # Machine mode
 
 Render a cascivo UI as a Markdown document — no CSS, no hydration, no interactivity. One
@@ -12,7 +13,7 @@ package, `@cascivo/text`, with three entry points depending on where the UI is.
 pnpm add @cascivo/text
 ```
 
-> Going the other way — an agent *writing* a static page? Use `cascivo-html`
+> Going the other way — an agent _writing_ a static page? Use `cascivo-html`
 > ([USING-CASCIVO-HTML.md](/docs/using-cascivo-html.md)): `.cv` text in, one HTML file out. For a
 > terminal UI, use `cascivo-tui` ([USING-CASCIVO-TUI.md](/docs/using-cascivo-tui.md)).
 
@@ -55,7 +56,7 @@ import { elementToMarkdown } from '@cascivo/text'
 const doc = elementToMarkdown(document.querySelector('main')!)
 ```
 
-This reads control *properties*, not attributes — the value someone typed, the box they
+This reads control _properties_, not attributes — the value someone typed, the box they
 checked, the disclosure they opened. An HTML string only ever carries the state the UI was
 rendered with.
 
@@ -87,7 +88,7 @@ caller performs and gates any act.
 ```tsx
 import { TextView } from '@cascivo/text/react'
 
-<TextView>
+;<TextView>
   <Dashboard />
 </TextView>
 ```
@@ -149,8 +150,8 @@ Email [input = "ada@example.com"]
 [tab: Usage]
 
 | Name | Plan |
-| --- | --- |
-| Ada | Pro |
+| ---- | ---- |
+| Ada  | Pro  |
 
 [button: Save changes] [button: Cancel (disabled)]
 ```
@@ -160,12 +161,12 @@ label (those words are part of the page), a text field contributes nothing.
 
 ## What is kept, and what is dropped
 
-| Kept | Dropped |
-| ---- | ------- |
-| Visually-hidden (`sr-only`) content — this is where a chart's data table lives | `aria-hidden`, `inert`, `hidden`, `display:none` subtrees |
-| Collapsed disclosures, closed menus and dialogs, annotated with their state | `<script>`, `<style>`, `<canvas>` (decorative by contract) |
+| Kept                                                                                      | Dropped                                                                    |
+| ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Visually-hidden (`sr-only`) content — this is where a chart's data table lives            | `aria-hidden`, `inert`, `hidden`, `display:none` subtrees                  |
+| Collapsed disclosures, closed menus and dialogs, annotated with their state               | `<script>`, `<style>`, `<canvas>` (decorative by contract)                 |
 | ARIA states that a reader needs: `disabled`, `selected`, `expanded`, `current`, `invalid` | `data-state` at rest: `idle`, `default`, `active`, `inactive`, `on`, `off` |
-| `data-state` values CSS pseudo-classes cannot express: `loading`, `error`, `open` | Decorative images (`alt=""`) and unnamed SVG |
+| `data-state` values CSS pseudo-classes cannot express: `loading`, `error`, `open`         | Decorative images (`alt=""`) and unnamed SVG                               |
 
 Collapsed content is expanded on purpose. A human can click to reveal; a document cannot, and
 a reader that silently drops half a page is worse than one that says which part was
@@ -181,11 +182,11 @@ because an agent cannot tell it from a true one. In the browser the property is 
 
 ## Options
 
-| Option | Default | What it does |
-| ------ | ------- | ------------ |
-| `annotate` | `true` | Name the affordances and their state. |
-| `links` | `'inline'` | `'inline'` keeps standard Markdown links; `'footnote'` numbers them and lists the URLs at the end; `'strip'` keeps the label only. |
-| `width` | `0` | Wrap column for plain paragraphs. Tables, fenced code and lists are never wrapped. |
+| Option     | Default    | What it does                                                                                                                       |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `annotate` | `true`     | Name the affordances and their state.                                                                                              |
+| `links`    | `'inline'` | `'inline'` keeps standard Markdown links; `'footnote'` numbers them and lists the URLs at the end; `'strip'` keeps the label only. |
+| `width`    | `0`        | Wrap column for plain paragraphs. Tables, fenced code and lists are never wrapped.                                                 |
 
 ## Limits
 

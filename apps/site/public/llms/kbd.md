@@ -27,10 +27,10 @@ import { Kbd } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `children` | `ReactNode` | no | — | The key label |
+| Prop       | Type           | Required | Default | Description                                           |
+| ---------- | -------------- | -------- | ------- | ----------------------------------------------------- |
+| `size`     | `'sm' \| 'md'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode`    | no       | —       | The key label                                         |
 
 ## Examples
 
@@ -45,7 +45,9 @@ import { Kbd } from '@cascivo/react'
 Compose multiple keys to show a shortcut
 
 ```tsx
-<span><Kbd>⌘</Kbd> + <Kbd>K</Kbd></span>
+<span>
+  <Kbd>⌘</Kbd> + <Kbd>K</Kbd>
+</span>
 ```
 
 ### Small

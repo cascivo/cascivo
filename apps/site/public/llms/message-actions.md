@@ -22,21 +22,25 @@ import { MessageActions } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `copyValue` | `string` | no | — | The text the Copy button copies. Omit to hide Copy. |
-| `feedback` | `'good' \| 'bad' \| null` | no | — | Controlled rating: `good`, `bad` or `null`. Pressing the active rating again clears it. |
-| `defaultFeedback` | `'good' \| 'bad' \| null` | no | `null` | Initial rating when uncontrolled. |
-| `onFeedbackChange` | `(feedback: 'good' \| 'bad' \| null) => void` | no | — | Called with the new rating (or `null` when cleared). The rating buttons render when this or `feedback` is set; a rating also announces "Thanks for your feedback". |
-| `onRegenerate` | `() => void` | no | — | Called by the Regenerate button. Omit to hide it. |
-| `labels` | `{ group?: string; good?: string; bad?: string; regenerate?: string; recorded?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| Prop               | Type                                                                                      | Required | Default | Description                                                                                                                                                        |
+| ------------------ | ----------------------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `copyValue`        | `string`                                                                                  | no       | —       | The text the Copy button copies. Omit to hide Copy.                                                                                                                |
+| `feedback`         | `'good' \| 'bad' \| null`                                                                 | no       | —       | Controlled rating: `good`, `bad` or `null`. Pressing the active rating again clears it.                                                                            |
+| `defaultFeedback`  | `'good' \| 'bad' \| null`                                                                 | no       | `null`  | Initial rating when uncontrolled.                                                                                                                                  |
+| `onFeedbackChange` | `(feedback: 'good' \| 'bad' \| null) => void`                                             | no       | —       | Called with the new rating (or `null` when cleared). The rating buttons render when this or `feedback` is set; a rating also announces "Thanks for your feedback". |
+| `onRegenerate`     | `() => void`                                                                              | no       | —       | Called by the Regenerate button. Omit to hide it.                                                                                                                  |
+| `labels`           | `{ group?: string; good?: string; bad?: string; regenerate?: string; recorded?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).                                                                                                         |
 
 ## Examples
 
 ### Copy, rate and regenerate
 
 ```tsx
-<MessageActions copyValue="Refunds are available for 30 days." onFeedbackChange={() => {}} onRegenerate={() => {}} />
+<MessageActions
+  copyValue="Refunds are available for 30 days."
+  onFeedbackChange={() => {}}
+  onRegenerate={() => {}}
+/>
 ```
 
 ### Copy only

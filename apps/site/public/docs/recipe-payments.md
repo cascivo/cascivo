@@ -3,18 +3,19 @@
   Canonical: https://cascivo.com/docs/recipe-payments.md
   registry v1.11.0 · generated 2026-11-21
 -->
+
 # Recipe: payments, billing and email on Cloudflare
 
 Take money and send mail from a cascivo app on Cloudflare Workers, with no Stripe SDK, no AWS
 SDK and no `nodejs_compat`. Everything here is in `@cascivo/app`: plain `fetch` against
 Stripe's and SES's APIs, and WebCrypto for the signatures.
 
-| Subpath               | What it does                                                                      |
-| --------------------- | --------------------------------------------------------------------------------- |
+| Subpath               | What it does                                                                                             |
+| --------------------- | -------------------------------------------------------------------------------------------------------- |
 | `@cascivo/app/stripe` | Checkout sessions, subscriptions, the Customer Portal, refunds, typed webhook events, entitlement checks |
-| `@cascivo/app/guard`  | `verifyWebhook`: Stripe's signature and timestamp window over the raw body         |
-| `@cascivo/app/ses`    | Amazon SES sending, and SES bounces and complaints delivered by SNS               |
-| `@cascivo/email`      | The emails themselves: receipts, reminders, newsletters                           |
+| `@cascivo/app/guard`  | `verifyWebhook`: Stripe's signature and timestamp window over the raw body                               |
+| `@cascivo/app/ses`    | Amazon SES sending, and SES bounces and complaints delivered by SNS                                      |
+| `@cascivo/email`      | The emails themselves: receipts, reminders, newsletters                                                  |
 
 The reference for every function is the
 [`@cascivo/app` README](https://github.com/cascivo/cascivo/tree/main/packages/app#readme). This
@@ -101,11 +102,11 @@ retrying them.
 Refund and dispute events name the payment, not the session. Store
 `session.paymentIntentId` with the order when it is paid, and look the order up by it.
 
-| Event                     | `kind`    | What the order does                                                |
-| ------------------------- | --------- | ------------------------------------------------------------------ |
-| `charge.refunded`         | `refund`  | Store `charge.amountRefunded`, the running total; `refunded` when `charge.refunded` |
-| `charge.dispute.created`  | `dispute` | `disputed`: hold back anything not delivered yet                   |
-| `charge.dispute.closed`   | `dispute` | `paid` again when `dispute.status` is `won`; stays `disputed` when `lost` |
+| Event                    | `kind`    | What the order does                                                                 |
+| ------------------------ | --------- | ----------------------------------------------------------------------------------- |
+| `charge.refunded`        | `refund`  | Store `charge.amountRefunded`, the running total; `refunded` when `charge.refunded` |
+| `charge.dispute.created` | `dispute` | `disputed`: hold back anything not delivered yet                                    |
+| `charge.dispute.closed`  | `dispute` | `paid` again when `dispute.status` is `won`; stays `disputed` when `lost`           |
 
 ```ts
 if (event.kind === 'refund') {
@@ -212,7 +213,10 @@ return handleSns(request, {
   topicArn: env.SNS_TOPIC_ARN,
   onNotification: async ({ message }) => {
     const event = parseSesNotification(message)
-    if (event.kind === 'complaint' || (event.kind === 'bounce' && event.bounceType === 'Permanent')) {
+    if (
+      event.kind === 'complaint' ||
+      (event.kind === 'bounce' && event.bounceType === 'Permanent')
+    ) {
       // never mail event.recipients again
     }
   },

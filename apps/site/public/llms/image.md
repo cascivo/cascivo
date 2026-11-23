@@ -28,17 +28,17 @@ import { Image } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `src` | `string` | no | — | Image source URL. |
-| `alt` | `string` | no | `` | Alternative text describing the image. |
-| `fallbackSrc` | `string` | no | — | Image shown if src fails to load |
-| `width` | `string \| number` | no | — | Intrinsic width in px, forwarded to the `<img>`. Set it together with `height` so the browser can reserve the box before the image loads (no layout shift). |
-| `height` | `string \| number` | no | — | Intrinsic height in px, forwarded to the `<img>`. Pair with `width` to reserve the box and avoid layout shift. |
-| `radius` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'full'` | no | `md` | Corner radius of the image ('none' \| 'sm' \| 'md' \| 'lg' \| 'full'). |
-| `zoom` | `boolean` | no | `false` | When true, zooms the image on hover. |
-| `removeWrapper` | `boolean` | no | `false` | Render a bare <img> with no wrapper, placeholder, or zoom |
-| `isBlurred` | `boolean` | no | `false` | When true, renders a blurred backdrop behind the image. |
+| Prop            | Type                                       | Required | Default | Description                                                                                                                                                 |
+| --------------- | ------------------------------------------ | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src`           | `string`                                   | no       | —       | Image source URL.                                                                                                                                           |
+| `alt`           | `string`                                   | no       | ``      | Alternative text describing the image.                                                                                                                      |
+| `fallbackSrc`   | `string`                                   | no       | —       | Image shown if src fails to load                                                                                                                            |
+| `width`         | `string \| number`                         | no       | —       | Intrinsic width in px, forwarded to the `<img>`. Set it together with `height` so the browser can reserve the box before the image loads (no layout shift). |
+| `height`        | `string \| number`                         | no       | —       | Intrinsic height in px, forwarded to the `<img>`. Pair with `width` to reserve the box and avoid layout shift.                                              |
+| `radius`        | `'none' \| 'sm' \| 'md' \| 'lg' \| 'full'` | no       | `md`    | Corner radius of the image ('none' \| 'sm' \| 'md' \| 'lg' \| 'full').                                                                                      |
+| `zoom`          | `boolean`                                  | no       | `false` | When true, zooms the image on hover.                                                                                                                        |
+| `removeWrapper` | `boolean`                                  | no       | `false` | Render a bare <img> with no wrapper, placeholder, or zoom                                                                                                   |
+| `isBlurred`     | `boolean`                                  | no       | `false` | When true, renders a blurred backdrop behind the image.                                                                                                     |
 
 ## Examples
 

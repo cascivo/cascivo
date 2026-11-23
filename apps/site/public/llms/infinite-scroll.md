@@ -28,13 +28,13 @@ import { InfiniteScroll } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `onLoadMore` | `() => Promise<unknown> \| unknown` | yes | — | Called when the sentinel comes into view, or the button is activated; the spinner shows until it settles |
-| `disabled` | `boolean` | no | `false` | When true, stops observing and renders nothing — there are no more pages. |
-| `rootMargin` | `string` | no | `'200px'` | How far ahead of the end to start loading, as an IntersectionObserver root margin. |
-| `labels` | `{ loadMore?: string; loading?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop         | Type                                      | Required | Default   | Description                                                                                              |
+| ------------ | ----------------------------------------- | -------- | --------- | -------------------------------------------------------------------------------------------------------- |
+| `onLoadMore` | `() => Promise<unknown> \| unknown`       | yes      | —         | Called when the sentinel comes into view, or the button is activated; the spinner shows until it settles |
+| `disabled`   | `boolean`                                 | no       | `false`   | When true, stops observing and renders nothing — there are no more pages.                                |
+| `rootMargin` | `string`                                  | no       | `'200px'` | How far ahead of the end to start loading, as an IntersectionObserver root margin.                       |
+| `labels`     | `{ loadMore?: string; loading?: string }` | no       | —         | Overrides for the component’s user-visible strings (i18n).                                               |
+| `className`  | `string`                                  | no       | —         | Additional CSS class names merged onto the root element.                                                 |
 
 ## Examples
 

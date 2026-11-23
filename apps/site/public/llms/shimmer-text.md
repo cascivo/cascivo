@@ -22,10 +22,10 @@ import { ShimmerText } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `as` | `'span' \| 'p' \| 'div'` | no | `span` | `span` for inline text, `p` for a paragraph, `div` for a block that imposes no semantics of its own. |
-| `children` | `ReactNode` | no | — | The label text the shimmer sweeps through. |
+| Prop       | Type                     | Required | Default | Description                                                                                          |
+| ---------- | ------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------- |
+| `as`       | `'span' \| 'p' \| 'div'` | no       | `span`  | `span` for inline text, `p` for a paragraph, `div` for a block that imposes no semantics of its own. |
+| `children` | `ReactNode`              | no       | —       | The label text the shimmer sweeps through.                                                           |
 
 ## Examples
 

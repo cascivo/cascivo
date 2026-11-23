@@ -32,11 +32,11 @@ Renders a real <h1>–<h6> from the level prop so the heading appears in the acc
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | No | 2 | Heading level (1–6) mapping to h1–h6. |
-| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'` | No | derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm) | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `children` | `ReactNode` | No | — | Heading text |
+| Name       | Type                                    | Required | Default                                                  | Description                                           |
+| ---------- | --------------------------------------- | -------- | -------------------------------------------------------- | ----------------------------------------------------- |
+| `level`    | `1 \| 2 \| 3 \| 4 \| 5 \| 6`            | No       | 2                                                        | Heading level (1–6) mapping to h1–h6.                 |
+| `size`     | `'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'` | No       | derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm) | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode`                             | No       | —                                                        | Heading text                                          |
 
 ## Tokens
 
@@ -70,15 +70,17 @@ Renders a real <h1>–<h6> from the level prop so the heading appears in the acc
 Keep the document outline correct while controlling the visual scale
 
 ```jsx
-<Heading level={2} size="2xl">Visually large, semantically h2</Heading>
+<Heading level={2} size="2xl">
+  Visually large, semantically h2
+</Heading>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| size | flexible | size may override the level-derived default for visual scale |
-| level sequence | strict | Levels must not skip — maintain a valid heading hierarchy |
+| Area           | Level    | Note                                                         |
+| -------------- | -------- | ------------------------------------------------------------ |
+| size           | flexible | size may override the level-derived default for visual scale |
+| level sequence | strict   | Levels must not skip — maintain a valid heading hierarchy    |
 
 ## AI context prompt
 

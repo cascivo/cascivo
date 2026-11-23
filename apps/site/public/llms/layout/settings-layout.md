@@ -22,10 +22,10 @@ import { SettingsLayout } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `menu` | `ReactNode` | yes | — | Side navigation menu |
-| `children` | `ReactNode` | yes | — | Settings content area |
+| Prop       | Type        | Required | Default | Description           |
+| ---------- | ----------- | -------- | ------- | --------------------- |
+| `menu`     | `ReactNode` | yes      | —       | Side navigation menu  |
+| `children` | `ReactNode` | yes      | —       | Settings content area |
 
 ## Examples
 
@@ -34,7 +34,9 @@ import { SettingsLayout } from '@cascivo/react'
 Menu + content layout
 
 ```tsx
-<SettingsLayout menu={<nav>Menu</nav>}><div>Settings</div></SettingsLayout>
+<SettingsLayout menu={<nav>Menu</nav>}>
+  <div>Settings</div>
+</SettingsLayout>
 ```
 
 ## Client JavaScript

@@ -7,6 +7,9 @@ export default (
     required
     value="pro"
     onChange={() => {}}
-    options={[{ value: 'free', label: 'Free' }, { value: 'pro', label: 'Pro' }]}
+    options={[
+      { value: 'free', label: 'Free' },
+      { value: 'pro', label: 'Pro' },
+    ]}
   />
 )

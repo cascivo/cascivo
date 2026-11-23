@@ -22,10 +22,10 @@ import { Center } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `ReactNode` | no | — | Content to center |
-| `maxWidth` | `string` | no | `48rem` | CSS max-width value |
+| Prop       | Type        | Required | Default | Description         |
+| ---------- | ----------- | -------- | ------- | ------------------- |
+| `children` | `ReactNode` | no       | —       | Content to center   |
+| `maxWidth` | `string`    | no       | `48rem` | CSS max-width value |
 
 ## Examples
 
@@ -34,7 +34,9 @@ import { Center } from '@cascivo/react'
 Centered container with custom max-width
 
 ```tsx
-<Center maxWidth="60rem"><p>Content</p></Center>
+<Center maxWidth="60rem">
+  <p>Content</p>
+</Center>
 ```
 
 ## Client JavaScript

@@ -17,11 +17,12 @@ export default meta
 type Story = StoryObj
 
 export const ADraggableNode: Story = {
-  name: "A draggable node",
+  name: 'A draggable node',
   render: () => (
-  <div style={{ position: 'relative', height: 160 }}>
-    <FlowNode id="a" defaultPosition={{ x: 40, y: 50 }}>Service A</FlowNode>
-  </div>
-),
+    <div style={{ position: 'relative', height: 160 }}>
+      <FlowNode id="a" defaultPosition={{ x: 40, y: 50 }}>
+        Service A
+      </FlowNode>
+    </div>
+  ),
 }
-

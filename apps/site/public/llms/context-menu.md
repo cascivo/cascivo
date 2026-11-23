@@ -27,9 +27,9 @@ import { ContextMenu } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `React.ReactNode` | yes | — | The right-click target first, followed by ContextMenuItem children. |
+| Prop       | Type              | Required | Default | Description                                                         |
+| ---------- | ----------------- | -------- | ------- | ------------------------------------------------------------------- |
+| `children` | `React.ReactNode` | yes      | —       | The right-click target first, followed by ContextMenuItem children. |
 
 ## Examples
 
@@ -49,7 +49,9 @@ import { ContextMenu } from '@cascivo/react'
 <ContextMenu>
   <FileRow file={file} />
   <ContextMenuItem onSelect={copy}>Copy</ContextMenuItem>
-  <ContextMenuItem onSelect={paste} disabled>Paste</ContextMenuItem>
+  <ContextMenuItem onSelect={paste} disabled>
+    Paste
+  </ContextMenuItem>
 </ContextMenu>
 ```
 

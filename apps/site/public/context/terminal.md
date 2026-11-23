@@ -32,13 +32,13 @@ A named group whose full script is present as visually hidden text from the firs
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `lines` | `TerminalLine[]` | Yes | — | The script. Each line has `text`, an optional `prefix` (e.g. `$`) and a `type` (`command \| output \| error \| comment`, default `output`). |
-| `speed` | `number` | No | 3 | Characters typed per animation frame. |
-| `loop` | `boolean` | No | false | Restart from the first line after the last one. |
-| `onComplete` | `() => void` | No | — | Called each time the last line finishes typing. |
-| `labels` | `{ label?: string }` | No | — | Overrides for the component’s user-visible strings (i18n) — `label` names the terminal for screen readers. |
+| Name         | Type                 | Required | Default | Description                                                                                                                                 |
+| ------------ | -------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lines`      | `TerminalLine[]`     | Yes      | —       | The script. Each line has `text`, an optional `prefix` (e.g. `$`) and a `type` (`command \| output \| error \| comment`, default `output`). |
+| `speed`      | `number`             | No       | 3       | Characters typed per animation frame.                                                                                                       |
+| `loop`       | `boolean`            | No       | false   | Restart from the first line after the last one.                                                                                             |
+| `onComplete` | `() => void`         | No       | —       | Called each time the last line finishes typing.                                                                                             |
+| `labels`     | `{ label?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n) — `label` names the terminal for screen readers.                                  |
 
 ## Object types
 
@@ -46,11 +46,11 @@ A named group whose full script is present as visually hidden text from the firs
 
 One line of the script.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `text` | `string` | Yes | What the line says. |
-| `prefix` | `string` | No | A prompt marker such as `$`, styled and not selectable. |
-| `type` | `'command' \| 'output' \| 'error' \| 'comment'` | No | Colours the line. Defaults to `output`. |
+| Field    | Type                                            | Required | Description                                             |
+| -------- | ----------------------------------------------- | -------- | ------------------------------------------------------- |
+| `text`   | `string`                                        | Yes      | What the line says.                                     |
+| `prefix` | `string`                                        | No       | A prompt marker such as `$`, styled and not selectable. |
+| `type`   | `'command' \| 'output' \| 'error' \| 'comment'` | No       | Colours the line. Defaults to `output`.                 |
 
 ## Tokens
 
@@ -81,10 +81,10 @@ One line of the script.
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| colours | flexible | Follows the editor tokens; override --cascivo-terminal-bg / -fg for an always-dark look |
-| speed and looping | flexible | speed, loop, onComplete |
+| Area              | Level    | Note                                                                                    |
+| ----------------- | -------- | --------------------------------------------------------------------------------------- |
+| colours           | flexible | Follows the editor tokens; override --cascivo-terminal-bg / -fg for an always-dark look |
+| speed and looping | flexible | speed, loop, onComplete                                                                 |
 
 ## AI context prompt
 

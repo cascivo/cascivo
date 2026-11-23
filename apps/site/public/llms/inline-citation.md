@@ -22,11 +22,11 @@ import { InlineCitation } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `index` | `number` | yes | — | The visible citation number — the source’s position in the matching Sources list. |
-| `source` | `AiSource` | yes | — | The cited source (`title`, `url`, optional `description`). Only absolute http(s) URLs become links. |
-| `labels` | `{ source?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). `source` may contain `{index}`; the accessible name is "<source>: <title>". |
+| Prop     | Type                  | Required | Default | Description                                                                                                                            |
+| -------- | --------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `index`  | `number`              | yes      | —       | The visible citation number — the source’s position in the matching Sources list.                                                      |
+| `source` | `AiSource`            | yes      | —       | The cited source (`title`, `url`, optional `description`). Only absolute http(s) URLs become links.                                    |
+| `labels` | `{ source?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n). `source` may contain `{index}`; the accessible name is "<source>: <title>". |
 
 ## Object types
 
@@ -34,11 +34,11 @@ import { InlineCitation } from '@cascivo/react'
 
 One source an answer cites (shared with Sources).
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `title` | `string` | yes | The source’s title. |
-| `url` | `string` | yes | Treated as untrusted: only absolute http(s) URLs are linked. |
-| `description` | `ReactNode` | no | An excerpt shown in the hover card. |
+| Field         | Type        | Required | Description                                                  |
+| ------------- | ----------- | -------- | ------------------------------------------------------------ |
+| `title`       | `string`    | yes      | The source’s title.                                          |
+| `url`         | `string`    | yes      | Treated as untrusted: only absolute http(s) URLs are linked. |
+| `description` | `ReactNode` | no       | An excerpt shown in the hover card.                          |
 
 ## Examples
 
@@ -47,7 +47,10 @@ One source an answer cites (shared with Sources).
 ```tsx
 <p>
   Refunds are available for 30 days.
-  <InlineCitation index={1} source={{ title: 'Refund policy', url: 'https://example.com/refunds' }} />
+  <InlineCitation
+    index={1}
+    source={{ title: 'Refund policy', url: 'https://example.com/refunds' }}
+  />
 </p>
 ```
 

@@ -17,12 +17,12 @@ Refresh with `pnpm email:caniemail:refresh` and commit the diff.
 
 ## How to read the verdict
 
-| Symbol | Meaning |
-| --- | --- |
-| ✅ | Supported by every client in the floor. |
-| ⚠️ | Partial in at least one client — usually "works on a table cell, not a div". Allowed, and enforced by structural invariants rather than by feature support. |
-| ❌ | Not supported by at least one client. The lint blocks it. |
-| — | Not in the matrix. Foundational HTML like `<td>` and `<a>` lands here; it is not a failure. |
+| Symbol | Meaning                                                                                                                                                     |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ✅     | Supported by every client in the floor.                                                                                                                     |
+| ⚠️     | Partial in at least one client — usually "works on a table cell, not a div". Allowed, and enforced by structural invariants rather than by feature support. |
+| ❌     | Not supported by at least one client. The lint blocks it.                                                                                                   |
+| —      | Not in the matrix. Foundational HTML like `<td>` and `<a>` lands here; it is not a failure.                                                                 |
 
 ## The support floor
 
@@ -44,27 +44,27 @@ and a broken Outlook render.
 
 ## Feature support
 
-| Feature | Verdict | Outlook (Windows) | Outlook.com | Gmail (desktop webmail) | Gmail (Android) | Gmail (iOS) | Apple Mail (macOS) | Apple Mail (iOS) | Yahoo! Mail (desktop webmail) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Flexbox | ❌ | ❌ | ✅ | ✅ | ⚠️ | ⚠️ | ✅ | ✅ | ✅ |
-| CSS Grid | ❌ | ❌ | ✅ | ✅ | ⚠️ | ⚠️ | ✅ | ✅ | ✅ |
-| `gap` | ❌ | ❌ | ⚠️ | ⚠️ | ⚠️ | ⚠️ | ✅ | ✅ | ❌ |
-| Custom properties (`var()`) | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
-| `oklch()` / `lab()` | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
-| `color-mix()` | — | — | — | — | — | — | — | — | — |
-| `rem` units | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
-| `border-radius` | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚠️ |
-| `box-shadow` | ❌ | ❌ | ✅ | ❌ | ⚠️ | ⚠️ | ✅ | ✅ | ❌ |
-| `@media` | ❌ | ❌ | ⚠️ | ⚠️ | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |
-| `prefers-color-scheme` | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
-| Inline SVG | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ⚠️ | ✅ | ❌ |
-| `position` | ❌ | ❌ | ⚠️ | ❌ | ❌ | ❌ | ⚠️ | ⚠️ | ⚠️ |
-| `float` | ❌ | ❌ | ✅ | ✅ | ⚠️ | ⚠️ | ✅ | ✅ | ⚠️ |
-| `padding` | ⚠️ | ⚠️ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `background-color` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `border-collapse` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `vertical-align` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `<table>` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Feature                     | Verdict | Outlook (Windows) | Outlook.com | Gmail (desktop webmail) | Gmail (Android) | Gmail (iOS) | Apple Mail (macOS) | Apple Mail (iOS) | Yahoo! Mail (desktop webmail) |
+| --------------------------- | ------- | ----------------- | ----------- | ----------------------- | --------------- | ----------- | ------------------ | ---------------- | ----------------------------- |
+| Flexbox                     | ❌      | ❌                | ✅          | ✅                      | ⚠️              | ⚠️          | ✅                 | ✅               | ✅                            |
+| CSS Grid                    | ❌      | ❌                | ✅          | ✅                      | ⚠️              | ⚠️          | ✅                 | ✅               | ✅                            |
+| `gap`                       | ❌      | ❌                | ⚠️          | ⚠️                      | ⚠️              | ⚠️          | ✅                 | ✅               | ❌                            |
+| Custom properties (`var()`) | ❌      | ❌                | ❌          | ❌                      | ❌              | ❌          | ✅                 | ✅               | ❌                            |
+| `oklch()` / `lab()`         | ❌      | ❌                | ❌          | ❌                      | ❌              | ❌          | ✅                 | ✅               | ❌                            |
+| `color-mix()`               | —       | —                 | —           | —                       | —               | —           | —                  | —                | —                             |
+| `rem` units                 | ❌      | ❌                | ✅          | ✅                      | ✅              | ✅          | ✅                 | ✅               | ❌                            |
+| `border-radius`             | ❌      | ❌                | ✅          | ✅                      | ✅              | ✅          | ✅                 | ✅               | ⚠️                            |
+| `box-shadow`                | ❌      | ❌                | ✅          | ❌                      | ⚠️              | ⚠️          | ✅                 | ✅               | ❌                            |
+| `@media`                    | ❌      | ❌                | ⚠️          | ⚠️                      | ⚠️              | ⚠️          | ✅                 | ✅               | ⚠️                            |
+| `prefers-color-scheme`      | ❌      | ❌                | ✅          | ❌                      | ❌              | ❌          | ✅                 | ✅               | ❌                            |
+| Inline SVG                  | ❌      | ❌                | ❌          | ❌                      | ❌              | ❌          | ⚠️                 | ✅               | ❌                            |
+| `position`                  | ❌      | ❌                | ⚠️          | ❌                      | ❌              | ❌          | ⚠️                 | ⚠️               | ⚠️                            |
+| `float`                     | ❌      | ❌                | ✅          | ✅                      | ⚠️              | ⚠️          | ✅                 | ✅               | ⚠️                            |
+| `padding`                   | ⚠️      | ⚠️                | ✅          | ✅                      | ✅              | ✅          | ✅                 | ✅               | ✅                            |
+| `background-color`          | ✅      | ✅                | ✅          | ✅                      | ✅              | ✅          | ✅                 | ✅               | ✅                            |
+| `border-collapse`           | ✅      | ✅                | ✅          | ✅                      | ✅              | ✅          | ✅                 | ✅               | ✅                            |
+| `vertical-align`            | ✅      | ✅                | ✅          | ✅                      | ✅              | ✅          | ✅                 | ✅               | ✅                            |
+| `<table>`                   | ✅      | ✅                | ✅          | ✅                      | ✅              | ✅          | ✅                 | ✅               | ✅                            |
 
 ## Accepted exceptions
 

@@ -5,11 +5,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          1,
-          0,
-          0
-        ],
+        "components": [1, 0, 0],
         "hex": "#ffffff"
       },
       "$description": "CSS: --cascivo-gray-0 (primitive)"
@@ -18,11 +14,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.985,
-          0.002,
-          264
-        ],
+        "components": [0.985, 0.002, 264],
         "hex": "#f9fafb"
       },
       "$description": "CSS: --cascivo-gray-50 (primitive)"
@@ -31,11 +23,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.967,
-          0.003,
-          264
-        ],
+        "components": [0.967, 0.003, 264],
         "hex": "#f3f4f6"
       },
       "$description": "CSS: --cascivo-gray-100 (primitive)"
@@ -44,11 +32,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.928,
-          0.006,
-          264
-        ],
+        "components": [0.928, 0.006, 264],
         "hex": "#e5e7eb"
       },
       "$description": "CSS: --cascivo-gray-200 (primitive)"
@@ -57,11 +41,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.872,
-          0.008,
-          264
-        ],
+        "components": [0.872, 0.008, 264],
         "hex": "#d2d5da"
       },
       "$description": "CSS: --cascivo-gray-300 (primitive)"
@@ -70,11 +50,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.707,
-          0.015,
-          264
-        ],
+        "components": [0.707, 0.015, 264],
         "hex": "#9ca1aa"
       },
       "$description": "CSS: --cascivo-gray-400 (primitive)"
@@ -83,11 +59,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.554,
-          0.018,
-          264
-        ],
+        "components": [0.554, 0.018, 264],
         "hex": "#6d737e"
       },
       "$description": "CSS: --cascivo-gray-500 (primitive)"
@@ -96,11 +68,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.446,
-          0.018,
-          264
-        ],
+        "components": [0.446, 0.018, 264],
         "hex": "#4f545e"
       },
       "$description": "CSS: --cascivo-gray-600 (primitive)"
@@ -109,11 +77,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.373,
-          0.015,
-          264
-        ],
+        "components": [0.373, 0.015, 264],
         "hex": "#3c4149"
       },
       "$description": "CSS: --cascivo-gray-700 (primitive)"
@@ -122,11 +86,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.269,
-          0.01,
-          264
-        ],
+        "components": [0.269, 0.01, 264],
         "hex": "#24262b"
       },
       "$description": "CSS: --cascivo-gray-800 (primitive)"
@@ -135,11 +95,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.205,
-          0.007,
-          264
-        ],
+        "components": [0.205, 0.007, 264],
         "hex": "#16171a"
       },
       "$description": "CSS: --cascivo-gray-900 (primitive)"
@@ -148,11 +104,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.145,
-          0.005,
-          264
-        ],
+        "components": [0.145, 0.005, 264],
         "hex": "#090a0c"
       },
       "$description": "CSS: --cascivo-gray-950 (primitive)"
@@ -163,11 +115,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.97,
-          0.025,
-          250
-        ],
+        "components": [0.97, 0.025, 250],
         "hex": "#e9f7ff"
       },
       "$description": "CSS: --cascivo-blue-50 (primitive)"
@@ -176,11 +124,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.932,
-          0.055,
-          250
-        ],
+        "components": [0.932, 0.055, 250],
         "hex": "#ceecff"
       },
       "$description": "CSS: --cascivo-blue-100 (primitive)"
@@ -189,11 +133,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.882,
-          0.095,
-          250
-        ],
+        "components": [0.882, 0.095, 250],
         "hex": "#a8ddff"
       },
       "$description": "CSS: --cascivo-blue-200 (primitive)"
@@ -202,11 +142,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.808,
-          0.14,
-          250
-        ],
+        "components": [0.808, 0.14, 250],
         "hex": "#75c6ff"
       },
       "$description": "CSS: --cascivo-blue-300 (primitive)"
@@ -215,11 +151,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.707,
-          0.18,
-          250
-        ],
+        "components": [0.707, 0.18, 250],
         "hex": "#30a5ff"
       },
       "$description": "CSS: --cascivo-blue-400 (primitive)"
@@ -228,11 +160,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.623,
-          0.214,
-          250
-        ],
+        "components": [0.623, 0.214, 250],
         "hex": "#0087ff"
       },
       "$description": "CSS: --cascivo-blue-500 (primitive)"
@@ -241,11 +169,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.546,
-          0.224,
-          250
-        ],
+        "components": [0.546, 0.224, 250],
         "hex": "#006deb"
       },
       "$description": "CSS: --cascivo-blue-600 (primitive)"
@@ -254,11 +178,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.452,
-          0.196,
-          250
-        ],
+        "components": [0.452, 0.196, 250],
         "hex": "#0052bc"
       },
       "$description": "CSS: --cascivo-blue-700 (primitive)"
@@ -267,11 +187,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.373,
-          0.155,
-          250
-        ],
+        "components": [0.373, 0.155, 250],
         "hex": "#003e8d"
       },
       "$description": "CSS: --cascivo-blue-800 (primitive)"
@@ -280,11 +196,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.29,
-          0.105,
-          250
-        ],
+        "components": [0.29, 0.105, 250],
         "hex": "#002b5c"
       },
       "$description": "CSS: --cascivo-blue-900 (primitive)"
@@ -293,11 +205,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.205,
-          0.065,
-          250
-        ],
+        "components": [0.205, 0.065, 250],
         "hex": "#001833"
       },
       "$description": "CSS: --cascivo-blue-950 (primitive)"
@@ -308,11 +216,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.982,
-          0.018,
-          145
-        ],
+        "components": [0.982, 0.018, 145],
         "hex": "#f2fdf2"
       },
       "$description": "CSS: --cascivo-green-50 (primitive)"
@@ -321,11 +225,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.962,
-          0.044,
-          145
-        ],
+        "components": [0.962, 0.044, 145],
         "hex": "#e1fbe1"
       },
       "$description": "CSS: --cascivo-green-100 (primitive)"
@@ -334,11 +234,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.925,
-          0.084,
-          145
-        ],
+        "components": [0.925, 0.084, 145],
         "hex": "#c4f6c4"
       },
       "$description": "CSS: --cascivo-green-200 (primitive)"
@@ -347,11 +243,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.75,
-          0.15,
-          145
-        ],
+        "components": [0.75, 0.15, 145],
         "hex": "#6bc670"
       },
       "$description": "CSS: --cascivo-green-400 (primitive)"
@@ -360,11 +252,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.648,
-          0.15,
-          145
-        ],
+        "components": [0.648, 0.15, 145],
         "hex": "#4aa651"
       },
       "$description": "CSS: --cascivo-green-500 (primitive)"
@@ -373,11 +261,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.548,
-          0.14,
-          145
-        ],
+        "components": [0.548, 0.14, 145],
         "hex": "#308538"
       },
       "$description": "CSS: --cascivo-green-600 (primitive)"
@@ -386,11 +270,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.448,
-          0.12,
-          145
-        ],
+        "components": [0.448, 0.12, 145],
         "hex": "#1d6525"
       },
       "$description": "CSS: --cascivo-green-700 (primitive)"
@@ -399,11 +279,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.28,
-          0.075,
-          145
-        ],
+        "components": [0.28, 0.075, 145],
         "hex": "#0a320f"
       },
       "$description": "CSS: --cascivo-green-900 (primitive)"
@@ -414,11 +290,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.971,
-          0.013,
-          22
-        ],
+        "components": [0.971, 0.013, 22],
         "hex": "#fef2f1"
       },
       "$description": "CSS: --cascivo-red-50 (primitive)"
@@ -427,11 +299,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.936,
-          0.032,
-          22
-        ],
+        "components": [0.936, 0.032, 22],
         "hex": "#ffe2e0"
       },
       "$description": "CSS: --cascivo-red-100 (primitive)"
@@ -440,11 +308,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.885,
-          0.062,
-          22
-        ],
+        "components": [0.885, 0.062, 22],
         "hex": "#ffcac7"
       },
       "$description": "CSS: --cascivo-red-200 (primitive)"
@@ -453,11 +317,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.72,
-          0.16,
-          22
-        ],
+        "components": [0.72, 0.16, 22],
         "hex": "#f97676"
       },
       "$description": "CSS: --cascivo-red-400 (primitive)"
@@ -466,11 +326,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.628,
-          0.188,
-          22
-        ],
+        "components": [0.628, 0.188, 22],
         "hex": "#e44c52"
       },
       "$description": "CSS: --cascivo-red-500 (primitive)"
@@ -479,11 +335,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.54,
-          0.188,
-          22
-        ],
+        "components": [0.54, 0.188, 22],
         "hex": "#c42b39"
       },
       "$description": "CSS: --cascivo-red-600 (primitive)"
@@ -492,11 +344,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.448,
-          0.17,
-          22
-        ],
+        "components": [0.448, 0.17, 22],
         "hex": "#9d1225"
       },
       "$description": "CSS: --cascivo-red-700 (primitive)"
@@ -505,11 +353,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.28,
-          0.1,
-          22
-        ],
+        "components": [0.28, 0.1, 22],
         "hex": "#4f0910"
       },
       "$description": "CSS: --cascivo-red-900 (primitive)"
@@ -520,11 +364,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.98,
-          0.02,
-          75
-        ],
+        "components": [0.98, 0.02, 75],
         "hex": "#fff7ea"
       },
       "$description": "CSS: --cascivo-orange-50 (primitive)"
@@ -533,11 +373,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.96,
-          0.045,
-          75
-        ],
+        "components": [0.96, 0.045, 75],
         "hex": "#ffeed1"
       },
       "$description": "CSS: --cascivo-orange-100 (primitive)"
@@ -546,11 +382,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.82,
-          0.13,
-          60
-        ],
+        "components": [0.82, 0.13, 60],
         "hex": "#ffaf68"
       },
       "$description": "CSS: --cascivo-orange-400 (primitive)"
@@ -559,11 +391,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.768,
-          0.145,
-          55
-        ],
+        "components": [0.768, 0.145, 55],
         "hex": "#f99850"
       },
       "$description": "CSS: --cascivo-orange-500 (primitive)"
@@ -572,11 +400,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.68,
-          0.155,
-          50
-        ],
+        "components": [0.68, 0.155, 50],
         "hex": "#e27731"
       },
       "$description": "CSS: --cascivo-orange-600 (primitive)"
@@ -587,11 +411,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.987,
-          0.026,
-          95
-        ],
+        "components": [0.987, 0.026, 95],
         "hex": "#fffbe8"
       },
       "$description": "CSS: --cascivo-yellow-50 (primitive)"
@@ -600,11 +420,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.973,
-          0.05,
-          95
-        ],
+        "components": [0.973, 0.05, 95],
         "hex": "#fff7d1"
       },
       "$description": "CSS: --cascivo-yellow-100 (primitive)"
@@ -613,11 +429,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.868,
-          0.145,
-          80
-        ],
+        "components": [0.868, 0.145, 80],
         "hex": "#ffc857"
       },
       "$description": "CSS: --cascivo-yellow-400 (primitive)"
@@ -626,11 +438,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.768,
-          0.145,
-          75
-        ],
+        "components": [0.768, 0.145, 75],
         "hex": "#e9a534"
       },
       "$description": "CSS: --cascivo-yellow-500 (primitive)"
@@ -641,11 +449,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.982,
-          0.008,
-          80
-        ],
+        "components": [0.982, 0.008, 80],
         "hex": "#fcf9f3"
       },
       "$description": "CSS: --cascivo-warm-50 (primitive)"
@@ -654,11 +458,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.962,
-          0.016,
-          80
-        ],
+        "components": [0.962, 0.016, 80],
         "hex": "#f8f2e7"
       },
       "$description": "CSS: --cascivo-warm-100 (primitive)"
@@ -667,11 +467,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.92,
-          0.025,
-          78
-        ],
+        "components": [0.92, 0.025, 78],
         "hex": "#eee3d3"
       },
       "$description": "CSS: --cascivo-warm-200 (primitive)"
@@ -680,11 +476,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.87,
-          0.035,
-          75
-        ],
+        "components": [0.87, 0.035, 75],
         "hex": "#e2d2bb"
       },
       "$description": "CSS: --cascivo-warm-300 (primitive)"
@@ -693,11 +485,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.76,
-          0.045,
-          70
-        ],
+        "components": [0.76, 0.045, 70],
         "hex": "#c4ad93"
       },
       "$description": "CSS: --cascivo-warm-400 (primitive)"
@@ -706,11 +494,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.64,
-          0.045,
-          65
-        ],
+        "components": [0.64, 0.045, 65],
         "hex": "#a08770"
       },
       "$description": "CSS: --cascivo-warm-500 (primitive)"
@@ -719,11 +503,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.52,
-          0.04,
-          60
-        ],
+        "components": [0.52, 0.04, 60],
         "hex": "#7b6452"
       },
       "$description": "CSS: --cascivo-warm-600 (primitive)"
@@ -732,11 +512,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.42,
-          0.03,
-          55
-        ],
+        "components": [0.42, 0.03, 55],
         "hex": "#5a493e"
       },
       "$description": "CSS: --cascivo-warm-700 (primitive)"
@@ -745,11 +521,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.31,
-          0.022,
-          50
-        ],
+        "components": [0.31, 0.022, 50],
         "hex": "#3a2d26"
       },
       "$description": "CSS: --cascivo-warm-800 (primitive)"
@@ -758,11 +530,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.21,
-          0.015,
-          50
-        ],
+        "components": [0.21, 0.015, 50],
         "hex": "#1e1612"
       },
       "$description": "CSS: --cascivo-warm-900 (primitive)"
@@ -889,14 +657,7 @@
     },
     "font-mono": {
       "$type": "fontFamily",
-      "$value": [
-        "ui-monospace",
-        "SFMono-Regular",
-        "SF Mono",
-        "Menlo",
-        "Consolas",
-        "monospace"
-      ],
+      "$value": ["ui-monospace", "SFMono-Regular", "SF Mono", "Menlo", "Consolas", "monospace"],
       "$description": "CSS: --cascivo-font-mono (primitive)"
     },
     "font-normal": {
@@ -1223,11 +984,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0,
-              0,
-              0
-            ],
+            "components": [0, 0, 0],
             "alpha": 0.05,
             "hex": "#000000"
           },
@@ -1257,11 +1014,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0,
-              0,
-              0
-            ],
+            "components": [0, 0, 0],
             "alpha": 0.07,
             "hex": "#000000"
           },
@@ -1285,11 +1038,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0,
-              0,
-              0
-            ],
+            "components": [0, 0, 0],
             "alpha": 0.04,
             "hex": "#000000"
           },
@@ -1319,11 +1068,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0,
-              0,
-              0
-            ],
+            "components": [0, 0, 0],
             "alpha": 0.07,
             "hex": "#000000"
           },
@@ -1347,11 +1092,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0,
-              0,
-              0
-            ],
+            "components": [0, 0, 0],
             "alpha": 0.04,
             "hex": "#000000"
           },
@@ -1381,11 +1122,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0,
-              0,
-              0
-            ],
+            "components": [0, 0, 0],
             "alpha": 0.16,
             "hex": "#000000"
           },
@@ -1409,11 +1146,7 @@
         {
           "color": {
             "colorSpace": "oklch",
-            "components": [
-              0,
-              0,
-              0
-            ],
+            "components": [0, 0, 0],
             "alpha": 0.04,
             "hex": "#000000"
           },
@@ -1471,11 +1204,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.205,
-          0,
-          0
-        ],
+        "components": [0.205, 0, 0],
         "hex": "#171717"
       },
       "$description": "CSS: --cascivo-color-primary (semantic)"
@@ -1484,11 +1213,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.985,
-          0,
-          0
-        ],
+        "components": [0.985, 0, 0],
         "hex": "#fafafa"
       },
       "$description": "CSS: --cascivo-color-primary-fg (semantic)"
@@ -1497,11 +1222,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.27,
-          0,
-          0
-        ],
+        "components": [0.27, 0, 0],
         "hex": "#262626"
       },
       "$description": "CSS: --cascivo-color-primary-hover (semantic)"
@@ -1510,11 +1231,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.32,
-          0,
-          0
-        ],
+        "components": [0.32, 0, 0],
         "hex": "#333333"
       },
       "$description": "CSS: --cascivo-color-primary-active (semantic)"
@@ -1523,11 +1240,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.145,
-          0.005,
-          264
-        ],
+        "components": [0.145, 0.005, 264],
         "alpha": 0.06,
         "hex": "#090a0c"
       },
@@ -1537,11 +1250,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          1,
-          0,
-          0
-        ],
+        "components": [1, 0, 0],
         "hex": "#ffffff"
       },
       "$description": "CSS: --cascivo-color-background (semantic)"
@@ -1550,11 +1259,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.985,
-          0.002,
-          264
-        ],
+        "components": [0.985, 0.002, 264],
         "hex": "#f9fafb"
       },
       "$description": "CSS: --cascivo-color-surface (semantic)"
@@ -1563,11 +1268,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.967,
-          0.003,
-          264
-        ],
+        "components": [0.967, 0.003, 264],
         "hex": "#f3f4f6"
       },
       "$description": "CSS: --cascivo-color-surface-2 (semantic)"
@@ -1576,11 +1277,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.145,
-          0.005,
-          264
-        ],
+        "components": [0.145, 0.005, 264],
         "hex": "#090a0c"
       },
       "$description": "CSS: --cascivo-color-foreground (semantic)"
@@ -1589,11 +1286,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.5,
-          0.018,
-          264
-        ],
+        "components": [0.5, 0.018, 264],
         "hex": "#5e636e"
       },
       "$description": "CSS: --cascivo-color-foreground-muted (semantic)"
@@ -1602,11 +1295,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.5,
-          0.016,
-          264
-        ],
+        "components": [0.5, 0.016, 264],
         "hex": "#5f636d"
       },
       "$description": "CSS: --cascivo-color-text-muted (semantic)"
@@ -1615,11 +1304,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          1,
-          0,
-          0
-        ],
+        "components": [1, 0, 0],
         "hex": "#ffffff"
       },
       "$description": "CSS: --cascivo-color-text-on-accent (semantic)"
@@ -1628,11 +1313,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          1,
-          0,
-          0
-        ],
+        "components": [1, 0, 0],
         "hex": "#ffffff"
       },
       "$description": "CSS: --cascivo-color-text-on-destructive (semantic)"
@@ -1641,11 +1322,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.52,
-          0.2,
-          250
-        ],
+        "components": [0.52, 0.2, 250],
         "hex": "#0067d5"
       },
       "$description": "CSS: --cascivo-color-accent (semantic)"
@@ -1654,11 +1331,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          1,
-          0,
-          0
-        ],
+        "components": [1, 0, 0],
         "hex": "#ffffff"
       },
       "$description": "CSS: --cascivo-color-accent-foreground (semantic)"
@@ -1667,11 +1340,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.45,
-          0.2,
-          250
-        ],
+        "components": [0.45, 0.2, 250],
         "hex": "#0051bd"
       },
       "$description": "CSS: --cascivo-color-accent-hover (semantic)"
@@ -1680,11 +1349,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.628,
-          0.188,
-          22
-        ],
+        "components": [0.628, 0.188, 22],
         "hex": "#e44c52"
       },
       "$description": "CSS: --cascivo-color-error (semantic)"
@@ -1693,11 +1358,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.768,
-          0.145,
-          75
-        ],
+        "components": [0.768, 0.145, 75],
         "hex": "#e9a534"
       },
       "$description": "CSS: --cascivo-color-warning (semantic)"
@@ -1706,11 +1367,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.648,
-          0.15,
-          145
-        ],
+        "components": [0.648, 0.15, 145],
         "hex": "#4aa651"
       },
       "$description": "CSS: --cascivo-color-success (semantic)"
@@ -1719,11 +1376,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.45,
-          0.14,
-          145
-        ],
+        "components": [0.45, 0.14, 145],
         "hex": "#036819"
       },
       "$description": "CSS: --cascivo-color-success-foreground (semantic)"
@@ -1732,11 +1385,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.5,
-          0.14,
-          75
-        ],
+        "components": [0.5, 0.14, 75],
         "hex": "#905300"
       },
       "$description": "CSS: --cascivo-color-warning-foreground (semantic)"
@@ -1745,11 +1394,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.448,
-          0.17,
-          22
-        ],
+        "components": [0.448, 0.17, 22],
         "hex": "#9d1225"
       },
       "$description": "CSS: --cascivo-color-destructive-foreground (semantic)"
@@ -1758,11 +1403,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.45,
-          0.19,
-          250
-        ],
+        "components": [0.45, 0.19, 250],
         "hex": "#0052b8"
       },
       "$description": "CSS: --cascivo-color-info-foreground (semantic)"
@@ -1771,11 +1412,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          1,
-          0,
-          0
-        ],
+        "components": [1, 0, 0],
         "hex": "#ffffff"
       },
       "$description": "CSS: --cascivo-color-info-content (semantic)"
@@ -1784,11 +1421,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          1,
-          0,
-          0
-        ],
+        "components": [1, 0, 0],
         "hex": "#ffffff"
       },
       "$description": "CSS: --cascivo-color-success-content (semantic)"
@@ -1797,11 +1430,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.145,
-          0,
-          0
-        ],
+        "components": [0.145, 0, 0],
         "hex": "#0a0a0a"
       },
       "$description": "CSS: --cascivo-color-warning-content (semantic)"
@@ -1810,11 +1439,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          1,
-          0,
-          0
-        ],
+        "components": [1, 0, 0],
         "hex": "#ffffff"
       },
       "$description": "CSS: --cascivo-color-error-content (semantic)"
@@ -1823,11 +1448,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.92,
-          0.004,
-          264
-        ],
+        "components": [0.92, 0.004, 264],
         "hex": "#e3e4e7"
       },
       "$description": "CSS: --cascivo-color-secondary (semantic)"
@@ -1836,11 +1457,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.27,
-          0.01,
-          264
-        ],
+        "components": [0.27, 0.01, 264],
         "hex": "#24262b"
       },
       "$description": "CSS: --cascivo-color-secondary-content (semantic)"
@@ -1849,11 +1466,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.86,
-          0.006,
-          264
-        ],
+        "components": [0.86, 0.006, 264],
         "hex": "#cfd1d5"
       },
       "$description": "CSS: --cascivo-color-secondary-hover (semantic)"
@@ -1862,11 +1475,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.967,
-          0.002,
-          264
-        ],
+        "components": [0.967, 0.002, 264],
         "hex": "#f3f4f5"
       },
       "$description": "CSS: --cascivo-color-secondary-subtle (semantic)"
@@ -1875,11 +1484,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "srgb",
-        "components": [
-          0,
-          0,
-          0
-        ],
+        "components": [0, 0, 0],
         "hex": "#000000"
       },
       "$description": "CSS: --cascivo-color-picker-alpha-to (component)"
@@ -1896,11 +1501,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0,
-          0,
-          0
-        ],
+        "components": [0, 0, 0],
         "alpha": 0.4,
         "hex": "#000000"
       },
@@ -2058,11 +1659,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.928,
-          0.006,
-          264
-        ],
+        "components": [0.928, 0.006, 264],
         "hex": "#e5e7eb"
       },
       "$description": "CSS: --cascivo-border-subtle (semantic)"
@@ -2071,11 +1668,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.872,
-          0.008,
-          264
-        ],
+        "components": [0.872, 0.008, 264],
         "hex": "#d2d5da"
       },
       "$description": "CSS: --cascivo-border-default (semantic)"
@@ -2084,11 +1677,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.707,
-          0.015,
-          264
-        ],
+        "components": [0.707, 0.015, 264],
         "hex": "#9ca1aa"
       },
       "$description": "CSS: --cascivo-border-strong (semantic)"
@@ -2097,52 +1686,27 @@
   "ease": {
     "ease-in": {
       "$type": "cubicBezier",
-      "$value": [
-        0.4,
-        0,
-        1,
-        1
-      ],
+      "$value": [0.4, 0, 1, 1],
       "$description": "CSS: --cascivo-ease-in (primitive)"
     },
     "ease-out": {
       "$type": "cubicBezier",
-      "$value": [
-        0,
-        0,
-        0.2,
-        1
-      ],
+      "$value": [0, 0, 0.2, 1],
       "$description": "CSS: --cascivo-ease-out (primitive)"
     },
     "ease-in-out": {
       "$type": "cubicBezier",
-      "$value": [
-        0.4,
-        0,
-        0.2,
-        1
-      ],
+      "$value": [0.4, 0, 0.2, 1],
       "$description": "CSS: --cascivo-ease-in-out (primitive)"
     },
     "ease-decel": {
       "$type": "cubicBezier",
-      "$value": [
-        0.16,
-        1,
-        0.3,
-        1
-      ],
+      "$value": [0.16, 1, 0.3, 1],
       "$description": "CSS: --cascivo-ease-decel (primitive)"
     },
     "ease-emphasized": {
       "$type": "cubicBezier",
-      "$value": [
-        0.2,
-        0,
-        0,
-        1
-      ],
+      "$value": [0.2, 0, 0, 1],
       "$description": "CSS: --cascivo-ease-emphasized (primitive)"
     }
   },
@@ -2225,11 +1789,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.62,
-          0.13,
-          70
-        ],
+        "components": [0.62, 0.13, 70],
         "hex": "#b77610"
       },
       "$description": "CSS: --cascivo-chart-1 (primitive)"
@@ -2238,11 +1798,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.62,
-          0.11,
-          240
-        ],
+        "components": [0.62, 0.11, 240],
         "hex": "#3e8ec1"
       },
       "$description": "CSS: --cascivo-chart-2 (primitive)"
@@ -2251,11 +1807,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.6,
-          0.13,
-          135
-        ],
+        "components": [0.6, 0.13, 135],
         "hex": "#5d913c"
       },
       "$description": "CSS: --cascivo-chart-3 (primitive)"
@@ -2264,11 +1816,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.6,
-          0.18,
-          55
-        ],
+        "components": [0.6, 0.18, 55],
         "hex": "#cd5900"
       },
       "$description": "CSS: --cascivo-chart-4 (primitive)"
@@ -2277,11 +1825,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.5,
-          0.13,
-          270
-        ],
+        "components": [0.5, 0.13, 270],
         "hex": "#475cad"
       },
       "$description": "CSS: --cascivo-chart-5 (primitive)"
@@ -2290,11 +1834,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.58,
-          0.16,
-          30
-        ],
+        "components": [0.58, 0.16, 30],
         "hex": "#c74c3d"
       },
       "$description": "CSS: --cascivo-chart-6 (primitive)"
@@ -2303,11 +1843,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.62,
-          0.12,
-          350
-        ],
+        "components": [0.62, 0.12, 350],
         "hex": "#bb6690"
       },
       "$description": "CSS: --cascivo-chart-7 (primitive)"
@@ -2316,11 +1852,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.5,
-          0.12,
-          200
-        ],
+        "components": [0.5, 0.12, 200],
         "hex": "#00767e"
       },
       "$description": "CSS: --cascivo-chart-8 (primitive)"
@@ -2329,11 +1861,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.5,
-          0.016,
-          264
-        ],
+        "components": [0.5, 0.016, 264],
         "hex": "#5f636d"
       },
       "$description": "CSS: --cascivo-chart-axis (semantic)"
@@ -2375,11 +1903,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.55,
-          0.15,
-          240
-        ],
+        "components": [0.55, 0.15, 240],
         "hex": "#0079bf"
       },
       "$description": "CSS: --cascivo-brand-primary (semantic)"
@@ -2388,11 +1912,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.72,
-          0.13,
-          195
-        ],
+        "components": [0.72, 0.13, 195],
         "hex": "#00bdbe"
       },
       "$description": "CSS: --cascivo-brand-accent (semantic)"
@@ -2401,11 +1921,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.22,
-          0.03,
-          250
-        ],
+        "components": [0.22, 0.03, 250],
         "hex": "#101c28"
       },
       "$description": "CSS: --cascivo-brand-ink (semantic)"
@@ -2414,11 +1930,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.99,
-          0.005,
-          250
-        ],
+        "components": [0.99, 0.005, 250],
         "hex": "#f9fcff"
       },
       "$description": "CSS: --cascivo-brand-paper (semantic)"
@@ -2427,11 +1939,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.55,
-          0.15,
-          240
-        ],
+        "components": [0.55, 0.15, 240],
         "hex": "#0079bf"
       },
       "$description": "CSS: --cascivo-brand-gradient-start (semantic)"
@@ -2440,11 +1948,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.72,
-          0.13,
-          195
-        ],
+        "components": [0.72, 0.13, 195],
         "hex": "#00bdbe"
       },
       "$description": "CSS: --cascivo-brand-gradient-end (semantic)"
@@ -2575,11 +2079,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.53,
-          0.13,
-          135
-        ],
+        "components": [0.53, 0.13, 135],
         "hex": "#487c25"
       },
       "$description": "CSS: --cascivo-editor-syntax-string (semantic)"
@@ -2588,11 +2088,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.54,
-          0.15,
-          40
-        ],
+        "components": [0.54, 0.15, 40],
         "hex": "#b4481e"
       },
       "$description": "CSS: --cascivo-editor-syntax-number (semantic)"
@@ -2601,11 +2097,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.54,
-          0.12,
-          350
-        ],
+        "components": [0.54, 0.12, 350],
         "hex": "#a14e78"
       },
       "$description": "CSS: --cascivo-editor-syntax-type (semantic)"
@@ -2614,11 +2106,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.54,
-          0.15,
-          40
-        ],
+        "components": [0.54, 0.15, 40],
         "hex": "#b4481e"
       },
       "$description": "CSS: --cascivo-editor-syntax-attr (semantic)"
@@ -2627,11 +2115,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.53,
-          0.13,
-          135
-        ],
+        "components": [0.53, 0.13, 135],
         "hex": "#487c25"
       },
       "$description": "CSS: --cascivo-editor-syntax-regexp (semantic)"
@@ -2640,11 +2124,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.54,
-          0.15,
-          40
-        ],
+        "components": [0.54, 0.15, 40],
         "hex": "#b4481e"
       },
       "$description": "CSS: --cascivo-editor-syntax-boolean (semantic)"
@@ -2653,11 +2133,7 @@
       "$type": "color",
       "$value": {
         "colorSpace": "oklch",
-        "components": [
-          0.53,
-          0.12,
-          240
-        ],
+        "components": [0.53, 0.12, 240],
         "hex": "#0573aa"
       },
       "$description": "CSS: --cascivo-editor-syntax-property (semantic)"

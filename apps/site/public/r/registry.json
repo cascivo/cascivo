@@ -31541,7 +31541,7 @@
               "data-disabled": [""]
             },
             "children": ["label", "slider"],
-            "emit": "auto"
+            "emit": "manual"
           },
           "parts": {
             "label": {
