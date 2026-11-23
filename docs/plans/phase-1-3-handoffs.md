@@ -1,0 +1,29 @@
+# Phase 1/3 handoffs (read before starting a workstream)
+
+## Phase 1 WS-0 (merged)
+- `packages/core/src/types.ts`: `ComponentMeta.contractTier?: 'static'|'native'|'behaviour'`, `anatomy?: { root: AnatomyPart; parts?: Record<string, AnatomyPart> }`.
+  `AnatomyPart`: `element`, `local?`, `data?` (full `data-*` names), `aria?`, `role?`, `children?` (`'@<unit>'` embeds a component), `when?`, `emit?`, `deprecated?`, `modifiers?: Record<local, whenExpr>`.
+- Validator `scripts/contract/anatomy.ts` (class ↔ part both ways; only root data-variant/size/state must match meta). G2 (anatomy required everywhere) not yet enforced.
+- `packages/css/contract.json` (`format: 1`, `units.<unit>.{name, tier, alias:'cv-<unit>', classes, anatomy?}`) and `packages/css/src/classes.gen.ts` (`classes.<camelUnit>.{root, alias, …}`, `ContractUnitName`), from `scripts/contract/generate.ts` in `regen`; `pnpm contract:check`.
+- `scripts/contract/css.ts` exports `compileModule`, `contractClass`; `build-css.ts` uses them.
+- Not done (WS-1): no `packages/css/package.json`, no `cv-<unit>` alias selector in CSS, no dist.
+- 17 components have anatomy (button = pattern, only one with `emit:'auto'`). Tiers: 65 static, 21 native, 60 behaviour; form controls are `native`; data-table `behaviour`.
+- TSX ↔ meta mismatches to fix (WS-2): badge `data-variant` info/primary missing from meta; avatar, progress, field, checkbox list states but set no `data-state`; tabs panel lacks `data-state`; toast `.icon` never rendered.
+
+## Phase 1 WS-5 (merged)
+`cv-tabs` element, ARIA tablist in cascivo-html, radio CSS removed, tabs zero drift.
+
+## Phase 3 A (merged)
+`cascivo_web::` with `default-features = false` (wasm32 builds):
+```rust
+Engine: Clone + Send + Sync; Engine::new(&Bundle)->Result<Engine>; Engine::from_bundle(&[u8]); #[fs] Engine::load(&Path)
+fn render(&self, tpl:&str, ctx:&minijinja::Value, req:&ReqCtx)->Result<String>; fn render_block(&self, tpl, block, ctx, req)->Result<String>
+fn locales(&self)->Vec<String>; fn version(&self)->u64; fn reload(&self)->Result<bool>; #[fs] fn watch(&self, Duration)->JoinHandle<()>
+ReqCtx<'a>{path, locale /*"" = default*/, csrf:Option<&str>, nonce:&str, user:Option<&Value>, flash:&[Flash]} (Default)
+Flash{kind, message}; Bundle{format, config, templates, messages, vite_manifest, css_modules, data}
+```
+- `build --bundle` writes `<site>/app.bundle` (not in public `dist/`).
+- Gaps for B1: engine adds no component CSS; `theme_script`/`islands_script` add no CSP nonce; `render_block` renders the full page first.
+
+## Phase 3 X1 (merged): checkpoint α passes
+0.46 MB gz wasm; cold start p50 49.5 ms (marginal, local wrangler); warm 4.9 ms. Workers for F, Containers second; re-measure cold start on a real workers.dev deploy early in F. `!Send` binding handlers untested. Details `phase-3-x1-results.md`.
