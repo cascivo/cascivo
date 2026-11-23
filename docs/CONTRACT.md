@@ -44,6 +44,15 @@ Six `static` units have no emitter yet and are listed with a reason in
 `packages/components/test/html-conformance/parity-coverage-allowlist.json`: `code-snippet`,
 `indicator`, `inline-citation`, `input-group`, `qr-code`, `relative-time`.
 
+## Where it comes from (gate G2)
+
+Each component's `<name>.meta.ts` declares `contractTier` (`static`, `native` or `behaviour`, see
+Tiers) and `anatomy`: every part, its element and the `data-*` attributes and values it accepts.
+`pnpm contract:generate` (in `regen`) builds `contract.json` from them and throws on an invalid
+tier or anatomy (`scripts/contract/anatomy.ts`, tested in `pnpm contract:check`). The check runs
+both ways: every class in the CSS module is an anatomy part and every part is a class, and the
+`data-variant`/`data-size`/`data-state` values agree with the meta.
+
 ## Versioning (gate G1)
 
 `packages/css/contract.baseline.json` is the contract of the last published `@cascivo/css`.
@@ -69,4 +78,5 @@ The allowlist may only shrink: an entry for a unit that gained an emitter fails 
 
 - Renaming a local class in a `*.module.css` is a public change: G1 will fail until you add the
   changeset.
-- `.cv` and Rust emitters take class names from `contract_gen.rs`, never from string literals.
+- `.cv` and Rust emitters take class names from `contract_gen.rs`, never from string literals
+  (gate G4: `crates/cascivo-html/tests/contract.rs` fails on a `"cv-` literal outside `*_gen.rs`).

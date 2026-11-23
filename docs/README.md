@@ -77,6 +77,7 @@ for pasting into an agent's context window.
 | ----- | -------------- |
 | [CONTRIBUTING-REGISTRY.md](CONTRIBUTING-REGISTRY.md) | Publish and host a third-party component registry. |
 | [CONTRIBUTING-TEMPLATES.md](CONTRIBUTING-TEMPLATES.md) | Author a template and submit it to the marketplace. |
+| [CONTRACT.md](CONTRACT.md) | The markup contract (`@cascivo/css`) — unhashed `cv-*` classes, the `cv-<unit>` alias and `data-*` attributes for HTML, htmx, Solid or Rust templates; tiers and gates G1–G4. |
 | [USING-CASCIVO-HTML.md](USING-CASCIVO-HTML.md) | `cascivo-html` (Rust crate + CLI) — write `.cv` text, get one static, branded, self-contained HTML file. For agents and for people. |
 | [USING-CASCIVO-WEB.md](USING-CASCIVO-WEB.md) | `cascivo-web` (Rust CLI) — static sites from Markdown, content collections, locales and RSS; deploy to Cloudflare. |
 | [USING-CASCIVO-SERVER.md](USING-CASCIVO-SERVER.md) | `cascivo-server` (Rust crate) — dynamic htmx apps: fragments, forms, sessions, CSRF, auth, Workers/Containers, Solid islands, SSE. |
