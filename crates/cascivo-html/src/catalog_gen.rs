@@ -361,6 +361,22 @@ pub static CATALOG: &[CompSpec] = &[
         summary: "Equal-width multi-column layout that collapses to single column on narrow viewp…",
     },
     CompSpec {
+        name: "context-meter",
+        component: "context-meter",
+        aliases: &[],
+        args: &[
+            ArgSpec { name: "value", kind: ArgKind::Num, required: true },
+            ArgSpec { name: "max", kind: ArgKind::Num, required: true },
+        ],
+        props: &[
+            PropSpec { name: "label", kind: PropKind::Str, default: Some("Context"), summary: "The meter’s name, shown above the bar" },
+        ],
+        children: Children::None,
+        client_js: ClientJs::None,
+        css: &["context-meter"],
+        summary: "How much of a model’s context window a conversation has used — \"12K / 200K\" wit…",
+    },
+    CompSpec {
         name: "dashboard-layout",
         component: "dashboard-layout",
         aliases: &[],
@@ -517,6 +533,23 @@ pub static CATALOG: &[CompSpec] = &[
         client_js: ClientJs::None,
         css: &["heading"],
         summary: "Section heading with semantic level decoupled from visual size",
+    },
+    CompSpec {
+        name: "icon-button",
+        component: "icon-button",
+        aliases: &[],
+        args: &[],
+        props: &[
+            PropSpec { name: "label", kind: PropKind::Str, default: None, summary: "Accessible name for the icon-only button" },
+            PropSpec { name: "ariaLabel", kind: PropKind::Str, default: None, summary: "Alias for label (the catalog convention for an invisible accessible name)" },
+            PropSpec { name: "variant", kind: PropKind::Enum(&["ghost", "outline", "filled"]), default: Some("ghost"), summary: "ghost is transparent until hover, outline adds a border, filled gives the butto…" },
+            PropSpec { name: "size", kind: PropKind::Enum(&["sm", "md", "lg"]), default: Some("md"), summary: "Visual size of the component (e.g 'sm', 'md', 'lg')" },
+            PropSpec { name: "disabled", kind: PropKind::Bool, default: Some("false"), summary: "When true, disables the control and removes it from the tab order" },
+        ],
+        children: Children::Text,
+        client_js: ClientJs::None,
+        css: &["icon-button"],
+        summary: "Square, icon-only button with a required accessible label",
     },
     CompSpec {
         name: "image",
@@ -800,6 +833,26 @@ pub static CATALOG: &[CompSpec] = &[
         summary: "Pie or donut chart with hover segments and optional legend",
     },
     CompSpec {
+        name: "progress",
+        component: "progress",
+        aliases: &[],
+        args: &[
+            ArgSpec { name: "value", kind: ArgKind::Num, required: false },
+        ],
+        props: &[
+            PropSpec { name: "label", kind: PropKind::Str, default: None, summary: "Alias of ariaLabel — the same invisible accessible name under the other spelling" },
+            PropSpec { name: "ariaLabel", kind: PropKind::Str, default: None, summary: "Invisible accessible name" },
+            PropSpec { name: "aria-label", kind: PropKind::Str, default: None, summary: "Accessible label when no visible label is present" },
+            PropSpec { name: "aria-describedby", kind: PropKind::Str, default: None, summary: "Id of an element describing the progress bar" },
+            PropSpec { name: "variant", kind: PropKind::Enum(&["primary", "info", "success", "warning", "error"]), default: Some("primary"), summary: "Colour of the fill: primary (the accent) or a severity tone — info, success, wa…" },
+            PropSpec { name: "size", kind: PropKind::Enum(&["sm", "md", "lg"]), default: Some("md"), summary: "Visual size of the component (e.g 'sm', 'md', 'lg')" },
+        ],
+        children: Children::None,
+        client_js: ClientJs::None,
+        css: &["progress"],
+        summary: "Horizontal bar showing the completion progress of a tracked operation",
+    },
+    CompSpec {
         name: "progress-bar",
         component: "progress-bar",
         aliases: &[],
@@ -838,6 +891,22 @@ pub static CATALOG: &[CompSpec] = &[
         summary: "Circular determinate progress indicator rendered as an SVG arc",
     },
     CompSpec {
+        name: "progress-indicator",
+        component: "progress-indicator",
+        aliases: &[],
+        args: &[
+            ArgSpec { name: "steps", kind: ArgKind::Rows, required: true },
+        ],
+        props: &[
+            PropSpec { name: "currentIndex", kind: PropKind::Num, default: None, summary: "Index of the current step (0-based)" },
+            PropSpec { name: "vertical", kind: PropKind::Bool, default: Some("false"), summary: "When true, lays the steps out vertically" },
+        ],
+        children: Children::None,
+        client_js: ClientJs::None,
+        css: &["progress-indicator"],
+        summary: "Shows progress through the steps of a multi-step flow",
+    },
+    CompSpec {
         name: "prose",
         component: "prose",
         aliases: &[],
@@ -847,6 +916,25 @@ pub static CATALOG: &[CompSpec] = &[
         client_js: ClientJs::None,
         css: &["prose"],
         summary: "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
+    },
+    CompSpec {
+        name: "radial-progress",
+        component: "radial-progress",
+        aliases: &[],
+        args: &[
+            ArgSpec { name: "value", kind: ArgKind::Num, required: true },
+        ],
+        props: &[
+            PropSpec { name: "label", kind: PropKind::Str, default: None, summary: "Alias of ariaLabel — the same invisible accessible name under the other spelling" },
+            PropSpec { name: "ariaLabel", kind: PropKind::Str, default: None, summary: "Invisible accessible name" },
+            PropSpec { name: "size", kind: PropKind::Enum(&["sm", "md", "lg"]), default: Some("md"), summary: "Visual size of the component (e.g 'sm', 'md', 'lg')" },
+            PropSpec { name: "variant", kind: PropKind::Enum(&["primary", "info", "success", "warning", "error"]), default: Some("primary"), summary: "Colour of the ring: primary (the accent) or a severity tone — info, success, wa…" },
+            PropSpec { name: "aria-label", kind: PropKind::Str, default: None, summary: "Accessible label used when no visible label is present" },
+        ],
+        children: Children::Text,
+        client_js: ClientJs::None,
+        css: &["radial-progress"],
+        summary: "Circular progress indicator using conic-gradient, with percentage label and var…",
     },
     CompSpec {
         name: "scatter",
@@ -1112,6 +1200,22 @@ pub static CATALOG: &[CompSpec] = &[
         client_js: ClientJs::None,
         css: &[],
         summary: "Inline SVG from a file, URL or markup, sanitized; currentColor follows the theme",
+    },
+    CompSpec {
+        name: "switcher",
+        component: "switcher",
+        aliases: &[],
+        args: &[
+            ArgSpec { name: "items", kind: ArgKind::Rows, required: true },
+        ],
+        props: &[
+            PropSpec { name: "ariaLabel", kind: PropKind::Str, default: None, summary: "Alias of label — the same invisible accessible name under the catalog spelling" },
+            PropSpec { name: "label", kind: PropKind::Str, default: Some("Switch application"), summary: "Accessible name for the switcher list" },
+        ],
+        children: Children::None,
+        client_js: ClientJs::Enhancement,
+        css: &["switcher"],
+        summary: "Always-visible app/product switcher LIST — every entry is rendered at once, it…",
     },
     CompSpec {
         name: "table",

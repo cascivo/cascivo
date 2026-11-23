@@ -57,6 +57,12 @@ export const PARITY_COMPONENTS = [
   'user',
   'item',
   'inline-loading',
+  'icon-button',
+  'context-meter',
+  'progress',
+  'progress-indicator',
+  'radial-progress',
+  'switcher',
 ] as const
 
 export type Fact = { facet: Facet; text: string }

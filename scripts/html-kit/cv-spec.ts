@@ -138,6 +138,12 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('skeleton'),
   e('spinner'),
   e('inline-loading', { css: ['inline-loading', 'spinner'] }),
+  e('progress', { args: [a('value', 'num')] }),
+  e('progress-indicator', { args: [a('steps', 'rows', true)] }),
+  e('radial-progress', { children: 'text', args: [a('value', 'num', true)] }),
+  e('context-meter', { args: [a('value', 'num', true), a('max', 'num', true)] }),
+  e('icon-button', { children: 'text' }),
+  e('switcher', { args: [a('items', 'rows', true)] }),
   // navigation / disclosure
   e('breadcrumb', { args: [a('items', 'rows', true)] }),
   e('steps', { args: [a('items', 'rows', true)] }),
