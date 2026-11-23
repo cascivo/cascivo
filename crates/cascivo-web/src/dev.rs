@@ -63,13 +63,16 @@ fn lock(s: &Shared) -> std::sync::MutexGuard<'_, State> {
 
 /// Serves `root` on `listener` until the process exits. Logs each rebuild's duration.
 pub fn serve(root: PathBuf, listener: TcpListener) -> io::Result<()> {
+    // The baseline is taken before the first build and before any request is answered: taken
+    // later (inside the watcher thread), an edit made in between joins the baseline and never
+    // triggers a rebuild, so the server keeps serving the stale page.
+    let mut last = fingerprint(&root);
     let state: Shared = Arc::new(Mutex::new(State {
         version: 1,
         out: rebuild(&root),
     }));
     let st = Arc::clone(&state);
     thread::spawn(move || {
-        let mut last = fingerprint(&root);
         loop {
             thread::sleep(POLL);
             let fp = fingerprint(&root);
