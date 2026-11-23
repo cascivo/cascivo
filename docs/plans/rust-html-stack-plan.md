@@ -94,3 +94,18 @@ calendar overflowed at 320/360 px (now a bottom sheet below 30rem).
    (KV/D1/R2); Containers template; htmx/Datastar guides. Checkpoint: criterion 6.
 4. Behaviours: port remaining client-JS components to elements via the factory backlog;
    optional React-island loader.
+
+## Phase 1 and 3 plans: how they fit
+
+Plans: [phase-1-contract-plan.md](phase-1-contract-plan.md), [phase-3-dynamic-plan.md](phase-3-dynamic-plan.md).
+
+- **Gap closed here.** Phase 3 needs anatomy + Rust emitters + parity for `field`, `input`, `select`,
+  `checkbox`, `table`, and anatomy for `dialog`, `toast`, `tabs`. Phase 1 puts tier J (78 components)
+  at anatomy only. Rule: these eight get anatomy in WS-0 (with A4), and the form/table ones get
+  emitters + parity in WS-4, ahead of the other batches. Without this, Phase 3 B2, D1, D2 and E stall.
+- **One example, not two.** Phase 1 H2 (`apps/examples/solid-htmx`) is the seed of the Phase 3 H
+  starter: keep it as small as possible and extend it in Phase 3, rather than building a second one.
+- **Tabs.** Both plans pick the ARIA tablist + `cv-tabs` element with a no-JS fallback; Phase 1 WS-5
+  builds it, Phase 3 D2 reuses it.
+- **Order.** Phase 3 A, B1, B3, C, F, G, X1 and S0 can start alongside Phase 1; B2, D, E and K wait
+  for Phase 1 WS-0, WS-1 and the form emitters.
