@@ -36,7 +36,10 @@ import { join, extname, normalize } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { gzipSync } from 'node:zlib'
 import { chromium } from '@playwright/test'
-import { FONT_FILES } from '../../apps/site/src/marketing/pages/cascivo-sans/data.ts'
+import {
+  COMPARE_FONT_FILES,
+  FONT_FILES,
+} from '../../apps/site/src/marketing/pages/cascivo-sans/data.ts'
 
 const root = fileURLToPath(new URL('../..', import.meta.url))
 const distDir = join(root, 'apps/site/dist')
@@ -206,7 +209,11 @@ const total = totals(perFile.keys())
 // the build is a regression regardless of which route pulls it. The one exception is the
 // Cascivo Sans downloads, by exact name: /cascivo-sans offers them, its CSS is the only one
 // that loads a face, and no other route requests them (scripts/quality/cascivo-sans-page.ts).
-const sanctionedFonts = new Set(FONT_FILES.map((f) => join(distDir, 'fonts/cascivo-sans', f.name)))
+// The same holds for its compare switch's reference faces, fetched only once it is switched on.
+const sanctionedFonts = new Set([
+  ...FONT_FILES.map((f) => join(distDir, 'fonts/cascivo-sans', f.name)),
+  ...COMPARE_FONT_FILES.map((name) => join(distDir, 'fonts/compare', name)),
+])
 let fontFiles = 0
 for (const f of walkDir(distDir)) {
   if (sanctionedFonts.has(f)) continue
