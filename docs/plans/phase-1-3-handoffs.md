@@ -79,3 +79,8 @@ cannot auto-emit them.
 - Extractors `Env`, `D1` (`d1`, binding `DB`), `R2` (`r2`, binding `BUCKET`) → 500 when missing. `R2::upload(&Upload{max_bytes, types, prefix}, ct, bytes) -> Stored` (413/415/400 via `AppError`).
 - Handlers awaiting bindings need `#[worker::send]`. No change to `cascivo-server` was needed.
 - CI (`rust.yml`): wasm32 build + clippy for `cascivo-worker`. Spike rebuilt; numbers in `phase-3-x1-results.md` (0.74 MB gz, edge startup 2 ms).
+## Phase 3 B2 + D2 cv-form (branch `claude/p3-d2-forms`)
+- `cascivo_server::{Form<T>, Submission::{Valid(T), Invalid(FormState)}, Validate { const RULES: &[(&str, Rule)]; fn validate(&self, &mut FormErrors) }, Rule::{text,email,url,number,checkbox}().required().min_len().max_len().min().max(), FormErrors::{add, add_form}, Msg::new(key).arg(k, v), FormState::{new::<T>(), values(serialize), errors, id_prefix}, parse_form}`. Modules `forms.rs`, `form_view.rs`.
+- Template: `form.field(name, label, hint, kind, options, rows, type, placeholder, value)`, `form.csrf()`, `form.errors()`, `form.value(n)`, `form.valid`. Control ids `f-<name>`. Return 422 on `Invalid`.
+- i18n keys `cascade.form.<ValidityState flag>`; the server puts the translated text on each control as `data-cv-msg-<kebab flag>`, so `<cv-form>` shows the server's words.
+- `@cascivo/elements/form` (`cv-form`, 1.2 KB gz): renders the field error markup on `invalid` (no browser bubble, no `novalidate`), clears it on a valid input, focuses the first `[aria-invalid=true]` on connect and `htmx:afterSettle`, `aria-busy` double-submit guard (cleared on `htmx:afterRequest`/`pageshow`), swaps 422 in `htmx:beforeSwap`. H's starter therefore needs no `responseHandling` meta for 422 inside a `cv-form`.

@@ -88,3 +88,40 @@ hub.publish("room:42", Fragment::new("msg", html))?; // <div hx-ext="sse" sse-co
 Features: `native` (default: tokio, `App::serve`, `Hub`), `password` (default), `sqlite`, `datastar`, `workers` (Cloudflare Workers, wasm32, no
 tokio; `MaybeSend` drops `Send` without `native`). Check:
 `cargo check -p cascivo-server --target wasm32-unknown-unknown --no-default-features --features workers`.
+
+## Forms and validation
+
+```rust
+#[derive(Deserialize)]
+struct Todo { title: String, prio: Option<u32> }
+
+impl Validate for Todo {
+    // Checked on the raw values first, and rendered as constraint attributes.
+    const RULES: &'static [(&'static str, Rule)] =
+        &[("title", Rule::text().required().max_len(80)), ("prio", Rule::number().min(1.0))];
+    fn validate(&self, e: &mut FormErrors) { /* server-only checks: e.add("title", Msg::new("todo.taken")) */ }
+}
+
+async fn create(hx: Hx, Form(s): Form<Todo>) -> Response {
+    match s {
+        Submission::Valid(t) => see_other(&hx, &LocalPath::parse("/todos").unwrap()),
+        Submission::Invalid(form) => View::page("todos.html").fragment("todo_form")
+            .ctx(context! { form }).status(StatusCode::UNPROCESSABLE_ENTITY).into_response(),
+    }
+}
+```
+
+The template gets `form` (`FormState::new::<Todo>()` for an empty form, `.values(&todo)` to
+prefill): `form.csrf()`, `form.errors()`, `form.value(name)`, `form.valid` and
+`form.field(name, label=…, hint=…, kind="input|textarea|select|checkbox", options=…, rows=…)`.
+`field` renders through the cascivo-html `field` + control emitters (`aria-invalid`,
+`aria-describedby` → the `role="alert"` error, the submitted value kept) and adds the rule's
+constraint attributes and one translated `data-cv-msg-<flag>` per constraint for `<cv-form>`.
+
+Messages are i18n keys resolved with the request locale: built-ins are
+`cascade.form.<ValidityState flag>` (`valueMissing`, `typeMismatch`, `tooShort` `{min}`,
+`tooLong` `{max}`, `rangeUnderflow` `{min}`, `rangeOverflow` `{max}`, `badInput`), with English
+defaults (`DEFAULT_MESSAGES`) when the app's `i18n/<locale>.toml` has no `[cascade.form]`.
+A serde failure is `badInput` on its field; empty values are dropped before serde, so an
+empty `Option` is `None` and an empty required `String` is `valueMissing`. Only urlencoded
+bodies (415 otherwise, 413 over 64 KB); the CSRF layer checks the `csrf` field first.

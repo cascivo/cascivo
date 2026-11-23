@@ -28,6 +28,8 @@ mod app;
 mod auth;
 mod csrf;
 mod error;
+mod form_view;
+mod forms;
 mod headers;
 mod hx;
 mod islands;
@@ -45,6 +47,10 @@ pub use auth::{hash_password, verify_password};
 pub use cascivo_web::{Engine, Flash, ReqCtx};
 pub use csrf::Csrf;
 pub use error::AppError;
+pub use forms::{
+    DEFAULT_MESSAGES, FORM_LIMIT, Form, FormErrors, FormState, Kind, MSG_PREFIX, Msg, Rule,
+    Submission, Validate, Values, parse as parse_form,
+};
 pub use headers::{Headers, Nonce};
 pub use hx::Hx;
 pub use islands::{ISLAND_PREFIX, IslandError, IslandKey};

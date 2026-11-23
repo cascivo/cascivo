@@ -28,7 +28,7 @@ import { PILOT, PILOT_DYNAMIC } from '../../packages/elements/test/pilot.ts'
 
 const PKG = fileURLToPath(new URL('../../packages/elements/', import.meta.url))
 const DIST = join(PKG, 'dist')
-const ELEMENTS = ['menu', 'tabs', 'combobox', 'date-picker', 'dialog', 'toaster', 'htmx'] as const
+const ELEMENTS = ['menu', 'tabs', 'form', 'combobox', 'date-picker', 'dialog', 'toaster', 'htmx'] as const
 const ELEMENT_BUDGET = 3 * 1024
 /** `cv-tabs` is the smallest element; its contract budget (phase-1-contract-plan §6) is 0.8 KB. */
 const BUDGET: Record<string, number> = { tabs: 819 }
