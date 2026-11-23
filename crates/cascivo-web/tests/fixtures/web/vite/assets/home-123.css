@@ -1,0 +1,3 @@
+@layer reset,base,component;
+@layer reset{*{margin:0}}
+.home{color:red;background:url(/img/x.png)}

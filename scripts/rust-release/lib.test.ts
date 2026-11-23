@@ -2,10 +2,12 @@ import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   type CrateInfo,
+  binaryPlan,
   bumpVersion,
   changelogSection,
   dependencyOrder,
   indexPath,
+  isPlaceholderVersion,
   isVersionOnlyCargoChange,
   needsRustChangeset,
   parseChangeset,
@@ -249,6 +251,68 @@ describe('publish plan', () => {
     assert.deepEqual(
       parseIndexVersions('{"vers":"0.1.0","yanked":false}\n{"vers":"0.1.1","yanked":true}\n'),
       ['0.1.0', '0.1.1'],
+    )
+  })
+})
+
+describe('0.0.0 placeholder crates', () => {
+  const web: CrateInfo = { name: 'cascivo-web', version: '0.0.0', dependsOn: ['cascivo-html'] }
+  const all = [...crates, web]
+  it('are never in the publish plan, even when absent from crates.io', () => {
+    assert.ok(isPlaceholderVersion('0.0.0'))
+    assert.ok(!isPlaceholderVersion('0.0.1'))
+    assert.deepEqual(
+      publishPlan(all, new Map()).map((p) => p.crate),
+      ['cascivo-html', 'cascivo-html-cli'],
+    )
+  })
+  it('enter the plan once a changeset bumped them', () => {
+    const bumped = all.map((c) => (c === web ? { ...c, version: '0.1.0' } : c))
+    assert.deepEqual(
+      publishPlan(bumped, new Map()).map((p) => p.crate),
+      ['cascivo-html', 'cascivo-html-cli', 'cascivo-web'],
+    )
+  })
+  it('version minor to 0.1.0 and show up in status', () => {
+    const cs = parseChangeset(
+      'w.md',
+      serializeChangeset([{ crate: 'cascivo-web', bump: 'minor' }], 'First release.'),
+    )
+    const [r, ...rest] = planReleases([cs], all, fixed)
+    assert.equal(rest.length, 0)
+    assert.equal(r?.crate, 'cascivo-web')
+    assert.equal(r?.from, '0.0.0')
+    assert.equal(r?.to, '0.1.0')
+    assert.equal(bumpVersion('0.0.0', 'patch'), '0.0.1')
+    assert.equal(bumpVersion('0.0.0', 'major'), '1.0.0')
+  })
+})
+
+describe('binaryPlan', () => {
+  const pkgs = [
+    { name: 'cascivo-html', version: '0.1.2', bins: [] },
+    { name: 'cascivo-html-cli', version: '0.1.2', bins: ['cascivo-html'] },
+    { name: 'cascivo-web', version: '0.0.0', bins: ['cascivo-web'] },
+  ]
+  it('lists bins of released crates only, skipping 0.0.0 and unpublished', () => {
+    assert.deepEqual(binaryPlan(pkgs, []), [
+      {
+        crate: 'cascivo-html-cli',
+        version: '0.1.2',
+        bin: 'cascivo-html',
+        tag: 'cascivo-html-cli@0.1.2',
+      },
+    ])
+    assert.deepEqual(binaryPlan(pkgs, [{ crate: 'cascivo-html-cli' }]), [])
+  })
+  it('includes a crate once it has left 0.0.0', () => {
+    const out = binaryPlan(
+      pkgs.map((p) => (p.name === 'cascivo-web' ? { ...p, version: '0.1.0' } : p)),
+      [],
+    )
+    assert.deepEqual(
+      out.map((b) => b.tag),
+      ['cascivo-html-cli@0.1.2', 'cascivo-web@0.1.0'],
     )
   })
 })

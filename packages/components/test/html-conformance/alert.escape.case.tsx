@@ -1,3 +1,7 @@
 import { Alert } from '../../src/alert/alert'
 
-export default <Alert title={'<b>&"'}>{'<i>&"'}</Alert>
+export default (
+  <Alert role="note" title={'<b>&"'}>
+    {'<i>&"'}
+  </Alert>
+)

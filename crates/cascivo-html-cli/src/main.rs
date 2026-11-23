@@ -5,15 +5,16 @@ use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
-use cascivo_html::{Diagnostic, Options, parse_brand_file};
+use cascivo_html::{Diagnostic, Options, Target, parse_brand_file};
 
 const USAGE: &str = "\
 cascivo-html: render agent-written .cv text into one static HTML file
 
 usage:
-  cascivo-html render [in.cv|-] [-o out.html] [--brand brand.cv] [asset options]
-  cascivo-html check [in.cv|-] [--brand brand.cv] [asset options]
+  cascivo-html render [in.cv|-] [-o out.html] [--brand brand.cv] [--target t] [asset options]
+  cascivo-html check [in.cv|-] [--brand brand.cv] [--target t] [asset options]
   cascivo-html guide [component]
+  cascivo-html script           print every client script (for --script-src)
   cascivo-html --help | --version
 
 `-` or no input reads stdin. Without -o, HTML goes to stdout.
@@ -22,10 +23,17 @@ Brand files (--brand, @brand-file) are read only from the input file's directory
 Images and SVG (`image logo.png`, `svg icon.svg`) are embedded as base64 / inlined so the
 output stays one file. Local paths are read from the input file's directory (the current
 directory for stdin) and any --assets roots; `..` and paths outside the roots are rejected.
+--target browser|blitz  where the HTML is shown (default browser). `render --target blitz`
+  lowers @container, :focus-visible and SVG styling for the Blitz native engine; `check
+  --target blitz` also prints warnings (stderr, exit stays 0) for features that degrade there.
 asset options:
   --assets <dir>       extra directory to read assets from (repeatable)
   --fetch              also download http(s) images and embed them (default: URLs stay links)
   --max-asset <bytes>  largest embedded asset (default 2097152)
+output options (render):
+  --no-inline-styles   CSP-safe: no style=\"\" attributes; rules go in the <style> block
+  --script-src <url>   reference scripts as <script src=url defer> instead of inlining them
+                       (write the source with `cascivo-html script > file.js`)
 exit: 0 ok, 1 invalid .cv, 2 usage or I/O error";
 
 /// `Err` carries a message and the exit code.
@@ -64,8 +72,13 @@ fn run(args: &[String]) -> Result<(), Fail> {
         "render" => build(rest, true),
         "check" => build(rest, false),
         "guide" => guide(rest),
+        "script" if rest.is_empty() => {
+            print!("{}", cascivo_html::script_bundle(None));
+            Ok(())
+        }
+        "script" => Err(usage_err("script takes no arguments")),
         other => Err(usage_err(format!(
-            "unknown command '{other}'; expected render, check or guide"
+            "unknown command '{other}'; expected render, check, guide or script"
         ))),
     }
 }
@@ -97,6 +110,9 @@ struct BuildArgs {
     assets: Vec<String>,
     fetch: bool,
     max_asset: Option<usize>,
+    inline_styles: bool,
+    script_src: Option<String>,
+    target: Target,
 }
 
 fn parse_build_args(args: &[String], render: bool) -> Result<BuildArgs, Fail> {
@@ -107,6 +123,9 @@ fn parse_build_args(args: &[String], render: bool) -> Result<BuildArgs, Fail> {
         assets: Vec::new(),
         fetch: false,
         max_asset: None,
+        inline_styles: true,
+        script_src: None,
+        target: Target::Browser,
     };
     let mut it = args.iter();
     while let Some(arg) = it.next() {
@@ -133,6 +152,20 @@ fn parse_build_args(args: &[String], render: bool) -> Result<BuildArgs, Fail> {
                 );
             }
             "--fetch" => a.fetch = true,
+            "--no-inline-styles" if render => a.inline_styles = false,
+            "--script-src" if render => {
+                a.script_src = Some(
+                    it.next()
+                        .ok_or_else(|| usage_err("--script-src needs a URL"))?
+                        .clone(),
+                );
+            }
+            "--target" => {
+                a.target = it
+                    .next()
+                    .and_then(|t| Target::parse(t))
+                    .ok_or_else(|| usage_err("--target needs `browser` or `blitz`"))?;
+            }
             "--max-asset" => {
                 a.max_asset = Some(
                     it.next()
@@ -279,6 +312,9 @@ fn build(args: &[String], render: bool) -> Result<(), Fail> {
         asset_resolver: Some(asset_resolver),
         embed_urls: a.fetch,
         max_asset_bytes: a.max_asset,
+        inline_styles: a.inline_styles,
+        script_src: a.script_src.clone(),
+        target: a.target,
         ..Options::default()
     };
     if let Some(b) = &a.brand {
@@ -288,6 +324,9 @@ fn build(args: &[String], render: bool) -> Result<(), Fail> {
 
     let html = cascivo_html::render(&src, &opts).map_err(|d| print_diags(&name, &d))?;
     if !render {
+        for w in cascivo_html::lint(&src, a.target).unwrap_or_default() {
+            eprintln!("{name}:{}:{}: warning: {}", w.line, w.col, w.msg);
+        }
         return Ok(());
     }
     match a.output {

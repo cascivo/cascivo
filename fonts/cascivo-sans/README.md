@@ -3,7 +3,7 @@
 Cascivo Sans is a variable grotesque for interfaces. It is generated from a parametric stroke
 engine and licensed under the SIL Open Font License 1.1. It comes as two variable fonts, upright
 and a drawn italic, each with weight and optical-size axes. It has an unambiguous `Il1`, tabular
-and old-style figures on request, and a 24 KB Latin web file.
+and old-style figures on request, and a 25 KB Latin web file.
 
 Version 0.6.1; see [CHANGELOG.md](./CHANGELOG.md). Read [RESEARCH.md](./RESEARCH.md) for why it exists, how it compares with Geist, IBM Plex and
 Helvetica, and what it does not do yet.
@@ -16,19 +16,19 @@ small-size strings, is at [cascivo.com/cascivo-sans/specimen](https://cascivo.co
 
 | File                                              | Axes              | Charset               | Size                       |
 | ------------------------------------------------- | ----------------- | --------------------- | -------------------------- |
-| `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 24.4 KB                    |
-| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 30.5 KB                    |
-| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 72.6 KB                    |
-| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 261.3 KB (desktop install) |
-| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 27.2 KB                    |
-| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 33.7 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 79.4 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 271.3 KB (desktop install) |
+| `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 25.1 KB                    |
+| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 31.2 KB                    |
+| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 74.8 KB                    |
+| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 265.8 KB (desktop install) |
+| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 27.8 KB                    |
+| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 34.4 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 80.9 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 272.8 KB (desktop install) |
 | `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 24.5 KB                    |
-| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 137.6 KB (desktop, hinted) |
-| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 139.4 KB (desktop, hinted) |
-| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 140.9 KB (desktop, hinted) |
-| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 141.8 KB (desktop, hinted) |
+| `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 138.5 KB (desktop, hinted) |
+| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 140.4 KB (desktop, hinted) |
+| `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 140.4 KB (desktop, hinted) |
+| `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 140.6 KB (desktop, hinted) |
 
 "Latin" means Basic Latin, Latin-1 and common punctuation. The full charset adds Latin
 Extended-A, Romanian comma letters, Vietnamese, Cyrillic, Greek and combining marks (stacked by
@@ -82,9 +82,9 @@ text, so set them large (about 24 px and up). Below optical size 14 every weight
 Black +3%), about a third of that at 12 px, none from 14 px. It matters most in Light, where it
 keeps the colour at 11 to 13 px.
 
-A line of text keeps its width when only the weight changes: within 2% of Regular from 100 to 700,
-and within 5% at 800 and 900 (display weights), so a hover state or a weight toggle does not
-reflow. Stems step by 20 to 22 units between named weights. Black keeps its words apart but its
+A line of text keeps its width when only the weight changes: within 2% of Regular from 100 to 600,
+so a hover state or a weight toggle does not reflow. Bold may run up to 4% wider and Black up to
+10% (display weights), so their counters and spacing stay open. Stems step by 20 to 22 units between named weights. Black keeps its words apart but its
 letters sit closer than Inter's (RESEARCH.md section 38 has the numbers).
 
 ## OpenType features

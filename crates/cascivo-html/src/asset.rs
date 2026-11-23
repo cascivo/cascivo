@@ -308,6 +308,8 @@ fn push_attr(out: &mut String, name: &str, raw: &str) {
 pub struct SvgOpts<'a> {
     pub alt: Option<&'a str>,
     pub style: &'a str,
+    /// CSP-safe sizing: written as `data-cv-style` on the root instead of `style`.
+    pub style_key: Option<&'a str>,
     pub fit: Option<&'a str>,
     /// Prefix for `id`s and `#id` references so two inlined files cannot collide.
     pub id_prefix: &'a str,
@@ -423,6 +425,9 @@ pub fn sanitize_svg(src: &str, o: &SvgOpts<'_>) -> Result<String, String> {
                                 style.push(';');
                             }
                             style.push_str(o.style);
+                        }
+                        if let Some(k) = o.style_key {
+                            push_attr(&mut out, "data-cv-style", k);
                         }
                     }
                     if !style.is_empty() {
@@ -590,6 +595,7 @@ mod tests {
             &SvgOpts {
                 alt: None,
                 style: "",
+                style_key: None,
                 fit: None,
                 id_prefix: "p-",
             },
@@ -672,7 +678,7 @@ mod tests {
     fn root_gets_a11y_size_and_fit() {
         let o = sanitize_svg(
             r#"<svg role="presentation" aria-label="old" preserveAspectRatio="none" style="fill:red"><rect/></svg>"#,
-            &SvgOpts { alt: Some("A \"logo\""), style: "inline-size:4rem", fit: Some("cover"), id_prefix: "" },
+            &SvgOpts { alt: Some("A \"logo\""), style: "inline-size:4rem", style_key: None, fit: Some("cover"), id_prefix: "" },
         )
         .unwrap();
         assert_eq!(

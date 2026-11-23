@@ -1,5 +1,14 @@
 # @cascivo/mcp
 
+## 0.10.2
+
+### Patch Changes
+
+- 9302aa3: Bundled registry now carries the optional manifest `agent` section for input, select, checkbox,
+  switch, dialog and tabs.
+- Updated dependencies [b470493]
+  - @cascivo/docs@0.2.18
+
 ## 0.10.1
 
 ### Patch Changes

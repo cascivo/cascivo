@@ -16,6 +16,7 @@
 
 pub mod asset;
 pub mod ast;
+pub mod blitz;
 pub mod brand;
 pub mod catalog;
 mod catalog_gen;
@@ -31,6 +32,7 @@ pub mod path;
 pub mod render;
 
 pub use ast::{BrandItem, Directive, Doc, Node, Value};
+pub use blitz::{Target, lint, lower_css, lower_svg};
 pub use brand::{Brand, parse_brand_file};
 pub use catalog::{
     ArgKind, ArgSpec, Children, ClientJs, CompSpec, PropKind, PropSpec, lookup, suggest,
@@ -40,7 +42,7 @@ pub use guide::{GUIDE, guide_for};
 pub use parse::parse;
 pub use render::{
     AssetResolver, BrandResolver, Cx, Fragment, Options, render, render_fragment, render_parts,
-    script, stylesheet,
+    script, script_bundle, script_names, style_rules, stylesheet, theme_css, theme_names,
 };
 
 /// Parse-only validation: every diagnostic in `src`, empty when it is valid.

@@ -173,7 +173,7 @@ class Stroke:
 
     caps: per end, 'b' butt (perpendicular; every curved terminal uses it), 'h' cut along a
           horizontal through the end point (straight strokes, joins),
-          'v' cut along a vertical through the end point.
+          'v' cut along a vertical through the end point, 's' along the italic's slant through it (a bar's end in the italic).
     taper: per end, thickness multiplier at that end (ramps to 1 across the end segment) —
            used for the thinned joins where an arch leaves a stem.
     w: constant thickness override (dots, hairline marks); ws: scale on the angle pen.
@@ -183,9 +183,14 @@ class Stroke:
          'n' not at all (a square end: Georgian's traced terminals, where a turned cut stepped).
     tilt: degrees from horizontal a cut='t' terminal's face may lie within, instead of HEAVY_TILT: the
           flatter ends of g and 6/9 (None keeps the shared angle; the a uses it).
+    reach: per end, how many segments the taper ramps across (None: the end segment's first 1/1.6, `_ease`). Black's
+           arches and bowls thin across both quarters next to the stem, as a drawn heavy arch does (glyphs.join_reach).
+    turn: degrees a 'b' end's cut turns further toward a flat face, at any weight (the Display master's terminals, P.face).
     """
 
-    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0, cut='v', tilt=None):
+    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0, cut='v', tilt=None, reach=(None, None), turn=0.0):
+        self.turn = turn
+        self.reach = reach
         self.segs = segs
         self.tilt = tilt
         self.cut = cut
@@ -199,7 +204,7 @@ class Stroke:
 
     def transformed(self, f, slant=None):
         segs = [(s[0],) + tuple(f(p) for p in s[1:]) for s in self.segs]
-        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen, self.slant if slant is None else slant, self.cut, self.tilt)
+        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen, self.slant if slant is None else slant, self.cut, self.tilt, self.reach, self.turn)
 
 
 def pen_thickness(tangent, V, H, slant=0.0):
@@ -218,11 +223,21 @@ def _thick(stroke, i, t, tan, V, H):
         pv, ph = stroke.pen if stroke.pen else (V, H)
         w = pen_thickness(tan, pv, ph, stroke.slant) * stroke.ws
     n = len(stroke.segs)
-    if i == 0 and stroke.taper[0] != 1.0:
+    r0, r1 = stroke.reach
+    if r0 is not None and stroke.taper[0] != 1.0:
+        w *= lerp(stroke.taper[0], 1.0, _smooth((i + t) / r0))
+    elif i == 0 and stroke.taper[0] != 1.0:
         w *= lerp(stroke.taper[0], 1.0, _ease(t, stroke.segs[i][0]))
-    if i == n - 1 and stroke.taper[1] != 1.0:
+    if r1 is not None and stroke.taper[1] != 1.0:
+        w *= lerp(stroke.taper[1], 1.0, _smooth((n - 1 - i + 1 - t) / r1))
+    elif i == n - 1 and stroke.taper[1] != 1.0:
         w *= lerp(stroke.taper[1], 1.0, _ease(1 - t, stroke.segs[i][0]))
     return w
+
+
+def _smooth(u):
+    u = min(1.0, u)
+    return u * u * (3 - 2 * u)
 
 
 def _ease(t, kind):
@@ -462,16 +477,28 @@ def _open_sides(stroke, V, H):
             limit = _thick(stroke, 0 if at_start else n - 1, t, tan, V, H) * 0.6
             left = _move_end(left, at_start, axis, c[axis], limit)
             right = _move_end(right, at_start, axis, c[axis], limit)
-        elif cap == 'b' and V > HEAVY_FROM and stroke.cut != 'n':
+        elif cap == 's':
+            t = 0.0 if at_start else 1.0
+            tan = seg_tangent(stroke.segs[0] if at_start else stroke.segs[-1], t)
+            axis = norm((1.0, -stroke.slant))
+            limit = _thick(stroke, 0 if at_start else n - 1, t, tan, V, H) * 0.6
+            left = _move_end(left, at_start, axis, _dot(c, axis), limit)
+            right = _move_end(right, at_start, axis, _dot(c, axis), limit)
+        elif cap == 'b' and (V > HEAVY_FROM or stroke.turn) and stroke.cut != 'n':
             seg = stroke.segs[0] if at_start else stroke.segs[-1]
             if seg[0] != 'C':
                 continue
             t = 0.0 if at_start else 1.0
             tan = seg_tangent(seg, t)
             out = (-tan[0], -tan[1]) if at_start else tan
-            cut = _heavy_cut(out, V, stroke.slant, stroke.cut, stroke.tilt)
+            cut = _heavy_cut(out, V, stroke.slant, stroke.cut, stroke.tilt) if V > HEAVY_FROM else out
             if cut is None:
                 continue
+            if stroke.turn:
+                # the Display master's faces lie flatter than its square ends (Inter's do at its opsz 32), never past flat
+                full = _turn(cut, (0.0, 1.0))
+                a = math.copysign(min(abs(full), math.radians(stroke.turn)), full)
+                cut = (cut[0] * math.cos(a) - cut[1] * math.sin(a), cut[0] * math.sin(a) + cut[1] * math.cos(a))
             # pivot on whichever edge ends further back, so the cut only ever trims: pivoting on
             # the centreline pushed the other edge out into a spike
             ends = [(sd[0][1] if at_start else sd[-1][-1]) for sd in (left, right)]
@@ -508,7 +535,10 @@ def expand(stroke, V, H):
     contour.append(end_cap)
     contour += [reverse_seg(s) for s in reversed(right)]
     contour.append(start_cap)
-    return [orient(contour, outer=True)]
+    out = [orient(contour, outer=True)]
+    # a glyph may adjust its own expanded outline (glyphs._l): set on the drawn stroke only, so a transformed copy (the italic's) has none
+    post = getattr(stroke, 'post', None)
+    return post(out) if post else out
 
 
 def _area(contour):

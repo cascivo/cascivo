@@ -69,10 +69,10 @@ try {
   // Home route must not download the font.
   const fontHits: string[] = []
   page.on('request', (r) => {
-    if (r.url().includes('/fonts/cascivo-sans/')) fontHits.push(r.url())
+    if (/\/fonts\/(cascivo-sans|compare)\//.test(r.url())) fontHits.push(r.url())
   })
   await page.goto(`${origin}/`, { waitUntil: 'networkidle' })
-  assert.deepEqual(fontHits, [], 'home route requested a Cascivo Sans file')
+  assert.deepEqual(fontHits, [], 'home route requested a Cascivo Sans or compare font file')
   console.log('ok — home route downloads no Cascivo Sans file')
 
   await page.goto(`${origin}/cascivo-sans`, { waitUntil: 'networkidle' })

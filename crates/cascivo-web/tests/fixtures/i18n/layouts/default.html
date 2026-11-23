@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+<head><meta charset="utf-8"><title>{{ page.title }}</title>
+{% for a in alternates %}<link rel="alternate" hreflang="{{ a.locale }}" href="{{ a.href }}">
+{% endfor %}</head>
+<body><nav>{{ t('nav.home') }} · {{ t('hi', name='Ada') }} · {{ locale }}</nav>{% block body %}{{ content }}{% endblock %}</body>
+</html>

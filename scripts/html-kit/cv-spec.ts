@@ -42,6 +42,14 @@ const assetProps: ExtraProp[] = [
   { name: 'fit', type: 'enum', values: ['contain', 'cover'], summary: 'How the picture fills w/h' },
 ]
 
+// Static pages announce nothing on load: `note` by default, a live region only on request.
+const liveRole: ExtraProp = {
+  name: 'role',
+  type: 'enum',
+  values: ['note', 'status', 'alert'],
+  summary: 'ARIA role (default note); status or alert make it a live region',
+}
+
 // Charts draw inline SVG; only the legend chrome has CSS.
 const chart = 'chart-legend'
 
@@ -87,10 +95,16 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('code', { children: 'text' }),
   e('kbd', { children: 'text' }),
   e('link', { children: 'text', args: [a('href', 'str', true)] }),
-  e('button', { children: 'text' }),
+  e('button', {
+    children: 'text',
+    // React reaches a link-styled button through `asChild`; in `.cv` it is one prop.
+    extraProps: [
+      { name: 'href', type: 'string', summary: 'Render a link (<a href>) styled as a button' },
+    ],
+  }),
   // feedback
-  e('alert', { children: 'text', args: [a('title', 'str')] }),
-  e('notification', { children: 'text', args: [a('title', 'str')] }),
+  e('alert', { children: 'text', args: [a('title', 'str')], extraProps: [liveRole] }),
+  e('notification', { children: 'text', args: [a('title', 'str')], extraProps: [liveRole] }),
   e('progress-bar', { args: [a('value', 'num', true)] }),
   e('progress-circle', { args: [a('value', 'num', true)] }),
   e('meter', { args: [a('value', 'num', true)] }),

@@ -1853,7 +1853,15 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/guides/using-cascivo-web</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/guides/using-cascivo-tui</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/using-cascivo-blitz</loc>
     <priority>0.6</priority>
   </url>
   <url>

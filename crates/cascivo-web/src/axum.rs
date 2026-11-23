@@ -19,7 +19,15 @@ pub fn router(site: &Site) -> Result<Router> {
                 Some((mime, bytes)) => {
                     ([(header::CONTENT_TYPE, mime.to_string())], bytes.to_vec()).into_response()
                 }
-                None => (StatusCode::NOT_FOUND, "not found").into_response(),
+                None => match out.not_found(uri.path()) {
+                    Some((mime, bytes)) => (
+                        StatusCode::NOT_FOUND,
+                        [(header::CONTENT_TYPE, mime.to_string())],
+                        bytes.to_vec(),
+                    )
+                        .into_response(),
+                    None => (StatusCode::NOT_FOUND, "not found").into_response(),
+                },
             }
         }
     }))

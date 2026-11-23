@@ -172,9 +172,32 @@ The PR gate (`rust-changeset.yml`) fails a PR that changes `crates/*/src/**` or 
 of `crates/*/Cargo.toml` without a `.changeset-rust/*.md`. Add the `no-rust-changeset` label when
 the change reaches no adopter. The Version PR is exempt (it deletes changesets).
 
+4. **Prebuilt binaries** — after `releases`, the `binaries-plan` job runs `changeset:rust binaries`
+   (released crates with a `[[bin]]` target: `cascivo-html-cli` as `cascivo-html`, `cascivo-web`).
+   The `binaries` job builds each for `x86_64`/`aarch64` Linux, `x86_64`/`aarch64` macOS and
+   `x86_64` Windows (`cargo build --release --locked`), packs `<bin>-<version>-<target>.tar.gz`
+   (`.zip` on Windows) with a `.sha256`, and uploads both to the `<crate>@<version>` release with
+   `gh release upload --clobber`. An asset already on the release is skipped, so a re-run only
+   fills gaps.
+
+**0.0.0 placeholder rule.** A crate at `version = "0.0.0"` (today `cascivo-web`) is unreleased:
+`publish-plan`, the `releases` tags and the `binaries` job all skip it, so merging it to `main`
+publishes nothing. Its first changeset (`minor` gives `0.1.0`) flows through the normal Version PR;
+merging that PR is the release decision. `cascivo-web` depends on `cascivo-html` APIs newer than
+the crates.io release, so ship a `cascivo-html` changeset with it: the plan publishes
+`cascivo-html` first, then `cascivo-html-cli`, then `cascivo-web`.
+
+**First publish of a brand-new crate is manual.** crates.io trusted publishing can only be
+configured for a crate that already exists, so the workflow cannot publish `cascivo-web` 0.1.0 by
+itself (same as `cascivo-html` 0.1.0, see `crates/cascivo-html/README.md`). Before merging its
+Version PR: publish it once by hand from the merged commit with a `publish-new` token
+(`cargo publish -p cascivo-web`, after `cascivo-html` is on the index), add the trusted publisher
+(repository `cascivo/cascivo`, workflow `rust-release.yml`, environment `crates-io`), and revoke the
+token. Otherwise `publish` fails with an auth error; fix the setup and re-run the workflow. The
+already-published version is then skipped and `releases`/`binaries` complete.
+
 crates.io trusts workflow filename `rust-release.yml` and environment `crates-io`; renaming either
-breaks publishing until the trusted publisher is reconfigured. A new crate name needs one manual
-first publish (see `crates/cascivo-html/README.md`).
+breaks publishing until the trusted publisher is reconfigured (the display `name:` is free to change).
 
 ## Release cadence is a correctness property, not a preference
 

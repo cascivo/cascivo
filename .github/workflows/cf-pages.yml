@@ -97,6 +97,14 @@ jobs:
       - run: pnpm run build:landing-demos
         env:
           VITE_CASCIVO_LIVE_URL: ${{ vars.CASCIVO_LIVE_URL }}
+      # "/" is the static cascivo-web build of apps/site/web laid over the Vite output
+      # (docs/plans/rust-html-stack-results-w4.md); every other route (and the 404.html SPA
+      # fallback) is unchanged. Kill switch: repo variable CASCIVO_WEB_HOME = '0' restores the
+      # Preact home on the next deploy.
+      # format() turns an unset variable (null) into '' so the comparison stays a string one;
+      # a bare `null != '0'` coerces both to the number 0 and skipped this step.
+      - if: format('{0}', vars.CASCIVO_WEB_HOME) != '0'
+        run: pnpm --filter @cascivo/site build:web
       # Deploy from apps/site so Wrangler picks up apps/site/functions/ (it resolves
       # the Functions directory relative to its working directory, not the assets arg).
       # The Functions serve machine-readable 404s for /llms/*, /context/*, /r/*.

@@ -1,0 +1,5 @@
+<footer class="footer pg-invert"><div class="footer-inner"><div class="footer-brand"><span class="footer-brand-name">cascivo</span><span class="footer-brand-facts">MIT · {{ data.web.counts.components }} components · {{ data.web.counts.themes }} themes</span></div><div class="footer-columns">
+{%- for col in data.web.nav.footer %}<nav aria-label="Footer: {{ col.label }}" class="footer-column"><h3 class="footer-column-title">{{ col.label }}</h3><ul class="footer-column-links">
+{%- for l in col.links %}<li><a href="{{ l.href }}"{% if l.href is startingwith "http" %} target="_blank" rel="noopener noreferrer"{% endif %}{% if l.mono %} class="footer-link-mono"{% endif %}>{{ l.label }}</a></li>{% endfor -%}
+</ul></nav>{% endfor -%}
+</div><div class="footer-note">Built with cascivo — view source, it's all tokens.</div></div></footer>

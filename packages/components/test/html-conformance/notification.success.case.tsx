@@ -1,3 +1,3 @@
 import { Notification } from '../../src/notification/notification'
 
-export default <Notification title="T" variant="success" />
+export default <Notification role="note" title="T" variant="success" />

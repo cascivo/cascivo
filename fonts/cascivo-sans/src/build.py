@@ -43,17 +43,18 @@ HEBREW = os.environ.get('CASCIVO_HEBREW') == '1'  # a draft, not yet shipped (RE
 if HEBREW:
     import hebrew  # noqa: E402,F401  (registers the Hebrew drawings)
 from composites import ALIAS, BOTTOM, CYR_EXT, CYR_LOCL, GREEK_ACCENTED, GREEK_POLY, ITALIC_ONLY, POLY_MARK, SPECIAL, accented_chars, glyph_name, is_cap  # noqa: E402
-from geom import contour_bounds, expand, transform_contour  # noqa: E402
+from geom import contour_bounds, expand, flatten, transform_contour  # noqa: E402
 import kern  # noqa: E402
 from kern import kern_fea  # noqa: E402
 from fontTools.varLib.models import VariationModel  # noqa: E402
-from params import MID_WGHT, BLACK_STEM, THIN_STEM, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, P  # noqa: E402
+from params import BOLD_SQUEEZE, BOLD_SQUEEZE_CAP, MID_WGHT, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, WGHT_MAP, P  # noqa: E402
 
 FAMILY = 'Cascivo Sans'
 PS = 'CascivoSans'
 VERSION = '0.6.1'
 DIST = os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
 MAX_ERR = 1.5  # cu2qu tolerance in font units: 1.5/1000 em is sub-pixel below ~700px
+BOLD_IUP_TOLERANCE = 0.5  # the Bold master's own deltas (its counters narrowed, counter_squeeze), see exact_optimize
 IUP_TOLERANCE = 2.0  # gvar deltas the rasterizer can re-infer within 2 units are dropped (section 25)
 
 
@@ -75,6 +76,7 @@ class Out:
         self.bounds = {}
         self.topleft = {}
         self.shift = {}  # Bold only: how far each letter's outline moved from the interpolated one
+        self.squeeze = {}  # Bold only: x -> how far a point at upright x moves as the letter's counters narrow (counter_squeeze)
         self.kind = {}  # name -> 'fixed' (own advance), 'mark' or 'tab': glyphs whose spacing is not sidebearings round the ink
 
 
@@ -105,12 +107,22 @@ def italicize_raw(contours, p):
     return [transform_contour(c, lambda q: (q[0] + (q[1] - yc) * p.slant, q[1])) for c in contours]
 
 
+# Round 5 (2), the upright Bold's rhythm and width ramp: the arched and round letters take BOLD_OPEN_SB of a stem sidebearing more a
+# side at Bold, the straight i j t less (the h (1 - h) term is nothing at Regular and Black). Bold set n m h u o b d p q 2-8 units
+# narrower than Regular (Inter's +14 to +37), so a line rich in them grew +1.2% at 700 and +4.5% at 800, a knee the eye reads on the
+# weight axis, and its n gap over counter was 0.55 (Inter's 0.62). Now +1.6% at 700 and 0.586: the rhythm test's 0.59 ceiling at 700
+# and the +2% cap at 600 ('Overview Activity...', 1.99%, which carries more i and t) hold it there.
+BOLD_OPEN_SB = {**{n: 0.3 for n in 'nhmuobdpq'}, **{n: -0.15 for n in ('dotlessi', 'dotlessj', 't')}}
+
+
 def draw_master(p):
     o = Out(p)
     for name in GL.ORDER:
         cps, fn = GL.GLYPHS[name]
         g = GL.G(p)
         fn(g, p)
+        if not p.italic and name in BOLD_OPEN_SB:  # Bold only: the h (1 - h) term is nothing at Regular and Black
+            g.sb = tuple(sb + BOLD_OPEN_SB[name] * p.heavy * (1 - p.heavy) for sb in g.sb)
         cs = []
         for s in g.strokes:
             cs += expand(s, p.V, p.H)
@@ -139,11 +151,14 @@ def draw_master(p):
             unit = p.Sc if is_cap(name) else p.S
             l, r = g.sb[0] * unit, g.sb[1] * unit
             dx = l - xmin
-            if p.heavy:
+            if p.heavy or (p.wght == 100 and not p.italic):
+                # Thin upright too, a quarter unit over (round 5): its tighter sidebearings (THIN_OPEN_UPRIGHT) left the dots' edges on
+                # half units, so the 53.6-unit dot rounded to 53 at Thin and 49 at Thin Display (test_dots_survive_thin asks 50), and
+                # u's and mu's bowls a unit apart at 250 (55 px, test_eng_and_mu_share_the_arch_of_n_and_u asks 24): 54, 50 and 20 now.
                 # A whole unit, so the heavy outlines round the same way whatever the spacing: a counter tip a few units
                 # long moved by 6 degrees with the fraction. The italic's half unit over is the phase its s tip was fitted
                 # at (27.3 / 35.8 / 47.8 / 58.4 at 750-900); the upright's ae tip would read 30.3 against 28.6 at 800 there.
-                dx = round(dx) + (0.5 if p.italic else 0)
+                dx = round(dx) + (0.5 if p.italic else 0 if p.heavy else 0.25)
             adv = l + (xmax - xmin) + r
         cs = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in (italic_cs if italic_cs is not None else cs)]
         o.contours[name] = cs
@@ -269,9 +284,11 @@ def add_composites(o):
 
     # i and j are dotless + dot so every accent on them is consistent
     # (the i and j dots keep their own height: the dot accent's lift is for ż, ė, ċ)
+    # Round 5, upright 3: the Caption master lifts them I_DOT_CAP8 units (the dot's size is P.dot's): 68 units over the stem read as one
+    # mark with it at 11 px, DPR 1 ("Settings" at 300 and 400), where Inter keeps 89-101. opsz 11 carries half of it (88 units).
     def dot_ij(base):
         m, bx, by, a = at(base, 'dotaccentcomb', 'top')
-        return (m, bx, by - GL.lift_dots(p), a)
+        return (m, bx, by - GL.lift_dots(p) + (GL.I_DOT_CAP8 * GL.caption(p) if not p.italic else 0), a)
 
     comp('i', [('dotlessi', 0, 0, 1), dot_ij('dotlessi')], o.adv['dotlessi'], ord('i'))
     comp('j', [('dotlessj', 0, 0, 1), dot_ij('dotlessj')], o.adv['dotlessj'], ord('j'))
@@ -322,8 +339,14 @@ def add_composites(o):
 
     S = p.S
     ov = lambda name: o.adv[name]  # noqa: E731
-    comp('colon', [('period', 0, 0, 1), ('period', 0, p.xh - p.dot, 1)], ov('period'), ord(':'))
-    comp('semicolon', [('comma', 0, 0, 1), ('period', 0, p.xh - p.dot, 1)], ov('comma'), ord(';'))
+    pd = GL.period_dot(p)
+    comp('colon', [('period', 0, 0, 1), ('period', 0, p.xh - pd, 1)], ov('period'), ord(':'))
+    # the semicolon's dot stands over the comma's head (its flat top), not at the period's place: the comma's tail swings left of
+    # its head, so the dot sat 25 units left of it at Regular (40 after round 5's longer swing)
+    ctop = max(q[1] for c in o.contours['comma'] for sg in c for q in sg[1:])
+    head = [q[0] for c in o.contours['comma'] for sg in c for q in sg[1:] if q[1] > ctop - 0.5]
+    pb = o.bounds['period']
+    comp('semicolon', [('comma', 0, 0, 1), ('period', (min(head) + max(head)) / 2 - (pb[0] + pb[2]) / 2, p.xh - pd, 1)], ov('comma'), ord(';'))
     comp('exclamdown', [('exclam', ov('exclam'), p.xh, -1)], ov('exclam'), 0xA1)
     comp('questiondown', [('question', ov('question'), p.xh + 10, -1)], ov('question'), 0xBF)
     d = p.dot
@@ -334,7 +357,7 @@ def add_composites(o):
     comp('quotesinglbase', [('comma', 0, 0, 1)], cadv, 0x201A)
     # the marks stand apart by their own width again at Thin (Inter's double quote is 2.9 marks wide there, 2.2 at Regular and Black: gaps of 1.9, 1.24 and 1.18 marks)
     cb = o.bounds['comma']
-    gap = max(d + S * 0.55, (cb[2] - cb[0]) * (1.75 - 0.55 * GL.thin_blend(p) - 0.02 * p.heavy))
+    gap = max(d + S * 0.55, (cb[2] - cb[0]) * (1.75 - 0.55 * GL.thin_blend(p) + 0.08 * p.heavy))  # Black: 1.28 marks, its wedges stood 35 units apart and read as one block
     comp('quotedblright', [('comma', 0, p.cap - d, 1), ('comma', gap, p.cap - d, 1)], cadv + gap, 0x201D)
     comp('quotedblleft', [('comma', cadv, lq, -1), ('comma', cadv + gap, lq, -1)], cadv + gap, 0x201C)
     comp('quotedblbase', [('comma', 0, 0, 1), ('comma', gap, 0, 1)], cadv + gap, 0x201E)
@@ -382,11 +405,13 @@ def add_composites(o):
     # figures: proportional, superior/inferior, numerator/denominator — all from the same outlines
     figs = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
     # figures keep their untightened sidebearing: Black's tighter S closed '13' into a clot (their advances are tabular-fixed)
+    # Black's proportional figures open by FIG_OPEN of it a side (round 4): 34 and 45 set 0.52x the HH gap upright and 0.45x in the
+    # italic, where they nearly touched (Inter's 0.80x)
     k = 0.6
     sup_y = p.cap - p.cap * k
     for f in figs:
         b = o.bounds[f]
-        tight = {'one': 0.9}.get(f, 0.62)
+        tight = {'one': 0.9}.get(f, 0.62) + FIG_OPEN * p.heavy
         l = p.Sfig * tight
         comp(f + '.pnum', [(f, l - b[0], 0, 1)], l + (b[2] - b[0]) + p.Sfig * tight)
         sw = o.adv[f] * k * 0.92
@@ -395,9 +420,9 @@ def add_composites(o):
         comp(f + '.sinf', [(f, lx, -p.cap * 0.14, k)], sw)
         comp(f + '.numr', [(f, lx, sup_y, k)], sw)
         comp(f + '.dnom', [(f, lx, 0, k)], sw)
-    comp('zero.zero.pnum', [('zero.slash', p.Sfig * 0.62 - o.bounds['zero.slash'][0], 0, 1)], o.adv['zero.pnum'])
+    comp('zero.zero.pnum', [('zero.slash', p.Sfig * (0.62 + FIG_OPEN * p.heavy) - o.bounds['zero.slash'][0], 0, 1)], o.adv['zero.pnum'])
     # the dotted zero (ss01): zero.dot.tf is drawn at the tabular advance, zero.dot is the proportional one, set as zero.pnum is
-    comp('zero.dot', [('zero.dot.tf', p.Sfig * 0.62 - o.bounds['zero.dot.tf'][0], 0, 1)], o.adv['zero.pnum'])
+    comp('zero.dot', [('zero.dot.tf', p.Sfig * (0.62 + FIG_OPEN * p.heavy) - o.bounds['zero.dot.tf'][0], 0, 1)], o.adv['zero.pnum'])
     # old-style figures: 0 1 2 drawn short (glyphs.py), 3 4 5 7 9 the lining figure hung below
     # the line so its top meets the short ones', tabular and proportional
     drop = p.cap - p.xh * GL.OSF_HEIGHT
@@ -406,7 +431,7 @@ def add_composites(o):
             comp(f + '.osf', [(f, 0, -drop, 1)], o.adv[f])
         src, dy = (f + '.osf', 0) if f + '.osf' in o.bounds else (f, -drop)
         b = o.bounds[src]
-        tight = {'one': 0.9}.get(f, 0.62)
+        tight = {'one': 0.9}.get(f, 0.62) + FIG_OPEN * p.heavy
         comp(f + '.osf.pnum', [(src, p.Sfig * tight - b[0], dy, 1)], p.Sfig * tight + (b[2] - b[0]) + p.Sfig * tight)
     # 1. Proportional figures by default: running text is the common case, and a tabular "1"
     # in a sentence leaves a hole ("$1, 117"). Tables opt in with font-variant-numeric:
@@ -523,7 +548,7 @@ def add_composites(o):
     comp('tonos', [('tonoscomb', tw / 2, p.xh + 68, 1)], tw, 0x384)
     _spacing_group(o, comp, 'dieresistonos', ['dieresiscomb', 'tonoscomb'], 0x385)
     # ano teleia: the colon's upper dot, at the x-height as in Inter and Plex (· sat mid-height)
-    comp('anoteleia', [('period', 0, p.xh - p.dot, 1)], o.adv['period'], 0x387)
+    comp('anoteleia', [('period', 0, p.xh - GL.period_dot(p), 1)], o.adv['period'], 0x387)
 
     add_polytonic(o, comp, at, tw)
 
@@ -563,7 +588,50 @@ def _lerp_contours(a, b, t):
     return [[(sa[0],) + tuple((pa[0] + (pb[0] - pa[0]) * t, pa[1] + (pb[1] - pa[1]) * t) for pa, pb in zip(sa[1:], sb[1:])) for sa, sb in zip(ca, cb)] for ca, cb in zip(a, b)]
 
 
-BOLD_OWN = {'minus'}  # the minus is 0.456 em at 700 and the plus's bar at Black; the straight line would put Bold at 0.52 em, as long as the en dash
+FIG_OPEN = 0.3
+BOLD_UNSQUEEZED = {'a'}  # its bowl, narrowed, met the stem in a counter tip 5 degrees sharper than quality.py's base at 750 (28 against 23)
+BOLD_OWN = {'minus', 'T', 'V', 'W', 'X', 'Y', 'Z'}  # the minus is 0.456 em at 700 and the plus's bar at Black; the straight line would put Bold at 0.52 em, as long as the en dash. T V W X Y Z: Black's widening starts at Bold (glyphs.capw), not at Regular
+
+
+def counter_squeeze(cs, p, share):
+    """Bold's counters narrowed by `share` of their width, the ink round them unchanged: x (upright) -> how far it moves.
+    The counters are the white between ink runs on the scanline (a third, a half or two thirds up the x-height or the
+    capitals) that crosses the most of it; a point inside a counter's span moves in proportion, one outside it moves as
+    the stroke beside it, so stems and bowls keep their thickness and the letter closes up round its middle. None if the
+    letter has no counter (i, l, t, z) or the share is 0."""
+    if not share:
+        return None
+    yc, s = p.xh / 2, p.slant
+    polys = [[(x - (y - yc) * s, y) for x, y in flatten(c)] for c in cs]
+    best = []
+    for y in [h * k for h in (p.xh, p.cap) for k in (0.33, 0.5, 0.67)]:
+        xs = []
+        for poly in polys:
+            for (xa, ya), (xb, yb) in zip(poly, poly[1:] + poly[:1]):
+                if (ya <= y < yb) or (yb <= y < ya):
+                    xs.append((xa + (y - ya) * (xb - xa) / (yb - ya), 1 if yb > ya else -1))
+        xs.sort()
+        runs, wind, start = [], 0, None
+        for x, d in xs:
+            was = wind
+            wind += d
+            if was == 0 and wind != 0:
+                start = x
+            elif was != 0 and wind == 0:
+                if runs and x - runs[-1][1] < 1e-6:
+                    runs[-1] = (runs[-1][0], x)
+                else:
+                    runs.append((start, x))
+        whites = [(a[1], b[0]) for a, b in zip(runs, runs[1:]) if b[0] - a[1] > 20]
+        if sum(b - a for a, b in whites) > sum(b - a for a, b in best):
+            best = whites
+    if not best:
+        return None
+    total = share * sum(b - a for a, b in best)
+
+    def f(x):  # whole units, so n and the letters built on its arch (eng, the accented n) round alike
+        return round(total / 2 - share * sum(max(0.0, min(x, b) - a) for a, b in best))
+    return f
 
 
 def mid_master(reg, black, nat):
@@ -591,32 +659,49 @@ def mid_master(reg, black, nat):
         rb, bb, nb = reg.bounds[name], black.bounds[name], nat.bounds[name]
         x1, x0 = lerp(rb[2], bb[2]), lerp(rb[0], bb[0])  # the upright ink's edges, where the italic's spacing is measured too
         lerp_adv = lerp(reg.adv[name], black.adv[name])
+        cs = _lerp_contours(rc, black.contours[name], t)
+        sq = None
+        if kind is None and name not in BOLD_OWN | BOLD_UNSQUEEZED:
+            sq = counter_squeeze(cs, p, BOLD_SQUEEZE_CAP if is_cap(name) else BOLD_SQUEEZE)
+        f = sq or (lambda x: 0.0)
         if kind in ('mark', 'tab'):
             adv, dx = nat.adv[name], 0.0
         elif kind == 'lerp':
             adv, dx = lerp_adv, 0.0
         else:
+            x0, x1 = x0 + f(x0), x1 + f(x1)
             adv = x1 + (nat.adv[name] - nb[2]) - (x0 - nb[0])
             dx = round((adv - lerp_adv) / 2)  # a whole unit: a half one moves a counter tip (the ae's at 750) by a degree or two
         shift[name] = dx
         o.shift[name] = dx
-        o.contours[name] = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in _lerp_contours(rc, black.contours[name], t)]
+        if sq:
+            o.squeeze[name] = sq
+        yc, s = p.xh / 2, p.slant
+        o.contours[name] = [transform_contour(c, lambda q, dx=dx: (q[0] + dx + f(q[0] - (q[1] - yc) * s), q[1])) for c in cs]
         if name in BOLD_OWN:  # a shape whose Bold is not on the line between Regular's and Black's
             o.contours[name] = nat.contours[name]
         o.adv[name] = round(adv)
         o.bounds[name] = tuple(lerp(a, b) for a, b in zip(rb, bb))
-        o.bounds[name] = (o.bounds[name][0] + dx, o.bounds[name][1], o.bounds[name][2] + dx, o.bounds[name][3])
-        o.topleft[name] = lerp(reg.topleft[name], black.topleft[name]) + dx
+        o.bounds[name] = (o.bounds[name][0] + dx + f(o.bounds[name][0]), o.bounds[name][1], o.bounds[name][2] + dx + f(o.bounds[name][2]), o.bounds[name][3])
+        o.topleft[name] = lerp(reg.topleft[name], black.topleft[name])
+        o.topleft[name] += dx + f(o.topleft[name])
         ra, ba = reg.anchors.get(name, {}), black.anchors.get(name, {})
-        o.anchors[name] = {k: (lerp(ra[k][0], ba[k][0]) + dx, lerp(ra[k][1], ba[k][1])) for k in ra}
+        o.anchors[name] = {k: (lerp(ra[k][0], ba[k][0]) + dx + f(lerp(ra[k][0], ba[k][0])), lerp(ra[k][1], ba[k][1])) for k in ra}
+        if name in BOLD_OWN and name in letters:  # a letter drawn for Bold keeps its own advance, ink and anchors, and the accents on it follow
+            shift[name] = o.shift[name] = 0.0
+            o.adv[name], o.bounds[name], o.topleft[name], o.anchors[name] = nat.adv[name], nat.bounds[name], nat.topleft[name], dict(nat.anchors.get(name, {}))
     add_composites(o)
     for name, parts in reg.comps.items():  # offsets interpolate too: a rounded one per master would be a delta of its own
         base = shift.get(parts[0][0], 0.0)  # the letter the marks sit on moved with its outline
+        sq = o.squeeze.get(parts[0][0])
         out = []
+        if parts[0][0] in BOLD_OWN and parts[0][0] in letters:
+            o.comps[name] = nat.comps[name]
+            continue
         for i, ((g, ox, oy, a), (_, bx, by, ba_)) in enumerate(zip(parts, black.comps[name])):
             x = lerp(ox, bx)
-            if i and o.kind.get(g) == 'mark':  # a mark follows its base
-                x += base
+            if i and o.kind.get(g) == 'mark':  # a mark follows its base, and the anchor it sits on
+                x += base + (sq(x) if sq else 0.0)
             elif i:  # a second letter follows the first one's advance
                 x += 2 * base
             out.append((g, x, lerp(oy, by), lerp(a, ba_)))
@@ -684,7 +769,8 @@ def build_glyf(outs, order):
         t = (outs[m].p.wght - outs[0].p.wght) / (outs[black].p.wght - outs[0].p.wght)
         pr, pb = pts[0], pts[black] if len(pts) > black else pts[1]
         x, y = (round(a) + (round(b) - round(a)) * t for a, b in zip(pr, pb))
-        return (x + outs[m].shift.get(name, 0.0), y)
+        sq = outs[m].squeeze.get(name)
+        return (x + outs[m].shift.get(name, 0.0) + (sq(x - (y - outs[m].p.xh / 2) * outs[m].p.slant) if sq else 0.0), y)
     for name in order:
         if name == '.notdef':
             for m, o in enumerate(outs):
@@ -940,27 +1026,6 @@ def build_master_font(o, glyf, order):
     return fb.font
 
 
-# Stem at each named weight (Regular 84 and Black are the masters). Every step is 20-22 units,
-# as in Inter (19-26): the old light half held equal stem *ratios* (13 units from Thin to
-# ExtraLight, 31 from Light to Regular), which read as a stall then a jump. Thin starts at 24, a
-# touch above the old Thin master (22), so it stays a legible stroke and the first step is a full 20;
-# the heavy half still front-loads weight as Geist and Inter do (Bold reads clearly bold).
-NAMED_STEMS = [(100, THIN_STEM), (200, 44), (300, 64), (400, 84), (500, 104), (600, 124), (700, 146), (800, 168), (900, BLACK_STEM)]
-
-
-def _wght_map():
-    """avar segments: user weight -> the design coordinate whose linear master stem is the target."""
-    out = []
-    for w, stem in NAMED_STEMS:
-        if stem <= 84:
-            d = 100 + (stem - THIN_STEM) / (84 - THIN_STEM) * 300
-        else:
-            d = 400 + (stem - 84) / (BLACK_STEM - 84) * 500
-        out.append((w, round(d, 1)))
-    return out
-
-
-WGHT_MAP = _wght_map()
 
 
 def _bold_after_black(sort_key):
@@ -1036,10 +1101,12 @@ def build(italic=False):
         a composite's component offsets (a dropped one moved a mark by up to the tolerance, so the decomposed
         stack stood 3 units off its mkmk anchors; fontTools gives each component a one-point contour) and every
         glyph's four phantom points (a dropped advance delta left Gcircumflex a unit off G in the static Bold,
-        and gvar off HVAR)."""
+        and gvar off HVAR). Bold's own deltas (its counters narrowed, counter_squeeze) keep BOLD_IUP_TOLERANCE: at 2 units the
+        rasterizer re-inferred n's and eng's right stems 2 units apart, which the shared arch must not be."""
         phantoms = list(self.coordinates)[-4:]
         composite = list(end_pts) == list(range(len(end_pts)))
-        optimize(self, orig, end_pts, 0 if composite else tolerance, **k)
+        bold = abs(self.axes.get('wght', (0, 0, 0))[1] - (MID_WGHT - 400) / 500) < 1e-3
+        optimize(self, orig, end_pts, 0 if composite else min(tolerance, BOLD_IUP_TOLERANCE) if bold else tolerance, **k)
         self.coordinates = list(self.coordinates)[:-4] + phantoms
 
     varLib._add_gvar = lambda *a, **k: add_gvar(*a, **{**k, 'tolerance': IUP_TOLERANCE})

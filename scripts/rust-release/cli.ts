@@ -6,6 +6,7 @@
  *   pnpm changeset:rust status [--markdown]   pending bumps -> resulting versions
  *   pnpm changeset:rust version               consume changesets, bump manifests/lock/changelogs
  *   pnpm changeset:rust publish-plan          JSON: crates whose version is not on crates.io yet
+ *   pnpm changeset:rust binaries              JSON: [{crate,version,bin,tag}] of released crates with a bin target
  *   pnpm changeset:rust changelog-section --crate <name> --version <v>
  *   pnpm changeset:rust coverage [--base <ref>]   PR gate: src/Cargo.toml change needs a changeset
  *
@@ -18,6 +19,7 @@ import { createInterface } from 'node:readline/promises'
 import { randomInt } from 'node:crypto'
 import {
   type Bump,
+  binaryPlan,
   type Change,
   type Changeset,
   type Config,
@@ -214,6 +216,30 @@ async function publishPlanCommand(): Promise<void> {
   console.log(JSON.stringify(publishPlan(crates, published)))
 }
 
+/** Prebuilt-binary work list: released (not 0.0.0, on crates.io) crates that declare a `bin`. */
+async function binariesCommand(): Promise<void> {
+  const crates = loadCrates().filter((c) => c.publishable)
+  const published = new Map<string, string[]>()
+  for (const c of crates) published.set(c.name, await publishedVersions(c.name))
+  const meta = JSON.parse(
+    run('cargo', ['metadata', '--no-deps', '--format-version', '1', '--offline']),
+  ) as {
+    packages: { name: string; targets: { name: string; kind: string[] }[] }[]
+  }
+  const bins = new Map(
+    meta.packages.map((p) => [
+      p.name,
+      p.targets.filter((t) => t.kind.includes('bin')).map((t) => t.name),
+    ]),
+  )
+  const packages = crates.map((c) => ({
+    name: c.name,
+    version: c.version,
+    bins: bins.get(c.name) ?? [],
+  }))
+  console.log(JSON.stringify(binaryPlan(packages, publishPlan(crates, published))))
+}
+
 function coverage(args: string[]): void {
   const baseBranch = loadConfig().baseBranch
   const git = (...a: string[]): string => run('git', a, 'ignore')
@@ -279,6 +305,9 @@ switch (command) {
     break
   case 'publish-plan':
     await publishPlanCommand()
+    break
+  case 'binaries':
+    await binariesCommand()
     break
   case 'changelog-section': {
     const crate = arg(rest, 'crate')

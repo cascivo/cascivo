@@ -156,9 +156,17 @@ The cascivo registry model is open — anyone can publish components and host th
 
 [`cascivo-html`](crates/cascivo-html) is a Rust library and CLI that turns agent-written `.cv` text into one deterministic, self-contained HTML file styled by real cascivo CSS (51 elements, seven SVG charts, `@brand` theming, embedded images and SVG). No React, no build step. Install: `cargo install cascivo-html-cli` (binary `cascivo-html`) or `cargo add cascivo-html`. Guide: [docs/USING-CASCIVO-HTML.md](docs/USING-CASCIVO-HTML.md); agent skill: [`skills/cascivo-html`](skills/cascivo-html/SKILL.md).
 
+### Native windows from Rust (`cascivo-blitz`)
+
+[`cascivo-blitz`](crates/cascivo-blitz) renders the same `.cv` text in a native window on the Blitz engine (Stylo, Taffy, Vello): no browser, no Dioxus. Signals and event handlers in Rust, plus native table sort, tabs, dialog and select. Install: `cargo add cascivo-blitz` (Rust 1.91+). Guide: [docs/USING-CASCIVO-BLITZ.md](docs/USING-CASCIVO-BLITZ.md).
+
 ### Terminal UIs from Rust (`cascivo-tui`)
 
 [`cascivo-tui`](crates/cascivo-tui) is a ratatui toolkit: build a terminal UI from a node tree styled with cascivo class strings (`"col gap-1 p-1 border rounded text-accent"`), eleven widgets (table, list, tabs, input, modal, toasts, ...) and the twelve cascivo themes, and test it headless with `TestApp`. Install: `cargo add cascivo-tui` (Rust 1.88+). Guide: [docs/USING-CASCIVO-TUI.md](docs/USING-CASCIVO-TUI.md); agent skill: [`skills/cascivo-tui`](skills/cascivo-tui/SKILL.md).
+
+### Static sites from Rust (`cascivo-web`)
+
+[`cascivo-web`](crates/cascivo-web) builds a static site from Markdown, content collections and templates, with cascivo components in the Markdown. Locales, RSS, a sitemap, a live-reload dev server and `deploy` to Cloudflare Workers Static Assets. One Rust binary, no Node build: `cargo install cascivo-web`. Guide: [docs/USING-CASCIVO-WEB.md](docs/USING-CASCIVO-WEB.md).
 
 ### Templates & marketplace
 
@@ -193,7 +201,7 @@ cascivo/
 │   ├── search/       # registry search index
 │   ├── cli/          # cascivo CLI — init / add / list / update / audit
 │   └── mcp/          # @cascivo/mcp     — MCP server over the registry
-├── crates/           # Rust workspace — cascivo-html (.cv text → one static HTML file) + its CLI, cascivo-tui (ratatui toolkit)
+├── crates/           # Rust workspace — cascivo-html (.cv text → one static HTML file) + its CLI, cascivo-tui (ratatui toolkit), cascivo-blitz (native Blitz window), cascivo-web (static sites from Markdown)
 ├── apps/
 │   ├── site/         # cascivo.com — landing + docs, generated from manifests (dogfood)
 │   ├── storybook/    # storybook.cascivo.com — stories from manifests

@@ -1,0 +1,71 @@
+{% macro snippet(code, lang, variant, cls="") %}<div data-variant="{{ variant }}" class="{{ m("code-snippet", "root") }}{% if cls %} {{ cls }}{% endif %}"><pre class="{{ m("code-snippet", "pre") }}">{{ code | highlight(lang) }}</pre><button type="button" aria-label="Copy code" data-state="idle" data-copy="{{ code }}" class="{{ m("code-snippet", "copy") }}"><svg aria-hidden="true" viewBox="0 0 16 16" class="{{ m("code-snippet", "icon") }}"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg></button></div>{% endmacro %}
+{# Static fallback = the default preset's state (PosterAppBuilder PRESETS[0]); the island replaces it. #}
+{% set ab = data.web.appBuilder %}
+{% set groups = ["Realtime", "AI", "Data", "Operations"] %}
+{% set presets = ["Realtime SaaS", "AI product", "Internal tool", "Publishing"] %}
+{% set chosen = ["board", "live"] %}
+{% set auth = "email" %}
+{% set local_label = {"simulated": "runs locally", "stand-in": "stand-in locally", "account": "needs an account"} %}
+{% set previewable_services = ["durable_objects", "d1_databases"] %}
+{% set ns = namespace(ids=[], parts=[], services=[], files=[], pages=[], react=false, picked=[], standins=[], previewable=true, folders=[]) %}
+{% for e in ab.examples %}{% if e.id in chosen %}{% set ns.ids = ns.ids + [e.id] %}{% for b in e.brings %}{% set ns.ids = ns.ids + [b] %}{% endfor %}{% set ns.picked = ns.picked + [e.id] %}{% endif %}{% endfor %}
+{% for e in ab.examples %}{% if e.id in ns.ids %}{% set ns.parts = ns.parts + [e] %}{% endif %}{% endfor %}
+{% for a in ab.auth %}{% if a.id == auth %}{% set ns.parts = ns.parts + [a] %}{% endif %}{% endfor %}
+{% for p in ns.parts %}
+  {% for s in p.services %}{% if s not in ns.services %}{% set ns.services = ns.services + [s] %}{% endif %}{% endfor %}
+  {% for f in p.files %}{% if f not in ns.files %}{% set ns.files = ns.files + [f] %}{% endif %}{% endfor %}
+  {% for g in p.pages %}{% if g not in ns.pages %}{% set ns.pages = ns.pages + [g] %}{% endif %}{% endfor %}
+  {% if p.react %}{% set ns.react = true %}{% endif %}
+{% endfor %}
+{% for s in ns.services %}
+  {% if s not in previewable_services %}{% set ns.previewable = false %}{% endif %}
+  {% if ab.services[s].local == "stand-in" %}{% set ns.standins = ns.standins + [ab.services[s].name] %}{% endif %}
+{% endfor %}
+{% set files = ns.files | sort(case_sensitive=true) %}
+{% set pages = ns.pages | sort(case_sensitive=true) %}
+{% for f in files %}{% set parts = f | split("/") %}{% set folder = (parts[:-1] | join("/") ~ "/") if parts | length > 1 else "" %}{% if folder not in ns.folders %}{% set ns.folders = ns.folders + [folder] %}{% endif %}{% endfor %}
+{% set command = "npx cascivo create acme --framework cloudflare" ~ ((" --example " ~ ns.picked | join(",")) if ns.picked | length > 0 else "") ~ ((" --auth " ~ auth) if auth != "none" else "") %}
+{% set tr = namespace(out=[]) %}
+{% for folder in ns.folders | sort(case_sensitive=true) %}
+  {% if folder %}{% set tr.out = tr.out + [folder] %}{% endif %}
+  {% for f in files %}{% set parts = f | split("/") %}{% set fd = (parts[:-1] | join("/") ~ "/") if parts | length > 1 else "" %}{% if fd == folder %}{% set tr.out = tr.out + [("  " ~ parts[-1]) if folder else parts[-1]] %}{% endif %}{% endfor %}
+{% endfor %}
+{% set tree = tr.out | join("\n") %}
+<div style="display: contents" {{ island("app-builder") }}>
+<section id="ship" aria-label="Ship an app" class="pg-section">
+  <div class="pg-pad pg-head">
+    <h2 class="pg-display pg-display--section">Then ship the whole app</h2>
+    <p class="pg-eyebrow">09 / on cloudflare</p>
+  </div>
+  <div class="pg-cols pg-cols--5-7">
+    <div class="pg-pad pg-builder-picks">
+      <div role="group" aria-label="Start from" class="pg-builder-presets">{% for label in presets %}<button type="button" class="pg-btn pg-btn--quiet pg-btn--mono">{{ label }}</button>{% endfor %}</div>
+      {% for group in groups %}<fieldset class="pg-builder-group"><legend class="pg-eyebrow">{{ group }}</legend>{% for e in ab.examples if e.group == group %}<label title="{{ e.blurb }}" class="pg-builder-option"><input type="checkbox"><span class="pg-builder-option-label">{{ e.label }}</span><span class="pg-builder-option-blurb">{{ e.blurb }}</span></label>{% endfor %}</fieldset>{% endfor %}
+      <fieldset class="pg-builder-group"><legend class="pg-eyebrow">Who can sign in</legend><label class="pg-builder-option"><input type="radio" name="builder-auth"><span class="pg-builder-option-label">Anyone</span><span class="pg-builder-option-blurb">No accounts.</span></label>{% for a in ab.auth %}<label class="pg-builder-option"><input type="radio" name="builder-auth"><span class="pg-builder-option-label">{{ a.label }}</span><span class="pg-builder-option-blurb">{{ a.blurb }}</span></label>{% endfor %}</fieldset>
+    </div>
+    <div class="pg-pad pg-builder-result">
+      <div class="pg-builder-sticky">
+        <p class="pg-lede">The same components, as a full-stack app on Cloudflare: one command writes the pages, the API and the Worker, and <code>vite dev</code> runs all of it offline.</p>
+        {{ snippet(command, "bash", "multi") }}
+        <dl aria-live="polite" class="pg-builder-stats"><div><dt>pages added</dt><dd>{{ pages | length }}</dd></div><div><dt>cloudflare services</dt><dd>{{ ns.services | length }}</dd></div><div><dt>files written</dt><dd>{{ files | length }}</dd></div></dl>
+        {% if ns.services | length > 0 %}<ul aria-label="Cloudflare services" class="pg-builder-services">{% for id in ns.services %}{% set service = ab.services[id] %}<li data-local="{{ service.local }}" class="pg-chip">{{ service.name }}<span class="pg-builder-local">{{ local_label[service.local] }}</span></li>{% endfor %}</ul>{% endif %}
+        {% if pages | length > 0 %}<p class="pg-note">Pages: <span class="pg-mono">{{ pages | join("  ") }}</span></p>{% endif %}
+        {% if files | length > 0 %}<pre aria-label="Files written" class="pg-pre pg-pre--tight pg-builder-tree">{{ tree }}</pre>{% endif %}
+        <ul class="pg-builder-facts">
+          <li>{% if ns.react %}Runs on React: the assistant uses React 19 hooks.{% else %}Runs on Preact: about a third of the JavaScript React needs.{% endif %}</li>
+          <li>{% if ns.standins | length > 0 %}{{ ns.standins | join(" and ") }} {{ "run" if ns.standins | length > 1 else "runs" }} on labelled stand-ins in vite dev, and for real once deployed.{% else %}Every service runs in vite dev, in the same runtime as production.{% endif %}</li>
+          <li>{% if ns.previewable %}Deploys with no account: npm run deploy:preview gives a public URL for an hour.{% else %}Needs a Cloudflare account to deploy: a temporary one only has Workers, KV, D1 and Durable Objects.{% endif %}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="pg-pad pg-starters-head">
+    <p class="pg-eyebrow">Or deploy a starter to your Cloudflare account</p>
+    <p class="pg-note">One click forks the starter into your GitHub account and deploys it. Cloudflare creates the Durable Objects and databases it needs.</p>
+  </div>
+  <ul aria-label="Starters" class="pg-tiles pg-starters">
+    {% for card in data.web.starters %}<li class="pg-pad pg-starter"><h3 class="pg-starter-title">{{ card.title }}</h3><p class="pg-note">{{ card.summary }}</p><div class="pg-starter-actions">{% if card.deployable %}<a href="{{ card.deployUrl }}" target="_blank" rel="noreferrer" aria-label="Deploy to Cloudflare: {{ card.title }}" class="pg-btn pg-btn--primary pg-btn--mono">Deploy to Cloudflare</a>{% else %}<span class="pg-chip">After the next release</span>{% endif %}<a href="https://github.com/cascivo/cascivo/tree/main/starters/{{ card.name }}" target="_blank" rel="noreferrer" aria-label="{{ card.title }} source on GitHub" class="pg-starter-source">Source</a></div></li>{% endfor %}
+    <li class="pg-pad pg-starter"><h3 class="pg-starter-title">Your own mix</h3><p class="pg-note">Every starter is <code>cascivo create</code> output. Pick the examples you want above, and run the one command it gives you.</p><div class="pg-starter-actions"><a href="#ship" class="pg-btn pg-btn--quiet pg-btn--mono">Back to the builder</a></div></li>
+  </ul>
+</section>
+</div>

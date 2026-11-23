@@ -47,7 +47,7 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         title,
         desc: None,
     };
-    open(out, &f, false);
+    open(out, cx, &f, false);
     let _ = write!(
         out,
         "<path d=\"{}\" fill=\"none\" stroke=\"{col}\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>",

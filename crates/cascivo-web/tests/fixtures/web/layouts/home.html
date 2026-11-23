@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+<head>
+<meta charset="utf-8">
+{{ head('Home', 'The "home" page', og_image='/og.png', jsonld={'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'a</script>'}) }}
+{{ theme_script() }}
+{% for u in vite_css('src/marketing/islands/home.css.ts') %}<link rel="stylesheet" href="{{ u }}">
+{% endfor %}
+<link rel="stylesheet" href="{{ css_bundle(vite_css('src/marketing/islands/signals.tsx') + vite_css('src/marketing/islands/home.css.ts'), name='home') }}">
+</head>
+<body>
+{% block body %}{% endblock %}
+<script src="{{ asset('copy.js') }}" defer></script>
+{{ islands_script() }}
+</body>
+</html>
