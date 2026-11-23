@@ -7,6 +7,7 @@ use crate::render::Cx;
 mod auto_gen;
 pub mod chart;
 mod display;
+mod e1_d;
 mod embed;
 mod feedback;
 mod layout;
@@ -29,6 +30,9 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         | "avatar-group" | "image" | "svg" | "list" | "data-list" | "structured-list"
         | "timeline" | "empty-state" | "blockquote" | "code" | "kbd" | "link" => {
             display::emit(node, cx, out);
+        }
+        "header" | "large-title-header" | "app-shell" | "dock" | "scroll-area" | "toc" => {
+            e1_d::emit(node, cx, out)
         }
         "alert" | "notification" | "progress-bar" | "progress-circle" | "meter" | "skeleton"
         | "spinner" => feedback::emit(node, cx, out),

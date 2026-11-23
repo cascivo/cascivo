@@ -68,6 +68,12 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('button-group', { children: 'nodes' }),
   e('shimmer-text', { children: 'text' }),
   e('visually-hidden', { children: 'text' }),
+  e('scroll-area', { children: 'nodes' }),
+  e('app-shell', { children: 'nodes' }),
+  e('large-title-header', { children: 'nodes', args: [a('title', 'str', true)] }),
+  e('header', { args: [a('links', 'rows')] }),
+  e('dock', { args: [a('items', 'rows', true)] }),
+  e('toc', { args: [a('items', 'rows', true)] }),
   e('separator'),
   e('spacer'),
   // display
