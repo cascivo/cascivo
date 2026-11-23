@@ -21,7 +21,7 @@
  * cascivo could not fix; keeping that leniency would let the regression this fixture exists
  * to catch sail straight through CI.
  *
- * It reads the built HTML, collects every `_<name>_<hash>_<line>` CSS-module class Astro
+ * It reads the built HTML, collects every `cv-<unit>-<local>` CSS-module class Astro
  * emitted, and asserts the emitted CSS actually defines them -- per page, one client
  * directive each.
  *
@@ -71,8 +71,13 @@ const results = []
 for (const file of files.filter((f) => f.endsWith('.html'))) {
   const page = file.slice(DIST.length + 1)
   const html = readFileSync(file, 'utf8')
+  // @cascivo/react renders the contract names (`cv-<unit>-<local>`), not build hashes.
   const used = [
-    ...new Set([...html.matchAll(/\b(_[a-zA-Z][\w-]*_[a-z0-9]{5,}_\d+)\b/g)].map((m) => m[1])),
+    ...new Set(
+      [...html.matchAll(/\bclass="([^"]*)"/g)]
+        .flatMap((m) => m[1].split(/\s+/))
+        .filter((c) => /^cv-[a-z0-9]+(-[\w-]+)+$/.test(c)),
+    ),
   ]
   // Only the stylesheets THIS page links, not every sheet in dist.
   const linked = [...html.matchAll(/href="([^"]+\.css)"/g)].map((m) => m[1])
