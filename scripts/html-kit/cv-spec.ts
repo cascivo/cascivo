@@ -171,6 +171,65 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('accordion', { children: 'nodes' }),
   e('collapsible', { children: 'nodes', args: [a('title', 'str', true)] }),
   e('tabs', { children: 'nodes' }),
+  // overlays: a server-rendered `<cv-dialog>` / `<cv-toaster>`; the shipped script drives them
+  e('dialog', {
+    children: 'nodes',
+    args: [a('title', 'str', true)],
+    css: ['modal'],
+    synthetic: 'Modal dialog',
+    extraProps: [
+      {
+        name: 'id',
+        type: 'string',
+        summary: 'Element id a dialog-trigger targets (default generated)',
+      },
+      { name: 'open', type: 'boolean', summary: 'Start open (modal once the script runs)' },
+      {
+        name: 'size',
+        type: 'enum',
+        values: ['sm', 'md', 'lg'],
+        summary: 'Panel width (default md)',
+      },
+      { name: 'description', type: 'string', summary: 'Supporting text under the title' },
+    ],
+  }),
+  e('dialog-trigger', {
+    children: 'text',
+    args: [a('target', 'str', true)],
+    css: ['button'],
+    synthetic: 'Opens a dialog',
+    extraProps: [
+      {
+        name: 'variant',
+        type: 'enum',
+        values: ['primary', 'secondary', 'ghost', 'destructive'],
+        summary: 'Button style (default primary)',
+      },
+    ],
+  }),
+  e('toaster', {
+    children: 'nodes',
+    css: ['toast'],
+    synthetic: 'Toast region',
+  }),
+  e('toast', {
+    children: 'text',
+    css: ['toast'],
+    synthetic: 'Notification',
+    extraProps: [
+      {
+        name: 'kind',
+        type: 'enum',
+        values: ['info', 'success', 'warning', 'danger'],
+        summary: 'Tone (default info; danger is announced as an alert)',
+      },
+      {
+        name: 'title',
+        type: 'string',
+        summary: 'Bold first line; the text becomes its description',
+      },
+    ],
+  }),
   // data
   e('data-table', {
     cv: 'table',

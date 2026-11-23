@@ -147,11 +147,19 @@ const EXTRA_CSS: &[(&str, &str)] = &[("image", include_str!("../assets/extra/ima
 
 /// The tabs custom element: its tag name and its key in [`SCRIPTS`].
 pub(crate) const CV_TABS: &str = "cv-tabs";
+/// The dialog and toaster custom elements, likewise.
+pub(crate) const CV_DIALOG: &str = "cv-dialog";
+pub(crate) const CV_TOASTER: &str = "cv-toaster";
+/// Attributes `cv-dialog.js` listens for on the document.
+pub(crate) const DIALOG_OPEN: &str = "data-cv-dialog-open";
+pub(crate) const DIALOG_CLOSE: &str = "data-cv-dialog-close";
 
 /// Inline scripts, keyed by the name emitters put in `Cx::scripts`.
 const SCRIPTS: &[(&str, &str)] = &[
     ("table-sort", include_str!("../assets/extra/table-sort.js")),
     (CV_TABS, include_str!("../assets/extra/cv-tabs.js")),
+    (CV_DIALOG, include_str!("../assets/extra/cv-dialog.js")),
+    (CV_TOASTER, include_str!("../assets/extra/cv-toaster.js")),
 ];
 
 /// Page shell: inline padding and a vertical rhythm from the brand's `gap` (default space-4).

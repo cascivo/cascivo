@@ -137,12 +137,13 @@ fn scripts_inline_by_default_or_reference_script_src() {
 fn script_bundle_covers_every_script() {
     let names: Vec<_> = script_names().collect();
     assert!(names.contains(&"table-sort") && names.contains(&"cv-tabs"));
+    assert!(names.contains(&"cv-dialog") && names.contains(&"cv-toaster"));
     let all = script_bundle(None);
     for n in &names {
         assert!(all.contains(script(n).unwrap().trim_end()));
     }
     let used = render_parts(
-        "table sort A | b\ntabs\n  text \"x\"\n",
+        "table sort A | b\ntabs\n  text \"x\"\ndialog \"d\"\ntoaster\n",
         &Options::default(),
     )
     .unwrap();

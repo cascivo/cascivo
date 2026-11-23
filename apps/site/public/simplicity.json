@@ -28,7 +28,7 @@
       "name": "modal",
       "label": "Dialog",
       "primitive": "Native <dialog> + showModal()",
-      "loc": 427,
+      "loc": 431,
       "files": 3,
       "deps": 0
     },

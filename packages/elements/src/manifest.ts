@@ -69,6 +69,32 @@ export const ELEMENTS: Entry[] = [
     ],
     events: formEvents,
   },
+  {
+    tag: 'cv-dialog',
+    className: 'CvDialog',
+    module: 'dialog',
+    description:
+      'Modal dialog: wraps a native <dialog> opened with showModal(); focus returns to the opener.',
+    formAssociated: false,
+    attributes: [
+      ['open', 'boolean', 'Open state (initial value; the live state is the `open` property).'],
+      ['static', 'boolean', 'A backdrop click does not close.'],
+    ],
+    events: [
+      ['cv-open', 'The dialog opened.'],
+      ['cv-close', 'The dialog closed (Escape, close control, backdrop, cv-dialog-close).'],
+    ],
+  },
+  {
+    tag: 'cv-toaster',
+    className: 'CvToaster',
+    module: 'toaster',
+    description:
+      'Live region for toasts: auto-dismiss, pause on hover/focus, filled by OOB swap or the cv-toast trigger.',
+    formAssociated: false,
+    attributes: [['duration', 'number', 'Milliseconds before a toast dismisses (0: never).']],
+    events: [['cv-toast-dismiss', 'A toast was dismissed.']],
+  },
 ]
 
 export function customElementsManifest(): object {

@@ -12,10 +12,19 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.meta.ts"
     }
   ],
-  "dependencies": ["@cascivo/react"],
-  "tags": ["block", "dashboard", "empty-state", "page"],
+  "dependencies": [
+    "@cascivo/react"
+  ],
+  "tags": [
+    "block",
+    "dashboard",
+    "empty-state",
+    "page"
+  ],
   "category": "display",
-  "registryDependencies": ["layout/dashboard-layout"],
+  "registryDependencies": [
+    "layout/dashboard-layout"
+  ],
   "meta": {
     "name": "EmptyDashboard",
     "description": "Dashboard page showing an empty state with a call-to-action button.",
@@ -45,9 +54,18 @@
         "description": "Empty dashboard"
       }
     ],
-    "dependencies": ["@cascivo/react"],
-    "registryDependencies": ["layout/dashboard-layout"],
-    "tags": ["block", "dashboard", "empty-state", "page"],
+    "dependencies": [
+      "@cascivo/react"
+    ],
+    "registryDependencies": [
+      "layout/dashboard-layout"
+    ],
+    "tags": [
+      "block",
+      "dashboard",
+      "empty-state",
+      "page"
+    ],
     "intent": {
       "whenToUse": [
         "A first-run or zero-data dashboard with an empty state and primary CTA",

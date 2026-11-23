@@ -7,11 +7,11 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { buildCss } from '../../../scripts/html-kit/build-css.ts'
 import { customElementsManifest } from '../src/manifest.ts'
 
-export const UNITS = ['menu', 'tabs', 'combobox', 'date-picker', 'calendar'] as const
+export const UNITS = ['menu', 'tabs', 'combobox', 'date-picker', 'calendar', 'modal', 'toast', 'button', 'input'] as const
 
 // Hosts are plain containers; the component CSS styles the markup inside them.
 const HOSTS =
-  '@layer cascivo.component{cv-menu{display:inline-block}cv-tabs{display:block}cv-combobox,cv-date-picker{display:block}}'
+  '@layer cascivo.component{cv-menu{display:inline-block}cv-tabs{display:block}cv-combobox,cv-date-picker{display:block}cv-dialog{display:contents}cv-toaster{display:contents}}'
 
 export function elementsCss(): string {
   return [HOSTS, ...UNITS.map(buildCss)].join('\n')
