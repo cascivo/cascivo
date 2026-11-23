@@ -41,6 +41,7 @@ WGHT_MAP = _wght_map()
 
 DOT_MIN_EM = 0.05  # the smallest dot (period, colon, i dot, ...) at wght 100, in em
 DOT_FLOOR = DOT_MIN_EM * 1000 + 3 * 1.12 * 1.06  # units; see P.dot
+DISPLAY_FACE = 20.0
 ITALIC_ANGLE = 10  # degrees; Plex and Inter italics sit near 10-11
 
 MASTERS = [
@@ -121,6 +122,10 @@ class P:
             xh -= 10
             spacing, counter, k, aperture = 0.92, 0.97, 0.60, -5.0  # 0.92 (round 3; it was 0.88, and Black at opsz 32 to 48 set ns, st, rg, ef a few units apart). The earlier floor still holds: Display's tightening and Black's (HEAVY_TIGHTEN) add up at 900/48, and any tighter leaves the round pairs (OO oo ss SS) under their 12-unit floor and the italic GO overlapping
         self.V = V
+        # Round 5, upright 3: degrees the Display master turns the c, e (and æ) and g terminals' faces toward flat (geom.Stroke turn). Inter's
+        # opsz 32 cuts them on the horizontal; ours stayed square to the stroke, and at 900 / 48, Black's near-flat faces plus the Display delta,
+        # the e and c apertures read as slanted slits beside Inter Black (faces 8-10 deg; 0-2 now, Regular Display's 0-9). The italic keeps its own.
+        self.face = DISPLAY_FACE if opsz == 48 and not italic else 0.0
         self.H = V * contrast
         # crossbars (e, A, H...) thin faster than bowls as weight rises, or heavy counters close
         self.bar = self.H * (1 - 0.22 * self.heavy)

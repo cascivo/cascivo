@@ -284,9 +284,11 @@ def add_composites(o):
 
     # i and j are dotless + dot so every accent on them is consistent
     # (the i and j dots keep their own height: the dot accent's lift is for ż, ė, ċ)
+    # Round 5, upright 3: the Caption master lifts them I_DOT_CAP8 units (the dot's size is P.dot's): 68 units over the stem read as one
+    # mark with it at 11 px, DPR 1 ("Settings" at 300 and 400), where Inter keeps 89-101. opsz 11 carries half of it (88 units).
     def dot_ij(base):
         m, bx, by, a = at(base, 'dotaccentcomb', 'top')
-        return (m, bx, by - GL.lift_dots(p), a)
+        return (m, bx, by - GL.lift_dots(p) + (GL.I_DOT_CAP8 * GL.caption(p) if not p.italic else 0), a)
 
     comp('i', [('dotlessi', 0, 0, 1), dot_ij('dotlessi')], o.adv['dotlessi'], ord('i'))
     comp('j', [('dotlessj', 0, 0, 1), dot_ij('dotlessj')], o.adv['dotlessj'], ord('j'))

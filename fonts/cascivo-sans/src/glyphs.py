@@ -513,7 +513,7 @@ def _steepen(seg, deg):
     return (seg[0], seg[1], seg[2], (x3 + dx * math.cos(a) - dy * math.sin(a), y3 + dx * math.sin(a) + dy * math.cos(a)), seg[4])
 
 
-def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None, close=0, bowl=0.03, flat=0.2, deep=0, tilt=None, straight=0.0):
+def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None, close=0, bowl=0.03, flat=0.2, deep=0, tilt=None, straight=0.0, hold=False):
     """S/s/$ spine: upper arc, a cubic spine at full stem weight, lower arc."""
     V, H = p.V, p.H
     yb, yt = -ov, top + ov
@@ -545,8 +545,12 @@ def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None, close
     # cubic (_ell_seg) in every master that needs it: the segment count stays the same.
     # `close`: degrees every weight's terminals sit further round; the heavy run shrinks by as
     # much, so Black's terminals stay put
-    a_up = term - close - (8 + (run if run_up is None else run_up) - close) * heavy + p.ap * 0.8
-    a_lo = -146 - close - (8 + run - close) * heavy + p.ap * 0.8
+    # `hold`: the Display master's closing (P.ap < 0) does not move the terminals (the upright S, round 5, upright 3). Black's are cut level
+    # where the bowl turns vertical; run 4 degrees further round at Display, the corner Black + Display ended past the vertical, its faces
+    # tipped 2-3 degrees and the lower terminal's inner edge curled back from the face: a lump and a step at 120 px.
+    ap = 0.0 if hold and p.ap < 0 else p.ap
+    a_up = term - close - (8 + (run if run_up is None else run_up) - close) * heavy + ap * 0.8
+    a_lo = -146 - close - (8 + run - close) * heavy + ap * 0.8
     up = g.arc(cxu, cyu, rxu, ryu, a_up, 180) if a_up > 0 else [_ell_seg(cxu, cyu, rxu, ryu, a_up, 90, p.k)] + g.arc(cxu, cyu, rxu, ryu, 90, 180)
     lo = g.arc(cxl, cyl, rxl, ryl, 0, a_lo) if a_lo > -180 else g.arc(cxl, cyl, rxl, ryl, 0, -90) + [_ell_seg(cxl, cyl, rxl, ryl, -90, a_lo, p.k)]
     if straight:
@@ -607,7 +611,7 @@ def _S_(g, p):
     # Black's upper terminal runs 20 degrees round, not 34: run on as far, its inner edge folded into a long beak (see S_BOWL)
     # Round 5, upright Black (the italic keeps round 4's): see CAP_S_UP
     hk, spine, flat, bowl, tilt, run_up, run, straight = (0.1, 0.3, 0.2, 0.03 - S_BOWL, CAP_S_TILT, CAP_S_RUN_UP, S_RUN_CAP, S_STRAIGHT) if p.italic else CAP_S_UP
-    _S(g, p, p.Hd * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + hk * p.heavy)), spine=spine, run=run, close=26, bowl=bowl, run_up=run_up, tilt=tilt, straight=straight, flat=flat)
+    _S(g, p, p.Hd * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + hk * p.heavy)), spine=spine, run=run, close=26, bowl=bowl, run_up=run_up, tilt=tilt, straight=straight, flat=flat, hold=not p.italic)
     g.ht = 'c'
     g.sb = (0.5, 0.5)
 
@@ -664,7 +668,8 @@ A_ARC_IN = 0.24  # Black's top arc starts this many stems further right: its ter
 A_BOWL_SLOPE = 0.15  # extra slope of the bowl's top at Black, so its counter rises toward the stem like Inter's (Black read 3.6 deg, Inter 12)
 A_BOWL_WALL = -0.06  # Black's bowl wall is thinner than the stem (as Inter's is), so the counter is a wide teardrop and not a slot
 A_BOWL_LOW, A_BOWL_LOW_AE = 0.03, 0.015  # Black's bowl top sits this share of the x-height lower than the +0.05 lift (0.015 -> 0.02 opened the a's mouth 46 -> 49, Inter 51; 0.03 with round 5's level top, which raised the bowl under the arc's end: 27 -> 41; æ keeps 0.015), and
-A_BOWL_FLOOR = 0.14  # its floor is this much of a bar thicker (not thinner): the counter stays short against its width, as Inter's does, which keeps its area under the cap
+A_BOWL_FLOOR = 0.10  # its floor is this much of a bar thicker (not thinner): the counter stays short against its width, as Inter's does, which keeps its area under the cap
+# (round 5, upright 3: 0.14 -> 0.10, a touch more counter, as the judge's 120 px a read small beside Inter's D: 0.052 -> 0.054 of the x-height squared, COUNTER_MAX's 1.3x Inter is 0.056)
 A_FILLET = 0.18  # extra share of a stem in the radius where the bowl's top meets the stem at Black: a steeper top left a spur there, not a U
 A_TOP_LIFT = 0.35  # how far up the stem the counter's top meets it, in the round's radius (none at Black, where it rises along the slope)
 A_TOP_ROUND, A_TOP_HANDLE = 0.12, 0.5  # the bowl top's round into the stem, at least this share of the x-height; its handle at the crown, a share of the run to the stem
@@ -1016,7 +1021,7 @@ def _g(g, p):
     # The tail's end rises steeply, where the pen is a stem wide, from a floor a hairline thick: the inner edge turned up in a step
     # just short of the cut (Black 137 -> 190 across the last quarter). The end thins by G_TAPER of that difference.
     te = 1 - G_TAPER * (1 - p.H / p.V)
-    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, end), caps=('b', 'b'), cut='t', tilt=tilt, taper=(1, te))
+    g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, end), caps=('b', 'b'), cut='t', tilt=tilt, taper=(1, te), turn=p.face)
     cx, cy2, rx2, ry2 = g.box(0, 18, w, p.xh + p.ov)
     # Round 5: the italic's bowl closes on its stem as the italic d's does (bowl_arc round_in, its stem-side quarters run all the way
     # round at Black): ending 8 degrees short on the narrowed quarters, its counter ran flat and pointed along the stem
@@ -1026,6 +1031,10 @@ def _g(g, p):
 
 
 O_SQUARE = 0.1
+# Round 5, upright 3: the upright Black o's sidebearings open by these shares of the stem sidebearing (left, right). Squarer at Black (O_SQUARE),
+# it set closer to its neighbours than Inter's does while nn matched: at 900 the mean white of nn, no, on and oo read 1.01, 0.98, 0.86 and 0.94x
+# Inter's (opsz 14; at 48 1.08, 1.04, 0.90, 0.96x), so in nnnonnnooo the o's sat tight. The right side gets more, as on was the tightest.
+O_SB = (0.1, 0.25)
 # Round 5, italic 2: the italic's heavy rounds are drawn, not sheared (G.drawn). Slanted whole, Black's o b d p q 6 9 O 0 and the
 # italic a's bowl had counters pointed at their top right and bottom left, a lozenge (the counter's left extreme 0.20-0.27 of its height
 # up, its right 0.72-0.80; Inter Italic's 0.29-0.31 and 0.69-0.72): the judge's "mechanical oblique". Before the slant the sides turn
@@ -1040,7 +1049,7 @@ def _o(g, p):
     w = p.nw * (1.1 - 0.05 * p.heavy)  # as b
     g.oval(0, -p.ov, w, p.xh + p.ov, k=p.k + O_SQUARE * p.heavy, drawn=True)
     g.anchors['horn_x'], g.anchors['horn_y'] = _horn_on_bowl(p, w, p.xh)  # ơ
-    g.sb = (0.62, 0.62)
+    g.sb = (0.62, 0.62) if p.italic else (0.62 + O_SB[0] * p.heavy, 0.62 + O_SB[1] * p.heavy)
 
 
 C_RUN, C_RUN_IT, C_TILT = 12, (6, 6), 12
@@ -1074,7 +1083,7 @@ def _c(g, p):
     # leans enough for the face to lean as Inter's (9 deg; at 12 the slant left it 3.7), and the c reads as open as Inter Italic's.
     # Regular's cut is square.
     ru, rl = C_RUN_IT if p.italic else (C_RUN, C_RUN)
-    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy), caps=('b', 'b'), cut='t', tilt=C_TILT_IT if p.italic else C_TILT)
+    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy), caps=('b', 'b'), cut='t', tilt=C_TILT_IT if p.italic else C_TILT, turn=p.face)
     g.sb = (0.62, 0.42 + (C_RSB_IT * p.heavy + CE_BOLD_IT * p.heavy * (1 - p.heavy) if p.italic else 0))
 
 
@@ -1122,7 +1131,7 @@ def _e_body(g, p, x0, w, bar_k=None):
     # the start is a join hidden in the bar, cut flat along the bar's underside, not a terminal
     tail = g.arc(cx, cy, rx, ry, 270, E_END - (E_RUN_IT if p.italic else E_RUN) * p.heavy - p.ap, p.k + (E_SQUARE_IT if p.italic else E_SQUARE) * p.heavy)
     tail[-1] = _steepen(tail[-1], (E_STEEP_IT if p.italic else 0.0) * p.heavy)
-    g.stroke(first + g.arc(cx, cy, rx, ry, 90, 270) + tail, caps=('h', 'b'), cut='t', tilt=E_TILT)
+    g.stroke(first + g.arc(cx, cy, rx, ry, 90, 270) + tail, caps=('h', 'b'), cut='t', tilt=E_TILT, turn=p.face)
     # ends on the bowl's centreline, so the bowl stroke covers it; in the italic the stroke's end
     # is cut on a slant, so the bar stops short of it
     # A heavy bar drops below the middle, where the bowl's outer edge has already turned in: its lower right corner stopped at
@@ -3029,6 +3038,9 @@ def m_grave(g, p, s):
 # x-height above it against the references' 0.16-0.22, where acute and grave already matched.
 # Heavier, the references' dots, macrons and tildes come closer (0.09-0.12 at Black), while their
 # acutes keep their distance: the lift turns into a drop.
+I_DOT_CAP8 = 40  # build.add_composites: the i and j dots at the Caption master
+
+
 def lift_dots(p):
     return 30 - 41 * p.heavy
 

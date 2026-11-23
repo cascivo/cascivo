@@ -1197,6 +1197,47 @@ class Font(unittest.TestCase):
             with self.subTest(font=os.path.basename(path)):
                 self.assertGreaterEqual(len(mouth), 55)
 
+    def test_display_terminals_cut_flat(self):
+        # Round 5, upright 3: Inter's opsz 32 cuts c e g on the horizontal, and at 900 / opsz 48 (64-120 px) this font's e and c apertures read as
+        # slanted slits (faces 9.5-9.6 deg from horizontal, the g's 8.1). The Display master turns those faces toward flat (params.DISPLAY_FACE):
+        # 0-2 deg at 900 / 48; Black's own at opsz 14 keep their lean (quality.py). The upright S keeps Black's level faces at display sizes
+        # (glyphs._S `hold`): they tipped 2.1-2.4 deg and the lower terminal's inner edge curled back from its face, a lump and a step.
+        import quality
+
+        for g, most in (('e', 4.0), ('c', 4.0), ('g', 4.0), ('S', 1.0)):
+            with self.subTest(glyph=g):
+                faces = quality.cut_faces(VF, g, 900, 48)
+                self.assertTrue(faces)
+                self.assertLessEqual(max(d for _, d in faces), most)
+
+    def test_caption_i_dot_clears_its_stem(self):
+        # Round 5, upright 3 (small_1x): at 11 px, DPR 1, the i's dot all but fused with its stem ("Settings" at 300 and 400). It sat 68 units over
+        # the x-height at every size, Inter's 89-101 at 300-400. The Caption master lifts the i and j dots (glyphs.I_DOT_CAP8): 88 at opsz 11,
+        # Regular sizes unchanged. The dot keeps its size (test_dot_floor_is_a_params_constant).
+        for w in (300, 400):
+            for opsz, lo, hi in ((11, 85, 95), (14, 66, 70)):
+                for name in ('i', 'j'):
+                    boxes = self._contour_boxes(VF, w, name, opsz)
+                    dot, body = max(boxes, key=lambda b: b[3]), min(boxes, key=lambda b: b[3])
+                    with self.subTest(wght=w, opsz=opsz, glyph=name):
+                        self.assertTrue(lo <= dot[1] - body[3] <= hi, dot[1] - body[3])
+
+    def test_black_o_sets_as_open_as_n(self):
+        # Round 5, upright 3 (nnnonnnooo at 900): squarer at Black, the o set closer to its neighbours than Inter's while nn matched: the mean white
+        # (pair_white_profile) of no, on and oo read 0.98, 0.86 and 0.94x Inter's at 900, nn 1.01x. The o's Black sidebearings open (glyphs.O_SB),
+        # so each pair's share of Inter's is within 0.9-1.1x nn's. Inter's means at 900, opsz 14 (Inter 4.1, @fontsource-variable/inter 5.3.0).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        inter = {'nn': 117, 'no': 144, 'on': 132, 'oo': 165}
+        nn = pair_white_profile(hb, VF, 'nn', 900)[0] / inter['nn']
+        for pair in ('no', 'on', 'oo'):
+            with self.subTest(pair=pair):
+                share = pair_white_profile(hb, VF, pair, 900)[0] / inter[pair] / nn
+                self.assertTrue(0.9 <= share <= 1.1, f'{pair} {share:.2f}')
+
     def test_italic_black_rounds_are_drawn(self):
         # Round 5, italic 2 (the judge's "mechanical oblique"): slanted whole, the italic's Black counters were lozenges, their left
         # extreme 0.20-0.27 of the counter's height up and their right 0.72-0.80 (Inter Italic's 0.29-0.31 and 0.69-0.72). The rounds
