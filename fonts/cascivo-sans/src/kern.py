@@ -23,12 +23,12 @@ import math
 import os
 import unicodedata
 
-from params import MID_WGHT, P  # noqa: E402
+from params import MID_WGHT, WGHT_MAP, P  # noqa: E402
 from composites import ALIAS, GREEK_ACCENTED, GREEK_POLY, accented_chars, glyph_name, is_cap, script_glyph
 from geom import seg_point
 
 BAND = 10
-# Black's sidebearing is ~20 units (params.HEAVY_TIGHTEN), so 0.55 S would keep pairs 11 units apart, and a band
+# Black's sidebearing was ~20 units before round 4 (params.HEAVY_TIGHTEN; 44 now), so 0.55 S would keep pairs 11 units apart, and a band
 # profile reads +-2: the closest point never gets nearer than this, whatever S is.
 KEEP_CLEAR = 16
 MIN_KERN = 10  # units; smaller corrections are invisible at text sizes
@@ -46,17 +46,170 @@ REGULAR_S = P(400, 14).S  # Regular's stem sidebearing unit: the reference of ST
 # never closes harder than the hardest value Inter has for it at any weight (read from Inter 4.001 in the audit: LT -96, To -78,
 # W+a -63, V+a -69, Y+round -138, A beside V/W/Y -88); those numbers are hand-set here, they are not derived. Without it the closest-point
 # floor is the only brake at Black, and W beside a round letter read -90 there (Inter -49) with the two nearly touching. Y's reach grows
-# with the weight because Inter's Y kerns harder as it gets heavier (-77 at Regular, -138 at Black); the others' stays put.
+# with the weight because Inter's Y kerns harder as it gets heavier (-77 at Regular, -138 at Black); the others' stays put. (1.1: Black's
+# looser sidebearings (round 1's counter trim) left Yo at 110 against the 0.8 x 138 floor at 1.0; 1.3 and the A pairs' 0.8 after round 2's, which
+# left Yo at 108-110 and the italic's Bold AW at 56 against 57.6; the A pairs' 1.4 after round 4's looser Bold, whose italic AW read 54.)
 STRONG_CLASSES = [
     (['L', 'Lslash'], ['T'], 1.8, 0.0, 1.0, 96),
     (['T'], ['o', 'c', 'e', 'd', 'q', 'g', 'a', 's', 'ae', 'oe'], 1.4, 0.0, 1.0, 78),
     (['W'], ['a', 'c', 'e', 'o', 'd', 'ae', 'oe'], 2.4, 0.0, 1.1, 63),
     (['V'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 0.0, 1.0, 69),
-    (['Y'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 1.0, 1.0, 138),
-    (['A'], ['V', 'W', 'Y'], 1.2, 0.6, 1.0, 88),
-    (['V', 'W', 'Y'], ['A'], 1.2, 0.6, 1.0, 88),
+    (['Y'], ['a', 'c', 'e', 'o', 'd', 'q', 'g', 'ae', 'oe'], 1.4, 1.3, 1.0, 138),
+    (['A'], ['V', 'W', 'Y'], 1.2, 1.4, 1.0, 88),
+    (['V', 'W', 'Y'], ['A'], 1.2, 1.4, 1.0, 88),
 ]
+# Thin's V beside a round letter: a hairline diagonal leaves the widest white of any weight beside it, and the hole was counted no
+# deeper than Regular's, so Vo, Ve, Vc read 0.6 to 0.75x Inter's. The hole counts THIN_REACH Regular sidebearings deeper at Thin, fading
+# to none at Regular (whose values do not move): 0.8 to 1.08x Inter's now. W beside a round letter and A beside W do not answer to it
+# (tried with 4 and 1.5, and with a lower closest-point floor): their white is spread over every band, which the measure reads as
+# spacing, not as a hole. They stay in test_font.KERNING_SHORT.
+THIN_REACH = {('V', b): 2.0 for b in ['c', 'e', 'o', 'q', 'g', 'oe']}
 STRONG = {(a, b): (reach, more, gain, limit) for lefts, rights, reach, more, gain, limit in STRONG_CLASSES for a in lefts for b in rights}
+
+# Round 4: the pairs the brief names, fitted to Inter's white, computed from the outlines of every master. A pair's white is the gap between the two
+# shapes' profiles in 5-unit rows, each row counted down to WHITE_DEPTH beyond the closest one, per em (test_font.pair_white_profile reads the same);
+# the pair must read WHITE_BAND (0.85-1.1x) of Inter's at the same weight, and its closest row WHITE_LEAST (0.75x). Kerning units do not carry that
+# from Inter to this font (the sidebearings differ letter by letter: Thin W V Y and A pairs read 0.72-0.85x of Inter's white, Black LY 7, 7. 1.1-1.3x,
+# y. y, r. F. 0.62-0.83x, Kv Ky at Regular 0.80-0.83x, T- 1.4-1.8x at Thin, f) 1.26x at Black), so each pair's value on a master is moved the least that
+# brings the weights the table lists inside a narrower band (AIM_BAND, AIM_LEAST: margin for the interpolation and the rounding). Only the
+# reference is hand-set, like STRONG's limits: Inter 4.001's mean and closest white of the pair at the weight, {pair: {wght: (mean, least)}}. A
+# redrawn T, V, W, Y or f changes the white and the value follows; nothing here is a unit count. Thin (100) carries the weights up to 400, Black (900) the
+# ones above, Regular (400) its own; between masters the white interpolates linearly in the design space (200 is 2/3 Thin; above 400 the avar map),
+# and Bold, whose outlines are its own, refits 500-800 against Regular and Black (_fit_white_bold).
+# Round 4, merge 2: ff fl at 500-700, ft at 700 and cf at 700 (upright), after the f was redrawn; ff at 400 too, which OWN_CLOSING_PAIRS closes
+# (1.04x Inter's: its -32 stays). ft read 1.15-1.16x Inter's white at 500-700. Inter lets ft's crossbars nearly meet (closest row 2-10 units), this
+# f keeps them 0.3x the nn gap apart (test_font.test_heavy_f_leaves_no_hole), so ft closes at Bold only as far as AIM_OWN's 1.09x: at the 1.06x aim
+# they came to 0.28x, and with 500-600 listed too (Regular's -33 holds them; Bold carries 600 two-thirds, 500 one-third) to 0.19x. Not fi: its closest
+# row is the hook over the i's dot (0.56-0.71x Inter's at 500-700: this f's hook is its right edge, Inter's crossbar reaches past it), and
+# opening it to the 0.75x floor (+22 at Bold) set the stems 1.23x Inter's white apart (test_ff_and_its_pairs_fit_like_inter: under 1.2x).
+WHITE_DEPTH, WHITE_BAND, WHITE_LEAST = 400, (0.85, 1.1), 0.75
+AIM_BAND, AIM_LEAST = (0.88, 1.06), 0.78
+AIM_OWN = {('f', 't'): (0.88, 1.09)}
+WHITE_REF = {
+    'upright': {
+        'Wa': {100: (275, 131), 200: (259, 127)},
+        'We': {100: (216, 159), 200: (209, 151)},
+        'Wo': {100: (216, 159), 200: (209, 151)},
+        'Wc': {100: (217, 158), 200: (209, 151)},
+        'Wq': {100: (211, 157), 200: (204, 149)},
+        'Wg': {100: (213, 157), 200: (208, 149)},
+        'Va': {100: (316, 157), 200: (299, 152)},
+        'Ve': {100: (257, 190), 200: (249, 182)},
+        'Vo': {100: (257, 190), 200: (249, 182)},
+        'Vc': {100: (257, 189), 200: (249, 182)},
+        'Vq': {100: (252, 187), 200: (245, 179)},
+        'Vg': {100: (254, 187), 200: (248, 179)},
+        'Ya': {100: (375, 228), 200: (355, 218)},
+        'Ye': {100: (310, 266), 200: (299, 251)},
+        'Yo': {100: (310, 266), 200: (299, 251)},
+        'Yc': {100: (311, 266), 200: (299, 250)},
+        'Yq': {100: (305, 259), 200: (294, 244)},
+        'Yg': {100: (307, 259), 200: (298, 244)},
+        'Ta': {100: (390, 277), 200: (370, 267)},
+        'Te': {100: (326, 282), 200: (315, 271)},
+        'To': {100: (326, 282), 200: (315, 271)},
+        'Tc': {100: (326, 282), 200: (315, 271)},
+        'Tq': {100: (321, 282), 200: (311, 271)},
+        'Tg': {100: (323, 282), 200: (315, 271)},
+        'WA': {100: (246, 213), 200: (240, 207)},
+        'VA': {100: (268, 267), 200: (260, 260)},
+        'YA': {100: (330, 263), 200: (319, 255)},
+        'TA': {100: (372, 244), 200: (355, 235)},
+        'AV': {100: (268, 268), 200: (262, 261)},
+        'AW': {100: (247, 213), 200: (240, 206)},
+        'AT': {100: (372, 244), 200: (356, 235)},
+        'AY': {100: (331, 263), 200: (320, 257)},
+        'LT': {100: (606, 263), 200: (570, 252)},
+        'LY': {100: (571, 294), 200: (555, 298), 800: (375, 217), 900: (329, 189)},
+        'LV': {100: (514, 291), 200: (488, 275)},
+        'Ty': {100: (387, 283), 200: (372, 269)},
+        'Tr': {100: (339, 337), 200: (326, 323)},
+        'T-': {100: (307, 307), 200: (296, 296)},
+        '7,': {800: (266, 245), 900: (249, 227)},
+        '7.': {800: (259, 234), 900: (245, 218)},
+        'y.': {800: (254, 227), 900: (251, 223)},
+        'y,': {800: (284, 237), 900: (285, 231)},
+        'r.': {800: (231, 215), 900: (228, 211)},
+        'r,': {800: (223, 215), 900: (215, 207)},
+        'F.': {800: (423, 407), 900: (410, 392)},
+        'F,': {800: (409, 401), 900: (390, 382)},
+        'P,': {800: (475, 467), 900: (463, 455)},
+        'f)': {800: (204, 46), 900: (185, 37)},
+        'f]': {800: (221, 53), 900: (199, 46)},
+        'f}': {800: (242, 53), 900: (224, 46)},
+        'ff': {400: (208, 10), 500: (194, 6), 600: (179, 3), 700: (166, 0)},
+        'fl': {500: (202, 91), 600: (188, 84), 700: (174, 76)},
+        'ft': {700: (157, 2)},
+        'cf': {700: (248, 69)},
+        'Kv': {400: (286, 185)},
+        'Ky': {400: (285, 185)},
+        'Kw': {400: (249, 164)},
+    },
+    'italic': {
+        'Wa': {100: (211, 157), 200: (205, 149)},
+        'We': {100: (216, 156), 200: (209, 149)},
+        'Wo': {100: (216, 158), 200: (209, 151)},
+        'Wc': {100: (217, 158), 200: (209, 151)},
+        'Wq': {100: (211, 157), 200: (204, 149)},
+        'Wg': {100: (213, 157), 200: (208, 149)},
+        'Va': {100: (252, 187), 200: (245, 180)},
+        'Ve': {100: (257, 187), 200: (249, 180)},
+        'Vo': {100: (257, 189), 200: (249, 181)},
+        'Vc': {100: (257, 189), 200: (250, 181)},
+        'Vq': {100: (252, 187), 200: (245, 179)},
+        'Vg': {100: (254, 186), 200: (248, 179)},
+        'Ya': {100: (306, 259), 200: (295, 245)},
+        'Ye': {100: (310, 262), 200: (299, 247)},
+        'Yo': {100: (310, 265), 200: (299, 249)},
+        'Yc': {100: (311, 265), 200: (299, 249)},
+        'Yq': {100: (305, 257), 200: (294, 243)},
+        'Yg': {100: (308, 257), 200: (298, 243)},
+        'Ta': {100: (321, 282), 200: (311, 271)},
+        'Te': {100: (326, 282), 200: (316, 271)},
+        'To': {100: (326, 282), 200: (315, 270)},
+        'Tc': {100: (327, 282), 200: (315, 271)},
+        'Tq': {100: (321, 282), 200: (311, 271)},
+        'Tg': {100: (323, 282), 200: (315, 271)},
+        'WA': {100: (246, 213), 200: (239, 206)},
+        'VA': {100: (267, 267), 200: (260, 260)},
+        'YA': {100: (329, 263), 200: (318, 255)},
+        'TA': {100: (371, 244), 200: (355, 234)},
+        'AV': {100: (268, 268), 200: (262, 262)},
+        'AW': {100: (247, 214), 200: (240, 206)},
+        'AT': {100: (372, 245), 200: (356, 236)},
+        'AY': {100: (331, 263), 200: (320, 257)},
+        'LT': {100: (606, 263), 200: (570, 252)},
+        'LY': {100: (571, 293), 200: (555, 298), 800: (375, 217), 900: (329, 189)},
+        'LV': {100: (513, 291), 200: (488, 274)},
+        'Ty': {100: (388, 284), 200: (373, 269)},
+        'Tr': {100: (339, 337), 200: (326, 323)},
+        'T-': {100: (307, 307), 200: (296, 296)},
+        '7,': {800: (265, 244), 900: (249, 227)},
+        '7.': {800: (259, 229), 900: (245, 213)},
+        'y.': {800: (253, 223), 900: (251, 218)},
+        'y,': {800: (284, 237), 900: (284, 230)},
+        'r.': {800: (231, 215), 900: (228, 211)},
+        'r,': {800: (223, 215), 900: (215, 207)},
+        'F.': {800: (423, 407), 900: (409, 392)},
+        'F,': {800: (409, 401), 900: (390, 382)},
+        'P,': {800: (475, 467), 900: (462, 454)},
+        'f)': {800: (208, 47), 900: (190, 38)},
+        'f]': {800: (224, 59), 900: (204, 53)},
+        'f}': {800: (241, 58), 900: (225, 53)},
+        'Kv': {400: (286, 184)},
+        'Ky': {400: (286, 184)},
+        'Kw': {400: (250, 165)},
+    },
+}
+# Black's proportional 0 then 1 left 1.35x the HH gap upright and 1.46x italic (Inter 0.89x): it closes by what its closest white has beyond FIT_HH x
+# the HH gap, at Black only (Thin and Regular keep their figure spacing; the pair is no reference list's).
+# Pairs no list kerned before WHITE_REF named them (fl cf, round 4, merge 2): they start from no kerning on every master, so only the fit moves them,
+# and Thin and Regular keep theirs (none).
+WHITE_ONLY = {('f', 'l'), ('c', 'f')}
+# 0 then 2 the same (round 4, merge 2: 1.18x the HH gap at Black upright; the italic's 1.02x stays unkerned).
+FIT_HH = {('zero.pnum', 'one.pnum'): 1.04, ('zero.pnum', 'two.pnum'): 1.04}
+FIT_HEAVY_ONLY = set(FIT_HH)
+
 
 CHAR_GLYPH = {
     '.': 'period', ',': 'comma', ':': 'colon', ';': 'semicolon', "'": 'quotesingle', '"': 'quotedbl',
@@ -115,8 +268,15 @@ TRACED_NEIGHBOURS = ['period', 'comma', 'ellipsis', 'colon', 'semicolon', 'excla
                       'quoteleft', 'quoteright', 'quotedblleft', 'quotedblright', 'quotedblbase', 'quotesingle', 'quotedbl'] + [f + '.pnum' for f in FIGS]
 
 # Closing pairs no reference list carries, kept when the measurement agrees: tt, whose two
-# crossbars Inter and Plex let nearly meet (ours sat 1.3x their white at Bold).
-OWN_CLOSING_PAIRS = {('t', 't'): -1}
+# crossbars Inter and Plex let nearly meet (ours sat 1.3x their white at Bold); f before a closing
+# bracket, whose white under the crossbar opened into a hole at Black once its sidebearing did (round 4): heavy masters only, as
+# HEAVY_ONLY, so Regular's f) is unchanged.
+# And ff (round 4, cycle 2), as tt: Inter lets its crossbars nearly meet (ff -39 at 400, -41 at 600). With the white beside each f's
+# crossbar held for the letters before and after it, the white between the two stems read 1.26x Inter's at 400 and 1.41x at 600,
+# a hole in "off"; kerned, 1.1-1.2x. Upright only (UPRIGHT_ONLY): the italic's crossbars, closer already, came within 0.28x the nn gap.
+F_BRACKETS = {('f', 'parenright'), ('f', 'bracketright'), ('f', 'braceright')}
+UPRIGHT_ONLY = {('f', 'f')}
+OWN_CLOSING_PAIRS = {('t', 't'): -1, ('f', 'f'): -1, **{k: -1 for k in F_BRACKETS}}
 
 
 def _glyph(ch):
@@ -125,6 +285,11 @@ def _glyph(ch):
     if 0x370 <= ord(ch) < 0x530:  # А and Α are kerned as A: they are A, and share A's classes
         return script_glyph(ch)
     return ch
+
+
+def white_ref(italic):
+    """{(first glyph, second glyph): {wght: (mean, least)}} of WHITE_REF for the upright or the italic."""
+    return {(_glyph(p[0]), _glyph(p[1])): by for p, by in WHITE_REF['italic' if italic else 'upright'].items()}
 
 
 def _candidates():
@@ -209,6 +374,8 @@ def measure(o, left_glyph, right_glyph, most=40):
     ref = (p.Sc if is_cap(left_glyph) else p.S) + (p.Sc if is_cap(right_glyph) else p.S)
     reach, more, gain, limit = STRONG.get((left_glyph, right_glyph), (None, 0.0, 1.0, 140))
     depth = DEPTH * p.S if reach is None else (reach + more * p.heavy) * REGULAR_S
+    if reach is not None:
+        depth += THIN_REACH.get((left_glyph, right_glyph), 0.0) * max(0.0, (400 - p.wght) / 300) * REGULAR_S
     eff = sum(min(g, ref + depth) for g in gaps) / len(gaps)
     sa, sb = _slope(hi, bands), _slope(lo, bands)
     lean = min(abs(sa), abs(sb)) if sa * sb > 0 else 0.0
@@ -291,7 +458,8 @@ def kern_pairs(o):
             if b == 'i':
                 cands.setdefault((a, w), v)
     cands.update(OWN_SHAPE_PAIRS)
-    cands.update(OWN_CLOSING_PAIRS)
+    cands.update({k: v for k, v in OWN_CLOSING_PAIRS.items() if not (o.p.italic and k in UPRIGHT_ONLY)})
+    cands.update({k: -1 for k in list(white_ref(o.p.italic)) + list(FIT_HH) if k[0] in glyphs and k[1] in glyphs})
     # Georgian and Armenian against punctuation and figures: neither Noto nor DejaVu kerns these,
     # but at Black შ's and წ's curls reach a dash's height (–შ touched at Display Black italic).
     # Opening only. (։ and ֊ are the colon and hyphen themselves.)
@@ -318,6 +486,8 @@ def reset():
     """Each font (upright, italic) measures and selects its own pairs."""
     global _SELECTED, _REGULAR, _BLACK, _GROUPS, _FIX, _DIAG
     _SELECTED = _REGULAR = _BLACK = _GROUPS = _FIX = _DIAG = None
+    _WHITE0.clear()
+    _FIT_O.clear()
 
 
 def _non_latin(name):
@@ -388,6 +558,136 @@ def set_reference(black, corners):
     _EXCESS.clear()
 
 
+_WHITE0 = {}  # (pair, wght) -> (mean white, least white, value) of a pair on the master of that weight, read when it was fitted
+
+
+def _white0(o, a, b):
+    """(mean, least) of the white between a and b's profiles with no kerning, per em: what pair_white_profile reads, on the master's own outline."""
+    _, hi = _cached_fine(o, a)
+    lo, _ = _cached_fine(o, b)
+    gaps = [o.adv[a] - hi[x] + lo[x] for x in set(hi) & set(lo)]
+    least = min(gaps)
+    return sum(min(g, least + WHITE_DEPTH) for g in gaps) / len(gaps), least
+
+
+def _design(w):
+    """The design coordinate of a user weight (the avar map): 800 sits halfway between Bold (700) and Black, not 4/5 of the way to Black."""
+    for (u0, d0), (u1, d1) in zip(WGHT_MAP, WGHT_MAP[1:]):
+        if u0 <= w <= u1:
+            return d0 + (d1 - d0) * (w - u0) / (u1 - u0)
+    raise ValueError(w)
+
+
+def _clamp_white(refs, value, mean0, least0, share, aim=AIM_BAND):
+    """The value nearest `value` that puts the white inside AIM_BAND of Inter's at the weights `share` reads, and its closest row over AIM_LEAST.
+    share(w) is None for a weight this master does not carry, else (this master's share of it, the other master's mean and least, kerned)."""
+    def bounds(band, least_aim):
+        lo, hi = -math.inf, math.inf
+        for w, (i_mean, i_least) in refs.items():
+            s = share(w)
+            if s is None:
+                continue
+            f, base_mean, base_least = s
+            lo = max(lo, (band[0] * i_mean - base_mean) / f - mean0, (least_aim * i_least - base_least) / f - least0)
+            hi = min(hi, (band[1] * i_mean - base_mean) / f - mean0)
+        return lo, hi
+
+    aim_lo, aim_hi = lo, hi = bounds(aim, AIM_LEAST)
+    if lo > hi:  # a pair whose closest row and whose mean pull apart at two weights: the margins go before the band does
+        lo, hi = bounds(WHITE_BAND, WHITE_LEAST + 0.01)
+    if lo > hi:  # and when they still do, the shapes decide (f) at Black: its hook is the nearest ink and the hole under the bar stays): the closest row wins
+        lo = hi = aim_lo
+    if lo > -math.inf or hi < math.inf:
+        return int(round(min(max(value, lo), hi)))
+    return value
+
+
+def _fit_white(o, vals, loc):
+    """Move each WHITE_REF pair's value on this master (Thin, Regular or Black) the least that puts the white at the weights it carries inside
+    AIM_BAND of Inter's, and its closest row over AIM_LEAST. The weights between a master and Regular read an interpolation of the two (Black's
+    estimate: Bold, a master of its own outlines, refits the weights from 500 to 800 in _fit_white_bold)."""
+    w0 = loc.get('wght')
+    if w0 not in (100, 400, 900):
+        return
+    for (a, b), refs in white_ref(o.p.italic).items():
+        if (a, b) not in vals or a not in o.adv or b not in o.adv:
+            continue
+        mean0, least0 = _white0(o, a, b)
+
+        def share(w):
+            if (w > 400) - (w < 400) != (w0 > 400) - (w0 < 400):
+                return None
+            if w0 == 400:
+                return 1.0, 0.0, 0.0
+            d = _design(w)
+            if MID_WGHT >= d > 400:  # Bold's own (_fit_white_bold)
+                return None
+            f = (400 - d) / 300 if w < 400 else (d - 400) / 500
+            m4, l4, v4 = _WHITE0[(a, b), 400]
+            return f, (1 - f) * (m4 + v4), (1 - f) * (l4 + v4)
+
+        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, AIM_OWN.get((a, b), AIM_BAND))
+        _WHITE0[(a, b), w0] = (mean0, least0, vals[(a, b)])
+    _FIT_O[w0] = o
+    for (a, b), by in FIT_HH.items():
+        if (a, b) in vals:
+            vals[(a, b)] = 0
+            if w0 == 900:
+                _, hi_h = _cached_fine(o, 'H')
+                lo_h, _ = _cached_fine(o, 'H')
+                hh = min(o.adv['H'] - hi_h[x] + lo_h[x] for x in set(hi_h) & set(lo_h))
+                vals[(a, b)] = -max(0, int(round(_gap(o, a, b) - by * hh)))
+
+
+_FIT_O = {}  # wght -> the master _fit_white last fitted there (Regular, Black): _fit_white_bold reads the outlines between them and Bold
+
+
+class _Between:
+    """The glyphs a pair draws, interpolated a share t of the way from master o to master p: what the font draws at a weight between two masters."""
+
+    def __init__(self, o, p, t, names):
+        self.contours, self.comps, self.adv = {}, {}, {}
+        lerp = lambda u, v: u + (v - u) * t  # noqa: E731
+        todo = list(names)
+        while todo:
+            g = todo.pop()
+            if g in self.adv:
+                continue
+            self.adv[g] = lerp(o.adv[g], p.adv[g])
+            self.contours[g] = [[(s[0],) + tuple((lerp(u[0], v[0]), lerp(u[1], v[1])) for u, v in zip(s[1:], q[1:])) for s, q in zip(c, d)]
+                                for c, d in zip(o.contours.get(g, []), p.contours.get(g, []))]
+            self.comps[g] = [(c, lerp(x, x2), lerp(y, y2), lerp(k, k2)) for (c, x, y, k), (_, x2, y2, k2) in zip(o.comps.get(g, []), p.comps.get(g, []))]
+            todo += [c for c, *_ in self.comps[g]]
+
+
+def _fit_white_bold(o, vals):
+    """Bold's outlines are not Regular's and Black's interpolated (its own spacing and counters, build.mid_master), so the white of a WHITE_REF pair
+    between 400 and 900 bends at 700: 500-600 read Regular and Bold, 800 Bold and Black. Bold's value moves the least that puts those weights inside
+    AIM_BAND (f) at 800 read 0.73x Inter's closest row with the straight-line estimate)."""
+    for (a, b), refs in white_ref(o.p.italic).items():
+        if (a, b) not in vals or a not in o.adv or b not in o.adv or ((a, b), 400) not in _WHITE0 or ((a, b), 900) not in _WHITE0:
+            continue
+        mean0, least0 = _white0(o, a, b)
+        m4, l4, v4 = _WHITE0[(a, b), 400]
+        m9, l9, v9 = _WHITE0[(a, b), 900]
+
+        def share(w):
+            # the white of the outlines the font draws there, unkerned, plus the kerning interpolated: Bold's share f of it is this value
+            d = _design(w)
+            if not 400 < d < 900:
+                return None
+            if d == MID_WGHT:
+                return 1.0, 0.0, 0.0
+            if d < MID_WGHT:
+                f, other, v_other = (d - 400) / (MID_WGHT - 400), _FIT_O[400], v4
+            else:
+                f, other, v_other = (900 - d) / (900 - MID_WGHT), _FIT_O[900], v9
+            mean_d, least_d = _white0(_Between(other, o, f, (a, b)), a, b)
+            return f, mean_d + (1 - f) * v_other - f * mean0, least_d + (1 - f) * v_other - f * least0
+
+        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, AIM_OWN.get((a, b), AIM_BAND))
+
+
 def _values(o, pairs):
     """Kerning follows weight, but optical size barely changes it: those masters reuse
     Regular's values, so their deltas vanish (1.6 KB of WOFF2, measured).
@@ -404,7 +704,10 @@ def _values(o, pairs):
     vals = {k: round(v[0] * (1 if k in STRONG else boost)) if v[0] < 0 else v[0] for k, v in pairs.items()}
     if o.p.wght <= 400:
         vals.update({k: 0 for k in _HEAVY_KEYS if k in vals})
+    vals.update({k: 0 for k in WHITE_ONLY if k in vals})
     loc = getattr(o, 'loc', {'wght': 400, 'opsz': 14})
+    if loc.get('opsz') == 14:
+        _fit_white(o, vals, loc)
     if loc.get('wght') == 400 and loc.get('opsz') == 14:
         _REGULAR = vals
     elif loc.get('wght') == 900 and loc.get('opsz') == 14:
@@ -432,6 +735,7 @@ def _values(o, pairs):
         # its own spacing (tighter than that line) would bring too close is opened by what it needs
         t = (MID_WGHT - 400) / 500
         out = {k: round(_REGULAR[k] + (_BLACK[k] - _REGULAR[k]) * t) for k in vals}
+        _fit_white_bold(o, out)
         for k in pairs:
             if k in OWN_SHAPE_PAIRS or k[0] in I_WIDE or k[1] in I_WIDE:
                 out[k] = max(out[k], _need(o, *k))
@@ -501,7 +805,9 @@ def _strong_fix(o, vals, first_of, second_of):
 # rows read an edge a little long: 13 at the corners, 17 in text Black and for the Bold master (read at 700/14, where 700/48 is 2-3 units
 # tighter). Values are rounded up to steps of 4, which compresses better than exact ones.
 DIAG_CAPS = 'AVWXYKRZTHMN'
-DIAG_FLOOR = {'text': 17, 'corner': 13, 'bold': 17}  # units of white
+# Round 3 (JUDGING.md): at 17 / 13 AVATAR and Kv still read as touching in a Black headline (0.8 px of white at 48 px), so the floors are 27 in
+# text Black, 19 at the corners and 21 / 23 for Bold; the test asks 26, 18 and 16.
+DIAG_FLOOR = {'text': 27, 'corner': 19, 'bold': 21, 'bold_italic': 23}  # units of white (the italic's Bold: with its looser sidebearings 700/48 reads 5-6 tighter than 700/14, and ZΔ kept 11)
 
 
 def _gap(o, a, b):
@@ -613,7 +919,7 @@ def _diagonal_fix(o, vals, classes, setup, firsts_fix, seconds_fix, fix):
     if loc.get('wght') == 900 and loc.get('opsz') == 14:
         where = [(o, DIAG_FLOOR['text'])] + [(c, DIAG_FLOOR['corner']) for c in _HEAVY[1:]]
     elif loc.get('wght') == MID_WGHT:
-        where = [(o, DIAG_FLOOR['bold'])]
+        where = [(o, DIAG_FLOOR['bold_italic' if o.p.italic else 'bold'])]
     else:
         return {}
     selected = set(_SELECTED)
@@ -630,6 +936,18 @@ def _diagonal_fix(o, vals, classes, setup, firsts_fix, seconds_fix, fix):
                                 need = max(need, floor - (gap + _diag_have(vals, firsts_fix, seconds_fix, fix, selected, a, b, ga, gb)))
         out[i, j] = 4 * int(math.ceil(max(0, need) / 4))  # steps of 4: the same few values compress
     return out
+
+
+# The tailed l before a word space: its tail sits L_SPACE_SHARE of the n's sidebearing closer to the space than the n's stem does
+# (Regular: 20 units of white against 70), and "small sizes" read as one word at 16 px. It opens by L_SPACE_SHARE of the difference,
+# so the white after the tail and after the stem split it (Regular +25: tail 0.93x n + space, stem 1.06x).
+L_TAILED = 'lĺļł'
+L_SPACE_SHARE = 0.5
+
+
+def l_space(o):
+    rsb = lambda g: o.adv[g] - o.bounds[g][2]  # noqa: E731
+    return max(0, round(L_SPACE_SHARE * (rsb('n') - rsb('l'))))
 
 
 def kern_fea(o):
@@ -659,6 +977,8 @@ def kern_fea(o):
             elif (a, b) in OWN_SHAPE_PAIRS:
                 if k > 0 or not _HEAVY or any(_need(h, a, b) > 0 for h in _HEAVY):
                     keep.append((a, b))
+            elif (a, b) in white_ref(o.p.italic) or (a, b) in FIT_HH:
+                keep.append((a, b))
         _SELECTED = sorted(keep)
     firsts = sorted({a for a, _ in _SELECTED})
     seconds = sorted({b for _, b in _SELECTED})
@@ -671,7 +991,7 @@ def kern_fea(o):
     cls = lambda g: g.replace('.', '_')  # noqa: E731
     lines = [f'@kR_{cls(g)} = [{" ".join(_members(g, glyphs, acc) + sorted(joined_r.get(g, [])))}];' for g in firsts]
     lines += [f'@kL_{cls(g)} = [{" ".join(_members(g, glyphs, acc) + sorted(joined_l.get(g, [])))}];' for g in seconds]
-    _HEAVY_KEYS = {(rr(a), rl(b)) for a, b in HEAVY_ONLY} | HEAVY_ONLY
+    _HEAVY_KEYS = {(rr(a), rl(b)) for a, b in HEAVY_ONLY | F_BRACKETS} | HEAVY_ONLY | F_BRACKETS | {(rr(a), rl(b)) for a, b in FIT_HEAVY_ONLY} | FIT_HEAVY_ONLY
     vals = _values(o, pairs)
     first_of = lambda ra: _members(ra, glyphs, acc) + sorted(joined_r.get(ra, []))  # noqa: E731
     second_of = lambda rb: _members(rb, glyphs, acc) + sorted(joined_l.get(rb, []))  # noqa: E731
@@ -696,5 +1016,10 @@ def kern_fea(o):
     lines.append('  lookup DIAGONAL_FIX {')
     lines += [f'    pos @dR_{i} @dL_{j} {diag.get((i, j), 0)};' for i, j in pairs_diag]
     lines.append('  } DIAGONAL_FIX;')
+    lines.append('  lookup L_SPACE {')
+    tailed = [o.cmap[ord(c)] for c in L_TAILED if ord(c) in o.cmap]
+    spaces = [o.cmap[c] for c in (0x20, 0xA0) if c in o.cmap]
+    lines.append(f'    pos [{" ".join(tailed)}] [{" ".join(spaces)}] {l_space(o)};')
+    lines.append('  } L_SPACE;')
     lines.append('} kern;')
     return '\n'.join(lines)

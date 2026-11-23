@@ -25,13 +25,13 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 74_500,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike)
-    'CascivoSans-Latin[opsz,wght].woff2': 31_500,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike)
-    'CascivoSans-Latin[wght].woff2': 25_000,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing
-    'CascivoSans-Regular.woff2': 25_500,  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek
-    'CascivoSans-Italic[opsz,wght].woff2': 81_500,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek
-    'CascivoSans-Italic-Latin[opsz,wght].woff2': 35_000,  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance
-    'CascivoSans-Italic-Latin[wght].woff2': 28_000,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing
+    'CascivoSans[opsz,wght].woff2': 76_600,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 75_500 -> 75_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 75_600 -> 76_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 76_400 -> 76_600, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Latin[opsz,wght].woff2': 32_100,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 31_600 -> 32_000, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 32_000 -> 32_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Latin[wght].woff2': 25_700,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_400, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 25_400 -> 25_600, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 25_600 -> 25_700, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Regular.woff2': 25_100,  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 25_500 -> 25_000, round 4 (Regular ships 24_964), then 25_000 -> 25_100, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
+    'CascivoSans-Italic[opsz,wght].woff2': 83_000,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 82_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 82_500 -> 82_800, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 82_800 -> 83_000, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Italic-Latin[opsz,wght].woff2': 35_300,  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance, then 35_000 -> 34_900, round 4 (ships 34_876), then 34_900 -> 35_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 35_400 -> 35_300, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds): the build ships under the old budget
+    'CascivoSans-Italic-Latin[wght].woff2': 28_400,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing, then 28_000 -> 28_200, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 28_200 -> 28_400, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 28_400 -> 28_500, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 28_500 -> 28_400, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds): the build ships under the old budget
 }
 
 
@@ -184,13 +184,146 @@ KERNING_SHORT_FLOOR = 0.25  # of Inter's, for the pairs in KERNING_SHORT: the we
 # Where 0.25x is too high the pair keeps what it ships, less a unit: italic Thin AW kerns 3 (Inter 57), the weakest pair of all.
 KERNING_SHORT_UNITS = {('italic', 'AW', 100): 2}
 KERNING_SHORT = (
-    {('upright', pair, 100) for pair in ('Wc', 'We', 'Wo', 'Wœ', 'Vc', 'Ve', 'Vo', 'Vq', 'Vg', 'Vœ', 'AW', 'WA')}
-    | {('italic', pair, 100) for pair in ('Wa', 'Wc', 'We', 'Wo', 'Wæ', 'Wœ', 'Va', 'Vc', 'Ve', 'Vo', 'Vq', 'Vg', 'Væ', 'Vœ', 'AV', 'AW', 'AY', 'VA', 'WA', 'Yg')}
+    # (round 3: Thin's V beside c e o q g œ reaches 0.8x and left this list, upright and italic: kern.THIN_REACH)
+    {('upright', pair, 100) for pair in ('Wc', 'We', 'Wo', 'Wœ', 'AW', 'WA')}
+    | {('italic', pair, 100) for pair in ('Wa', 'Wc', 'We', 'Wo', 'Wæ', 'Wœ', 'Va', 'Væ', 'AV', 'AW', 'AY', 'VA', 'WA', 'Yg', 'YA', 'Ye', 'Yc', 'Yo')} | {('upright', 'Wa', 100)}
+    # (round 4: Thin upright Wa and italic YA, Ye, Yc and Yo open (kern.WHITE_REF) to reach 0.85x of Inter's white at Thin and ExtraLight; their kerning is 0.72-0.79x of
+    # Inter's now: the white is what the eye reads, and Inter's Y and W have more of it beside these letters than their units say)
     # A beside W at Regular: the upright reads -45 / -44 against Inter's -57 (0.79x, 0.77x) and the italic -27 / -34 (0.47x, 0.60x): the
     # shapes' own white is already as close as the measure's floor and reach allow, and the user accepted the italic's shortfall (spec,
-    # Decisions). Italic Yg at Black stops at -109 (0.79x): the g's open top is the nearest ink
-    | {('upright', pair, 400) for pair in ('AW', 'WA')} | {('italic', pair, 400) for pair in ('AW', 'WA')} | {('italic', 'Yg', 900)}
+    # Decisions). Italic Yg at Black leaves this list (-112, 0.81x)
+    | {('upright', pair, 400) for pair in ('AW', 'WA')} | {('italic', pair, 400) for pair in ('AW', 'WA')}
 )
+
+# Inter's white at the pairs round 4 fitted (kern.WHITE_FIT), as pair_white_profile reads it: {pair: {wght: (mean white, least white)}}, per em, read from
+# Inter.ttf and InterItalic.ttf (Inter 4.001 variable, opsz 14) with HarfBuzz's default features. Thin and ExtraLight: W V Y T beside a e o c q g and A,
+# AV AW AT AY, LT LY LV, Ty To Tr, Wa We; Black and ExtraBold: LY and the figure and letter pairs with a full stop or comma; Regular: Kv Ky Kw;
+# upright 400-700: ff fl ft cf (merge 2).
+# Cascivo's mean white lies within WHITE_BAND of Inter's and its closest row is at least WHITE_LEAST_FLOOR of Inter's, at the weights listed.
+WHITE_BAND = (0.85, 1.1)
+WHITE_LEAST_FLOOR = 0.75
+# Where the white beside f) at 800-900 cannot reach the band by kerning: the f's hook is the nearest ink (Inter's closest row is 37-46, here 24-40 when the
+# pair keeps its 0.75x), and the hole under the crossbar between the stem and the parenthesis is the shape's. Kerning closes it only by touching the hook, so the
+# pair keeps its closest row and its mean stays where it is (the redrawn f of the shape sessions is the fix): the ceiling is what ships, rounded up.
+# Round 4, merge 2: the redrawn f (hook 136 units past the stem at Black, Inter's 125; this f's right edge, as Inter's crossbar is not) and Bold's own fit
+# (kern._fit_white_bold) leave 1.17x and 1.25x (1.2 and 1.3 before).
+WHITE_BAND_SHAPE = {('upright', 'f)', 800): 1.17, ('upright', 'f)', 900): 1.26}
+INTER_WHITE = {
+    'upright': {
+        'Wa': {100: (275, 131), 200: (259, 127)},
+        'We': {100: (216, 159), 200: (209, 151)},
+        'Wo': {100: (216, 159), 200: (209, 151)},
+        'Wc': {100: (217, 158), 200: (209, 151)},
+        'Wq': {100: (211, 157), 200: (204, 149)},
+        'Wg': {100: (213, 157), 200: (208, 149)},
+        'Va': {100: (316, 157), 200: (299, 152)},
+        'Ve': {100: (257, 190), 200: (249, 182)},
+        'Vo': {100: (257, 190), 200: (249, 182)},
+        'Vc': {100: (257, 189), 200: (249, 182)},
+        'Vq': {100: (252, 187), 200: (245, 179)},
+        'Vg': {100: (254, 187), 200: (248, 179)},
+        'Ya': {100: (375, 228), 200: (355, 218)},
+        'Ye': {100: (310, 266), 200: (299, 251)},
+        'Yo': {100: (310, 266), 200: (299, 251)},
+        'Yc': {100: (311, 266), 200: (299, 250)},
+        'Yq': {100: (305, 259), 200: (294, 244)},
+        'Yg': {100: (307, 259), 200: (298, 244)},
+        'Ta': {100: (390, 277), 200: (370, 267)},
+        'Te': {100: (326, 282), 200: (315, 271)},
+        'To': {100: (326, 282), 200: (315, 271)},
+        'Tc': {100: (326, 282), 200: (315, 271)},
+        'Tq': {100: (321, 282), 200: (311, 271)},
+        'Tg': {100: (323, 282), 200: (315, 271)},
+        'WA': {100: (246, 213), 200: (240, 207)},
+        'VA': {100: (268, 267), 200: (260, 260)},
+        'YA': {100: (330, 263), 200: (319, 255)},
+        'TA': {100: (372, 244), 200: (355, 235)},
+        'AV': {100: (268, 268), 200: (262, 261)},
+        'AW': {100: (247, 213), 200: (240, 206)},
+        'AT': {100: (372, 244), 200: (356, 235)},
+        'AY': {100: (331, 263), 200: (320, 257)},
+        'LT': {100: (606, 263), 200: (570, 252)},
+        'LY': {100: (571, 294), 200: (555, 298), 800: (375, 217), 900: (329, 189)},
+        'LV': {100: (514, 291), 200: (488, 275)},
+        'Ty': {100: (387, 283), 200: (372, 269)},
+        'Tr': {100: (339, 337), 200: (326, 323)},
+        'T-': {100: (307, 307), 200: (296, 296)},
+        '7,': {800: (266, 245), 900: (249, 227)},
+        '7.': {800: (259, 234), 900: (245, 218)},
+        'y.': {800: (254, 227), 900: (251, 223)},
+        'y,': {800: (284, 237), 900: (285, 231)},
+        'r.': {800: (231, 215), 900: (228, 211)},
+        'r,': {800: (223, 215), 900: (215, 207)},
+        'F.': {800: (423, 407), 900: (410, 392)},
+        'F,': {800: (409, 401), 900: (390, 382)},
+        'P,': {800: (475, 467), 900: (463, 455)},
+        'f)': {800: (204, 46), 900: (185, 37)},
+        'f]': {800: (221, 53), 900: (199, 46)},
+        'f}': {800: (242, 53), 900: (224, 46)},
+        'ff': {400: (208, 10), 500: (194, 6), 600: (179, 3), 700: (166, 0)},
+        'fl': {500: (202, 91), 600: (188, 84), 700: (174, 76)},
+        'ft': {700: (157, 2)},
+        'cf': {700: (248, 69)},
+        'Kv': {400: (286, 185)},
+        'Ky': {400: (285, 185)},
+        'Kw': {400: (249, 164)},
+    },
+    'italic': {
+        'Wa': {100: (211, 157), 200: (205, 149)},
+        'We': {100: (216, 156), 200: (209, 149)},
+        'Wo': {100: (216, 158), 200: (209, 151)},
+        'Wc': {100: (217, 158), 200: (209, 151)},
+        'Wq': {100: (211, 157), 200: (204, 149)},
+        'Wg': {100: (213, 157), 200: (208, 149)},
+        'Va': {100: (252, 187), 200: (245, 180)},
+        'Ve': {100: (257, 187), 200: (249, 180)},
+        'Vo': {100: (257, 189), 200: (249, 181)},
+        'Vc': {100: (257, 189), 200: (250, 181)},
+        'Vq': {100: (252, 187), 200: (245, 179)},
+        'Vg': {100: (254, 186), 200: (248, 179)},
+        'Ya': {100: (306, 259), 200: (295, 245)},
+        'Ye': {100: (310, 262), 200: (299, 247)},
+        'Yo': {100: (310, 265), 200: (299, 249)},
+        'Yc': {100: (311, 265), 200: (299, 249)},
+        'Yq': {100: (305, 257), 200: (294, 243)},
+        'Yg': {100: (308, 257), 200: (298, 243)},
+        'Ta': {100: (321, 282), 200: (311, 271)},
+        'Te': {100: (326, 282), 200: (316, 271)},
+        'To': {100: (326, 282), 200: (315, 270)},
+        'Tc': {100: (327, 282), 200: (315, 271)},
+        'Tq': {100: (321, 282), 200: (311, 271)},
+        'Tg': {100: (323, 282), 200: (315, 271)},
+        'WA': {100: (246, 213), 200: (239, 206)},
+        'VA': {100: (267, 267), 200: (260, 260)},
+        'YA': {100: (329, 263), 200: (318, 255)},
+        'TA': {100: (371, 244), 200: (355, 234)},
+        'AV': {100: (268, 268), 200: (262, 262)},
+        'AW': {100: (247, 214), 200: (240, 206)},
+        'AT': {100: (372, 245), 200: (356, 236)},
+        'AY': {100: (331, 263), 200: (320, 257)},
+        'LT': {100: (606, 263), 200: (570, 252)},
+        'LY': {100: (571, 293), 200: (555, 298), 800: (375, 217), 900: (329, 189)},
+        'LV': {100: (513, 291), 200: (488, 274)},
+        'Ty': {100: (388, 284), 200: (373, 269)},
+        'Tr': {100: (339, 337), 200: (326, 323)},
+        'T-': {100: (307, 307), 200: (296, 296)},
+        '7,': {800: (265, 244), 900: (249, 227)},
+        '7.': {800: (259, 229), 900: (245, 213)},
+        'y.': {800: (253, 223), 900: (251, 218)},
+        'y,': {800: (284, 237), 900: (284, 230)},
+        'r.': {800: (231, 215), 900: (228, 211)},
+        'r,': {800: (223, 215), 900: (215, 207)},
+        'F.': {800: (423, 407), 900: (409, 392)},
+        'F,': {800: (409, 401), 900: (390, 382)},
+        'P,': {800: (475, 467), 900: (462, 454)},
+        'f)': {800: (208, 47), 900: (190, 38)},
+        'f]': {800: (224, 59), 900: (204, 53)},
+        'f}': {800: (241, 58), 900: (225, 53)},
+        'Kv': {400: (286, 184)},
+        'Ky': {400: (286, 184)},
+        'Kw': {400: (250, 165)},
+    },
+}
 
 # Inter's guillemet ink, in 1/1000 em squared (area of a single chevron; a double one is twice that) and its least white between the
 # chevrons of « », at three heavy weights. Read from Inter.ttf (Inter 4.001 variable, opsz 14, in the audit's reference set; InterItalic.ttf
@@ -350,6 +483,48 @@ def pair_kerning(hb, path, pair, wght):
     return round((advance(True) - advance(False)) * 1000 / face.upem)
 
 
+def pair_white(hb, path, pair, wght, lo, hi, opsz=14):
+    """The least white between the two letters of a shaped pair (kerning on) in the rows lo to hi (units above the baseline)."""
+    face, f = _shaper(hb, path)
+    font = hb.Font(face)
+    font.set_variations({'wght': wght, 'opsz': opsz})
+    buf = hb.Buffer()
+    buf.add_str(pair)
+    buf.guess_segment_properties()
+    hb.shape(font, buf, {'kern': True})
+    order = f.getGlyphOrder()
+    (a, b), adv = [order[i.codepoint] for i in buf.glyph_infos], buf.glyph_positions[0].x_advance
+    gs = f.getGlyphSet(location={'wght': wght, 'opsz': opsz}, normalized=False)
+    ra, rb = dict(ink_rows(gs, a)), dict(ink_rows(gs, b))
+    return min(adv + rb[y][0][0] - ra[y][-1][1] for y in range(lo, hi + 1) if ra.get(y) and rb.get(y))
+
+
+WHITE_DEPTH = 400  # units per em counted below the closest row in pair_white_profile
+
+
+def pair_white_profile(hb, path, pair, wght, opsz=14):
+    """(mean white, least white) between the two letters of a shaped pair (kerning on), per em: the gap between their profiles in each 5-unit row
+    both occupy, each row counted down to WHITE_DEPTH beyond the closest one (a hole is only so much white to the eye), and the closest row."""
+    face, f = _shaper(hb, path)
+    font = hb.Font(face)
+    font.set_variations({'wght': wght, 'opsz': opsz})
+    buf = hb.Buffer()
+    buf.add_str(pair)
+    buf.guess_segment_properties()
+    hb.shape(font, buf, {'kern': True})
+    order = f.getGlyphOrder()
+    gs = f.getGlyphSet(location={'wght': wght, 'opsz': opsz}, normalized=False)
+    rows = []
+    for info in buf.glyph_infos:
+        pen = ClosedInkRows(gs)
+        gs[order[info.codepoint]].draw(pen)
+        rows.append(pen.out)
+    adv, k = buf.glyph_positions[0].x_advance, 1000 / face.upem
+    gaps = [(adv + rows[1][y][0] - rows[0][y][1]) * k for y in set(rows[0]) & set(rows[1])]
+    least = min(gaps)
+    return sum(min(g, least + WHITE_DEPTH) for g in gaps) / len(gaps), least
+
+
 def sidebearing_ratio(hb, path, letter, wght):
     """The letter's own sidebearings (left plus right) as a share of the n's, read off the shaped strings `nn` and `n<letter>n`:
     twice the mean ink gap beside the letter over the gap of `nn`, less one. An italic's outlines are sheared back upright first
@@ -416,6 +591,56 @@ class InkRows(BasePen):
         for i in range(1, 81):
             t, u = i / 80, 1 - i / 80
             self._add(u * u * x0 + 2 * u * t * c[0] + t * t * p[0], u * u * y0 + 2 * u * t * c[1] + t * t * p[1])
+
+
+def shaped_gaps(hb, path, text, wght, opsz=14):
+    """The least white between each two neighbours of a shaped string (kerned), read on the outlines' 5-unit rows, and the HH gap
+    at the same location: ([gap, ...], HH)."""
+    face, f = _shaper(hb, path)
+    font = hb.Font(face)
+    font.set_variations({'wght': wght, 'opsz': opsz})
+    gs, order = f.getGlyphSet(location={'wght': wght, 'opsz': opsz}, normalized=False), f.getGlyphOrder()
+
+    def gaps(txt):
+        buf = hb.Buffer()
+        buf.add_str(txt)
+        buf.guess_segment_properties()
+        hb.shape(font, buf, {'kern': True})
+        rows = []
+        for info in buf.glyph_infos:
+            pen = InkRows(gs)
+            gs[order[info.codepoint]].draw(pen)
+            rows.append(pen.out)
+        advs = [p.x_advance for p in buf.glyph_positions]
+        return [min(advs[i] + rows[i + 1][k][0] - rows[i][k][1] for k in set(rows[i]) & set(rows[i + 1])) for i in range(len(rows) - 1)]
+
+    return gaps(text), gaps('HH')[0]
+
+
+class ClosedInkRows(InkRows):
+    """InkRows with the closing edge of each contour: a TrueType outline closes with an implied straight line (a stem's left side, a hyphen's end)
+    that the pen is never asked to draw, so a profile read without it has no left edge there."""
+
+    def __init__(self, gs):
+        super().__init__(gs)
+        self.first = None
+
+    def _moveTo(self, p):
+        self.first = p
+        super()._moveTo(p)
+
+    def _closePath(self):
+        if self.first is not None and self._getCurrentPoint() != self.first:
+            self._lineTo(self.first)
+        self.first = None
+
+    _endPath = _closePath
+
+
+def ink_runs_at(gs, name, y):
+    """The ink runs (x0, x1) of a glyph on the row nearest height y."""
+    rows = dict(ink_rows(gs, name))
+    return rows[min(rows, key=lambda r: abs(r - y))]
 
 
 class Font(unittest.TestCase):
@@ -535,9 +760,9 @@ class Font(unittest.TestCase):
 
     def test_weight_changes_do_not_reflow_text(self):
         # Bold on hover or an active tab must not rewrap a line. Shaped with kerning, a UI string stays within
-        # 2% of its Regular width from 100 to 700, upright and italic. The heavier weights are display weights and
-        # may run wider, up to +5% (-2%) from 750: 750 starts the range because it is the first named step
-        # between Bold's master and Black's, where the width is already climbing to Black's.
+        # 2% of its Regular width from 100 to 600, upright and italic. Bold may run to +4% and Black to +10%, on a
+        # straight line between (650 +3%, 800 +7%); never under -2% (the owner's decision, round 4: under +2% / +5%
+        # Black's counters and sidebearings were squeezed until it set 6% narrower than Inter's Black at the same stem).
         # (Geist spans 0.96x-1.11x of its Regular width from Thin to Black, Inter 0.94x-1.08x; this font was 1.11x.)
         try:
             import uharfbuzz as hb
@@ -549,34 +774,35 @@ class Font(unittest.TestCase):
                 row = shaped_widths(hb, path, text)
                 for w, width in row.items():
                     ratio = width / row[400] - 1
-                    limit = 0.02 if w <= 700 else 0.05
-                    self.assertTrue(-0.02 <= ratio <= limit, f'{os.path.basename(path)} {text[:10]!r} wght {w}: {ratio:+.1%} against 400, limit {limit:+.0%}')
+                    limit = 0.02 if w <= 600 else 0.02 + 0.02 * (w - 600) / 100 if w <= 700 else 0.04 + 0.06 * (w - 700) / 200
+                    self.assertTrue(-0.02 <= ratio <= limit, f'{os.path.basename(path)} {text[:10]!r} wght {w}: {ratio:+.1%} against 400, limit {limit:+.1%}')
 
     def test_heavy_spacing_stays_open(self):
         # A text line at 800 and 900 must keep its words and letters apart, measured as the ink gap on shaped
         # text (the advance of a space says little: Black's words fused at 14 px with a space of 190 units,
         # because the letters beside it had tightened). References are Inter's and Inter Italic's own 800 and 900,
         # read the same way on the same text, in 1000 units per em.
-        # Shipped: word gap 0.99x Inter's at 900 (255 against 257) and 0.96x at 800; letter gap 0.43x (30 against
-        # 69) and 0.50x (40 against 79). The letter gap cannot reach Inter's: Black's stems add 11% to a line, the
-        # guarded counters give back nothing, and the width limit (+5%) leaves sidebearings of ~22 units against
-        # Inter's 50. So the limits sit just under what ships and stop a return to the 215 / 26 that fused the
-        # paragraph: words at 0.90x Inter's, upright letters at 0.40x. An italic's boxes overlap its neighbours, so
-        # its letter gap reads negative in both fonts: it is held to Inter Italic's less 40 (Cascivo reads 36 under).
+        # Round 3 shipped letter gaps of 0.43x Inter's at 900 (30 against 69) and 0.50x at 800, as tight as the old width
+        # limit (+5%) allowed. Round 4 (Black may run to +10%) ships 0.87x (60 against 69) and 0.81x (64 against 79), words
+        # 0.98x and 0.95x (252 against 257, 272 against 287). The limits sit just under what ships: upright letters at 0.85x
+        # Inter's at 900 and 0.78x at 800, words at 0.90x (the 215 / 26 that once fused the paragraph). An italic's boxes
+        # overlap its neighbours, so its letter gap reads negative in both fonts: it is held to Inter Italic's less 12
+        # (Cascivo reads 4 under at 900 and 10 at 800; round 3 read 36 under).
         try:
             import uharfbuzz as hb
         except ImportError:
             self.skipTest('pip install uharfbuzz')
 
         inter = {(VF, 800): (287, 79), (VF, 900): (257, 69), (VFI, 800): (263, 18), (VFI, 900): (233, 7)}  # word gap, letter gap
+        letter_floor = {800: 0.78, 900: 0.85}
         for (path, w), (inter_word, inter_letter) in inter.items():
             word, letter = ink_gaps(hb, path, w)
             name = f'{os.path.basename(path)} wght {w}'
             self.assertGreaterEqual(word, 0.90 * inter_word, f'{name}: gap across a word space')
             if path == VF:
-                self.assertGreaterEqual(letter, 0.40 * inter_letter, f'{name}: mean letter gap')
+                self.assertGreaterEqual(letter, letter_floor[w] * inter_letter, f'{name}: mean letter gap')
             else:
-                self.assertGreaterEqual(letter, inter_letter - 40, f'{name}: mean letter gap')
+                self.assertGreaterEqual(letter, inter_letter - 12, f'{name}: mean letter gap')
 
     def test_capitals_keep_their_sidebearings_in_proportion(self):
         # A capital's sidebearings stay 1.3x the lowercase's at every weight (Inter 1.17 / 1.05 / 0.94 at Thin / Bold /
@@ -741,6 +967,411 @@ class Font(unittest.TestCase):
         self.assertLessEqual(n_sidebearing(black) / n_sidebearing(regular), 0.8)
         self.assertGreaterEqual(o_contrast(black), 0.68)
 
+    def test_heavy_n_gap_holds_against_its_counter(self):
+        # JUDGING.md criterion 1: the white between two n's over the white inside one (rhythm.py). Bold read 0.38 and Black 0.30
+        # against Inter's 0.62 / 0.64 and Regular's own 0.53, and mn, HI touched; the heavy trim (round 1's CN_TRIM) brought both to
+        # 0.46-0.47. Round 2 trimmed Black further (0.53) and gave the italic the same rebalance on a redrawn arch (it read 0.39
+        # and 0.30; glyphs.ARCH_LEAN). Round 4 (Black may run to +10%, Bold to +4%) untrimmed Black's counters and opened its
+        # sidebearings, and narrowed Bold's counters (params.BOLD_SQUEEZE): upright 0.55 / 0.59 at 700 / 900, italic 0.58 / 0.60,
+        # rising from Bold to Black as Inter's (0.62 / 0.64). The floors sit 0.02 under what ships.
+        import rhythm
+
+        for path, floors in ((VF, {700: 0.53, 900: 0.57}), (VFI, {700: 0.56, 900: 0.57})):
+            for w, floor in floors.items():
+                with self.subTest(font=os.path.basename(path), wght=w):
+                    self.assertGreaterEqual(rhythm.ratio(path, w), floor, 'n gap / counter')
+
+    def test_black_counters_hold_against_inter(self):
+        # JUDGING.md criterion 3: the Black counters that read small beside Inter's, as a share of the x-height squared (quality.counter_area).
+        # The e's eye was 0.78x Inter's under a bar as heavy as the H's, the 6 and 9 0.90x, b d p q 0.92x, and the A's counter 0.57x
+        # (Inter's reads 0.069 upright and 0.061 italic); o a g 8 0 were 1.0-1.2x already. quality.COUNTER_MIN_SHARE (0.70) stays the
+        # floor for the rest. Round 4 untrimmed Black's counters: e 1.05x / 0.98x (upright / italic), 6 and 9 1.11x / 1.06x, b d p q
+        # 1.17x / 1.08x (round 3: 0.98x / 0.93x), A 1.26x / 1.59x; the floors sit just under the italic's. Round 4's opened e
+        # (glyphs.E_RUN, E_WIDE): 1.11x / 1.05x, its floor 0.96 -> 1.03.
+        import quality
+
+        for path, sfx, a_ref in ((VF, '', 0.069), (VFI, '_italic', 0.061)):
+            for g, share in (('e', 1.03), ('six', 1.04), ('nine', 1.04), ('b', 1.05), ('d', 1.05), ('p', 1.05), ('q', 1.05)):
+                m = quality.raster(path, g, 900)
+                with self.subTest(font=os.path.basename(path), glyph=g):
+                    self.assertGreaterEqual(quality.counter_area(m, m.x_height), share * quality.REF['counter' + sfx][(g, 900)])
+            m = quality.raster(path, 'A', 900)
+            with self.subTest(font=os.path.basename(path), glyph='A'):
+                self.assertGreaterEqual(quality.counter_area(m, m.x_height), 1.2 * a_ref)
+
+    def test_parentheses_bow_and_stand_with_the_brackets(self):
+        # JUDGING.md defect 5: the parenthesis was 159 units wide at Regular (Inter 211, Geist 214), nearly straight, and 884 tall beside
+        # brackets of 974. It is at least 0.9x Inter's width at Regular and Black (305), and ( ) [ ] { } stand within 20 units of one height.
+        for path in (VF, VFI):
+            for wght, inter in ((400, 211), (900, 305)):
+                boxes = {ch: self._ink(path, wght, ch)[0] for ch in '()[]{}'}
+                with self.subTest(font=os.path.basename(path), wght=wght):
+                    self.assertGreaterEqual(boxes['('][2] - boxes['('][0], 0.9 * inter)
+                    heights = [b[3] - b[1] for b in boxes.values()]
+                    self.assertLessEqual(max(heights) - min(heights), 20)
+
+    def test_diagonal_ends_meet_flush(self):
+        # Z's diagonal ends inside its bars and Y's arms run into its stem without a ledge, upright and italic. The italic's Z stood 4 to 9
+        # units out past each bar (its ends were placed with the upright's stroke width), and Y's arms were cut flat at the join, wider
+        # than the stem: a step of 9 units a side upright and 10 to 18 in the italic. Read on the outline's rows, 4 units below and above
+        # the join (0.43 of the cap height), where a clean arm moves 2 to 3 units.
+        for path in (VF, VFI):
+            for wght in (400, 900):
+                gs, _ = self._glyphs(path, wght)
+                z = {y: r for y, r in ink_rows(gs, 'Z') if r}
+                y_ = {y: r for y, r in ink_rows(gs, 'Y') if r}
+                with self.subTest(font=os.path.basename(path), wght=wght):
+                    self.assertLessEqual(min(z[y][0][0] for y in z if 0 < y <= 10) - min(r[0][0] for r in z.values()), 1, 'Z: ink left of the lower bar')
+                    self.assertLessEqual(max(r[-1][1] for r in z.values()) - max(z[y][-1][1] for y in z if y >= 690), 1, 'Z: ink right of the upper bar')
+                    self.assertLessEqual(abs(y_[297][0][0] - y_[305][0][0]), 5, 'Y: a ledge left of the join')
+                    self.assertLessEqual(abs(y_[297][-1][1] - y_[305][-1][1]), 5, 'Y: a ledge right of the join')
+                    self.assertEqual({len(y_[y]) for y in range(10, 295)}, {1}, 'Y: the stem is one stroke below the join')
+                # round 4: the italic z took Z's anchoring, its Black right corners stepped (owner decision 3); its lower bar is the wider
+                zl = {y: r for y, r in ink_rows(gs, 'z') if r}
+                self.assertLessEqual(min(zl[y][0][0] for y in zl if 0 < y <= 10) - min(zl[y][0][0] for y in zl if y <= 264), 1, 'z: ink left of the lower bar')
+                self.assertLessEqual(max(zl[y][-1][1] for y in zl if y >= 264) - max(zl[y][-1][1] for y in zl if y >= 518), 1, 'z: ink right of the upper bar')
+
+    def test_black_diagonals_keep_a_crotch(self):
+        # Black's v and y: the white between the arms is at least 20 units wide over 200 units of height (v 233, y 266; they were 142 and
+        # 163, a notch over a solid wedge), upright and italic. The letters are wider and their diagonals lighter (glyphs.V_WIDER, V_LIGHTER).
+        for path in (VF, VFI):
+            gs, _ = self._glyphs(path, 900)
+            for name in ('v', 'y'):
+                rows = [y for y, r in ink_rows(gs, name) if y > 0 and len(r) >= 2 and min(b[0] - a[1] for a, b in zip(r, r[1:])) >= 20]
+                with self.subTest(font=os.path.basename(path), glyph=name):
+                    self.assertGreaterEqual(len(rows), 200)
+
+    def test_heavy_f_leaves_no_hole(self):
+        # Round 4: Black's f was 41% wider than Regular's (Inter's 14%). Its stem sat right of the crossbar's middle (arms 129 / 57 units,
+        # Inter's 84 / 101), its hook overhung the crossbar by 92 (Inter's 20) and it was spaced from the hook: the white after the
+        # crossbar read 1.5-1.9x the nn gap at 600-900 ("craf t", "of f"), and the italic's wide descender pushed its stem right, a hole
+        # on both sides ("e f g"). At 500-900 the white beside the crossbar (rows 422-517) is 0.85-1.15x the nn gap at mid x-height,
+        # after it (fu) and, in the italic, before it (ef), as Regular's 0.9-1.0x; ft and ff keep apart (they ran 0.3-0.8x).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        for path in (VF, VFI):
+            for w in (500, 600, 700, 800, 900):
+                nn = pair_white(hb, path, 'nn', w, 238, 290)
+                pairs = ('fu', 'ef') if path == VFI else ('fu',)
+                for pair in pairs:
+                    with self.subTest(font=os.path.basename(path), wght=w, pair=pair):
+                        self.assertTrue(0.85 <= pair_white(hb, path, pair, w, 422, 517) / nn <= 1.15)
+                for pair in ('ft', 'ff'):
+                    with self.subTest(font=os.path.basename(path), wght=w, pair=pair):
+                        self.assertGreaterEqual(pair_white(hb, path, pair, w, 422, 517), 0.3 * nn)
+
+    def test_italic_f_crossbar_clears_the_letter_before(self):
+        # Round 4, cycle 2: the italic f's crossbar reached under the letter before it at 800-900 (Black's a, c, g, r at 0.44-0.61x
+        # Inter Italic's white before the crossbar, as shares of the nn gap; t 23 units). Its left arm is shorter at Black and its left
+        # end follows the slant (glyphs.F_ARM_IT): at 500-900 the white before the crossbar (rows 412-523) is >= 0.85x Inter Italic's
+        # (measured on Inter Italic 4.1, in its own nn gaps, below) and never under 26 units.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        inter = {500: dict(a=0.57, c=0.64, e=0.72, o=0.83, r=0.34, g=0.57), 600: dict(a=0.57, c=0.61, e=0.68, o=0.79, r=0.36, g=0.57),
+                 700: dict(a=0.58, c=0.58, e=0.65, o=0.77, r=0.38, g=0.58), 800: dict(a=0.59, c=0.57, e=0.63, o=0.77, r=0.42, g=0.59),
+                 900: dict(a=0.60, c=0.62, e=0.64, o=0.83, r=0.47, g=0.60)}
+        for w, ref in inter.items():
+            nn = pair_white(hb, VFI, 'nn', w, 238, 290)
+            for c in 'aceorgt':
+                with self.subTest(wght=w, pair=c + 'f'):
+                    self.assertGreaterEqual(pair_white(hb, VFI, c + 'f', w, 412, 523), max(26, 0.85 * ref.get(c, 0) * nn))
+
+    def test_ff_and_its_pairs_fit_like_inter(self):
+        # Round 4, cycle 2: "off" read with a hole at 13-16 px, 600: the white between the two stems (rows 53-317) was 1.41x Inter's at
+        # 600 and 1.54x at 700, as shares of each font's nn gap (Inter kerns ff -41; kern.OWN_CLOSING_PAIRS now closes it too), and the
+        # white after the f (fi, fl) 1.11-1.26x. At 500-700 ff, fi and fl sit 0.9-1.2x Inter's (ff 1.13-1.18, fi 1.06-1.09, fl
+        # 1.09-1.18) and ft under 1.4x (1.23-1.36: it waits on the t's left side and kerning). Inter's, in its nn gaps, below.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        inter = {500: dict(ff=1.60, fi=1.62, fl=1.60, ft=1.47), 600: dict(ff=1.64, fi=1.68, fl=1.63, ft=1.50), 700: dict(ff=1.69, fi=1.73, fl=1.67, ft=1.53)}
+        for w, ref in inter.items():
+            nn = pair_white(hb, VF, 'nn', w, 238, 290)
+            for pair, r in ref.items():
+                with self.subTest(wght=w, pair=pair):
+                    ratio = pair_white(hb, VF, pair, w, 53, 317) / nn / r
+                    self.assertTrue(0.9 <= ratio <= (1.4 if pair == 'ft' else 1.2), f'{ratio:.2f}x Inter')
+
+    def test_caption_f_hook_reaches(self):
+        # Round 4, cycle 2: at 12-13 px "of" read close to "ot": the hook's overhang past the stem was Inter's at opsz 14 (148 / 149
+        # units at 400, 143 / 141 at 600) and only 4% longer at opsz 8. The Caption master's hook is longer (glyphs.F_HOOK_CAP): >= 1.2x
+        # Inter's opsz-14 hook at opsz 8 and >= 1.05x at opsz 12, while Regular's (opsz 14) is unchanged; the advance holds.
+        for w, inter in ((400, 149), (600, 141)):
+            for opsz, k in ((8, 1.2), (12, 1.05)):
+                gs, cmap = self._glyphs(VF, w, opsz)
+                rows = dict(ink_rows(gs, cmap[ord('f')]))
+                stem = max(rows[y][-1][1] for y in range(160, 320) if rows.get(y))
+                hook = max(r[-1][1] for y, r in rows.items() if y > 560 and r)
+                with self.subTest(wght=w, opsz=opsz):
+                    self.assertGreaterEqual(hook - stem, k * inter)
+
+    def test_black_bowls_round_into_the_stem(self):
+        # Round 4, cycle 2: Black's b d p q counters were chamfered on the stem side (glyphs.bowl_arc, round_in): a quarter of the way
+        # from the counter's top or bottom, its stem side stood 1.1-1.4% of the counter's height further in than its far side, the corner
+        # cut off and the inner edge run straight into the stem. Now the two sides are within 0.5% (Inter's oval: 0.4%).
+        for ch in 'bdpq':
+            gs, cmap = self._glyphs(VF, 900)
+            rows = dict(ink_rows(gs, cmap[ord(ch)]))
+            ys = [264]
+            while len(rows.get(ys[-1] + 1, [])) == 2:
+                ys.append(ys[-1] + 1)
+            while len(rows.get(ys[0] - 1, [])) == 2:
+                ys.insert(0, ys[0] - 1)
+            left = {y: rows[y][0][1] for y in ys}
+            right = {y: rows[y][1][0] for y in ys}
+            h = ys[-1] - ys[0]
+            for fr in (0.15, 0.25, 0.75, 0.85):
+                y = ys[0] + round(fr * h)
+                stem_in, far_in = (left[y] - min(left.values()), max(right.values()) - right[y])
+                if ch in 'dq':
+                    stem_in, far_in = far_in, stem_in
+                with self.subTest(glyph=ch, at=fr):
+                    self.assertLessEqual(stem_in - far_in, 0.005 * h)
+
+    def test_italic_black_arch_leaves_no_notch(self):
+        # Round 4, cycle 2: the italic's Black arches thin across both quarters, which took 18 units off the crown's outside: the crown
+        # sat under the x-height and the stem's corner stood above it, a notch at display sizes (n h m; the u's floor above the baseline).
+        # The crown sits higher by what the thinning takes off (glyphs.ARCH_LIFT): it reaches past the x-height, the u's floor under 0.
+        gs, cmap = self._glyphs(VFI, 900)
+        for ch in 'nhm':
+            with self.subTest(glyph=ch):
+                self.assertGreater(max(y for y, r in ink_rows(gs, cmap[ord(ch)]) if r and r[-1][1] > 330 and y < 650), 528)
+        self.assertLess(min(y for y, r in ink_rows(gs, cmap[ord('u')]) if r), 0)
+
+    def test_black_crotches_open_like_inter(self):
+        # Round 4, cycle 2: Black's k and w crotches were clotted (glyphs.K_JOIN, W_JOIN thin the strokes into the joints). The white
+        # between the k's stem and arm (rows with a gap of 20 units or more above 0.25 x-heights) and below the w's top crotches reached
+        # 0.29 and 0.50 x-heights down at Black upright, 0.24 in the italic k (Inter's 0.38, 0.59, 0.38). At 700-900 each is >= 0.9x
+        # Inter's (Inter 4.1 and Inter Italic 4.1, below).
+        inter = {(VF, 'k'): {700: 0.494, 800: 0.439, 900: 0.377}, (VFI, 'k'): {700: 0.495, 800: 0.44, 900: 0.377}, (VF, 'w'): {700: 0.661, 800: 0.627, 900: 0.589}}
+        for (path, ch), ref in inter.items():
+            for w, r in ref.items():
+                gs, cmap = self._glyphs(path, w)
+                rows = [(y, run) for y, run in ink_rows(gs, cmap[ord(ch)]) if run]
+                if ch == 'k':
+                    depth = sum(1 for y, run in rows if 528 * 0.25 < y < 528 and len(run) >= 2 and run[1][0] - run[0][1] >= 20)
+                else:
+                    depth = sum(1 for y, run in rows if 0 < y < 528 and len(run) >= 3 and run[1][0] - run[0][1] >= 20)
+                with self.subTest(font=os.path.basename(path), glyph=ch, wght=w):
+                    self.assertGreaterEqual(depth / 528, 0.9 * r)
+
+    def test_l_tail_reads_and_keeps_its_white(self):
+        # Round 4: at 700-900 the upright l's tail read as a ( and crowded the next letter (klm, ll, illumination): as tall as it was
+        # long, with 0.7-0.8x the nn gap after it. Flatter (glyphs.L_FLAT_UP) and spaced further (L_RSB, L_BOLD_OPEN), the white
+        # after its tail is >= 0.82-0.86x the nn gap at 700-800 and 0.92x at 900 (0.94) and the tail still reaches 28 units past the stem at 900, the family's signature
+        # (cycle 2: 21, a nib, now 30 on a lighter toe; glyphs.L_LONG), its inner edge never folding back into the stem's by more than 3 units (it did by 7). At
+        # Regular the outline stays; l + space opens by half what the tail takes off n's sidebearing (kern.l_space: 25 units), or
+        # "small sizes" read as one word at 16 px.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        for w, floor in ((700, 0.82), (800, 0.86), (900, 0.92)):
+            with self.subTest(wght=w):
+                self.assertGreaterEqual(pair_white(hb, VF, 'ln', w, 0, 100), floor * pair_white(hb, VF, 'nn', w, 238, 290))
+        gs, _ = self._glyphs(VF, 900)
+        rows = dict(ink_rows(gs, 'l'))
+        self.assertGreaterEqual(max(rows[y][-1][1] for y in range(0, 60)) - max(rows[y][-1][1] for y in range(300, 500)), 28, 'the tail')
+        stem = max(rows[y][-1][1] for y in range(300, 500))
+        self.assertGreaterEqual(min(rows[y][-1][1] for y in range(0, 300)), stem - 3, 'the inner edge folds')
+        for path in (VF, VFI):
+            with self.subTest(font=os.path.basename(path)):
+                self.assertGreaterEqual(pair_kerning(hb, path, 'l ', 400), 20)
+                self.assertGreaterEqual(pair_kerning(hb, path, 'l ', 900), 0)
+
+    def test_black_e_opens(self):
+        # Round 4 (JUDGING.md known limit 2): Black's e eye was small and its aperture a slit. Its terminal ends lower on a squarer last
+        # quarter (glyphs.E_RUN, E_SQUARE), so the cut stays near flat with square corners (quality's terminal checks), and the e is 2%
+        # wider: the rows whose right quarter is open (the mouth at the right edge) are >= 55 at 900 upright (39 -> 63) and italic (59).
+        for path in (VF, VFI):
+            gs, _ = self._glyphs(path, 900)
+            rows = dict(ink_rows(gs, 'e'))
+            right = max(r[-1][1] for r in rows.values() if r)
+            width = right - min(r[0][0] for r in rows.values() if r)
+            mouth = [y for y in range(60, 470) if rows.get(y) and rows[y][-1][1] < right - 0.25 * width]
+            with self.subTest(font=os.path.basename(path)):
+                self.assertGreaterEqual(len(mouth), 55)
+
+    def test_black_arch_joins_are_thin(self):
+        # Round 4 (owner decision 2): Black's arches and bowls met the stem at full weight, join_ratio 0.76-0.81 upright and 0.83-0.90
+        # italic (Inter's 0.45-0.46 and 0.38-0.42), the crotches dark and blunt. They thin across both quarters next to the stem
+        # (glyphs.BLACK_JOIN, join_reach, join_flush): upright n m h u 0.56-0.59 and b d p q 0.69, italic 0.69-0.74. quality.py judges
+        # them by that thickness now (JOIN_THIN_MAX); here the arches hold what ships, and Bold's rhythm stays 0.53-0.59 (cycle 2: the
+        # italic's crown sits 7 units higher, glyphs.ARCH_LIFT, which moves rhythm.py's scanline and reads one pixel more gap at 400 px,
+        # 0.575 -> 0.589; the n's counter and gap are unchanged to the unit).
+        import quality
+        import rhythm
+
+        for path, arch, bowl in ((VF, 0.61, 0.71), (VFI, 0.75, 0.75)):
+            for g in 'nmhubdpq':
+                m = quality.raster(path, g, 900)
+                with self.subTest(font=os.path.basename(path), glyph=g):
+                    self.assertLessEqual(quality.join_ratio(m, quality.JOIN_GLYPHS[g]), arch if g in 'nmhu' else bowl)
+            with self.subTest(font=os.path.basename(path), rhythm=700):
+                self.assertTrue(0.53 <= rhythm.ratio(path, 700) <= 0.59)
+
+    def test_black_t_reaches_right(self):
+        # Round 4: Black's t stem sat right of its crossbar's middle (arms 117 / 69 units, Inter's 67 / 91), as the f's did, and the t
+        # read narrow on the right. The right arm is now at least as long as the left (glyphs.T_STEM_IN).
+        for path in (VF, VFI):
+            gs, _ = self._glyphs(path, 900)
+            rows = dict(ink_rows(gs, 't'))
+            sh = 0.1763 * 170 if path == VFI else 0.0  # the italic's crossbar row sheared back over the stem's (tan 10 deg)
+            stem = rows[300][0]
+            bar = (rows[470][0][0] - sh, rows[470][0][1] - sh)
+            with self.subTest(font=os.path.basename(path)):
+                self.assertGreaterEqual(bar[1] - stem[1], stem[0] - bar[0])
+
+    def _black_rows(self, italic, ch, wght=900):
+        """A Black (or other weight) letter's ink rows, the italic's sheared upright about mid x-height (tan 10 deg), so its stems are
+        vertical and their edges compare as the upright's do."""
+        gs, cmap = self._glyphs(VFI if italic else VF, wght)
+        rows = dict(ink_rows(gs, cmap[ord(ch)]))
+        if italic:
+            rows = {y: [(a - (y - 264) * 0.1763, b - (y - 264) * 0.1763) for a, b in v] for y, v in rows.items()}
+        return rows
+
+    def test_black_l_tail_and_t_foot_turn_in_one_curve(self):
+        # Round 4 cycle 3: at 300 px the Black l's tail rose off the stem in a step (its right edge stood on the stem's line for all but
+        # 8 rows, then jumped out) and the t's inner corner was a near-square notch (8-9 rows of fillet). Both now turn in one concave
+        # curve: the l's right edge never steps back inward going up and leaves the stem over >= 50 rows (upright 82, italic 61), the
+        # t's inner edge over >= 20 (27).
+        for italic in (False, True):
+            with self.subTest(italic=italic, glyph='l'):
+                r = self._black_rows(italic, 'l')
+                re = {y: r[y][-1][1] for y in r if r[y]}
+                stem = sorted(re[y] for y in range(300, 500))[100]
+                toe = max(re[y] for y in range(0, 40))
+                self.assertLessEqual(max(re[y + 1] - re[y] for y in range(0, 300)), 0.5)
+                self.assertGreaterEqual(sum(1 for y in range(0, 300) if stem + 3 < re[y] < toe - 3), 50)
+            with self.subTest(italic=italic, glyph='t'):
+                r = self._black_rows(italic, 't')
+                re = {y: r[y][0][1] for y in r if r[y]}
+                stem = sorted(re[y] for y in range(200, 300))[50]
+                foot = max(re[y] for y in range(10, 60))
+                self.assertGreaterEqual(sum(1 for y in range(0, 300) if stem + 2 < re[y] < foot - 2), 20)
+
+    def test_black_strokes_end_clean(self):
+        # Round 4 cycle 3: the Black (and Bold) shapes had nibs where a stroke ends against another. The f's hook overhung its crossbar
+        # by 35-44 units at 700-900 (now 25, 13 and 2), the italic f's descending tail ended in a 67-unit wedge (now a flat cut,
+        # <= 5), the k's leg bowed 11 units off its line (<= 2), the r's beak hung 33-37 units below its face (<= 12) and z / Z stepped
+        # 48-51 units in from the bar to the diagonal (<= 15).
+        for w, most in ((700, 30), (800, 18), (900, 5)):
+            with self.subTest(glyph='f', wght=w):
+                r = self._black_rows(False, 'f', w)
+                hook = max(v[-1][1] for y, v in r.items() if y > 560 and v)
+                bar = max(v[-1][1] for y, v in r.items() if 400 < y < 520 and v)
+                self.assertLessEqual(hook - bar, most)
+        r = self._black_rows(True, 'f')
+        lo = min(y for y in r if y < -2 and r[y])
+        xs = [r[y][0][0] for y in range(lo + 3, lo + int(0.6 * -lo))]
+        self.assertLessEqual(max(xs) - min(xs), 5, 'italic f tail tip')
+        for italic in (False, True):
+            with self.subTest(italic=italic, glyph='k'):
+                r = self._black_rows(italic, 'k')
+                pts = [(y, r[y][1][0]) for y in range(10, 180) if len(r[y]) >= 2]
+                (y0, x0), (y1, x1) = pts[0], pts[-1]
+                self.assertLessEqual(max(abs(x - (x0 + (x1 - x0) * (y - y0) / (y1 - y0))) for y, x in pts), 2)
+            with self.subTest(italic=italic, glyph='r'):
+                r = self._black_rows(italic, 'r')
+                face = max(v[-1][1] for v in r.values() if v)
+                yf = min(y for y, v in r.items() if v and v[-1][1] >= face - 2)
+                yin = min(y for y, v in r.items() if v and any(a <= face - 40 <= b for a, b in v))
+                self.assertLessEqual(yin - yf, 12)
+            for ch in 'zZ':
+                with self.subTest(italic=italic, glyph=ch):
+                    r = self._black_rows(italic, ch)
+                    left = min(v[0][0] for y, v in r.items() if 2 < y < 60 and v)
+                    top = max(y for y, v in r.items() if y < 250 and v and v[0][0] <= left + 2)
+                    self.assertLessEqual(r[top + 3][0][0] - left, 15)
+
+    def test_black_italic_bars_and_feet_are_flat(self):
+        # Round 4 cycle 3: the Black italic's horizontal bars ended 3 units past the baseline and cap height (a step where the
+        # slanted stem met them) and the feet of v w V W M and the apex of A ended in 6-11 unit spurs past the stroke's edge line. Bars
+        # now sit on the line (no ink below 0 or above the cap height, 699), and no foot or apex reaches more than 1 unit past its edge.
+        for ch in 'EFLTZzBDPR7':
+            with self.subTest(glyph=ch):
+                ys = [y for y, v in self._black_rows(True, ch).items() if v]
+                self.assertGreaterEqual(min(ys), 0)
+                self.assertLessEqual(max(ys), 699)
+        for ch, top in (('v', False), ('w', False), ('V', False), ('W', False), ('M', False), ('A', True)):
+            with self.subTest(glyph=ch):
+                r = self._black_rows(True, ch)
+                ys = sorted(y for y, v in r.items() if v)
+                y_end = ys[-2] if top else ys[1]
+                fit = [y_end - k for k in range(12, 36)] if top else [y_end + k for k in range(12, 36)]
+                n = len(r[y_end])
+                self.assertTrue(all(len(r[y]) == n for y in fit))
+                out = 0
+                for i in range(n):
+                    for side, sgn in ((0, -1), (1, 1)):
+                        (ya, xa), (yb, xb) = (fit[0], r[fit[0]][i][side]), (fit[-1], r[fit[-1]][i][side])
+                        out = max(out, sgn * (r[y_end][i][side] - (xa + (xb - xa) * (y_end - ya) / (yb - ya))))
+                self.assertLessEqual(out, 1)
+
+    def test_black_rounds_square_up_and_the_euro_lightens(self):
+        # Round 4 cycle 3: at 900 the o O Q 0 were near-ellipses, so their counters were pinched at the four diagonals next to Inter's
+        # superelliptic Black, and the euro's two bars filled 64% of its box, a dark blot in a row of figures. The Black rounds are
+        # squarer (glyphs.O_SQUARE, CAP_O_SQUARE): counter white per ink row o 42.4k -> 45.3k, O 125k -> 133k, 0 78k -> 84k
+        # (italic o 40.3k -> 43.2k, O 119k -> 125k, 0 77k -> 82k); the euro's bars are lighter: 0.50 of its box (Inter 0.52).
+        for path, floors in ((VF, (44_000, 130_000, 81_000)), (VFI, (42_000, 122_000, 80_000))):
+            gs, cmap = self._glyphs(path, 900)
+            for ch, least in zip('oO0', floors):
+                rows = dict(ink_rows(gs, cmap[ord(ch)]))
+                white = sum(v[i + 1][0] - v[i][1] for v in rows.values() for i in range(len(v) - 1))
+                with self.subTest(font=os.path.basename(path), glyph=ch):
+                    self.assertGreaterEqual(white, least)
+            rows = dict(ink_rows(gs, cmap[ord('\u20ac')]))
+            box = (max(v[-1][1] for v in rows.values() if v) - min(v[0][0] for v in rows.values() if v)) * (max(y for y, v in rows.items() if v) - min(y for y, v in rows.items() if v))
+            with self.subTest(font=os.path.basename(path), glyph='euro'):
+                self.assertLessEqual(ink_area(rows.items()) / box, 0.55)
+
+    def test_black_double_quotes_stand_apart(self):
+        # The two marks of a Black double quote keep 90 units of white (103 upright, 98 italic): at 35 they read as one block
+        for path in (VF, VFI):
+            gs, _ = self._glyphs(path, 900)
+            for name in ('quotedblleft', 'quotedblright'):
+                with self.subTest(font=os.path.basename(path), glyph=name):
+                    self.assertGreaterEqual(chevron_white(ink_rows(gs, name)), 90)
+
+    def test_display_black_letters_keep_apart(self):
+        # 900 at opsz 48 is where Black's tightening and Display's add up: ns, st, ti, ge set a few units apart in a headline. With Display's
+        # spacing at 0.92 of text (params.P) the common pairs keep 28 units of white (they read 31 to 58), upright and italic.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        import io
+
+        from fontTools.varLib.instancer import instantiateVariableFont
+
+        for path in (VF, VFI):
+            f = instantiateVariableFont(TTFont(path), {'wght': 900, 'opsz': 48})
+            bio = io.BytesIO()
+            f.save(bio)
+            font = hb.Font(hb.Face(bio.getvalue()))
+            gs, order = f.getGlyphSet(), f.getGlyphOrder()
+            short = {}
+            for pair in ('ns', 'st', 'ti', 'ge', 'on', 'iv', 'ag', 'bu', 'am', 'ha', 'ur', 'mb'):
+                buf = hb.Buffer()
+                buf.add_str(pair)
+                buf.guess_segment_properties()
+                hb.shape(font, buf, {'kern': True})
+                (a, b), adv = [order[i.codepoint] for i in buf.glyph_infos], buf.glyph_positions[0].x_advance
+                ra, rb = InkRows(gs), InkRows(gs)
+                gs[a].draw(ra)
+                gs[b].draw(rb)
+                gap = round(min(adv + rb.out[k][0] - ra.out[k][1] for k in set(ra.out) & set(rb.out)))
+                if gap < 28:
+                    short[pair] = gap
+            with self.subTest(font=os.path.basename(path)):
+                self.assertEqual(short, {}, 'pairs with less than 28 units of white at 900 / opsz 48')
+
     def test_heavy_question_mark_hook_clears_its_dot(self):
         # Black's dot was 227 units tall; with the hook ending at a fixed 27% of cap height, the two
         # touched and read as a notch.
@@ -889,13 +1520,17 @@ class Font(unittest.TestCase):
         # forms, the ij and dz-lj-nj digraphs, ŀ ł, Cyrillic ј, dotless j)
         opened = {0x6A, 0x6B, 0x6C, 0x7A, 0x133, 0x135, 0x137, 0x13A, 0x13C, 0x13E, 0x140, 0x142, 0x17A, 0x17C, 0x17E, 0x1C5, 0x1C6, 0x1C8, 0x1C9,
                   0x1CB, 0x1CC, 0x237, 0x458}
-        allowed = {'upright': sized | opened, 'italic': sized | opened}
+        # Round 4 (owner decision 3): [ ] { } open their sidebearings (glyphs._bracket_sb), 56 / 21 beside the parentheses' 70 / 31. Their
+        # new advances are pinned here instead of the fixture's (upright 264 and 334, italic 269 and 338)
+        reopened = {'upright': {0x5B: 296, 0x5D: 296, 0x7B: 369, 0x7D: 369}, 'italic': {0x5B: 303, 0x5D: 303, 0x7B: 375, 0x7D: 375}}
+        allowed = {'upright': sized | opened | set(reopened['upright']), 'italic': sized | opened | set(reopened['italic'])}
         for kind, path in (('upright', VF), ('italic', VFI)):
             f = instantiateVariableFont(TTFont(path), {'wght': 400, 'opsz': 14})
             cmap, hmtx = f.getBestCmap(), f['hmtx']
             self.assertEqual(set(cmap), {int(cp) for cp in ref[kind]} | added[kind], f'{kind}: codepoints gained or lost since a855b5e0')
             moved = {cp: (ref[kind][str(cp)], hmtx[n][0]) for cp, n in cmap.items() if str(cp) in ref[kind] and hmtx[n][0] != ref[kind][str(cp)] and cp not in allowed.get(kind, ())}
             self.assertEqual(moved, {}, f'{kind}: advances that moved since a855b5e0 (codepoint: was, now)')
+            self.assertEqual({cp: hmtx[cmap[cp]][0] for cp in reopened[kind]}, reopened[kind], f'{kind}: the reopened brackets')
 
     def test_pairs_keep_their_clearance_at_the_black_corners(self):
         # Display Black is the tightest corner: Black's spacing plus Display's deltas. Dï and Bî must keep kern.py's
@@ -957,7 +1592,8 @@ class Font(unittest.TestCase):
         pairs = [a + b for a in caps for b in caps] + [a + b for a in 'AKRVWXYZ' + 'ÁÝКЖХУАΚΧΥΑΔ' for b in 'xvwyk']
         for path in (VF, VFI):
             # 800 and 850 at opsz 48 are between the masters: the kerning interpolates linearly where the white does not (italic Tk read 9 at 850/48)
-            for wght, opsz, floor in ((900, 48, 12), (900, 8, 12), (900, 14, 16), (700, 48, 12), (850, 48, 12), (800, 48, 12)):
+            # Round 3 (JUDGING.md): AVATAR and Kv still read as touching at 16 units, so the floors are 26 in text Black and 16 to 18 at the corners
+            for wght, opsz, floor in ((900, 48, 18), (900, 8, 18), (900, 14, 26), (700, 48, 16), (850, 48, 16), (800, 48, 16)):
                 f = instantiateVariableFont(TTFont(path), {'wght': wght, 'opsz': opsz})
                 bio = io.BytesIO()
                 f.save(bio)
@@ -1431,7 +2067,76 @@ class Font(unittest.TestCase):
                     with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz, glyph=ch):
                         self.assertGreaterEqual(ink_area(rows), 0.9 * copies * inter_area, 'ink area')
                         if copies == 2:
-                            self.assertGreaterEqual(chevron_white(rows), 40, 'white between the chevrons')
+                            self.assertGreaterEqual(chevron_white(rows), 45, 'white between the chevrons')  # 45: drawn as outlines with Inter's white (55 at Black)
+
+    def test_heavy_guillemets_match_inters_size_and_centre(self):
+        # Round 4 (cycle 2): the chevrons at 700-900 stood 462 tall around 264, Inter's 461 around 301 (0.55 of its x-height, ours 0.50) on a
+        # smaller x-height, so beside the text they read oversized and low. Height, width, arm width (the ink run just under the top face)
+        # and the vertical centre are 0.95-1.05x Inter's at 700 and 900, upright and italic, single and double. Read from Inter 4.001
+        # (opsz 14) as INTER_QUOTE_BOX: the arm is 156 / 202 wide at 700 / 900 (155 / 202 italic), the centre 301 up.
+        arm = {'upright': {700: 156, 900: 202}, 'italic': {700: 155, 900: 202}}
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for wght in (700, 900):
+                gs, cmap = self._glyphs(path, wght)
+                for ch, name in (('\u2039', 'guilsinglleft'), ('\u203a', 'guilsinglright'), ('\u00ab', 'guillemotleft'), ('\u00bb', 'guillemotright')):
+                    iw, ih = INTER_QUOTE_BOX[kind][name][wght]
+                    b, _ = self._ink(path, wght, name)
+                    run = ink_runs_at(gs, cmap[ord(ch)], b[3] - 8)[0]
+                    with self.subTest(kind=kind, wght=wght, glyph=name):
+                        for label, got, want in (('width', b[2] - b[0], iw), ('height', b[3] - b[1], ih), ('centre', (b[1] + b[3]) / 2, 301), ('arm', run[1] - run[0], arm[kind][wght])):
+                            self.assertGreaterEqual(got, 0.95 * want, label)
+                            self.assertLessEqual(got, 1.05 * want, label)
+
+    def test_thin_percent_rings_are_equal_and_inters_size(self):
+        # Thin's rings stood 0.51 of the cap tall and 0.32 wide, touching: tall ovals, the lower one reading smaller beside the slash. They
+        # are one size now (within 2 units), 0.42 / 0.43 of the cap tall at 100 / 200 (Inter's 306 and 316 of 728, 0.42 and 0.43) and
+        # at least 0.7 as wide as tall (Inter 0.78), with a white gap between them.
+        inter = {100: 306 / 728, 200: 316 / 728}
+        for path in (VF, VFI):
+            cap = self._ink(path, 400, 'H')[0][3]
+            for wght, share in inter.items():
+                boxes = self._contour_boxes(path, wght, 'percent')
+                total = max(b[2] for b in boxes) - min(b[0] for b in boxes)
+                rings = sorted((b for b in boxes if b[2] - b[0] < 0.5 * total), key=lambda b: b[3] - b[1], reverse=True)[:2]
+                rings.sort(key=lambda b: -b[1])
+                (u, l) = rings
+                with self.subTest(font=os.path.basename(path), wght=wght):
+                    self.assertAlmostEqual(u[3] - u[1], l[3] - l[1], delta=2)
+                    self.assertAlmostEqual(u[2] - u[0], l[2] - l[0], delta=2)
+                    self.assertGreaterEqual((u[3] - u[1]) / cap, 0.95 * share)
+                    self.assertLessEqual((u[3] - u[1]) / cap, 1.1 * share)
+                    self.assertGreaterEqual((u[2] - u[0]) / (u[3] - u[1]), 0.7)
+                    self.assertGreater(u[1] - l[3], 0.08 * cap)
+
+    def test_thin_dots_hold_inters_size_to_stem_ratio(self):
+        # Thin's dot against its own stem: Inter's is 52 on a stem of 22 at 100 (2.36) and 78 on 44 at 200 (1.77). This font's runs
+        # 0.95x those; the floor is 0.9x, for . : ; ! ? upright and italic
+        inter = {100: 52 / 22, 200: 78 / 44}
+        for path in (VF, VFI):
+            for wght, ratio in inter.items():
+                gs, cmap = self._glyphs(path, wght)
+                stem = (lambda r: r[1] - r[0])(ink_runs_at(gs, cmap[ord('H')], 200)[0])
+                for ch in '.:;!?':
+                    boxes = self._contour_boxes(path, wght, ch)
+                    dot = min(b[3] - b[1] for b in boxes)
+                    with self.subTest(font=os.path.basename(path), wght=wght, glyph=ch):
+                        self.assertGreaterEqual(dot / stem, 0.9 * ratio)
+
+    def test_black_diagonal_capitals_keep_inters_width(self):
+        # Round 4 (cycle 2): Black's T V W X Y Z stood 0.84-0.90x Inter's ink width over H's (T 0.852 beside 0.963, W 1.405 beside 1.580);
+        # 0.94x or more now at 900, upright and italic (700 and below keep their widths: 600 is at the +2% gate on 'OVERVIEW ACTIVITY
+        # SETTINGS', so the widening starts at Bold). Inter's ratios (ink width / ink width of H) read from Inter 4.001.
+        inter = {
+            'upright': {700: dict(T=.965, V=1.136, W=1.609, X=1.119, Y=1.110, Z=.901), 900: dict(T=.963, V=1.143, W=1.580, X=1.129, Y=1.113, Z=.906)},
+            'italic': {700: dict(T=.835, V=.950, W=1.345, X=1.070, Y=.928, Z=.914), 900: dict(T=.847, V=.965, W=1.335, X=1.073, Y=.940, Z=.921)},
+        }
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for wght, floor in ((900, 0.94),):
+                hb = self._ink(path, wght, 'H')[0]
+                for ch, want in inter[kind][wght].items():
+                    b = self._ink(path, wght, ch)[0]
+                    with self.subTest(kind=kind, wght=wght, glyph=ch):
+                        self.assertGreaterEqual((b[2] - b[0]) / (hb[2] - hb[0]), floor * want)
 
     # --- Spacing and kerning (interface brief, Section 1 item 5) ---
 
@@ -1468,6 +2173,46 @@ class Font(unittest.TestCase):
                     with self.subTest(kind=kind, pair=pair, wght=wght):
                         got = -pair_kerning(hb, path, pair, wght)
                         self.assertGreaterEqual(got, floor * inter, f'{pair} kerns {got} at {wght}, Inter {inter}')
+
+    def test_fitted_pairs_hold_inter_white(self):
+        # Round 4 (JUDGING.md, kerning): the white between the letters of a pair is what the eye reads, and kerning units do not carry it from
+        # Inter to this font (its sidebearings differ letter by letter). At Thin and ExtraLight (W V Y T beside a e o c q g and A, AV AW AT AY, LT LY LV,
+        # Ty To Tr, Wa We), at ExtraBold and Black (LY 7, 7. y. y, r. F. F, P,) and at Regular (Kv Ky Kw) the mean white of the pair lies within 0.85-1.1x of
+        # Inter's at the same weight (upright against Inter, italic against Inter Italic) and the closest row keeps 0.75x of Inter's. Before the fit
+        # the Thin and italic pairs read 0.72-0.85x, LY 7, 7. 1.10-1.31x and y. y, r. F. 0.62-0.83x at Black, Kv Ky 0.80-0.83x at Regular.
+        # Round 4, merge 2, upright: ff fl at 500-700 and ff at 400, ft and cf at 700 (ft read 1.15-1.16x).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for pair, by_weight in INTER_WHITE[kind].items():
+                for wght, (mean, least) in by_weight.items():
+                    with self.subTest(kind=kind, pair=pair, wght=wght):
+                        got_mean, got_least = pair_white_profile(hb, path, pair, wght)
+                        self.assertGreaterEqual(got_mean / mean, WHITE_BAND[0], f'{pair} has {got_mean:.0f} of white at {wght}, Inter {mean}')
+                        self.assertLessEqual(got_mean / mean, WHITE_BAND_SHAPE.get((kind, pair, wght), WHITE_BAND[1]), f'{pair} has {got_mean:.0f} of white at {wght}, Inter {mean}')
+                        self.assertGreaterEqual(got_least, WHITE_LEAST_FLOOR * least, f'{pair} comes to {got_least:.0f} at {wght}, Inter {least}')  # Inter's ff at 700: 0
+
+    def test_black_proportional_one_sets_like_the_other_figures(self):
+        # Round 4: Black's proportional 0 then 1 left 1.35x the HH gap upright and 1.46x italic (Inter's 0.89x), where 11, 10 and 12 sat at 0.9-1.0x. The pair
+        # closes (kern.WHITE_FIT) so 01 11 10 12 are within 1.1x the HH gap at 900 and 800; Thin and Regular keep their figure spacing (no kerning).
+        # 02 the same (round 4, merge 2: 1.16x and 1.18x the HH gap at 800 and 900 upright).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        for path in (VF, VFI):
+            for wght in (800, 900):
+                for pair in ('01', '11', '10', '12', '02'):
+                    with self.subTest(path=os.path.basename(path), wght=wght, pair=pair):
+                        gaps, hh = shaped_gaps(hb, path, pair, wght)
+                        self.assertLessEqual(gaps[0] / hh, 1.1, f'{pair} sets {gaps[0] / hh:.2f}x the HH gap at {wght}')
+            for wght in (100, 400):
+                for pair in ('01', '02'):
+                    self.assertEqual(pair_kerning(hb, path, pair, wght), 0, f'{pair} stays unkerned at {wght}')
 
     def test_quotes_hold_their_size(self):
         # single and double quotes (curly and straight) and the guillemets: the ink box (width and height each) is >= 0.9x Inter's
@@ -1541,6 +2286,171 @@ class Font(unittest.TestCase):
         # Regular and heavier keep their dot: the floor only acts below it
         self.assertEqual(round(params.P(400, 14).dot), 115)
         self.assertGreaterEqual(params.P(100, 14).dot, params.DOT_MIN_EM * 1000)
+
+    # -- round 4, capitals, figures and punctuation at 600-900 ------------------------------------------------------------------
+
+    def test_heavy_at_tracks_the_weight(self):
+        # Black's @ was a hairline ring beside its letters: 1.44x its H's ink (Inter's 1.68x) and 1.23 cap heights tall (Inter's 1.32), its
+        # foot high. At 700 and 900 it carries at least 0.95x Inter's share and height, upright and italic, and the white in its ring stays
+        # open (one enclosed counter, the bowl's: at 900 the stem's top met the deeper ring and closed it). 100 and 400 are unchanged.
+        from fontTools.pens.boundsPen import BoundsPen
+
+        inter = {700: (1.67, 1.280), 900: (1.68, 1.322)}
+        for path in (VF, VFI):
+            for wght, (share, height) in inter.items():
+                gs, cmap = self._glyphs(path, wght)
+                boxes = {}
+                for ch in 'H@':
+                    pen = BoundsPen(gs)
+                    gs[cmap[ord(ch)]].draw(pen)
+                    boxes[ch] = pen.bounds
+                cap = boxes['H'][3] - boxes['H'][1]
+                area = ink_area(ink_rows(gs, cmap[ord('@')])) / ink_area(ink_rows(gs, cmap[ord('H')]))
+                with self.subTest(font=os.path.basename(path), wght=wght):
+                    self.assertGreaterEqual(area, 0.95 * share)
+                    self.assertGreaterEqual((boxes['@'][3] - boxes['@'][1]) / cap, 0.97 * height)
+                    self.assertEqual(len(self._enclosed(path, '@', wght)), 1)
+
+    def _enclosed(self, path, ch, wght, opsz=14):
+        """Areas of the white regions a glyph encloses, as FreeType fills it (nonzero), at 1000 px per em, largest first."""
+        import numpy as np
+        from PIL import Image, ImageDraw, ImageFont
+        from scipy import ndimage as ndi
+
+        f = ImageFont.truetype(path, 1000)
+        f.set_variation_by_axes([wght, opsz])
+        im = Image.new('L', (1600, 1500), 255)
+        ImageDraw.Draw(im).text((300, 150), ch, font=f, fill=0)
+        labels, n = ndi.label(~(np.asarray(im) < 128))
+        border = set(np.unique(np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])))
+        return sorted((int((labels == j).sum()) for j in range(1, n + 1) if j not in border), reverse=True)
+
+    def test_heavy_brackets_carry_a_stem_and_stand_apart(self):
+        # Black's parentheses were 0.86 of a stem at the belly (Inter's 1.01) and its braces 0.90: light rules beside Black letters. At 900
+        # ( is >= 0.98 of the H's stem and {'s upright stroke >= 0.95. In `!()[]{}` the marks that face away from each other keep the HH gap
+        # (the italic's `]{` and `}(` sat 0.72x and 0.86x it, `[]` 0.52x); `[]` and `{}` keep 0.9x. At Regular `[]` is 77 apart, Inter's.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        for path in (VF, VFI):
+            gs, cmap = self._glyphs(path, 900)
+            stem = (lambda r: r[1] - r[0])(ink_runs_at(gs, cmap[ord('H')], 200)[0])
+            g, hh = shaped_gaps(hb, path, '!()[]{}', 900)
+            with self.subTest(font=os.path.basename(path)):
+                self.assertGreaterEqual((lambda r: r[1] - r[0])(ink_runs_at(gs, cmap[ord('(')], 295)[0]), 0.98 * stem)
+                self.assertGreaterEqual((lambda r: r[1] - r[0])(ink_runs_at(gs, cmap[ord('{')], 495)[0]), 0.95 * stem)
+                for i in (0, 2, 4):  # !( )[ ]{
+                    self.assertGreaterEqual(g[i], 0.99 * hh, '!()[]{}'[i:i + 2])
+                for i in (3, 5):  # [] {}
+                    self.assertGreaterEqual(g[i], 0.9 * hh, '!()[]{}'[i:i + 2])
+                self.assertGreaterEqual(shaped_gaps(hb, path, '[]', 400)[0][0], 77)
+
+    def test_heavy_ampersand_keeps_both_counters_open(self):
+        # Black's & had a dot for its upper counter (10,660 px at 1000 px per em, upright) and a lower one 0.54x Inter's. Its loop is larger
+        # and lighter and its leg and bowl lighter than its stem: both counters stay over 20,000 px at 700 and 900, text and Display sizes.
+        for path in (VF, VFI):
+            for wght in (700, 900):
+                for opsz in (14, 48):
+                    areas = self._enclosed(path, '&', wght, opsz)
+                    with self.subTest(font=os.path.basename(path), wght=wght, opsz=opsz):
+                        self.assertEqual(len(areas), 2)
+                        self.assertGreaterEqual(min(areas), 20_000)
+
+    def test_black_quotes_asterisk_and_percent_match_inter(self):
+        # Black's curly quotes and comma stood 337 tall, 0.48 of the cap height (Inter's 325 of 728, 0.45): large wedges. They stand within
+        # Inter's share now (306); the floor of test_quotes_hold_their_size still holds them up. The asterisk was 0.90x Inter's ink width and
+        # 0.86x its height at Black: >= 0.95x now. The percent's rings were 0.51 of a stem beside a 0.93 slash (Inter's 0.63 and 0.59):
+        # rings >= 0.58, the slash at most 0.75.
+        from fontTools.pens.boundsPen import BoundsPen
+
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            gs, cmap = self._glyphs(path, 900)
+
+            def box(ch):
+                pen = BoundsPen(gs)
+                gs[cmap[ord(ch)]].draw(pen)
+                return pen.bounds
+
+            cap = box('H')[3] - box('H')[1]
+            stem = (lambda r: r[1] - r[0])(ink_runs_at(gs, cmap[ord('H')], 200)[0])
+            with self.subTest(kind=kind):
+                for ch in '\u201c\u201d\u2018\u2019,':
+                    b = box(ch)
+                    self.assertLessEqual((b[3] - b[1]) / cap, 325 / 728, ch)
+                b = box('*')
+                self.assertGreaterEqual(b[2] - b[0], 0.95 * (412 if kind == 'upright' else 429))
+                self.assertGreaterEqual(b[3] - b[1], 0.95 * 409)
+                rings = ink_runs_at(gs, cmap[ord('%')], 700 * 0.76)
+                self.assertGreaterEqual(min(r[1] - r[0] for r in rings[:2]), 0.58 * stem)
+                self.assertLessEqual(min(r[1] - r[0] for r in ink_runs_at(gs, cmap[ord('%')], 700 * 0.6)), 0.75 * stem)
+
+    def test_black_capitals_keep_inter_proportions(self):
+        # Round 4 released the width; H took its counter back and the round capitals stayed narrow beside it. Ink width over H's at 900,
+        # upright, within 0.03 of Inter's: O was 1.03 (Inter 1.08), C 1.01 (1.04), G 0.98 (1.04), M 1.24 (1.31); B P R D stood wide at
+        # 0.97, 0.98, 0.98, 1.02 (0.91, 0.89, 0.93, 0.98), their counters wide boxes.
+        from fontTools.pens.boundsPen import BoundsPen
+
+        inter = {'O': 1.078, 'C': 1.040, 'G': 1.043, 'Q': 1.078, 'M': 1.314, 'B': 0.911, 'P': 0.890, 'R': 0.927, 'D': 0.979}
+        gs, cmap = self._glyphs(VF, 900)
+
+        def width(ch):
+            pen = BoundsPen(gs)
+            gs[cmap[ord(ch)]].draw(pen)
+            return pen.bounds[2] - pen.bounds[0]
+
+        for ch, share in inter.items():
+            with self.subTest(glyph=ch):
+                self.assertAlmostEqual(width(ch) / width('H'), share, delta=0.03)
+
+    def test_q_tail_reaches_below_the_line(self):
+        # The Q's tail stopped 55 under the baseline at Regular and 94 at Black (Inter's 56 and 70 of a 728 cap height, its tail longer and
+        # steeper): 83 and 123 now, at the same advance
+        for path in (VF, VFI):
+            for wght, depth in ((400, 75), (900, 110)):
+                b, _ = self._ink(path, wght, 'Q')
+                with self.subTest(font=os.path.basename(path), wght=wght):
+                    self.assertLessEqual(b[1], -depth)
+
+    def test_heavy_capitals_keep_apart(self):
+        # Black's serifed I, K's foot, L's foot and J's hook crowded their neighbours: KL sat 0.55x the HH gap upright and 0.48x italic, LM
+        # 0.68x / 0.73x, IJ 0.50x / 0.62x, HI 0.80x / 0.71x (Inter's KL 0.73x, LM 0.79x, IJ 0.70x, HI 1.0x). Each is >= 0.65x now (HI 0.7x),
+        # and the I's slabs no heavier than the H's bar.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        for path in (VF, VFI):
+            g, hh = shaped_gaps(hb, path, 'KLMHIJ', 900)
+            with self.subTest(font=os.path.basename(path)):
+                for i, pair in ((0, 'KL'), (1, 'LM'), (4, 'IJ')):
+                    self.assertGreaterEqual(g[i] / hh, 0.65, pair)
+                self.assertGreaterEqual(g[3] / hh, 0.7, 'HI')
+                gs, cmap = self._glyphs(path, 900)
+                slab = [y for y, r in ink_rows(gs, cmap[ord('I')]) if r and r[-1][1] - r[0][0] > 300]
+                bar = [y for y, r in ink_rows(gs, cmap[ord('H')]) if len(r) == 1]
+                self.assertLessEqual(len([y for y in slab if y < 350]), len(bar) + 2)
+
+    def test_black_figures_balance_and_keep_apart(self):
+        # Black figures: the proportional 3 4 5 set 0.51x-0.54x the HH gap upright and 0.44x-0.47x italic, where 34 and 45 nearly touched
+        # (Inter's 0.80x): >= 0.7x now. The 8's upper counter was a slot, 0.79x its lower one: the two within 0.85x of each other. The 1's
+        # flag met the stem 60 units under its top, a notch over a separate block: 40 under the top it reaches 40 left of the stem.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        for path in (VF, VFI):
+            g, hh = shaped_gaps(hb, path, '3456', 900)
+            gs, cmap = self._glyphs(path, 900)
+            slant = 0.1763 if path == VFI else 0.0
+            eight = self._enclosed(path, '8', 900)
+            one = dict(ink_rows(gs, cmap[ord('1')]))
+            top = max(y for y, r in one.items() if r)
+            with self.subTest(font=os.path.basename(path)):
+                self.assertGreaterEqual(min(g) / hh, 0.7)
+                self.assertEqual(len(eight), 2)
+                self.assertGreaterEqual(eight[1] / eight[0], 0.85)
+                self.assertGreaterEqual(one[200][0][0] + (top - 240) * slant - one[top - 40][0][0], 40)
 
     def test_comparison_data_is_current(self):
         """The /cascivo-sans table shows comparison.json; its Cascivo entry must match the
