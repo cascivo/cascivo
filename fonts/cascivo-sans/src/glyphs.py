@@ -353,6 +353,7 @@ def _O(g, p):
 
 Q_TAIL = 30
 CAP_C_RUN_IT = 0
+CAP_C_TILT_IT = 12  # the c's own went to 8 in round 5, italic 3 (C_TILT_IT); the C keeps the face its gates were drawn for
 
 
 @glyph('Q', 0x51)
@@ -375,7 +376,7 @@ def _C(g, p):
     # later, when it still carried 0.85-0.93x the ink of Inter, Geist and Helvetica
     # The italic's Black ends as the c's: its last quarter squarer and on a near-flat face, so the lower end is blunt, not a wedge
     sq, run = (C_SQUARE_IT, CAP_C_RUN_IT) if p.italic else (0.0, 0.0)
-    g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap, 270) + g.arc(cx, cy, rx, ry, 270, 338 - p.ap + run * p.heavy, p.k + sq * p.heavy), caps=('b', 'b'), cut='t' if p.italic else 'h', tilt=C_TILT_IT)
+    g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap, 270) + g.arc(cx, cy, rx, ry, 270, 338 - p.ap + run * p.heavy, p.k + sq * p.heavy), caps=('b', 'b'), cut='t' if p.italic else 'h', tilt=CAP_C_TILT_IT)
     g.ht = 'c'
     g.sb = (0.62, 0.45)
 
@@ -1043,8 +1044,8 @@ def _o(g, p):
     g.sb = (0.62, 0.62)
 
 
-C_RUN, C_RUN_IT, C_TILT = 12, (6, 6), 12
-C_TILT_IT = 12
+C_RUN, C_RUN_IT, C_TILT = 12, (0, 0), 12
+C_TILT_IT = 8
 # Round 5, italic 2: the italic's Black c, e and x sat closest of any lowercase to their neighbours (closest ink against Inter Italic's at
 # 900: ee ec ea 0.62-0.64x, ex 0.65x, ck 0.76x, where nn is 0.84x): "ck", "ex" nearly touched. Their right (x: both) sidebearings open by
 # these shares of the stem sidebearing at Black, nothing at Regular. The e pays for it in body width (E_NARROW_IT, a share of the n
@@ -1057,6 +1058,18 @@ C_NARROW_IT, E_NARROW_IT = -0.01, 0.019
 # closest white (nn 0.83x); the 600 line, two thirds of Bold's, keeps the mixed-case string under the +2% it may run to.
 CE_BOLD_IT = 0.35
 C_SQUARE_IT = 0.3
+# Round 5, italic 3: the italic's Black c read as a thin diagonal slit beside Inter Italic's horizontal one. Its terminals end where
+# Regular's do (C_RUN_IT 0: the 6 degrees further round hung the upper end over the counter), their faces lie within C_TILT_IT of
+# flat (12: they splayed into a wedge), the lower end arrives C_STEEP_IT[1] degrees steeper, so that flatter face still cuts it square
+# (corners 129 / 81, 80 / 119; 154 / 62 unsteepened), and the upper end, cut on the stroke's slanted side, thins by C_TAPER_IT[0]
+# (lighter at the tip, as Inter's). The mouth at opsz 48 reads 1.2x as deep (quality's bottleneck 117 -> 143 units).
+C_TAPER_IT = (0.1, 0.0)
+C_STEEP_IT = (5, 25)
+# Bold's c, drawn upright before the slant, ends its lower terminal further right with these ends (the advance follows the upright
+# drawing's bounds: 527 -> 540 at 700, while its slanted ink grew 6), and 600's mixed-case line ran over the +2% it may: Bold's right
+# sidebearing gives back this share of its CE_BOLD_IT opening (nothing at Regular and Black): 600 sets +1.99%. More closed ck at 700
+# under test_italic_heavy_round_pairs_keep_apart's floor (0.75 left 75 units, 0.3 leaves 78).
+C_BOLD_GIVE_IT = 0.3
 
 
 @glyph('c', 0x63)
@@ -1070,24 +1083,41 @@ def _c(g, p):
     # Black's terminals run C_RUN (italic C_RUN_IT, upper and lower) further round: short of that, the mouth read 2.3x Inter's
     # beside an e and s at 0.7-1.0x. Both end in near-flat faces as the e's do (cut 't', C_TILT). Round 5: the italic's upper end
     # ran 30 degrees round, to the ellipse's right extreme, and was cut flat across a stroke falling vertically: a beak hanging over
-    # a slot of a counter (Black's mouth 72 units at opsz 48). It now ends 6 degrees round (C_RUN_IT), where the slanted stroke still
+    # a slot of a counter (Black's mouth 72 units at opsz 48). It then ended 6 degrees round (now 0: see C_STEEP_IT), where the slanted stroke still
     # leans enough for the face to lean as Inter's (9 deg; at 12 the slant left it 3.7), and the c reads as open as Inter Italic's.
     # Regular's cut is square.
+    _c_stroke(g, p, cx, cy, rx, ry)
+    g.sb = (0.62, 0.42 + (C_RSB_IT * p.heavy + (CE_BOLD_IT - C_BOLD_GIVE_IT) * p.heavy * (1 - p.heavy) if p.italic else 0))
+
+
+def _c_stroke(g, p, cx, cy, rx, ry):
+    """The c's round and its two terminals (c and ¢)."""
     ru, rl = C_RUN_IT if p.italic else (C_RUN, C_RUN)
-    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy), caps=('b', 'b'), cut='t', tilt=C_TILT_IT if p.italic else C_TILT)
-    g.sb = (0.62, 0.42 + (C_RSB_IT * p.heavy + CE_BOLD_IT * p.heavy * (1 - p.heavy) if p.italic else 0))
+    arc = g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy)
+    if not p.italic:
+        return g.stroke(arc, caps=('b', 'b'), cut='t', tilt=C_TILT)
+    # the first handle is turned about the upper end (the segment reversed, steepened, reversed back), the last about the lower
+    first = _steepen(arc[0][:1] + arc[0][4:0:-1], -C_STEEP_IT[0] * p.heavy)
+    arc[0] = first[:1] + first[4:0:-1]
+    arc[-1] = _steepen(arc[-1], C_STEEP_IT[1] * p.heavy)
+    return g.stroke(arc, caps=('b', 'b'), cut='t', tilt=C_TILT_IT, taper=tuple(1 - t * p.heavy for t in C_TAPER_IT))
 
 
 # Black's terminal: E_RUN -14 -> -8 (italic -12) ends it lower, so the aperture opens from a slit; its last quarter is E_SQUARE
 # squarer, so the stroke still rises steeply at the cut and the near-flat face (E_TILT) leaves square corners (upright 124 / 76,
 # italic 125 / 73; at -6 on the round quarter they were 135 / 68). E_WIDE: Black's e keeps Regular's share of the n, not 2% less,
 # so the eye grows with the width the round-4 gate allows (counter 0.0496 -> 0.0525, Inter 0.0471); at +0.02 600 ran +2.1%.
-E_END, E_RUN, E_RUN_IT, E_TILT, E_SQUARE, E_WIDE = 322, -8, -12, 12, 0.14, 0.0
+E_END, E_RUN, E_RUN_IT, E_TILT, E_SQUARE, E_WIDE = 322, -8, -9, 12, 0.14, 0.0
 # Black's bar is this much thinner than the other crossbars and drops this share of a bar below the middle: its eye read 0.78x Inter's
 # (as a share of the x-height squared) while o a g read 1.0-1.2x, so the e was the dark spot of a Black word
 E_BAR, E_DROP = 0.32, 0.35
 E_SQUARE_IT = 0.14
 E_STEEP_IT = 12
+# Round 5, italic 3: the italic's Black e mouth was a slit (42 units at its narrowest at opsz 14, Inter Italic's 63; 32 at opsz 48).
+# Its terminal ends 3 degrees sooner (E_RUN_IT -12 -> -9) and the bar drops E_DROP_IT of itself, not E_DROP: the mouth opens to 66 / 55
+# while the eye, which read 1.2x Inter Italic's, keeps 1.07x (test_black_counters_hold_against_inter asks 1.03x). A shorter terminal
+# cut flatter leaves a wedge (corners 137-166 at -4 to -8); this one keeps 120 / 81.
+E_DROP_IT = 0.25
 E_BAR_IT = 0.2  # the italic's bar is lighter still: its eye read 0.98x Inter Italic's at E_BAR. Round 5: 0.06 -> 0.12, Black's eye
 # 108 -> 115 units tall (0.0496 -> 0.0538 of the x-height squared, Inter Italic 0.0458): it read small beside Inter's. Round 5, italic
 # 2: 0.12 -> 0.2, so the eye stays as tall as the e narrows (E_NARROW_IT) and grows (0.050 -> 0.056 at opsz 14). A lower bar
@@ -1105,7 +1135,7 @@ def _e_body(g, p, x0, w, bar_k=None):
     cx, cy, rx, ry = g.box(x0, -p.ov, x0 + w, p.xh + p.ov)
     # flush with where the bowl stroke ends, or its butt end shows below the bar; heavy bars drop
     # half their height (still covering that end) so the eye above stays open
-    thin, drop = bar_k or (E_BAR + (E_BAR_IT if p.italic else 0), E_DROP)
+    thin, drop = bar_k or (E_BAR + (E_BAR_IT if p.italic else 0), E_DROP_IT if p.italic else E_DROP)
     bar = p.bar * (1 - thin * p.heavy - E_CAP8 * caption(p))
     yb = cy - p.bar * drop * p.heavy
     # the italic's narrower, slanted eye closed to 0.69x Inter's and Plex's at Regular: its bar
@@ -2571,8 +2601,7 @@ def _currency(g, p):
 def _cent(g, p):
     w = fw(p) * 0.92
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov + 40)
-    ru, rl = C_RUN_IT if p.italic else (C_RUN, C_RUN)
-    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy), caps=('b', 'b'), cut='t', tilt=C_TILT_IT if p.italic else C_TILT)  # as c
+    _c_stroke(g, p, cx, cy, rx, ry)  # as c
     g.line((w * 0.53, -110), (w * 0.53, p.xh + 150), w=p.V * 0.72)
     g.tab = True
 
