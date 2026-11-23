@@ -1,5 +1,11 @@
 # cascivo-web
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated internal dependencies.
+
 ## 0.2.0
 
 ### Minor Changes
