@@ -11,7 +11,7 @@ that changes the *number* of strokes or segments. Parameters may only move point
 import math
 
 from params import ITALIC_ANGLE, MID_WGHT
-from geom import L, lerp, Stroke, _smooth, arc, contour_bounds, norm, orient, pen_thickness, reverse_seg
+from geom import L, lerp, Stroke, _smooth, arc, contour_bounds, expand, norm, orient, pen_thickness, reverse_seg
 
 GLYPHS = {}  # name -> (codepoints, fn)
 ORDER = []
@@ -273,7 +273,7 @@ def _N(g, p):
 @glyph('Z', 0x5A)
 def _Z(g, p):
     w = p.Hd * (0.9 + CAPW_BLACK['Z'][p.italic] * capw(p))
-    g.hbar(w * 0.04, w, p.cap - p.H, pen=flat_pen(p)).hbar(0, w, 0, pen=flat_pen(p))
+    g.hbar(w * 0.04, w, p.cap - p.H, pen=flat_pen(p), caps=z_caps(p)).hbar(0, w, 0, pen=flat_pen(p), caps=z_caps(p))
     _z_diag(g, w, p.cap, 0)  # the italic's ends stood 10 to 25 units out past the bars
     g.ht = 'c'
     g.sb = (0.35, 0.35 + (0.3 if p.italic else 0) * p.heavy)  # as the italic L
@@ -654,6 +654,11 @@ A_BELLY = 0.6  # see _a_bowl
 A_TIP = 5  # units: see _a_bowl
 A_TUCK = (0.6, 0.3)  # (Regular, Black) the italic a's last quarter: see _a
 A_IT_WALL, A_IT_LAP = 0.05, 0
+# Round 5: Black's ring draws its left wall A_IT_PEN[0] of a stem and its top and bottom A_IT_PEN[1] of bowl_pen's, outer edges where
+# they were. Its counter was a slot 0.46 as wide as tall (Inter Italic's a 0.67, the o's 0.67 on both), so it read small beside Inter's
+# though its area was 1.17x. Now 0.65, 175 units wide (Inter 166). b d p q keep theirs: a heavier top and bottom thickens their joins
+# over JOIN_THIN_MAX.
+A_IT_PEN = (0.88, 1.3)
 A_ARC_END = 13  # the a's arc runs less far round than the g's tail: ending higher keeps its mouth open once the end moved inward
 
 
@@ -955,7 +960,10 @@ def _g(g, p):
     te = 1 - G_TAPER * (1 - p.H / p.V)
     g.stroke([L((xr, p.xh), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, end), caps=('b', 'b'), cut='t', tilt=tilt, taper=(1, te))
     cx, cy2, rx2, ry2 = g.box(0, 18, w, p.xh + p.ov)
-    g.stroke(bowl_arc(g, cx, cy2, rx2, ry2, False), taper=(join_taper(p),) * 2, reach=(join_reach(p),) * 2)
+    # Round 5: the italic's bowl closes on its stem as the italic d's does (bowl_arc round_in, its stem-side quarters run all the way
+    # round at Black): ending 8 degrees short on the narrowed quarters, its counter ran flat and pointed along the stem
+    bowl = bowl_arc(g, cx, cy2, rx2, ry2, False, BOWL_ROUND_IT, JOIN_RUN * (1 - BOWL_RUN * p.heavy)) if p.italic else bowl_arc(g, cx, cy2, rx2, ry2, False)
+    g.stroke(bowl, taper=(join_taper(p),) * 2, reach=(join_reach(p),) * 2)
     g.sb = (0.62, 1.15 if p.italic else 1)  # the italic sat 10% tighter on its right than Inter's and Plex's
 
 
@@ -970,7 +978,7 @@ def _o(g, p):
     g.sb = (0.62, 0.62)
 
 
-C_RUN, C_RUN_IT, C_TILT = 12, (30, 6), 12
+C_RUN, C_RUN_IT, C_TILT = 12, (6, 6), 12
 C_TILT_IT = 12
 C_SQUARE_IT = 0.3
 
@@ -984,10 +992,13 @@ def _c(g, p):
     # terminals sit 14° further round than they first did, at every weight: the open aperture left
     # the c at 0.78x Geist's and Inter's ink at Regular and 0.77x at Black, and Bold inherited it
     # Black's terminals run C_RUN (italic C_RUN_IT, upper and lower) further round: short of that, the mouth read 2.3x Inter's
-    # beside an e and s at 0.7-1.0x. The upright's end in near-flat faces as the e's do (cut 't', C_TILT); the italic's keep the
-    # half-way cut, whose faces lean as Inter's (cut 't', its lower face lay 3.7 deg off flat). Regular's cut is square either way.
+    # beside an e and s at 0.7-1.0x. Both end in near-flat faces as the e's do (cut 't', C_TILT). Round 5: the italic's upper end
+    # ran 30 degrees round, to the ellipse's right extreme, and was cut flat across a stroke falling vertically: a beak hanging over
+    # a slot of a counter (Black's mouth 72 units at opsz 48). It now ends 6 degrees round (C_RUN_IT), where the slanted stroke still
+    # leans enough for the face to lean as Inter's (9 deg; at 12 the slant left it 3.7), and the c reads as open as Inter Italic's.
+    # Regular's cut is square.
     ru, rl = C_RUN_IT if p.italic else (C_RUN, C_RUN)
-    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy), caps=('b', 'b'), cut='h' if p.italic else 't', tilt=C_TILT)
+    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy), caps=('b', 'b'), cut='t', tilt=C_TILT_IT if p.italic else C_TILT)
     g.sb = (0.62, 0.42)
 
 
@@ -1001,7 +1012,9 @@ E_END, E_RUN, E_RUN_IT, E_TILT, E_SQUARE, E_WIDE = 322, -8, -12, 12, 0.14, 0.0
 E_BAR, E_DROP = 0.32, 0.35
 E_SQUARE_IT = 0.14
 E_STEEP_IT = 12
-E_BAR_IT = 0.06  # the italic's bar is lighter still: its eye read 0.98x Inter Italic's at E_BAR
+E_BAR_IT = 0.12  # the italic's bar is lighter still: its eye read 0.98x Inter Italic's at E_BAR. Round 5: 0.06 -> 0.12, Black's eye
+# 108 -> 115 units tall (0.0496 -> 0.0538 of the x-height squared, Inter Italic 0.0458): it read small beside Inter's. A lower bar
+# would close the mouth (test_black_e_opens) and open ef (test_heavy_f_leaves_no_hole)
 AE_BAR = (0.2, 0.5)  # the e half of æ keeps the bar E_BAR and E_DROP were before round 4, cycle 2: its counter tip against the a half is held to that drawing's
 # Caption (opsz 8) draws its horizontals 0.94 of a stem against Regular's 0.87, which closed the e's eye and the a's counter
 # (0.109 and 0.124 of the x-height squared, Regular's 0.123 and 0.137) and, through the Caption delta, Black's at opsz 8 (0.046
@@ -1167,11 +1180,13 @@ def _a(g, p):
         # Black's bowl is a whole ring, not d's: tucked into the stem, its counter's right side was the stem's straight edge,
         # pointed where the bowl met it top and bottom. The ring starts and ends half way up the stem, its thinned wall A_IT_WALL
         # stems clear of the stem's edge and its end A_IT_LAP degrees past its start, so the counter is an oval as Inter Italic's.
-        xr = w - p.V - A_IT_WALL * p.V + p.V * taper / 2
-        cxr, rxr = (p.V / 2 + xr) / 2, (xr - p.V / 2) / 2
-        ring = [_ell_seg(cxr, cy, rxr, ry, 0, 90, p.k)] + g.arc(cxr, cy, rxr, ry, 90, 270) + [_ell_seg(cxr, cy, rxr, ry, 270, 360 + A_IT_LAP, p.k)]
+        hb = bowl_pen(p)[1] * (1 - A_CAP8 * caption(p))
+        vp, hp = p.V * lerp(1.0, A_IT_PEN[0], p.heavy), hb * lerp(1.0, A_IT_PEN[1], p.heavy)
+        xr = w - p.V - A_IT_WALL * p.V + vp * taper / 2
+        cxr, rxr, ryr = (vp / 2 + xr) / 2, (xr - vp / 2) / 2, ry + (hb - hp) / 2
+        ring = [_ell_seg(cxr, cy, rxr, ryr, 0, 90, p.k)] + g.arc(cxr, cy, rxr, ryr, 90, 270) + [_ell_seg(cxr, cy, rxr, ryr, 270, 360 + A_IT_LAP, p.k)]
         segs = [(a[0],) + tuple((lerp(u[0], v[0], p.heavy), lerp(u[1], v[1], p.heavy)) for u, v in zip(a[1:], b[1:])) for a, b in zip(segs, ring)]
-        g.stroke(segs, taper=(taper,) * 2, pen=(p.V, bowl_pen(p)[1] * (1 - A_CAP8 * caption(p))), reach=(join_reach(p),) * 2)
+        g.stroke(segs, taper=(taper,) * 2, pen=(vp, hp), reach=(join_reach(p),) * 2)
         g.sb = (0.62, 1)
         return
     w = p.nw * 0.98  # no narrower at Black: a narrower bowl met its stem at 25 deg, under Inter's 36 - 10
@@ -1223,6 +1238,9 @@ F_ARM, F_ARM_IT, F_BOLD_RSB, F_HOOK_CAP = 0.14, 0.145, -0.5, 0.36
 #   length (140 units left of the stem, 190 before). F_GIVE (right, italic left) gives the units the hook and the tail took off the
 #   ink back to the sidebearings at Black, so the stem keeps its place in the advance (fu, ef unchanged).
 F_END, F_TAIL_END, F_CUT, F_GIVE = (42, 42), 45, 'v', (36, 56)
+# Round 5: F_TAIL_REG, degrees short of 140 the descender's hook ends at Regular. At 140 it curled back up past the horizontal, a
+# fussy upturned tip under the letter before (Inter Italic's and Plex Italic's end level, 110-120 round); now it ends falling flat.
+F_TAIL_REG = 22
 
 
 def _f_hook(p):
@@ -1249,14 +1267,22 @@ def _f_hook(p):
 def _italic_descender(g, p, x, turn=20):
     """Italic f, long s and sharp s: the stem at x runs below the baseline and hooks left under
     the preceding letter, the same size in all three. Returns the hook and the y where it meets
-    the stem. `turn`: degrees short of 140 the hook ends at Black (the f's F_TAIL_END)."""
+    the stem. `turn`: degrees short of 140 the hook ends at Black (the f's F_TAIL_END), F_TAIL_REG at Regular."""
     rx = _f_hook(p)[3]
     # a wider hook at Black, turned a little less far: at Regular's size the inner edge of Black's hook curled up
     # against the stem and nicked it. F_TAIL 0.5 -> 0.35 (round 4): it ran 303 units left of the stem (Inter's 193), and the f,
     # spaced from it, stood 82 units right of Inter's with a hole before it ("e f g")
     rxb, ryb = rx * (0.9 + F_TAIL * p.heavy), rx * (0.99 + 0.2 * p.heavy)
     cyb = p.desc + p.H / 2 + ryb
-    return g.arc(x - rxb, cyb, rxb, ryb, -140 + turn * p.heavy, 0), cyb
+    g.tail_was = g.arc(x - rxb, cyb, rxb, ryb, -140 + turn * p.heavy, 0)  # the round-4 tail, which the spacing keeps (tail_give)
+    return g.arc(x - rxb, cyb, rxb, ryb, -140 + lerp(F_TAIL_REG, turn, p.heavy), 0), cyb
+
+
+def tail_give(g, p, hook, rest, **kw):
+    """What the shorter Regular tail (F_TAIL_REG) takes off the ink on the left, in sidebearings: given back, so the stem keeps its
+    place and the advance its value (test_advances_at_regular_match_a855b5e0). Nothing at Black, whose tail is unchanged."""
+    left = lambda segs: min(contour_bounds(c)[0] for c in expand(Stroke(segs + rest, **kw), p.V, p.H))  # noqa: E731
+    return (left(hook) - left(g.tail_was)) / p.S
 
 
 @glyph('f', 0x66)
@@ -1276,6 +1302,7 @@ def _f(g, p):
         hook, cyb = _italic_descender(g, p, sx, F_TAIL_END)
         # square ends (cut='n'): the heavy 'v' cut turned the descender's tip into a spike and left a sliver
         g.stroke(hook + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'), cut=F_CUT if p.heavy else 'n')
+        give_tail = tail_give(g, p, hook, [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'), cut=F_CUT if p.heavy else 'n')
         # heavier, the hook ran into the feet of x, y, k, r; and the arm, 9% tight at Bold, met a T
         # The heavy hook is wider (_italic_descender) and pushed the stem right: ef, af, gef read as two words at 600-900. The f
         # sits closer instead; kern.py keeps the hook off the feet of x, y, k, r.
@@ -1283,7 +1310,7 @@ def _f(g, p):
         # Round 4 (narrower top hook and tail): -1.0 / +0.3 -> -1.6 / +0.8 at Black, so the white after the crossbar matches Regular's
         # (fu 0.68 -> 0.95 of the nn gap) and the stem sits as close to the letter before as Inter's; Bold's tuck 1.8 -> 1.0 and its
         # right side F_BOLD_OPEN wider, or 700 set ef and fu at 0.79 and 0.83 of the nn gap (Regular 0.91, 0.93)
-        g.sb = (-0.2 - 1.6 * p.heavy - F_BOLD_TUCK * p.heavy * (1 - p.heavy) + F_GIVE[1] * p.heavy / p.S, 0.15 + 0.8 * p.heavy + F_BOLD_OPEN * p.heavy * (1 - p.heavy) - give)
+        g.sb = (-0.2 - 1.6 * p.heavy - F_BOLD_TUCK * p.heavy * (1 - p.heavy) + F_GIVE[1] * p.heavy / p.S + give_tail, 0.15 + 0.8 * p.heavy + F_BOLD_OPEN * p.heavy * (1 - p.heavy) - give)
         arm = F_ARM_IT * V * p.heavy
         # Heavy, the crossbar's left end follows the slant (as Inter Italic's does), so its top corner stands back from an r's arm
         # (rf 0.61x Inter Italic's white at Black, now 0.97x) while its bottom one keeps the e's (ef at most 1.15x the nn gap). The
@@ -1542,19 +1569,27 @@ def _y(g, p):
 Z_LAP = 6
 
 
+def z_caps(p):
+    """Round 5: the italic's heavy z and Z bars end along the slant, as Inter Italic's do. Cut square, the top bar's end stood over
+    the diagonal's edge as a step on the right (and the baseline bar's on the left); Regular keeps square ends and its advances."""
+    return ('s', 's') if p.italic else ('b', 'b')
+
+
 def _z_diag(g, xr, top, xl):
     """z and Z: the diagonal from the top bar's right end (xr) to the baseline bar's left end (xl), its edges and ends anchored at
-    Black Z_LAP inside the bars' inner faces (at their centrelines up to Regular)."""
-    k = (g.p.H / 2 - Z_LAP) * g.p.heavy
-    # the bars' ends are square to the bars, so in the italic they stand where the slant puts the bars' centrelines: the anchors
-    # k above and below those move back along the slant to meet them
-    g.diag(xr + k * g.p.slant, top - g.p.H / 2 - k, xl - k * g.p.slant, g.p.H / 2 + k, 'r', 'l', ws=0.95, exact=(True, True))
+    Black Z_LAP inside the bars' inner faces (the upright's at their centrelines up to Regular)."""
+    # The italic's bars end along the slant (z_caps), through the anchors themselves, and the diagonal's edges are anchored Z_LAP
+    # inside the bars' inner faces at every weight, so they run on along those ends. (Square to the bars, the ends stood where the
+    # slant puts the bars' centrelines, and the anchors moved back along the slant to meet them; anchored at the centreline up to
+    # Regular, the edge left a shelf under the bar's end at 400-800, the step JUDGING.md lists.)
+    k = (g.p.H / 2 - Z_LAP) * (1.0 if g.p.slant else g.p.heavy)
+    g.diag(xr, top - g.p.H / 2 - k, xl, g.p.H / 2 + k, 'r', 'l', ws=0.95, exact=(True, True))
 
 
 @glyph('z', 0x7A)
 def _z(g, p):
     w = p.dnw * 0.95 + Z_WIDER * p.heavy
-    g.hbar(w * 0.04, w * 0.98, p.xh - p.H, pen=flat_pen(p)).hbar(0, w, 0, pen=flat_pen(p))
+    g.hbar(w * 0.04, w * 0.98, p.xh - p.H, pen=flat_pen(p), caps=z_caps(p)).hbar(0, w, 0, pen=flat_pen(p), caps=z_caps(p))
     _z_diag(g, w * 0.98, p.xh, 0)  # as Z's: the italic's ends stood out past the bars at Black, a step on the right
     # the italic's baseline bar slants out under the next letter: heavy, it met X and A
     g.sb = (0.64, 0.64 + ((0.12 + 1.0 * p.heavy) if p.italic else 0))
@@ -2430,7 +2465,7 @@ def _cent(g, p):
     w = fw(p) * 0.92
     cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov + 40)
     ru, rl = C_RUN_IT if p.italic else (C_RUN, C_RUN)
-    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy), caps=('b', 'b'), cut='h' if p.italic else 't', tilt=C_TILT)  # as c
+    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy), caps=('b', 'b'), cut='t', tilt=C_TILT_IT if p.italic else C_TILT)  # as c
     g.line((w * 0.53, -110), (w * 0.53, p.xh + 150), w=p.V * 0.72)
     g.tab = True
 
@@ -2641,6 +2676,7 @@ def _germandbls(g, p):
     if p.italic:  # the long-s half descends, as in the italic f and long s
         hook, cyb = _italic_descender(g, p, a)
         g.stroke(hook + [L((a, cyb), (a, cy))] + top, caps=('b', 'b'))
+        give_tail = tail_give(g, p, hook, [L((a, cyb), (a, cy))] + top, caps=('b', 'b'))
     else:
         g.stroke([L((a, 0), (a, cy))] + top)
     yt = cy - ry
@@ -2649,7 +2685,7 @@ def _germandbls(g, p):
     cxl = w - V / 2 - rxl
     g.stroke([L((w * 0.36, yt), (cxl, yt))] + g.arc(cxl, (yt + H / 2) / 2, rxl, ryl, 90, -90) + [L((cxl, H / 2), (w * 0.3, H / 2))])
     g.ht = 'a'
-    g.sb = (0.1 if p.italic else 1, 0.6)
+    g.sb = (0.1 + give_tail if p.italic else 1, 0.6)
 
 
 @glyph('uni1E9E', 0x1E9E)
@@ -2789,7 +2825,7 @@ def _longs(g, p):
     if p.italic:  # descends like the italic f, which it is the ancestor of
         hook, cyb = _italic_descender(g, p, sx)
         g.stroke(hook + [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b'))
-        g.sb = (-0.2, 0.2)
+        g.sb = (-0.2 + tail_give(g, p, hook, [L((sx, cyb), (sx, cy))] + top_hook, caps=('b', 'b')), 0.2)
     else:
         g.stroke([L((sx, 0), (sx, cy))] + top_hook, caps=('b', 'b'))
         g.sb = (1, 0.2)
