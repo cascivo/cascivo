@@ -133,10 +133,13 @@ pub fn style_rules(styles: &BTreeMap<String, String>) -> String {
 // Static output has no load handler, so the image must not stay hidden behind its placeholder.
 const EXTRA_CSS: &[(&str, &str)] = &[("image", include_str!("../assets/extra/image.css"))];
 
+/// The tabs custom element: its tag name and its key in [`SCRIPTS`].
+pub(crate) const CV_TABS: &str = "cv-tabs";
+
 /// Inline scripts, keyed by the name emitters put in `Cx::scripts`.
 const SCRIPTS: &[(&str, &str)] = &[
     ("table-sort", include_str!("../assets/extra/table-sort.js")),
-    ("cv-tabs", include_str!("../assets/extra/cv-tabs.js")),
+    (CV_TABS, include_str!("../assets/extra/cv-tabs.js")),
 ];
 
 /// Page shell: inline padding and a vertical rhythm from the brand's `gap` (default space-4).
