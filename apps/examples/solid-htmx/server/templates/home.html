@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% block main %}
+{% extends "base.html" %} {% block scripts %}
+<script type="module" nonce="{{ request.nonce }}" src="/assets/island.js"></script>
+{% endblock %} {% block main %}
 <h1>Notes</h1>
 <div
   id="save-bar"

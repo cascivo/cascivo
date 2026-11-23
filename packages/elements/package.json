@@ -5,7 +5,9 @@
   "description": "Light-DOM custom elements (cv-menu, cv-tabs, cv-combobox, cv-date-picker, cv-dialog, cv-toaster, cv-form) and the htmx glue that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure",
   "license": "MIT",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "./dist/htmx.js"
+  ],
   "exports": {
     "./package.json": "./package.json",
     "./menu": "./dist/menu.js",

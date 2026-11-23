@@ -6,11 +6,22 @@ use axum::http::{Request, StatusCode, header};
 use solid_htmx_server::router;
 use tower::ServiceExt;
 
-async fn call(req: Request<Body>) -> (StatusCode, axum::http::HeaderMap, String) {
+fn app() -> axum::Router {
     let assets = std::env::temp_dir().join("solid-htmx-smoke");
     std::fs::create_dir_all(&assets).unwrap();
     std::fs::write(assets.join("island.js"), "console.log(1)").unwrap();
-    let res = router(&assets).oneshot(req).await.unwrap();
+    router(&assets)
+}
+
+async fn call(req: Request<Body>) -> (StatusCode, axum::http::HeaderMap, String) {
+    send(app(), req).await
+}
+
+async fn send(
+    app: axum::Router,
+    req: Request<Body>,
+) -> (StatusCode, axum::http::HeaderMap, String) {
+    let res = app.oneshot(req).await.unwrap();
     let (status, headers) = (res.status(), res.headers().clone());
     let body = axum::body::to_bytes(res.into_body(), 1 << 20)
         .await
@@ -22,19 +33,35 @@ fn get(path: &str) -> Request<Body> {
     Request::get(path).body(Body::empty()).unwrap()
 }
 
-fn htmx_post(path: &str) -> Request<Body> {
+/// A same-origin htmx POST carrying the session cookie and the CSRF token the page handed out
+/// (`hx-headers` on `<body>`).
+async fn htmx_post(app: &axum::Router, path: &str) -> Request<Body> {
+    let (_, headers, page) = send(app.clone(), get("/")).await;
+    let cookie = headers[header::SET_COOKIE].to_str().unwrap();
+    let cookie = cookie.split(';').next().unwrap().to_owned();
+    let token = page
+        .split("X-CSRF-Token\":\"")
+        .nth(1)
+        .and_then(|t| t.split('"').next())
+        .expect("the page carries a CSRF token");
     Request::post(path)
         .header("hx-request", "true")
         .header("sec-fetch-site", "same-origin")
+        .header(header::COOKIE, cookie)
+        .header("x-csrf-token", token)
         .body(Body::empty())
         .unwrap()
 }
 
-/// Every `cv-*` class in the markup must exist in `@cascivo/css`'s contract.
+/// Every `cv-*` class in the markup must exist in `@cascivo/css`'s contract (element tags and
+/// ids such as `cv-toaster` are not classes).
 fn assert_contract(html: &str) {
     let contract = include_str!("../../../../../packages/css/contract.json");
     for class in html
-        .split(|c: char| c == '"' || c.is_whitespace())
+        .split("class=\"")
+        .skip(1)
+        .filter_map(|rest| rest.split('"').next())
+        .flat_map(str::split_whitespace)
         .filter(|t| t.starts_with("cv-"))
     {
         assert!(
@@ -67,7 +94,9 @@ async fn page_has_island_mount_assets_and_strict_csp() {
 
 #[tokio::test]
 async fn htmx_post_returns_only_the_fragment() {
-    let (status, _, body) = call(htmx_post("/notes")).await;
+    let app = app();
+    let req = htmx_post(&app, "/notes").await;
+    let (status, _, body) = send(app, req).await;
     assert_eq!(status, StatusCode::OK);
     assert!(body.contains("3 notes"), "{body}");
     assert!(
@@ -90,4 +119,32 @@ async fn serves_only_the_built_files() {
         call(get("/assets/secret.txt")).await.0,
         StatusCode::NOT_FOUND
     );
+}
+
+#[tokio::test]
+async fn an_htmx_post_without_the_csrf_token_is_refused() {
+    let req = Request::post("/notes")
+        .header("hx-request", "true")
+        .header("sec-fetch-site", "same-origin")
+        .body(Body::empty())
+        .unwrap();
+    assert_eq!(call(req).await.0, StatusCode::FORBIDDEN);
+}
+
+/// The fixture pages of the conformance harness (`scripts/checks/dynamic`) use only classes the
+/// contract has, and each answers 200.
+#[tokio::test]
+async fn fixture_pages_render_and_stay_on_the_contract() {
+    for path in [
+        "/c/form",
+        "/c/dialog",
+        "/c/toast",
+        "/c/island",
+        "/c/sse",
+        "/c/tabs",
+    ] {
+        let (status, _, body) = call(get(path)).await;
+        assert_eq!(status, StatusCode::OK, "{path}");
+        assert_contract(&body);
+    }
 }

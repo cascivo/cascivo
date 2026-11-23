@@ -4095,6 +4095,8 @@ dependencies = [
  "axum",
  "cascivo-server",
  "cascivo-web",
+ "futures-util",
+ "minijinja",
  "serde",
  "serde_json",
  "tokio",
