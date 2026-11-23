@@ -51,6 +51,40 @@ Path=/`; idle and absolute TTLs; unknown ids are never adopted; `rotate_id()` on
 - `hash_password`/`verify_password` (Argon2id, `password`); `Session::oauth_begin` /
   `oauth_callback` (state + PKCE S256) for OAuth providers.
 
-Features: `native` (default: tokio, `App::serve`), `password` (default), `sqlite`, `workers` (Cloudflare Workers, wasm32, no
+## Server islands
+
+```rust
+let key = IslandKey::new(&[secret.as_bytes()])?; // own derived key; `.ttl(d)`, default 1 h
+let app = App::new(engine)
+    .islands(key.clone())
+    .server_island("cart", |p: CartProps, _parts| async move {
+        Ok(View::page("cart.html").ctx(load(p.id).await?).fragment("cart"))
+    });
+// Page handler: ctx { cart: key.placeholder("cart", &CartProps { id: 3 }, "<i>…</i>")? }
+// Template: {{ cart }}  →  <div hx-get="/_island/cart?p=<b64>.<mac>" hx-trigger="load" hx-swap="outerHTML">…</div>
+```
+
+- The HMAC-SHA256 MAC covers island name, expiry and props: tampered, expired, other-key or
+  other-island tokens answer 400 and the handler never runs. Key list for rotation.
+- `placeholder` returns a safe template value (no `|safe`); its fallback is trusted markup.
+
+## SSE
+
+```rust
+let hub: Hub<Fragment> = Hub::new(&["feed", "room:*"]).max_per_key(4); // native only
+// GET /events/{room}: sse(hub.subscribe(&format!("room:{room}"), session_key)?)
+hub.publish("room:42", Fragment::new("msg", html))?; // <div hx-ext="sse" sse-connect=… sse-swap="msg">
+```
+
+- `sse(stream)` frames `Fragment { event, html }` (one `data:` line per HTML line; an event
+  name with CR/LF is dropped). Keep-alive comments need `native`.
+- `Hub`: tokio broadcast by allowlisted topic (exact, or `prefix:*` with a
+  `[A-Za-z0-9_-]{1,64}` suffix), a stream cap per subscriber key, lagging subscribers skip.
+  **Workers:** `sse` framing compiles, but there is no `Hub` and no keep-alive; fan-out there
+  needs Durable Objects, which Phase 3 does not use.
+- Feature `datastar`: `patch_elements(html, selector, PatchMode)`, `patch_signals(&json)`.
+  Datastar expressions need `unsafe-eval` in the CSP.
+
+Features: `native` (default: tokio, `App::serve`, `Hub`), `password` (default), `sqlite`, `datastar`, `workers` (Cloudflare Workers, wasm32, no
 tokio; `MaybeSend` drops `Send` without `native`). Check:
 `cargo check -p cascivo-server --target wasm32-unknown-unknown --no-default-features --features workers`.
