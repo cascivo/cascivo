@@ -6,6 +6,28 @@ export const meta: ComponentMeta = {
   category: 'navigation',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      local: 'indicator',
+      element: 'ol',
+      data: { 'data-orientation': ['horizontal', 'vertical'] },
+      children: ['step'],
+      // One step per entry of `steps`, with computed status and marker text.
+      emit: 'manual',
+    },
+    parts: {
+      step: {
+        element: 'li',
+        data: { 'data-status': ['complete', 'current', 'incomplete'] },
+        aria: ['aria-current'],
+        children: ['marker', 'text'],
+      },
+      marker: { element: 'span', aria: ['aria-hidden'], children: ['$text'] },
+      text: { element: 'span', children: ['label', 'description'] },
+      label: { element: 'span', children: ['$text'] },
+      description: { element: 'span', children: ['$text'], when: 'description' },
+    },
+  },
   states: ['complete', 'current', 'incomplete'],
   variants: ['horizontal', 'vertical'],
   sizes: [],

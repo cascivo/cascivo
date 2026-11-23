@@ -9,6 +9,23 @@ export const meta: ComponentMeta = {
   // client boundary, so this file adds none.
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      local: 'citation',
+      element: 'sup',
+      // The marker and card render inside a HoverCard, not directly under the `sup`.
+      children: ['marker', 'card'],
+      // The host name is computed, and the marker is a link or a span by URL.
+      emit: 'manual',
+    },
+    parts: {
+      marker: { element: ['a', 'span'], children: ['$text', '@visually-hidden'] },
+      card: { element: 'span', children: ['title', 'host', 'description'] },
+      title: { element: 'span', children: ['$text'] },
+      host: { element: 'span', children: ['$text'], when: 'source.url' },
+      description: { element: 'span', children: ['$text'], when: 'source.description' },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

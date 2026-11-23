@@ -6,6 +6,20 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'group',
+      role: 'group',
+      data: { 'data-spacing': ['sm', 'md', 'lg'], 'data-grid': [''] },
+      children: ['$slot', 'overflow'],
+      // Truncation by `max` and the +N count are computed from the children.
+      emit: 'manual',
+    },
+    parts: {
+      overflow: { element: 'div', aria: ['aria-label'], children: ['@avatar'], when: 'max' },
+    },
+  },
   states: ['default'],
   variants: [],
   sizes: [],

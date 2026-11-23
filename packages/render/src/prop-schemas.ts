@@ -545,7 +545,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'variant',
       required: false,
-      enum: ['default', 'secondary', 'success', 'warning', 'destructive', 'outline'],
+      enum: [
+        'default',
+        'secondary',
+        'success',
+        'warning',
+        'destructive',
+        'outline',
+        'info',
+        'primary',
+      ],
     },
     {
       name: 'size',

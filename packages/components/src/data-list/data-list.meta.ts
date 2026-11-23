@@ -6,6 +6,25 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'dl',
+      local: 'list',
+      data: {
+        'data-orientation': ['horizontal', 'vertical'],
+        'data-size': ['sm', 'md'],
+        'data-dividers': [''],
+      },
+      children: ['row', '$slot'],
+      // Rows are looped from `items`.
+      emit: 'manual',
+    },
+    parts: {
+      row: { element: 'div', children: ['term', 'detail'] },
+      term: { element: 'dt', children: ['$slot'] },
+      detail: { element: 'dd', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: ['horizontal', 'vertical'],
   sizes: ['sm', 'md'],

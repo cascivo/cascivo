@@ -7,6 +7,13 @@ export const meta: ComponentMeta = {
   category: 'feedback',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: ['span', 'p', 'div'],
+      children: ['$slot'],
+      emit: 'auto',
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

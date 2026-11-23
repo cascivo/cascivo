@@ -7,6 +7,33 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      local: 'input-group',
+      element: 'div',
+      data: { 'data-has-prefix': [''], 'data-has-suffix': [''] },
+      // InputGroupAddon and InputGroupButtons are separate components used alongside the
+      // group, so they are listed as its children.
+      children: ['addon', 'input-wrap', 'inline-addon', 'button-group'],
+      emit: 'manual',
+    },
+    parts: {
+      'input-wrap': { element: 'span', children: ['$slot'] },
+      addon: {
+        element: 'span',
+        data: { 'data-position': ['prefix', 'suffix'] },
+        children: ['$slot'],
+        when: 'prefix || suffix',
+      },
+      'inline-addon': {
+        element: 'span',
+        data: { 'data-align': ['inline-start', 'inline-end'] },
+        aria: ['aria-hidden'],
+        children: ['$slot'],
+      },
+      'button-group': { element: 'div', role: 'group', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

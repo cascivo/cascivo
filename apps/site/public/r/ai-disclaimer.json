@@ -27,6 +27,20 @@
     "category": "feedback",
     "clientJs": "none",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "p",
+        "local": "disclaimer",
+        "children": ["glyph", "$slot"],
+        "emit": "manual"
+      },
+      "parts": {
+        "glyph": {
+          "element": "svg",
+          "aria": ["aria-hidden"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

@@ -47,6 +47,28 @@
       "classes": {
         "disclaimer": "cv-ai-disclaimer-disclaimer",
         "glyph": "cv-ai-disclaimer-glyph"
+      },
+      "anatomy": {
+        "root": {
+          "element": "p",
+          "local": "disclaimer",
+          "children": [
+            "glyph",
+            "$slot"
+          ],
+          "emit": "manual",
+          "class": "cv-ai-disclaimer-disclaimer"
+        },
+        "parts": {
+          "glyph": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "glyph",
+            "class": "cv-ai-disclaimer-glyph"
+          }
+        }
       }
     },
     "ai-status": {
@@ -186,6 +208,109 @@
         "navWrapper": "cv-app-shell-navWrapper",
         "scrim": "cv-app-shell-scrim",
         "shell": "cv-app-shell-shell"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "shell",
+          "data": {
+            "data-open": [
+              "true",
+              "false"
+            ]
+          },
+          "children": [
+            "header",
+            "body",
+            "footer"
+          ],
+          "emit": "manual",
+          "class": "cv-app-shell-shell"
+        },
+        "parts": {
+          "header": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "header",
+            "class": "cv-app-shell-header"
+          },
+          "body": {
+            "element": "div",
+            "children": [
+              "navWrapper",
+              "scrim",
+              "main"
+            ],
+            "local": "body",
+            "class": "cv-app-shell-body"
+          },
+          "navWrapper": {
+            "element": "div",
+            "data": {
+              "data-cascivo-appshell-nav": [
+                ""
+              ],
+              "data-open": [
+                "true",
+                "false"
+              ]
+            },
+            "children": [
+              "navInner"
+            ],
+            "when": "nav",
+            "local": "navWrapper",
+            "class": "cv-app-shell-navWrapper"
+          },
+          "navInner": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "navInner",
+            "class": "cv-app-shell-navInner"
+          },
+          "scrim": {
+            "element": "div",
+            "data": {
+              "data-open": [
+                "true",
+                "false"
+              ]
+            },
+            "aria": [
+              "aria-hidden"
+            ],
+            "when": "nav",
+            "local": "scrim",
+            "class": "cv-app-shell-scrim"
+          },
+          "main": {
+            "element": "main",
+            "data": {
+              "data-cascivo-appshell-main": [
+                ""
+              ],
+              "data-padding": "string"
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "main",
+            "class": "cv-app-shell-main"
+          },
+          "footer": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "when": "footer",
+            "local": "footer",
+            "class": "cv-app-shell-footer"
+          }
+        }
       }
     },
     "aspect-ratio": {
@@ -195,6 +320,27 @@
       "classes": {
         "inner": "cv-aspect-ratio-inner",
         "root": "cv-aspect-ratio-root"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "children": [
+            "inner"
+          ],
+          "emit": "manual",
+          "class": "cv-aspect-ratio-root"
+        },
+        "parts": {
+          "inner": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "inner",
+            "class": "cv-aspect-ratio-inner"
+          }
+        }
       }
     },
     "avatar": {
@@ -275,6 +421,43 @@
       "classes": {
         "group": "cv-avatar-group-group",
         "overflow": "cv-avatar-group-overflow"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "group",
+          "role": "group",
+          "data": {
+            "data-spacing": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "data-grid": [
+              ""
+            ]
+          },
+          "children": [
+            "$slot",
+            "overflow"
+          ],
+          "emit": "manual",
+          "class": "cv-avatar-group-group"
+        },
+        "parts": {
+          "overflow": {
+            "element": "div",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "@avatar"
+            ],
+            "when": "max",
+            "local": "overflow",
+            "class": "cv-avatar-group-overflow"
+          }
+        }
       }
     },
     "badge": {
@@ -294,7 +477,9 @@
               "success",
               "warning",
               "destructive",
-              "outline"
+              "outline",
+              "info",
+              "primary"
             ],
             "data-size": [
               "sm",
@@ -318,6 +503,29 @@
       "classes": {
         "blockquote": "cv-blockquote-blockquote",
         "footer": "cv-blockquote-footer"
+      },
+      "anatomy": {
+        "root": {
+          "element": "blockquote",
+          "children": [
+            "$slot",
+            "footer"
+          ],
+          "emit": "auto",
+          "local": "blockquote",
+          "class": "cv-blockquote-blockquote"
+        },
+        "parts": {
+          "footer": {
+            "element": "footer",
+            "children": [
+              "$text"
+            ],
+            "when": "cite",
+            "local": "footer",
+            "class": "cv-blockquote-footer"
+          }
+        }
       }
     },
     "bottom-sheet": {
@@ -418,6 +626,30 @@
       "alias": "cv-button-group",
       "classes": {
         "buttonGroup": "cv-button-group-buttonGroup"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "buttonGroup",
+          "role": "group",
+          "data": {
+            "data-orientation": [
+              "horizontal",
+              "vertical"
+            ],
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "children": [
+            "$slot"
+          ],
+          "emit": "auto",
+          "class": "cv-button-group-buttonGroup"
+        },
+        "parts": {}
       }
     },
     "calendar": {
@@ -604,6 +836,83 @@
         "meta": "cv-chat-bubble-meta",
         "name": "cv-chat-bubble-name",
         "time": "cv-chat-bubble-time"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "bubble",
+          "data": {
+            "data-side": [
+              "start",
+              "end"
+            ]
+          },
+          "children": [
+            "avatar",
+            "content"
+          ],
+          "emit": "auto",
+          "class": "cv-chat-bubble-bubble"
+        },
+        "parts": {
+          "avatar": {
+            "element": "div",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "when": "avatar",
+            "local": "avatar",
+            "class": "cv-chat-bubble-avatar"
+          },
+          "content": {
+            "element": "div",
+            "children": [
+              "meta",
+              "body"
+            ],
+            "local": "content",
+            "class": "cv-chat-bubble-content"
+          },
+          "meta": {
+            "element": "div",
+            "children": [
+              "name",
+              "time"
+            ],
+            "when": "name || time",
+            "local": "meta",
+            "class": "cv-chat-bubble-meta"
+          },
+          "name": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "when": "name",
+            "local": "name",
+            "class": "cv-chat-bubble-name"
+          },
+          "time": {
+            "element": "time",
+            "children": [
+              "$text"
+            ],
+            "when": "time",
+            "local": "time",
+            "class": "cv-chat-bubble-time"
+          },
+          "body": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "body",
+            "class": "cv-chat-bubble-body"
+          }
+        }
       }
     },
     "checkbox": {
@@ -682,6 +991,24 @@
       "alias": "cv-code",
       "classes": {
         "code": "cv-code-code"
+      },
+      "anatomy": {
+        "root": {
+          "element": "code",
+          "data": {
+            "data-size": [
+              "sm",
+              "md"
+            ]
+          },
+          "children": [
+            "$slot"
+          ],
+          "emit": "auto",
+          "local": "code",
+          "class": "cv-code-code"
+        },
+        "parts": {}
       }
     },
     "code-snippet": {
@@ -702,6 +1029,150 @@
         "pre": "cv-code-snippet-pre",
         "root": "cv-code-snippet-root",
         "title": "cv-code-snippet-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": [
+            "span",
+            "div"
+          ],
+          "local": "root",
+          "data": {
+            "data-variant": [
+              "inline",
+              "single",
+              "multi"
+            ],
+            "data-terminal": [
+              ""
+            ]
+          },
+          "children": [
+            "bar",
+            "pre",
+            "inlineCode",
+            "copy"
+          ],
+          "emit": "manual",
+          "class": "cv-code-snippet-root"
+        },
+        "parts": {
+          "bar": {
+            "element": "div",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "dots",
+              "title"
+            ],
+            "when": "terminal",
+            "local": "bar",
+            "class": "cv-code-snippet-bar"
+          },
+          "dots": {
+            "element": "span",
+            "children": [
+              "dot"
+            ],
+            "local": "dots",
+            "class": "cv-code-snippet-dots"
+          },
+          "dot": {
+            "element": "span",
+            "local": "dot",
+            "class": "cv-code-snippet-dot"
+          },
+          "title": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "when": "title",
+            "local": "title",
+            "class": "cv-code-snippet-title"
+          },
+          "pre": {
+            "element": "pre",
+            "children": [
+              "code",
+              "line"
+            ],
+            "local": "pre",
+            "class": "cv-code-snippet-pre"
+          },
+          "code": {
+            "element": "code",
+            "children": [
+              "$text",
+              "line"
+            ],
+            "local": "code",
+            "class": "cv-code-snippet-code"
+          },
+          "line": {
+            "element": "span",
+            "children": [
+              "lineNumber",
+              "lineText"
+            ],
+            "local": "line",
+            "class": "cv-code-snippet-line"
+          },
+          "lineNumber": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "lineNumber",
+            "class": "cv-code-snippet-lineNumber"
+          },
+          "lineText": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "lineText",
+            "class": "cv-code-snippet-lineText"
+          },
+          "inlineCode": {
+            "element": "code",
+            "children": [
+              "$text"
+            ],
+            "local": "inlineCode",
+            "class": "cv-code-snippet-inlineCode"
+          },
+          "copy": {
+            "element": "button",
+            "data": {
+              "data-state": [
+                "idle",
+                "copied"
+              ]
+            },
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "icon"
+            ],
+            "when": "showCopyButton",
+            "local": "copy",
+            "class": "cv-code-snippet-copy"
+          },
+          "icon": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "icon",
+            "class": "cv-code-snippet-icon"
+          }
+        }
       }
     },
     "collapsible": {
@@ -849,6 +1320,71 @@
         "meter": "cv-context-meter-meter",
         "track": "cv-context-meter-track",
         "value": "cv-context-meter-value"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "meter",
+          "role": "meter",
+          "data": {
+            "data-level": [
+              "normal",
+              "high",
+              "full"
+            ]
+          },
+          "aria": [
+            "aria-label",
+            "aria-valuenow",
+            "aria-valuemin",
+            "aria-valuemax",
+            "aria-valuetext"
+          ],
+          "children": [
+            "header",
+            "track"
+          ],
+          "emit": "manual",
+          "class": "cv-context-meter-meter"
+        },
+        "parts": {
+          "header": {
+            "element": "div",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text",
+              "value"
+            ],
+            "local": "header",
+            "class": "cv-context-meter-header"
+          },
+          "value": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "value",
+            "class": "cv-context-meter-value"
+          },
+          "track": {
+            "element": "div",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "fill"
+            ],
+            "local": "track",
+            "class": "cv-context-meter-track"
+          },
+          "fill": {
+            "element": "div",
+            "local": "fill",
+            "class": "cv-context-meter-fill"
+          }
+        }
       }
     },
     "copy-button": {
@@ -869,6 +1405,58 @@
         "list": "cv-data-list-list",
         "row": "cv-data-list-row",
         "term": "cv-data-list-term"
+      },
+      "anatomy": {
+        "root": {
+          "element": "dl",
+          "local": "list",
+          "data": {
+            "data-orientation": [
+              "horizontal",
+              "vertical"
+            ],
+            "data-size": [
+              "sm",
+              "md"
+            ],
+            "data-dividers": [
+              ""
+            ]
+          },
+          "children": [
+            "row",
+            "$slot"
+          ],
+          "emit": "manual",
+          "class": "cv-data-list-list"
+        },
+        "parts": {
+          "row": {
+            "element": "div",
+            "children": [
+              "term",
+              "detail"
+            ],
+            "local": "row",
+            "class": "cv-data-list-row"
+          },
+          "term": {
+            "element": "dt",
+            "children": [
+              "$slot"
+            ],
+            "local": "term",
+            "class": "cv-data-list-term"
+          },
+          "detail": {
+            "element": "dd",
+            "children": [
+              "$slot"
+            ],
+            "local": "detail",
+            "class": "cv-data-list-detail"
+          }
+        }
       }
     },
     "data-table": {
@@ -1511,6 +2099,61 @@
         "icon": "cv-dock-icon",
         "item": "cv-dock-item",
         "label": "cv-dock-label"
+      },
+      "anatomy": {
+        "root": {
+          "element": "nav",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "item"
+          ],
+          "emit": "manual",
+          "local": "dock",
+          "class": "cv-dock-dock"
+        },
+        "parts": {
+          "item": {
+            "element": [
+              "button",
+              "a"
+            ],
+            "data": {
+              "data-active": [
+                "true"
+              ]
+            },
+            "aria": [
+              "aria-current"
+            ],
+            "children": [
+              "icon",
+              "label"
+            ],
+            "local": "item",
+            "class": "cv-dock-item"
+          },
+          "icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "icon",
+            "class": "cv-dock-icon"
+          },
+          "label": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-dock-label"
+          }
+        }
       }
     },
     "drawer": {
@@ -1565,6 +2208,66 @@
         "empty-state": "cv-empty-state-empty-state",
         "icon": "cv-empty-state-icon",
         "title": "cv-empty-state-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "data": {
+            "data-size": [
+              "md",
+              "lg"
+            ]
+          },
+          "children": [
+            "icon",
+            "title",
+            "description",
+            "action"
+          ],
+          "emit": "auto",
+          "local": "empty-state",
+          "class": "cv-empty-state-empty-state"
+        },
+        "parts": {
+          "icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "when": "icon",
+            "local": "icon",
+            "class": "cv-empty-state-icon"
+          },
+          "title": {
+            "element": "h3",
+            "children": [
+              "$text"
+            ],
+            "local": "title",
+            "class": "cv-empty-state-title"
+          },
+          "description": {
+            "element": "p",
+            "children": [
+              "$text"
+            ],
+            "when": "description",
+            "local": "description",
+            "class": "cv-empty-state-description"
+          },
+          "action": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "when": "action",
+            "local": "action",
+            "class": "cv-empty-state-action"
+          }
+        }
       }
     },
     "fab": {
@@ -1684,6 +2387,87 @@
         "list": "cv-header-list",
         "nav": "cv-header-nav",
         "spacer": "cv-header-spacer"
+      },
+      "anatomy": {
+        "root": {
+          "element": "header",
+          "role": "banner",
+          "data": {
+            "data-sticky": [
+              "true"
+            ]
+          },
+          "children": [
+            "brand",
+            "nav",
+            "spacer",
+            "actions"
+          ],
+          "emit": "manual",
+          "local": "header",
+          "class": "cv-header-header"
+        },
+        "parts": {
+          "brand": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "when": "brand",
+            "local": "brand",
+            "class": "cv-header-brand"
+          },
+          "nav": {
+            "element": "nav",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "list"
+            ],
+            "when": "links",
+            "local": "nav",
+            "class": "cv-header-nav"
+          },
+          "list": {
+            "element": "ul",
+            "children": [
+              "link"
+            ],
+            "local": "list",
+            "class": "cv-header-list"
+          },
+          "link": {
+            "element": "a",
+            "data": {
+              "data-state": [
+                "active"
+              ]
+            },
+            "aria": [
+              "aria-current"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "link",
+            "class": "cv-header-link"
+          },
+          "spacer": {
+            "element": "div",
+            "local": "spacer",
+            "class": "cv-header-spacer"
+          },
+          "actions": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "when": "actions",
+            "local": "actions",
+            "class": "cv-header-actions"
+          }
+        }
       }
     },
     "header-panel": {
@@ -1704,6 +2488,34 @@
       "alias": "cv-heading",
       "classes": {
         "heading": "cv-heading-heading"
+      },
+      "anatomy": {
+        "root": {
+          "element": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6"
+          ],
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg",
+              "xl",
+              "2xl"
+            ]
+          },
+          "children": [
+            "$slot"
+          ],
+          "emit": "manual",
+          "local": "heading",
+          "class": "cv-heading-heading"
+        },
+        "parts": {}
       }
     },
     "hover-card": {
@@ -1721,6 +2533,36 @@
       "alias": "cv-icon-button",
       "classes": {
         "iconButton": "cv-icon-button-iconButton"
+      },
+      "anatomy": {
+        "root": {
+          "local": "iconButton",
+          "element": [
+            "button",
+            "a"
+          ],
+          "data": {
+            "data-variant": [
+              "ghost",
+              "outline",
+              "filled"
+            ],
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "$slot"
+          ],
+          "emit": "manual",
+          "class": "cv-icon-button-iconButton"
+        },
+        "parts": {}
       }
     },
     "image": {
@@ -1741,6 +2583,39 @@
       "classes": {
         "indicator": "cv-indicator-indicator",
         "overlay": "cv-indicator-overlay"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "data": {
+            "data-placement": [
+              "top-start",
+              "top-end",
+              "bottom-start",
+              "bottom-end"
+            ]
+          },
+          "children": [
+            "$slot",
+            "overlay"
+          ],
+          "emit": "auto",
+          "local": "indicator",
+          "class": "cv-indicator-indicator"
+        },
+        "parts": {
+          "overlay": {
+            "element": "div",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "overlay",
+            "class": "cv-indicator-overlay"
+          }
+        }
       }
     },
     "infinite-scroll": {
@@ -1764,6 +2639,68 @@
         "host": "cv-inline-citation-host",
         "marker": "cv-inline-citation-marker",
         "title": "cv-inline-citation-title"
+      },
+      "anatomy": {
+        "root": {
+          "local": "citation",
+          "element": "sup",
+          "children": [
+            "marker",
+            "card"
+          ],
+          "emit": "manual",
+          "class": "cv-inline-citation-citation"
+        },
+        "parts": {
+          "marker": {
+            "element": [
+              "a",
+              "span"
+            ],
+            "children": [
+              "$text",
+              "@visually-hidden"
+            ],
+            "local": "marker",
+            "class": "cv-inline-citation-marker"
+          },
+          "card": {
+            "element": "span",
+            "children": [
+              "title",
+              "host",
+              "description"
+            ],
+            "local": "card",
+            "class": "cv-inline-citation-card"
+          },
+          "title": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "title",
+            "class": "cv-inline-citation-title"
+          },
+          "host": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "when": "source.url",
+            "local": "host",
+            "class": "cv-inline-citation-host"
+          },
+          "description": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "when": "source.description",
+            "local": "description",
+            "class": "cv-inline-citation-description"
+          }
+        }
       }
     },
     "inline-loading": {
@@ -1776,6 +2713,65 @@
         "inline-loading": "cv-inline-loading-inline-loading",
         "label": "cv-inline-loading-label",
         "spinner": "cv-inline-loading-spinner"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "role": "status",
+          "aria": [
+            "aria-live"
+          ],
+          "data": {
+            "data-status": [
+              "inactive",
+              "active",
+              "finished",
+              "error"
+            ]
+          },
+          "children": [
+            "indicator",
+            "label"
+          ],
+          "emit": "manual",
+          "local": "inline-loading",
+          "class": "cv-inline-loading-inline-loading"
+        },
+        "parts": {
+          "indicator": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "spinner",
+              "icon"
+            ],
+            "local": "indicator",
+            "class": "cv-inline-loading-indicator"
+          },
+          "spinner": {
+            "element": "span",
+            "when": "status === 'active'",
+            "local": "spinner",
+            "class": "cv-inline-loading-spinner"
+          },
+          "icon": {
+            "element": "svg",
+            "when": "status === 'finished' || status === 'error'",
+            "local": "icon",
+            "class": "cv-inline-loading-icon"
+          },
+          "label": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "when": "label",
+            "local": "label",
+            "class": "cv-inline-loading-label"
+          }
+        }
       }
     },
     "input": {
@@ -1869,6 +2865,79 @@
         "inline-addon": "cv-input-group-inline-addon",
         "input-group": "cv-input-group-input-group",
         "input-wrap": "cv-input-group-input-wrap"
+      },
+      "anatomy": {
+        "root": {
+          "local": "input-group",
+          "element": "div",
+          "data": {
+            "data-has-prefix": [
+              ""
+            ],
+            "data-has-suffix": [
+              ""
+            ]
+          },
+          "children": [
+            "addon",
+            "input-wrap",
+            "inline-addon",
+            "button-group"
+          ],
+          "emit": "manual",
+          "class": "cv-input-group-input-group"
+        },
+        "parts": {
+          "input-wrap": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "local": "input-wrap",
+            "class": "cv-input-group-input-wrap"
+          },
+          "addon": {
+            "element": "span",
+            "data": {
+              "data-position": [
+                "prefix",
+                "suffix"
+              ]
+            },
+            "children": [
+              "$slot"
+            ],
+            "when": "prefix || suffix",
+            "local": "addon",
+            "class": "cv-input-group-addon"
+          },
+          "inline-addon": {
+            "element": "span",
+            "data": {
+              "data-align": [
+                "inline-start",
+                "inline-end"
+              ]
+            },
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "inline-addon",
+            "class": "cv-input-group-inline-addon"
+          },
+          "button-group": {
+            "element": "div",
+            "role": "group",
+            "children": [
+              "$slot"
+            ],
+            "local": "button-group",
+            "class": "cv-input-group-button-group"
+          }
+        }
       }
     },
     "item": {
@@ -1882,6 +2951,77 @@
         "item": "cv-item-item",
         "media": "cv-item-media",
         "title": "cv-item-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": [
+            "div",
+            "a"
+          ],
+          "data": {
+            "data-variant": [
+              "default",
+              "muted"
+            ],
+            "data-size": [
+              "sm",
+              "md"
+            ]
+          },
+          "children": [
+            "$slot",
+            "media",
+            "content",
+            "actions"
+          ],
+          "emit": "manual",
+          "local": "item",
+          "class": "cv-item-item"
+        },
+        "parts": {
+          "media": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "media",
+            "class": "cv-item-media"
+          },
+          "content": {
+            "element": "div",
+            "children": [
+              "$slot",
+              "title",
+              "description"
+            ],
+            "local": "content",
+            "class": "cv-item-content"
+          },
+          "title": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "title",
+            "class": "cv-item-title"
+          },
+          "description": {
+            "element": "p",
+            "children": [
+              "$slot"
+            ],
+            "local": "description",
+            "class": "cv-item-description"
+          },
+          "actions": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "actions",
+            "class": "cv-item-actions"
+          }
+        }
       }
     },
     "join": {
@@ -1890,6 +3030,24 @@
       "alias": "cv-join",
       "classes": {
         "join": "cv-join-join"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "data": {
+            "data-orientation": [
+              "horizontal",
+              "vertical"
+            ]
+          },
+          "children": [
+            "$slot"
+          ],
+          "emit": "auto",
+          "local": "join",
+          "class": "cv-join-join"
+        },
+        "parts": {}
       }
     },
     "kbd": {
@@ -1898,6 +3056,24 @@
       "alias": "cv-kbd",
       "classes": {
         "kbd": "cv-kbd-kbd"
+      },
+      "anatomy": {
+        "root": {
+          "element": "kbd",
+          "data": {
+            "data-size": [
+              "sm",
+              "md"
+            ]
+          },
+          "children": [
+            "$slot"
+          ],
+          "emit": "auto",
+          "local": "kbd",
+          "class": "cv-kbd-kbd"
+        },
+        "parts": {}
       }
     },
     "label": {
@@ -1908,6 +3084,47 @@
         "label": "cv-label-label",
         "marker": "cv-label-marker",
         "srOnly": "cv-label-srOnly"
+      },
+      "anatomy": {
+        "root": {
+          "element": "label",
+          "data": {
+            "data-disabled": [
+              ""
+            ]
+          },
+          "children": [
+            "$slot",
+            "marker",
+            "srOnly"
+          ],
+          "emit": "manual",
+          "local": "label",
+          "class": "cv-label-label"
+        },
+        "parts": {
+          "marker": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "when": "required",
+            "local": "marker",
+            "class": "cv-label-marker"
+          },
+          "srOnly": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "when": "required",
+            "local": "srOnly",
+            "class": "cv-label-srOnly"
+          }
+        }
       }
     },
     "large-title-header": {
@@ -1921,6 +3138,68 @@
         "root": "cv-large-title-header-root",
         "slot": "cv-large-title-header-slot",
         "slotEnd": "cv-large-title-header-slotEnd"
+      },
+      "anatomy": {
+        "root": {
+          "local": "root",
+          "element": "div",
+          "children": [
+            "bar",
+            "largeTitle",
+            "$slot"
+          ],
+          "emit": "manual",
+          "class": "cv-large-title-header-root"
+        },
+        "parts": {
+          "bar": {
+            "element": "div",
+            "children": [
+              "slot",
+              "compactTitle",
+              "slot"
+            ],
+            "local": "bar",
+            "class": "cv-large-title-header-bar"
+          },
+          "slot": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "slot",
+            "class": "cv-large-title-header-slot",
+            "modifiers": {
+              "slotEnd": {
+                "class": "cv-large-title-header-slotEnd",
+                "when": "actions"
+              }
+            }
+          },
+          "compactTitle": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "compactTitle",
+            "class": "cv-large-title-header-compactTitle"
+          },
+          "largeTitle": {
+            "element": [
+              "h1",
+              "h2",
+              "h3"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "largeTitle",
+            "class": "cv-large-title-header-largeTitle"
+          }
+        }
       }
     },
     "link": {
@@ -1929,6 +3208,32 @@
       "alias": "cv-link",
       "classes": {
         "link": "cv-link-link"
+      },
+      "anatomy": {
+        "root": {
+          "element": "a",
+          "data": {
+            "data-variant": [
+              "standalone",
+              "inline"
+            ],
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "data-external": [
+              "true"
+            ]
+          },
+          "children": [
+            "$slot"
+          ],
+          "emit": "manual",
+          "local": "link",
+          "class": "cv-link-link"
+        },
+        "parts": {}
       }
     },
     "list": {
@@ -1938,6 +3243,37 @@
       "classes": {
         "item": "cv-list-item",
         "list": "cv-list-list"
+      },
+      "anatomy": {
+        "root": {
+          "element": [
+            "ul",
+            "ol"
+          ],
+          "data": {
+            "data-marker": [
+              "disc",
+              "decimal",
+              "none"
+            ]
+          },
+          "children": [
+            "item"
+          ],
+          "emit": "manual",
+          "local": "list",
+          "class": "cv-list-list"
+        },
+        "parts": {
+          "item": {
+            "element": "li",
+            "children": [
+              "$slot"
+            ],
+            "local": "item",
+            "class": "cv-list-item"
+          }
+        }
       }
     },
     "log-viewer": {
@@ -2290,6 +3626,10 @@
               "sm",
               "md",
               "lg"
+            ],
+            "data-state": [
+              "determinate",
+              "indeterminate"
             ]
           },
           "aria": [
@@ -2314,6 +3654,86 @@
         "label": "cv-progress-bar-label",
         "progress": "cv-progress-bar-progress",
         "track": "cv-progress-bar-track"
+      },
+      "anatomy": {
+        "root": {
+          "local": "progress",
+          "element": "div",
+          "data": {
+            "data-status": [
+              "active",
+              "success",
+              "error"
+            ],
+            "data-size": [
+              "sm",
+              "md"
+            ],
+            "data-state": [
+              "indeterminate"
+            ]
+          },
+          "children": [
+            "label",
+            "track",
+            "helper"
+          ],
+          "emit": "manual",
+          "class": "cv-progress-bar-progress"
+        },
+        "parts": {
+          "label": {
+            "element": "span",
+            "children": [
+              "$text",
+              "glyph"
+            ],
+            "when": "label",
+            "local": "label",
+            "class": "cv-progress-bar-label"
+          },
+          "glyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "when": "status",
+            "local": "glyph",
+            "class": "cv-progress-bar-glyph"
+          },
+          "track": {
+            "element": "div",
+            "role": "progressbar",
+            "aria": [
+              "aria-valuemin",
+              "aria-valuemax",
+              "aria-valuenow",
+              "aria-labelledby"
+            ],
+            "children": [
+              "fill"
+            ],
+            "local": "track",
+            "class": "cv-progress-bar-track"
+          },
+          "fill": {
+            "element": "div",
+            "local": "fill",
+            "class": "cv-progress-bar-fill"
+          },
+          "helper": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "when": "helperText",
+            "local": "helper",
+            "class": "cv-progress-bar-helper"
+          }
+        }
       }
     },
     "progress-circle": {
@@ -2326,6 +3746,65 @@
         "svg": "cv-progress-circle-svg",
         "track": "cv-progress-circle-track",
         "value": "cv-progress-circle-value"
+      },
+      "anatomy": {
+        "root": {
+          "local": "progressCircle",
+          "element": "div",
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "role": "progressbar",
+          "aria": [
+            "aria-valuemin",
+            "aria-valuemax",
+            "aria-valuenow",
+            "aria-label"
+          ],
+          "children": [
+            "svg",
+            "value"
+          ],
+          "emit": "manual",
+          "class": "cv-progress-circle-progressCircle"
+        },
+        "parts": {
+          "svg": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "track",
+              "fill"
+            ],
+            "local": "svg",
+            "class": "cv-progress-circle-svg"
+          },
+          "track": {
+            "element": "circle",
+            "local": "track",
+            "class": "cv-progress-circle-track"
+          },
+          "fill": {
+            "element": "circle",
+            "local": "fill",
+            "class": "cv-progress-circle-fill"
+          },
+          "value": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "when": "showValue",
+            "local": "value",
+            "class": "cv-progress-circle-value"
+          }
+        }
       }
     },
     "progress-indicator": {
@@ -2339,6 +3818,81 @@
         "marker": "cv-progress-indicator-marker",
         "step": "cv-progress-indicator-step",
         "text": "cv-progress-indicator-text"
+      },
+      "anatomy": {
+        "root": {
+          "local": "indicator",
+          "element": "ol",
+          "data": {
+            "data-orientation": [
+              "horizontal",
+              "vertical"
+            ]
+          },
+          "children": [
+            "step"
+          ],
+          "emit": "manual",
+          "class": "cv-progress-indicator-indicator"
+        },
+        "parts": {
+          "step": {
+            "element": "li",
+            "data": {
+              "data-status": [
+                "complete",
+                "current",
+                "incomplete"
+              ]
+            },
+            "aria": [
+              "aria-current"
+            ],
+            "children": [
+              "marker",
+              "text"
+            ],
+            "local": "step",
+            "class": "cv-progress-indicator-step"
+          },
+          "marker": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "marker",
+            "class": "cv-progress-indicator-marker"
+          },
+          "text": {
+            "element": "span",
+            "children": [
+              "label",
+              "description"
+            ],
+            "local": "text",
+            "class": "cv-progress-indicator-text"
+          },
+          "label": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-progress-indicator-label"
+          },
+          "description": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "when": "description",
+            "local": "description",
+            "class": "cv-progress-indicator-description"
+          }
+        }
       }
     },
     "prompt-suggestions": {
@@ -2356,6 +3910,18 @@
       "alias": "cv-prose",
       "classes": {
         "prose": "cv-prose-prose"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "children": [
+            "$slot"
+          ],
+          "emit": "auto",
+          "local": "prose",
+          "class": "cv-prose-prose"
+        },
+        "parts": {}
       }
     },
     "pull-to-refresh": {
@@ -2377,6 +3943,28 @@
       "classes": {
         "qrCode": "cv-qr-code-qrCode",
         "svg": "cv-qr-code-svg"
+      },
+      "anatomy": {
+        "root": {
+          "local": "qrCode",
+          "element": "div",
+          "children": [
+            "svg"
+          ],
+          "emit": "manual",
+          "class": "cv-qr-code-qrCode"
+        },
+        "parts": {
+          "svg": {
+            "element": "svg",
+            "role": "img",
+            "aria": [
+              "aria-label"
+            ],
+            "local": "svg",
+            "class": "cv-qr-code-svg"
+          }
+        }
       }
     },
     "radial-progress": {
@@ -2386,6 +3974,49 @@
       "classes": {
         "label": "cv-radial-progress-label",
         "radialProgress": "cv-radial-progress-radialProgress"
+      },
+      "anatomy": {
+        "root": {
+          "local": "radialProgress",
+          "element": "div",
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "data-variant": [
+              "primary",
+              "info",
+              "success",
+              "warning",
+              "error"
+            ]
+          },
+          "role": "progressbar",
+          "aria": [
+            "aria-valuenow",
+            "aria-valuemin",
+            "aria-valuemax",
+            "aria-labelledby",
+            "aria-label"
+          ],
+          "children": [
+            "label"
+          ],
+          "emit": "manual",
+          "class": "cv-radial-progress-radialProgress"
+        },
+        "parts": {
+          "label": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "local": "label",
+            "class": "cv-radial-progress-label"
+          }
+        }
       }
     },
     "radio": {
@@ -2441,6 +4072,18 @@
       "alias": "cv-relative-time",
       "classes": {
         "relativeTime": "cv-relative-time-relativeTime"
+      },
+      "anatomy": {
+        "root": {
+          "local": "relativeTime",
+          "element": "time",
+          "children": [
+            "$text"
+          ],
+          "emit": "manual",
+          "class": "cv-relative-time-relativeTime"
+        },
+        "parts": {}
       }
     },
     "reorder-list": {
@@ -2474,6 +4117,34 @@
       "alias": "cv-scroll-area",
       "classes": {
         "root": "cv-scroll-area-root"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "data": {
+            "data-orientation": [
+              "vertical",
+              "horizontal",
+              "both"
+            ],
+            "data-edges": [
+              "shadow",
+              "mask",
+              "none"
+            ],
+            "data-scroll-top": "boolean",
+            "data-scroll-bottom": "boolean",
+            "data-scroll-start": "boolean",
+            "data-scroll-end": "boolean"
+          },
+          "children": [
+            "$slot"
+          ],
+          "emit": "manual",
+          "class": "cv-scroll-area-root"
+        },
+        "parts": {}
       }
     },
     "search": {
@@ -2687,6 +4358,22 @@
       "alias": "cv-shimmer-text",
       "classes": {
         "shimmer-text": "cv-shimmer-text-shimmer-text"
+      },
+      "anatomy": {
+        "root": {
+          "element": [
+            "span",
+            "p",
+            "div"
+          ],
+          "children": [
+            "$slot"
+          ],
+          "emit": "auto",
+          "local": "shimmer-text",
+          "class": "cv-shimmer-text-shimmer-text"
+        },
+        "parts": {}
       }
     },
     "side-nav": {
@@ -2730,6 +4417,36 @@
       "classes": {
         "line": "cv-skeleton-line",
         "skeleton": "cv-skeleton-skeleton"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "data": {
+            "data-variant": [
+              "text",
+              "circle",
+              "rect"
+            ],
+            "data-ai": "boolean"
+          },
+          "aria": [
+            "aria-hidden"
+          ],
+          "children": [
+            "line"
+          ],
+          "emit": "manual",
+          "local": "skeleton",
+          "class": "cv-skeleton-skeleton"
+        },
+        "parts": {
+          "line": {
+            "element": "span",
+            "when": "variant === 'text'",
+            "local": "line",
+            "class": "cv-skeleton-line"
+          }
+        }
       }
     },
     "skip-nav": {
@@ -2738,6 +4455,18 @@
       "alias": "cv-skip-nav",
       "classes": {
         "link": "cv-skip-nav-link"
+      },
+      "anatomy": {
+        "root": {
+          "element": "a",
+          "local": "link",
+          "children": [
+            "$text"
+          ],
+          "emit": "manual",
+          "class": "cv-skip-nav-link"
+        },
+        "parts": {}
       }
     },
     "slider": {
@@ -2780,6 +4509,27 @@
       "classes": {
         "layer": "cv-stack-layer",
         "stack": "cv-stack-stack"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "children": [
+            "layer"
+          ],
+          "emit": "manual",
+          "local": "stack",
+          "class": "cv-stack-stack"
+        },
+        "parts": {
+          "layer": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "layer",
+            "class": "cv-stack-layer"
+          }
+        }
       }
     },
     "stat": {
@@ -2892,6 +4642,38 @@
       "classes": {
         "dot": "cv-status-dot",
         "status": "cv-status-status"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "data": {
+            "data-status": [
+              "success",
+              "warning",
+              "error",
+              "info",
+              "neutral"
+            ],
+            "data-pulse": "boolean"
+          },
+          "children": [
+            "dot",
+            "$slot"
+          ],
+          "emit": "manual",
+          "local": "status",
+          "class": "cv-status-status"
+        },
+        "parts": {
+          "dot": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "dot",
+            "class": "cv-status-dot"
+          }
+        }
       }
     },
     "steps": {
@@ -2963,6 +4745,61 @@
         "icon": "cv-switcher-icon",
         "item": "cv-switcher-item",
         "switcher": "cv-switcher-switcher"
+      },
+      "anatomy": {
+        "root": {
+          "element": "ul",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "item",
+            "divider"
+          ],
+          "emit": "manual",
+          "local": "switcher",
+          "class": "cv-switcher-switcher"
+        },
+        "parts": {
+          "item": {
+            "element": "a",
+            "data": {
+              "data-state": [
+                "active"
+              ]
+            },
+            "aria": [
+              "aria-current"
+            ],
+            "children": [
+              "icon",
+              "$text"
+            ],
+            "local": "item",
+            "class": "cv-switcher-item"
+          },
+          "icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "when": "icon",
+            "local": "icon",
+            "class": "cv-switcher-icon"
+          },
+          "divider": {
+            "element": "span",
+            "role": "separator",
+            "aria": [
+              "aria-orientation"
+            ],
+            "local": "divider",
+            "class": "cv-switcher-divider"
+          }
+        }
       }
     },
     "tabs": {
@@ -3072,6 +4909,35 @@
       "alias": "cv-text",
       "classes": {
         "text": "cv-text-text"
+      },
+      "anatomy": {
+        "root": {
+          "element": [
+            "p",
+            "span",
+            "div"
+          ],
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "data-weight": [
+              "normal",
+              "medium",
+              "semibold"
+            ],
+            "data-muted": "boolean"
+          },
+          "children": [
+            "$slot"
+          ],
+          "emit": "auto",
+          "local": "text",
+          "class": "cv-text-text"
+        },
+        "parts": {}
       }
     },
     "textarea": {
@@ -3120,6 +4986,99 @@
         "marker": "cv-timeline-marker",
         "time": "cv-timeline-time",
         "title": "cv-timeline-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "ol",
+          "local": "list",
+          "data": {
+            "data-orientation": [
+              "vertical",
+              "horizontal"
+            ]
+          },
+          "children": [
+            "item"
+          ],
+          "emit": "manual",
+          "class": "cv-timeline-list"
+        },
+        "parts": {
+          "item": {
+            "element": "li",
+            "data": {
+              "data-status": [
+                "complete",
+                "current",
+                "upcoming",
+                "error"
+              ],
+              "data-tone": [
+                "neutral",
+                "info",
+                "success",
+                "warning",
+                "danger"
+              ]
+            },
+            "aria": [
+              "aria-current"
+            ],
+            "children": [
+              "marker",
+              "content"
+            ],
+            "local": "item",
+            "class": "cv-timeline-item"
+          },
+          "marker": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "marker",
+            "class": "cv-timeline-marker"
+          },
+          "content": {
+            "element": "div",
+            "children": [
+              "title",
+              "time",
+              "description"
+            ],
+            "local": "content",
+            "class": "cv-timeline-content"
+          },
+          "title": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "title",
+            "class": "cv-timeline-title"
+          },
+          "time": {
+            "element": "time",
+            "children": [
+              "$text"
+            ],
+            "when": "time",
+            "local": "time",
+            "class": "cv-timeline-time"
+          },
+          "description": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "when": "description",
+            "local": "description",
+            "class": "cv-timeline-description"
+          }
+        }
       }
     },
     "toast": {
@@ -3228,6 +5187,18 @@
       "alias": "cv-toc",
       "classes": {
         "toc": "cv-toc-toc"
+      },
+      "anatomy": {
+        "root": {
+          "element": "nav",
+          "aria": [
+            "aria-label"
+          ],
+          "emit": "manual",
+          "local": "toc",
+          "class": "cv-toc-toc"
+        },
+        "parts": {}
       }
     },
     "toggle": {
@@ -3311,6 +5282,33 @@
       "classes": {
         "dot": "cv-typing-indicator-dot",
         "typing-indicator": "cv-typing-indicator-typing-indicator"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "role": "status",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "dot",
+            "dot",
+            "dot"
+          ],
+          "emit": "manual",
+          "local": "typing-indicator",
+          "class": "cv-typing-indicator-typing-indicator"
+        },
+        "parts": {
+          "dot": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "dot",
+            "class": "cv-typing-indicator-dot"
+          }
+        }
       }
     },
     "user": {
@@ -3323,6 +5321,57 @@
         "name": "cv-user-name",
         "text": "cv-user-text",
         "user": "cv-user-user"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "role": "group",
+          "children": [
+            "@avatar",
+            "text",
+            "action"
+          ],
+          "emit": "manual",
+          "local": "user",
+          "class": "cv-user-user"
+        },
+        "parts": {
+          "text": {
+            "element": "span",
+            "children": [
+              "name",
+              "description"
+            ],
+            "local": "text",
+            "class": "cv-user-text"
+          },
+          "name": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "local": "name",
+            "class": "cv-user-name"
+          },
+          "description": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "when": "description",
+            "local": "description",
+            "class": "cv-user-description"
+          },
+          "action": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "when": "children",
+            "local": "action",
+            "class": "cv-user-action"
+          }
+        }
       }
     },
     "virtual-list": {
@@ -3341,6 +5390,18 @@
       "alias": "cv-visually-hidden",
       "classes": {
         "visuallyHidden": "cv-visually-hidden-visuallyHidden"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "local": "visuallyHidden",
+          "children": [
+            "$slot"
+          ],
+          "emit": "auto",
+          "class": "cv-visually-hidden-visuallyHidden"
+        },
+        "parts": {}
       }
     },
     "wheel-picker": {

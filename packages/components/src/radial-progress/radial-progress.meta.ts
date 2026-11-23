@@ -7,6 +7,25 @@ export const meta: ComponentMeta = {
   category: 'feedback',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      local: 'radialProgress',
+      element: 'div',
+      data: {
+        'data-size': ['sm', 'md', 'lg'],
+        'data-variant': ['primary', 'info', 'success', 'warning', 'error'],
+      },
+      role: 'progressbar',
+      aria: ['aria-valuenow', 'aria-valuemin', 'aria-valuemax', 'aria-labelledby', 'aria-label'],
+      children: ['label'],
+      // The value is clamped, the name falls back to the label span's generated id, and the
+      // default text is a formatted percentage.
+      emit: 'manual',
+    },
+    parts: {
+      label: { element: 'span', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: ['primary', 'info', 'success', 'warning', 'error'],
   sizes: ['sm', 'md', 'lg'],

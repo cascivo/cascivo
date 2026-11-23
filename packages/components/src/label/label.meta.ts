@@ -6,6 +6,20 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      // `asChild` puts the label classes on the caller's element.
+      element: 'label',
+      data: { 'data-disabled': [''] },
+      children: ['$slot', 'marker', 'srOnly'],
+      // The required-marker text comes from the i18n catalog or a `labels` override.
+      emit: 'manual',
+    },
+    parts: {
+      marker: { element: 'span', aria: ['aria-hidden'], children: ['$text'], when: 'required' },
+      srOnly: { element: 'span', children: ['$text'], when: 'required' },
+    },
+  },
   states: ['default', 'disabled'],
   variants: [],
   sizes: [],

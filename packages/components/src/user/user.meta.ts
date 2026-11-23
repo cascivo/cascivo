@@ -6,6 +6,21 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      role: 'group',
+      children: ['@avatar', 'text', 'action'],
+      // Avatar props are derived from `name` at render time.
+      emit: 'manual',
+    },
+    parts: {
+      text: { element: 'span', children: ['name', 'description'] },
+      name: { element: 'span', children: ['$slot'] },
+      description: { element: 'span', children: ['$slot'], when: 'description' },
+      action: { element: 'span', children: ['$slot'], when: 'children' },
+    },
+  },
   states: ['default'],
   variants: [],
   sizes: [],

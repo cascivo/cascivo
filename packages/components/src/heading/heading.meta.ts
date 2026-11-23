@@ -6,6 +6,15 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      data: { 'data-size': ['sm', 'md', 'lg', 'xl', '2xl'] },
+      children: ['$slot'],
+      // `data-size` defaults from `level` when `size` is omitted.
+      emit: 'manual',
+    },
+  },
   states: [],
   variants: [],
   sizes: ['sm', 'md', 'lg', 'xl', '2xl'],

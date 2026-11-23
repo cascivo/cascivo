@@ -6,6 +6,24 @@ export const meta: ComponentMeta = {
   category: 'feedback',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      local: 'progressCircle',
+      element: 'div',
+      data: { 'data-size': ['sm', 'md', 'lg'] },
+      role: 'progressbar',
+      aria: ['aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'aria-label'],
+      children: ['svg', 'value'],
+      // The arc offset and the percentage text are computed from `value` and `max`.
+      emit: 'manual',
+    },
+    parts: {
+      svg: { element: 'svg', aria: ['aria-hidden'], children: ['track', 'fill'] },
+      track: { element: 'circle' },
+      fill: { element: 'circle' },
+      value: { element: 'span', children: ['$text'], when: 'showValue' },
+    },
+  },
   states: [],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

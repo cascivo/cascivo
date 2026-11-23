@@ -28,6 +28,27 @@
     "category": "display",
     "clientJs": "none",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "group",
+        "role": "group",
+        "data": {
+          "data-spacing": ["sm", "md", "lg"],
+          "data-grid": [""]
+        },
+        "children": ["$slot", "overflow"],
+        "emit": "manual"
+      },
+      "parts": {
+        "overflow": {
+          "element": "div",
+          "aria": ["aria-label"],
+          "children": ["@avatar"],
+          "when": "max"
+        }
+      }
+    },
     "states": ["default"],
     "variants": [],
     "sizes": [],

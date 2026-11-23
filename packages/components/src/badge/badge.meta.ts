@@ -10,7 +10,16 @@ export const meta: ComponentMeta = {
     root: {
       element: 'span',
       data: {
-        'data-variant': ['default', 'secondary', 'success', 'warning', 'destructive', 'outline'],
+        'data-variant': [
+          'default',
+          'secondary',
+          'success',
+          'warning',
+          'destructive',
+          'outline',
+          'info',
+          'primary',
+        ],
         'data-size': ['sm', 'md'],
       },
       children: ['$slot'],
@@ -19,14 +28,23 @@ export const meta: ComponentMeta = {
     },
   },
   states: [],
-  variants: ['default', 'secondary', 'success', 'warning', 'destructive', 'outline'],
+  variants: [
+    'default',
+    'secondary',
+    'success',
+    'warning',
+    'destructive',
+    'outline',
+    'info',
+    'primary',
+  ],
   sizes: ['sm', 'md'],
   props: [
     {
       name: 'variant',
       description:
         "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only).",
-      type: "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'",
+      type: "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline' | 'info' | 'primary'",
       required: false,
       default: 'default',
     },

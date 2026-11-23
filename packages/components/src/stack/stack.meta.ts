@@ -7,6 +7,17 @@ export const meta: ComponentMeta = {
   category: 'layout',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      children: ['layer'],
+      // One `layer` per child, each with a computed index custom property.
+      emit: 'manual',
+    },
+    parts: {
+      layer: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

@@ -6,6 +6,18 @@ export const meta: ComponentMeta = {
   category: 'layout',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'root',
+      children: ['inner'],
+      // The `ratio` prop becomes an inline custom property, which is a computed value.
+      emit: 'manual',
+    },
+    parts: {
+      inner: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

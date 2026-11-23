@@ -124,7 +124,7 @@ pub static CATALOG: &[CompSpec] = &[
         aliases: &[],
         args: &[],
         props: &[
-            PropSpec { name: "variant", kind: PropKind::Enum(&["default", "secondary", "success", "warning", "destructive", "outline"]), default: Some("default"), summary: "Severity tone" },
+            PropSpec { name: "variant", kind: PropKind::Enum(&["default", "secondary", "success", "warning", "destructive", "outline", "info", "primary"]), default: Some("default"), summary: "Severity tone" },
             PropSpec { name: "size", kind: PropKind::Enum(&["sm", "md"]), default: Some("md"), summary: "Visual size of the component (e.g 'sm', 'md', 'lg')" },
         ],
         children: Children::Text,

@@ -28,6 +28,14 @@
     "category": "navigation",
     "clientJs": "enhancement",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "a",
+        "local": "link",
+        "children": ["$text"],
+        "emit": "manual"
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

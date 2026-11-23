@@ -7,6 +7,18 @@ export const meta: ComponentMeta = {
   category: 'feedback',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'p',
+      local: 'disclaimer',
+      children: ['glyph', '$slot'],
+      // The text sits in a classless \`span\` that the part tree cannot express.
+      emit: 'manual',
+    },
+    parts: {
+      glyph: { element: 'svg', aria: ['aria-hidden'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

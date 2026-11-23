@@ -6,6 +6,16 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'blockquote',
+      children: ['$slot', 'footer'],
+      emit: 'auto',
+    },
+    parts: {
+      footer: { element: 'footer', children: ['$text'], when: 'cite' },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

@@ -8,6 +8,25 @@ export const meta: ComponentMeta = {
   // active-state animation.
   clientJs: 'enhancement',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'nav',
+      aria: ['aria-label'],
+      children: ['item'],
+      // One item per array entry, and each renders as a link or a button.
+      emit: 'manual',
+    },
+    parts: {
+      item: {
+        element: ['button', 'a'],
+        data: { 'data-active': ['true'] },
+        aria: ['aria-current'],
+        children: ['icon', 'label'],
+      },
+      icon: { element: 'span', aria: ['aria-hidden'], children: ['$slot'] },
+      label: { element: 'span', children: ['$text'] },
+    },
+  },
   states: ['default', 'active'],
   variants: [],
   sizes: [],

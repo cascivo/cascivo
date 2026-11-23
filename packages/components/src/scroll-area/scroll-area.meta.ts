@@ -7,6 +7,24 @@ export const meta: ComponentMeta = {
   // Scrolling is native and the content is all present; JS only adds the overflow shadows.
   clientJs: 'enhancement',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'root',
+      data: {
+        'data-orientation': ['vertical', 'horizontal', 'both'],
+        'data-edges': ['shadow', 'mask', 'none'],
+        // Toggled by the scroll listener, not props: present when more content lies that way.
+        'data-scroll-top': 'boolean',
+        'data-scroll-bottom': 'boolean',
+        'data-scroll-start': 'boolean',
+        'data-scroll-end': 'boolean',
+      },
+      children: ['$slot'],
+      // Scroll-position attributes and size custom properties are set at runtime.
+      emit: 'manual',
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

@@ -27,6 +27,18 @@
     "category": "navigation",
     "clientJs": "none",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "a",
+        "data": {
+          "data-variant": ["standalone", "inline"],
+          "data-size": ["sm", "md", "lg"],
+          "data-external": ["true"]
+        },
+        "children": ["$slot"],
+        "emit": "manual"
+      }
+    },
     "states": [],
     "variants": ["standalone", "inline"],
     "sizes": ["sm", "md", "lg"],

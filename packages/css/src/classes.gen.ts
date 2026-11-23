@@ -33,6 +33,7 @@ export const classes = {
     revert: 'cv-ai-badge-revert',
   },
   aiDisclaimer: {
+    root: 'cv-ai-disclaimer-disclaimer',
     alias: 'cv-ai-disclaimer',
     disclaimer: 'cv-ai-disclaimer-disclaimer',
     glyph: 'cv-ai-disclaimer-glyph',
@@ -67,6 +68,7 @@ export const classes = {
     title: 'cv-alert-dialog-title',
   },
   appShell: {
+    root: 'cv-app-shell-shell',
     alias: 'cv-app-shell',
     body: 'cv-app-shell-body',
     footer: 'cv-app-shell-footer',
@@ -91,6 +93,7 @@ export const classes = {
     status: 'cv-avatar-status',
   },
   avatarGroup: {
+    root: 'cv-avatar-group-group',
     alias: 'cv-avatar-group',
     group: 'cv-avatar-group-group',
     overflow: 'cv-avatar-group-overflow',
@@ -200,6 +203,7 @@ export const classes = {
     title: 'cv-chain-of-thought-title',
   },
   chatBubble: {
+    root: 'cv-chat-bubble-bubble',
     alias: 'cv-chat-bubble',
     avatar: 'cv-chat-bubble-avatar',
     body: 'cv-chat-bubble-body',
@@ -357,6 +361,7 @@ export const classes = {
     wrapper: 'cv-context-menu-wrapper',
   },
   contextMeter: {
+    root: 'cv-context-meter-meter',
     alias: 'cv-context-meter',
     fill: 'cv-context-meter-fill',
     header: 'cv-context-meter-header',
@@ -371,6 +376,7 @@ export const classes = {
     icon: 'cv-copy-button-icon',
   },
   dataList: {
+    root: 'cv-data-list-list',
     alias: 'cv-data-list',
     detail: 'cv-data-list-detail',
     list: 'cv-data-list-list',
@@ -606,6 +612,7 @@ export const classes = {
     status: 'cv-infinite-scroll-status',
   },
   inlineCitation: {
+    root: 'cv-inline-citation-citation',
     alias: 'cv-inline-citation',
     card: 'cv-inline-citation-card',
     citation: 'cv-inline-citation-citation',
@@ -854,6 +861,7 @@ export const classes = {
     progress: 'cv-progress-progress',
   },
   progressBar: {
+    root: 'cv-progress-bar-progress',
     alias: 'cv-progress-bar',
     fill: 'cv-progress-bar-fill',
     glyph: 'cv-progress-bar-glyph',
@@ -872,6 +880,7 @@ export const classes = {
     value: 'cv-progress-circle-value',
   },
   progressIndicator: {
+    root: 'cv-progress-indicator-indicator',
     alias: 'cv-progress-indicator',
     description: 'cv-progress-indicator-description',
     indicator: 'cv-progress-indicator-indicator',
@@ -1087,6 +1096,7 @@ export const classes = {
     skeleton: 'cv-skeleton-skeleton',
   },
   skipNav: {
+    root: 'cv-skip-nav-link',
     alias: 'cv-skip-nav',
     link: 'cv-skip-nav-link',
   },
@@ -1246,6 +1256,7 @@ export const classes = {
     wrapper: 'cv-time-picker-wrapper',
   },
   timeline: {
+    root: 'cv-timeline-list',
     alias: 'cv-timeline',
     content: 'cv-timeline-content',
     description: 'cv-timeline-description',

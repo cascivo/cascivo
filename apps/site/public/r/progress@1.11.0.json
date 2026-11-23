@@ -32,7 +32,8 @@
         "element": "progress",
         "data": {
           "data-variant": ["primary", "info", "success", "warning", "error"],
-          "data-size": ["sm", "md", "lg"]
+          "data-size": ["sm", "md", "lg"],
+          "data-state": ["determinate", "indeterminate"]
         },
         "aria": ["aria-label", "aria-describedby"],
         "emit": "manual"

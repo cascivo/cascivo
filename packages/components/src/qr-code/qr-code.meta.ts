@@ -9,6 +9,18 @@ export const meta: ComponentMeta = {
   // calls useSignals() and carries 'use client'. Nothing is unreachable with JS off.
   clientJs: 'enhancement',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      local: 'qrCode',
+      element: 'div',
+      children: ['svg'],
+      // The SVG path is encoded from `value` at render time.
+      emit: 'manual',
+    },
+    parts: {
+      svg: { element: 'svg', role: 'img', aria: ['aria-label'] },
+    },
+  },
   states: ['default'],
   variants: [],
   sizes: [],
