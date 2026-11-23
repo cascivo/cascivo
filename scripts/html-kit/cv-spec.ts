@@ -63,6 +63,23 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('section', { children: 'nodes', args: [a('title', 'str')] }),
   e('page-header', { children: 'nodes', args: [a('title', 'str', true), a('description', 'str')] }),
   e('dashboard-layout', { children: 'nodes' }),
+  // layout primitives (contract E1)
+  e('join', { children: 'nodes' }),
+  e('button-group', { children: 'nodes' }),
+  e('shimmer-text', { children: 'text' }),
+  e('visually-hidden', { children: 'text' }),
+  e('chat-bubble', { children: 'nodes' }),
+  e('stack', { children: 'nodes' }),
+  e('aspect-ratio', { children: 'nodes' }),
+  e('skip-nav', { children: 'text' }),
+  e('typing-indicator'),
+  e('ai-disclaimer', { children: 'text' }),
+  e('scroll-area', { children: 'nodes' }),
+  e('app-shell', { children: 'nodes' }),
+  e('large-title-header', { children: 'nodes', args: [a('title', 'str', true)] }),
+  e('header', { args: [a('links', 'rows')] }),
+  e('dock', { args: [a('items', 'rows', true)] }),
+  e('toc', { args: [a('items', 'rows', true)] }),
   e('separator'),
   e('spacer'),
   // display
@@ -95,6 +112,16 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('code', { children: 'text' }),
   e('kbd', { children: 'text' }),
   e('link', { children: 'text', args: [a('href', 'str', true)] }),
+  // display units (contract E1, batch b)
+  e('label', {
+    children: 'text',
+    extraProps: [
+      { name: 'htmlFor', type: 'string', summary: 'Id of the form control this label names' },
+    ],
+  }),
+  e('status', { children: 'text' }),
+  e('user', { args: [a('name', 'str', true)], css: ['user', 'avatar'] }),
+  e('item', { children: 'nodes' }),
   e('button', {
     children: 'text',
     // React reaches a link-styled button through `asChild`; in `.cv` it is one prop.
@@ -110,6 +137,13 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('meter', { args: [a('value', 'num', true)] }),
   e('skeleton'),
   e('spinner'),
+  e('inline-loading', { css: ['inline-loading', 'spinner'] }),
+  e('progress', { args: [a('value', 'num')] }),
+  e('progress-indicator', { args: [a('steps', 'rows', true)] }),
+  e('radial-progress', { children: 'text', args: [a('value', 'num', true)] }),
+  e('context-meter', { args: [a('value', 'num', true), a('max', 'num', true)] }),
+  e('icon-button', { children: 'text' }),
+  e('switcher', { args: [a('items', 'rows', true)] }),
   // navigation / disclosure
   e('breadcrumb', { args: [a('items', 'rows', true)] }),
   e('steps', { args: [a('items', 'rows', true)] }),

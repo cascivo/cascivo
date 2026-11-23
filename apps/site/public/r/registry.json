@@ -9351,7 +9351,7 @@
               "data-side": ["start", "end"]
             },
             "children": ["avatar", "content"],
-            "emit": "auto"
+            "emit": "manual"
           },
           "parts": {
             "avatar": {
@@ -30803,7 +30803,7 @@
           "root": {
             "element": ["span", "p", "div"],
             "children": ["$slot"],
-            "emit": "auto"
+            "emit": "manual"
           }
         },
         "states": [],

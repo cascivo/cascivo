@@ -12,7 +12,7 @@ export const meta: ComponentMeta = {
       local: 'bubble',
       data: { 'data-side': ['start', 'end'] },
       children: ['avatar', 'content'],
-      emit: 'auto',
+      emit: 'manual',
     },
     parts: {
       avatar: { element: 'div', aria: ['aria-hidden'], children: ['$slot'], when: 'avatar' },

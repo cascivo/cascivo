@@ -7,6 +7,10 @@ use crate::render::Cx;
 mod auto_gen;
 pub mod chart;
 mod display;
+mod e1_a;
+mod e1_b;
+mod e1_c;
+mod e1_d;
 mod embed;
 mod feedback;
 mod layout;
@@ -30,8 +34,16 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         | "timeline" | "empty-state" | "blockquote" | "code" | "kbd" | "link" => {
             display::emit(node, cx, out);
         }
+        "chat-bubble" | "shimmer-text" | "stack" | "aspect-ratio" | "skip-nav"
+        | "typing-indicator" | "ai-disclaimer" => e1_a::emit(node, cx, out),
+        "header" | "large-title-header" | "app-shell" | "dock" | "scroll-area" | "toc" => {
+            e1_d::emit(node, cx, out)
+        }
+        "label" | "status" | "user" | "item" | "inline-loading" => e1_b::emit(node, cx, out),
         "alert" | "notification" | "progress-bar" | "progress-circle" | "meter" | "skeleton"
         | "spinner" => feedback::emit(node, cx, out),
+        "icon-button" | "context-meter" | "progress" | "progress-indicator" | "radial-progress"
+        | "switcher" => e1_c::emit(node, cx, out),
         "breadcrumb" | "steps" | "accordion" | "collapsible" | "tabs" | "table" => {
             nav::emit(node, cx, out);
         }

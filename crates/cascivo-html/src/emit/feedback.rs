@@ -25,7 +25,7 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
 
 /// A number the way JS stringifies it (shortest round-trip, so values computed with the same
 /// IEEE operations as the React component print identically). Non-finite becomes `0`.
-fn js_num(n: f64) -> String {
+pub(super) fn js_num(n: f64) -> String {
     if !n.is_finite() || n == 0.0 {
         return "0".to_string();
     }
