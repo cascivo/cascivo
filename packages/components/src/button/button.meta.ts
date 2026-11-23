@@ -5,6 +5,25 @@ export const meta: ComponentMeta = {
   description: 'Triggers an action or event',
   category: 'inputs',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      // `asChild` puts the root classes on the caller's element (usually `<a href>`).
+      element: ['button', 'a'],
+      data: {
+        'data-variant': ['primary', 'secondary', 'ghost', 'destructive'],
+        'data-size': ['sm', 'md', 'lg'],
+        'data-state': ['idle', 'loading'],
+      },
+      aria: ['aria-busy'],
+      children: ['@spinner', 'label'],
+      emit: 'auto',
+    },
+    parts: {
+      // Absent with `asChild`: the caller's element is the whole button.
+      label: { element: 'span', children: ['$slot'], when: '!asChild' },
+    },
+  },
   states: ['idle', 'loading'],
   variants: ['primary', 'secondary', 'ghost', 'destructive'],
   sizes: ['sm', 'md', 'lg'],

@@ -16,6 +16,7 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 | `cascivo`                | 1.8.2   | 1.8.0 — `cascivo app add page "<title>" [--block <name>]` adds a page to an app made fro  | [CHANGELOG](packages/cli/CHANGELOG.md)            |
 | `@cascivo/core`          | 1.11.0  | 1.11.0 — `transition(machine, state, event)`: the transition rule `useMachine` runs, as a | [CHANGELOG](packages/core/CHANGELOG.md)           |
 | `create-cascivo`         | 0.1.1   | 0.1.0 — `cascivo create --framework cloudflare` scaffolds a client-rendered app and its   | [CHANGELOG](packages/create-cascivo/CHANGELOG.md) |
+| `@cascivo/css`           | 0.0.0   | —                                                                                         | [CHANGELOG](packages/css/CHANGELOG.md)            |
 | `@cascivo/data`          | 0.1.1   | 0.1.0 — New package: `@cascivo/data`, client data primitives with zero dependencies. The  | [CHANGELOG](packages/data/CHANGELOG.md)           |
 | `@cascivo/docs`          | 0.2.19  | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/docs/CHANGELOG.md)           |
 | `@cascivo/docspack`      | 0.3.5   | 0.3.0 — The CLI ships a machine-readable description of every command (`dist/cmdspec.jso  | [CHANGELOG](packages/docspack/CHANGELOG.md)       |

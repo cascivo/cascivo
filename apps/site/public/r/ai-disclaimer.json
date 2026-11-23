@@ -26,6 +26,21 @@
     "description": "A short, quiet note that AI-generated content may be wrong — \"AI-generated content may be incorrect\"",
     "category": "feedback",
     "clientJs": "none",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "p",
+        "local": "disclaimer",
+        "children": ["glyph", "$slot"],
+        "emit": "manual"
+      },
+      "parts": {
+        "glyph": {
+          "element": "svg",
+          "aria": ["aria-hidden"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block main %}
+<h1>Dialog</h1>
+<button
+  type="button"
+  id="edit-open"
+  class="cv-button-button"
+  data-variant="secondary"
+  data-size="md"
+  data-cv-dialog-open="edit"
+>
+  <span class="cv-button-label">Edit name</span>
+</button>
+<p id="dialog-status">
+  <span id="status">{% block status %}{{ "Saved" if saved else "Not saved" }}{% endblock %}</span>
+</p>
+<cv-dialog id="edit">
+  <dialog class="cv-modal-dialog" data-size="md" aria-labelledby="edit-title">
+    <div class="cv-modal-panel">
+      <div class="cv-modal-header">
+        <h2 class="cv-modal-title" id="edit-title">Edit name</h2>
+        <button type="button" class="cv-modal-close" data-cv-dialog-close aria-label="Close modal">
+          ×
+        </button>
+      </div>
+      <div class="cv-modal-footer">
+        <button
+          type="button"
+          class="cv-button-button"
+          data-variant="secondary"
+          data-size="md"
+          data-cv-dialog-close
+        >
+          <span class="cv-button-label">Cancel</span>
+        </button>
+        <button
+          type="button"
+          id="edit-save"
+          class="cv-button-button"
+          data-variant="primary"
+          data-size="md"
+          hx-post="/c/dialog"
+          hx-target="#status"
+          hx-swap="innerHTML"
+        >
+          <span class="cv-button-label">Save</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+</cv-dialog>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block title %}Sign in · {{ site.title }}{% endblock %} {% block
+main %}
+<h1>Sign in</h1>
+<div id="login">{% block login %}<cv-form
+    ><form method="post" action="/login" hx-post="/login" hx-target="closest cv-form" hx-swap="outerHTML">
+      {{ form.csrf() }}
+      <input type="hidden" name="next" value="{{ next }}" />
+      {% for e in form.errors() %}
+      <p role="alert">{{ e }}</p>
+      {% endfor %} {{ form.field("name", label="Name", hint="Demo sign-in: any name of 3 or more letters.") }}
+      <button class="cv-button-button" data-variant="primary" data-size="md" type="submit">
+        <span class="cv-button-label">Sign in</span>
+      </button>
+    </form></cv-form
+  >{% endblock %}</div>
+{% endblock %}

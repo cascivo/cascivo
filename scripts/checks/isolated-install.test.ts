@@ -83,6 +83,7 @@ const PACKAGES = [
   'email',
   'text',
   'render',
+  'css',
 ]
 
 /**
@@ -102,6 +103,7 @@ const NEEDS_DIST = [
   'email',
   'text',
   'render',
+  'css',
 ]
 
 const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 'dist')))
@@ -204,6 +206,14 @@ export const noteText: Promise<string> = notesClient.note({ params: { id: '1' } 
 export const notesHandler = createHandler(notesApi, { note: ({ params }) => params.id })
 export const routesPlugin = cascivoRoutes()
 export const routesSource: string = generateRoutes(['index.tsx'], './routes')
+// @cascivo/css: the typed class map and the Vite scoped-name helper, both entries flattened.
+import { classes, type Contract, type ContractUnitName } from '@cascivo/css'
+import { cascivoScopedName, createCascivoScopedName } from '@cascivo/css/vite'
+export const contractLabel: 'cv-button-label' = classes.button.label
+export const contractUnit: ContractUnitName = 'button'
+export const contractTier = (c: Contract): string | undefined => c.units['button']?.tier
+export const scopedLabel: string = cascivoScopedName('label', '/src/button/button.module.css')
+export const scopedCustom = createCascivoScopedName({ unit: () => 'button', locals: 'any' })
 import { connectRoom } from '@cascivo/app/sync'
 import {
   roomResponse,

@@ -25,10 +25,11 @@ export function signature(e: CvEntry): string {
 }
 
 /** A short clause of the manifest summary: cut at the first dash/comma/"with", then at 44 chars. */
+// 28 chars keeps the 105-component list under the 6000-char GUIDE budget (tests/guide.rs).
 export function shortSummary(s: string): string {
   const clause = s.split(/ [—–-] |, | with /)[0]!.replace(/\.$/, '')
-  if (clause.length <= 44) return clause
-  const cut = clause.slice(0, 44)
+  if (clause.length <= 28) return clause
+  const cut = clause.slice(0, 28)
   return cut.slice(0, cut.lastIndexOf(' ')).trimEnd()
 }
 
@@ -39,7 +40,7 @@ name [args] [key=value] [flag] ["text"]
 - Data: bar Q1:12 Q2:18 | line 3 5 8 | table Name,Age | Ann,31 | Bob,42 (first row = header; props go BEFORE the rows). In a cell, \\, is a literal comma, \\| a bar.
 - 3x card "x" repeats a node. # comment lines. Only two-space indents.
 - Directives: @title "T" @lang de @brand … @brand-file brand.cv
-- Pictures: image logo.png "Alt" w=64 | svg icons/a.svg "Alt" fit=cover | svg "<svg …>". Paths are relative to the .cv file (CLI: --assets <dir> adds roots, --fetch embeds https URLs); files are embedded, svg inlined so currentColor follows the theme.
+- Pictures: image logo.png "Alt" w=64 | svg icons/a.svg "Alt" fit=cover | svg "<svg …>". Paths are relative to the .cv file (CLI: --assets <dir> adds roots, --fetch embeds URLs); files are embedded, svg inlined (currentColor).
 - Aliases: cols=columns, row/col=flex, h1..h3=heading, p=text.
 - @brand keys: #hex primary, accent=#hex, theme=<name>, light|dark|auto, r8 radius px, gap4, density=compact|normal|comfy, font=Inter, mono=…
 - Errors print line:col and the expected signature. Run \`cascivo-html check\`.`
@@ -53,7 +54,6 @@ page-header "Sales" "Q3 overview"
 cols 3
   stat Revenue "$48k" "+12%"
   stat Users 1204
-  stat Churn "2.1%"
 card "Trend"
   line 3 5 8 13 9 14
 \`\`\`
@@ -62,7 +62,7 @@ Landing:
 @title "Acme"
 center
   h1 "Ship faster"
-  p "One file. No build step."
+  p "One file."
   button "Get started" primary
 alert "Beta" "Invite only."
 \`\`\`

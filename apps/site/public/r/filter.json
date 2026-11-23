@@ -26,6 +26,29 @@
     "description": "A group of toggleable pill or outline buttons for filtering content by category",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "filter",
+        "role": "group",
+        "data": {
+          "data-variant": ["pill", "outline"]
+        },
+        "aria": ["aria-label"],
+        "children": ["item"]
+      },
+      "parts": {
+        "item": {
+          "element": "button",
+          "data": {
+            "data-selected": "boolean"
+          },
+          "aria": ["aria-pressed"],
+          "children": ["$text"]
+        }
+      }
+    },
     "states": ["default", "selected", "hover", "focus"],
     "variants": ["pill", "outline"],
     "sizes": [],

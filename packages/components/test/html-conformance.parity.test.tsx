@@ -22,7 +22,7 @@ const componentOf = (name: string) => name.split('.')[0] as string
 const used = new Set<string>()
 const report = new Map<string, { cases: number; raw: number; unjustified: number }>()
 
-describe('React vs cascivo-html parity (10 components)', () => {
+describe('React vs cascivo-html parity (parity components)', () => {
   for (const c of PARITY_COMPONENTS) {
     describe(c, () => {
       for (const [path, mod] of Object.entries(cases)) {
