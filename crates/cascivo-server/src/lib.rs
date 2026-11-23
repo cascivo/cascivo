@@ -12,10 +12,15 @@
 //! checks every unsafe method; an [`Authenticator`] ([`App::auth`]) feeds [`User`] and
 //! [`MaybeUser`].
 //!
+//! Server islands ([`App::islands`], [`App::server_island`], [`IslandKey::placeholder`]) load
+//! a fragment after the page with HMAC-signed, expiring props. [`sse`] streams [`Fragment`]s
+//! for the htmx `sse` extension (or Datastar, feature `datastar`); [`Hub`] fans them out by
+//! allowlisted topic (`native` only: Workers have no fan-out without Durable Objects).
+//!
 //! Untrusted input: `HX-*` request headers are facts ([`Hx`]); they never pick a template or a
 //! block. Redirect targets are [`LocalPath`]s.
 //!
-//! Features: `native` (default; tokio, [`App::serve`]), `password` (default; Argon2id),
+//! Features: `native` (default; tokio, [`App::serve`], [`Hub`], SSE keep-alive), `datastar`, `password` (default; Argon2id),
 //! `sqlite` (`SqliteStore`, sqlx) and `workers` (wasm32 Workers without
 //! tokio; [`MaybeSend`] has no `Send` bound when `native` is off).
 
@@ -25,8 +30,10 @@ mod csrf;
 mod error;
 mod headers;
 mod hx;
+mod islands;
 mod path;
 mod session;
+mod sse;
 mod stores;
 mod util;
 mod view;
@@ -40,8 +47,14 @@ pub use csrf::Csrf;
 pub use error::AppError;
 pub use headers::{Headers, Nonce};
 pub use hx::Hx;
+pub use islands::{ISLAND_PREFIX, IslandError, IslandKey};
 pub use path::{LocalPath, LocalPathError, see_other};
 pub use session::{Record, SameSite, Session, SessionConfig, SessionId, SessionStore, StoreError};
+pub use sse::{Fragment, sse};
+#[cfg(feature = "native")]
+pub use sse::{Hub, HubError, Subscription};
+#[cfg(feature = "datastar")]
+pub use sse::{PatchMode, patch_elements, patch_signals};
 #[cfg(feature = "sqlite")]
 pub use stores::SqliteStore;
 pub use stores::{CookieStore, MemoryStore};

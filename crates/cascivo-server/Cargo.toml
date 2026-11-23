@@ -37,6 +37,8 @@ cascivo-web = { path = "../cascivo-web", version = "0.2.1", default-features = f
 getrandom = "0.4.3"
 minijinja = { version = "3.1.0", default-features = false, features = ["serde"] }
 form_urlencoded = "1.2.3"
+# SSE stream adapters (already in the tree via axum).
+futures-util = { version = "0.3.34", default-features = false, features = ["alloc"] }
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.154"
 tokio = { version = "1.54.1", optional = true, features = ["net"] }
@@ -50,9 +52,12 @@ js-sys = "0.3.107"
 [features]
 default = ["native", "password"]
 # tokio + hyper: `App::serve`.
-native = ["dep:tokio", "axum/tokio", "axum/http1"]
+native = ["dep:tokio", "tokio/sync", "axum/tokio", "axum/http1"]
 # Cloudflare Workers (wasm32, no tokio): `MaybeSend` drops its `Send` bound.
 workers = []
+# Datastar SSE events (`patch_elements`, `patch_signals`). Its expressions need `unsafe-eval`
+# in the CSP; htmx does not.
+datastar = []
 # Argon2id password hashing (`hash_password`, `verify_password`).
 password = ["dep:argon2"]
 # `SqliteStore` (sqlx).

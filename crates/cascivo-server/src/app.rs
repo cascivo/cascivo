@@ -10,12 +10,16 @@ use minijinja::Value;
 use crate::auth::AuthRt;
 use crate::csrf::CsrfRt;
 use crate::headers::Compiled;
+use crate::islands::Mount;
 use crate::session::SessionRt;
 use crate::util::Local;
 use crate::view::Req;
 use crate::{
-    AppError, Authenticator, Csrf, Headers, Hx, LocalPath, Nonce, SessionConfig, SessionStore, View,
+    AppError, Authenticator, Csrf, Headers, Hx, IslandKey, LocalPath, MaybeSend, Nonce,
+    SessionConfig, SessionStore, View,
 };
+use axum::http::request::Parts;
+use serde::de::DeserializeOwned;
 
 type Wrap = Box<dyn FnOnce(Router) -> Router>;
 
@@ -45,6 +49,8 @@ pub struct App<S = ()> {
     sessions: Option<Wrap>,
     auth: Option<Wrap>,
     csrf: Csrf,
+    island_key: Option<IslandKey>,
+    islands: Vec<Mount>,
 }
 
 impl App<()> {
@@ -59,6 +65,8 @@ impl App<()> {
             sessions: None,
             auth: None,
             csrf: Csrf::default(),
+            island_key: None,
+            islands: Vec::new(),
         }
     }
 }
@@ -76,6 +84,8 @@ impl<S: Clone + Send + Sync + 'static> App<S> {
             sessions: self.sessions,
             auth: self.auth,
             csrf: self.csrf,
+            island_key: self.island_key,
+            islands: self.islands,
         }
     }
 
@@ -133,7 +143,33 @@ impl<S: Clone + Send + Sync + 'static> App<S> {
         self
     }
 
+    /// The key that signs and verifies server-island props ([`server_island`](Self::server_island)).
+    pub fn islands(mut self, key: IslandKey) -> Self {
+        self.island_key = Some(key);
+        self
+    }
+
+    /// `GET /_island/<name>?p=<token>`: verifies the token from
+    /// [`IslandKey::placeholder`]/[`url`](IslandKey::url) and calls `f` with its props. A
+    /// missing, tampered, expired or other-island token answers 400 without calling `f`.
+    /// Return a [`View`] with a [`fragment`](View::fragment): the placeholder's `hx-get` is a
+    /// partial htmx request. Needs [`islands`](Self::islands).
+    ///
     /// # Panics
+    /// When `name` is not `[a-z0-9_-]{1,64}`.
+    pub fn server_island<P, F, Fut>(mut self, name: &'static str, f: F) -> Self
+    where
+        P: DeserializeOwned + Send + 'static,
+        F: Fn(P, Parts) -> Fut + Clone + Send + Sync + 'static,
+        Fut: Future<Output = Result<View, AppError>> + MaybeSend + 'static,
+    {
+        self.islands.push(crate::islands::mount(name, f));
+        self
+    }
+
+    /// # Panics
+    /// When a [`server_island`](Self::server_island) is registered without
+    /// [`islands`](Self::islands).
     /// When a [`Headers`] value is not a valid header value: failing at startup beats
     /// serving without a CSP. When [`auth`](Self::auth) is set without
     /// [`sessions`](Self::sessions).
@@ -155,10 +191,20 @@ impl<S: Clone + Send + Sync + 'static> App<S> {
             cfg: self.csrf,
             tokens: self.sessions.is_some(),
         });
+        let mut stateless = self.stateless;
+        if !self.islands.is_empty() {
+            let key = self
+                .island_key
+                .as_ref()
+                .unwrap_or_else(|| panic!("cascivo-server: App::server_island needs App::islands"));
+            for m in self.islands {
+                stateless = m(key, stateless);
+            }
+        }
         let router: Router = self.router.with_state(self.state);
         // Outermost first: render (nonce, headers) → session → auth → CSRF → routes.
         let mut r = router
-            .merge(self.stateless)
+            .merge(stateless)
             .layer(from_fn_with_state(csrf, crate::csrf::layer));
         if let Some(auth) = self.auth {
             r = auth(r);
