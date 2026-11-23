@@ -7,6 +7,7 @@ use crate::render::Cx;
 mod auto_gen;
 pub mod chart;
 mod display;
+mod e1_c;
 mod embed;
 mod feedback;
 mod layout;
@@ -32,6 +33,8 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         }
         "alert" | "notification" | "progress-bar" | "progress-circle" | "meter" | "skeleton"
         | "spinner" => feedback::emit(node, cx, out),
+        "icon-button" | "context-meter" | "progress" | "progress-indicator" | "radial-progress"
+        | "switcher" => e1_c::emit(node, cx, out),
         "breadcrumb" | "steps" | "accordion" | "collapsible" | "tabs" | "table" => {
             nav::emit(node, cx, out);
         }
