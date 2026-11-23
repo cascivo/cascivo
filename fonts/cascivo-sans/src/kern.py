@@ -231,6 +231,9 @@ for _i, _n in enumerate(FIGS):
 # feet of diagonal letters and r. Only a pair whose measurement opens it is kept.
 OWN_SHAPE_PAIRS = {(a, b): 1 for a, b in [('l', 'period'), ('l', 'comma'), ('l', 'ellipsis'), ('l', 'A'), ('l', 'X'), ('l', 'x')]}
 OWN_SHAPE_PAIRS.update({(a, 'f'): 1 for a in 'kvwxyr'})
+# and into the descenders of g, j and q (round 5): Black's qf kept 9-15 units of white and jf 15-20, a touch at display sizes. The
+# upright f does not descend: its pairs measure open and are not kept.
+OWN_SHAPE_PAIRS.update({(a, 'f'): 1 for a in 'gjq'})
 # Clear at Regular but closing at the heavy corners (Display Black: the opsz and weight deltas add
 # up): the tailed l into z, the italic t's crossbar under a diagonal, top-heavy capitals into T.
 OWN_SHAPE_PAIRS.update({(a, b): 1 for a, b in [('l', 'z'), ('x', 't'), ('k', 't'), ('y', 't'), ('v', 't'), ('w', 't'), ('r', 't'), ('t', 'z'), ('V', 'T'), ('W', 'T'), ('Y', 'T'), ('X', 'T'), ('f', 'T')]})
