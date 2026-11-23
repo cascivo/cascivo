@@ -571,6 +571,13 @@ def _s_extra(p):
 S_BOWL = -0.15
 S_RUN_CAP = 32
 CAP_S_TILT = 12
+# CAP_S_UP (round 5): the upright Black S's (horizontals' extra weight, spine's extra weight, spine flatness, upper bowl share,
+# terminal tilt, upper and lower terminals' run, terminal handle `straight`). Round 4's (0.1, 0.3, 0.2, 0.18, 12, 14, 32, -0.3) left a
+# spine 184 units thick at the middle under horizontals of 150 (Inter's 170 and 162), a diagonal spine that pinched the upper counter
+# to a slit at its left end, and a lower terminal run past the vertical and cut on a tilt, whose inner edge curled back from the face:
+# a step into the counter. Lighter and flatter, the spine leaves both counters round-ended, 116 and 122 units tall (Inter's 121 and
+# 130), and each terminal ends where its bowl turns vertical, cut level (quality.py reads both faces square, 190 thick), as Inter's.
+CAP_S_UP = (0.2, 0.0, 0.4, 0.14, 0, 24, 26, 0.0)
 CAP_S_RUN_UP = 14
 # Black's s: see _s. S_LIGHT: its horizontals are this much lighter (the upper counter's throat read 0.70x Inter's).
 S_FLAT_IT = 0.2
@@ -587,7 +594,9 @@ def _S_(g, p):
     # carried 0.86x their ink
     # (Regular's terminals sit 14° further round too: the S carried 0.80x their ink at Regular)
     # Black's upper terminal runs 20 degrees round, not 34: run on as far, its inner edge folded into a long beak (see S_BOWL)
-    _S(g, p, p.Hd * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + 0.1 * p.heavy)), spine=0.3, run=S_RUN_CAP, close=26, bowl=0.03 - S_BOWL, run_up=CAP_S_RUN_UP, tilt=CAP_S_TILT, straight=S_STRAIGHT)
+    # Round 5, upright Black (the italic keeps round 4's): see CAP_S_UP
+    hk, spine, flat, bowl, tilt, run_up, run, straight = (0.1, 0.3, 0.2, 0.03 - S_BOWL, CAP_S_TILT, CAP_S_RUN_UP, S_RUN_CAP, S_STRAIGHT) if p.italic else CAP_S_UP
+    _S(g, p, p.Hd * 0.94 + _s_extra(p) * 0.5, p.cap, p.ov, pen=(p.V, p.H * (1 + hk * p.heavy)), spine=spine, run=run, close=26, bowl=bowl, run_up=run_up, tilt=tilt, straight=straight, flat=flat)
     g.ht = 'c'
     g.sb = (0.5, 0.5)
 
@@ -785,6 +794,10 @@ def _u(g, p):
 # a beak at 230-300 px. The thinning now stays in the quarter at the stem (R_REACH), the arm ends R_END degrees further round
 # (62 -> 78), and its radius grows R_GROW so the arm's ink ends where it did (advance held): a flat arm cut square, as Inter's.
 R_END, R_REACH, R_GROW = 16, 1.0, 0.12
+# R_JOIN (round 5, upright): Black's arm leaves the stem at this share of its weight, not the arches' BLACK_JOIN 0.45. The r has no
+# second stem to keep a counter open, and at 0.45 its arm hung from the stem on a neck half as thick as the arm (Inter's r keeps
+# about two thirds of its arm's weight at the join).
+R_JOIN = 0.65
 
 
 @glyph('r', 0x72)
@@ -798,7 +811,8 @@ def _r(g, p):
     ry = p.xh * 0.42
     cy = p.xh + p.ov * 0.4 - p.H / 2 - ry
     rx *= 1 + R_GROW * p.heavy
-    g.stroke(g.arc(a + rx, cy, rx, ry, 180 - JOIN_RUN, 62 - p.ap * 0.5 + R_END * p.heavy), taper=(arch_join(p), 1), caps=('b', 'b'), reach=(min(join_reach(p), R_REACH), None))
+    taper = arch_join(p) if p.italic else lerp(arch_join(p), R_JOIN, p.heavy)
+    g.stroke(g.arc(a + rx, cy, rx, ry, 180 - JOIN_RUN, 62 - p.ap * 0.5 + R_END * p.heavy), taper=(taper, 1), caps=('b', 'b'), reach=(min(join_reach(p), R_REACH), None))
     g.sb = (1, 0.35 + (0.25 if p.italic else 0) * p.heavy)  # ra, re, ro sat 10% tighter than in the references
 
 
@@ -831,6 +845,7 @@ L_LONG, L_TOE_THIN = 9, 0.2
 # turn is taller for it (L_FLAT_UP 0.15 -> -0.25, italic L_FLAT 0.35 -> -0.15), and the italic's toe is cut along the slant
 # (L_FACE), as its t's foot is, where its vertical face met a leaning stem in a notch. Reach, toe and advance are unchanged.
 L_REACH, L_FACE = 0.5, 's'
+L_INNER = 0.55
 
 
 @glyph('l', 0x6C)
@@ -856,6 +871,19 @@ def _l(g, p):  # tailed by default
     h = p.heavy
     face = L_FACE if p.italic and h else 'v'
     g.stroke([L((a, p.asc), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 270), caps=('b', face), pen=(p.V, lerp(toe, p.V, h)), taper=(1, lerp(1, toe / p.V, h)), reach=(None, L_REACH))
+    if not p.italic:
+        # Round 5: the upright's tail evens out its expanded inner edge. The pen thins to the toe over the turn's last half, so at
+        # Black the expansion left that edge's first handle 0.14 of its drop (Regular's 0.48): it ran straight down from the stem
+        # and turned into the toe in a 30-unit corner, a flat on the curve at display sizes. It is L_INNER of the drop now, as an
+        # ellipse's quarter; Regular and Thin are unchanged.
+        def even_inner(cs, h=h):
+            c = cs[0]
+            i = next(j for j, sg in enumerate(c) if sg[0] == 'C')
+            _, q0, q1, q2, q3 = c[i]
+            c[i] = ('C', q0, (q1[0], q0[1] - lerp(q0[1] - q1[1], L_INNER * (q0[1] - q3[1]), h)), q2, q3)
+            return cs
+
+        g.strokes[-1].post = even_inner
     g.ht = 'a'
     g.sb = (1, 0.28 + (0.08 + 0.95 * p.heavy if p.italic else L_RSB * p.heavy + L_BOLD_OPEN * p.heavy * (1 - p.heavy)))
 
@@ -1104,11 +1132,12 @@ def _a_bowl(g, p, xs, wf, stem=True):
     # through 60 degrees into the notch, and turned in a corner (a chin); Inter's is lowest about half way
     xb = cxb + (min(cxb, A_BELLY * xe) - cxb) * h
     xX = xe - (yx - yb0) / math.tan(tn)  # where the bottom's tangent meets the notch's: the curve between stays convex
-    # the notch's tip is a round of A_TIP units at Black (1 at Regular): a sharp one is a slit of white the spur check reads (2.9 units^2 at Black)
+    # The notch's tip is a flat A_TIP units wide at Black (1 at Regular), as Inter's: a sharp one is a slit of white the spur check
+    # reads (2.9 units^2 at Black), and the round it was until round 5 turned 145 degrees in 5 units, a bead of ink on the chin
+    # that read as a nick at display sizes.
     tip = 1 + (A_TIP - 1) * h
-    tt = tip / math.tan(math.radians(45) - tn / 2)
-    t1 = (xe - tt * math.cos(tn), yx - tt * math.sin(tn))
-    hk = 4 / 3 * math.tan((math.pi / 2 + tn) / 4) * tip
+    t1 = (xe - tip, yx)
+    xX -= tip
     dt = 0.55 * (yx - yb0) / math.sin(tn)
     outer = [
         L((xs, yq), (xe, yq)),
@@ -1116,8 +1145,8 @@ def _a_bowl(g, p, xs, wf, stem=True):
         ('C', (cxb, ybt), (cxb - cxb * k, ybt - slope * cxb * k), (0, cy + ry * k), (0, cy)),  # leaves the sloped top along its own direction
         ('C', (0, cy), (0, cy - ry * k), (xb - xb * k, yb0), (xb, yb0)),
         ('C', (xb, yb0), (xb + (xX - xb) * 0.8, yb0), (t1[0] - dt * math.cos(tn), t1[1] - dt * math.sin(tn)), t1),
-        ('C', t1, (t1[0] + hk * math.cos(tn), t1[1] + hk * math.sin(tn)), (xe, yx - tt + hk), (xe, yx - tt)),
-        L((xe, yx - tt), (xs, yq)),
+        L(t1, (xe, yx)),
+        L((xe, yx), (xs, yq)),
     ]
     yti, ybi = ybt - th, yb0 + th * (1 + A_BOWL_FLOOR * h)  # a heavy bowl's floor is thicker, as Inter's
     cyi, ryi = (yti + ybi) / 2, (yti - ybi) / 2
@@ -1859,10 +1888,22 @@ def _nbsp(g, p):
     g.adv_fixed = round(p.Sfig * 2 + 128 - 28 * p.heavy)  # as the space
 
 
+# Round 5: the full stop (and the colon's and semicolon's dots, built from it) is PERIOD_TRIM smaller than the i's dot at
+# Regular, fading out toward Thin and Black (period_dot). A square dot reads heavier than Inter's round one of the same area, and
+# at 300 to 600 a full-size one was the darkest mark in a line of text. The sidebearings take the difference: the advance holds.
+PERIOD_TRIM = 0.08
+
+
+def period_dot(p):
+    return p.dot * (1 - PERIOD_TRIM * thin_blend(p) * (1 - p.heavy))
+
+
 @glyph('period', 0x2E)
 def _period(g, p):
-    g.dot(p.dot / 2, 0)
-    g.sb = (0.9, 0.9)
+    d = period_dot(p)
+    g.dot(d / 2, 0, d)
+    sb = 0.9 + (p.dot - d) / 2 / p.S
+    g.sb = (sb, sb)
 
 
 def thin_blend(p):
@@ -1886,6 +1927,7 @@ def comma_depth(p):
 
 
 COMMA_HEAD = 0.5
+COMMA_STEM = (1.0, 16.0)  # the comma's widest head (stems, units): see comma_shape
 
 
 def comma_shape(g, d, x, top, depth, swing=0.0, head=COMMA_HEAD):
@@ -1898,6 +1940,12 @@ def comma_shape(g, d, x, top, depth, swing=0.0, head=COMMA_HEAD):
     p = g.p
     f = thin_blend(p)
     w = d * (f + (1 - f) * min(1.0, 1.2 * p.V / p.dot))
+    if head == COMMA_HEAD:
+        # Round 5: from Light to SemiBold the head is no wider than COMMA_STEM (a stem and a few units), as Inter's comma is a
+        # stroke about a stem thick: a full dot's width (1.37 stems at Regular) made , ; and the quotes the darkest marks in
+        # text at 300 to 600. Thin and Black are under it already; the tail swings further (comma_swing), so the ink box holds.
+        w0, w = w, min(w, p.V * COMMA_STEM[0] + COMMA_STEM[1])
+        swing += w0 - w
     x -= (d - w) / 2
     # The head is `head` (COMMA_HEAD; the Greek breathings keep 0.95, their own size) of a dot tall before the tail starts to taper, and the tail is longer by what the head gives up. At a
     # full dot the head was a square with a short tail under it: , ; and the quotes built from it were the darkest marks in a
