@@ -49,3 +49,8 @@ jobs:
       # cascivo-server on Cloudflare Workers: wasm32, no tokio, `?Send`.
       - run: rustup target add wasm32-unknown-unknown
       - run: cargo check -p cascivo-server --target wasm32-unknown-unknown --no-default-features --features workers --locked
+      # cascivo-worker: the Workers adapter builds for wasm32 and lints clean there (its JS
+      # bindings only run on wasm, so the native clippy above does not see every path).
+      - run: cargo build -p cascivo-worker --target wasm32-unknown-unknown --locked
+      - run: cargo clippy -p cascivo-worker --target wasm32-unknown-unknown --all-features -- -D warnings
+      - run: cargo clippy -p cascivo-worker --no-default-features --all-targets -- -D warnings

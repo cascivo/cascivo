@@ -72,3 +72,10 @@ cannot auto-emit them.
 - React switch: `scripts/contract/scoped-name.ts` (`cascivoRepoScopedName`) in `packages/react`, site, storybook and the 11 examples that alias component source. Bench apps use the `@cascivo/react` dist, so they need nothing. Gates that matched `_name_hash_line` now match `cv-*` (astro-islands, framework-install, astro-browser, react-vite-ssr, react-next).
 - Solid example (WS-6): depend on `@cascivo/css` + `@cascivo/themes`; `import '@cascivo/themes/light.css'; import '@cascivo/css/cascivo.css'; import { classes as c } from '@cascivo/css'`. Vite configs in this repo need the source aliases `@cascivo/css/vite` (above) and `@cascivo/css` (as in site/storybook). Use `c.<unit>.alias` or `.root` on the root.
 - G6: same-machine A/B of the site visual suite (local Chromium, 0 px tolerance): 534/534 screenshots identical between the hashed and contract builds; `progress` ×3 never stabilises in either (animated). CI `visual.yml` stays the authority.
+
+## Phase 3 F (branch `claude/p3-f-worker`): `crates/cascivo-worker` (`publish = false`)
+- `serve(req, env, |env| Router)`, `serve_router(req, env, &Router)` (cache in a `OnceLock`), `serve_with(req, env, Bindings{d1, r2}, &Router)`; `worker::Env` goes in request extensions.
+- `KvStore::new(&env, "SESSIONS")` / `KvStore::with_backend(impl KvBackend)`: key `storage_key()`, JSON `Record`, `expirationTtl = max(ttl, 60)`; corrupt record = new session.
+- Extractors `Env`, `D1` (`d1`, binding `DB`), `R2` (`r2`, binding `BUCKET`) → 500 when missing. `R2::upload(&Upload{max_bytes, types, prefix}, ct, bytes) -> Stored` (413/415/400 via `AppError`).
+- Handlers awaiting bindings need `#[worker::send]`. No change to `cascivo-server` was needed.
+- CI (`rust.yml`): wasm32 build + clippy for `cascivo-worker`. Spike rebuilt; numbers in `phase-3-x1-results.md` (0.74 MB gz, edge startup 2 ms).
