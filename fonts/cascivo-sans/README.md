@@ -17,16 +17,16 @@ small-size strings, is at [cascivo.com/cascivo-sans/specimen](https://cascivo.co
 | File                                              | Axes              | Charset               | Size                       |
 | ------------------------------------------------- | ----------------- | --------------------- | -------------------------- |
 | `fonts/CascivoSans-Latin[wght].woff2`             | wght              | Latin                 | 25.1 KB                    |
-| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 31.3 KB                    |
-| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 74.7 KB                    |
-| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 266.0 KB (desktop install) |
-| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 27.7 KB                    |
-| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 34.5 KB                    |
-| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 81.0 KB                    |
+| `fonts/CascivoSans-Latin[opsz,wght].woff2`        | wght, opsz        | Latin                 | 31.2 KB                    |
+| `fonts/CascivoSans[opsz,wght].woff2`              | wght, opsz        | full (956 codepoints) | 74.8 KB                    |
+| `fonts/CascivoSans[opsz,wght].ttf`                | wght, opsz        | full                  | 265.8 KB (desktop install) |
+| `fonts/CascivoSans-Italic-Latin[wght].woff2`      | wght              | Latin                 | 27.8 KB                    |
+| `fonts/CascivoSans-Italic-Latin[opsz,wght].woff2` | wght, opsz        | Latin                 | 34.4 KB                    |
+| `fonts/CascivoSans-Italic[opsz,wght].woff2`       | wght, opsz        | full                  | 80.9 KB                    |
 | `fonts/CascivoSans-Italic[opsz,wght].ttf`         | wght, opsz        | full                  | 272.8 KB (desktop install) |
 | `fonts/CascivoSans-Regular.woff2`                 | static 400        | full                  | 24.5 KB                    |
 | `fonts/CascivoSans-Regular.ttf`                   | static 400        | full                  | 138.5 KB (desktop, hinted) |
-| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 140.3 KB (desktop, hinted) |
+| `fonts/CascivoSans-Bold.ttf`                      | static 700        | full                  | 140.4 KB (desktop, hinted) |
 | `fonts/CascivoSans-Italic.ttf`                    | static 400 italic | full                  | 140.4 KB (desktop, hinted) |
 | `fonts/CascivoSans-BoldItalic.ttf`                | static 700 italic | full                  | 140.6 KB (desktop, hinted) |
 
