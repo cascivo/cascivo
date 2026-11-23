@@ -24,6 +24,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { gzipSync } from 'node:zlib'
 import { buildBase, buildTheme } from '../html-kit/build-css.ts'
 import { chromiumNote, resolveChromium } from './lib/chromium.ts'
+import { settled } from './lib/settle.ts'
 import { PILOT, PILOT_DYNAMIC } from '../../packages/elements/test/pilot.ts'
 
 const PKG = fileURLToPath(new URL('../../packages/elements/', import.meta.url))
@@ -401,9 +402,9 @@ describe('@cascivo/elements in Chromium', () => {
     await page.addScriptTag({ url: '/axe.js' })
     // Settle first: a popover that just closed is still fading out, and axe measures the
     // half-transparent text mid-transition (the old flaky color-contrast on menu items).
-    const run = () =>
-      page.evaluate(async () => {
-        await Promise.all(document.getAnimations().map((a) => a.finished.catch(() => {})))
+    const run = async () => {
+      await settled(page)
+      return page.evaluate(async () => {
         const r = await (window as any).axe.run(document, {
           runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'],
         })
@@ -411,6 +412,7 @@ describe('@cascivo/elements in Chromium', () => {
           (v: any) => `${v.id}: ${v.nodes.map((n: any) => n.target).join(' ')}`,
         )
       })
+    }
     assert.deepEqual(await run(), [], 'closed')
     for (const trigger of [
       '#actions [aria-haspopup]',

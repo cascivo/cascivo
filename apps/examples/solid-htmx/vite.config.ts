@@ -18,9 +18,13 @@ export default defineConfig({
   build: {
     cssCodeSplit: false,
     rollupOptions: {
-      input: resolve(root, 'apps/examples/solid-htmx/src/island.tsx'),
+      input: {
+        island: resolve(root, 'apps/examples/solid-htmx/src/island.tsx'),
+        htmx: resolve(root, 'apps/examples/solid-htmx/src/htmx.ts'),
+        elements: resolve(root, 'apps/examples/solid-htmx/src/elements.ts'),
+      },
       output: {
-        entryFileNames: 'island.js',
+        entryFileNames: '[name].js',
         assetFileNames: (a) =>
           a.names.some((n) => n.endsWith('.css')) ? 'island.css' : '[name][extname]',
       },

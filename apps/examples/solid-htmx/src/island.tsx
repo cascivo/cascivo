@@ -1,6 +1,5 @@
 import '@cascivo/themes/light.css'
 import '@cascivo/css/cascivo.css'
-import 'htmx.org'
 import { classes as c } from '@cascivo/css'
 import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'

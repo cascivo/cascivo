@@ -1,6 +1,8 @@
 //! The solid-htmx example server: a page, one htmx fragment route and the island assets.
 //! Everything dynamic is HTML from `cascivo-server`; the Solid island ships as `/assets/island.js`.
 
+mod conformance;
+
 use std::collections::BTreeMap;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicU32, Ordering};
@@ -10,7 +12,7 @@ use axum::extract::{Path, State};
 use axum::http::{HeaderValue, StatusCode, header};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
-use cascivo_server::{App, View};
+use cascivo_server::{App, Csrf, IslandKey, MemoryStore, SessionConfig, View};
 use cascivo_web::{Bundle, Config, Engine};
 use serde::Serialize;
 
@@ -26,7 +28,7 @@ struct Ctx {
 }
 
 fn engine() -> Engine {
-    let templates = BTreeMap::from([
+    let mut templates = BTreeMap::from([
         (
             "base.html".to_string(),
             include_str!("../templates/base.html").to_string(),
@@ -36,11 +38,13 @@ fn engine() -> Engine {
             include_str!("../templates/home.html").to_string(),
         ),
     ]);
+    templates.extend(conformance::TEMPLATES.map(|(k, v)| (k.to_string(), v.to_string())));
+    let en = conformance::MESSAGES.map(|(k, v)| (k.to_string(), v.to_string()));
     Engine::new(&Bundle {
         format: cascivo_web::engine::BUNDLE_FORMAT,
-        config: Config::parse("title = \"solid-htmx\"").expect("static config"),
+        config: Config::parse("title = \"solid-htmx\"\nlang = \"en\"").expect("static config"),
         templates,
-        messages: BTreeMap::new(),
+        messages: BTreeMap::from([("en".to_string(), en.into_iter().collect())]),
         vite_manifest: None,
         css_modules: None,
         data: serde_json::Value::Null,
@@ -52,11 +56,15 @@ fn home(count: u32) -> View {
     View::page("home.html").ctx(Ctx { count }).fragment("count")
 }
 
-/// Serves only the two files the Vite build emits, never a request-chosen path.
+/// Serves only files the Vite build emits: a flat `.js`/`.css` name, never a request-chosen path.
 async fn asset(State(s): State<Notes>, Path(name): Path<String>) -> Response {
-    let ctype = match name.as_str() {
-        "island.js" => "text/javascript; charset=utf-8",
-        "island.css" => "text/css; charset=utf-8",
+    let safe = !name.starts_with('.')
+        && name
+            .bytes()
+            .all(|b| b.is_ascii_alphanumeric() || matches!(b, b'-' | b'_' | b'.'));
+    let ctype = match name.rsplit_once('.') {
+        Some((_, "js")) if safe => "text/javascript; charset=utf-8",
+        Some((_, "css")) if safe => "text/css; charset=utf-8",
         _ => return StatusCode::NOT_FOUND.into_response(),
     };
     match std::fs::read(s.assets.join(&name)) {
@@ -75,7 +83,13 @@ pub fn router(assets: impl Into<std::path::PathBuf>) -> Router {
         count: Arc::new(AtomicU32::new(2)),
         assets: Arc::new(assets.into()),
     };
+    let key = IslandKey::new(&[conformance::ISLAND_SECRET]).expect("island key");
     App::new(engine())
+        .sessions(MemoryStore::new(), SessionConfig::default())
+        .csrf(Csrf::default())
+        .islands(key.clone())
+        .server_island("stats", conformance::stats_island)
+        .toaster("base.html", "toaster")
         .with_state(state)
         .routes(
             Router::new()
@@ -85,7 +99,8 @@ pub fn router(assets: impl Into<std::path::PathBuf>) -> Router {
                     "/notes",
                     post(|State(s): State<Notes>| async move { home(s.count.fetch_add(1, Ordering::Relaxed) + 1) }),
                 )
-                .route("/assets/{name}", get(asset)),
+                .route("/assets/{name}", get(asset))
+                .merge(conformance::routes(key)),
         )
         .into_router()
 }

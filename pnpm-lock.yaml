@@ -274,7 +274,7 @@ catalogs:
       version: 19.2.7
     shiki:
       specifier: ^4.2.0
-      version: 4.2.0
+      version: 4.6.0
     storybook:
       specifier: ^10.4.2
       version: 10.4.2
@@ -1114,9 +1114,15 @@ importers:
       '@cascivo/css':
         specifier: workspace:*
         version: link:../../../packages/css
+      '@cascivo/elements':
+        specifier: workspace:*
+        version: link:../../../packages/elements
       '@cascivo/themes':
         specifier: workspace:*
         version: link:../../../packages/themes
+      htmx-ext-sse:
+        specifier: ^2.2.4
+        version: 2.2.4
       htmx.org:
         specifier: ^2.0.8
         version: 2.0.11
@@ -1422,7 +1428,7 @@ importers:
         version: 29.1.1
       shiki:
         specifier: 'catalog:'
-        version: 4.2.0
+        version: 4.6.0
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
@@ -7881,6 +7887,9 @@ packages:
   html-void-elements@3.0.0:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
 
+  htmx-ext-sse@2.2.4:
+    resolution: {integrity: sha512-LJmxVhykyflBWgh5PvbRidcyuqMHlgfajmmzumvKctv9puvsufeH6OaejSMZTNTnEI8O2wXXn4ZZtBdpEMqmEQ==}
+
   htmx.org@2.0.11:
     resolution: {integrity: sha512-Thx/WtpeOQqSrqBCw/A1cwGJGg4UrVa3+sW0GmrM3p4gJgO89ecH4qtbnyzDDWFvBTqjnIMCgELTNt636dtamA==}
 
@@ -8198,8 +8207,8 @@ packages:
     resolution: {integrity: sha512-b94GiNHQNy6JNTrt5w6zNyffMrNkXZb3KTkCZJb2V1xaEGCk093vkZ2jk3tpaeP33/OiXC+WvK9AxUebnf5nbw==}
     engines: {node: '>= 0.6.3'}
 
-  legacy-javascript@0.0.3:
-    resolution: {integrity: sha512-1r6MT4dVaJyXt4G07Cm2cQ0AUaLJdefiEp4SmIAylA++gnEQ82YvmzE58RkM5EP0fk5hROLCslUPGnwIYdZQVA==}
+  legacy-javascript@0.0.4:
+    resolution: {integrity: sha512-UTmeKBVxnfJcpmpOvzzNnLsQT99BXHpPlc/ZKddIRmWmrR0fw6335I3lq4+sJoP60UTbBNaYsGYVPc65YB1x3A==}
 
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -12689,7 +12698,7 @@ snapshots:
 
   '@paulirish/trace_engine@0.0.53':
     dependencies:
-      legacy-javascript: 0.0.3
+      legacy-javascript: 0.0.4
       third-party-web: 0.30.0
 
   '@playwright/test@1.61.0':
@@ -16196,6 +16205,10 @@ snapshots:
 
   html-void-elements@3.0.0: {}
 
+  htmx-ext-sse@2.2.4:
+    dependencies:
+      htmx.org: 2.0.11
+
   htmx.org@2.0.11: {}
 
   http-cache-semantics@4.2.0: {}
@@ -16473,7 +16486,7 @@ snapshots:
     dependencies:
       readable-stream: 2.3.8
 
-  legacy-javascript@0.0.3: {}
+  legacy-javascript@0.0.4: {}
 
   levn@0.4.1:
     dependencies:
