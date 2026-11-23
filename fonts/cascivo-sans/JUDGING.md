@@ -85,8 +85,8 @@ then run the full gates above. Tests: `python3 -I src/test_score.py`.
 
 Calibration, from the fonts committed at each commit (0.6.1 `5e450f8d`, round 4 `a27d7610`, round
 5 `59f5fcf4`): the scorer ranks R5 > R4 > 0.6.1 as the blind judge does (6.84 / 6.69 / 5.09).
-Upright 8.14 / 8.11 / 7.53, upright and italic mean 8.04 / 8.01 / 7.60; Pearson r = 0.97 (upright)
-and 0.96 (mean). The range is compressed (0.6 against 1.75 points) and R5 over R4 is a +0.03 step,
+Upright 8.14 / 8.11 / 7.53, upright and italic mean 8.04 / 8.01 / 7.60; Pearson r = 0.999 (upright)
+and 1.00 (mean), on three points. The range is compressed (0.6 against 1.75 points) and R5 over R4 is a +0.03 step,
 inside the noise: trust the sign of a change, not its size. Optical sizes stay at 2.8 in all three
 (x-height delta 14 to 32 is -5 units against Inter's -30), which is defect 8, not a scorer error.
 
