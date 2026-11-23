@@ -1,4 +1,4 @@
-//! `cascivo-web build [site] [--out dist] [--no-clean]`, `dev [site] [--port 4321]`, `new <dir>`
+//! `cascivo-web build [site] [--out dist] [--no-clean] [--bundle] [--bundle-out <file>]`, `dev [site] [--port 4321]`, `new <dir>`
 //! (starter site) and `deploy [site] [--out dist] [--no-clean] [--pages] [--project-name <p>]
 //! [--dry-run] [-- <wrangler args>]` (build, then `wrangler deploy` or `wrangler pages deploy`).
 
@@ -9,7 +9,7 @@ use std::time::Instant;
 
 use cascivo_web::Site;
 
-const USAGE: &str = "usage: cascivo-web build [site-dir] [--out <dir>] [--no-clean]\n       cascivo-web dev [site-dir] [--port <n>]\n       cascivo-web new <dir>\n       cascivo-web deploy [site-dir] [--out <dir>] [--no-clean] [--pages] [--project-name <name>] [--dry-run] [-- <wrangler args>]";
+const USAGE: &str = "usage: cascivo-web build [site-dir] [--out <dir>] [--no-clean] [--bundle] [--bundle-out <file>]\n       cascivo-web dev [site-dir] [--port <n>]\n       cascivo-web new <dir>\n       cascivo-web deploy [site-dir] [--out <dir>] [--no-clean] [--pages] [--project-name <name>] [--dry-run] [-- <wrangler args>]";
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -30,6 +30,7 @@ fn run(args: &[String]) -> Result<(), String> {
     let mut dry_run = false;
     let mut clean = true;
     let mut pages = false;
+    let mut bundle: Option<Option<PathBuf>> = None;
     let mut project: Option<String> = None;
     let mut extra: Vec<String> = Vec::new();
     let mut it = args[1..].iter();
@@ -38,6 +39,10 @@ fn run(args: &[String]) -> Result<(), String> {
             "--dry-run" => dry_run = true,
             "--no-clean" => clean = false,
             "--pages" => pages = true,
+            "--bundle" => bundle = Some(bundle.flatten()),
+            "--bundle-out" => {
+                bundle = Some(Some(it.next().ok_or("--bundle-out needs a file")?.into()));
+            }
             "--project-name" => {
                 project = Some(it.next().ok_or("--project-name needs a name")?.clone());
             }
@@ -56,7 +61,14 @@ fn run(args: &[String]) -> Result<(), String> {
         }
     }
     match cmd {
-        "build" => build(&root, out, clean).map(|_| ()),
+        "build" => {
+            build(&root, out, clean)?;
+            match bundle {
+                // Next to the site, not in dist/: dist is served publicly.
+                Some(to) => write_bundle(&root, &to.unwrap_or_else(|| root.join("app.bundle"))),
+                None => Ok(()),
+            }
+        }
         "new" => {
             if args.len() < 2 {
                 return Err(USAGE.into());
@@ -137,4 +149,14 @@ fn build(root: &std::path::Path, out: Option<PathBuf>, clean: bool) -> Result<Pa
         t.elapsed().as_secs_f64() * 1e3
     );
     Ok(dist)
+}
+
+/// Writes the request-time template bundle that `Engine::from_bundle` reads.
+fn write_bundle(root: &std::path::Path, to: &std::path::Path) -> Result<(), String> {
+    let bytes = cascivo_web::Bundle::load(root)
+        .map_err(|e| e.to_string())?
+        .to_bytes();
+    std::fs::write(to, &bytes).map_err(|e| format!("{}: {e}", to.display()))?;
+    eprintln!("bundle → {} ({} bytes)", to.display(), bytes.len());
+    Ok(())
 }
