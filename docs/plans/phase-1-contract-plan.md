@@ -1,6 +1,6 @@
 # Phase 1 (Contract): implementation plan
 
-Status: plan only. Parent: [rust-html-stack-plan.md](rust-html-stack-plan.md) (Phase 0 done).
+Status: done (2026-11-23). Parent: [rust-html-stack-plan.md](rust-html-stack-plan.md) (Phase 0 done).
 Effort: 2–2.5 weeks, 6 workstreams in parallel after a 1.5-day foundation.
 
 **Owner's goal.** New dynamic apps built with plain HTML/CSS + htmx + Solid (Rust/axum servers),

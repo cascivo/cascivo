@@ -1,6 +1,6 @@
 # Rust + HTML-first stack: Phase 3 (Dynamic) plan
 
-Status: plan only, not started. Parent: [rust-html-stack-plan.md](rust-html-stack-plan.md)
+Status: in progress (see rust-html-stack-plan.md § Status). Parent: [rust-html-stack-plan.md](rust-html-stack-plan.md)
 ("Later phases", item 3). Inputs: results W1–W5, `crates/cascivo-web` (`axum.rs`, `islands.rs`,
 `dev.rs`, `deploy.rs`), `packages/elements`.
 

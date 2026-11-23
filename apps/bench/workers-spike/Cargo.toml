@@ -13,7 +13,9 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 axum = { version = "0.8.9", default-features = false }
-cascivo-server = { path = "../../../crates/cascivo-server", default-features = false, features = ["workers"] }
+cascivo-server = { path = "../../../crates/cascivo-server", default-features = false, features = [
+  "workers",
+] }
 cascivo-web = { path = "../../../crates/cascivo-web", default-features = false }
 cascivo-worker = { path = "../../../crates/cascivo-worker" }
 console_error_panic_hook = "0.1.7"

@@ -1,6 +1,6 @@
 # Rust + HTML-first stack: plan
 
-Status: Phase 0 (de-risk) done; go for Phase 1. Criterion 6 (tool vs product) awaits the owner. Origin: analysis of (1) a Rust, Astro-class framework and
+Status: Phase 0, 1 and 2 done; Phase 3 in progress. Criterion 6 settled for now: own tool, product later. Origin: analysis of (1) a Rust, Astro-class framework and
 (2) an HTML/CSS-first stack (htmx, custom elements). Both converge on one architecture.
 
 ## Target architecture
@@ -109,3 +109,13 @@ Plans: [phase-1-contract-plan.md](phase-1-contract-plan.md), [phase-3-dynamic-pl
   builds it, Phase 3 D2 reuses it.
 - **Order.** Phase 3 A, B1, B3, C, F, G, X1 and S0 can start alongside Phase 1; B2, D, E and K wait
   for Phase 1 WS-0, WS-1 and the form emitters.
+
+## Status (2026-11-23)
+
+- **Phase 1 (Contract): done.** `@cascivo/css`; anatomy on every component with a CSS module (G2);
+  Rust consts + auto emitters from the contract (G4); 101 cascivo-html components; parity coverage
+  gate (G3); contract semver gate (G1); `cv-tabs`; Solid + htmx example on `cascivo-server`.
+- **Phase 2 (Static MVP): done** via #297–#302: images, i18n, RSS, Cloudflare deploy, cascivo.com home
+  on cascivo-web at Lighthouse 100.
+- **Phase 3 (Dynamic): in progress.** Done: A, X1 (α pass), B1 (β holds), B2, B3, C, D1, D2, F, G.
+  Next: E (Solid islands), T (harness), then H (starter), I (guides). S0 and K wait for the owner's app.
