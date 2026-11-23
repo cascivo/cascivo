@@ -1185,7 +1185,9 @@
                           "success",
                           "warning",
                           "destructive",
-                          "outline"
+                          "outline",
+                          "info",
+                          "primary"
                         ]
                       },
                       {

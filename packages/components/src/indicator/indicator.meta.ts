@@ -6,6 +6,17 @@ export const meta: ComponentMeta = {
   category: 'layout',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      data: { 'data-placement': ['top-start', 'top-end', 'bottom-start', 'bottom-end'] },
+      children: ['$slot', 'overlay'],
+      emit: 'auto',
+    },
+    parts: {
+      overlay: { element: 'div', aria: ['aria-hidden'], children: ['$slot'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

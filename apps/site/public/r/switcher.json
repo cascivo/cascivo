@@ -27,6 +27,35 @@
     "category": "navigation",
     "clientJs": "enhancement",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "ul",
+        "aria": ["aria-label"],
+        "children": ["item", "divider"],
+        "emit": "manual"
+      },
+      "parts": {
+        "item": {
+          "element": "a",
+          "data": {
+            "data-state": ["active"]
+          },
+          "aria": ["aria-current"],
+          "children": ["icon", "$text"]
+        },
+        "icon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$slot"],
+          "when": "icon"
+        },
+        "divider": {
+          "element": "span",
+          "role": "separator",
+          "aria": ["aria-orientation"]
+        }
+      }
+    },
     "states": ["default"],
     "variants": [],
     "sizes": [],

@@ -30,6 +30,21 @@
     "category": "display",
     "clientJs": "enhancement",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "local": "qrCode",
+        "element": "div",
+        "children": ["svg"],
+        "emit": "manual"
+      },
+      "parts": {
+        "svg": {
+          "element": "svg",
+          "role": "img",
+          "aria": ["aria-label"]
+        }
+      }
+    },
     "states": ["default"],
     "variants": [],
     "sizes": [],

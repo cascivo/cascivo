@@ -6,6 +6,14 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'span',
+      local: 'visuallyHidden',
+      children: ['$slot'],
+      emit: 'auto',
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

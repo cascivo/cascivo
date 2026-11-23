@@ -27,6 +27,21 @@
     "category": "feedback",
     "clientJs": "none",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "span",
+        "role": "status",
+        "aria": ["aria-label"],
+        "children": ["dot", "dot", "dot"],
+        "emit": "manual"
+      },
+      "parts": {
+        "dot": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

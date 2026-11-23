@@ -7,6 +7,23 @@ export const meta: ComponentMeta = {
   category: 'feedback',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      role: 'status',
+      aria: ['aria-live'],
+      data: { 'data-status': ['inactive', 'active', 'finished', 'error'] },
+      children: ['indicator', 'label'],
+      // The icon and the default label both switch on `status`.
+      emit: 'manual',
+    },
+    parts: {
+      indicator: { element: 'span', aria: ['aria-hidden'], children: ['spinner', 'icon'] },
+      spinner: { element: 'span', when: "status === 'active'" },
+      icon: { element: 'svg', when: "status === 'finished' || status === 'error'" },
+      label: { element: 'span', children: ['$slot'], when: 'label' },
+    },
+  },
   states: ['inactive', 'active', 'finished', 'error'],
   variants: [],
   sizes: [],

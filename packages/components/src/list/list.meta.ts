@@ -6,6 +6,19 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: ['ul', 'ol'],
+      data: { 'data-marker': ['disc', 'decimal', 'none'] },
+      children: ['item'],
+      // `data-marker` defaults from the element when `marker` is not passed.
+      emit: 'manual',
+    },
+    parts: {
+      // `ListItem` is a separate component composed inside the list.
+      item: { element: 'li', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: ['disc', 'decimal', 'none'],
   sizes: [],

@@ -28,7 +28,8 @@ export const meta: ComponentMeta = {
       status: { element: 'span', aria: ['aria-hidden'], when: 'status' },
     },
   },
-  states: ['loading', 'loaded', 'error'],
+  // The image machine's states are internal; no CSS keys on them, so none reach the markup.
+  states: [],
   variants: [],
   sizes: ['xs', 'sm', 'md', 'lg', 'xl'],
   props: [

@@ -8,6 +8,15 @@ export const meta: ComponentMeta = {
   category: 'navigation',
   clientJs: 'enhancement',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'a',
+      local: 'link',
+      children: ['$text'],
+      // `href` is built from `targetId` and the label comes from i18n.
+      emit: 'manual',
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

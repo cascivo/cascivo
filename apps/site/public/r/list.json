@@ -27,6 +27,22 @@
     "category": "display",
     "clientJs": "none",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": ["ul", "ol"],
+        "data": {
+          "data-marker": ["disc", "decimal", "none"]
+        },
+        "children": ["item"],
+        "emit": "manual"
+      },
+      "parts": {
+        "item": {
+          "element": "li",
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": [],
     "variants": ["disc", "decimal", "none"],
     "sizes": [],

@@ -8,6 +8,15 @@ export const meta: ComponentMeta = {
   // highlighting.
   clientJs: 'enhancement',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'nav',
+      aria: ['aria-label'],
+      // The list, items and links are bare elements styled by descendant selectors.
+      // One entry per item; links carry a computed `aria-current`.
+      emit: 'manual',
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

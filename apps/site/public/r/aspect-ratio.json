@@ -27,6 +27,20 @@
     "category": "layout",
     "clientJs": "none",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "root",
+        "children": ["inner"],
+        "emit": "manual"
+      },
+      "parts": {
+        "inner": {
+          "element": "div",
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

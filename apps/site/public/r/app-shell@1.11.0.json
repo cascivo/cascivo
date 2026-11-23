@@ -27,6 +27,61 @@
     "category": "layout",
     "clientJs": "enhancement",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "shell",
+        "data": {
+          "data-open": ["true", "false"]
+        },
+        "children": ["header", "body", "footer"],
+        "emit": "manual"
+      },
+      "parts": {
+        "header": {
+          "element": "div",
+          "children": ["$slot"]
+        },
+        "body": {
+          "element": "div",
+          "children": ["navWrapper", "scrim", "main"]
+        },
+        "navWrapper": {
+          "element": "div",
+          "data": {
+            "data-cascivo-appshell-nav": [""],
+            "data-open": ["true", "false"]
+          },
+          "children": ["navInner"],
+          "when": "nav"
+        },
+        "navInner": {
+          "element": "div",
+          "children": ["$slot"]
+        },
+        "scrim": {
+          "element": "div",
+          "data": {
+            "data-open": ["true", "false"]
+          },
+          "aria": ["aria-hidden"],
+          "when": "nav"
+        },
+        "main": {
+          "element": "main",
+          "data": {
+            "data-cascivo-appshell-main": [""],
+            "data-padding": "string"
+          },
+          "children": ["$slot"]
+        },
+        "footer": {
+          "element": "div",
+          "children": ["$slot"],
+          "when": "footer"
+        }
+      }
+    },
     "states": ["open", "closed"],
     "variants": [],
     "sizes": [],

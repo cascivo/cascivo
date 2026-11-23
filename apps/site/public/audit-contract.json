@@ -679,7 +679,7 @@
       "props": [
         {
           "name": "variant",
-          "type": "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'",
+          "type": "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline' | 'info' | 'primary'",
           "required": false
         },
         { "name": "size", "type": "'sm' | 'md'", "required": false },

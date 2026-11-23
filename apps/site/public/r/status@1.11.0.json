@@ -27,6 +27,23 @@
     "category": "display",
     "clientJs": "none",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "span",
+        "data": {
+          "data-status": ["success", "warning", "error", "info", "neutral"],
+          "data-pulse": "boolean"
+        },
+        "children": ["dot", "$slot"],
+        "emit": "manual"
+      },
+      "parts": {
+        "dot": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        }
+      }
+    },
     "states": [],
     "variants": ["success", "warning", "error", "info", "neutral"],
     "sizes": [],

@@ -6,6 +6,22 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      data: {
+        'data-variant': ['text', 'circle', 'rect'],
+        'data-ai': 'boolean',
+      },
+      aria: ['aria-hidden'],
+      children: ['line'],
+      // One `line` per `lines`, rendered in a loop.
+      emit: 'manual',
+    },
+    parts: {
+      line: { element: 'span', when: "variant === 'text'" },
+    },
+  },
   states: [],
   variants: ['text', 'circle', 'rect'],
   sizes: [],

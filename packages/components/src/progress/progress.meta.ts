@@ -12,6 +12,7 @@ export const meta: ComponentMeta = {
       data: {
         'data-variant': ['primary', 'info', 'success', 'warning', 'error'],
         'data-size': ['sm', 'md', 'lg'],
+        'data-state': ['determinate', 'indeterminate'],
       },
       aria: ['aria-label', 'aria-describedby'],
       // `max` is derived from `value`, so the markup is not static.

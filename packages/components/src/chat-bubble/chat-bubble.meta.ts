@@ -6,6 +6,23 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'bubble',
+      data: { 'data-side': ['start', 'end'] },
+      children: ['avatar', 'content'],
+      emit: 'auto',
+    },
+    parts: {
+      avatar: { element: 'div', aria: ['aria-hidden'], children: ['$slot'], when: 'avatar' },
+      content: { element: 'div', children: ['meta', 'body'] },
+      meta: { element: 'div', children: ['name', 'time'], when: 'name || time' },
+      name: { element: 'span', children: ['$text'], when: 'name' },
+      time: { element: 'time', children: ['$text'], when: 'time' },
+      body: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: ['start', 'end'],
   sizes: [],

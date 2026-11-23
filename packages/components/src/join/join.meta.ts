@@ -7,6 +7,14 @@ export const meta: ComponentMeta = {
   category: 'layout',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      data: { 'data-orientation': ['horizontal', 'vertical'] },
+      children: ['$slot'],
+      emit: 'auto',
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

@@ -27,6 +27,33 @@
     "category": "navigation",
     "clientJs": "enhancement",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "nav",
+        "aria": ["aria-label"],
+        "children": ["item"],
+        "emit": "manual"
+      },
+      "parts": {
+        "item": {
+          "element": ["button", "a"],
+          "data": {
+            "data-active": ["true"]
+          },
+          "aria": ["aria-current"],
+          "children": ["icon", "label"]
+        },
+        "icon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$slot"]
+        },
+        "label": {
+          "element": "span",
+          "children": ["$text"]
+        }
+      }
+    },
     "states": ["default", "active"],
     "variants": [],
     "sizes": [],

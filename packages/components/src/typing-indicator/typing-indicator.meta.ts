@@ -7,6 +7,19 @@ export const meta: ComponentMeta = {
   category: 'feedback',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'span',
+      role: 'status',
+      aria: ['aria-label'],
+      children: ['dot', 'dot', 'dot'],
+      // The accessible name comes from i18n.
+      emit: 'manual',
+    },
+    parts: {
+      dot: { element: 'span', aria: ['aria-hidden'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

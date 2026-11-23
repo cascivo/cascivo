@@ -450,6 +450,20 @@
         "category": "feedback",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "p",
+            "local": "disclaimer",
+            "children": ["glyph", "$slot"],
+            "emit": "manual"
+          },
+          "parts": {
+            "glyph": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -1043,6 +1057,61 @@
         "category": "layout",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "shell",
+            "data": {
+              "data-open": ["true", "false"]
+            },
+            "children": ["header", "body", "footer"],
+            "emit": "manual"
+          },
+          "parts": {
+            "header": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "body": {
+              "element": "div",
+              "children": ["navWrapper", "scrim", "main"]
+            },
+            "navWrapper": {
+              "element": "div",
+              "data": {
+                "data-cascivo-appshell-nav": [""],
+                "data-open": ["true", "false"]
+              },
+              "children": ["navInner"],
+              "when": "nav"
+            },
+            "navInner": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "scrim": {
+              "element": "div",
+              "data": {
+                "data-open": ["true", "false"]
+              },
+              "aria": ["aria-hidden"],
+              "when": "nav"
+            },
+            "main": {
+              "element": "main",
+              "data": {
+                "data-cascivo-appshell-main": [""],
+                "data-padding": "string"
+              },
+              "children": ["$slot"]
+            },
+            "footer": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "footer"
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -1184,6 +1253,20 @@
         "category": "layout",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "children": ["inner"],
+            "emit": "manual"
+          },
+          "parts": {
+            "inner": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -1310,7 +1393,7 @@
             }
           }
         },
-        "states": ["loading", "loaded", "error"],
+        "states": [],
         "variants": [],
         "sizes": ["xs", "sm", "md", "lg", "xl"],
         "props": [
@@ -1437,6 +1520,27 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "group",
+            "role": "group",
+            "data": {
+              "data-spacing": ["sm", "md", "lg"],
+              "data-grid": [""]
+            },
+            "children": ["$slot", "overflow"],
+            "emit": "manual"
+          },
+          "parts": {
+            "overflow": {
+              "element": "div",
+              "aria": ["aria-label"],
+              "children": ["@avatar"],
+              "when": "max"
+            }
+          }
+        },
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -1579,7 +1683,9 @@
                 "success",
                 "warning",
                 "destructive",
-                "outline"
+                "outline",
+                "info",
+                "primary"
               ],
               "data-size": ["sm", "md"]
             },
@@ -1588,13 +1694,22 @@
           }
         },
         "states": [],
-        "variants": ["default", "secondary", "success", "warning", "destructive", "outline"],
+        "variants": [
+          "default",
+          "secondary",
+          "success",
+          "warning",
+          "destructive",
+          "outline",
+          "info",
+          "primary"
+        ],
         "sizes": ["sm", "md"],
         "props": [
           {
             "name": "variant",
             "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only).",
-            "type": "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'",
+            "type": "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline' | 'info' | 'primary'",
             "required": false,
             "default": "default"
           },
@@ -2622,6 +2737,20 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "blockquote",
+            "children": ["$slot", "footer"],
+            "emit": "auto"
+          },
+          "parts": {
+            "footer": {
+              "element": "footer",
+              "children": ["$text"],
+              "when": "cite"
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -3338,6 +3467,19 @@
         "category": "inputs",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "buttonGroup",
+            "role": "group",
+            "data": {
+              "data-orientation": ["horizontal", "vertical"],
+              "data-size": ["sm", "md", "lg"]
+            },
+            "children": ["$slot"],
+            "emit": "auto"
+          }
+        },
         "states": ["idle"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -8769,6 +8911,48 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "bubble",
+            "data": {
+              "data-side": ["start", "end"]
+            },
+            "children": ["avatar", "content"],
+            "emit": "auto"
+          },
+          "parts": {
+            "avatar": {
+              "element": "div",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"],
+              "when": "avatar"
+            },
+            "content": {
+              "element": "div",
+              "children": ["meta", "body"]
+            },
+            "meta": {
+              "element": "div",
+              "children": ["name", "time"],
+              "when": "name || time"
+            },
+            "name": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "name"
+            },
+            "time": {
+              "element": "time",
+              "children": ["$text"],
+              "when": "time"
+            },
+            "body": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": ["start", "end"],
         "sizes": [],
@@ -9217,6 +9401,16 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "code",
+            "data": {
+              "data-size": ["sm", "md"]
+            },
+            "children": ["$slot"],
+            "emit": "auto"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -9340,6 +9534,76 @@
         "category": "display",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": ["span", "div"],
+            "local": "root",
+            "data": {
+              "data-variant": ["inline", "single", "multi"],
+              "data-terminal": [""]
+            },
+            "children": ["bar", "pre", "inlineCode", "copy"],
+            "emit": "manual"
+          },
+          "parts": {
+            "bar": {
+              "element": "div",
+              "aria": ["aria-hidden"],
+              "children": ["dots", "title"],
+              "when": "terminal"
+            },
+            "dots": {
+              "element": "span",
+              "children": ["dot"]
+            },
+            "dot": {
+              "element": "span"
+            },
+            "title": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "title"
+            },
+            "pre": {
+              "element": "pre",
+              "children": ["code", "line"]
+            },
+            "code": {
+              "element": "code",
+              "children": ["$text", "line"]
+            },
+            "line": {
+              "element": "span",
+              "children": ["lineNumber", "lineText"]
+            },
+            "lineNumber": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$text"]
+            },
+            "lineText": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "inlineCode": {
+              "element": "code",
+              "children": ["$text"]
+            },
+            "copy": {
+              "element": "button",
+              "data": {
+                "data-state": ["idle", "copied"]
+              },
+              "aria": ["aria-label"],
+              "children": ["icon"],
+              "when": "showCopyButton"
+            },
+            "icon": {
+              "element": "svg",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": ["idle", "copied"],
         "variants": ["inline", "single", "multi"],
         "sizes": [],
@@ -10797,6 +11061,44 @@
         "category": "feedback",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "meter",
+            "role": "meter",
+            "data": {
+              "data-level": ["normal", "high", "full"]
+            },
+            "aria": [
+              "aria-label",
+              "aria-valuenow",
+              "aria-valuemin",
+              "aria-valuemax",
+              "aria-valuetext"
+            ],
+            "children": ["header", "track"],
+            "emit": "manual"
+          },
+          "parts": {
+            "header": {
+              "element": "div",
+              "aria": ["aria-hidden"],
+              "children": ["$text", "value"]
+            },
+            "value": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "track": {
+              "element": "div",
+              "aria": ["aria-hidden"],
+              "children": ["fill"]
+            },
+            "fill": {
+              "element": "div"
+            }
+          }
+        },
         "states": ["normal", "high", "full"],
         "variants": [],
         "sizes": [],
@@ -11040,6 +11342,33 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "dl",
+            "local": "list",
+            "data": {
+              "data-orientation": ["horizontal", "vertical"],
+              "data-size": ["sm", "md"],
+              "data-dividers": [""]
+            },
+            "children": ["row", "$slot"],
+            "emit": "manual"
+          },
+          "parts": {
+            "row": {
+              "element": "div",
+              "children": ["term", "detail"]
+            },
+            "term": {
+              "element": "dt",
+              "children": ["$slot"]
+            },
+            "detail": {
+              "element": "dd",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": ["horizontal", "vertical"],
         "sizes": ["sm", "md"],
@@ -12600,6 +12929,33 @@
         "category": "navigation",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "nav",
+            "aria": ["aria-label"],
+            "children": ["item"],
+            "emit": "manual"
+          },
+          "parts": {
+            "item": {
+              "element": ["button", "a"],
+              "data": {
+                "data-active": ["true"]
+              },
+              "aria": ["aria-current"],
+              "children": ["icon", "label"]
+            },
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "label": {
+              "element": "span",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["default", "active"],
         "variants": [],
         "sizes": [],
@@ -13670,6 +14026,38 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-size": ["md", "lg"]
+            },
+            "children": ["icon", "title", "description", "action"],
+            "emit": "auto"
+          },
+          "parts": {
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"],
+              "when": "icon"
+            },
+            "title": {
+              "element": "h3",
+              "children": ["$text"]
+            },
+            "description": {
+              "element": "p",
+              "children": ["$text"],
+              "when": "description"
+            },
+            "action": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "action"
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": ["md", "lg"],
@@ -16459,6 +16847,50 @@
         "category": "navigation",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "header",
+            "role": "banner",
+            "data": {
+              "data-sticky": ["true"]
+            },
+            "children": ["brand", "nav", "spacer", "actions"],
+            "emit": "manual"
+          },
+          "parts": {
+            "brand": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "brand"
+            },
+            "nav": {
+              "element": "nav",
+              "aria": ["aria-label"],
+              "children": ["list"],
+              "when": "links"
+            },
+            "list": {
+              "element": "ul",
+              "children": ["link"]
+            },
+            "link": {
+              "element": "a",
+              "data": {
+                "data-state": ["active"]
+              },
+              "aria": ["aria-current"],
+              "children": ["$text"]
+            },
+            "spacer": {
+              "element": "div"
+            },
+            "actions": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "actions"
+            }
+          }
+        },
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -16720,6 +17152,16 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": ["h1", "h2", "h3", "h4", "h5", "h6"],
+            "data": {
+              "data-size": ["sm", "md", "lg", "xl", "2xl"]
+            },
+            "children": ["$slot"],
+            "emit": "manual"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": ["sm", "md", "lg", "xl", "2xl"],
@@ -16966,6 +17408,19 @@
         "category": "inputs",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "local": "iconButton",
+            "element": ["button", "a"],
+            "data": {
+              "data-variant": ["ghost", "outline", "filled"],
+              "data-size": ["sm", "md", "lg"]
+            },
+            "aria": ["aria-label"],
+            "children": ["$slot"],
+            "emit": "manual"
+          }
+        },
         "states": ["idle"],
         "variants": ["ghost", "outline", "filled"],
         "sizes": ["sm", "md", "lg"],
@@ -17282,6 +17737,23 @@
         "category": "layout",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-placement": ["top-start", "top-end", "bottom-start", "bottom-end"]
+            },
+            "children": ["$slot", "overlay"],
+            "emit": "auto"
+          },
+          "parts": {
+            "overlay": {
+              "element": "div",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -17529,6 +18001,38 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "local": "citation",
+            "element": "sup",
+            "children": ["marker", "card"],
+            "emit": "manual"
+          },
+          "parts": {
+            "marker": {
+              "element": ["a", "span"],
+              "children": ["$text", "@visually-hidden"]
+            },
+            "card": {
+              "element": "span",
+              "children": ["title", "host", "description"]
+            },
+            "title": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "host": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "source.url"
+            },
+            "description": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "source.description"
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -17672,6 +18176,38 @@
         "category": "feedback",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "role": "status",
+            "aria": ["aria-live"],
+            "data": {
+              "data-status": ["inactive", "active", "finished", "error"]
+            },
+            "children": ["indicator", "label"],
+            "emit": "manual"
+          },
+          "parts": {
+            "indicator": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["spinner", "icon"]
+            },
+            "spinner": {
+              "element": "span",
+              "when": "status === 'active'"
+            },
+            "icon": {
+              "element": "svg",
+              "when": "status === 'finished' || status === 'error'"
+            },
+            "label": {
+              "element": "span",
+              "children": ["$slot"],
+              "when": "label"
+            }
+          }
+        },
         "states": ["inactive", "active", "finished", "error"],
         "variants": [],
         "sizes": [],
@@ -18024,6 +18560,45 @@
         "category": "inputs",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "local": "input-group",
+            "element": "div",
+            "data": {
+              "data-has-prefix": [""],
+              "data-has-suffix": [""]
+            },
+            "children": ["addon", "input-wrap", "inline-addon", "button-group"],
+            "emit": "manual"
+          },
+          "parts": {
+            "input-wrap": {
+              "element": "span",
+              "children": ["$slot"]
+            },
+            "addon": {
+              "element": "span",
+              "data": {
+                "data-position": ["prefix", "suffix"]
+              },
+              "children": ["$slot"],
+              "when": "prefix || suffix"
+            },
+            "inline-addon": {
+              "element": "span",
+              "data": {
+                "data-align": ["inline-start", "inline-end"]
+              },
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "button-group": {
+              "element": "div",
+              "role": "group",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -18140,6 +18715,39 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": ["div", "a"],
+            "data": {
+              "data-variant": ["default", "muted"],
+              "data-size": ["sm", "md"]
+            },
+            "children": ["$slot", "media", "content", "actions"],
+            "emit": "manual"
+          },
+          "parts": {
+            "media": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "content": {
+              "element": "div",
+              "children": ["$slot", "title", "description"]
+            },
+            "title": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "description": {
+              "element": "p",
+              "children": ["$slot"]
+            },
+            "actions": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": ["default", "muted"],
         "sizes": ["sm", "md"],
@@ -18255,6 +18863,16 @@
         "category": "layout",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-orientation": ["horizontal", "vertical"]
+            },
+            "children": ["$slot"],
+            "emit": "auto"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -18350,6 +18968,16 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "kbd",
+            "data": {
+              "data-size": ["sm", "md"]
+            },
+            "children": ["$slot"],
+            "emit": "auto"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -18451,6 +19079,29 @@
         "category": "inputs",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "label",
+            "data": {
+              "data-disabled": [""]
+            },
+            "children": ["$slot", "marker", "srOnly"],
+            "emit": "manual"
+          },
+          "parts": {
+            "marker": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$text"],
+              "when": "required"
+            },
+            "srOnly": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "required"
+            }
+          }
+        },
         "states": ["default", "disabled"],
         "variants": [],
         "sizes": [],
@@ -18597,6 +19248,36 @@
         "category": "navigation",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "local": "root",
+            "element": "div",
+            "children": ["bar", "largeTitle", "$slot"],
+            "emit": "manual"
+          },
+          "parts": {
+            "bar": {
+              "element": "div",
+              "children": ["slot", "compactTitle", "slot"]
+            },
+            "slot": {
+              "element": "div",
+              "children": ["$slot"],
+              "modifiers": {
+                "slotEnd": "actions"
+              }
+            },
+            "compactTitle": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$text"]
+            },
+            "largeTitle": {
+              "element": ["h1", "h2", "h3"],
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["expanded", "collapsed"],
         "variants": [],
         "sizes": [],
@@ -20125,6 +20806,18 @@
         "category": "navigation",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "a",
+            "data": {
+              "data-variant": ["standalone", "inline"],
+              "data-size": ["sm", "md", "lg"],
+              "data-external": ["true"]
+            },
+            "children": ["$slot"],
+            "emit": "manual"
+          }
+        },
         "states": [],
         "variants": ["standalone", "inline"],
         "sizes": ["sm", "md", "lg"],
@@ -20258,6 +20951,22 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": ["ul", "ol"],
+            "data": {
+              "data-marker": ["disc", "decimal", "none"]
+            },
+            "children": ["item"],
+            "emit": "manual"
+          },
+          "parts": {
+            "item": {
+              "element": "li",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": ["disc", "decimal", "none"],
         "sizes": [],
@@ -23066,7 +23775,8 @@
             "element": "progress",
             "data": {
               "data-variant": ["primary", "info", "success", "warning", "error"],
-              "data-size": ["sm", "md", "lg"]
+              "data-size": ["sm", "md", "lg"],
+              "data-state": ["determinate", "indeterminate"]
             },
             "aria": ["aria-label", "aria-describedby"],
             "emit": "manual"
@@ -23216,7 +23926,47 @@
         "category": "feedback",
         "clientJs": "none",
         "contractTier": "static",
-        "states": ["determinate", "indeterminate"],
+        "anatomy": {
+          "root": {
+            "local": "progress",
+            "element": "div",
+            "data": {
+              "data-status": ["active", "success", "error"],
+              "data-size": ["sm", "md"],
+              "data-state": ["indeterminate"]
+            },
+            "children": ["label", "track", "helper"],
+            "emit": "manual"
+          },
+          "parts": {
+            "label": {
+              "element": "span",
+              "children": ["$text", "glyph"],
+              "when": "label"
+            },
+            "glyph": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$text"],
+              "when": "status"
+            },
+            "track": {
+              "element": "div",
+              "role": "progressbar",
+              "aria": ["aria-valuemin", "aria-valuemax", "aria-valuenow", "aria-labelledby"],
+              "children": ["fill"]
+            },
+            "fill": {
+              "element": "div"
+            },
+            "helper": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "helperText"
+            }
+          }
+        },
+        "states": ["indeterminate"],
         "variants": ["active", "success", "error"],
         "sizes": ["sm", "md"],
         "props": [
@@ -23354,6 +24104,37 @@
         "category": "feedback",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "local": "progressCircle",
+            "element": "div",
+            "data": {
+              "data-size": ["sm", "md", "lg"]
+            },
+            "role": "progressbar",
+            "aria": ["aria-valuemin", "aria-valuemax", "aria-valuenow", "aria-label"],
+            "children": ["svg", "value"],
+            "emit": "manual"
+          },
+          "parts": {
+            "svg": {
+              "element": "svg",
+              "aria": ["aria-hidden"],
+              "children": ["track", "fill"]
+            },
+            "track": {
+              "element": "circle"
+            },
+            "fill": {
+              "element": "circle"
+            },
+            "value": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "showValue"
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -23484,6 +24265,45 @@
         "category": "navigation",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "local": "indicator",
+            "element": "ol",
+            "data": {
+              "data-orientation": ["horizontal", "vertical"]
+            },
+            "children": ["step"],
+            "emit": "manual"
+          },
+          "parts": {
+            "step": {
+              "element": "li",
+              "data": {
+                "data-status": ["complete", "current", "incomplete"]
+              },
+              "aria": ["aria-current"],
+              "children": ["marker", "text"]
+            },
+            "marker": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$text"]
+            },
+            "text": {
+              "element": "span",
+              "children": ["label", "description"]
+            },
+            "label": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "description": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "description"
+            }
+          }
+        },
         "states": ["complete", "current", "incomplete"],
         "variants": ["horizontal", "vertical"],
         "sizes": [],
@@ -23723,6 +24543,13 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "children": ["$slot"],
+            "emit": "auto"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -23977,6 +24804,21 @@
         "category": "display",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "local": "qrCode",
+            "element": "div",
+            "children": ["svg"],
+            "emit": "manual"
+          },
+          "parts": {
+            "svg": {
+              "element": "svg",
+              "role": "img",
+              "aria": ["aria-label"]
+            }
+          }
+        },
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -24114,6 +24956,32 @@
         "category": "feedback",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "local": "radialProgress",
+            "element": "div",
+            "data": {
+              "data-size": ["sm", "md", "lg"],
+              "data-variant": ["primary", "info", "success", "warning", "error"]
+            },
+            "role": "progressbar",
+            "aria": [
+              "aria-valuenow",
+              "aria-valuemin",
+              "aria-valuemax",
+              "aria-labelledby",
+              "aria-label"
+            ],
+            "children": ["label"],
+            "emit": "manual"
+          },
+          "parts": {
+            "label": {
+              "element": "span",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": ["primary", "info", "success", "warning", "error"],
         "sizes": ["sm", "md", "lg"],
@@ -24826,6 +25694,14 @@
         "category": "display",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "local": "relativeTime",
+            "element": "time",
+            "children": ["$text"],
+            "emit": "manual"
+          }
+        },
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -25256,6 +26132,22 @@
         "category": "layout",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "data": {
+              "data-orientation": ["vertical", "horizontal", "both"],
+              "data-edges": ["shadow", "mask", "none"],
+              "data-scroll-top": "boolean",
+              "data-scroll-bottom": "boolean",
+              "data-scroll-start": "boolean",
+              "data-scroll-end": "boolean"
+            },
+            "children": ["$slot"],
+            "emit": "manual"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -27242,6 +28134,13 @@
         "category": "feedback",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": ["span", "p", "div"],
+            "children": ["$slot"],
+            "emit": "auto"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -27556,6 +28455,24 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-variant": ["text", "circle", "rect"],
+              "data-ai": "boolean"
+            },
+            "aria": ["aria-hidden"],
+            "children": ["line"],
+            "emit": "manual"
+          },
+          "parts": {
+            "line": {
+              "element": "span",
+              "when": "variant === 'text'"
+            }
+          }
+        },
         "states": [],
         "variants": ["text", "circle", "rect"],
         "sizes": [],
@@ -27687,6 +28604,14 @@
         "category": "navigation",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "a",
+            "local": "link",
+            "children": ["$text"],
+            "emit": "manual"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -28203,6 +29128,19 @@
         "category": "layout",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "children": ["layer"],
+            "emit": "manual"
+          },
+          "parts": {
+            "layer": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -28499,6 +29437,23 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "data": {
+              "data-status": ["success", "warning", "error", "info", "neutral"],
+              "data-pulse": "boolean"
+            },
+            "children": ["dot", "$slot"],
+            "emit": "manual"
+          },
+          "parts": {
+            "dot": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": [],
         "variants": ["success", "warning", "error", "info", "neutral"],
         "sizes": [],
@@ -29330,6 +30285,35 @@
         "category": "navigation",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "ul",
+            "aria": ["aria-label"],
+            "children": ["item", "divider"],
+            "emit": "manual"
+          },
+          "parts": {
+            "item": {
+              "element": "a",
+              "data": {
+                "data-state": ["active"]
+              },
+              "aria": ["aria-current"],
+              "children": ["icon", "$text"]
+            },
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"],
+              "when": "icon"
+            },
+            "divider": {
+              "element": "span",
+              "role": "separator",
+              "aria": ["aria-orientation"]
+            }
+          }
+        },
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -30063,6 +31047,18 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": ["p", "span", "div"],
+            "data": {
+              "data-size": ["sm", "md", "lg"],
+              "data-weight": ["normal", "medium", "semibold"],
+              "data-muted": "boolean"
+            },
+            "children": ["$slot"],
+            "emit": "auto"
+          }
+        },
         "states": [],
         "variants": ["normal", "medium", "semibold"],
         "sizes": ["sm", "md", "lg"],
@@ -30721,6 +31717,51 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "ol",
+            "local": "list",
+            "data": {
+              "data-orientation": ["vertical", "horizontal"]
+            },
+            "children": ["item"],
+            "emit": "manual"
+          },
+          "parts": {
+            "item": {
+              "element": "li",
+              "data": {
+                "data-status": ["complete", "current", "upcoming", "error"],
+                "data-tone": ["neutral", "info", "success", "warning", "danger"]
+              },
+              "aria": ["aria-current"],
+              "children": ["marker", "content"]
+            },
+            "marker": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "content": {
+              "element": "div",
+              "children": ["title", "time", "description"]
+            },
+            "title": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "time": {
+              "element": "time",
+              "children": ["$text"],
+              "when": "time"
+            },
+            "description": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "description"
+            }
+          }
+        },
         "states": ["complete", "current", "upcoming"],
         "variants": ["vertical", "horizontal"],
         "sizes": [],
@@ -31006,6 +32047,13 @@
         "category": "navigation",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "nav",
+            "aria": ["aria-label"],
+            "emit": "manual"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -32096,6 +33144,21 @@
         "category": "feedback",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "role": "status",
+            "aria": ["aria-label"],
+            "children": ["dot", "dot", "dot"],
+            "emit": "manual"
+          },
+          "parts": {
+            "dot": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -32218,6 +33281,34 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "role": "group",
+            "children": ["@avatar", "text", "action"],
+            "emit": "manual"
+          },
+          "parts": {
+            "text": {
+              "element": "span",
+              "children": ["name", "description"]
+            },
+            "name": {
+              "element": "span",
+              "children": ["$slot"]
+            },
+            "description": {
+              "element": "span",
+              "children": ["$slot"],
+              "when": "description"
+            },
+            "action": {
+              "element": "span",
+              "children": ["$slot"],
+              "when": "children"
+            }
+          }
+        },
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -32486,6 +33577,14 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "local": "visuallyHidden",
+            "children": ["$slot"],
+            "emit": "auto"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],

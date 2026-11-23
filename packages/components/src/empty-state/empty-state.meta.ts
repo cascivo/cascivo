@@ -6,6 +6,20 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      data: { 'data-size': ['md', 'lg'] },
+      children: ['icon', 'title', 'description', 'action'],
+      emit: 'auto',
+    },
+    parts: {
+      icon: { element: 'span', aria: ['aria-hidden'], children: ['$slot'], when: 'icon' },
+      title: { element: 'h3', children: ['$text'] },
+      description: { element: 'p', children: ['$text'], when: 'description' },
+      action: { element: 'div', children: ['$slot'], when: 'action' },
+    },
+  },
   states: [],
   variants: [],
   sizes: ['md', 'lg'],

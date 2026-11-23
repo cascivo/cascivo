@@ -7,6 +7,24 @@ export const meta: ComponentMeta = {
   category: 'feedback',
   clientJs: 'none',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'meter',
+      role: 'meter',
+      data: { 'data-level': ['normal', 'high', 'full'] },
+      aria: ['aria-label', 'aria-valuenow', 'aria-valuemin', 'aria-valuemax', 'aria-valuetext'],
+      children: ['header', 'track'],
+      // Level, formatted numbers and the fill fraction are computed.
+      emit: 'manual',
+    },
+    parts: {
+      header: { element: 'div', aria: ['aria-hidden'], children: ['$text', 'value'] },
+      value: { element: 'span', children: ['$text'] },
+      track: { element: 'div', aria: ['aria-hidden'], children: ['fill'] },
+      fill: { element: 'div' },
+    },
+  },
   states: ['normal', 'high', 'full'],
   variants: [],
   sizes: [],

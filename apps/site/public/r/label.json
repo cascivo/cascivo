@@ -27,6 +27,29 @@
     "category": "inputs",
     "clientJs": "none",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "label",
+        "data": {
+          "data-disabled": [""]
+        },
+        "children": ["$slot", "marker", "srOnly"],
+        "emit": "manual"
+      },
+      "parts": {
+        "marker": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$text"],
+          "when": "required"
+        },
+        "srOnly": {
+          "element": "span",
+          "children": ["$text"],
+          "when": "required"
+        }
+      }
+    },
     "states": ["default", "disabled"],
     "variants": [],
     "sizes": [],
