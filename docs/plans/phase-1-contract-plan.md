@@ -259,3 +259,9 @@ parallel, the phase fits in 2–2.5 weeks.
   path until there is an adopter (criterion 6)?
 - **Q5** Solid example: is axum + htmx + Solid the reference stack, or should the example stay
   Node/Vite-only to keep CI free of Rust in the JS job?
+
+### Owner decisions (2026-11-23)
+
+Q1 add the `cv-<unit>` root alias. Q2 accept §6. Q3 minor release. Q4 no `cascivo add --contract`
+in Phase 1 (Vite helper only; H1 dropped until there is an adopter). Q5 the example runs on axum;
+its smoke test lives in the Rust CI job, so the JS job stays Rust-free.
