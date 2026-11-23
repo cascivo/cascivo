@@ -35,7 +35,7 @@
           "data-side": ["start", "end"]
         },
         "children": ["avatar", "content"],
-        "emit": "auto"
+        "emit": "manual"
       },
       "parts": {
         "avatar": {
