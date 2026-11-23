@@ -68,6 +68,12 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('button-group', { children: 'nodes' }),
   e('shimmer-text', { children: 'text' }),
   e('visually-hidden', { children: 'text' }),
+  e('chat-bubble', { children: 'nodes' }),
+  e('stack', { children: 'nodes' }),
+  e('aspect-ratio', { children: 'nodes' }),
+  e('skip-nav', { children: 'text' }),
+  e('typing-indicator'),
+  e('ai-disclaimer', { children: 'text' }),
   e('separator'),
   e('spacer'),
   // display

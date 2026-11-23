@@ -2,7 +2,9 @@
 #[rustfmt::skip]
 pub static COMPONENT_CSS: &[(&str, &str)] = &[
     ("accordion", include_str!("../assets/css/accordion.css")),
+    ("ai-disclaimer", include_str!("../assets/css/ai-disclaimer.css")),
     ("alert", include_str!("../assets/css/alert.css")),
+    ("aspect-ratio", include_str!("../assets/css/aspect-ratio.css")),
     ("auto-grid", include_str!("../assets/css/auto-grid.css")),
     ("avatar", include_str!("../assets/css/avatar.css")),
     ("avatar-group", include_str!("../assets/css/avatar-group.css")),
@@ -14,6 +16,7 @@ pub static COMPONENT_CSS: &[(&str, &str)] = &[
     ("card", include_str!("../assets/css/card.css")),
     ("center", include_str!("../assets/css/center.css")),
     ("chart-legend", include_str!("../assets/css/chart-legend.css")),
+    ("chat-bubble", include_str!("../assets/css/chat-bubble.css")),
     ("code", include_str!("../assets/css/code.css")),
     ("collapsible", include_str!("../assets/css/collapsible.css")),
     ("columns", include_str!("../assets/css/columns.css")),
@@ -40,8 +43,10 @@ pub static COMPONENT_CSS: &[(&str, &str)] = &[
     ("separator", include_str!("../assets/css/separator.css")),
     ("shimmer-text", include_str!("../assets/css/shimmer-text.css")),
     ("skeleton", include_str!("../assets/css/skeleton.css")),
+    ("skip-nav", include_str!("../assets/css/skip-nav.css")),
     ("spacer", include_str!("../assets/css/spacer.css")),
     ("spinner", include_str!("../assets/css/spinner.css")),
+    ("stack", include_str!("../assets/css/stack.css")),
     ("stat", include_str!("../assets/css/stat.css")),
     ("steps", include_str!("../assets/css/steps.css")),
     ("structured-list", include_str!("../assets/css/structured-list.css")),
@@ -49,6 +54,7 @@ pub static COMPONENT_CSS: &[(&str, &str)] = &[
     ("tag", include_str!("../assets/css/tag.css")),
     ("text", include_str!("../assets/css/text.css")),
     ("timeline", include_str!("../assets/css/timeline.css")),
+    ("typing-indicator", include_str!("../assets/css/typing-indicator.css")),
     ("visually-hidden", include_str!("../assets/css/visually-hidden.css")),
 ];
 
