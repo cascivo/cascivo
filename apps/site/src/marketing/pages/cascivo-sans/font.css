@@ -15,6 +15,33 @@
   font-display: swap;
 }
 
+/* Comparison faces: same-origin, OFL, fetched only once the compare switch paints a glyph. */
+@font-face {
+  font-family: 'Compare Inter';
+  src: url('/fonts/compare/inter-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Comparison faces: same-origin, OFL, fetched only once the compare switch paints a glyph. */
+@font-face {
+  font-family: 'Compare Geist';
+  src: url('/fonts/compare/geist-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Comparison faces: same-origin, OFL, fetched only once the compare switch paints a glyph. */
+@font-face {
+  font-family: 'Compare IBM Plex Sans';
+  src: url('/fonts/compare/ibm-plex-sans-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 .cs-page {
   font-family: 'Cascivo Sans', var(--cascivo-font-sans);
 
@@ -56,7 +83,7 @@
     gap: var(--cascivo-space-3);
   }
 
-  & .cs-waterfall li {
+  & .cs-waterfall > li {
     display: flex;
     flex-direction: column;
     gap: var(--cascivo-space-1);
@@ -71,6 +98,34 @@
     font-family: var(--cascivo-font-mono);
     font-size: var(--cascivo-text-sm);
     color: var(--cascivo-color-text-subtle);
+  }
+
+  & .cs-waterfall-compare {
+    margin: var(--cascivo-space-2) 0 0;
+    padding: 0 0 0 var(--cascivo-space-4);
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-2);
+    border-inline-start: 2px solid var(--cascivo-color-border);
+    color: var(--cascivo-color-text-subtle);
+  }
+
+  & .cs-waterfall-compare .cs-waterfall-text {
+    font-size: inherit;
+  }
+
+  & .cs-waterfall-compare > li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-1);
+  }
+
+  & .cs-why {
+    margin: 0;
+    padding-inline-start: var(--cascivo-space-5);
+    display: grid;
+    gap: var(--cascivo-space-3);
   }
 
   & .cs-waterfall-text {
@@ -307,9 +362,18 @@
       grid-template-columns: repeat(3, 1fr);
     }
 
-    & .cs-waterfall li {
+    & .cs-waterfall > li,
+    & .cs-waterfall-compare > li {
       flex-direction: row;
       align-items: baseline;
+    }
+
+    & .cs-waterfall > li {
+      flex-wrap: wrap;
+    }
+
+    & .cs-waterfall-compare {
+      flex: 1 0 100%;
     }
 
     & .cs-waterfall-label {
