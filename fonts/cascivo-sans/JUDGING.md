@@ -59,6 +59,36 @@ that a reader notices. Score each criterion at the worst place on its sheets, no
 | 10  | Optical sizes (4)              | `opsz`: a monotone, smooth change from 8 to 48; 48 is tight but not touching                                                                   | `test_font.py` (opsz stems)                                                                                                                                            |
 | 11  | Character without gimmick (3)  | All sheets: does it look like one family, quiet, with a clear identity (`l` tail, serifed `I`)? Does any feature call attention to itself?     | None                                                                                                                                                                   |
 
+## Numeric scorer and tuner
+
+`src/score.py` is a fast stand-in for the blind judge (about 7 s, no model calls). It compares the
+built font with Inter, Geist and Plex (the `/tmp/refs` files above) at wght 100 to 900:
+
+```sh
+python3 -I src/score.py [--italic] [--json] [--refs /tmp/refs]   # one summary line + the 10 worst rows
+python3 -I src/tune.py --param HEAVY_TIGHTEN --range 0.45:0.60 --steps 5   # prints best value and delta
+```
+
+Metrics: ink-density CV (colour), counter/ink area per glyph, HT-style gap/counter ratio over 24
+pairs (rhythm), 2nd difference of advances and stems over the weights, pixel IoU of `O/0 I/l/1 rn/m
+cl/d` at 11 and 12 px, opsz 14 to 32 spacing and x-height delta against Inter (Inter's opsz stops
+at 32), kinks at smooth on-curve points, overshoot. Each value is a z-score against the references'
+mean and spread (spread floored); |z| inside 0.5 is free; an item is 10 minus 2 times the excess
+(30% mean, 70% 90th percentile). `I G l` (the identity glyphs) are left out. Items map to rubric
+rows 1, 2, 3, 6, 7 and 10; 4, 5, 8, 9 and 11 are not scored numerically.
+
+`tune.py` sweeps named constants (`NAME` or `NAME.KEY` in `params.py`, `glyphs.py`, `build.py`),
+builds the upright font only, scores every grid point in parallel (about 45 s), then runs the
+gates (`test_font.py` plus the full woff2 budget) on the best point, next best on a failure
+(about 9 min). `--no-gates` skips them. It writes nothing; copy the printed value into the source,
+then run the full gates above. Tests: `python3 -I src/test_score.py`.
+
+Calibration: the committed font scores 7.5 overall (rhythm 5.2, weight axis 8.5, shape 8.5, colour
+9.1, small sizes 8.3, optical sizes 2.8) against the blind baseline of 6.9. Its worst rows are the
+defects above (Black `nn` gap, Black `I/1`, opsz x-height, Black `2` kink). The R5 > R4 > 0.6.1
+check needs those builds; they are not in git history, so the correlation with 6.84 / 6.69 / 5.09
+is still to do.
+
 ## Must not regress
 
 The advantages and their gates. All of them must pass in each round (`.github/workflows/fonts.yml`):
