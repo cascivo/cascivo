@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Range input for selecting a value within bounds',
   category: 'inputs',
   clientJs: 'none',
+  contractTier: 'native',
   states: [],
   variants: [],
   sizes: [],

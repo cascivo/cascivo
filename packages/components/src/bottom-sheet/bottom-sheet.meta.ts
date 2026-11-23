@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['open', 'closed', 'dragging'],
   variants: [],
   sizes: [],

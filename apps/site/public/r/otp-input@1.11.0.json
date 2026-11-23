@@ -26,6 +26,7 @@
     "description": "Segmented one-time code input",
     "category": "inputs",
     "clientJs": "enhancement",
+    "contractTier": "behaviour",
     "states": ["idle", "focused", "filled", "disabled"],
     "variants": [],
     "sizes": [],

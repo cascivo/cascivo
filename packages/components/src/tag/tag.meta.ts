@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'display',
   // The chip and its label render; only the optional dismiss button needs JS.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: [],
   variants: ['default', 'info', 'success', 'warning', 'error'],
   sizes: ['sm', 'md'],

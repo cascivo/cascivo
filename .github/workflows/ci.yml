@@ -425,6 +425,10 @@ jobs:
       - name: Regen determinism guard (no wall-clock reads in generators)
         run: pnpm run regen:check
 
+      # Markup contract: contractTier/anatomy validator + contract.json/classes.gen.ts freshness.
+      - name: Markup contract tests
+        run: pnpm run contract:check
+
       # Unit tests for the view/catalog schema generators (scripts/schema/*.test.ts).
       - name: Schema generator tests
         run: pnpm run schema:check

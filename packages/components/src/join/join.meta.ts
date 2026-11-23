@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Groups adjacent children into a seamless joined element by removing interior borders and radii',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],

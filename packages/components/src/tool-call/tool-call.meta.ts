@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'native',
   states: ['pending', 'running', 'awaiting-approval', 'complete', 'error', 'denied'],
   variants: [],
   sizes: [],

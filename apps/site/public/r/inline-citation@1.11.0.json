@@ -27,6 +27,7 @@
     "description": "A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card",
     "category": "display",
     "clientJs": "none",
+    "contractTier": "static",
     "states": [],
     "variants": [],
     "sizes": [],

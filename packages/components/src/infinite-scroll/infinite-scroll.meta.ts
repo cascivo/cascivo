@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Loads the next page when the end of a list scrolls into view',
   category: 'feedback',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['idle', 'loading', 'disabled'],
   variants: [],
   sizes: [],

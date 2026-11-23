@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Quoted passage with optional attribution footer',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],

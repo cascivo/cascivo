@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // All slides are in the server HTML and the track is a CSS scroll-snap container, so it
   // scrolls natively; JS adds the arrows and dots.
   clientJs: 'enhancement',
+  contractTier: 'behaviour',
   states: [],
   variants: [],
   sizes: [],

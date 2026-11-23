@@ -26,6 +26,37 @@
     "description": "Displays a user image with initials fallback",
     "category": "display",
     "clientJs": "enhancement",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "span",
+        "data": {
+          "data-size": ["xs", "sm", "md", "lg", "xl"],
+          "data-status": ["online", "offline", "busy"]
+        },
+        "aria": ["aria-label"],
+        "role": "img",
+        "children": ["image", "fallback", "status"],
+        "emit": "manual"
+      },
+      "parts": {
+        "image": {
+          "element": "img",
+          "when": "src"
+        },
+        "fallback": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$text"],
+          "when": "!src"
+        },
+        "status": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "when": "status"
+        }
+      }
+    },
     "states": ["loading", "loaded", "error"],
     "variants": [],
     "sizes": ["xs", "sm", "md", "lg", "xl"],

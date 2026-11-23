@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'A short, quiet note that AI-generated content may be wrong — "AI-generated content may be incorrect"',
   category: 'feedback',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],

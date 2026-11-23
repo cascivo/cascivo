@@ -26,6 +26,7 @@
     "description": "Virtualized monospace console for high-frequency log and stream output",
     "category": "display",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["following", "paused", "empty"],
     "variants": [],
     "sizes": [],

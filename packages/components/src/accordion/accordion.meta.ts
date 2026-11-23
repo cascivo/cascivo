@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Vertically stacked, collapsible content sections',
   category: 'navigation',
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

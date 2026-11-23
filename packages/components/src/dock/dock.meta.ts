@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // Items with an href render as real anchors, so navigation works; JS only adds the
   // active-state animation.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: ['default', 'active'],
   variants: [],
   sizes: [],

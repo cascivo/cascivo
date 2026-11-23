@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply',
   category: 'feedback',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],

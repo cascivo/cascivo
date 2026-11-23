@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Styled anchor for navigation, standalone or inline within prose',
   category: 'navigation',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: ['standalone', 'inline'],
   sizes: ['sm', 'md', 'lg'],

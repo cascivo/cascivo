@@ -29,6 +29,7 @@
     "description": "Encodes a URL or short text into a scannable SVG QR code",
     "category": "display",
     "clientJs": "enhancement",
+    "contractTier": "static",
     "states": ["default"],
     "variants": [],
     "sizes": [],

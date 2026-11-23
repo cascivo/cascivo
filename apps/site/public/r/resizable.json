@@ -26,6 +26,7 @@
     "description": "Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space",
     "category": "layout",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": [],
     "variants": [],
     "sizes": [],

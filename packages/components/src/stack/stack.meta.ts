@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],

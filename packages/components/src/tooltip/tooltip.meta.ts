@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Contextual label shown on hover or focus',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['hidden', 'visible'],
   variants: [],
   sizes: [],

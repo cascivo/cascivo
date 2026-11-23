@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   description: 'Skip link that jumps keyboard users past the navigation to the main content',
   category: 'navigation',
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],

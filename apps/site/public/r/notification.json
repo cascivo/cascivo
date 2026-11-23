@@ -26,6 +26,7 @@
     "description": "Inline, actionable notification banner that surfaces a titled message with an optional recovery action",
     "category": "feedback",
     "clientJs": "enhancement",
+    "contractTier": "static",
     "states": [],
     "variants": ["info", "success", "warning", "error"],
     "sizes": [],

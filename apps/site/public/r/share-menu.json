@@ -26,6 +26,7 @@
     "description": "A Share button opening intent links for Bluesky, Mastodon, Threads, LinkedIn and X, plus copy link and the system share sheet",
     "category": "overlay",
     "clientJs": "enhancement",
+    "contractTier": "behaviour",
     "states": ["closed", "open", "copied"],
     "variants": [],
     "sizes": ["sm", "md"],

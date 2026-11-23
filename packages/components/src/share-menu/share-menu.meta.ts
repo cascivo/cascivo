@@ -9,6 +9,7 @@ export const meta: ComponentMeta = {
   // link, so sharing works before hydration. Copy link, the Mastodon server field and the
   // system share sheet need script and appear once it runs.
   clientJs: 'enhancement',
+  contractTier: 'behaviour',
   states: ['closed', 'open', 'copied'],
   variants: [],
   sizes: ['sm', 'md'],

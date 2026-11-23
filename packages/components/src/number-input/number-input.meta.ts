@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Numeric input with stepper buttons, clamping, precision, and locale formatting',
   category: 'inputs',
   clientJs: 'enhancement',
+  contractTier: 'native',
   states: ['idle', 'focused', 'error'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

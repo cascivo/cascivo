@@ -5,6 +5,19 @@ export const meta: ComponentMeta = {
   description: 'Small status label or category indicator',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'span',
+      data: {
+        'data-variant': ['default', 'secondary', 'success', 'warning', 'destructive', 'outline'],
+        'data-size': ['sm', 'md'],
+      },
+      children: ['$slot'],
+      // `data-variant` goes through a tone lookup at render time, so the markup is not static.
+      emit: 'manual',
+    },
+  },
   states: [],
   variants: ['default', 'secondary', 'success', 'warning', 'destructive', 'outline'],
   sizes: ['sm', 'md'],

@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   category: 'display',
   // The text is revealed by a requestAnimationFrame loop; server HTML starts empty.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: [],
   variants: [],
   sizes: [],

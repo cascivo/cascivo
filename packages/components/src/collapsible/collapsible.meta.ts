@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'A single disclosure region toggled open and closed by its trigger',
   category: 'display',
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

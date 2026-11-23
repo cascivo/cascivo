@@ -26,6 +26,7 @@
     "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
     "category": "navigation",
     "clientJs": "enhancement",
+    "contractTier": "static",
     "states": ["pending", "active", "complete", "error"],
     "variants": [],
     "sizes": [],

@@ -8,6 +8,7 @@ export const meta: ComponentMeta = {
   // The marker is static markup and reads with JS off. The explanation (Toggletip, its own
   // client boundary) and the revert button need JS.
   clientJs: 'enhancement',
+  contractTier: 'native',
   states: [],
   variants: [],
   sizes: [],

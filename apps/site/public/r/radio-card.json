@@ -26,6 +26,7 @@
     "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
     "category": "inputs",
     "clientJs": "enhancement",
+    "contractTier": "native",
     "states": ["default", "checked", "disabled"],
     "variants": [],
     "sizes": [],

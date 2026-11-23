@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Dropdown menu with keyboard navigation, built on usePopover',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

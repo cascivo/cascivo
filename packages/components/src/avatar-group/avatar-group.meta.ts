@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
   states: ['default'],
   variants: [],
   sizes: [],

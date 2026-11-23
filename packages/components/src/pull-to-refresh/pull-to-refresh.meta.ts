@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   category: 'feedback',
   // A pointer gesture is the entire trigger.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['idle', 'pulling', 'ready', 'refreshing'],
   variants: [],
   sizes: [],

@@ -26,6 +26,7 @@
     "description": "Reveals text character by character with a blinking cursor, catching up as a streamed reply grows",
     "category": "display",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": [],
     "variants": [],
     "sizes": [],

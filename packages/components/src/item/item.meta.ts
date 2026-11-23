@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Generic content row primitive with media, content, and action regions',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: ['default', 'muted'],
   sizes: ['sm', 'md'],

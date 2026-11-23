@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Collapsible panel for a model’s reasoning — opens and shimmers "Thinking…" while it streams, then settles to "Thought for N seconds"',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'native',
   states: ['streaming', 'settled'],
   variants: [],
   sizes: [],

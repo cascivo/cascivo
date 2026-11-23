@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'An accessible date-picker with a calendar popover.',
   category: 'inputs',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['default', 'open', 'error', 'disabled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

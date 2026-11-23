@@ -26,6 +26,7 @@
     "description": "Inline click-to-edit text field",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["preview", "editing", "disabled"],
     "variants": [],
     "sizes": [],

@@ -26,6 +26,7 @@
     "description": "A click-triggered info popover for supplementary, selectable content",
     "category": "overlay",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["open", "closed"],
     "variants": [],
     "sizes": [],

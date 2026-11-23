@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   category: 'feedback',
   // The status renders and is announced from server HTML; only the Stop button needs JS.
   clientJs: 'enhancement',
+  contractTier: 'native',
   states: ['thinking', 'generating', 'complete', 'error', 'stopped'],
   variants: [],
   sizes: [],

@@ -26,6 +26,7 @@
     "description": "Tabular row list for scannable data, optionally single-selectable",
     "category": "display",
     "clientJs": "enhancement",
+    "contractTier": "static",
     "states": ["default", "selected"],
     "variants": ["static", "selectable"],
     "sizes": [],

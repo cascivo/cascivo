@@ -26,6 +26,7 @@
     "description": "Body text with size, weight, and muted variants",
     "category": "display",
     "clientJs": "none",
+    "contractTier": "static",
     "states": [],
     "variants": ["normal", "medium", "semibold"],
     "sizes": ["sm", "md", "lg"],

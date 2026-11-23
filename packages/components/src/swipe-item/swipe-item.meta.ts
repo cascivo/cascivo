@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   category: 'display',
   // Actions are revealed by a horizontal swipe gesture and are unreachable otherwise.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['closed', 'leading', 'trailing'],
   variants: [],
   sizes: [],

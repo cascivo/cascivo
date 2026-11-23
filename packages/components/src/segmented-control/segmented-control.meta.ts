@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // Mutually exclusive selection through JS-only buttons — nothing can be selected without
   // JS.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['idle', 'selected', 'disabled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   // The pills are JS-only buttons — with JS off nothing can be filtered.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['default', 'selected', 'hover', 'focus'],
   variants: ['pill', 'outline'],
   sizes: [],

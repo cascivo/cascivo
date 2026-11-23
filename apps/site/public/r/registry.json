@@ -31,6 +31,7 @@
         "description": "Vertically stacked, collapsible content sections",
         "category": "navigation",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -153,6 +154,7 @@
         "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -315,6 +317,7 @@
         "description": "Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "native",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -446,6 +449,7 @@
         "description": "A short, quiet note that AI-generated content may be wrong — \"AI-generated content may be incorrect\"",
         "category": "feedback",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -550,6 +554,7 @@
         "description": "Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button",
         "category": "feedback",
         "clientJs": "enhancement",
+        "contractTier": "native",
         "states": ["thinking", "generating", "complete", "error", "stopped"],
         "variants": [],
         "sizes": [],
@@ -692,6 +697,50 @@
         "description": "Highlights a short, important message inline",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-variant": ["default", "info", "success", "warning", "destructive"]
+            },
+            "children": ["icon", "body", "dismiss"],
+            "emit": "manual"
+          },
+          "parts": {
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"],
+              "when": "icon"
+            },
+            "body": {
+              "element": "div",
+              "children": ["title", "content", "action"]
+            },
+            "title": {
+              "element": "div",
+              "children": ["$text"],
+              "when": "title"
+            },
+            "content": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "children"
+            },
+            "action": {
+              "element": "button",
+              "children": ["$text"],
+              "when": "action"
+            },
+            "dismiss": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"],
+              "when": "dismissible"
+            }
+          }
+        },
         "states": [],
         "variants": ["default", "info", "success", "warning", "destructive"],
         "sizes": [],
@@ -836,6 +885,7 @@
         "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed"],
         "variants": ["default", "destructive"],
         "sizes": [],
@@ -992,6 +1042,7 @@
         "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
         "category": "layout",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -1132,6 +1183,7 @@
         "description": "Constrains content to a fixed width-to-height ratio",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -1227,6 +1279,37 @@
         "description": "Displays a user image with initials fallback",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "data": {
+              "data-size": ["xs", "sm", "md", "lg", "xl"],
+              "data-status": ["online", "offline", "busy"]
+            },
+            "aria": ["aria-label"],
+            "role": "img",
+            "children": ["image", "fallback", "status"],
+            "emit": "manual"
+          },
+          "parts": {
+            "image": {
+              "element": "img",
+              "when": "src"
+            },
+            "fallback": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$text"],
+              "when": "!src"
+            },
+            "status": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "when": "status"
+            }
+          }
+        },
         "states": ["loading", "loaded", "error"],
         "variants": [],
         "sizes": ["xs", "sm", "md", "lg", "xl"],
@@ -1353,6 +1436,7 @@
         "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -1484,6 +1568,25 @@
         "description": "Small status label or category indicator",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "data": {
+              "data-variant": [
+                "default",
+                "secondary",
+                "success",
+                "warning",
+                "destructive",
+                "outline"
+              ],
+              "data-size": ["sm", "md"]
+            },
+            "children": ["$slot"],
+            "emit": "manual"
+          }
+        },
         "states": [],
         "variants": ["default", "secondary", "success", "warning", "destructive", "outline"],
         "sizes": ["sm", "md"],
@@ -2518,6 +2621,7 @@
         "description": "Quoted passage with optional attribution footer",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -2626,6 +2730,7 @@
         "description": "Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed", "dragging"],
         "variants": [],
         "sizes": [],
@@ -2915,6 +3020,14 @@
         "description": "Shows the current page location within a navigation hierarchy",
         "category": "navigation",
         "clientJs": "enhancement",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "nav",
+            "aria": ["aria-label"],
+            "emit": "manual"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -3041,6 +3154,27 @@
         "description": "Triggers an action or event",
         "category": "inputs",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": ["button", "a"],
+            "data": {
+              "data-variant": ["primary", "secondary", "ghost", "destructive"],
+              "data-size": ["sm", "md", "lg"],
+              "data-state": ["idle", "loading"]
+            },
+            "aria": ["aria-busy"],
+            "children": ["@spinner", "label"],
+            "emit": "auto"
+          },
+          "parts": {
+            "label": {
+              "element": "span",
+              "children": ["$slot"],
+              "when": "!asChild"
+            }
+          }
+        },
         "states": ["idle", "loading"],
         "variants": ["primary", "secondary", "ghost", "destructive"],
         "sizes": ["sm", "md", "lg"],
@@ -3203,6 +3337,7 @@
         "description": "Visually joins a set of related buttons into a single segmented control",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["idle"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -3337,6 +3472,7 @@
         "description": "An accessible standalone month-grid date picker.",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["default", "selected", "today", "disabled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -3582,6 +3718,51 @@
         "description": "Container for grouping related content",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-cascivo-card": [""],
+              "data-variant": ["default", "outlined", "elevated"],
+              "data-padding": ["none", "sm", "md", "lg"],
+              "data-ai": ["", "generating"]
+            },
+            "children": ["$slot", "header", "title", "content", "footer"],
+            "emit": "manual"
+          },
+          "parts": {
+            "header": {
+              "element": "div",
+              "modifiers": {
+                "headerRow": "actions"
+              },
+              "children": ["$slot", "headerMain", "headerActions"]
+            },
+            "headerMain": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "actions"
+            },
+            "headerActions": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "actions"
+            },
+            "title": {
+              "element": "h3",
+              "children": ["$slot"]
+            },
+            "content": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "footer": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": ["default", "outlined", "elevated"],
         "sizes": [],
@@ -3703,6 +3884,7 @@
         "description": "Scroll-snap slide deck with previous/next controls and dot indicators",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "behaviour",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -3846,6 +4028,7 @@
         "description": "The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "native",
         "states": ["pending", "active", "complete", "error"],
         "variants": [],
         "sizes": [],
@@ -8585,6 +8768,7 @@
         "description": "Message bubble for chat and messaging UIs with avatar, name, and timestamp support",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": ["start", "end"],
         "sizes": [],
@@ -8718,6 +8902,33 @@
         "description": "Binary toggle for forms, with indeterminate support",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "label",
+            "local": "wrapper",
+            "data": {
+              "data-disabled": ["true"]
+            },
+            "children": ["input", "control", "label"],
+            "emit": "manual"
+          },
+          "parts": {
+            "input": {
+              "element": "input",
+              "aria": ["aria-label"]
+            },
+            "control": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "label": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "label"
+            }
+          }
+        },
         "states": ["unchecked", "checked", "indeterminate"],
         "variants": [],
         "sizes": [],
@@ -8874,6 +9085,7 @@
         "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "native",
         "states": ["default", "checked", "disabled"],
         "variants": [],
         "sizes": [],
@@ -9004,6 +9216,7 @@
         "description": "Inline code span for identifiers, commands, and short snippets",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -9126,6 +9339,7 @@
         "description": "Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["idle", "copied"],
         "variants": ["inline", "single", "multi"],
         "sizes": [],
@@ -9291,6 +9505,7 @@
         "description": "A single disclosure region toggled open and closed by its trigger",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -9427,6 +9642,7 @@
         "description": "Interactive color selection widget with saturation/lightness area, hue and alpha sliders",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["default", "disabled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -9649,6 +9865,7 @@
         "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["closed", "open", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -9970,6 +10187,7 @@
         "description": "Cmd+K command palette with fuzzy search over grouped commands",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -10197,6 +10415,7 @@
         "description": "Reveals the difference between two layers with a draggable divider",
         "category": "display",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -10362,6 +10581,7 @@
         "description": "Labelled list of rows inside a bordered container",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "native",
         "states": [],
         "variants": ["on-page", "disclosed"],
         "sizes": [],
@@ -10475,6 +10695,7 @@
         "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -10575,6 +10796,7 @@
         "description": "How much of a model’s context window a conversation has used — \"12K / 200K\" with a bar that warns as it fills",
         "category": "feedback",
         "clientJs": "none",
+        "contractTier": "static",
         "states": ["normal", "high", "full"],
         "variants": [],
         "sizes": [],
@@ -10696,6 +10918,7 @@
         "description": "Icon button that copies a value to the clipboard with copied feedback",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["idle", "copied"],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -10816,6 +11039,7 @@
         "description": "Key-value pairs rendered as a description list",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": ["horizontal", "vertical"],
         "sizes": ["sm", "md"],
@@ -10962,6 +11186,272 @@
         "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
         "category": "display",
         "clientJs": "required",
+        "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "data": {
+              "data-density": ["compact", "normal", "relaxed"],
+              "data-resized": ["true"],
+              "data-zebra": ["true"],
+              "data-sticky-header": ["true"],
+              "data-paginated": ["true"],
+              "data-fixed-layout": ["true"]
+            },
+            "children": ["srOnly", "toolbar", "batchBar", "scroller", "footer"]
+          },
+          "parts": {
+            "srOnly": {
+              "element": "span",
+              "aria": ["aria-live"],
+              "children": ["$text"]
+            },
+            "toolbar": {
+              "element": "div",
+              "children": ["heading", "toolbarActions"]
+            },
+            "heading": {
+              "element": "div",
+              "children": ["title", "description"],
+              "when": "title !== undefined || description !== undefined"
+            },
+            "title": {
+              "element": "div",
+              "children": ["$text"],
+              "when": "title !== undefined"
+            },
+            "description": {
+              "element": "div",
+              "children": ["$text"],
+              "when": "description !== undefined"
+            },
+            "toolbarActions": {
+              "element": "div",
+              "children": ["search", "@button", "$slot", "@popover", "menu"]
+            },
+            "search": {
+              "element": "input",
+              "aria": ["aria-label"],
+              "when": "searchable"
+            },
+            "menu": {
+              "element": "div",
+              "children": ["@checkbox"]
+            },
+            "batchBar": {
+              "element": "div",
+              "children": ["batchCount", "batchActions"],
+              "when": "batchActions && selection"
+            },
+            "batchCount": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "batchActions": {
+              "element": "div",
+              "children": ["@button"]
+            },
+            "scroller": {
+              "element": "div",
+              "modifiers": {
+                "scrollerVirtualized": "virtualized"
+              },
+              "children": ["table"]
+            },
+            "table": {
+              "element": "table",
+              "role": "grid",
+              "aria": [
+                "aria-labelledby",
+                "aria-label",
+                "aria-describedby",
+                "aria-busy",
+                "aria-rowcount"
+              ],
+              "children": [
+                "controlCol",
+                "groupHeader",
+                "headerCell",
+                "filterRow",
+                "row",
+                "emptyCell",
+                "groupRow",
+                "expansionRow",
+                "totals"
+              ]
+            },
+            "controlCol": {
+              "element": "col"
+            },
+            "groupHeader": {
+              "element": "th",
+              "children": ["$text"],
+              "when": "columnGroups"
+            },
+            "headerCell": {
+              "element": "th",
+              "data": {
+                "data-align": ["start", "end"],
+                "data-sized": ["true"],
+                "data-pinned": ["start", "end"],
+                "data-pinned-edge": ["true"],
+                "data-cell": "string"
+              },
+              "aria": ["aria-sort"],
+              "children": ["headerInner", "resizeHandle"]
+            },
+            "headerInner": {
+              "element": "span",
+              "children": ["sortButton", "$text", "@overflow-menu"]
+            },
+            "sortButton": {
+              "element": "button",
+              "data": {
+                "data-state": ["ascending", "descending", "none"]
+              },
+              "children": ["$text", "sortIndex"],
+              "when": "col.sortable"
+            },
+            "sortIndex": {
+              "element": "sup",
+              "aria": ["aria-hidden"],
+              "children": ["$text"]
+            },
+            "resizeHandle": {
+              "element": "span",
+              "role": "separator",
+              "data": {
+                "data-state": ["resizing"]
+              },
+              "aria": ["aria-orientation", "aria-label", "aria-valuenow"],
+              "when": "resizable"
+            },
+            "filterRow": {
+              "element": "tr",
+              "children": ["filterInput", "rangeInputs", "@popover"],
+              "when": "hasFilterRow"
+            },
+            "filterInput": {
+              "element": "input",
+              "aria": ["aria-label"]
+            },
+            "rangeInputs": {
+              "element": "div",
+              "children": ["filterInput"]
+            },
+            "row": {
+              "element": "tr",
+              "data": {
+                "data-parity": ["even", "odd"],
+                "data-pinned-row": ["top", "bottom"],
+                "data-state": ["selected"]
+              },
+              "aria": ["aria-rowindex"],
+              "children": ["controlCell", "$slot", "shimmer"]
+            },
+            "controlCell": {
+              "element": ["td", "th"],
+              "data": {
+                "data-pinned": ["start", "end"],
+                "data-pinned-edge": ["true"],
+                "data-cell": "string"
+              },
+              "children": ["expandButton", "@checkbox", "@overflow-menu", "srOnly"]
+            },
+            "expandButton": {
+              "element": "button",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-expanded", "aria-label"],
+              "children": ["chevron"],
+              "when": "renderExpandedRow"
+            },
+            "chevron": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "shimmer": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "when": "loading"
+            },
+            "emptyCell": {
+              "element": "td",
+              "children": ["$slot"]
+            },
+            "groupRow": {
+              "element": "tr",
+              "data": {
+                "data-depth": "number",
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-rowindex"],
+              "children": ["controlCell", "groupToggle"],
+              "when": "groupBy"
+            },
+            "groupToggle": {
+              "element": "button",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-expanded"],
+              "children": ["chevron", "$text", "groupCount"]
+            },
+            "groupCount": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "expansionRow": {
+              "element": "tr",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "children": ["expansionGrid"],
+              "when": "renderExpandedRow"
+            },
+            "expansionGrid": {
+              "element": "div",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "children": ["expansionInner"]
+            },
+            "expansionInner": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "totals": {
+              "element": "tfoot",
+              "children": ["controlCell", "srOnly", "$slot"],
+              "when": "totals"
+            },
+            "footer": {
+              "element": "div",
+              "children": ["pageSize", "range", "pageButtons"],
+              "when": "pagination"
+            },
+            "pageSize": {
+              "element": "label",
+              "children": ["$text"],
+              "when": "pagination.pageSizeOptions"
+            },
+            "range": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "pageButtons": {
+              "element": "div",
+              "children": ["pageButton"]
+            },
+            "pageButton": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["default", "loading", "empty"],
         "variants": [],
         "sizes": ["compact", "normal", "relaxed"],
@@ -11647,6 +12137,7 @@
         "description": "An accessible date-picker with a calendar popover.",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["default", "open", "error", "disabled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -11931,6 +12422,7 @@
         "description": "A dual-calendar picker for selecting a contiguous date range.",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["default", "open", "selecting"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -12107,6 +12599,7 @@
         "description": "Fixed bottom navigation bar for mobile app shells with up to 5 items",
         "category": "navigation",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["default", "active"],
         "variants": [],
         "sizes": [],
@@ -12236,6 +12729,7 @@
         "description": "Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -12406,6 +12900,7 @@
         "description": "Menu of actions revealed from a trigger",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -12592,6 +13087,7 @@
         "description": "Inline click-to-edit text field",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["preview", "editing", "disabled"],
         "variants": [],
         "sizes": [],
@@ -13173,6 +13669,7 @@
         "description": "Placeholder for views that have no data to display",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": ["md", "lg"],
@@ -13301,6 +13798,7 @@
         "description": "Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["default", "open", "closed"],
         "variants": [],
         "sizes": [],
@@ -13471,6 +13969,30 @@
         "description": "Form-field wrapper composing label, control, description, and error",
         "category": "inputs",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-disabled": [""]
+            },
+            "children": ["@label", "$slot", "description", "error"],
+            "emit": "manual"
+          },
+          "parts": {
+            "description": {
+              "element": "p",
+              "children": ["$slot"],
+              "when": "description || hint"
+            },
+            "error": {
+              "element": "p",
+              "role": "alert",
+              "children": ["$slot"],
+              "when": "error"
+            }
+          }
+        },
         "states": ["default", "disabled", "invalid"],
         "variants": [],
         "sizes": [],
@@ -13632,6 +14154,7 @@
         "description": "Drag-and-drop file upload zone with file list and status indicators.",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["idle", "dragover", "uploading", "complete", "error", "disabled"],
         "variants": [],
         "sizes": [],
@@ -13818,6 +14341,7 @@
         "description": "A group of toggleable pill or outline buttons for filtering content by category",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["default", "selected", "hover", "focus"],
         "variants": ["pill", "outline"],
         "sizes": [],
@@ -15812,6 +16336,7 @@
         "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["idle", "submitting"],
         "variants": [],
         "sizes": [],
@@ -15933,6 +16458,7 @@
         "description": "App top bar with brand, primary navigation links, and an actions slot",
         "category": "navigation",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -16061,6 +16587,7 @@
         "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
         "category": "navigation",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -16192,6 +16719,7 @@
         "description": "Section heading with semantic level decoupled from visual size",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": ["sm", "md", "lg", "xl", "2xl"],
@@ -16315,6 +16843,7 @@
         "description": "Hover-triggered popover with configurable open/close delay",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -16436,6 +16965,7 @@
         "description": "Square, icon-only button with a required accessible label",
         "category": "inputs",
         "clientJs": "none",
+        "contractTier": "static",
         "states": ["idle"],
         "variants": ["ghost", "outline", "filled"],
         "sizes": ["sm", "md", "lg"],
@@ -16594,6 +17124,7 @@
         "description": "Image with load state, blur-up placeholder, graceful fallback, and optional zoom",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["loading", "loaded", "error"],
         "variants": [],
         "sizes": [],
@@ -16750,6 +17281,7 @@
         "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -16848,6 +17380,7 @@
         "description": "Loads the next page when the end of a list scrolls into view",
         "category": "feedback",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["idle", "loading", "disabled"],
         "variants": [],
         "sizes": [],
@@ -16995,6 +17528,7 @@
         "description": "A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -17137,6 +17671,7 @@
         "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
         "category": "feedback",
         "clientJs": "none",
+        "contractTier": "static",
         "states": ["inactive", "active", "finished", "error"],
         "variants": [],
         "sizes": [],
@@ -17257,6 +17792,42 @@
         "description": "Text input field with optional label, hint, and error state",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-state": ["idle", "focused", "error"],
+              "data-size": ["sm", "md", "lg"],
+              "data-ai": [""]
+            },
+            "children": ["label", "input", "error", "hint"],
+            "emit": "manual"
+          },
+          "parts": {
+            "label": {
+              "element": "label",
+              "children": ["$text"],
+              "when": "label"
+            },
+            "input": {
+              "element": "input",
+              "aria": ["aria-invalid", "aria-describedby", "aria-label"]
+            },
+            "error": {
+              "element": "span",
+              "role": "alert",
+              "children": ["$text"],
+              "when": "error"
+            },
+            "hint": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "!error && hint"
+            }
+          }
+        },
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -17452,6 +18023,7 @@
         "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; InputGroupButtons collapses adjacent button borders",
         "category": "inputs",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -17567,6 +18139,7 @@
         "description": "Generic content row primitive with media, content, and action regions",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": ["default", "muted"],
         "sizes": ["sm", "md"],
@@ -17681,6 +18254,7 @@
         "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -17775,6 +18349,7 @@
         "description": "Displays a keyboard key or shortcut",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -17875,6 +18450,7 @@
         "description": "Accessible caption for a form control",
         "category": "inputs",
         "clientJs": "none",
+        "contractTier": "static",
         "states": ["default", "disabled"],
         "variants": [],
         "sizes": [],
@@ -18020,6 +18596,7 @@
         "description": "Scrolling region whose large title collapses into a compact sticky bar as it scrolls",
         "category": "navigation",
         "clientJs": "none",
+        "contractTier": "static",
         "states": ["expanded", "collapsed"],
         "variants": [],
         "sizes": [],
@@ -19547,6 +20124,7 @@
         "description": "Styled anchor for navigation, standalone or inline within prose",
         "category": "navigation",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": ["standalone", "inline"],
         "sizes": ["sm", "md", "lg"],
@@ -19679,6 +20257,7 @@
         "description": "Styled unordered or ordered list with ListItem",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": ["disc", "decimal", "none"],
         "sizes": [],
@@ -19788,6 +20367,7 @@
         "description": "Virtualized monospace console for high-frequency log and stream output",
         "category": "display",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["following", "paused", "empty"],
         "variants": [],
         "sizes": [],
@@ -19961,6 +20541,7 @@
         "description": "Dropdown menu with keyboard navigation, built on usePopover",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -20074,6 +20655,7 @@
         "description": "A button that opens an anchored action menu of one-shot commands",
         "category": "navigation",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed"],
         "variants": ["primary", "secondary", "ghost"],
         "sizes": ["sm", "md", "lg"],
@@ -20248,6 +20830,7 @@
         "description": "Horizontal application menu bar with keyboard-navigable dropdown menus",
         "category": "navigation",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -20381,6 +20964,7 @@
         "description": "The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -20505,6 +21089,62 @@
         "description": "Accessible dialog overlay using native <dialog> element",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "dialog",
+            "local": "dialog",
+            "data": {
+              "data-size": ["sm", "md", "lg"],
+              "data-draggable": ["true"],
+              "data-ai": ["", "generating"]
+            },
+            "aria": ["aria-labelledby", "aria-describedby"],
+            "children": ["panel"]
+          },
+          "parts": {
+            "panel": {
+              "element": "div",
+              "children": ["header", "description", "body", "footer"]
+            },
+            "header": {
+              "element": "div",
+              "children": ["title", "close"],
+              "when": "title || onClose"
+            },
+            "title": {
+              "element": "h2",
+              "children": ["$text"],
+              "when": "title"
+            },
+            "close": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"],
+              "when": "onClose"
+            },
+            "description": {
+              "element": "p",
+              "children": ["$text"],
+              "when": "description"
+            },
+            "body": {
+              "element": "div",
+              "data": {
+                "data-cascivo-modal-body": [""]
+              },
+              "children": ["$slot"]
+            },
+            "footer": {
+              "element": "div",
+              "data": {
+                "data-cascivo-modal-footer": [""]
+              },
+              "children": ["$slot"],
+              "when": "footer"
+            }
+          }
+        },
         "states": ["closed", "open"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -20695,6 +21335,7 @@
         "description": "Searchable multi-value select with a popover listbox, chips and grouping",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["closed", "open", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -21019,6 +21660,7 @@
         "description": "A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring",
         "category": "inputs",
         "clientJs": "none",
+        "contractTier": "native",
         "states": ["default", "focus", "disabled", "invalid"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -21183,6 +21825,7 @@
         "description": "Site navigation bar with links and dropdown flyout panels",
         "category": "navigation",
         "clientJs": "enhancement",
+        "contractTier": "behaviour",
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -21320,6 +21963,7 @@
         "description": "Inline, actionable notification banner that surfaces a titled message with an optional recovery action",
         "category": "feedback",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": [],
         "variants": ["info", "success", "warning", "error"],
         "sizes": [],
@@ -21479,6 +22123,7 @@
         "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "native",
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -21684,6 +22329,7 @@
         "description": "Segmented one-time code input",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "behaviour",
         "states": ["idle", "focused", "filled", "disabled"],
         "variants": [],
         "sizes": [],
@@ -21813,6 +22459,7 @@
         "description": "Kebab icon button revealing a menu of row-level actions",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["closed", "open"],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -21984,6 +22631,7 @@
         "description": "Controls for navigating paged data sets, with page size selection",
         "category": "navigation",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -22132,6 +22780,7 @@
         "description": "Password input with reveal toggle and optional strength meter",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "native",
         "states": ["idle", "revealed"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -22279,6 +22928,7 @@
         "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -22410,6 +23060,18 @@
         "description": "Horizontal bar showing the completion progress of a tracked operation",
         "category": "feedback",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "progress",
+            "data": {
+              "data-variant": ["primary", "info", "success", "warning", "error"],
+              "data-size": ["sm", "md", "lg"]
+            },
+            "aria": ["aria-label", "aria-describedby"],
+            "emit": "manual"
+          }
+        },
         "states": ["determinate", "indeterminate"],
         "variants": ["primary", "info", "success", "warning", "error"],
         "sizes": ["sm", "md", "lg"],
@@ -22553,6 +23215,7 @@
         "description": "Shows determinate or indeterminate progress of a task",
         "category": "feedback",
         "clientJs": "none",
+        "contractTier": "static",
         "states": ["determinate", "indeterminate"],
         "variants": ["active", "success", "error"],
         "sizes": ["sm", "md"],
@@ -22690,6 +23353,7 @@
         "description": "Circular determinate progress indicator rendered as an SVG arc",
         "category": "feedback",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -22819,6 +23483,7 @@
         "description": "Shows progress through the steps of a multi-step flow",
         "category": "navigation",
         "clientJs": "none",
+        "contractTier": "static",
         "states": ["complete", "current", "incomplete"],
         "variants": ["horizontal", "vertical"],
         "sizes": [],
@@ -22941,6 +23606,7 @@
         "description": "Starter prompts as a wrap of pill buttons — the \"Try asking…\" row of an empty AI chat",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "native",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -23056,6 +23722,7 @@
         "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -23178,6 +23845,7 @@
         "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
         "category": "feedback",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["idle", "pulling", "ready", "refreshing"],
         "variants": [],
         "sizes": [],
@@ -23308,6 +23976,7 @@
         "description": "Encodes a URL or short text into a scannable SVG QR code",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -23444,6 +24113,7 @@
         "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
         "category": "feedback",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": ["primary", "info", "success", "warning", "error"],
         "sizes": ["sm", "md", "lg"],
@@ -23599,6 +24269,7 @@
         "description": "Single choice from a set, grouped with RadioGroup",
         "category": "inputs",
         "clientJs": "none",
+        "contractTier": "native",
         "states": ["unchecked", "checked"],
         "variants": [],
         "sizes": [],
@@ -23734,6 +24405,7 @@
         "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "native",
         "states": ["default", "checked", "disabled"],
         "variants": [],
         "sizes": [],
@@ -23873,6 +24545,7 @@
         "description": "Star rating input with accessible radio group pattern",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "native",
         "states": ["idle", "disabled", "readOnly"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -24012,6 +24685,7 @@
         "description": "Collapsible panel for a model’s reasoning — opens and shimmers \"Thinking…\" while it streams, then settles to \"Thought for N seconds\"",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "native",
         "states": ["streaming", "settled"],
         "variants": [],
         "sizes": [],
@@ -24151,6 +24825,7 @@
         "description": "Displays a date as a localized phrase relative to now, auto-updating",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -24258,6 +24933,7 @@
         "description": "List whose rows can be reordered by pointer drag or entirely by keyboard",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["idle", "grabbed", "disabled"],
         "variants": [],
         "sizes": [],
@@ -24429,6 +25105,7 @@
         "description": "Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space",
         "category": "layout",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -24578,6 +25255,7 @@
         "description": "A scroll container with styled, slim scrollbars and overflow shadows",
         "category": "layout",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -24700,6 +25378,7 @@
         "description": "Search input with debounced search callback and clear button",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "native",
         "states": ["empty", "filled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -25540,6 +26219,7 @@
         "description": "Mutually exclusive toggle group",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["idle", "selected", "disabled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -25686,6 +26366,49 @@
         "description": "Native select menu styled to match the design system",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-state": ["idle", "focused", "error"],
+              "data-size": ["sm", "md", "lg"]
+            },
+            "children": ["label", "field", "error", "hint"],
+            "emit": "manual"
+          },
+          "parts": {
+            "label": {
+              "element": "label",
+              "children": ["$text"],
+              "when": "label"
+            },
+            "field": {
+              "element": "div",
+              "children": ["select", "chevron"]
+            },
+            "select": {
+              "element": "select",
+              "aria": ["aria-invalid", "aria-describedby", "aria-label"]
+            },
+            "chevron": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "error": {
+              "element": "span",
+              "role": "alert",
+              "children": ["$text"],
+              "when": "error"
+            },
+            "hint": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "!error && hint"
+            }
+          }
+        },
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -25867,6 +26590,18 @@
         "description": "Visual or semantic divider between content",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": ["hr", "div"],
+            "data": {
+              "data-orientation": ["horizontal", "vertical"]
+            },
+            "aria": ["aria-orientation"],
+            "role": "separator",
+            "emit": "manual"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -25963,6 +26698,7 @@
         "description": "A Share button opening intent links for Bluesky, Mastodon, Threads, LinkedIn and X, plus copy link and the system share sheet",
         "category": "overlay",
         "clientJs": "enhancement",
+        "contractTier": "behaviour",
         "states": ["closed", "open", "copied"],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -26127,6 +26863,7 @@
         "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -26249,6 +26986,7 @@
         "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
         "category": "navigation",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -26503,6 +27241,7 @@
         "description": "Text with a bright band sweeping through it — the \"Thinking…\" look for a label that marks work in progress",
         "category": "feedback",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -26621,6 +27360,7 @@
         "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
         "category": "navigation",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["expanded", "collapsed"],
         "variants": [],
         "sizes": [],
@@ -26815,6 +27555,7 @@
         "description": "Animated loading placeholder that mirrors the shape of pending content",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": ["text", "circle", "rect"],
         "sizes": [],
@@ -26945,6 +27686,7 @@
         "description": "Skip link that jumps keyboard users past the navigation to the main content",
         "category": "navigation",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -27057,6 +27799,7 @@
         "description": "Range input for selecting a value within bounds",
         "category": "inputs",
         "clientJs": "none",
+        "contractTier": "native",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -27212,6 +27955,7 @@
         "description": "Collapsible, numbered list of the sources an AI answer drew on — \"Used 3 sources\" — whose numbers match InlineCitation",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "native",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -27347,6 +28091,7 @@
         "description": "Indeterminate loading indicator",
         "category": "feedback",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -27457,6 +28202,7 @@
         "description": "Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -27563,6 +28309,51 @@
         "description": "Displays a key metric with optional delta, trend direction and help text",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-card": ["true"]
+            },
+            "children": ["label", "value", "delta", "help", "visual"],
+            "emit": "manual"
+          },
+          "parts": {
+            "label": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "value": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "delta": {
+              "element": "span",
+              "data": {
+                "data-trend": ["up", "down", "flat"],
+                "data-sentiment": ["good", "bad", "neutral"]
+              },
+              "children": ["arrow", "$text"],
+              "when": "delta"
+            },
+            "arrow": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$text"]
+            },
+            "help": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "helpText"
+            },
+            "visual": {
+              "element": "span",
+              "children": ["$slot"],
+              "when": "visual"
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -27707,6 +28498,7 @@
         "description": "Colored dot with a label communicating the state of a system or entity",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": ["success", "warning", "error", "info", "neutral"],
         "sizes": [],
@@ -27826,6 +28618,7 @@
         "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
         "category": "navigation",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["pending", "active", "complete", "error"],
         "variants": [],
         "sizes": [],
@@ -28000,6 +28793,7 @@
         "description": "Reveals text character by character with a blinking cursor, catching up as a streamed reply grows",
         "category": "display",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -28105,6 +28899,7 @@
         "description": "Tabular row list for scannable data, optionally single-selectable",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["default", "selected"],
         "variants": ["static", "selectable"],
         "sizes": [],
@@ -28259,6 +29054,7 @@
         "description": "Animated toggle between two icon/content states with rotate or flip transition",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["unchecked", "checked"],
         "variants": ["rotate", "flip"],
         "sizes": [],
@@ -28410,6 +29206,7 @@
         "description": "List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity",
         "category": "display",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["closed", "leading", "trailing"],
         "variants": [],
         "sizes": [],
@@ -28532,6 +29329,7 @@
         "description": "Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.",
         "category": "navigation",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -28649,6 +29447,36 @@
         "description": "Switch between related panels of content",
         "category": "navigation",
         "clientJs": "required",
+        "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "children": ["list", "content"]
+          },
+          "parts": {
+            "list": {
+              "element": "div",
+              "role": "tablist",
+              "children": ["trigger"]
+            },
+            "trigger": {
+              "element": ["button", "a"],
+              "role": "tab",
+              "data": {
+                "data-state": ["active", "inactive"],
+                "data-value": "string"
+              },
+              "aria": ["aria-selected", "aria-controls", "aria-disabled"],
+              "children": ["$slot"]
+            },
+            "content": {
+              "element": "div",
+              "role": "tabpanel",
+              "aria": ["aria-labelledby"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["active", "inactive"],
         "variants": [],
         "sizes": [],
@@ -28778,6 +29606,7 @@
         "description": "Compact chip for labeling, categorizing, or filtering content",
         "category": "display",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": [],
         "variants": ["default", "info", "success", "warning", "error"],
         "sizes": ["sm", "md"],
@@ -28915,6 +29744,7 @@
         "description": "Free-form multi-value chip input",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["idle", "focused", "disabled"],
         "variants": [],
         "sizes": [],
@@ -29073,6 +29903,7 @@
         "description": "An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts",
         "category": "display",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -29231,6 +30062,7 @@
         "description": "Body text with size, weight, and muted variants",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": ["normal", "medium", "semibold"],
         "sizes": ["sm", "md", "lg"],
@@ -29363,6 +30195,7 @@
         "description": "Multi-line text input with optional label, hint, and error state",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "native",
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": [],
@@ -29543,6 +30376,7 @@
         "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["default", "selected", "focus", "disabled"],
         "variants": ["single", "multi"],
         "sizes": [],
@@ -29706,6 +30540,7 @@
         "description": "Native time input wrapper with label, hint, error, and size variants",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "behaviour",
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -29885,6 +30720,7 @@
         "description": "Ordered sequence of events with status markers and a connector line",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": ["complete", "current", "upcoming"],
         "variants": ["vertical", "horizontal"],
         "sizes": [],
@@ -29996,6 +30832,50 @@
         "description": "Transient notification surfaced via the useToast hook",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "viewport",
+            "role": "region",
+            "aria": ["aria-label"],
+            "children": ["toast"]
+          },
+          "parts": {
+            "toast": {
+              "element": "div",
+              "role": "status",
+              "data": {
+                "data-variant": ["default", "success", "warning", "destructive"],
+                "data-state": ["visible", "dismissing", "gone"]
+              },
+              "aria": ["aria-live"],
+              "children": ["icon", "body", "close"]
+            },
+            "icon": {
+              "element": "span",
+              "when": "false"
+            },
+            "body": {
+              "element": "div",
+              "children": ["title", "description"]
+            },
+            "title": {
+              "element": "div",
+              "children": ["$text"]
+            },
+            "description": {
+              "element": "div",
+              "children": ["$text"],
+              "when": "description"
+            },
+            "close": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["visible", "dismissing", "gone"],
         "variants": ["default", "success", "warning", "destructive"],
         "sizes": [],
@@ -30125,6 +31005,7 @@
         "description": "Table of contents with scroll-spy highlighting of the active section",
         "category": "navigation",
         "clientJs": "enhancement",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -30253,6 +31134,7 @@
         "description": "On/off switch built as an accessible button",
         "category": "inputs",
         "clientJs": "enhancement",
+        "contractTier": "behaviour",
         "states": ["off", "on"],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -30410,6 +31292,7 @@
         "description": "A set of toggle buttons for single or multiple selection",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["on", "off"],
         "variants": ["single", "multiple"],
         "sizes": ["sm", "md", "lg"],
@@ -30573,6 +31456,7 @@
         "description": "A click-triggered info popover for supplementary, selectable content",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -30735,6 +31619,7 @@
         "description": "Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "native",
         "states": ["pending", "running", "awaiting-approval", "complete", "error", "denied"],
         "variants": [],
         "sizes": [],
@@ -30886,6 +31771,7 @@
         "description": "Contextual label shown on hover or focus",
         "category": "overlay",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["hidden", "visible"],
         "variants": [],
         "sizes": [],
@@ -31017,6 +31903,7 @@
         "description": "Hierarchical, expandable tree of nodes with keyboard navigation and selection",
         "category": "display",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["default", "expanded", "collapsed", "selected"],
         "variants": ["single", "multi"],
         "sizes": [],
@@ -31208,6 +32095,7 @@
         "description": "Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply",
         "category": "feedback",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -31329,6 +32217,7 @@
         "description": "Identity composite: an avatar with a name, description, and optional action slot",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -31441,6 +32330,7 @@
         "description": "Renders only the rows inside the viewport, so list length costs no extra DOM",
         "category": "display",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -31595,6 +32485,7 @@
         "description": "Hides content visually while keeping it available to screen readers",
         "category": "display",
         "clientJs": "none",
+        "contractTier": "static",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -31688,6 +32579,7 @@
         "description": "iOS-style drum picker — a column of options that scrolls and snaps to a selection",
         "category": "inputs",
         "clientJs": "required",
+        "contractTier": "behaviour",
         "states": ["idle", "focused", "scrolling"],
         "variants": [],
         "sizes": [],

@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'display',
   // A static bordered list — the rows are all in the server HTML.
   clientJs: 'enhancement',
+  contractTier: 'native',
   states: [],
   variants: ['on-page', 'disclosed'],
   sizes: [],

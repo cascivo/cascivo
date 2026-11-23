@@ -27,6 +27,7 @@
     "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
     "category": "feedback",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["idle", "pulling", "ready", "refreshing"],
     "variants": [],
     "sizes": [],

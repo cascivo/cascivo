@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate',
   category: 'inputs',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: [],
   variants: [],
   sizes: [],

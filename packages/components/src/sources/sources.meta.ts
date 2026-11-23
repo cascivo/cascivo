@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Collapsible, numbered list of the sources an AI answer drew on — "Used 3 sources" — whose numbers match InlineCitation',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'native',
   states: [],
   variants: [],
   sizes: [],

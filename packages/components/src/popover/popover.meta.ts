@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Anchored floating panel built on CSS Anchor Positioning + Popover API',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

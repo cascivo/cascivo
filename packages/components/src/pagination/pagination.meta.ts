@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'navigation',
   // Page controls render as buttons plus a select, none of which navigate without JS.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: [],
   variants: [],
   sizes: [],

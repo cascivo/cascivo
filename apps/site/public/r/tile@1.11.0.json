@@ -26,6 +26,7 @@
     "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["default", "selected", "focus", "disabled"],
     "variants": ["single", "multi"],
     "sizes": [],

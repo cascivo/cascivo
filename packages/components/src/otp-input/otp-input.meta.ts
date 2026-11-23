@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // Six native inputs render, so the code can be typed and submitted; JS adds auto-advance
   // and paste splitting.
   clientJs: 'enhancement',
+  contractTier: 'behaviour',
   states: ['idle', 'focused', 'filled', 'disabled'],
   variants: [],
   sizes: [],

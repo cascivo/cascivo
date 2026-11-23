@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   category: 'feedback',
   // The title and message render in full; JS only drives the optional action and dismissal.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: [],
   variants: ['info', 'success', 'warning', 'error'],
   sizes: [],

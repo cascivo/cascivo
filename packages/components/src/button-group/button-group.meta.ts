@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // A layout wrapper that joins its children visually; the buttons themselves are the
   // caller's.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: ['idle'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

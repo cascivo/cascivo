@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Message bubble for chat and messaging UIs with avatar, name, and timestamp support',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: ['start', 'end'],
   sizes: [],

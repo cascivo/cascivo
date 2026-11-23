@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Searchable multi-value select with a popover listbox, chips and grouping',
   category: 'inputs',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['closed', 'open', 'error'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

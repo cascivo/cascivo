@@ -26,6 +26,7 @@
     "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
     "category": "layout",
     "clientJs": "enhancement",
+    "contractTier": "static",
     "states": ["open", "closed"],
     "variants": [],
     "sizes": [],

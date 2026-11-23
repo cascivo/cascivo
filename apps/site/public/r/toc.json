@@ -29,6 +29,7 @@
     "description": "Table of contents with scroll-spy highlighting of the active section",
     "category": "navigation",
     "clientJs": "enhancement",
+    "contractTier": "static",
     "states": [],
     "variants": [],
     "sizes": [],

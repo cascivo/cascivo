@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   // Selection runs through JS-only buttons — nothing can be toggled without JS.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['on', 'off'],
   variants: ['single', 'multiple'],
   sizes: ['sm', 'md', 'lg'],

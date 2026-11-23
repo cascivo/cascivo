@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'On/off switch built as an accessible button',
   category: 'inputs',
   clientJs: 'enhancement',
+  contractTier: 'behaviour',
   states: ['off', 'on'],
   variants: [],
   sizes: ['sm', 'md'],

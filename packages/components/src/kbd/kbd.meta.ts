@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Displays a keyboard key or shortcut',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: ['sm', 'md'],

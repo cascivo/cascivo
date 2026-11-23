@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   // Adding and removing chips is the component; with JS off the value cannot change.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['idle', 'focused', 'disabled'],
   variants: [],
   sizes: [],

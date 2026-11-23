@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   category: 'layout',
   // Reallocating space by drag or keyboard is the component.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: [],
   variants: [],
   sizes: [],

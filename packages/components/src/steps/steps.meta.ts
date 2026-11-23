@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   category: 'navigation',
   // A static progress indicator; every step and its state render on the server.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: ['pending', 'active', 'complete', 'error'],
   variants: [],
   sizes: [],

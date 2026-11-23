@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

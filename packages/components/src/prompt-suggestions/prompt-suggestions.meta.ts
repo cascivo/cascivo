@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Starter prompts as a wrap of pill buttons — the "Try asking…" row of an empty AI chat',
   category: 'inputs',
   clientJs: 'required',
+  contractTier: 'native',
   states: [],
   variants: [],
   sizes: [],

@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'List whose rows can be reordered by pointer drag or entirely by keyboard',
   category: 'inputs',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['idle', 'grabbed', 'disabled'],
   variants: [],
   sizes: [],

@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'A button that opens an anchored action menu of one-shot commands',
   category: 'navigation',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['open', 'closed'],
   variants: ['primary', 'secondary', 'ghost'],
   sizes: ['sm', 'md', 'lg'],

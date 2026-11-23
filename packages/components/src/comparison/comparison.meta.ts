@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // The reveal is the component: without the draggable divider you see one layer and cannot
   // reach the other.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['default'],
   variants: [],
   sizes: [],

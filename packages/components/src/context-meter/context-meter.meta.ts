@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'How much of a model’s context window a conversation has used — "12K / 200K" with a bar that warns as it fills',
   category: 'feedback',
   clientJs: 'none',
+  contractTier: 'static',
   states: ['normal', 'high', 'full'],
   variants: [],
   sizes: [],
