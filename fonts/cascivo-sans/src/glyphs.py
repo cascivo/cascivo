@@ -343,6 +343,17 @@ def _K(g, p):
 O_BLACK, C_BLACK, G_BLACK, M_BLACK = 0.045, 0.033, 0.068, 0.055
 CAP_O_SQUARE = 0.1
 BOWL_NARROW = {'B': 0.06, 'P': 0.09, 'R': 0.05, 'D': 0.04}
+# Round 7: the bowled capitals' horizontals at Black. Drawn with the lowercase's contrast (0.72), their tops and bottoms were 27 px
+# at 200 px against Inter's 31-35, so D and B carried 1.3-1.4x Inter's counter over their ink. CAP_ROUND_H is the share of the
+# stem-minus-horizontal difference those strokes take back at Black; Regular is unchanged. B's two bowls share the height, so it
+# takes less (CAP_ROUND_H_B): at D's share its counters fell under Inter's. The italic keeps its pen: heavier, its B's bars stood a
+# unit under the baseline, the small в folded and the D's points put the italic woff2 over its budget. O and Q keep theirs (the O's
+# counter floor in test_font holds its white).
+CAP_ROUND_H, CAP_ROUND_H_B = 0.8, 0.4
+
+
+def cap_round_H(p, share=None):
+    return p.H + (p.V - p.H) * (CAP_ROUND_H if share is None else share) * p.heavy
 
 
 @glyph('O', 0x4F)
@@ -408,24 +419,24 @@ def _G(g, p):
 @glyph('D', 0x44)
 def _D(g, p):
     w = p.Hw * (1.06 - (0.04 + BOWL_NARROW['D']) * p.heavy)  # as b
-    V, H = p.V, p.H
+    V, H = p.V, cap_round_H(p, 0.0 if p.italic else None)
     xr = w - V / 2
     ry = (p.cap - H) / 2
     rx = min(ry * 1.02, (xr - V / 2) * 0.62)
     cx, cy = xr - rx, p.cap / 2
-    g.stroke([L((V / 2, p.cap - H / 2), (cx, p.cap - H / 2))] + g.arc(cx, cy, rx, ry, 90, -90) + [L((cx, H / 2), (V / 2, H / 2))], pen=flat_pen(p))
+    g.stroke([L((V / 2, p.cap - H / 2), (cx, p.cap - H / 2))] + g.arc(cx, cy, rx, ry, 90, -90) + [L((cx, H / 2), (V / 2, H / 2))], pen=flat_pen(p, H))
     g.vstem(0, 0, p.cap)
     g.ht = 'c'
     g.sb = (1, 0.62)
 
 
-def _bowl_right(g, x0, xr, ytop, ybot, ratio=1.0):
+def _bowl_right(g, x0, xr, ytop, ybot, ratio=1.0, H=None):
     """A P/B/R bowl: bars from the stem centre at ytop/ybot (centerlines), round on the right."""
     ry = (ytop - ybot) / 2
     rx = min(ry * ratio, (xr - x0) * 0.75)
     cx = xr - rx
     cy = (ytop + ybot) / 2
-    g.stroke([L((x0, ytop), (cx, ytop))] + g.arc(cx, cy, rx, ry, 90, -90) + [L((cx, ybot), (x0, ybot))], pen=flat_pen(g.p))
+    g.stroke([L((x0, ytop), (cx, ytop))] + g.arc(cx, cy, rx, ry, 90, -90) + [L((cx, ybot), (x0, ybot))], pen=flat_pen(g.p, H))
     return cx
 
 
@@ -456,11 +467,11 @@ def _R(g, p):
 @glyph('B', 0x42)
 def _B(g, p):
     w = p.Hw * (0.97 - BOWL_NARROW['B'] * p.heavy)
-    V, H = p.V, p.H
+    V, H = p.V, cap_round_H(p, 0.0 if p.italic else CAP_ROUND_H_B)
     g.vstem(0, 0, p.cap)
     ym = p.cap * 0.535
-    _bowl_right(g, V / 2, w - V / 2 - w * 0.05, p.cap - H / 2, ym, 1.08)
-    _bowl_right(g, V / 2, w - V / 2, ym, H / 2, 1.08)
+    _bowl_right(g, V / 2, w - V / 2 - w * 0.05, p.cap - H / 2, ym, 1.08, H)
+    _bowl_right(g, V / 2, w - V / 2, ym, H / 2, 1.08, H)
     g.ht = 'c'
     g.sb = (1, 0.6)
 
@@ -1567,15 +1578,16 @@ def _kra(g, p):
 V_WIDER, W_WIDER, V_LIGHTER = 34, 35, 0.10  # W_WIDER 70 -> 35 (round 4): with DIAG_TRIM halved, Black's w ran 1.46x its n (Inter's 1.35x)
 
 
-def flat_pen(p):
+def flat_pen(p, H=None):
     """Round 4, cycle 3: the pen of a stroke whose horizontal edges stand on the baseline or the cap height (E F L T Z z 7 bars,
     B D P R bowls). The italic's pen leans with the slant, so it draws a horizontal 5.5 units thicker than H at Black: those bars
     stood 3 units under the baseline and over the cap height, a step against the stem's square end at every corner (E's four,
     L's, B's). Black's pen draws them H thick; Regular is unchanged."""
+    H = p.H if H is None else H
     if not p.italic:
-        return (p.V, p.H)
+        return (p.V, H)
     c = pen_thickness((1.0, 0.0), 1.0, 0.0, p.slant)  # the share of V in a horizontal's thickness
-    return (p.V, lerp(p.H, (p.H - p.V * c) / (1 - c), p.heavy))
+    return (p.V, lerp(H, (H - p.V * c) / (1 - c), p.heavy))
 
 
 def exact_shift(g, dx, dy, ws):
