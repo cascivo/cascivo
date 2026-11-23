@@ -28,13 +28,13 @@ import { Skeleton } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type                           | Required | Default | Description                                                                                                           |
-| --------- | ------------------------------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
-| `variant` | `'text' \| 'circle' \| 'rect'` | no       | `text`  | Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block).                             |
-| `width`   | `string`                       | no       | —       | CSS length applied as an inline custom property                                                                       |
-| `height`  | `string`                       | no       | —       | CSS length applied as an inline custom property                                                                       |
-| `lines`   | `number`                       | no       | `1`     | Number of bars for the text variant; the last bar renders shorter                                                     |
-| `ai`      | `boolean`                      | no       | `false` | Tints the placeholder and its sheen with the AI hue, marking content that an AI is generating (Carbon’s AI skeleton). |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'text' \| 'circle' \| 'rect'` | no | `text` | Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block). |
+| `width` | `string` | no | — | CSS length applied as an inline custom property |
+| `height` | `string` | no | — | CSS length applied as an inline custom property |
+| `lines` | `number` | no | `1` | Number of bars for the text variant; the last bar renders shorter |
+| `ai` | `boolean` | no | `false` | Tints the placeholder and its sheen with the AI hue, marking content that an AI is generating (Carbon’s AI skeleton). |
 
 ## Examples
 

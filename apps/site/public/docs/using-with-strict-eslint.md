@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/using-with-strict-eslint.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Using cascivo with a strict host ESLint config
 
 **Short version:**
@@ -42,7 +41,7 @@ The fix is one rule. Extend the fragment this package ships:
 // .oxlintrc.json
 {
   "extends": ["./node_modules/@cascivo/eslint-config/src/oxlintrc.json"],
-  "categories": { "correctness": "error" },
+  "categories": { "correctness": "error" }
 }
 ```
 
@@ -56,7 +55,7 @@ The fix is one rule. Extend the fragment this package ships:
 (`Rule 'immutability' not found in plugin 'react'`), so add this only on an oxlint recent
 enough to ship the rule. On an older one the rule does not fire, so you need neither.
 
-Everything below about _what turning the rule off costs_ applies identically — it is the
+Everything below about *what turning the rule off costs* applies identically — it is the
 same rule, ported.
 
 Until the 2026-08-31 report (§13) this page mentioned oxlint three times, all of them
@@ -237,12 +236,11 @@ source compiled by `babel-plugin-react-compiler` 1.x (`pnpm compiler:check`, in 
 
   The compiler tracks `open.value` as a dependency, so memoized output re-renders when the
   value changes — the example's interaction tests pass under it.
-
 - **The same form satisfies `react-hooks/immutability`**, so with setters you can keep that
   rule on instead of using the override above.
 
 cascivo's own components are unaffected either way: they ship `'use client'` and do not rely
-on compiler memoization. The rule applies to the signal-writing components _you_ write.
+on compiler memoization. The rule applies to the signal-writing components *you* write.
 
 ---
 
@@ -301,6 +299,7 @@ cascivo enforces the objective classes below in its own linter (oxlint) via
 config for every rule outside the scope-off list above.
 
 ### `.eslintrc` (legacy) equivalent
+
 
 ```json
 {

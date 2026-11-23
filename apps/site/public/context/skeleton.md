@@ -34,13 +34,13 @@ Presentational by role — the placeholder shapes carry no meaning; the surround
 
 ## Props
 
-| Name      | Type                           | Required | Default | Description                                                                                                           |
-| --------- | ------------------------------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
-| `variant` | `'text' \| 'circle' \| 'rect'` | No       | text    | Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block).                             |
-| `width`   | `string`                       | No       | —       | CSS length applied as an inline custom property                                                                       |
-| `height`  | `string`                       | No       | —       | CSS length applied as an inline custom property                                                                       |
-| `lines`   | `number`                       | No       | 1       | Number of bars for the text variant; the last bar renders shorter                                                     |
-| `ai`      | `boolean`                      | No       | false   | Tints the placeholder and its sheen with the AI hue, marking content that an AI is generating (Carbon’s AI skeleton). |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'text' \| 'circle' \| 'rect'` | No | text | Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block). |
+| `width` | `string` | No | — | CSS length applied as an inline custom property |
+| `height` | `string` | No | — | CSS length applied as an inline custom property |
+| `lines` | `number` | No | 1 | Number of bars for the text variant; the last bar renders shorter |
+| `ai` | `boolean` | No | false | Tints the placeholder and its sheen with the AI hue, marking content that an AI is generating (Carbon’s AI skeleton). |
 
 ## Tokens
 
@@ -80,10 +80,10 @@ Presentational by role — the placeholder shapes carry no meaning; the surround
 
 ## Boundaries
 
-| Area                   | Level    | Note                                                           |
-| ---------------------- | -------- | -------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | variant and dimensions | flexible | Shape, width, height, and line count match the pending content |
-| token names            | strict   | Background and radius must resolve to --cascivo-* tokens       |
+| token names | strict | Background and radius must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/using-cascivo-html.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Static HTML with cascivo-html
 
 `cascivo-html` turns a short text file (`.cv`) into **one HTML file** styled by the real cascivo
@@ -15,12 +14,12 @@ It is a Rust library plus a command-line tool. The library has no dependencies. 
 
 ## When to use it
 
-| You want                                                         | Use                                                                                    |
-| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| A running React app                                              | `@cascivo/react` or `npx cascivo add` ([GETTING-STARTED.md](/docs/getting-started.md)) |
-| An agent-built page from JSON                                    | `@cascivo/render` with a `ViewConfig`                                                  |
-| One static HTML file (report, dashboard, landing page, document) | `cascivo-html`                                                                         |
-| A UI as Markdown for an agent to read                            | `@cascivo/text` ([MACHINE-MODE.md](/docs/machine-mode.md))                             |
+| You want | Use |
+| -------- | --- |
+| A running React app | `@cascivo/react` or `npx cascivo add` ([GETTING-STARTED.md](/docs/getting-started.md)) |
+| An agent-built page from JSON | `@cascivo/render` with a `ViewConfig` |
+| One static HTML file (report, dashboard, landing page, document) | `cascivo-html` |
+| A UI as Markdown for an agent to read | `@cascivo/text` ([MACHINE-MODE.md](/docs/machine-mode.md)) |
 
 Static output only: no forms, no live data, no event handlers you write yourself.
 
@@ -72,16 +71,16 @@ The format has 51 elements: layout, display, feedback, navigation and seven SVG 
 
 `@brand` sets the look in one line. Every key is optional.
 
-| Key                              | Meaning                          |
-| -------------------------------- | -------------------------------- |
-| `#hex`                           | primary color                    |
-| `accent=#hex`                    | accent color                     |
-| `theme=<name>`                   | one of the twelve cascivo themes |
-| `light`, `dark`, `auto`          | color mode                       |
-| `r8`                             | corner radius in px              |
-| `gap4`                           | default space step               |
-| `density=compact\|normal\|comfy` | spacing density                  |
-| `font=Inter`, `mono=…`           | font families                    |
+| Key | Meaning |
+| --- | ------- |
+| `#hex` | primary color |
+| `accent=#hex` | accent color |
+| `theme=<name>` | one of the twelve cascivo themes |
+| `light`, `dark`, `auto` | color mode |
+| `r8` | corner radius in px |
+| `gap4` | default space step |
+| `density=compact\|normal\|comfy` | spacing density |
+| `font=Inter`, `mono=…` | font families |
 
 For a reusable brand, put the same keys in a file, one per line, and use `@brand-file brand.cv`
 in the page or `--brand brand.cv` on the command line. Brand files are read only from the input
@@ -139,12 +138,12 @@ this loop.
 `--target blitz` (library: `Options { target: Target::Blitz, .. }`) to lower the output for it.
 The default, `browser`, changes nothing.
 
-| Blitz gap                                                            | What `--target blitz` does                                                                                                                                                                   |
-| -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@container` never matches                                           | Rewrites it to the same `@media` query on the viewport. Right for page-level layouts; a narrow container in a wide window still follows the window. `scroll-state()` containers are dropped. |
-| `:focus-visible` never matches                                       | Rewrites it to `:focus`. Pointer focus shows the ring too.                                                                                                                                   |
-| SVG ignores CSS `fill`, `stroke`, `transform`, `var()` and `oklch()` | Moves them to presentation attributes with `rgb()` values from the page theme and brand (`meter`, `progress-circle` and every chart).                                                        |
-| No `<script>`                                                        | Does not emit the table-sort script. `[data-sortable]` stays for a host handler.                                                                                                             |
+| Blitz gap | What `--target blitz` does |
+|---|---|
+| `@container` never matches | Rewrites it to the same `@media` query on the viewport. Right for page-level layouts; a narrow container in a wide window still follows the window. `scroll-state()` containers are dropped. |
+| `:focus-visible` never matches | Rewrites it to `:focus`. Pointer focus shows the ring too. |
+| SVG ignores CSS `fill`, `stroke`, `transform`, `var()` and `oklch()` | Moves them to presentation attributes with `rgb()` values from the page theme and brand (`meter`, `progress-circle` and every chart). |
+| No `<script>` | Does not emit the table-sort script. `[data-sortable]` stays for a host handler. |
 
 `overflow:auto` needs no change: Blitz treats it as `scroll`. `:has()` needs the engine pref
 `layout.css.has-selector.enabled`; the host sets it.

@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/compared-to-stylex.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # cascivo compared to StyleX
 
 StyleX is Meta's styling system: JavaScript style objects compiled to atomic CSS at build
@@ -30,26 +29,26 @@ custom properties and cascade layers. cascivo just writes it.**
 
 ## Feature by feature
 
-|                                            | cascivo                                                               | StyleX                                                                                |
-| ------------------------------------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Style runtime                              | None — plain CSS files                                                | None — compiled away                                                                  |
-| Build step for styling                     | **None**                                                              | Babel plugin + bundler integration, required                                          |
-| Cascade control                            | Real `@layer`, seven canonical layers                                 | Computed rule priority; `:not(#\#)` specificity polyfill where layers are unavailable |
-| Token names                                | `--cascivo-color-accent` — flat, stable, typeable from memory         | Hashed at build (`defineVars`); needs an import                                       |
-| Token checking                             | Lint rule, `satisfies` type, and CI audit, all from one generated set | Compiler error                                                                        |
-| Styling at a distance                      | Prevented (hashed CSS Modules + published `data-cascivo-*` hooks)     | Prevented (selectors rejected by the compiler)                                        |
-| Relational styling (parent hover, sibling) | Native `:has()` and `data-*` attributes                               | `stylex.when.*` + explicit markers (compiles to `:has()`)                             |
-| Theming                                    | `data-theme` on any subtree; twelve themes ship                       | `createTheme()` on any subtree                                                        |
-| Components                                 | A component library — accessible, tested, manifested                  | None — StyleX is only the styling layer                                               |
-| DevTools                                   | Hashed CSS-Module class, one rule per element                         | Atomic classes (`x1abc x2def …`) plus `:not(#\#)`                                     |
-| Dynamic styles at runtime                  | Any CSS custom property, set from JS                                  | Not available — everything must be statically analysable                              |
-| Maturity                                   | 1.x, stable                                                           | 0.19.x — no 1.0 yet                                                                   |
+| | cascivo | StyleX |
+| --- | --- | --- |
+| Style runtime | None — plain CSS files | None — compiled away |
+| Build step for styling | **None** | Babel plugin + bundler integration, required |
+| Cascade control | Real `@layer`, seven canonical layers | Computed rule priority; `:not(#\#)` specificity polyfill where layers are unavailable |
+| Token names | `--cascivo-color-accent` — flat, stable, typeable from memory | Hashed at build (`defineVars`); needs an import |
+| Token checking | Lint rule, `satisfies` type, and CI audit, all from one generated set | Compiler error |
+| Styling at a distance | Prevented (hashed CSS Modules + published `data-cascivo-*` hooks) | Prevented (selectors rejected by the compiler) |
+| Relational styling (parent hover, sibling) | Native `:has()` and `data-*` attributes | `stylex.when.*` + explicit markers (compiles to `:has()`) |
+| Theming | `data-theme` on any subtree; twelve themes ship | `createTheme()` on any subtree |
+| Components | A component library — accessible, tested, manifested | None — StyleX is only the styling layer |
+| DevTools | Hashed CSS-Module class, one rule per element | Atomic classes (`x1abc x2def …`) plus `:not(#\#)` |
+| Dynamic styles at runtime | Any CSS custom property, set from JS | Not available — everything must be statically analysable |
+| Maturity | 1.x, stable | 0.19.x — no 1.0 yet |
 
 Two rows deserve their own paragraph.
 
 **Atomic CSS is solving a problem you may not have.** StyleX's atomic classes deduplicate
 declarations across thousands of call sites in one bundle; Meta reports ~80% smaller CSS at
-their scale. That is a real win at Meta's size. cascivo gets the same _shape_ of result from
+their scale. That is a real win at Meta's size. cascivo gets the same *shape* of result from
 a different mechanism — you install the components you use, so CSS grows with your component
 count, not with how many times you render them.
 
@@ -160,16 +159,16 @@ its own reset. If you already use StyleX, add `cascivo` to your layer order abov
 
 ## Coming from StyleX — a translation table
 
-| StyleX                                    | cascivo                                                                     |
-| ----------------------------------------- | --------------------------------------------------------------------------- |
-| `stylex.create({ … })`                    | a `.module.css` file in `@layer cascivo.component`                          |
-| `stylex.props(styles.a, styles.b)`        | `className={cn(styles.a, styles.b)}`                                        |
-| `stylex.defineVars({ … })`                | `--cascivo-*` custom properties (or your own, in your layer)                |
-| `stylex.createTheme(vars, { … })`         | `[data-theme="…"]` on any element — see [THEMING.md](/docs/theming.md)      |
-| `StyleXStyles<{ width, height }>` prop    | component props + tokens; `data-cascivo-*` hooks for internals              |
-| `stylex.when.ancestor(':hover')` + marker | `.parent:hover .child`, or `:has()`                                         |
-| The compiler rejects an unknown token     | `cascivo/token-values`, `satisfies CascivoTokenStyle`, `cascivo audit --ai` |
-| Last style wins                           | `@layer` order wins — `cascivo.override` beats everything cascivo ships     |
+| StyleX | cascivo |
+| --- | --- |
+| `stylex.create({ … })` | a `.module.css` file in `@layer cascivo.component` |
+| `stylex.props(styles.a, styles.b)` | `className={cn(styles.a, styles.b)}` |
+| `stylex.defineVars({ … })` | `--cascivo-*` custom properties (or your own, in your layer) |
+| `stylex.createTheme(vars, { … })` | `[data-theme="…"]` on any element — see [THEMING.md](/docs/theming.md) |
+| `StyleXStyles<{ width, height }>` prop | component props + tokens; `data-cascivo-*` hooks for internals |
+| `stylex.when.ancestor(':hover')` + marker | `.parent:hover .child`, or `:has()` |
+| The compiler rejects an unknown token | `cascivo/token-values`, `satisfies CascivoTokenStyle`, `cascivo audit --ai` |
+| Last style wins | `@layer` order wins — `cascivo.override` beats everything cascivo ships |
 
 ## See also
 

@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/styling-internals.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Styling a component's internals
 
 cascivo components ship CSS Modules, so their inner elements carry **hashed** class names
@@ -47,16 +46,16 @@ keeps your intent explicit and survives later refactors of your own stylesheet.
 
 ## The hooks
 
-| Attribute                    | Component  | Element                                                                                                                                   |
-| ---------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `data-cascivo-appshell-nav`  | `AppShell` | the sidebar wrapper — the flex item that owns the sidebar's width                                                                         |
-| `data-cascivo-appshell-main` | `AppShell` | the `<main>` scroll container                                                                                                             |
-| `data-cascivo-modal-body`    | `Modal`    | the scrollable content region between header and footer                                                                                   |
-| `data-cascivo-modal-footer`  | `Modal`    | the right-aligned action row (rendered only when `footer` is passed)                                                                      |
-| `data-cascivo-drawer-body`   | `Drawer`   | the scrollable content region                                                                                                             |
-| `data-cascivo-sheet-body`    | `Sheet`    | the scrollable content region                                                                                                             |
-| `data-cascivo-logo`          | `Logo`     | the lockup wrapper, valued with the active variant (`mark`, `mark-accent`, `horizontal`, `stacked`, `nav`)                                |
-| `data-cascivo-card`          | `Card`     | the card surface itself — also what `Grid`'s `alignRows` targets to pass its subgrid row tracks down to CardHeader/CardContent/CardFooter |
+| Attribute | Component | Element |
+| --- | --- | --- |
+| `data-cascivo-appshell-nav` | `AppShell` | the sidebar wrapper — the flex item that owns the sidebar's width |
+| `data-cascivo-appshell-main` | `AppShell` | the `<main>` scroll container |
+| `data-cascivo-modal-body` | `Modal` | the scrollable content region between header and footer |
+| `data-cascivo-modal-footer` | `Modal` | the right-aligned action row (rendered only when `footer` is passed) |
+| `data-cascivo-drawer-body` | `Drawer` | the scrollable content region |
+| `data-cascivo-sheet-body` | `Sheet` | the scrollable content region |
+| `data-cascivo-logo` | `Logo` | the lockup wrapper, valued with the active variant (`mark`, `mark-accent`, `horizontal`, `stacked`, `nav`) |
+| `data-cascivo-card` | `Card` | the card surface itself — also what `Grid`'s `alignRows` targets to pass its subgrid row tracks down to CardHeader/CardContent/CardFooter |
 
 ## Prefer a token, then a prop, then a hook
 
@@ -68,7 +67,7 @@ A hook is the third choice, not the first:
    [`TOKENS.md`](/docs/tokens.md).
 
    Reach for these before the semantic tier when the change is scoped to one component
-   family: setting `--cascivo-color-primary` recolours primary buttons _and_ every other
+   family: setting `--cascivo-color-primary` recolours primary buttons *and* every other
    primary surface in the subtree, which is right for a brand and wrong for one dialog's
    confirm button.
 
@@ -77,7 +76,6 @@ A hook is the third choice, not the first:
    > `--cascivo-color-primary-fg`. If your new background needs dark text, set that too, or
    > the button fails contrast. The complete list of knobs per component is in each
    > component's manifest and in `@cascivo/tokens/style-contract.json`.
-
 2. **A prop.** If the component exposes one (`size`, `footer`, `padding`), use it — props
    are typed and survive everything.
 3. **A style hook**, for the layout facts neither of the above reaches.
@@ -107,7 +105,7 @@ import type { CascivoStyleHook } from '@cascivo/tokens/style-contract'
 const hook: CascivoStyleHook = 'data-cascivo-modal-body' // a typo here is a compile error
 ```
 
-## What is _not_ a contract
+## What is *not* a contract
 
 Everything else about a component's internals: the hashed class names, the element nesting,
 the tag names, and any `data-testid` (those exist for cascivo's own tests and can change

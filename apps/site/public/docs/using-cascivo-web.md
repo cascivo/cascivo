@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/using-cascivo-web.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Static sites with cascivo-web
 
 `cascivo-web` builds a static website from a folder of Markdown, content collections and
@@ -15,11 +14,11 @@ It is a command-line tool and a Rust library.
 
 ## When to use it
 
-| You want                                   | Use                                                                                    |
-| ------------------------------------------ | -------------------------------------------------------------------------------------- |
-| A running React app                        | `@cascivo/react` or `npx cascivo add` ([GETTING-STARTED.md](/docs/getting-started.md)) |
-| One static HTML file (report, dashboard)   | `cascivo-html` ([USING-CASCIVO-HTML.md](/docs/using-cascivo-html.md))                  |
-| A static site: pages, a blog, locales, RSS | `cascivo-web`                                                                          |
+| You want | Use |
+| -------- | --- |
+| A running React app | `@cascivo/react` or `npx cascivo add` ([GETTING-STARTED.md](/docs/getting-started.md)) |
+| One static HTML file (report, dashboard) | `cascivo-html` ([USING-CASCIVO-HTML.md](/docs/using-cascivo-html.md)) |
+| A static site: pages, a blog, locales, RSS | `cascivo-web` |
 
 ## Install
 
@@ -83,30 +82,30 @@ description = "New posts"
 limit = 20
 ```
 
-| Key                        | Meaning                                                                                                                                                                                                                            |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `title`                    | Required. Site name.                                                                                                                                                                                                               |
-| `base_url`                 | Absolute origin. Default empty. Without it there is no `sitemap.xml`, and feeds fail.                                                                                                                                              |
-| `lang`                     | Language of the site. Default `en`.                                                                                                                                                                                                |
-| `theme`                    | A cascivo theme name. Default `light`.                                                                                                                                                                                             |
-| `dark_theme`               | Optional second theme. `cascivo.css` applies it under `prefers-color-scheme: dark` to pages whose `<html>` has no `data-theme` (then `theme` applies to them otherwise). `[data-theme=<name>]` still works for both.               |
-| `[brand]`                  | Token overrides: `primary`, `accent` (`#rgb` or `#rrggbb`), `radius` (px, 0–64), `gap` (space step), `density` (`compact`, `normal`, `comfy`), `font`, `mono`. The same keys as `@brand` in cascivo-html. See [Theming](#theming). |
-| `[i18n] default`           | Default locale, served at `/`. Must be in `locales`.                                                                                                                                                                               |
-| `[i18n] locales`           | All locales. Others are served at `/<locale>/`.                                                                                                                                                                                    |
-| `[i18n] fallback`          | Default `true`. See [Locales](#locales).                                                                                                                                                                                           |
-| `[build] trailing_slash`   | Default `true`: `/about/` (`about/index.html`). `false`: `/about` (`about.html`) in output files, `page.url`, entry URLs, canonical, sitemap, hreflang and feeds.                                                                  |
-| `[build] cascivo_css`      | Default `true`. `false`: no `cascivo.css` and no link to it.                                                                                                                                                                       |
-| `[build] inline_styles`    | Default `true`. `false`: components write no `style=""`. They get `data-cv-style` hooks, and the rules go into `cascivo.css`. See [Strict CSP](#strict-csp).                                                                       |
-| `[build] external_scripts` | Default `false`. `true`: component scripts, `theme_script()` and `islands_script()` go into `.js` files with `<script src>`.                                                                                                       |
-| `[build] hash_assets`      | Default `false`. `true`: `cascivo.css` and the generated `.js` files get content-hashed names under `/_cw/`, like `asset()`.                                                                                                       |
-| `[head] robots`            | Default `robots` of `head()`. Default `"index, follow"`; `""` omits the tag.                                                                                                                                                       |
-| `[deploy] target`          | `"workers"` (default) or `"pages"`. See [Deploy](#deploy-to-cloudflare).                                                                                                                                                           |
-| `[deploy] project`         | Cloudflare Pages project name (`--project-name`).                                                                                                                                                                                  |
-| `[[feeds]] collection`     | Required. The collection to publish.                                                                                                                                                                                               |
-| `path`                     | Feed file. Default `rss.xml`.                                                                                                                                                                                                      |
-| `title`                    | Feed title. Default: the site title.                                                                                                                                                                                               |
-| `description`              | Feed description. Default empty.                                                                                                                                                                                                   |
-| `limit`                    | Newest items to include. Default `20`.                                                                                                                                                                                             |
+| Key | Meaning |
+| --- | ------- |
+| `title` | Required. Site name. |
+| `base_url` | Absolute origin. Default empty. Without it there is no `sitemap.xml`, and feeds fail. |
+| `lang` | Language of the site. Default `en`. |
+| `theme` | A cascivo theme name. Default `light`. |
+| `dark_theme` | Optional second theme. `cascivo.css` applies it under `prefers-color-scheme: dark` to pages whose `<html>` has no `data-theme` (then `theme` applies to them otherwise). `[data-theme=<name>]` still works for both. |
+| `[brand]` | Token overrides: `primary`, `accent` (`#rgb` or `#rrggbb`), `radius` (px, 0–64), `gap` (space step), `density` (`compact`, `normal`, `comfy`), `font`, `mono`. The same keys as `@brand` in cascivo-html. See [Theming](#theming). |
+| `[i18n] default` | Default locale, served at `/`. Must be in `locales`. |
+| `[i18n] locales` | All locales. Others are served at `/<locale>/`. |
+| `[i18n] fallback` | Default `true`. See [Locales](#locales). |
+| `[build] trailing_slash` | Default `true`: `/about/` (`about/index.html`). `false`: `/about` (`about.html`) in output files, `page.url`, entry URLs, canonical, sitemap, hreflang and feeds. |
+| `[build] cascivo_css` | Default `true`. `false`: no `cascivo.css` and no link to it. |
+| `[build] inline_styles` | Default `true`. `false`: components write no `style=""`. They get `data-cv-style` hooks, and the rules go into `cascivo.css`. See [Strict CSP](#strict-csp). |
+| `[build] external_scripts` | Default `false`. `true`: component scripts, `theme_script()` and `islands_script()` go into `.js` files with `<script src>`. |
+| `[build] hash_assets` | Default `false`. `true`: `cascivo.css` and the generated `.js` files get content-hashed names under `/_cw/`, like `asset()`. |
+| `[head] robots` | Default `robots` of `head()`. Default `"index, follow"`; `""` omits the tag. |
+| `[deploy] target` | `"workers"` (default) or `"pages"`. See [Deploy](#deploy-to-cloudflare). |
+| `[deploy] project` | Cloudflare Pages project name (`--project-name`). |
+| `[[feeds]] collection` | Required. The collection to publish. |
+| `path` | Feed file. Default `rss.xml`. |
+| `title` | Feed title. Default: the site title. |
+| `description` | Feed description. Default empty. |
+| `limit` | Newest items to include. Default `20`. |
 
 An unknown key is an error with the line number.
 
@@ -172,20 +171,19 @@ title = "Hello"
 date = 2026-02-01
 tags = ["news"]
 +++
-
 The body is Markdown.
 ```
 
 Front matter is TOML between two `+++` lines. Field types:
 
-| Type     | Accepts                                               |
-| -------- | ----------------------------------------------------- |
-| `string` | a string                                              |
-| `int`    | an integer                                            |
-| `float`  | a float or an integer                                 |
-| `bool`   | `true` or `false`                                     |
-| `date`   | a TOML date (`2026-01-31`) or a `"YYYY-MM-DD"` string |
-| `array`  | an array                                              |
+| Type | Accepts |
+| ---- | ------- |
+| `string` | a string |
+| `int` | an integer |
+| `float` | a float or an integer |
+| `bool` | `true` or `false` |
+| `date` | a TOML date (`2026-01-31`) or a `"YYYY-MM-DD"` string |
+| `array` | an array |
 
 A missing required field, a wrong type and a field the schema does not list are all errors. Every
 collection needs a schema file.
@@ -194,12 +192,12 @@ collection needs a schema file.
 
 Files in `pages/` become routes.
 
-| File                               | URL                                                    |
-| ---------------------------------- | ------------------------------------------------------ |
-| `pages/index.md`                   | `/`                                                    |
-| `pages/about.md`                   | `/about/`                                              |
-| `pages/blog/index.html`            | `/blog/`                                               |
-| `pages/blog/[posts].html`          | `/blog/<slug>/`, once per entry of `posts`             |
+| File | URL |
+| ---- | --- |
+| `pages/index.md` | `/` |
+| `pages/about.md` | `/about/` |
+| `pages/blog/index.html` | `/blog/` |
+| `pages/blog/[posts].html` | `/blog/<slug>/`, once per entry of `posts` |
 | `pages/404.md` or `pages/404.html` | `/404.html` (`pages/de/404.html` gives `/de/404.html`) |
 
 Markdown and `.html` pages have optional `+++` TOML front matter. In a Markdown page,
@@ -211,10 +209,10 @@ must exist. Two files that give the same URL are an error.
 Two front matter keys control the sitemap, on pages and on collection entries (no schema field
 needed):
 
-| Key                    | Meaning                                                                                           |
-| ---------------------- | ------------------------------------------------------------------------------------------------- |
-| `sitemap = false`      | Leave the page out of `sitemap.xml`. On a `[collection].html` template it leaves out every entry. |
-| `lastmod = 2026-03-04` | Adds `<lastmod>` to its sitemap entry. A TOML date or a `YYYY-MM-DD` string.                      |
+| Key | Meaning |
+| --- | ------- |
+| `sitemap = false` | Leave the page out of `sitemap.xml`. On a `[collection].html` template it leaves out every entry. |
+| `lastmod = 2026-03-04` | Adds `<lastmod>` to its sitemap entry. A TOML date or a `YYYY-MM-DD` string. |
 
 The 404 page renders with its layout like any page and is never in the sitemap. `head()` gives
 it `robots` `noindex` by default. `cascivo-web dev` serves it, with status 404, for unknown URLs.
@@ -224,25 +222,23 @@ it `robots` `noindex` by default. `cascivo-web dev` serves it, with status 404, 
 Layouts and `.html` pages are [minijinja](https://docs.rs/minijinja) templates (Jinja syntax).
 Use `{% extends "default.html" %}` and `{% block body %}` to share a frame.
 
-| Variable         | Value                                                                                      |
-| ---------------- | ------------------------------------------------------------------------------------------ |
-| `site`           | `title`, `base_url`, `lang`, `theme`. In a locale, `lang` is that locale.                  |
-| `page`           | Front matter plus `url`. On a dynamic route: the entry (fields, `slug`, `url`, `content`). |
-| `content`        | The page or entry body as rendered HTML.                                                   |
-| `collections`    | `collections.<name>`: a list of entries with `slug`, `url`, `content` and the fields.      |
-| `locale`         | The locale being rendered.                                                                 |
-| `alternates`     | Translations of this page: a list of `{locale, url, href}`. `href` is absolute.            |
-| `t(key, **args)` | A message from `i18n/<locale>.toml`.                                                       |
-| `cv(text)`       | Renders `.cv` text to HTML.                                                                |
+| Variable | Value |
+| -------- | ----- |
+| `site` | `title`, `base_url`, `lang`, `theme`. In a locale, `lang` is that locale. |
+| `page` | Front matter plus `url`. On a dynamic route: the entry (fields, `slug`, `url`, `content`). |
+| `content` | The page or entry body as rendered HTML. |
+| `collections` | `collections.<name>`: a list of entries with `slug`, `url`, `content` and the fields. |
+| `locale` | The locale being rendered. |
+| `alternates` | Translations of this page: a list of `{locale, url, href}`. `href` is absolute. |
+| `t(key, **args)` | A message from `i18n/<locale>.toml`. |
+| `cv(text)` | Renders `.cv` text to HTML. |
 
 `url` on an entry exists only when a `[collection].html` route exists.
 
 ```html
-<ul>
-  {% for p in collections.posts|sort(attribute="date", reverse=true) %}
+<ul>{% for p in collections.posts|sort(attribute="date", reverse=true) %}
   <li><a href="{{ p.url }}">{{ p.title }}</a> {{ p.date }}</li>
-  {% endfor %}
-</ul>
+{% endfor %}</ul>
 {{ cv('page-header "Blog"') }}
 ```
 
@@ -254,14 +250,14 @@ for you.
 
 Template functions take positional or keyword arguments. An unknown keyword is an error.
 
-| Call                                                                                                                                                                         | Result                                                                                                                                                                                                                                                                                            |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `head(title, description, canonical, og_title, og_description, og_image, og_image_alt, og_image_width, og_image_height, og_type, robots, twitter_card, jsonld, theme_color)` | `<title>`, description, canonical, robots, `og:*`, `twitter:*` and JSON-LD tags. Canonical defaults to `base_url` + the page URL; there is none without `base_url`. `theme_color` is a string or `{light, dark}`.                                                                                 |
-| `img(src, alt, widths=[480, 960, 1440], sizes, class, loading="lazy", format="webp", priority=false)`                                                                        | An `<img srcset>`. Resized, content-hashed copies go to `/_cw/img/`. It never upscales. `format="keep"` keeps JPEG, PNG or WebP. `priority=true` is for the LCP image: eager, `fetchpriority="high"` and a preload in `<head>`. `priority="<media query>"` preloads only where the query matches. |
-| `asset(path)`                                                                                                                                                                | Copies a file from `[assets] dir` to `/_cw/<stem>.<hash>.<ext>` and returns the URL.                                                                                                                                                                                                              |
-| `code \| highlight("ts")`                                                                                                                                                    | A highlighted `<code>` element for `bash`, `css`, `js` or `ts`. Another language is an error.                                                                                                                                                                                                     |
-| `theme_script(storage_key="cascade-theme", attribute="data-theme", default_light="poster", default_dark="poster-dark", blocking=[...])`                                      | An inline script that sets the theme before paint.                                                                                                                                                                                                                                                |
-| `data.<name>`                                                                                                                                                                | A file listed in `[data]` (JSON or TOML).                                                                                                                                                                                                                                                         |
+| Call | Result |
+| ---- | ------ |
+| `head(title, description, canonical, og_title, og_description, og_image, og_image_alt, og_image_width, og_image_height, og_type, robots, twitter_card, jsonld, theme_color)` | `<title>`, description, canonical, robots, `og:*`, `twitter:*` and JSON-LD tags. Canonical defaults to `base_url` + the page URL; there is none without `base_url`. `theme_color` is a string or `{light, dark}`. |
+| `img(src, alt, widths=[480, 960, 1440], sizes, class, loading="lazy", format="webp", priority=false)` | An `<img srcset>`. Resized, content-hashed copies go to `/_cw/img/`. It never upscales. `format="keep"` keeps JPEG, PNG or WebP. `priority=true` is for the LCP image: eager, `fetchpriority="high"` and a preload in `<head>`. `priority="<media query>"` preloads only where the query matches. |
+| `asset(path)` | Copies a file from `[assets] dir` to `/_cw/<stem>.<hash>.<ext>` and returns the URL. |
+| `code \| highlight("ts")` | A highlighted `<code>` element for `bash`, `css`, `js` or `ts`. Another language is an error. |
+| `theme_script(storage_key="cascade-theme", attribute="data-theme", default_light="poster", default_dark="poster-dark", blocking=[...])` | An inline script that sets the theme before paint. |
+| `data.<name>` | A file listed in `[data]` (JSON or TOML). |
 
 WebP output is lossless. `img()` and `asset()` read from `[images] dir` and `[assets] dir`
 (default `assets`, relative to the site root).
@@ -280,14 +276,14 @@ islands = "src/islands/{name}.tsx"               # manifest key of an island
 web = "../dist/.vite/web-data.json"
 ```
 
-| Call                                         | Result                                                                                                                                                |
-| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `vite(entry)`                                | `/` + the hashed file of a manifest entry.                                                                                                            |
-| `vite_css(entry)`                            | CSS URLs of the entry and its static imports, dependencies first.                                                                                     |
-| `css_bundle(hrefs, name="bundle")`           | One content-hashed `/_cw/<name>.<hash>.css` from those files, in order. Top-level `@layer a, b;` statements go first. A relative `url()` is an error. |
-| `m(module, class)`                           | The hashed class of a CSS module. `module` is the `x.module.css` stem.                                                                                |
-| `island(name, client="visible", props=none)` | The `data-island`, `data-client`, `data-src`, `data-css` and `data-props` attributes. `client` is `visible`, `idle` or `load`.                        |
-| `islands_script()`                           | A small inline module that loads each island and calls its default export `(el, props)`. A failure leaves the static markup.                          |
+| Call | Result |
+| ---- | ------ |
+| `vite(entry)` | `/` + the hashed file of a manifest entry. |
+| `vite_css(entry)` | CSS URLs of the entry and its static imports, dependencies first. |
+| `css_bundle(hrefs, name="bundle")` | One content-hashed `/_cw/<name>.<hash>.css` from those files, in order. Top-level `@layer a, b;` statements go first. A relative `url()` is an error. |
+| `m(module, class)` | The hashed class of a CSS module. `module` is the `x.module.css` stem. |
+| `island(name, client="visible", props=none)` | The `data-island`, `data-client`, `data-src`, `data-css` and `data-props` attributes. `client` is `visible`, `idle` or `load`. |
+| `islands_script()` | A small inline module that loads each island and calls its default export `(el, props)`. A failure leaves the static markup. |
 
 Write the static fallback markup inside the island element. The loader replaces it only when the
 module loads.
@@ -349,8 +345,7 @@ strings.
 **hreflang.** Put this in your layout `<head>`:
 
 ```html
-{% for a in alternates %}<link rel="alternate" hreflang="{{ a.locale }}" href="{{ a.href }}" />{%
-endfor %}
+{% for a in alternates %}<link rel="alternate" hreflang="{{ a.locale }}" href="{{ a.href }}">{% endfor %}
 ```
 
 With `base_url` set, `sitemap.xml` lists each page once, with `xhtml:link` entries for every
@@ -381,7 +376,7 @@ Link it from a layout: `<link rel="alternate" type="application/rss+xml" href="/
 {
   "name": "my-site",
   "compatibility_date": "2026-11-01",
-  "assets": { "directory": "./dist", "not_found_handling": "404-page" },
+  "assets": { "directory": "./dist", "not_found_handling": "404-page" }
 }
 ```
 

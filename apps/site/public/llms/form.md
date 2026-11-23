@@ -27,12 +27,12 @@ import { Form } from '@cascivo/react'
 
 ## Props
 
-| Prop        | Type                                   | Required | Default | Description                                                      |
-| ----------- | -------------------------------------- | -------- | ------- | ---------------------------------------------------------------- |
-| `form`      | `FormStore<T>`                         | yes      | —       | The form store holding values, validation, and submission state. |
-| `onValid`   | `(values: T) => void \| Promise<void>` | yes      | —       | Called with the values when the form passes validation.          |
-| `children`  | `ReactNode`                            | yes      | —       | Content rendered inside the component.                           |
-| `className` | `string`                               | no       | —       | Additional CSS class names merged onto the root element.         |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `form` | `FormStore<T>` | yes | — | The form store holding values, validation, and submission state. |
+| `onValid` | `(values: T) => void \| Promise<void>` | yes | — | Called with the values when the form passes validation. |
+| `children` | `ReactNode` | yes | — | Content rendered inside the component. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -42,7 +42,7 @@ import { Form } from '@cascivo/react'
 function Demo() {
   const form = useForm({
     initialValues: { email: '' },
-    validate: (v) => (v.email.includes('@') ? {} : { email: 'Invalid email' }),
+    validate: (v) => v.email.includes('@') ? {} : { email: 'Invalid email' },
   })
   const email = form.field('email')
   return (

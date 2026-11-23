@@ -40,15 +40,15 @@ import { Button } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                                                   | Required | Default   | Description                                                                                                                                            |
-| ---------- | ------------------------------------------------------ | -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `variant`  | `'primary' \| 'secondary' \| 'ghost' \| 'destructive'` | no       | `primary` | `primary` for the main action, `secondary` for a supporting one, `ghost` for a borderless action in dense UI, `destructive` for anything that deletes. |
-| `size`     | `'sm' \| 'md' \| 'lg'`                                 | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                  |
-| `loading`  | `boolean`                                              | no       | `false`   | When true, shows a loading state.                                                                                                                      |
-| `disabled` | `boolean`                                              | no       | `false`   | When true, disables the control and removes it from the tab order.                                                                                     |
-| `asChild`  | `boolean`                                              | no       | `false`   | When true, renders the child element as the root via Slot, merging props (polymorphic rendering).                                                      |
-| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>`           | no       | —         | Called when the element is clicked.                                                                                                                    |
-| `children` | `ReactNode`                                            | no       | —         | Button label                                                                                                                                           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'destructive'` | no | `primary` | `primary` for the main action, `secondary` for a supporting one, `ghost` for a borderless action in dense UI, `destructive` for anything that deletes. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `loading` | `boolean` | no | `false` | When true, shows a loading state. |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `asChild` | `boolean` | no | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `onClick` | `React.MouseEventHandler<HTMLButtonElement>` | no | — | Called when the element is clicked. |
+| `children` | `ReactNode` | no | — | Button label |
 
 ## Examples
 
@@ -75,9 +75,7 @@ import { Button } from '@cascivo/react'
 Render button styling on a real anchor (keeps middle-click / open-in-new-tab).
 
 ```tsx
-<Button asChild>
-  <a href="/pricing">View pricing</a>
-</Button>
+<Button asChild><a href="/pricing">View pricing</a></Button>
 ```
 
 ## Client JavaScript

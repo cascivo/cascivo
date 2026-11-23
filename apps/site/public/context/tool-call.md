@@ -34,15 +34,15 @@ The header is a native <summary>, so the disclosure is keyboard-operable (Enter/
 
 ## Props
 
-| Name      | Type                                                                                                                                                                            | Required | Default | Description                                                                                                                                  |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `name`    | `string`                                                                                                                                                                        | Yes      | —       | The tool’s name, shown in monospace (e.g. `search_web`).                                                                                     |
-| `status`  | `'pending' \| 'running' \| 'awaiting-approval' \| 'complete' \| 'error' \| 'denied'`                                                                                            | Yes      | —       | Lifecycle, matching the AI SDK tool-part states: `pending` (input streaming), `running`, `awaiting-approval`, `complete`, `error`, `denied`. |
-| `input`   | `ReactNode`                                                                                                                                                                     | No       | —       | The call’s arguments. A string (e.g. `JSON.stringify(args, null, 2)`) renders preformatted; any other node renders as given.                 |
-| `output`  | `ReactNode`                                                                                                                                                                     | No       | —       | The tool’s result — a string renders preformatted, a node as given.                                                                          |
-| `error`   | `ReactNode`                                                                                                                                                                     | No       | —       | Why the call failed. The panel opens itself when status is `error`.                                                                          |
-| `actions` | `ReactNode`                                                                                                                                                                     | No       | —       | Rich slot below the card — typically Approve / Deny buttons while `awaiting-approval`. Always visible, never inside the collapsible panel.   |
-| `labels`  | `{ pending?: string; running?: string; awaitingApproval?: string; complete?: string; error?: string; denied?: string; input?: string; output?: string; errorHeading?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n).                                                                                   |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `name` | `string` | Yes | — | The tool’s name, shown in monospace (e.g. `search_web`). |
+| `status` | `'pending' \| 'running' \| 'awaiting-approval' \| 'complete' \| 'error' \| 'denied'` | Yes | — | Lifecycle, matching the AI SDK tool-part states: `pending` (input streaming), `running`, `awaiting-approval`, `complete`, `error`, `denied`. |
+| `input` | `ReactNode` | No | — | The call’s arguments. A string (e.g. `JSON.stringify(args, null, 2)`) renders preformatted; any other node renders as given. |
+| `output` | `ReactNode` | No | — | The tool’s result — a string renders preformatted, a node as given. |
+| `error` | `ReactNode` | No | — | Why the call failed. The panel opens itself when status is `error`. |
+| `actions` | `ReactNode` | No | — | Rich slot below the card — typically Approve / Deny buttons while `awaiting-approval`. Always visible, never inside the collapsible panel. |
+| `labels` | `{ pending?: string; running?: string; awaitingApproval?: string; complete?: string; error?: string; denied?: string; input?: string; output?: string; errorHeading?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Tokens
 
@@ -85,9 +85,7 @@ The header is a native <summary>, so the disclosure is keyboard-operable (Enter/
   input={'{ "to": "team@example.com", "subject": "Weekly report" }'}
   actions={
     <>
-      <Button variant="ghost" size="sm">
-        Deny
-      </Button>
+      <Button variant="ghost" size="sm">Deny</Button>
       <Button size="sm">Approve</Button>
     </>
   }
@@ -102,10 +100,10 @@ The header is a native <summary>, so the disclosure is keyboard-operable (Enter/
 
 ## Boundaries
 
-| Area              | Level    | Note                                                                                |
-| ----------------- | -------- | ----------------------------------------------------------------------------------- |
-| payloads          | flexible | Strings render preformatted; pass a node (a table, a CodeSnippet) for richer output |
-| status vocabulary | strict   | Map your framework’s tool states onto the six statuses; do not invent more          |
+| Area | Level | Note |
+|------|-------|------|
+| payloads | flexible | Strings render preformatted; pass a node (a table, a CodeSnippet) for richer output |
+| status vocabulary | strict | Map your framework’s tool states onto the six statuses; do not invent more |
 
 ## AI context prompt
 

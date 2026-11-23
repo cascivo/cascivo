@@ -53,6 +53,28 @@ const liveRole: ExtraProp = {
 // Charts draw inline SVG; only the legend chrome has CSS.
 const chart = 'chart-legend'
 
+
+// Form controls submit with a form: the DOM attributes the React manifests leave to `...props`.
+const controlProps = (unit: 'input' | 'textarea' | 'select' | 'checkbox'): ExtraProp[] => [
+  { name: 'name', type: 'string', summary: 'Field name sent with the form' },
+  { name: 'required', type: 'boolean', summary: 'The browser blocks submit while it is empty' },
+  ...(unit === 'input'
+    ? ([
+        {
+          name: 'type',
+          type: 'enum',
+          values: ['text', 'email', 'password', 'search', 'tel', 'url', 'number', 'date'],
+          summary: 'Native input type (default text)',
+        },
+      ] as ExtraProp[])
+    : []),
+  ...(unit === 'checkbox'
+    ? ([
+        { name: 'value', type: 'string', summary: 'Value sent when checked (default on)' },
+      ] as ExtraProp[])
+    : []),
+]
+
 export const CV_SPEC: readonly CvEntry[] = [
   // layout
   e('flex', { children: 'nodes', aliases: ['row', 'col'] }),
@@ -125,6 +147,19 @@ export const CV_SPEC: readonly CvEntry[] = [
       { name: 'sort', type: 'boolean', summary: 'Click a header to sort (inlines a tiny script)' },
     ],
   }),
+  // forms (native controls; the contract is the markup, behaviour stays the browser's)
+  e('field', {
+    children: 'nodes',
+    args: [a('label', 'str')],
+    css: ['field', 'label'],
+  }),
+  e('input', { args: [a('label', 'str')], extraProps: controlProps('input') }),
+  e('textarea', { args: [a('label', 'str')], extraProps: controlProps('textarea') }),
+  e('select', {
+    args: [a('options', 'rows', true)],
+    extraProps: controlProps('select'),
+  }),
+  e('checkbox', { args: [a('label', 'str')], extraProps: controlProps('checkbox') }),
   // charts
   e('bar-chart', { cv: 'bar', args: [a('data', 'pairs', true)], css: [chart] }),
   e('line-chart', { cv: 'line', args: [a('data', 'nums', true)], css: [chart] }),

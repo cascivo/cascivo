@@ -77,6 +77,12 @@ export const meta: ComponentMeta = {
       default: 'false',
     },
     {
+      name: 'placeholder',
+      description: 'Placeholder text shown when the field is empty.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'disabled',
       description: 'When true, disables the control and removes it from the tab order.',
       type: 'boolean',

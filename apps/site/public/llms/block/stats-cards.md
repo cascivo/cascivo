@@ -18,9 +18,9 @@ _Copy-paste only — `StatsCards` is not exported from `@cascivo/react`. Run the
 
 ## Props
 
-| Prop    | Type     | Required | Default     | Description   |
-| ------- | -------- | -------- | ----------- | ------------- |
-| `stats` | `Stat[]` | no       | `demoStats` | KPI stat data |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `stats` | `Stat[]` | no | `demoStats` | KPI stat data |
 
 ## Examples
 

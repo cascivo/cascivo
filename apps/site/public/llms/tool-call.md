@@ -31,15 +31,15 @@ import { ToolCall } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type                                                                                                                                                                            | Required | Default | Description                                                                                                                                  |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `name`    | `string`                                                                                                                                                                        | yes      | —       | The tool’s name, shown in monospace (e.g. `search_web`).                                                                                     |
-| `status`  | `'pending' \| 'running' \| 'awaiting-approval' \| 'complete' \| 'error' \| 'denied'`                                                                                            | yes      | —       | Lifecycle, matching the AI SDK tool-part states: `pending` (input streaming), `running`, `awaiting-approval`, `complete`, `error`, `denied`. |
-| `input`   | `ReactNode`                                                                                                                                                                     | no       | —       | The call’s arguments. A string (e.g. `JSON.stringify(args, null, 2)`) renders preformatted; any other node renders as given.                 |
-| `output`  | `ReactNode`                                                                                                                                                                     | no       | —       | The tool’s result — a string renders preformatted, a node as given.                                                                          |
-| `error`   | `ReactNode`                                                                                                                                                                     | no       | —       | Why the call failed. The panel opens itself when status is `error`.                                                                          |
-| `actions` | `ReactNode`                                                                                                                                                                     | no       | —       | Rich slot below the card — typically Approve / Deny buttons while `awaiting-approval`. Always visible, never inside the collapsible panel.   |
-| `labels`  | `{ pending?: string; running?: string; awaitingApproval?: string; complete?: string; error?: string; denied?: string; input?: string; output?: string; errorHeading?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).                                                                                   |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `name` | `string` | yes | — | The tool’s name, shown in monospace (e.g. `search_web`). |
+| `status` | `'pending' \| 'running' \| 'awaiting-approval' \| 'complete' \| 'error' \| 'denied'` | yes | — | Lifecycle, matching the AI SDK tool-part states: `pending` (input streaming), `running`, `awaiting-approval`, `complete`, `error`, `denied`. |
+| `input` | `ReactNode` | no | — | The call’s arguments. A string (e.g. `JSON.stringify(args, null, 2)`) renders preformatted; any other node renders as given. |
+| `output` | `ReactNode` | no | — | The tool’s result — a string renders preformatted, a node as given. |
+| `error` | `ReactNode` | no | — | Why the call failed. The panel opens itself when status is `error`. |
+| `actions` | `ReactNode` | no | — | Rich slot below the card — typically Approve / Deny buttons while `awaiting-approval`. Always visible, never inside the collapsible panel. |
+| `labels` | `{ pending?: string; running?: string; awaitingApproval?: string; complete?: string; error?: string; denied?: string; input?: string; output?: string; errorHeading?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Examples
 
@@ -69,9 +69,7 @@ import { ToolCall } from '@cascivo/react'
   input={'{ "to": "team@example.com", "subject": "Weekly report" }'}
   actions={
     <>
-      <Button variant="ghost" size="sm">
-        Deny
-      </Button>
+      <Button variant="ghost" size="sm">Deny</Button>
       <Button size="sm">Approve</Button>
     </>
   }

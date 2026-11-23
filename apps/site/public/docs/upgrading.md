@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/upgrading.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Upgrading cascivo
 
 cascivo has two consumption paths, so it has two upgrade stories: **npm
@@ -21,11 +20,11 @@ and for how long.
 
 ### What a version bump means
 
-| Bump      | From 1.0.0 onward                                                    | Before 1.0 (historical)              |
-| --------- | -------------------------------------------------------------------- | ------------------------------------ |
-| **major** | may remove or change covered API; every removal was deprecated first | n/a                                  |
-| **minor** | adds API; never removes or changes covered API                       | may include breaking changes         |
-| **patch** | fixes only                                                           | fixes and improvements, safe to take |
+| Bump      | From 1.0.0 onward                                                        | Before 1.0 (historical)                |
+| --------- | ------------------------------------------------------------------------ | -------------------------------------- |
+| **major** | may remove or change covered API; every removal was deprecated first     | n/a                                    |
+| **minor** | adds API; never removes or changes covered API                           | may include breaking changes           |
+| **patch** | fixes only                                                               | fixes and improvements, safe to take   |
 
 From 1.0.0, `"^1.2.0"` is safe to widen across the whole `1.x` line. Below 1.0, npm's `^`
 range does not cross a minor while the major is `0` — `"^0.18.0"` means
@@ -83,10 +82,10 @@ These may change in any release, including a patch:
 The `1.x` line covers the packages an application depends on directly or transitively at
 runtime. Tooling packages stay on `0.x` until their own surfaces settle, and say so on npm.
 
-| Line  | Packages                                                                                                                                                                                                                                                                                        |
-| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Line  | Packages                                                                                                                            |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `1.x` | `@cascivo/react`, `@cascivo/core`, `@cascivo/charts`, `@cascivo/editor`, `@cascivo/flow`, `@cascivo/i18n`, `@cascivo/storage`, `@cascivo/ai`, `@cascivo/text`, `@cascivo/render` (the lockstep family below), plus `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons` and the `cascivo` CLI |
-| `0.x` | `@cascivo/mcp`, `@cascivo/registry`, `@cascivo/docs`, `@cascivo/docspack`, `@cascivo/eslint-config`, `@cascivo/eslint-plugin`, `@cascivo/vite-plugin`, `@cascivo/platform`, `@cascivo/email`                                                                                                    |
+| `0.x` | `@cascivo/mcp`, `@cascivo/registry`, `@cascivo/docs`, `@cascivo/docspack`, `@cascivo/eslint-config`, `@cascivo/eslint-plugin`, `@cascivo/vite-plugin`, `@cascivo/platform`, `@cascivo/email`                                                                                 |
 
 `@cascivo/platform` in particular is an early experiment in platform-idiomatic geometry and
 motion; treat its API as unsettled. `@cascivo/email-preview` is a development-only preview
@@ -116,9 +115,11 @@ versions to detect API drift:
     {
       "name": "@cascivo/charts",
       "version": "0.3.4",
-      "releases": [{ "version": "0.3.0", "level": "minor", "notes": ["PieChart: donut …"] }],
-    },
-  ],
+      "releases": [
+        { "version": "0.3.0", "level": "minor", "notes": ["PieChart: donut …"] }
+      ]
+    }
+  ]
 }
 ```
 
@@ -179,7 +180,7 @@ long you have.
 **Removals only happen in a major.** A deprecation introduced during `1.x` is removed in
 `2.0.0` at the earliest, so the alias is guaranteed to outlive the whole `1.x` line.
 
-Aliases that only _add_ a name (`ariaLabel` alongside `aria-label`, `value` alongside `id`)
+Aliases that only *add* a name (`ariaLabel` alongside `aria-label`, `value` alongside `id`)
 are not deprecations — both spellings are supported indefinitely, and neither is
 struck through. They exist because guessing the wrong one cost adopters a compile
 round-trip.
@@ -214,7 +215,7 @@ exits `0` with "All components up to date." otherwise.
 npx cascivo update button
 ```
 
-Runs a **three-way merge**: the CLI fetches the _base_ version recorded in the
+Runs a **three-way merge**: the CLI fetches the *base* version recorded in the
 lockfile (from the registry's versioned snapshots, `r/<name>@<version>.json`),
 your local copy, and the current upstream, then merges upstream changes around
 your local edits. Three outcomes per file:
@@ -273,7 +274,7 @@ Release-specific upgrade guides, newest first:
 
   In the same release, `ThemeProvider` stops writing the module theme store on the server
   (a `value` no longer leaks into the next request), and `themePreloadScript({ reapplyOn:
-'astro:after-swap' })` keeps the theme across Astro `<ClientRouter>` soft navigations.
+  'astro:after-swap' })` keeps the theme across Astro `<ClientRouter>` soft navigations.
 
 - **Compound parts outside their root now throw** (`@cascivo/react` minor) — `TabsList`,
   `TabsTrigger`, `TabsContent`, `AccordionItem`, `AccordionTrigger` and `AccordionContent`
@@ -284,14 +285,14 @@ Release-specific upgrade guides, newest first:
 
 - **Upgrading `0.x` → `1.0.0`** — eleven deprecated surfaces are removed. Every one has a
   replacement that takes the identical argument, so each fix is a rename, and every removal
-  is a _compile error_ rather than a silent behaviour change.
+  is a *compile error* rather than a silent behaviour change.
 
-  | Removed                           | Replace with                             | Affects                                                                                     |
-  | --------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------- |
-  | `onChange` (value-carrying)       | `onValueChange`                          | `Combobox`, `DatePicker`, `Filter`, `NumberInput`, `Search`, `Swap`, `TimePicker`, `Toggle` |
-  | `Text`, `TextProps`               | `ChartText`, `ChartTextProps`            | `@cascivo/charts`                                                                           |
-  | `BarChart` `xTicks` / `yTicks`    | `valueAxisTicks` / `categoryAxisTicks`   | `@cascivo/charts`                                                                           |
-  | `Dropdown` item `separator: true` | a separate `{ kind: 'separator' }` entry | `@cascivo/react`                                                                            |
+  | Removed | Replace with | Affects |
+  | --- | --- | --- |
+  | `onChange` (value-carrying) | `onValueChange` | `Combobox`, `DatePicker`, `Filter`, `NumberInput`, `Search`, `Swap`, `TimePicker`, `Toggle` |
+  | `Text`, `TextProps` | `ChartText`, `ChartTextProps` | `@cascivo/charts` |
+  | `BarChart` `xTicks` / `yTicks` | `valueAxisTicks` / `categoryAxisTicks` | `@cascivo/charts` |
+  | `Dropdown` item `separator: true` | a separate `{ kind: 'separator' }` entry | `@cascivo/react` |
 
   Two notes on the shape of these:
 
@@ -301,7 +302,7 @@ Release-specific upgrade guides, newest first:
     and then be called with a DOM event — a silent break instead of a loud one. The other five
     are plain interfaces with no HTML base, so `onChange` is simply not a prop. Either way,
     passing it is a compile error that names the replacement.
-  - `BarChart`'s removed pair followed _screen_ position, so its meaning swapped with
+  - `BarChart`'s removed pair followed *screen* position, so its meaning swapped with
     `orientation`: `yTicks={1}` did nothing on a horizontal chart while `xTicks={1}` worked.
     The replacements are named by role and mean the same thing either way. `ScatterChart`
     keeps `xTicks`/`yTicks` — both its axes are value axes, so screen naming is correct there.
@@ -356,10 +357,9 @@ Release-specific upgrade guides, newest first:
   TypeScript flags every site (`.value` on a `string` is an error). If you passed
   the signal itself into `computed()`/`effect()` or a Preact component, get it from
   the new `themeSignal()` export instead. The setter is unchanged.
-
 - **`@cascivo/themes` now installs with `@cascivo/react`** (`@cascivo/react` minor)
   — it moved from a peer/optional install to a real dependency, so `pnpm add
-@cascivo/react` brings it along. You still import a theme CSS file once (or import
+  @cascivo/react` brings it along. You still import a theme CSS file once (or import
   the now-self-contained `@cascivo/react/styles.css`, which bundles tokens + light +
   dark); skipping the import renders components grayscale, and `ThemeProvider` now
   warns about exactly that in dev. No action needed unless you were installing

@@ -22,11 +22,11 @@ import { PromptSuggestions } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                      | Required | Default | Description                                                                                             |
-| ---------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------- |
-| `items`    | `string[]`                | yes      | —       | The prompts, as the exact text each one sends.                                                          |
-| `onSelect` | `(value: string) => void` | yes      | —       | Called with the chosen prompt — send it, or put it in the composer.                                     |
-| `labels`   | `{ group?: string }`      | no       | —       | Overrides for the component’s user-visible strings (i18n) — `group` names the group for screen readers. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `string[]` | yes | — | The prompts, as the exact text each one sends. |
+| `onSelect` | `(value: string) => void` | yes | — | Called with the chosen prompt — send it, or put it in the composer. |
+| `labels` | `{ group?: string }` | no | — | Overrides for the component’s user-visible strings (i18n) — `group` names the group for screen readers. |
 
 ## Examples
 

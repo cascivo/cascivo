@@ -22,10 +22,10 @@ import { AuthLayout } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type        | Required | Default | Description                            |
-| ---------- | ----------- | -------- | ------- | -------------------------------------- |
-| `children` | `ReactNode` | yes      | —       | Auth form content                      |
-| `logo`     | `ReactNode` | no       | —       | Optional logo displayed above the form |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | yes | — | Auth form content |
+| `logo` | `ReactNode` | no | — | Optional logo displayed above the form |
 
 ## Examples
 
@@ -34,9 +34,7 @@ import { AuthLayout } from '@cascivo/react'
 Centered auth card with logo
 
 ```tsx
-<AuthLayout logo={<img src="/logo.svg" alt="Logo" />}>
-  <form>...</form>
-</AuthLayout>
+<AuthLayout logo={<img src="/logo.svg" alt="Logo" />}><form>...</form></AuthLayout>
 ```
 
 ## Client JavaScript

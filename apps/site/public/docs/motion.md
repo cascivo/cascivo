@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/motion.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Motion (`@cascivo/tokens/motion.css`)
 
 cascivo's motion layer is a **closed set**: thirteen shared keyframes, a fixed duration
@@ -30,14 +29,10 @@ Everything here is enforced. `pnpm motion:check` runs the audit plus the parity 
 
 ```css
 /* BROKEN — compiles, ships, never runs */
-.spinner {
-  animation: cascivo-spin 1s linear infinite;
-}
+.spinner { animation: cascivo-spin 1s linear infinite; }
 
 /* correct */
-.spinner {
-  animation: global(cascivo-spin) 1s linear infinite;
-}
+.spinner { animation: global(cascivo-spin) 1s linear infinite; }
 ```
 
 CSS Modules localises `animation-name` by default, so the first form is rewritten to
@@ -66,11 +61,11 @@ the user's setting because of exactly that.
 
 Three paths, by what the motion is for:
 
-| Kind                                                      | Timing                     | Reduced motion                                                            |
-| --------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------- |
-| One-shot (transitions, finite animations)                 | `--cascivo-duration-*`     | Collapses globally. Nothing to write.                                     |
+| Kind | Timing | Reduced motion |
+| --- | --- | --- |
+| One-shot (transitions, finite animations) | `--cascivo-duration-*` | Collapses globally. Nothing to write. |
 | **Decorative loop** — pulse, ping, blink, shimmer, wiggle | `--cascivo-duration-loop*` | Wrap the declaration in `@media (prefers-reduced-motion: no-preference)`. |
-| **Indicator loop** — spinner, indeterminate bar           | `--cascivo-duration-loop*` | Keep running; **slow** it with an explicit `reduce` guard.                |
+| **Indicator loop** — spinner, indeterminate bar | `--cascivo-duration-loop*` | Keep running; **slow** it with an explicit `reduce` guard. |
 
 Decorative loops use the `no-preference` form because it makes motion **opt-in**: a user who
 expresses no preference, or whose browser predates the feature, gets no animation. It is
@@ -80,8 +75,7 @@ strictly stronger than a `reduce` guard, and it needs no second rule.
 /* Decorative loop — opt-in, so a user who expresses no preference gets no motion. */
 @media (prefers-reduced-motion: no-preference) {
   .dot {
-    animation: global(cascivo-pulse) var(--cascivo-duration-loop) var(--cascivo-ease-in-out)
-      infinite;
+    animation: global(cascivo-pulse) var(--cascivo-duration-loop) var(--cascivo-ease-in-out) infinite;
   }
 }
 ```
@@ -108,21 +102,10 @@ repaints the element every frame. That is why the canonical shimmer translates a
 rather than sliding a gradient:
 
 ```css
-.placeholder {
-  position: relative;
-  overflow: hidden;
-}
+.placeholder { position: relative; overflow: hidden; }
 .placeholder::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  translate: -100% 0;
-  background-image: linear-gradient(
-    90deg,
-    transparent,
-    var(--cascivo-color-bg-subtle),
-    transparent
-  );
+  content: ''; position: absolute; inset: 0; translate: -100% 0;
+  background-image: linear-gradient(90deg, transparent, var(--cascivo-color-bg-subtle), transparent);
 }
 @media (prefers-reduced-motion: no-preference) {
   .placeholder::after {
@@ -151,27 +134,27 @@ Fourteen keyframes in `packages/tokens/src/motion.css`. It is imported from
 
 ### Loading & progress
 
-| Keyframe                 | For                                | Notes                                                          |
-| ------------------------ | ---------------------------------- | -------------------------------------------------------------- |
-| `cascivo-spin`           | Spinners, refresh glyphs           | Continuous rotation.                                           |
-| `cascivo-shimmer`        | Skeletons, image placeholders      | Translate an overlay; see §3.                                  |
-| `cascivo-text-shimmer`   | "Thinking…" labels (`ShimmerText`) | A band sweeping through text clipped to a 200% gradient.       |
-| `cascivo-progress-sweep` | Indeterminate bars                 | Host must be `overflow: hidden`; bar ≈ 40% of track.           |
-| `cascivo-blink`          | Terminal / streaming cursor        | Pair with `step-end`.                                          |
-| `cascivo-dots`           | Typing indicator                   | Stagger `animation-delay` 0 / 160ms / 320ms across three dots. |
-| `cascivo-dash-grow`      | Material-style SVG spinner         | Pair with `cascivo-spin` on the parent.                        |
+| Keyframe | For | Notes |
+| --- | --- | --- |
+| `cascivo-spin` | Spinners, refresh glyphs | Continuous rotation. |
+| `cascivo-shimmer` | Skeletons, image placeholders | Translate an overlay; see §3. |
+| `cascivo-text-shimmer` | "Thinking…" labels (`ShimmerText`) | A band sweeping through text clipped to a 200% gradient. |
+| `cascivo-progress-sweep` | Indeterminate bars | Host must be `overflow: hidden`; bar ≈ 40% of track. |
+| `cascivo-blink` | Terminal / streaming cursor | Pair with `step-end`. |
+| `cascivo-dots` | Typing indicator | Stagger `animation-delay` 0 / 160ms / 320ms across three dots. |
+| `cascivo-dash-grow` | Material-style SVG spinner | Pair with `cascivo-spin` on the parent. |
 
 ### Attention & feedback
 
-| Keyframe              | For                               | Notes                                                 |
-| --------------------- | --------------------------------- | ----------------------------------------------------- |
-| `cascivo-pulse`       | Live badges, recording dots       | Opacity. Floors at 0.4 — see the contrast note below. |
-| `cascivo-pulse-scale` | Breathing CTA                     | Scale to 1.05.                                        |
-| `cascivo-ping`        | Map markers, unread dots          | Apply to a `::after` under the dot, never the dot.    |
-| `cascivo-shake`       | Failed validation                 | Finite; time off `--cascivo-motion-attention`.        |
-| `cascivo-wiggle`      | Edit-mode / reorderable items     | ±1.5°.                                                |
-| `cascivo-bounce`      | Scroll affordances, FABs          |                                                       |
-| `cascivo-flash`       | New table row, hash-linked target | One-shot only; tint via `--cascivo-flash-tint`.       |
+| Keyframe | For | Notes |
+| --- | --- | --- |
+| `cascivo-pulse` | Live badges, recording dots | Opacity. Floors at 0.4 — see the contrast note below. |
+| `cascivo-pulse-scale` | Breathing CTA | Scale to 1.05. |
+| `cascivo-ping` | Map markers, unread dots | Apply to a `::after` under the dot, never the dot. |
+| `cascivo-shake` | Failed validation | Finite; time off `--cascivo-motion-attention`. |
+| `cascivo-wiggle` | Edit-mode / reorderable items | ±1.5°. |
+| `cascivo-bounce` | Scroll affordances, FABs | |
+| `cascivo-flash` | New table row, hash-linked target | One-shot only; tint via `--cascivo-flash-tint`. |
 
 > **Never pulse a text label's opacity.** `cascivo-pulse` floors at 0.4 precisely because a
 > label fading further crosses below the WCAG contrast threshold mid-cycle. Animate a
@@ -193,24 +176,24 @@ it runs only on a short label, only while work is in progress).
 
 **Easings.**
 
-| Token                       | Curve                           | For                                                |
-| --------------------------- | ------------------------------- | -------------------------------------------------- |
-| `--cascivo-ease-in`         | `cubic-bezier(0.4, 0, 1, 1)`    | Exits.                                             |
-| `--cascivo-ease-out`        | `cubic-bezier(0, 0, 0.2, 1)`    | Entrances, hover. The default.                     |
-| `--cascivo-ease-in-out`     | `cubic-bezier(0.4, 0, 0.2, 1)`  | Loops, symmetric motion.                           |
-| `--cascivo-ease-decel`      | `cubic-bezier(0.16, 1, 0.3, 1)` | Off-canvas surfaces — enters fast, settles slowly. |
-| `--cascivo-ease-spring`     | `linear(…)`                     | Snap detents. No JS spring solver needed.          |
-| `--cascivo-ease-emphasized` | `cubic-bezier(0.2, 0, 0, 1)`    | Noticed but unhurried.                             |
+| Token | Curve | For |
+| --- | --- | --- |
+| `--cascivo-ease-in` | `cubic-bezier(0.4, 0, 1, 1)` | Exits. |
+| `--cascivo-ease-out` | `cubic-bezier(0, 0, 0.2, 1)` | Entrances, hover. The default. |
+| `--cascivo-ease-in-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Loops, symmetric motion. |
+| `--cascivo-ease-decel` | `cubic-bezier(0.16, 1, 0.3, 1)` | Off-canvas surfaces — enters fast, settles slowly. |
+| `--cascivo-ease-spring` | `linear(…)` | Snap detents. No JS spring solver needed. |
+| `--cascivo-ease-emphasized` | `cubic-bezier(0.2, 0, 0, 1)` | Noticed but unhurried. |
 
-**Semantic pairs** — reach for these first; they carry duration _and_ easing:
+**Semantic pairs** — reach for these first; they carry duration *and* easing:
 
-| Token                        | Resolves to       | For                                              |
-| ---------------------------- | ----------------- | ------------------------------------------------ |
-| `--cascivo-motion-enter`     | 200ms ease-out    | Anything appearing.                              |
-| `--cascivo-motion-exit`      | 150ms ease-in     | Anything leaving. Faster than enter, on purpose. |
-| `--cascivo-motion-emphasis`  | 300ms ease-in-out | Deliberate, noticed changes.                     |
-| `--cascivo-motion-drawer`    | 300ms ease-decel  | Drawer, Sheet, SideNav.                          |
-| `--cascivo-motion-attention` | 500ms ease-out    | Shake, flash, bounce.                            |
+| Token | Resolves to | For |
+| --- | --- | --- |
+| `--cascivo-motion-enter` | 200ms ease-out | Anything appearing. |
+| `--cascivo-motion-exit` | 150ms ease-in | Anything leaving. Faster than enter, on purpose. |
+| `--cascivo-motion-emphasis` | 300ms ease-in-out | Deliberate, noticed changes. |
+| `--cascivo-motion-drawer` | 300ms ease-decel | Drawer, Sheet, SideNav. |
+| `--cascivo-motion-attention` | 500ms ease-out | Shake, flash, bounce. |
 
 The platform axis owns motion (see `packages/tokens/src/layers.css`), so all five semantic
 pairs are re-declared in `packages/platform/src/web.css`. A new pair must be added to both,
@@ -232,8 +215,7 @@ handles it:
 
 ```css
 .dialog {
-  opacity: 0;
-  scale: 0.96;
+  opacity: 0; scale: 0.96;
   transition:
     opacity var(--cascivo-motion-exit),
     scale var(--cascivo-motion-exit),
@@ -241,15 +223,9 @@ handles it:
     overlay var(--cascivo-duration-150) allow-discrete;
 
   &[open] {
-    opacity: 1;
-    scale: 1;
-    transition:
-      opacity var(--cascivo-motion-enter),
-      scale var(--cascivo-motion-enter);
-    @starting-style {
-      opacity: 0;
-      scale: 0.96;
-    }
+    opacity: 1; scale: 1;
+    transition: opacity var(--cascivo-motion-enter), scale var(--cascivo-motion-enter);
+    @starting-style { opacity: 0; scale: 0.96; }
   }
 }
 ```

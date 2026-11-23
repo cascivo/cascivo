@@ -31,14 +31,14 @@ A named group of real buttons. Good and Bad are toggle buttons (aria-pressed), s
 
 ## Props
 
-| Name               | Type                                                                                      | Required | Default | Description                                                                                                                                                        |
-| ------------------ | ----------------------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `copyValue`        | `string`                                                                                  | No       | —       | The text the Copy button copies. Omit to hide Copy.                                                                                                                |
-| `feedback`         | `'good' \| 'bad' \| null`                                                                 | No       | —       | Controlled rating: `good`, `bad` or `null`. Pressing the active rating again clears it.                                                                            |
-| `defaultFeedback`  | `'good' \| 'bad' \| null`                                                                 | No       | null    | Initial rating when uncontrolled.                                                                                                                                  |
-| `onFeedbackChange` | `(feedback: 'good' \| 'bad' \| null) => void`                                             | No       | —       | Called with the new rating (or `null` when cleared). The rating buttons render when this or `feedback` is set; a rating also announces "Thanks for your feedback". |
-| `onRegenerate`     | `() => void`                                                                              | No       | —       | Called by the Regenerate button. Omit to hide it.                                                                                                                  |
-| `labels`           | `{ group?: string; good?: string; bad?: string; regenerate?: string; recorded?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n).                                                                                                         |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `copyValue` | `string` | No | — | The text the Copy button copies. Omit to hide Copy. |
+| `feedback` | `'good' \| 'bad' \| null` | No | — | Controlled rating: `good`, `bad` or `null`. Pressing the active rating again clears it. |
+| `defaultFeedback` | `'good' \| 'bad' \| null` | No | null | Initial rating when uncontrolled. |
+| `onFeedbackChange` | `(feedback: 'good' \| 'bad' \| null) => void` | No | — | Called with the new rating (or `null` when cleared). The rating buttons render when this or `feedback` is set; a rating also announces "Thanks for your feedback". |
+| `onRegenerate` | `() => void` | No | — | Called by the Regenerate button. Omit to hide it. |
+| `labels` | `{ group?: string; good?: string; bad?: string; regenerate?: string; recorded?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Tokens
 
@@ -51,11 +51,7 @@ A named group of real buttons. Good and Bad are toggle buttons (aria-pressed), s
 ### Copy, rate and regenerate
 
 ```jsx
-<MessageActions
-  copyValue="Refunds are available for 30 days."
-  onFeedbackChange={() => {}}
-  onRegenerate={() => {}}
-/>
+<MessageActions copyValue="Refunds are available for 30 days." onFeedbackChange={() => {}} onRegenerate={() => {}} />
 ```
 
 ### Copy only
@@ -66,10 +62,10 @@ A named group of real buttons. Good and Bad are toggle buttons (aria-pressed), s
 
 ## Boundaries
 
-| Area             | Level    | Note                                                                  |
-| ---------------- | -------- | --------------------------------------------------------------------- |
-| which actions    | flexible | Each action renders only when its prop is set                         |
-| rating semantics | strict   | Two-state good / bad toggles; do not repurpose them for other choices |
+| Area | Level | Note |
+|------|-------|------|
+| which actions | flexible | Each action renders only when its prop is set |
+| rating semantics | strict | Two-state good / bad toggles; do not repurpose them for other choices |
 
 ## AI context prompt
 

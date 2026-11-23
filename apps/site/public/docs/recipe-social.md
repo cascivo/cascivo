@@ -3,20 +3,19 @@
   Canonical: https://cascivo.com/docs/recipe-social.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Recipe: sign-in, connected accounts and social posting on Cloudflare
 
 Let people sign in with an account they already have, connect their social accounts, and post
 to them now or later from a Worker. Everything here is in `@cascivo/app` and runs on Workers
 with plain `fetch` and WebCrypto: no provider SDKs and no `nodejs_compat`.
 
-| Subpath                     | What it does                                                                                              |
-| --------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Subpath                     | What it does                                                                          |
+| --------------------------- | ------------------------------------------------------------------------------------- |
 | `@cascivo/app/oauth`        | The OAuth flow and one adapter per provider: GitHub, Google, LinkedIn, Bluesky, Mastodon, Threads, Buffer |
-| `@cascivo/app/oauth-server` | Sign-in (`handleOAuth`) and connected accounts (`handleConnections`), tokens sealed in D1                 |
-| `@cascivo/app/social`       | One publisher per network: `check` a post as it is typed, `publish` it                                    |
-| `@cascivo/app/uploads`      | Images for posts, uploaded through the Worker into R2                                                     |
-| `ShareMenu`                 | A Share button for your readers: each network's own compose link, no account needed                       |
+| `@cascivo/app/oauth-server` | Sign-in (`handleOAuth`) and connected accounts (`handleConnections`), tokens sealed in D1 |
+| `@cascivo/app/social`       | One publisher per network: `check` a post as it is typed, `publish` it               |
+| `@cascivo/app/uploads`      | Images for posts, uploaded through the Worker into R2                                 |
+| `ShareMenu`                 | A Share button for your readers: each network's own compose link, no account needed   |
 
 The reference for every function is the
 [`@cascivo/app` README](https://github.com/cascivo/cascivo/tree/main/packages/app#readme). This
@@ -24,12 +23,12 @@ page is the workflow, and the mistakes it is built to prevent.
 
 ## Pick the job
 
-| You want                                | Use                                             | Accounts or tokens?     |
-| --------------------------------------- | ----------------------------------------------- | ----------------------- |
-| Readers share a page from their account | `ShareMenu`, or `shareIntentUrl` in your markup | None                    |
-| People sign in with GitHub, Google, …   | `handleOAuth`                                   | Discarded after sign-in |
-| The app posts for people, now or later  | `handleConnections` and a publisher per network | Kept, sealed in D1      |
-| Reach X, Instagram, TikTok and the rest | `buffer()` and `bufferPublisher`                | The user's Buffer       |
+| You want                                 | Use                                              | Accounts or tokens? |
+| ---------------------------------------- | ------------------------------------------------ | ------------------- |
+| Readers share a page from their account  | `ShareMenu`, or `shareIntentUrl` in your markup  | None                |
+| People sign in with GitHub, Google, …    | `handleOAuth`                                    | Discarded after sign-in |
+| The app posts for people, now or later   | `handleConnections` and a publisher per network  | Kept, sealed in D1  |
+| Reach X, Instagram, TikTok and the rest  | `buffer()` and `bufferPublisher`                 | The user's Buffer   |
 
 ## Start from a scaffold
 
@@ -128,13 +127,13 @@ try {
 Run `publisher.check(post)` in the composer as people type, and again in the Worker before
 anything is stored: a scheduled post fails at once, not at three in the morning.
 
-| Network  | Length                                    | Images                  | Safe to retry?                        |
-| -------- | ----------------------------------------- | ----------------------- | ------------------------------------- |
-| Bluesky  | 300 graphemes                             | 4, 1 MB, uploaded       | Yes: `createdAt` fixes the record key |
-| Mastodon | The server's own (`mastodonServerLimits`) | Usually 4, uploaded     | Yes: `Idempotency-Key`                |
-| LinkedIn | 3000 characters                           | Up to 20, uploaded      | No                                    |
-| Threads  | 500, an emoji counts its UTF-8 bytes      | Up to 20, by public URL | No                                    |
-| Buffer   | The network behind the channel's          | Up to 10, by public URL | No                                    |
+| Network  | Length                               | Images                    | Safe to retry?                       |
+| -------- | ------------------------------------ | ------------------------- | ------------------------------------ |
+| Bluesky  | 300 graphemes                        | 4, 1 MB, uploaded         | Yes: `createdAt` fixes the record key |
+| Mastodon | The server's own (`mastodonServerLimits`) | Usually 4, uploaded  | Yes: `Idempotency-Key`               |
+| LinkedIn | 3000 characters                      | Up to 20, uploaded        | No                                   |
+| Threads  | 500, an emoji counts its UTF-8 bytes | Up to 20, by public URL   | No                                   |
+| Buffer   | The network behind the channel's     | Up to 10, by public URL   | No                                   |
 
 **Never retry a network that cannot deduplicate.** A request that timed out may already have
 posted. `PublishError.retryable` is true only for rate limits and 5xx answers; for LinkedIn,
@@ -155,12 +154,12 @@ own step, so one network failing neither blocks nor repeats the others.
 
 ## Keep connections alive
 
-| Provider                | What keeps it working                                                                                   |
-| ----------------------- | ------------------------------------------------------------------------------------------------------- |
+| Provider | What keeps it working                                                          |
+| -------- | ------------------------------------------------------------------------------ |
 | Bluesky, Buffer, Google | `connectionTokens` refreshes on use, one request at a time (the refresh token is replaced on every use) |
-| Threads                 | The token renews itself only while it works: a daily `refreshConnections`                               |
-| LinkedIn                | Cannot be renewed: remind the owner before `expiresAt` (`expiringConnections`)                          |
-| Mastodon                | Nothing; a refused token is a `reconnect`                                                               |
+| Threads  | The token renews itself only while it works: a daily `refreshConnections`       |
+| LinkedIn | Cannot be renewed: remind the owner before `expiresAt` (`expiringConnections`)  |
+| Mastodon | Nothing; a refused token is a `reconnect`                                       |
 
 ```ts
 import { expiringConnections, refreshConnections } from '@cascivo/app/oauth-server'
@@ -190,15 +189,15 @@ schedule a post with it, and take its type from storage, not from the browser.
 Register `https://<your app>/api/connections/<provider>/callback` (or
 `/api/auth/oauth/<provider>/callback` for sign-in) as the redirect URL.
 
-| Provider | Where                                                       | Before strangers can connect                          |
-| -------- | ----------------------------------------------------------- | ----------------------------------------------------- |
-| GitHub   | An OAuth App                                                | Nothing                                               |
-| Google   | An OAuth client, type "Web application"                     | Verification for sensitive scopes                     |
-| LinkedIn | An app with "Sign In with LinkedIn" and "Share on LinkedIn" | Nothing for these two products                        |
-| Bluesky  | Nothing: your client metadata URL is the client id          | Nothing                                               |
-| Mastodon | Nothing: the app registers itself per server                | Nothing                                               |
-| Threads  | A Meta app with the Threads use case                        | App Review and business verification                  |
-| Buffer   | An app client in Buffer's settings                          | Nothing; mind the request budget (100 per 15 minutes) |
+| Provider | Where                                       | Before strangers can connect                          |
+| -------- | ------------------------------------------- | ----------------------------------------------------- |
+| GitHub   | An OAuth App                                 | Nothing                                               |
+| Google   | An OAuth client, type "Web application"      | Verification for sensitive scopes                     |
+| LinkedIn | An app with "Sign In with LinkedIn" and "Share on LinkedIn" | Nothing for these two products          |
+| Bluesky  | Nothing: your client metadata URL is the client id | Nothing                                        |
+| Mastodon | Nothing: the app registers itself per server | Nothing                                               |
+| Threads  | A Meta app with the Threads use case         | App Review and business verification                  |
+| Buffer   | An app client in Buffer's settings           | Nothing; mind the request budget (100 per 15 minutes) |
 
 ## What this does not cover
 

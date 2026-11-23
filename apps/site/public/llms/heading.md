@@ -30,11 +30,11 @@ import { Heading } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                                    | Required | Default                                                    | Description                                           |
-| ---------- | --------------------------------------- | -------- | ---------------------------------------------------------- | ----------------------------------------------------- |
-| `level`    | `1 \| 2 \| 3 \| 4 \| 5 \| 6`            | no       | `2`                                                        | Heading level (1–6) mapping to h1–h6.                 |
-| `size`     | `'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'` | no       | `derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `children` | `ReactNode`                             | no       | —                                                          | Heading text                                          |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | no | `2` | Heading level (1–6) mapping to h1–h6. |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'` | no | `derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode` | no | — | Heading text |
 
 ## Examples
 
@@ -55,9 +55,7 @@ import { Heading } from '@cascivo/react'
 Keep the document outline correct while controlling the visual scale
 
 ```tsx
-<Heading level={2} size="2xl">
-  Visually large, semantically h2
-</Heading>
+<Heading level={2} size="2xl">Visually large, semantically h2</Heading>
 ```
 
 ## Client JavaScript

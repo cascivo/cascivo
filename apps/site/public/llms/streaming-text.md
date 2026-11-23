@@ -22,11 +22,11 @@ import { StreamingText } from '@cascivo/react'
 
 ## Props
 
-| Prop         | Type         | Required | Default | Description                                                                                                                                    |
-| ------------ | ------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `text`       | `string`     | yes      | —       | The target text. Pass the accumulating reply as it streams; typing catches up as it grows, and restarts if it is replaced by a shorter string. |
-| `speed`      | `number`     | no       | `2`     | Characters revealed per animation frame.                                                                                                       |
-| `onComplete` | `() => void` | no       | —       | Called when the displayed text has caught up with `text`.                                                                                      |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `text` | `string` | yes | — | The target text. Pass the accumulating reply as it streams; typing catches up as it grows, and restarts if it is replaced by a shorter string. |
+| `speed` | `number` | no | `2` | Characters revealed per animation frame. |
+| `onComplete` | `() => void` | no | — | Called when the displayed text has caught up with `text`. |
 
 ## Examples
 

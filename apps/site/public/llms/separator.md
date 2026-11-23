@@ -22,10 +22,10 @@ import { Separator } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                         | Required | Default      | Description                                                                                                                 |
-| ------------- | ---------------------------- | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| `orientation` | `'horizontal' \| 'vertical'` | no       | `horizontal` | Direction the rule runs: `horizontal` draws a full-width line, `vertical` a full-height one that stretches to its flex row. |
-| `decorative`  | `boolean`                    | no       | `false`      | When true, the separator is purely visual and hidden from assistive tech                                                    |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Direction the rule runs: `horizontal` draws a full-width line, `vertical` a full-height one that stretches to its flex row. |
+| `decorative` | `boolean` | no | `false` | When true, the separator is purely visual and hidden from assistive tech |
 
 ## Examples
 

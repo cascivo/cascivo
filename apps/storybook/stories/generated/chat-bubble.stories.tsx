@@ -3,34 +3,29 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Avatar, ChatBubble } from '@cascivo/react'
 
 const meta: Meta = {
-  title: 'Display/ChatBubble',
+  title: "Display/ChatBubble",
 }
 export default meta
 type Story = StoryObj
 
 export const IncomingMessage: Story = {
-  name: 'Incoming message',
+  name: "Incoming message",
   render: () => (
-    <ChatBubble side="start" name="Alice" time="10:42 AM">
-      Hey, how are you?
-    </ChatBubble>
+    <ChatBubble side="start" name="Alice" time="10:42 AM">Hey, how are you?</ChatBubble>
   ),
 }
 
 export const OutgoingMessage: Story = {
-  name: 'Outgoing message',
+  name: "Outgoing message",
   render: () => (
-    <ChatBubble side="end" time="10:43 AM">
-      Doing great, thanks!
-    </ChatBubble>
+    <ChatBubble side="end" time="10:43 AM">Doing great, thanks!</ChatBubble>
   ),
 }
 
 export const WithAvatar: Story = {
-  name: 'With avatar',
+  name: "With avatar",
   render: () => (
-    <ChatBubble side="start" avatar={<Avatar src="/alice.png" size="sm" />} name="Alice">
-      See you tomorrow!
-    </ChatBubble>
+    <ChatBubble side="start" avatar={<Avatar src="/alice.png" size="sm" />} name="Alice">See you tomorrow!</ChatBubble>
   ),
 }
+

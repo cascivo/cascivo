@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/using-with-ghost.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Using cascivo with Ghost
 
 **Status: tokens and themes only.** cascivo's design tokens and the twelve themes are plain
@@ -23,12 +22,12 @@ bundler in the default workflow — you edit `.hbs` and `assets/`, zip, upload.
 one, so there is no cascivo "Ghost theme" and no template that would produce one. This is a
 runtime mismatch, not a gap in effort.
 
-|                                                                      | Works in a Ghost theme |
-| -------------------------------------------------------------------- | ---------------------- |
-| `@cascivo/tokens` — the three-level custom-property system           | ✅ plain CSS           |
-| `@cascivo/themes` — twelve themes, `data-theme` switching, dark mode | ✅ plain CSS           |
-| `@cascivo/react` — every component                                   | ❌ React only          |
-| Signals, `@cascivo/core` primitives, the FSM layer                   | ❌ React only          |
+| | Works in a Ghost theme |
+| --- | --- |
+| `@cascivo/tokens` — the three-level custom-property system | ✅ plain CSS |
+| `@cascivo/themes` — twelve themes, `data-theme` switching, dark mode | ✅ plain CSS |
+| `@cascivo/react` — every component | ❌ React only |
+| Signals, `@cascivo/core` primitives, the FSM layer | ❌ React only |
 
 What you get is the **design system minus the component library**: one coherent color
 system in `oklch`, a type and space scale, elevation, radii, motion tokens, and twelve
@@ -85,17 +84,18 @@ your-theme/
 In `default.hbs`, **before** your own stylesheet, and set the theme on `<html>`:
 
 ```hbs
-<html lang='{{@site.locale}}' data-theme='light'>
-  <head>
-    {{! cascivo first: your own CSS is unlayered and will win over it }}
-    <link rel='stylesheet' href='{{asset "css/cascivo.css"}}' />
-    <link rel='stylesheet' href='{{asset "css/screen.css"}}' />
+<!DOCTYPE html>
+<html lang="{{@site.locale}}" data-theme="light">
+<head>
+    {{!-- cascivo first: your own CSS is unlayered and will win over it --}}
+    <link rel="stylesheet" href="{{asset "css/cascivo.css"}}">
+    <link rel="stylesheet" href="{{asset "css/screen.css"}}">
     {{ghost_head}}
-  </head>
-  <body class='{{body_class}}'>
+</head>
+<body class="{{body_class}}">
     {{{body}}}
     {{ghost_foot}}
-  </body>
+</body>
 </html>
 ```
 
@@ -123,9 +123,8 @@ To follow the reader's OS setting, set it before first paint so there is no flas
 
 ```html
 <script>
-  document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light'
+  document.documentElement.dataset.theme =
+    matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 </script>
 ```
 
@@ -205,12 +204,12 @@ apps/examples/ghost-theme/
 - **[`gscan`](https://github.com/TryGhost/gscan), Ghost's own theme validator, reports zero
   errors.** This is what makes the theme real rather than plausible-looking Handlebars — and
   it earned its place immediately: the first version of this guide's snippets was missing the
-  `.kg-width-wide` / `.kg-width-full` Koenig classes that Ghost _requires_ a theme to style,
+  `.kg-width-wide` / `.kg-width-full` Koenig classes that Ghost *requires* a theme to style,
   and gscan is what caught it.
 
 Each of those fails when deliberately broken; that was checked rather than assumed.
 
 **Not covered:** nothing here runs Ghost and renders a page. There is no headless Ghost in
-CI, so the templates are a _validated_ recipe, not a _rendered_ one. Theme structure,
+CI, so the templates are a *validated* recipe, not a *rendered* one. Theme structure,
 `{{asset}}`, and the absence of a build step come from
 [Ghost's own documentation](https://docs.ghost.org/themes/).

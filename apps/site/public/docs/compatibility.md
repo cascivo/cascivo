@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/compatibility.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Compatibility & support matrix
 
 What cascivo runs on, which package versions go together, and the build-tooling
@@ -13,17 +12,17 @@ baseline. If an integration surprises you, start here.
 
 ## Frameworks
 
-| Framework                             | Supported             | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| ------------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| React 18 / 19                         | ✅ Yes                | Primary target. Components ship `'use client'` preserved.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| Next.js App Router (RSC)              | ✅ Yes                | Import the CSS once in a Server Component (e.g. `app/layout.tsx`); components are client. Working example: [`apps/examples/react-next`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-next). See [`USING-WITH-NEXTJS.md`](/docs/using-with-nextjs.md).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| Vite + React (CSR/SPA)                | ✅ Yes                | Reference setup. See `apps/examples/react-vite`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| Vite SSR / TanStack Start             | ✅ Yes¹               | Requires `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin). Working example: [`apps/examples/react-vite-ssr`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-vite-ssr). See [`USING-WITH-VITE-SSR.md`](/docs/using-with-vite-ssr.md).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| Preact 10 (`preact/compat`)           | ✅ **CSR only**       | Verified on Vite CSR (`@preact/preset-vite`) — components, signals, overlays and charts all behave as on React, at roughly half the JS. **Not verified under SSR/prerender**. Under Astro, `client:only="preact"` works; server-rendered Preact islands fail in `@astrojs/preact`'s compat aliasing. See [`USING-WITH-PREACT.md`](/docs/using-with-preact.md).                                                                                                                                                                                                                                                                                                                                                                                                           |
-| Cloudflare Workers (client app + API) | ✅ Yes                | Client-rendered (no SSR): static assets with an SPA fallback, `/api/*` routed to the Worker. `npx cascivo create --framework cloudflare` (or `npm create cascivo`) emits it wired up, on Preact or React; the `framework:check` CI job builds that scaffold from packed tarballs and runs its Worker. A ready-to-deploy copy lives in [`starters/cloudflare`](https://github.com/cascivo/cascivo/tree/main/starters/cloudflare) (Deploy to Cloudflare button, `npm create cloudflare --template`). Working example with Workers AI streaming: [`apps/examples/chat`](https://github.com/cascivo/cascivo/tree/main/apps/examples/chat).                                                                                                                                   |
-| Astro (React islands)                 | ✅ Yes²               | A plain `astro add react && pnpm add @cascivo/react` app renders styled with no config from the first release after `@cascivo/react` 1.9.0 (older versions need `vite.resolve.noExternal: [/^@cascivo\//]`). `npx astro add @cascivo/astro` adds the layer order, theme and a `<ClientRouter />`-safe no-flash script. Compose compound components in `.tsx`; never hydrate a `@cascivo/react` export straight from `.astro`. Verified by the naive-adopter arm of `pnpm framework:check` (weekly against `astro@latest`). `npx cascivo create --framework astro` emits it wired up. Working example: [`apps/examples/astro-islands`](https://github.com/cascivo/cascivo/tree/main/apps/examples/astro-islands). See [`USING-WITH-ASTRO.md`](/docs/using-with-astro.md). |
-| Vue / Svelte / Angular                | ⚠️ Tokens/themes only | `@cascivo/tokens` + `@cascivo/themes` are framework-agnostic CSS; the components are React.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| Ghost (Handlebars themes)             | ⚠️ Tokens/themes only | Themes are Handlebars rendered server-side with no JS framework layer, so React components cannot mount. The token + theme CSS works once flattened (bare `@import`s, no build step in Ghost). Working theme, validated by Ghost's own `gscan` in CI: [`apps/examples/ghost-theme`](https://github.com/cascivo/cascivo/tree/main/apps/examples/ghost-theme). See [`USING-WITH-GHOST.md`](/docs/using-with-ghost.md).                                                                                                                                                                                                                                                                                                                                                     |
+| Framework                  | Supported | Notes                                                                                   |
+| -------------------------- | --------- | --------------------------------------------------------------------------------------- |
+| React 18 / 19              | ✅ Yes    | Primary target. Components ship `'use client'` preserved.                                |
+| Next.js App Router (RSC)   | ✅ Yes    | Import the CSS once in a Server Component (e.g. `app/layout.tsx`); components are client. Working example: [`apps/examples/react-next`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-next). See [`USING-WITH-NEXTJS.md`](/docs/using-with-nextjs.md). |
+| Vite + React (CSR/SPA)     | ✅ Yes    | Reference setup. See `apps/examples/react-vite`.                                         |
+| Vite SSR / TanStack Start  | ✅ Yes¹   | Requires `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin). Working example: [`apps/examples/react-vite-ssr`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-vite-ssr). See [`USING-WITH-VITE-SSR.md`](/docs/using-with-vite-ssr.md). |
+| Preact 10 (`preact/compat`) | ✅ **CSR only** | Verified on Vite CSR (`@preact/preset-vite`) — components, signals, overlays and charts all behave as on React, at roughly half the JS. **Not verified under SSR/prerender**. Under Astro, `client:only="preact"` works; server-rendered Preact islands fail in `@astrojs/preact`'s compat aliasing. See [`USING-WITH-PREACT.md`](/docs/using-with-preact.md). |
+| Cloudflare Workers (client app + API) | ✅ Yes | Client-rendered (no SSR): static assets with an SPA fallback, `/api/*` routed to the Worker. `npx cascivo create --framework cloudflare` (or `npm create cascivo`) emits it wired up, on Preact or React; the `framework:check` CI job builds that scaffold from packed tarballs and runs its Worker. A ready-to-deploy copy lives in [`starters/cloudflare`](https://github.com/cascivo/cascivo/tree/main/starters/cloudflare) (Deploy to Cloudflare button, `npm create cloudflare --template`). Working example with Workers AI streaming: [`apps/examples/chat`](https://github.com/cascivo/cascivo/tree/main/apps/examples/chat). |
+| Astro (React islands)      | ✅ Yes²   | A plain `astro add react && pnpm add @cascivo/react` app renders styled with no config from the first release after `@cascivo/react` 1.9.0 (older versions need `vite.resolve.noExternal: [/^@cascivo\//]`). `npx astro add @cascivo/astro` adds the layer order, theme and a `<ClientRouter />`-safe no-flash script. Compose compound components in `.tsx`; never hydrate a `@cascivo/react` export straight from `.astro`. Verified by the naive-adopter arm of `pnpm framework:check` (weekly against `astro@latest`). `npx cascivo create --framework astro` emits it wired up. Working example: [`apps/examples/astro-islands`](https://github.com/cascivo/cascivo/tree/main/apps/examples/astro-islands). See [`USING-WITH-ASTRO.md`](/docs/using-with-astro.md). |
+| Vue / Svelte / Angular     | ⚠️ Tokens/themes only | `@cascivo/tokens` + `@cascivo/themes` are framework-agnostic CSS; the components are React. |
+| Ghost (Handlebars themes)  | ⚠️ Tokens/themes only | Themes are Handlebars rendered server-side with no JS framework layer, so React components cannot mount. The token + theme CSS works once flattened (bare `@import`s, no build step in Ghost). Working theme, validated by Ghost's own `gscan` in CI: [`apps/examples/ghost-theme`](https://github.com/cascivo/cascivo/tree/main/apps/examples/ghost-theme). See [`USING-WITH-GHOST.md`](/docs/using-with-ghost.md). |
 
 ¹ The published `@cascivo/react` bundle ships per-component CSS as static
 side-effect imports. Bundlers resolve these; a bare server-side ESM loader
@@ -57,19 +56,19 @@ packages itself, so (b) needs no config (`@cascivo/astro` still sets it for olde
 cascivo targets the **last 2 versions of Chrome, Firefox, and Safari**. It relies
 on modern CSS that is broadly shipped as of 2025:
 
-| Feature                                 | Min support                     | Used for                                                         |
-| --------------------------------------- | ------------------------------- | ---------------------------------------------------------------- |
-| `@layer`                                | Chrome 99, FF 97, Saf 15.4      | predictable cascade ordering                                     |
-| `@container`                            | Chrome 105, FF 110, Saf 16      | slot-aware responsive components                                 |
-| `:has()`                                | Chrome 105, FF 121, Saf 15.4    | stateful styling without JS                                      |
-| `oklch()`                               | Chrome 111, FF 113, Saf 15.4    | the entire color system                                          |
-| Popover API / `@starting-style`         | Chrome 114+, FF 125+, Saf 17.4+ | overlays (Sheet, Drawer, Popover)                                |
-| `subgrid`                               | Chrome 117, FF 71, Saf 16       | `Grid`'s `alignRows` — cross-card band alignment                 |
-| `field-sizing: content`                 | Chrome 123, FF 121, Saf 26      | `Textarea`'s `autosize` — **progressive**                        |
-| `anchor-size()` / `position-visibility` | Chrome 125+, Saf 26+            | panel widths and anchor-tied visibility — **progressive**        |
-| `scroll-state` container queries        | Chrome 133+ only                | `ScrollArea` shadows, `DataTable` stuck header — **progressive** |
-| `appearance: base-select`               | Chrome 135+ only                | `NativeSelect`'s themed option list — **progressive**            |
-| CSS `@function` / `if()`                | Chrome 133+ only                | **progressive enhancement only** (below)                         |
+| Feature                       | Min support              | Used for                                  |
+| ----------------------------- | ------------------------ | ----------------------------------------- |
+| `@layer`                      | Chrome 99, FF 97, Saf 15.4 | predictable cascade ordering              |
+| `@container`                  | Chrome 105, FF 110, Saf 16 | slot-aware responsive components          |
+| `:has()`                      | Chrome 105, FF 121, Saf 15.4 | stateful styling without JS               |
+| `oklch()`                     | Chrome 111, FF 113, Saf 15.4 | the entire color system                   |
+| Popover API / `@starting-style` | Chrome 114+, FF 125+, Saf 17.4+ | overlays (Sheet, Drawer, Popover)     |
+| `subgrid`                     | Chrome 117, FF 71, Saf 16 | `Grid`'s `alignRows` — cross-card band alignment |
+| `field-sizing: content`       | Chrome 123, FF 121, Saf 26 | `Textarea`'s `autosize` — **progressive**  |
+| `anchor-size()` / `position-visibility` | Chrome 125+, Saf 26+ | panel widths and anchor-tied visibility — **progressive** |
+| `scroll-state` container queries | Chrome 133+ only      | `ScrollArea` shadows, `DataTable` stuck header — **progressive** |
+| `appearance: base-select`     | Chrome 135+ only         | `NativeSelect`'s themed option list — **progressive** |
+| CSS `@function` / `if()`      | Chrome 133+ only         | **progressive enhancement only** (below)  |
 
 ### CSS `@function` is opt-in
 
@@ -116,20 +115,20 @@ CI's drift check — it cannot go stale. (It once sat thirteen minors behind, cl
 
 <!-- BEGIN GENERATED: package-compatibility (scripts/compat/generate.ts) -->
 
-| Package            | Version | Peer requirements                                                                                             |
-| ------------------ | ------- | ------------------------------------------------------------------------------------------------------------- |
-| `@cascivo/core`    | 1.11.x  | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
-| `@cascivo/tokens`  | 1.3.x   | none (CSS only)                                                                                               |
-| `@cascivo/themes`  | 1.0.x   | `@cascivo/tokens` (direct dep) — themes `@import` it                                                          |
-| `@cascivo/react`   | 1.11.x  | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
-| `@cascivo/astro`   | 1.11.x  | `@cascivo/themes >=1.0.0`, `astro >=7.0.0`                                                                    |
-| `@cascivo/icons`   | 1.1.x   | `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`                                                        |
-| `@cascivo/charts`  | 1.11.x  | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
-| `@cascivo/i18n`    | 1.11.x  | `@preact/signals-react >=3.0.0`                                                                               |
-| `@cascivo/storage` | 1.11.x  | `@preact/signals-react >=3.0.0`                                                                               |
-| `@cascivo/data`    | 0.1.x   | none                                                                                                          |
-| `@cascivo/app`     | 1.11.x  | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`                       |
-| `@cascivo/mcp`     | 0.10.x  | (server; run via `npx`)                                                                                       |
+| Package | Version | Peer requirements |
+| ------- | ------- | ----------------- |
+| `@cascivo/core` | 1.11.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/tokens` | 1.3.x | none (CSS only) |
+| `@cascivo/themes` | 1.0.x | `@cascivo/tokens` (direct dep) — themes `@import` it |
+| `@cascivo/react` | 1.11.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/astro` | 1.11.x | `@cascivo/themes >=1.0.0`, `astro >=7.0.0` |
+| `@cascivo/icons` | 1.1.x | `@types/react >=18.0.0` _(optional)_, `react >=18.0.0` |
+| `@cascivo/charts` | 1.11.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/i18n` | 1.11.x | `@preact/signals-react >=3.0.0` |
+| `@cascivo/storage` | 1.11.x | `@preact/signals-react >=3.0.0` |
+| `@cascivo/data` | 0.1.x | none |
+| `@cascivo/app` | 1.11.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0` |
+| `@cascivo/mcp` | 0.10.x | (server; run via `npx`) |
 
 <!-- END GENERATED: package-compatibility -->
 
@@ -184,6 +183,6 @@ directions and requires every asymmetric inline box to swap. The one deliberate 
 `ContextMenu`, which positions from the pointer's viewport x — a physical coordinate by
 nature.
 
-What is **not** covered: bidirectional _text_ handling inside your own content (that is the
+What is **not** covered: bidirectional *text* handling inside your own content (that is the
 browser's job, and `dir="auto"` is usually the right answer), and RTL-specific iconography —
 a directional icon you pass as a prop is yours to mirror.

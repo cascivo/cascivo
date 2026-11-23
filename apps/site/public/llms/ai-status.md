@@ -30,12 +30,12 @@ import { AiStatus } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                                                                                                             | Required | Default | Description                                                                                                                                             |
-| -------- | ---------------------------------------------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `status` | `'thinking' \| 'generating' \| 'complete' \| 'error' \| 'stopped'`                                               | yes      | —       | The phase: `thinking` (working, nothing produced yet), `generating` (output is streaming), `complete`, `error`, or `stopped` (the reader pressed Stop). |
-| `label`  | `ReactNode`                                                                                                      | no       | —       | Replaces the default text for the current status, e.g. "Searching 12 documents…". Rendered on screen.                                                   |
-| `labels` | `{ thinking?: string; generating?: string; complete?: string; error?: string; stopped?: string; stop?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).                                                                                              |
-| `onStop` | `() => void`                                                                                                     | no       | —       | Called when the reader presses Stop. When set, a Stop button renders while the status is `thinking` or `generating`.                                    |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `status` | `'thinking' \| 'generating' \| 'complete' \| 'error' \| 'stopped'` | yes | — | The phase: `thinking` (working, nothing produced yet), `generating` (output is streaming), `complete`, `error`, or `stopped` (the reader pressed Stop). |
+| `label` | `ReactNode` | no | — | Replaces the default text for the current status, e.g. "Searching 12 documents…". Rendered on screen. |
+| `labels` | `{ thinking?: string; generating?: string; complete?: string; error?: string; stopped?: string; stop?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `onStop` | `() => void` | no | — | Called when the reader presses Stop. When set, a Stop button renders while the status is `thinking` or `generating`. |
 
 ## Examples
 

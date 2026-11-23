@@ -28,33 +28,29 @@ import { Field } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type           | Required | Default | Description                                                                                                        |
-| ------------- | -------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `label`       | `ReactNode`    | no       | —       | Text label for the control. Rendered on screen.                                                                    |
-| `hint`        | `ReactNode`    | no       | —       | Alias of `description` — the name the eight form controls use for the same supporting text. Neither is deprecated. |
-| `description` | `ReactNode`    | no       | —       | Supporting text under the control, wired via aria-describedby. `hint` is accepted as an alias.                     |
-| `error`       | `ReactNode`    | no       | —       | Error message shown when the value is invalid.                                                                     |
-| `required`    | `boolean`      | no       | `false` | When true, marks the field as required.                                                                            |
-| `disabled`    | `boolean`      | no       | `false` | When true, disables the control and removes it from the tab order.                                                 |
-| `id`          | `string`       | no       | —       | Id applied to the root element (auto-generated when omitted).                                                      |
-| `children`    | `ReactElement` | yes      | —       | Content rendered inside the component.                                                                             |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `ReactNode` | no | — | Text label for the control. Rendered on screen. |
+| `hint` | `ReactNode` | no | — | Alias of `description` — the name the eight form controls use for the same supporting text. Neither is deprecated. |
+| `description` | `ReactNode` | no | — | Supporting text under the control, wired via aria-describedby. `hint` is accepted as an alias. |
+| `error` | `ReactNode` | no | — | Error message shown when the value is invalid. |
+| `required` | `boolean` | no | `false` | When true, marks the field as required. |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `id` | `string` | no | — | Id applied to the root element (auto-generated when omitted). |
+| `children` | `ReactElement` | yes | — | Content rendered inside the component. |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Field label="Email">
-  <Input type="email" />
-</Field>
+<Field label="Email"><Input type="email" /></Field>
 ```
 
 ### With description
 
 ```tsx
-<Field label="Email" description="We never share it.">
-  <Input />
-</Field>
+<Field label="Email" description="We never share it."><Input /></Field>
 ```
 
 ### With error
@@ -62,9 +58,7 @@ import { Field } from '@cascivo/react'
 Sets aria-invalid on the control and announces the error via role="alert".
 
 ```tsx
-<Field label="Email" error="Email is required" required>
-  <Input />
-</Field>
+<Field label="Email" error="Email is required" required><Input /></Field>
 ```
 
 ## Client JavaScript

@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/using-with-astro.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Using cascivo with Astro
 
 **Status: supported.** A plain `astro add react` app that installs `@cascivo/react` renders
@@ -45,18 +44,18 @@ export default defineConfig({
 On every page, ahead of any other CSS, it:
 
 1. injects the CSS layer order as one full statement. The default is `@layer vendor,
-cascivo.reset … cascivo.override;`: `vendor` lowest, then cascivo's canonical order;
+   cascivo.reset … cascivo.override;`: `vendor` lowest, then cascivo's canonical order;
 2. imports the theme stylesheet (default `@cascivo/themes/light-dark.css`);
 3. inlines the no-flash theme script in `<head>` and re-applies the theme after every
    `<ClientRouter />` swap (see [Theme across navigation](#theme-across-navigation));
 4. keeps `@cascivo/*` in the Vite graph with `vite.resolve.noExternal`, so older
    `@cascivo/react` releases (see [Older versions](#older-versions-and-the-cause)) stay styled.
 
-| Option        | Default                            | Notes                                                                                                  |
-| ------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `layers`      | the default statement above        | A **complete** `@layer …;` statement. Pass it to add your own layers.                                  |
-| `theme`       | `'@cascivo/themes/light-dark.css'` | Any theme stylesheet, or `false` to import it yourself.                                                |
-| `themeScript` | `{}`                               | `{ storageKey?, attribute?, defaultTheme? }`, matching `ThemeProvider`'s props, or `false` to opt out. |
+| Option | Default | Notes |
+| --- | --- | --- |
+| `layers` | the default statement above | A **complete** `@layer …;` statement. Pass it to add your own layers. |
+| `theme` | `'@cascivo/themes/light-dark.css'` | Any theme stylesheet, or `false` to import it yourself. |
+| `themeScript` | `{}` | `{ storageKey?, attribute?, defaultTheme? }`, matching `ThemeProvider`'s props, or `false` to opt out. |
 
 An app on a single custom theme must name it in both places, or the defaults repaint it as plain
 light or dark (this is what the scaffold writes):
@@ -175,12 +174,12 @@ A component that reads `signal.value` during render must call `useSignals()` fro
 
 ### Choosing a client directive
 
-| Directive             | Server HTML | JS shipped | Reach for it when                                             |
-| --------------------- | ----------- | ---------- | ------------------------------------------------------------- |
-| _(none)_              | yes         | **none**   | static page content, the default for anything non-interactive |
-| `client:load`         | yes         | yes        | interactive and above the fold                                |
-| `client:visible`      | yes         | yes        | interactive and below the fold                                |
-| `client:only="react"` | **no**      | yes        | app-shaped islands you do not need indexed                    |
+| Directive | Server HTML | JS shipped | Reach for it when |
+| --- | --- | --- | --- |
+| *(none)* | yes | **none** | static page content, the default for anything non-interactive |
+| `client:load` | yes | yes | interactive and above the fold |
+| `client:visible` | yes | yes | interactive and below the fold |
+| `client:only="react"` | **no** | yes | app-shaped islands you do not need indexed |
 
 A cascivo component with no directive renders to static HTML and ships no JavaScript while still
 emitting its CSS. Components that only work with client JS (a `Modal` opening, `Tabs`
@@ -286,7 +285,6 @@ What is checked, and where:
 
   It also removes the `astro-component` keyword from a repacked `@cascivo/react` and expects
   unstyled output, so the zero-config path cannot pass by accident.
-
 - **Weekly, against the newest Astro.** `.github/workflows/framework-latest.yml` runs the same arm
   with `ASTRO_VERSION=latest`, so the next Astro release (a major above all) is caught before
   adopters hit it.

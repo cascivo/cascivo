@@ -27,10 +27,10 @@ import { Code } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type           | Required | Default | Description                                           |
-| ---------- | -------------- | -------- | ------- | ----------------------------------------------------- |
-| `size`     | `'sm' \| 'md'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `children` | `ReactNode`    | no       | —       | The code text                                         |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode` | no | — | The code text |
 
 ## Examples
 
@@ -45,9 +45,7 @@ import { Code } from '@cascivo/react'
 Sits inline with surrounding text
 
 ```tsx
-<Text>
-  Run <Code>vp check</Code> before committing.
-</Text>
+<Text>Run <Code>vp check</Code> before committing.</Text>
 ```
 
 ### Small

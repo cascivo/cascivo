@@ -29,10 +29,10 @@ import { ChainOfThought } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                                                                       | Required | Default | Description                                                                                                                                                                                                                                                        |
-| -------- | -------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `items`  | `ChainOfThoughtItem[]`                                                     | yes      | —       | The steps, in order. Each has `id`, `title`, optional `description`, `status` (`pending \| active \| complete \| error`, plus the `current` / `upcoming` aliases), optional `detail` (collapsible content that turns the title into a toggle) and optional `icon`. |
-| `labels` | `{ pending?: string; active?: string; complete?: string; error?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n) — the status text a screen reader hears after each step title.                                                                                                                                           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `ChainOfThoughtItem[]` | yes | — | The steps, in order. Each has `id`, `title`, optional `description`, `status` (`pending \| active \| complete \| error`, plus the `current` / `upcoming` aliases), optional `detail` (collapsible content that turns the title into a toggle) and optional `icon`. |
+| `labels` | `{ pending?: string; active?: string; complete?: string; error?: string }` | no | — | Overrides for the component’s user-visible strings (i18n) — the status text a screen reader hears after each step title. |
 
 ## Object types
 
@@ -40,14 +40,14 @@ import { ChainOfThought } from '@cascivo/react'
 
 One step in the chain.
 
-| Field         | Type            | Required | Description                                                                                    |
-| ------------- | --------------- | -------- | ---------------------------------------------------------------------------------------------- |
-| `id`          | `string`        | yes      | Stable key for the step.                                                                       |
-| `title`       | `ReactNode`     | yes      | What the step does.                                                                            |
-| `description` | `ReactNode`     | no       | A secondary line under the title.                                                              |
-| `status`      | `ProgressInput` | no       | `pending \| active \| complete \| error` (plus `current` / `upcoming`). Defaults to `pending`. |
-| `detail`      | `ReactNode`     | no       | Collapsible content; makes the title a disclosure toggle.                                      |
-| `icon`        | `ReactNode`     | no       | Replaces the status glyph in the marker.                                                       |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | `string` | yes | Stable key for the step. |
+| `title` | `ReactNode` | yes | What the step does. |
+| `description` | `ReactNode` | no | A secondary line under the title. |
+| `status` | `ProgressInput` | no | `pending \| active \| complete \| error` (plus `current` / `upcoming`). Defaults to `pending`. |
+| `detail` | `ReactNode` | no | Collapsible content; makes the title a disclosure toggle. |
+| `icon` | `ReactNode` | no | Replaces the status glyph in the marker. |
 
 ## Examples
 
@@ -74,12 +74,7 @@ One step in the chain.
       status: 'complete',
       detail: 'cascivo.com/docs · github.com/cascivo/cascivo · npmjs.com/package/@cascivo/react',
     },
-    {
-      id: 'fail',
-      title: 'Fetch pricing page',
-      description: 'The page returned 404.',
-      status: 'error',
-    },
+    { id: 'fail', title: 'Fetch pricing page', description: 'The page returned 404.', status: 'error' },
   ]}
 />
 ```

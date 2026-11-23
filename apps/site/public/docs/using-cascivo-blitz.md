@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/using-cascivo-blitz.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Native windows with cascivo-blitz
 
 `cascivo-blitz` shows a `.cv` file in a native window. It uses the Blitz engine (Stylo, Taffy,
@@ -12,10 +11,10 @@ Vello). It needs no browser and no Dioxus. The `.cv` format is the same as in
 
 ## When to use it
 
-| You want                   | Use                                                                |
-| -------------------------- | ------------------------------------------------------------------ |
-| A static HTML file         | `cascivo-html`                                                     |
-| A native window from `.cv` | `cascivo-blitz`                                                    |
+| You want                   | Use                                                          |
+| -------------------------- | ------------------------------------------------------------ |
+| A static HTML file         | `cascivo-html`                                               |
+| A native window from `.cv` | `cascivo-blitz`                                              |
 | A terminal UI              | `cascivo-tui` ([USING-CASCIVO-TUI.md](/docs/using-cascivo-tui.md)) |
 
 ## Install

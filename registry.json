@@ -26167,7 +26167,7 @@
         "textarea.tsx": "sha256-74f851b2888d4f8691effa629663ef65a5579f74f43c26da7225c6a2b36772b2",
         "index.ts": "sha256-faa6e1544725eaeb285606e523d371b45b46d79cf0ab71ab9d5fe4e09ef244b7",
         "textarea.module.css": "sha256-a9ab00f28d9c14d5024b89fa25dab5a8ca13991ec1fe0a3bd68ce12cf01c8f63",
-        "textarea.meta.ts": "sha256-3e7f304e9d68aa49d102d44d28e4e54b44cfdc0af6f4fe468271fd14722d80b4"
+        "textarea.meta.ts": "sha256-00a0d7208a19d11137eb797b8dba8b7e6aaca21bf63ea1b33ba064d2daae5ae4"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -26259,6 +26259,12 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "disabled",

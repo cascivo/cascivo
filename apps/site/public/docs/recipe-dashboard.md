@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/recipe-dashboard.md
   registry v1.11.0 · generated 2026-11-21
 -->
-
 # Recipe: building a console/dashboard page
 
 You're building something like Vercel's project dashboard, a Datadog-style usage
@@ -24,20 +23,20 @@ The column is generated from `registry.json` and checked by
 
 ## Component map
 
-| Need                                                                         | Use                                                                                               | Registry id                                          | Channel                              | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Workspace/project switcher — **collapsed trigger** (the usual console shape) | `Dropdown`                                                                                        | `dropdown`                                           | `@cascivo/react`                     | What Vercel, Linear and GitHub all ship: one row showing the current workspace, a menu on click. Put an `Avatar` + name in the trigger.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| Workspace list — **always visible** in the sidebar                           | `Switcher`                                                                                        | `switcher`                                           | `@cascivo/react`                     | Renders every entry, permanently, at full height — budget the vertical space. Despite the name it does not collapse; an adopter picked it from the name and got both teams stacked in the rail (2026-08-21 report item 5).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| Command palette (⌘K)                                                         | `CommandMenu`                                                                                     | `command-menu`                                       | `@cascivo/react`                     | Full keyboard nav, fuzzy search, page-stack; native `<dialog>` focus trap built in.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| Right-click / row actions                                                    | `ContextMenu`, or `OverflowMenu` for a visible "⋯" trigger                                        | `context-menu`, `overflow-menu`                      | `@cascivo/react`                     | Right-click is undiscoverable on touch — pair `ContextMenu` with a visible `OverflowMenu`/`Dropdown` for the same actions, don't ship it as the only path.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| Page structure (shell content, toolbars, card grids)                         | `Grid`/`GridItem`, `AutoGrid`, `Flex`                                                             | `layout/grid`, `layout/auto-grid`, `layout/flex`     | `@cascivo/react`                     | `Grid`/`GridItem` take responsive object props (`cols={{ base: 1, md: 2, lg: 3 }}`); `AutoGrid` fills columns by width with no media queries; `Flex` is the gap-based flex container. Reach for these before writing custom layout CSS.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| Project-card grid                                                            | `Card` + `Badge` (framework/status) + `RelativeTime` (last deploy), laid out in `AutoGrid`/`Grid` | `card`, `badge`, `relative-time`, `layout/auto-grid` | `@cascivo/react`                     | `AutoGrid min="16rem"` gives a responsive card grid with no media queries; use `Grid cols={{…}}` for an explicit responsive column count. Under SSR pass `RelativeTime`'s `now` (a serialized server timestamp) for byte-identical server/client text — every deploy console has a "3 minutes ago" column. `CardHeader actions={…}` gives the title-left / menu-right header.                                                                                                                                                                                                                                                                                                                                                 |
-| KPI / usage numbers                                                          | `Stat`, or `Kpi` for a chart-library tile                                                         | `stat`, `chart/kpi`                                  | `@cascivo/react` / `@cascivo/charts` | `Stat` is layout-only (label/value/delta/trend); `Kpi` (from `@cascivo/charts`) bundles a trailing sparkline — see below. ⚠ **Pick one per app.** `<Stat card>` matches `Kpi`'s **chrome** (surface/border/radius/padding) but **not its layout** — `Kpi` puts value and delta on one line with the sparkline below, `Stat` stacks value → delta → help text with `visual` trailing — so the two rows still read as different tile designs. Use `Kpi` when you have a numeric `delta` it should format and a sparkline; `Stat` otherwise.                                                                                                                                                                                     |
-| Usage sparklines (inline, no axes)                                           | `Sparkline`                                                                                       | `chart/sparkline`                                    | `@cascivo/charts`                    | `npm: @cascivo/charts`. Token-scaled via `--cascivo-chart-*`. ⚠ **Fixed-width** (120×32 by default) — unlike every other chart it does _not_ track its container, so in a tight card header it pushes siblings onto the next line. Give it a smaller `width`, or protect the text and let the chart keep its intrinsic size: `white-space: nowrap` on the text and `flex: 0 0 auto` on the chart. ⚠ Do **not** put `min-width: 0` on the sparkline's flex item — the SVG has a fixed width attribute so it will not shrink, and the _text_ becomes the flexible item and wraps instead (2026-08-22 report item 18).                                                                                                           |
-| Time-series usage charts (with axes, zoom, live data)                        | `LineChart` / `AreaChart`                                                                         | `chart/line-chart`, `chart/area-chart`               | `@cascivo/charts`                    | Both support time scales — **return a `Date` from `x`** to get one. Returning a `number` gives a linear axis labelled with the raw value, so `Date.now()`-shaped data renders as `1,787,250,000,000` (it warns in dev). Add `format` for sub-day buckets, whose built-in time format repeats the same label. Multi-series, brush/zoom. For live-updating usage graphs, feed them with `useStreamSeries` (`@cascivo/charts`). **Multi-series colours are automatic**: the Nth series takes `--cascivo-chart-N` (eight distinct hues per theme, light and dark), so a two-series chart differentiates itself with no `color` prop. Set `color` on a series only to override — e.g. to make "errors" red regardless of position. |
-| Data table of deployments/rows                                               | `DataTable`                                                                                       | `data-table`                                         | `@cascivo/react`                     | Sorting/pagination/search built in. Set `Column.width` (any CSS length) on identifier-shaped columns — default sizing doesn't consider content shape, so a commit hash wraps mid-hash. **Size SOME columns, not all**: sizing every one flips the table to `table-layout: fixed`, which can overflow its container (the far columns are then reachable by horizontal scroll, not dropped). Leave at least one free-form column unsized to absorb the remaining width. Sized and unsized columns alike have a content floor, so `minWidth` is only for raising it.                                                                                                                                                             |
-| Page header (title + description + breadcrumb + actions)                     | `PageHeader`                                                                                      | `layout/page-header`                                 | `@cascivo/react`                     | Every routed page needs one. Now exported — do **not** hand-compose it from `Heading`/`Text`/`Flex`, and don't `npx cascivo add` it just for this (that mixes consumption paths). Pair `breadcrumb={<Breadcrumb …/>}` with `actions={<Button …/>}`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| Empty state before first deploy/project                                      | a dedicated empty-state block                                                                     | `block/empty-dashboard`                              | copy-paste                           | Full page: empty illustration/copy + CTA, ready to adapt.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Need | Use | Registry id | Channel | Notes |
+| --- | --- | --- | --- | --- |
+| Workspace/project switcher — **collapsed trigger** (the usual console shape) | `Dropdown` | `dropdown` | `@cascivo/react` | What Vercel, Linear and GitHub all ship: one row showing the current workspace, a menu on click. Put an `Avatar` + name in the trigger. |
+| Workspace list — **always visible** in the sidebar | `Switcher` | `switcher` | `@cascivo/react` | Renders every entry, permanently, at full height — budget the vertical space. Despite the name it does not collapse; an adopter picked it from the name and got both teams stacked in the rail (2026-08-21 report item 5). |
+| Command palette (⌘K) | `CommandMenu` | `command-menu` | `@cascivo/react` | Full keyboard nav, fuzzy search, page-stack; native `<dialog>` focus trap built in. |
+| Right-click / row actions | `ContextMenu`, or `OverflowMenu` for a visible "⋯" trigger | `context-menu`, `overflow-menu` | `@cascivo/react` | Right-click is undiscoverable on touch — pair `ContextMenu` with a visible `OverflowMenu`/`Dropdown` for the same actions, don't ship it as the only path. |
+| Page structure (shell content, toolbars, card grids) | `Grid`/`GridItem`, `AutoGrid`, `Flex` | `layout/grid`, `layout/auto-grid`, `layout/flex` | `@cascivo/react` | `Grid`/`GridItem` take responsive object props (`cols={{ base: 1, md: 2, lg: 3 }}`); `AutoGrid` fills columns by width with no media queries; `Flex` is the gap-based flex container. Reach for these before writing custom layout CSS. |
+| Project-card grid | `Card` + `Badge` (framework/status) + `RelativeTime` (last deploy), laid out in `AutoGrid`/`Grid` | `card`, `badge`, `relative-time`, `layout/auto-grid` | `@cascivo/react` | `AutoGrid min="16rem"` gives a responsive card grid with no media queries; use `Grid cols={{…}}` for an explicit responsive column count. Under SSR pass `RelativeTime`'s `now` (a serialized server timestamp) for byte-identical server/client text — every deploy console has a "3 minutes ago" column. `CardHeader actions={…}` gives the title-left / menu-right header. |
+| KPI / usage numbers | `Stat`, or `Kpi` for a chart-library tile | `stat`, `chart/kpi` | `@cascivo/react` / `@cascivo/charts` | `Stat` is layout-only (label/value/delta/trend); `Kpi` (from `@cascivo/charts`) bundles a trailing sparkline — see below. ⚠ **Pick one per app.** `<Stat card>` matches `Kpi`'s **chrome** (surface/border/radius/padding) but **not its layout** — `Kpi` puts value and delta on one line with the sparkline below, `Stat` stacks value → delta → help text with `visual` trailing — so the two rows still read as different tile designs. Use `Kpi` when you have a numeric `delta` it should format and a sparkline; `Stat` otherwise. |
+| Usage sparklines (inline, no axes) | `Sparkline` | `chart/sparkline` | `@cascivo/charts` | `npm: @cascivo/charts`. Token-scaled via `--cascivo-chart-*`. ⚠ **Fixed-width** (120×32 by default) — unlike every other chart it does *not* track its container, so in a tight card header it pushes siblings onto the next line. Give it a smaller `width`, or protect the text and let the chart keep its intrinsic size: `white-space: nowrap` on the text and `flex: 0 0 auto` on the chart. ⚠ Do **not** put `min-width: 0` on the sparkline's flex item — the SVG has a fixed width attribute so it will not shrink, and the *text* becomes the flexible item and wraps instead (2026-08-22 report item 18). |
+| Time-series usage charts (with axes, zoom, live data) | `LineChart` / `AreaChart` | `chart/line-chart`, `chart/area-chart` | `@cascivo/charts` | Both support time scales — **return a `Date` from `x`** to get one. Returning a `number` gives a linear axis labelled with the raw value, so `Date.now()`-shaped data renders as `1,787,250,000,000` (it warns in dev). Add `format` for sub-day buckets, whose built-in time format repeats the same label. Multi-series, brush/zoom. For live-updating usage graphs, feed them with `useStreamSeries` (`@cascivo/charts`). **Multi-series colours are automatic**: the Nth series takes `--cascivo-chart-N` (eight distinct hues per theme, light and dark), so a two-series chart differentiates itself with no `color` prop. Set `color` on a series only to override — e.g. to make "errors" red regardless of position. |
+| Data table of deployments/rows | `DataTable` | `data-table` | `@cascivo/react` | Sorting/pagination/search built in. Set `Column.width` (any CSS length) on identifier-shaped columns — default sizing doesn't consider content shape, so a commit hash wraps mid-hash. **Size SOME columns, not all**: sizing every one flips the table to `table-layout: fixed`, which can overflow its container (the far columns are then reachable by horizontal scroll, not dropped). Leave at least one free-form column unsized to absorb the remaining width. Sized and unsized columns alike have a content floor, so `minWidth` is only for raising it. |
+| Page header (title + description + breadcrumb + actions) | `PageHeader` | `layout/page-header` | `@cascivo/react` | Every routed page needs one. Now exported — do **not** hand-compose it from `Heading`/`Text`/`Flex`, and don't `npx cascivo add` it just for this (that mixes consumption paths). Pair `breadcrumb={<Breadcrumb …/>}` with `actions={<Button …/>}`. |
+| Empty state before first deploy/project | a dedicated empty-state block | `block/empty-dashboard` | copy-paste | Full page: empty illustration/copy + CTA, ready to adapt. |
 
 ## Whole-page starting points
 
@@ -45,14 +44,14 @@ Don't build from the component list above if one of these already matches — st
 from the block/template and adapt it, which is faster and more consistent than
 composing from scratch:
 
-| Block/template                                   | Registry id                                 | What it gives you                                                                     |
-| ------------------------------------------------ | ------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Full KPI-tiles + charts dashboard                | `block/dashboard-charts`                    | KPI tiles, line chart, bar chart, and pie chart wired together over sample data.      |
-| KPI stat-card grid only                          | `block/stats-cards`                         | Grid of `Stat` cards with trend badges — the "four numbers at the top" row.           |
-| Welcome header + KPI cards                       | `dashboard-overview`                        | Header + four KPI stat cards (revenue, users, orders, …).                             |
-| Searchable/sortable/paginated table page         | `dashboard-table`, `block/users-table-page` | `DataTable` wired with search, sort, pagination, export/invite actions.               |
-| App shell with collapsible sidebar               | `app-shell`, `block/sidebar-app`            | Sidebar + topbar + content area chrome to host any of the above.                      |
-| Carbon-parity console shell (icon-rail side nav) | `block/console-app`                         | `ShellHeader` + icon-rail `SideNav` + content area — denser, IDE-like console chrome. |
+| Block/template | Registry id | What it gives you |
+| --- | --- | --- |
+| Full KPI-tiles + charts dashboard | `block/dashboard-charts` | KPI tiles, line chart, bar chart, and pie chart wired together over sample data. |
+| KPI stat-card grid only | `block/stats-cards` | Grid of `Stat` cards with trend badges — the "four numbers at the top" row. |
+| Welcome header + KPI cards | `dashboard-overview` | Header + four KPI stat cards (revenue, users, orders, …). |
+| Searchable/sortable/paginated table page | `dashboard-table`, `block/users-table-page` | `DataTable` wired with search, sort, pagination, export/invite actions. |
+| App shell with collapsible sidebar | `app-shell`, `block/sidebar-app` | Sidebar + topbar + content area chrome to host any of the above. |
+| Carbon-parity console shell (icon-rail side nav) | `block/console-app` | `ShellHeader` + icon-rail `SideNav` + content area — denser, IDE-like console chrome. |
 
 Before scaffolding by hand, check `list_templates` (MCP) or `/docs/marketplace` for a
 whole-page `dashboard` template — see the `cascivo-design-page` skill's step 0.
@@ -67,6 +66,7 @@ read one end-to-end rather than starting from a blank file:
 - [`apps/examples/trade`](https://github.com/cascivo/cascivo/tree/main/apps/examples/trade) — Trade Republic-style: `Sparkline`, `Stat`.
 - [`apps/examples/pay`](https://github.com/cascivo/cascivo/tree/main/apps/examples/pay) — Stripe-style: `AreaChart`, `BarChart`.
 - [`apps/examples/track`](https://github.com/cascivo/cascivo/tree/main/apps/examples/track) — Linear-style issue tracker console.
+
 
 ## Bundle size, and the 500 KB warning on your first build
 
@@ -96,7 +96,7 @@ keeps the engine out of the initial chunk entirely.
 
 > ### ⚠ Split the index route too, or the chart engine lands in your entry chunk anyway
 >
-> "Split the chart routes" reads as _not_ including the landing page, and an adopter took it
+> "Split the chart routes" reads as *not* including the landing page, and an adopter took it
 > that way (2026-08-08 report B). They split `/analytics` exactly as above, left `/` eager,
 > and measured:
 >
@@ -105,7 +105,7 @@ keeps the engine out of the initial chunk entirely.
 > dist/assets/analytics-*.js   2.88 kB   ← the "big" chart route
 > ```
 >
-> The analytics chunk was 2.9 kB because `@cascivo/charts` was _already_ in the entry chunk:
+> The analytics chunk was 2.9 kB because `@cascivo/charts` was *already* in the entry chunk:
 > the Overview page uses `Sparkline` in its KPI tiles and project cards — which is what
 > ["Composing a KPI tile with a sparkline"](#composing-a-kpi-tile-with-a-sparkline) below
 > recommends. One `Sparkline` on an **eagerly-loaded** route pulls the engine into the entry
@@ -127,7 +127,7 @@ keeps the engine out of the initial chunk entirely.
 > charts — a marketing page, a KPI strip — import from the engine-free subpath instead:
 >
 > ```tsx
-> import { Sparkline } from '@cascivo/charts/sparkline' // ~3.5 kB gzip, no chart engine
+> import { Sparkline } from '@cascivo/charts/sparkline'   // ~3.5 kB gzip, no chart engine
 > ```
 >
 > Same chart, same props, same markup; the one difference is that it has no hover tooltip,
@@ -162,7 +162,7 @@ The canonical dashboard tile — a number, a trend, and a tiny chart — is eith
 import { Stat } from '@cascivo/react'
 import { Sparkline } from '@cascivo/charts'
 
-;<Stat
+<Stat
   label="Requests / min"
   value="1.2k"
   delta="+4.3%"
@@ -175,11 +175,11 @@ import { Sparkline } from '@cascivo/charts'
 // Or the charts package's own KPI tile, sparkline built in
 import { Kpi } from '@cascivo/charts'
 
-;<Kpi
+<Kpi
   label="Requests / min"
   value={1200}
   delta={4.3}
-  deltaFormat="percent" // renders +4.3% — `delta` is a number, Kpi owns the formatting
+  deltaFormat="percent"   // renders +4.3% — `delta` is a number, Kpi owns the formatting
   sparkline={requestsPerMinute}
 />
 ```
@@ -205,14 +205,14 @@ no container query to write:
 </Card>
 ```
 
-- **`width`** — a _fixed_ SVG width in px, for an export or a thumbnail. It is clamped to the
+- **`width`** — a *fixed* SVG width in px, for an export or a thumbnail. It is clamped to the
   container (`max-inline-size: 100%`), so it can never overflow its card, but it also stops
   the chart from growing. In a responsive dashboard grid there is no correct number: don't
   pass one.
 - **`height`** — sets the aspect (default 300; 48 in `plain` mode). Unlike `width` it does
   **not** track the container, so this is the knob you do set.
 - **`useChartSize`** is **not** the answer to "make my chart responsive" — charts already
-  call it internally. Reach for it only to size a _different_ element to match a chart, or to
+  call it internally. Reach for it only to size a *different* element to match a chart, or to
   build a custom chart on the same measurement primitive.
 
 Two axis-chrome details worth knowing, both automatic:
@@ -232,8 +232,8 @@ Two axis-chrome details worth knowing, both automatic:
 A dashboard file often imports from `@cascivo/react`, `@cascivo/charts` and `@cascivo/icons`
 at once. **No name clash remains** — the last one is fixed rather than documented:
 
-| Name   | `@cascivo/react`         | `@cascivo/charts`            |
-| ------ | ------------------------ | ---------------------------- |
+| Name | `@cascivo/react` | `@cascivo/charts` |
+| --- | --- | --- |
 | `Text` | the typography component | — renamed to **`ChartText`** |
 
 ```tsx
@@ -268,29 +268,29 @@ These 21 names exist in **both** `@cascivo/icons` and a component package
 (`@cascivo/react` or `@cascivo/charts`). Both are valid JSX in the same position, so a
 wrong import resolves silently instead of failing to compile — alias the icon:
 
-| Name       | Alias the icon as                                           |
-| ---------- | ----------------------------------------------------------- |
+| Name | Alias the icon as |
+| --- | --- |
 | `BarChart` | `import { BarChart as BarChartIcon } from '@cascivo/icons'` |
 | `Calendar` | `import { Calendar as CalendarIcon } from '@cascivo/icons'` |
-| `Code`     | `import { Code as CodeIcon } from '@cascivo/icons'`         |
-| `Column`   | `import { Column as ColumnIcon } from '@cascivo/icons'`     |
-| `Filter`   | `import { Filter as FilterIcon } from '@cascivo/icons'`     |
-| `Gauge`    | `import { Gauge as GaugeIcon } from '@cascivo/icons'`       |
-| `Glyph`    | `import { Glyph as GlyphIcon } from '@cascivo/icons'`       |
-| `Grid`     | `import { Grid as GridIcon } from '@cascivo/icons'`         |
-| `Heatmap`  | `import { Heatmap as HeatmapIcon } from '@cascivo/icons'`   |
-| `Image`    | `import { Image as ImageIcon } from '@cascivo/icons'`       |
-| `Link`     | `import { Link as LinkIcon } from '@cascivo/icons'`         |
-| `List`     | `import { List as ListIcon } from '@cascivo/icons'`         |
-| `Menu`     | `import { Menu as MenuIcon } from '@cascivo/icons'`         |
+| `Code` | `import { Code as CodeIcon } from '@cascivo/icons'` |
+| `Column` | `import { Column as ColumnIcon } from '@cascivo/icons'` |
+| `Filter` | `import { Filter as FilterIcon } from '@cascivo/icons'` |
+| `Gauge` | `import { Gauge as GaugeIcon } from '@cascivo/icons'` |
+| `Glyph` | `import { Glyph as GlyphIcon } from '@cascivo/icons'` |
+| `Grid` | `import { Grid as GridIcon } from '@cascivo/icons'` |
+| `Heatmap` | `import { Heatmap as HeatmapIcon } from '@cascivo/icons'` |
+| `Image` | `import { Image as ImageIcon } from '@cascivo/icons'` |
+| `Link` | `import { Link as LinkIcon } from '@cascivo/icons'` |
+| `List` | `import { List as ListIcon } from '@cascivo/icons'` |
+| `Menu` | `import { Menu as MenuIcon } from '@cascivo/icons'` |
 | `PieChart` | `import { PieChart as PieChartIcon } from '@cascivo/icons'` |
-| `Radar`    | `import { Radar as RadarIcon } from '@cascivo/icons'`       |
-| `Radio`    | `import { Radio as RadioIcon } from '@cascivo/icons'`       |
-| `Search`   | `import { Search as SearchIcon } from '@cascivo/icons'`     |
-| `Steps`    | `import { Steps as StepsIcon } from '@cascivo/icons'`       |
-| `Tag`      | `import { Tag as TagIcon } from '@cascivo/icons'`           |
+| `Radar` | `import { Radar as RadarIcon } from '@cascivo/icons'` |
+| `Radio` | `import { Radio as RadioIcon } from '@cascivo/icons'` |
+| `Search` | `import { Search as SearchIcon } from '@cascivo/icons'` |
+| `Steps` | `import { Steps as StepsIcon } from '@cascivo/icons'` |
+| `Tag` | `import { Tag as TagIcon } from '@cascivo/icons'` |
 | `Terminal` | `import { Terminal as TerminalIcon } from '@cascivo/icons'` |
-| `User`     | `import { User as UserIcon } from '@cascivo/icons'`         |
+| `User` | `import { User as UserIcon } from '@cascivo/icons'` |
 
 <!-- END:icon-collisions -->
 

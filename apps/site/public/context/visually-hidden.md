@@ -32,9 +32,9 @@ Applies the standard clip technique so content stays in the DOM and accessibilit
 
 ## Props
 
-| Name       | Type        | Required | Default | Description                                               |
-| ---------- | ----------- | -------- | ------- | --------------------------------------------------------- |
-| `children` | `ReactNode` | Yes      | —       | Content announced by assistive technology but not painted |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | Yes | — | Content announced by assistive technology but not painted |
 
 ## Examples
 
@@ -43,26 +43,21 @@ Applies the standard clip technique so content stays in the DOM and accessibilit
 Gives an icon-only control an accessible name
 
 ```jsx
-<button type="button">
-  <CloseIcon />
-  <VisuallyHidden>Close dialog</VisuallyHidden>
-</button>
+<button type="button"><CloseIcon /><VisuallyHidden>Close dialog</VisuallyHidden></button>
 ```
 
 ### Table context
 
 ```jsx
-<th>
-  Price <VisuallyHidden>(in euros)</VisuallyHidden>
-</th>
+<th>Price <VisuallyHidden>(in euros)</VisuallyHidden></th>
 ```
 
 ## Boundaries
 
-| Area                 | Level    | Note                                                    |
-| -------------------- | -------- | ------------------------------------------------------- |
-| children             | flexible | Any text/content meant for assistive tech               |
-| visibility technique | strict   | Must keep content in the a11y tree — never display:none |
+| Area | Level | Note |
+|------|-------|------|
+| children | flexible | Any text/content meant for assistive tech |
+| visibility technique | strict | Must keep content in the a11y tree — never display:none |
 
 ## AI context prompt
 

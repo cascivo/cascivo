@@ -22,10 +22,10 @@ import { Sources } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                   | Required | Default | Description                                                                                                                                                                         |
-| -------- | ---------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `items`  | `AiSource[]`           | yes      | —       | The sources, in citation order. Each has `title`, `url` and an optional `description`. Only absolute http(s) URLs become links; anything else (e.g. `javascript:`) renders as text. |
-| `labels` | `{ summary?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n). `summary` may contain `{count}`.                                                                                         |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `AiSource[]` | yes | — | The sources, in citation order. Each has `title`, `url` and an optional `description`. Only absolute http(s) URLs become links; anything else (e.g. `javascript:`) renders as text. |
+| `labels` | `{ summary?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). `summary` may contain `{count}`. |
 
 ## Object types
 
@@ -33,11 +33,11 @@ import { Sources } from '@cascivo/react'
 
 One source an answer cites.
 
-| Field         | Type        | Required | Description                                                                  |
-| ------------- | ----------- | -------- | ---------------------------------------------------------------------------- |
-| `title`       | `string`    | yes      | The source’s title.                                                          |
-| `url`         | `string`    | yes      | Where it lives. Treated as untrusted: only absolute http(s) URLs are linked. |
-| `description` | `ReactNode` | no       | An excerpt or note shown under the title.                                    |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | `string` | yes | The source’s title. |
+| `url` | `string` | yes | Where it lives. Treated as untrusted: only absolute http(s) URLs are linked. |
+| `description` | `ReactNode` | no | An excerpt or note shown under the title. |
 
 ## Examples
 
@@ -47,11 +47,7 @@ One source an answer cites.
 <Sources
   items={[
     { title: 'Refund policy', url: 'https://example.com/refunds' },
-    {
-      title: 'Terms of service',
-      url: 'https://example.com/terms',
-      description: '§4 covers cancellations.',
-    },
+    { title: 'Terms of service', url: 'https://example.com/terms', description: '§4 covers cancellations.' },
   ]}
 />
 ```

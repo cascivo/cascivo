@@ -32,20 +32,20 @@ import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bund
 
 ## Props
 
-| Prop            | Type                                     | Required | Default | Description                                                                 |
-| --------------- | ---------------------------------------- | -------- | ------- | --------------------------------------------------------------------------- |
-| `type`          | `'source' \| 'target'`                   | yes      | —       | Whether the handle is a connection source or target ('source' \| 'target'). |
-| `position`      | `'top' \| 'right' \| 'bottom' \| 'left'` | no       | —       | Edge of the node (defaults: source→right, target→left).                     |
-| `id`            | `string`                                 | no       | —       | Handle id for multi-handle nodes.                                           |
-| `isConnectable` | `boolean`                                | no       | `true`  | Whether new connections can start or end at this handle.                    |
-| `className`     | `string`                                 | no       | —       | Additional CSS class names merged onto the root element.                    |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `type` | `'source' \| 'target'` | yes | — | Whether the handle is a connection source or target ('source' \| 'target'). |
+| `position` | `'top' \| 'right' \| 'bottom' \| 'left'` | no | — | Edge of the node (defaults: source→right, target→left). |
+| `id` | `string` | no | — | Handle id for multi-handle nodes. |
+| `isConnectable` | `boolean` | no | `true` | Whether new connections can start or end at this handle. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
 ### Source and target ports
 
 ```tsx
-;() => (
+() => (
   <div style={{ position: 'relative', height: 160 }}>
     <FlowNode id="api" defaultPosition={{ x: 70, y: 55 }}>
       API

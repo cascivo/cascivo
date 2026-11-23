@@ -20341,6 +20341,7 @@ import { Textarea } from '@cascivo/react'
 | `rows` | `number` | no | `4` | Number of visible text rows. |
 | `resize` | `'none' \| 'vertical' \| 'both'` | no | `vertical` | Which directions the textarea can be resized ('none' \| 'vertical' \| 'both'). |
 | `autosize` | `boolean` | no | `false` | Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept. |
+| `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `value` | `string` | no | — | The controlled value. |
 | `defaultValue` | `string` | no | — | The initial value when uncontrolled. |

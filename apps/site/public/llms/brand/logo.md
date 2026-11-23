@@ -30,10 +30,10 @@ import { Logo } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type                                                            | Required | Default                      | Description                                                                                                                                          |
-| --------- | --------------------------------------------------------------- | -------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant` | `'mark' \| 'mark-accent' \| 'horizontal' \| 'stacked' \| 'nav'` | no       | `mark`                       | `mark` and `mark-accent` render the square alone; `horizontal`, `stacked` and `nav` add the wordmark. `nav` is the only lockup permitted below 24px. |
-| `size`    | `number`                                                        | no       | `18 for `nav`, 32 otherwise` | Mark height in px. Clamped to a 16px floor — below that the notch closes optically.                                                                  |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'mark' \| 'mark-accent' \| 'horizontal' \| 'stacked' \| 'nav'` | no | `mark` | `mark` and `mark-accent` render the square alone; `horizontal`, `stacked` and `nav` add the wordmark. `nav` is the only lockup permitted below 24px. |
+| `size` | `number` | no | `18 for `nav`, 32 otherwise` | Mark height in px. Clamped to a 16px floor — below that the notch closes optically. |
 
 ## Examples
 

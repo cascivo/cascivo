@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Collapsible } from '@cascivo/react'
 
 const meta: Meta = {
-  title: 'Display/Collapsible',
+  title: "Display/Collapsible",
 }
 export default meta
 type Story = StoryObj
 
 export const Uncontrolled: Story = {
-  name: 'Uncontrolled',
+  name: "Uncontrolled",
   render: () => (
     <Collapsible trigger="Show details">
       <p>Hidden content revealed on toggle.</p>
@@ -18,10 +18,11 @@ export const Uncontrolled: Story = {
 }
 
 export const OpenByDefault: Story = {
-  name: 'Open by default',
+  name: "Open by default",
   render: () => (
     <Collapsible defaultOpen trigger="Details">
       <p>Visible initially.</p>
     </Collapsible>
   ),
 }
+

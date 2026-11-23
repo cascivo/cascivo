@@ -34,13 +34,13 @@ Built on native <details>/<summary>, so the trigger is a keyboard-operable discl
 
 ## Props
 
-| Name        | Type                                                         | Required | Default | Description                                                                                                                                              |
-| ----------- | ------------------------------------------------------------ | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `children`  | `ReactNode`                                                  | Yes      | —       | The reasoning text or steps.                                                                                                                             |
-| `streaming` | `boolean`                                                    | No       | false   | True while reasoning is still arriving: the panel opens, the trigger shimmers "Thinking…" and the content is aria-busy. Turning it off closes the panel. |
-| `duration`  | `number`                                                     | No       | —       | Seconds spent reasoning. Once streaming ends the trigger reads "Thought for {duration} seconds"; without it, "Reasoning". The caller owns the clock.     |
-| `label`     | `ReactNode`                                                  | No       | —       | Replaces the trigger text in every state. Rendered on screen.                                                                                            |
-| `labels`    | `{ thinking?: string; thoughtFor?: string; label?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n). `thoughtFor` may contain `{count}`.                                                           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | Yes | — | The reasoning text or steps. |
+| `streaming` | `boolean` | No | false | True while reasoning is still arriving: the panel opens, the trigger shimmers "Thinking…" and the content is aria-busy. Turning it off closes the panel. |
+| `duration` | `number` | No | — | Seconds spent reasoning. Once streaming ends the trigger reads "Thought for {duration} seconds"; without it, "Reasoning". The caller owns the clock. |
+| `label` | `ReactNode` | No | — | Replaces the trigger text in every state. Rendered on screen. |
+| `labels` | `{ thinking?: string; thoughtFor?: string; label?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). `thoughtFor` may contain `{count}`. |
 
 ## Tokens
 
@@ -63,17 +63,15 @@ Built on native <details>/<summary>, so the trigger is a keyboard-operable discl
 ### Settled
 
 ```jsx
-<Reasoning duration={12}>
-  The user wants a summary, so I started with the totals and then compared regions.
-</Reasoning>
+<Reasoning duration={12}>The user wants a summary, so I started with the totals and then compared regions.</Reasoning>
 ```
 
 ## Boundaries
 
-| Area           | Level    | Note                                                                                               |
-| -------------- | -------- | -------------------------------------------------------------------------------------------------- |
-| trigger text   | flexible | Override with label, or localise each state through labels                                         |
-| open behaviour | strict   | Opens when streaming starts and closes when it ends; do not force it open after the answer arrives |
+| Area | Level | Note |
+|------|-------|------|
+| trigger text | flexible | Override with label, or localise each state through labels |
+| open behaviour | strict | Opens when streaming starts and closes when it ends; do not force it open after the answer arrives |
 
 ## AI context prompt
 

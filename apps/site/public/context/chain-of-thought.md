@@ -36,10 +36,10 @@ An ordered list whose active step carries aria-current="step" and whose list is 
 
 ## Props
 
-| Name     | Type                                                                       | Required | Default | Description                                                                                                                                                                                                                                                        |
-| -------- | -------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `items`  | `ChainOfThoughtItem[]`                                                     | Yes      | —       | The steps, in order. Each has `id`, `title`, optional `description`, `status` (`pending \| active \| complete \| error`, plus the `current` / `upcoming` aliases), optional `detail` (collapsible content that turns the title into a toggle) and optional `icon`. |
-| `labels` | `{ pending?: string; active?: string; complete?: string; error?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n) — the status text a screen reader hears after each step title.                                                                                                                                           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `ChainOfThoughtItem[]` | Yes | — | The steps, in order. Each has `id`, `title`, optional `description`, `status` (`pending \| active \| complete \| error`, plus the `current` / `upcoming` aliases), optional `detail` (collapsible content that turns the title into a toggle) and optional `icon`. |
+| `labels` | `{ pending?: string; active?: string; complete?: string; error?: string }` | No | — | Overrides for the component’s user-visible strings (i18n) — the status text a screen reader hears after each step title. |
 
 ## Object types
 
@@ -47,14 +47,14 @@ An ordered list whose active step carries aria-current="step" and whose list is 
 
 One step in the chain.
 
-| Field         | Type            | Required | Description                                                                                    |
-| ------------- | --------------- | -------- | ---------------------------------------------------------------------------------------------- |
-| `id`          | `string`        | Yes      | Stable key for the step.                                                                       |
-| `title`       | `ReactNode`     | Yes      | What the step does.                                                                            |
-| `description` | `ReactNode`     | No       | A secondary line under the title.                                                              |
-| `status`      | `ProgressInput` | No       | `pending \| active \| complete \| error` (plus `current` / `upcoming`). Defaults to `pending`. |
-| `detail`      | `ReactNode`     | No       | Collapsible content; makes the title a disclosure toggle.                                      |
-| `icon`        | `ReactNode`     | No       | Replaces the status glyph in the marker.                                                       |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | `string` | Yes | Stable key for the step. |
+| `title` | `ReactNode` | Yes | What the step does. |
+| `description` | `ReactNode` | No | A secondary line under the title. |
+| `status` | `ProgressInput` | No | `pending \| active \| complete \| error` (plus `current` / `upcoming`). Defaults to `pending`. |
+| `detail` | `ReactNode` | No | Collapsible content; makes the title a disclosure toggle. |
+| `icon` | `ReactNode` | No | Replaces the status glyph in the marker. |
 
 ## Tokens
 
@@ -92,22 +92,17 @@ One step in the chain.
       status: 'complete',
       detail: 'cascivo.com/docs · github.com/cascivo/cascivo · npmjs.com/package/@cascivo/react',
     },
-    {
-      id: 'fail',
-      title: 'Fetch pricing page',
-      description: 'The page returned 404.',
-      status: 'error',
-    },
+    { id: 'fail', title: 'Fetch pricing page', description: 'The page returned 404.', status: 'error' },
   ]}
 />
 ```
 
 ## Boundaries
 
-| Area              | Level    | Note                                                             |
-| ----------------- | -------- | ---------------------------------------------------------------- |
-| step content      | flexible | Titles, descriptions, detail and icons are any ReactNode         |
-| status vocabulary | strict   | Use the shared Progress values; do not invent per-chain statuses |
+| Area | Level | Note |
+|------|-------|------|
+| step content | flexible | Titles, descriptions, detail and icons are any ReactNode |
+| status vocabulary | strict | Use the shared Progress values; do not invent per-chain statuses |
 
 ## AI context prompt
 
