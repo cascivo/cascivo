@@ -109,6 +109,88 @@
         "overlay": "cv-action-sheet-overlay",
         "sheet": "cv-action-sheet-sheet",
         "title": "cv-action-sheet-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "overlay",
+          "children": [
+            "sheet"
+          ],
+          "class": "cv-action-sheet-overlay"
+        },
+        "parts": {
+          "sheet": {
+            "element": "div",
+            "role": "menu",
+            "aria": [
+              "aria-label",
+              "aria-labelledby",
+              "aria-describedby"
+            ],
+            "children": [
+              "group"
+            ],
+            "local": "sheet",
+            "class": "cv-action-sheet-sheet"
+          },
+          "group": {
+            "element": "div",
+            "children": [
+              "heading",
+              "item"
+            ],
+            "local": "group",
+            "class": "cv-action-sheet-group"
+          },
+          "heading": {
+            "element": "div",
+            "role": "presentation",
+            "children": [
+              "title",
+              "description"
+            ],
+            "local": "heading",
+            "class": "cv-action-sheet-heading"
+          },
+          "title": {
+            "element": "p",
+            "children": [
+              "$slot"
+            ],
+            "local": "title",
+            "class": "cv-action-sheet-title"
+          },
+          "description": {
+            "element": "p",
+            "children": [
+              "$slot"
+            ],
+            "local": "description",
+            "class": "cv-action-sheet-description"
+          },
+          "item": {
+            "element": "button",
+            "role": "menuitem",
+            "data": {
+              "data-destructive": "string"
+            },
+            "aria": [
+              "aria-disabled"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "item",
+            "class": "cv-action-sheet-item",
+            "modifiers": {
+              "cancel": {
+                "class": "cv-action-sheet-cancel",
+                "when": "cancel button"
+              }
+            }
+          }
+        }
       }
     },
     "ai-badge": {
@@ -355,6 +437,85 @@
         "description": "cv-alert-dialog-description",
         "dialog": "cv-alert-dialog-dialog",
         "title": "cv-alert-dialog-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "dialog",
+          "role": "alertdialog",
+          "data": {
+            "data-state": [
+              "open",
+              "closed"
+            ],
+            "data-variant": [
+              "default",
+              "destructive"
+            ]
+          },
+          "aria": [
+            "aria-modal",
+            "aria-labelledby",
+            "aria-describedby"
+          ],
+          "children": [
+            "content"
+          ],
+          "class": "cv-alert-dialog-dialog"
+        },
+        "parts": {
+          "content": {
+            "element": "div",
+            "children": [
+              "title",
+              "description",
+              "actions"
+            ],
+            "local": "content",
+            "class": "cv-alert-dialog-content"
+          },
+          "title": {
+            "element": "p",
+            "children": [
+              "$text"
+            ],
+            "local": "title",
+            "class": "cv-alert-dialog-title"
+          },
+          "description": {
+            "element": "p",
+            "children": [
+              "$text"
+            ],
+            "local": "description",
+            "class": "cv-alert-dialog-description"
+          },
+          "actions": {
+            "element": "div",
+            "children": [
+              "cancel",
+              "confirm"
+            ],
+            "local": "actions",
+            "class": "cv-alert-dialog-actions"
+          },
+          "cancel": {
+            "element": "button",
+            "children": [
+              "$text"
+            ],
+            "local": "cancel",
+            "class": "cv-alert-dialog-cancel"
+          },
+          "confirm": {
+            "element": "button",
+            "children": [
+              "$text"
+            ],
+            "local": "confirm",
+            "class": "cv-alert-dialog-confirm"
+          }
+        }
       }
     },
     "app-shell": {
@@ -705,6 +866,108 @@
         "overlay": "cv-bottom-sheet-overlay",
         "panel": "cv-bottom-sheet-panel",
         "title": "cv-bottom-sheet-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "overlay",
+          "children": [
+            "panel"
+          ],
+          "class": "cv-bottom-sheet-overlay"
+        },
+        "parts": {
+          "panel": {
+            "element": "div",
+            "role": "dialog",
+            "data": {
+              "data-dragging": "string"
+            },
+            "aria": [
+              "aria-modal",
+              "aria-labelledby",
+              "aria-describedby"
+            ],
+            "children": [
+              "header",
+              "body"
+            ],
+            "local": "panel",
+            "class": "cv-bottom-sheet-panel"
+          },
+          "header": {
+            "element": "div",
+            "children": [
+              "handle",
+              "heading",
+              "close"
+            ],
+            "local": "header",
+            "class": "cv-bottom-sheet-header"
+          },
+          "handle": {
+            "element": "div",
+            "role": "separator",
+            "aria": [
+              "aria-label",
+              "aria-orientation"
+            ],
+            "local": "handle",
+            "class": "cv-bottom-sheet-handle"
+          },
+          "heading": {
+            "element": "div",
+            "children": [
+              "title",
+              "description"
+            ],
+            "local": "heading",
+            "class": "cv-bottom-sheet-heading"
+          },
+          "title": {
+            "element": "h2",
+            "children": [
+              "$slot"
+            ],
+            "local": "title",
+            "class": "cv-bottom-sheet-title"
+          },
+          "description": {
+            "element": "p",
+            "children": [
+              "$slot"
+            ],
+            "local": "description",
+            "class": "cv-bottom-sheet-description"
+          },
+          "close": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "closeIcon"
+            ],
+            "local": "close",
+            "class": "cv-bottom-sheet-close"
+          },
+          "closeIcon": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "closeIcon",
+            "class": "cv-bottom-sheet-closeIcon"
+          },
+          "body": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "body",
+            "class": "cv-bottom-sheet-body"
+          }
+        }
       }
     },
     "breadcrumb": {
@@ -833,6 +1096,160 @@
         "todayButton": "cv-calendar-todayButton",
         "weekNumber": "cv-calendar-weekNumber",
         "weekday": "cv-calendar-weekday"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "children": [
+            "header",
+            "grid",
+            "footer",
+            "srOnly"
+          ],
+          "local": "calendar",
+          "class": "cv-calendar-calendar"
+        },
+        "parts": {
+          "header": {
+            "element": "div",
+            "children": [
+              "navButton",
+              "navSpacer",
+              "monthLabel"
+            ],
+            "local": "header",
+            "class": "cv-calendar-header"
+          },
+          "navButton": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "navButton",
+            "class": "cv-calendar-navButton"
+          },
+          "navSpacer": {
+            "element": "span",
+            "local": "navSpacer",
+            "class": "cv-calendar-navSpacer"
+          },
+          "monthLabel": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "monthLabel",
+            "class": "cv-calendar-monthLabel"
+          },
+          "grid": {
+            "element": "table",
+            "role": "grid",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "weekday",
+              "weekNumber",
+              "empty",
+              "cell"
+            ],
+            "local": "grid",
+            "class": "cv-calendar-grid"
+          },
+          "weekday": {
+            "element": "th",
+            "children": [
+              "srOnly",
+              "$text"
+            ],
+            "local": "weekday",
+            "class": "cv-calendar-weekday"
+          },
+          "weekNumber": {
+            "element": "th",
+            "children": [
+              "$text"
+            ],
+            "local": "weekNumber",
+            "class": "cv-calendar-weekNumber"
+          },
+          "empty": {
+            "element": "td",
+            "role": "gridcell",
+            "local": "empty",
+            "class": "cv-calendar-empty"
+          },
+          "cell": {
+            "element": "td",
+            "role": "presentation",
+            "children": [
+              "day"
+            ],
+            "local": "cell",
+            "class": "cv-calendar-cell"
+          },
+          "day": {
+            "element": "button",
+            "role": "gridcell",
+            "data": {
+              "data-day": "string",
+              "data-selected": "string",
+              "data-today": "string",
+              "data-in-range": "string",
+              "data-range-start": "string",
+              "data-range-end": "string"
+            },
+            "aria": [
+              "aria-label",
+              "aria-selected",
+              "aria-current",
+              "aria-disabled"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "day",
+            "class": "cv-calendar-day"
+          },
+          "footer": {
+            "element": "div",
+            "when": "showToday",
+            "children": [
+              "todayButton"
+            ],
+            "local": "footer",
+            "class": "cv-calendar-footer"
+          },
+          "todayButton": {
+            "element": "button",
+            "children": [
+              "$text"
+            ],
+            "local": "todayButton",
+            "class": "cv-calendar-todayButton"
+          },
+          "srOnly": {
+            "element": "span",
+            "aria": [
+              "aria-live"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "srOnly",
+            "class": "cv-calendar-srOnly"
+          }
+        }
       }
     },
     "card": {
@@ -966,6 +1383,158 @@
         "slide": "cv-carousel-slide",
         "track": "cv-carousel-track",
         "viewport": "cv-carousel-viewport"
+      },
+      "anatomy": {
+        "root": {
+          "element": "section",
+          "aria": [
+            "aria-roledescription",
+            "aria-label"
+          ],
+          "children": [
+            "viewport",
+            "controls"
+          ],
+          "local": "carousel",
+          "class": "cv-carousel-carousel"
+        },
+        "parts": {
+          "viewport": {
+            "element": "div",
+            "children": [
+              "nav",
+              "track"
+            ],
+            "local": "viewport",
+            "class": "cv-carousel-viewport"
+          },
+          "nav": {
+            "element": "button",
+            "aria": [
+              "aria-label",
+              "aria-controls"
+            ],
+            "children": [
+              "chevron"
+            ],
+            "local": "nav",
+            "class": "cv-carousel-nav",
+            "modifiers": {
+              "prev": {
+                "class": "cv-carousel-prev",
+                "when": "previous button"
+              },
+              "next": {
+                "class": "cv-carousel-next",
+                "when": "next button"
+              }
+            }
+          },
+          "chevron": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "chevron",
+            "class": "cv-carousel-chevron",
+            "modifiers": {
+              "chevronPrev": {
+                "class": "cv-carousel-chevronPrev",
+                "when": "previous button"
+              },
+              "chevronNext": {
+                "class": "cv-carousel-chevronNext",
+                "when": "next button"
+              }
+            }
+          },
+          "track": {
+            "element": "div",
+            "aria": [
+              "aria-live"
+            ],
+            "children": [
+              "slide"
+            ],
+            "local": "track",
+            "class": "cv-carousel-track"
+          },
+          "slide": {
+            "element": "div",
+            "role": "group",
+            "aria": [
+              "aria-roledescription",
+              "aria-label"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "slide",
+            "class": "cv-carousel-slide"
+          },
+          "controls": {
+            "element": "div",
+            "children": [
+              "playPause",
+              "dots"
+            ],
+            "local": "controls",
+            "class": "cv-carousel-controls"
+          },
+          "playPause": {
+            "element": "button",
+            "when": "autoplay",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "pauseGlyph",
+              "playGlyph"
+            ],
+            "local": "playPause",
+            "class": "cv-carousel-playPause"
+          },
+          "pauseGlyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "pauseGlyph",
+            "class": "cv-carousel-pauseGlyph"
+          },
+          "playGlyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "playGlyph",
+            "class": "cv-carousel-playGlyph"
+          },
+          "dots": {
+            "element": "div",
+            "role": "group",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "dot"
+            ],
+            "local": "dots",
+            "class": "cv-carousel-dots"
+          },
+          "dot": {
+            "element": "button",
+            "data": {
+              "data-active": "string"
+            },
+            "aria": [
+              "aria-label",
+              "aria-current"
+            ],
+            "local": "dot",
+            "class": "cv-carousel-dot"
+          }
+        }
       }
     },
     "chain-of-thought": {
@@ -1609,6 +2178,167 @@
         "srOnly": "cv-color-picker-srOnly",
         "thumb": "cv-color-picker-thumb",
         "wrapper": "cv-color-picker-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "data-disabled": "string"
+          },
+          "children": [
+            "label",
+            "area",
+            "sliders",
+            "row",
+            "presets",
+            "srOnly"
+          ],
+          "class": "cv-color-picker-wrapper"
+        },
+        "parts": {
+          "label": {
+            "element": "label",
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-color-picker-label"
+          },
+          "area": {
+            "element": "div",
+            "role": "group",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "axis",
+              "thumb"
+            ],
+            "local": "area",
+            "class": "cv-color-picker-area"
+          },
+          "axis": {
+            "element": "input",
+            "aria": [
+              "aria-label",
+              "aria-valuetext"
+            ],
+            "local": "axis",
+            "class": "cv-color-picker-axis"
+          },
+          "thumb": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "thumb",
+            "class": "cv-color-picker-thumb"
+          },
+          "sliders": {
+            "element": "div",
+            "children": [
+              "slider"
+            ],
+            "local": "sliders",
+            "class": "cv-color-picker-sliders"
+          },
+          "slider": {
+            "element": "input",
+            "aria": [
+              "aria-label",
+              "aria-valuetext"
+            ],
+            "local": "slider",
+            "class": "cv-color-picker-slider",
+            "modifiers": {
+              "hue": {
+                "class": "cv-color-picker-hue",
+                "when": "hue slider"
+              },
+              "alpha": {
+                "class": "cv-color-picker-alpha",
+                "when": "alpha slider"
+              }
+            }
+          },
+          "row": {
+            "element": "div",
+            "children": [
+              "preview",
+              "hex",
+              "eyedropper"
+            ],
+            "local": "row",
+            "class": "cv-color-picker-row"
+          },
+          "preview": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "preview",
+            "class": "cv-color-picker-preview"
+          },
+          "hex": {
+            "element": "input",
+            "aria": [
+              "aria-label",
+              "aria-labelledby",
+              "aria-describedby",
+              "aria-invalid"
+            ],
+            "local": "hex",
+            "class": "cv-color-picker-hex"
+          },
+          "eyedropper": {
+            "element": "button",
+            "when": "EyeDropper support",
+            "aria": [
+              "aria-label"
+            ],
+            "local": "eyedropper",
+            "class": "cv-color-picker-eyedropper"
+          },
+          "presets": {
+            "element": "div",
+            "role": "group",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "preset"
+            ],
+            "local": "presets",
+            "class": "cv-color-picker-presets"
+          },
+          "preset": {
+            "element": "button",
+            "aria": [
+              "aria-label",
+              "aria-pressed"
+            ],
+            "local": "preset",
+            "class": "cv-color-picker-preset"
+          },
+          "srOnly": {
+            "element": "span",
+            "role": "status",
+            "aria": [
+              "aria-live"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "srOnly",
+            "class": "cv-color-picker-srOnly"
+          }
+        }
       }
     },
     "combobox": {
@@ -1638,6 +2368,260 @@
         "trigger": "cv-combobox-trigger",
         "value": "cv-combobox-value",
         "wrapper": "cv-combobox-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-state": [
+              "closed",
+              "open",
+              "error"
+            ],
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "children": [
+            "label",
+            "field",
+            "popup",
+            "srOnly",
+            "error",
+            "hint"
+          ],
+          "class": "cv-combobox-wrapper"
+        },
+        "parts": {
+          "label": {
+            "element": "label",
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-combobox-label"
+          },
+          "field": {
+            "element": "div",
+            "children": [
+              "trigger",
+              "clear",
+              "chevron"
+            ],
+            "local": "field",
+            "class": "cv-combobox-field"
+          },
+          "trigger": {
+            "element": [
+              "input",
+              "button"
+            ],
+            "aria": [
+              "aria-expanded",
+              "aria-controls",
+              "aria-haspopup",
+              "aria-activedescendant",
+              "aria-labelledby",
+              "aria-label",
+              "aria-invalid",
+              "aria-describedby",
+              "aria-required",
+              "aria-autocomplete"
+            ],
+            "children": [
+              "value"
+            ],
+            "local": "trigger",
+            "class": "cv-combobox-trigger"
+          },
+          "value": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "value",
+            "class": "cv-combobox-value",
+            "modifiers": {
+              "placeholder": {
+                "class": "cv-combobox-placeholder",
+                "when": "no option selected"
+              }
+            }
+          },
+          "clear": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "clearGlyph"
+            ],
+            "local": "clear",
+            "class": "cv-combobox-clear"
+          },
+          "clearGlyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "clearGlyph",
+            "class": "cv-combobox-clearGlyph"
+          },
+          "chevron": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "chevron",
+            "class": "cv-combobox-chevron"
+          },
+          "popup": {
+            "element": "div",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "children": [
+              "listbox",
+              "empty"
+            ],
+            "local": "popup",
+            "class": "cv-combobox-popup"
+          },
+          "listbox": {
+            "element": "div",
+            "role": "listbox",
+            "aria": [
+              "aria-label",
+              "aria-busy"
+            ],
+            "children": [
+              "group",
+              "option"
+            ],
+            "local": "listbox",
+            "class": "cv-combobox-listbox"
+          },
+          "group": {
+            "element": "div",
+            "role": "group",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "groupLabel",
+              "option"
+            ],
+            "local": "group",
+            "class": "cv-combobox-group"
+          },
+          "groupLabel": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "groupLabel",
+            "class": "cv-combobox-groupLabel"
+          },
+          "option": {
+            "element": "div",
+            "role": "option",
+            "data": {
+              "data-state": [
+                "active"
+              ],
+              "data-disabled": "string"
+            },
+            "aria": [
+              "aria-selected",
+              "aria-disabled"
+            ],
+            "children": [
+              "optionLabel",
+              "check",
+              "$text"
+            ],
+            "local": "option",
+            "class": "cv-combobox-option",
+            "modifiers": {
+              "create": {
+                "class": "cv-combobox-create",
+                "when": "creatable"
+              }
+            }
+          },
+          "optionLabel": {
+            "element": "span",
+            "children": [
+              "match",
+              "$text"
+            ],
+            "local": "optionLabel",
+            "class": "cv-combobox-optionLabel"
+          },
+          "match": {
+            "element": "mark",
+            "children": [
+              "$text"
+            ],
+            "local": "match",
+            "class": "cv-combobox-match"
+          },
+          "check": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "check",
+            "class": "cv-combobox-check"
+          },
+          "empty": {
+            "element": "div",
+            "role": "status",
+            "children": [
+              "$text"
+            ],
+            "local": "empty",
+            "class": "cv-combobox-empty"
+          },
+          "srOnly": {
+            "element": "span",
+            "role": "status",
+            "aria": [
+              "aria-live"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "srOnly",
+            "class": "cv-combobox-srOnly"
+          },
+          "error": {
+            "element": "span",
+            "role": "alert",
+            "children": [
+              "$text"
+            ],
+            "local": "error",
+            "class": "cv-combobox-error"
+          },
+          "hint": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "hint",
+            "class": "cv-combobox-hint"
+          }
+        }
       }
     },
     "command-menu": {
@@ -1675,6 +2659,316 @@
         "status": "cv-command-menu-status",
         "statusDot": "cv-command-menu-statusDot",
         "text": "cv-command-menu-text"
+      },
+      "anatomy": {
+        "root": {
+          "element": "dialog",
+          "local": "dialog",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "panel"
+          ],
+          "class": "cv-command-menu-dialog"
+        },
+        "parts": {
+          "panel": {
+            "element": "div",
+            "children": [
+              "search",
+              "scopes",
+              "list",
+              "footer"
+            ],
+            "local": "panel",
+            "class": "cv-command-menu-panel"
+          },
+          "search": {
+            "element": "div",
+            "children": [
+              "searchIcon",
+              "scopeChip",
+              "input"
+            ],
+            "local": "search",
+            "class": "cv-command-menu-search"
+          },
+          "searchIcon": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "searchIcon",
+            "class": "cv-command-menu-searchIcon"
+          },
+          "scopeChip": {
+            "element": "span",
+            "children": [
+              "$text",
+              "scopeClear"
+            ],
+            "local": "scopeChip",
+            "class": "cv-command-menu-scopeChip"
+          },
+          "scopeClear": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "local": "scopeClear",
+            "class": "cv-command-menu-scopeClear"
+          },
+          "input": {
+            "element": "input",
+            "role": "combobox",
+            "aria": [
+              "aria-expanded",
+              "aria-controls",
+              "aria-activedescendant",
+              "aria-autocomplete",
+              "aria-label"
+            ],
+            "local": "input",
+            "class": "cv-command-menu-input"
+          },
+          "scopes": {
+            "element": "div",
+            "children": [
+              "scopesLabel",
+              "scopePill"
+            ],
+            "local": "scopes",
+            "class": "cv-command-menu-scopes"
+          },
+          "scopesLabel": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "scopesLabel",
+            "class": "cv-command-menu-scopesLabel"
+          },
+          "scopePill": {
+            "element": "button",
+            "data": {
+              "data-active": "string"
+            },
+            "children": [
+              "scopePrefix",
+              "$text"
+            ],
+            "local": "scopePill",
+            "class": "cv-command-menu-scopePill"
+          },
+          "scopePrefix": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "scopePrefix",
+            "class": "cv-command-menu-scopePrefix"
+          },
+          "list": {
+            "element": "div",
+            "children": [
+              "group",
+              "empty"
+            ],
+            "local": "list",
+            "class": "cv-command-menu-list"
+          },
+          "group": {
+            "element": "div",
+            "role": "group",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "heading",
+              "option"
+            ],
+            "local": "group",
+            "class": "cv-command-menu-group"
+          },
+          "heading": {
+            "element": "div",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text",
+              "count"
+            ],
+            "local": "heading",
+            "class": "cv-command-menu-heading"
+          },
+          "count": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "count",
+            "class": "cv-command-menu-count"
+          },
+          "option": {
+            "element": "div",
+            "role": "option",
+            "data": {
+              "data-state": [
+                "active"
+              ],
+              "data-disabled": "string"
+            },
+            "aria": [
+              "aria-selected",
+              "aria-disabled"
+            ],
+            "children": [
+              "icon",
+              "text",
+              "status",
+              "actions",
+              "shortcut"
+            ],
+            "local": "option",
+            "class": "cv-command-menu-option"
+          },
+          "icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "icon",
+            "class": "cv-command-menu-icon"
+          },
+          "text": {
+            "element": "span",
+            "children": [
+              "label",
+              "description"
+            ],
+            "local": "text",
+            "class": "cv-command-menu-text"
+          },
+          "label": {
+            "element": "span",
+            "children": [
+              "match",
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-command-menu-label"
+          },
+          "match": {
+            "element": "mark",
+            "children": [
+              "$text"
+            ],
+            "local": "match",
+            "class": "cv-command-menu-match"
+          },
+          "description": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "description",
+            "class": "cv-command-menu-description"
+          },
+          "status": {
+            "element": "span",
+            "data": {
+              "data-tone": "string"
+            },
+            "children": [
+              "statusDot",
+              "$text"
+            ],
+            "local": "status",
+            "class": "cv-command-menu-status"
+          },
+          "statusDot": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "statusDot",
+            "class": "cv-command-menu-statusDot"
+          },
+          "actions": {
+            "element": "span",
+            "children": [
+              "action"
+            ],
+            "local": "actions",
+            "class": "cv-command-menu-actions"
+          },
+          "action": {
+            "element": "span",
+            "children": [
+              "$text",
+              "actionKeys"
+            ],
+            "local": "action",
+            "class": "cv-command-menu-action"
+          },
+          "actionKeys": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "@kbd"
+            ],
+            "local": "actionKeys",
+            "class": "cv-command-menu-actionKeys"
+          },
+          "shortcut": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "@kbd"
+            ],
+            "local": "shortcut",
+            "class": "cv-command-menu-shortcut"
+          },
+          "empty": {
+            "element": "div",
+            "role": "status",
+            "children": [
+              "@spinner",
+              "$text"
+            ],
+            "local": "empty",
+            "class": "cv-command-menu-empty"
+          },
+          "footer": {
+            "element": "div",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "hint"
+            ],
+            "local": "footer",
+            "class": "cv-command-menu-footer"
+          },
+          "hint": {
+            "element": "span",
+            "children": [
+              "@kbd",
+              "$text"
+            ],
+            "local": "hint",
+            "class": "cv-command-menu-hint"
+          }
+        }
       }
     },
     "comparison": {
@@ -1687,6 +2981,67 @@
         "divider": "cv-comparison-divider",
         "handle": "cv-comparison-handle",
         "item": "cv-comparison-item"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "data": {
+            "data-orientation": [
+              "horizontal",
+              "vertical"
+            ],
+            "data-dragging": "string"
+          },
+          "children": [
+            "item",
+            "before",
+            "divider"
+          ],
+          "local": "comparison",
+          "class": "cv-comparison-comparison"
+        },
+        "parts": {
+          "item": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "item",
+            "class": "cv-comparison-item"
+          },
+          "before": {
+            "element": "div",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "before",
+            "class": "cv-comparison-before"
+          },
+          "divider": {
+            "element": "div",
+            "children": [
+              "handle"
+            ],
+            "local": "divider",
+            "class": "cv-comparison-divider"
+          },
+          "handle": {
+            "element": "div",
+            "role": "slider",
+            "aria": [
+              "aria-label",
+              "aria-orientation",
+              "aria-valuemin",
+              "aria-valuemax",
+              "aria-valuenow"
+            ],
+            "local": "handle",
+            "class": "cv-comparison-handle"
+          }
+        }
       }
     },
     "contained-list": {
@@ -1790,6 +3145,46 @@
         "item": "cv-context-menu-item",
         "menu": "cv-context-menu-menu",
         "wrapper": "cv-context-menu-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "children": [
+            "$slot",
+            "menu"
+          ],
+          "class": "cv-context-menu-wrapper"
+        },
+        "parts": {
+          "menu": {
+            "element": "div",
+            "role": "menu",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "children": [
+              "item"
+            ],
+            "local": "menu",
+            "class": "cv-context-menu-menu"
+          },
+          "item": {
+            "element": "div",
+            "role": "menuitem",
+            "aria": [
+              "aria-disabled"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "item",
+            "class": "cv-context-menu-item"
+          }
+        }
       }
     },
     "context-meter": {
@@ -1876,6 +3271,39 @@
       "classes": {
         "copyButton": "cv-copy-button-copyButton",
         "icon": "cv-copy-button-icon"
+      },
+      "anatomy": {
+        "root": {
+          "element": "button",
+          "local": "copyButton",
+          "data": {
+            "data-state": [
+              "idle",
+              "copied"
+            ],
+            "data-size": [
+              "sm",
+              "md"
+            ]
+          },
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "icon"
+          ],
+          "class": "cv-copy-button-copyButton"
+        },
+        "parts": {
+          "icon": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "icon",
+            "class": "cv-copy-button-icon"
+          }
+        }
       }
     },
     "data-list": {
@@ -2549,6 +3977,165 @@
         "trigger": "cv-date-picker-trigger",
         "value": "cv-date-picker-value",
         "wrapper": "cv-date-picker-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-state": [
+              "default",
+              "open",
+              "error",
+              "disabled"
+            ],
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "children": [
+            "label",
+            "field",
+            "popup",
+            "error",
+            "hint"
+          ],
+          "class": "cv-date-picker-wrapper"
+        },
+        "parts": {
+          "label": {
+            "element": "label",
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-date-picker-label"
+          },
+          "field": {
+            "element": "div",
+            "children": [
+              "trigger",
+              "clear",
+              "openButton"
+            ],
+            "local": "field",
+            "class": "cv-date-picker-field"
+          },
+          "trigger": {
+            "element": [
+              "input",
+              "button"
+            ],
+            "aria": [
+              "aria-expanded",
+              "aria-controls",
+              "aria-haspopup",
+              "aria-labelledby",
+              "aria-label",
+              "aria-invalid",
+              "aria-describedby",
+              "aria-required"
+            ],
+            "children": [
+              "value"
+            ],
+            "local": "trigger",
+            "class": "cv-date-picker-trigger"
+          },
+          "value": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "value",
+            "class": "cv-date-picker-value",
+            "modifiers": {
+              "placeholder": {
+                "class": "cv-date-picker-placeholder",
+                "when": "!displayValue"
+              }
+            }
+          },
+          "clear": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "clearGlyph"
+            ],
+            "local": "clear",
+            "class": "cv-date-picker-clear"
+          },
+          "clearGlyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "clearGlyph",
+            "class": "cv-date-picker-clearGlyph"
+          },
+          "openButton": {
+            "element": "button",
+            "aria": [
+              "aria-label",
+              "aria-expanded",
+              "aria-controls"
+            ],
+            "children": [
+              "calendarGlyph"
+            ],
+            "local": "openButton",
+            "class": "cv-date-picker-openButton"
+          },
+          "calendarGlyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "calendarGlyph",
+            "class": "cv-date-picker-calendarGlyph"
+          },
+          "popup": {
+            "element": "div",
+            "role": "dialog",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "@calendar"
+            ],
+            "local": "popup",
+            "class": "cv-date-picker-popup"
+          },
+          "error": {
+            "element": "span",
+            "role": "alert",
+            "when": "error",
+            "children": [
+              "$text"
+            ],
+            "local": "error",
+            "class": "cv-date-picker-error"
+          },
+          "hint": {
+            "element": "span",
+            "when": "hint",
+            "children": [
+              "$text"
+            ],
+            "local": "hint",
+            "class": "cv-date-picker-hint"
+          }
+        }
       }
     },
     "date-range-picker": {
@@ -2570,6 +4157,153 @@
         "trigger": "cv-date-range-picker-trigger",
         "value": "cv-date-range-picker-value",
         "wrapper": "cv-date-range-picker-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "children": [
+            "trigger",
+            "panel"
+          ],
+          "class": "cv-date-range-picker-wrapper"
+        },
+        "parts": {
+          "trigger": {
+            "element": "button",
+            "role": "combobox",
+            "aria": [
+              "aria-expanded",
+              "aria-haspopup",
+              "aria-label"
+            ],
+            "children": [
+              "value",
+              "icon"
+            ],
+            "local": "trigger",
+            "class": "cv-date-range-picker-trigger"
+          },
+          "value": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "value",
+            "class": "cv-date-range-picker-value",
+            "modifiers": {
+              "placeholder": {
+                "class": "cv-date-range-picker-placeholder",
+                "when": "!displayValue"
+              }
+            }
+          },
+          "icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "icon",
+            "class": "cv-date-range-picker-icon"
+          },
+          "panel": {
+            "element": "div",
+            "role": "dialog",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "children": [
+              "presets",
+              "calendars",
+              "footer"
+            ],
+            "local": "panel",
+            "class": "cv-date-range-picker-panel"
+          },
+          "presets": {
+            "element": "div",
+            "when": "presets",
+            "children": [
+              "preset"
+            ],
+            "local": "presets",
+            "class": "cv-date-range-picker-presets"
+          },
+          "preset": {
+            "element": "button",
+            "children": [
+              "$text"
+            ],
+            "local": "preset",
+            "class": "cv-date-range-picker-preset"
+          },
+          "calendars": {
+            "element": "div",
+            "children": [
+              "calNav",
+              "@calendar"
+            ],
+            "local": "calendars",
+            "class": "cv-date-range-picker-calendars"
+          },
+          "calNav": {
+            "element": "div",
+            "children": [
+              "navButton"
+            ],
+            "local": "calNav",
+            "class": "cv-date-range-picker-calNav"
+          },
+          "navButton": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "navButton",
+            "class": "cv-date-range-picker-navButton"
+          },
+          "footer": {
+            "element": "div",
+            "children": [
+              "clearBtn",
+              "applyBtn"
+            ],
+            "local": "footer",
+            "class": "cv-date-range-picker-footer"
+          },
+          "clearBtn": {
+            "element": "button",
+            "children": [
+              "$text"
+            ],
+            "local": "clearBtn",
+            "class": "cv-date-range-picker-clearBtn"
+          },
+          "applyBtn": {
+            "element": "button",
+            "children": [
+              "$text"
+            ],
+            "local": "applyBtn",
+            "class": "cv-date-range-picker-applyBtn"
+          }
+        }
       }
     },
     "dock": {
@@ -2652,6 +4386,117 @@
         "overlay": "cv-drawer-overlay",
         "panel": "cv-drawer-panel",
         "title": "cv-drawer-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "overlay",
+          "data": {
+            "data-side": [
+              "left",
+              "right",
+              "top",
+              "bottom"
+            ]
+          },
+          "children": [
+            "panel"
+          ],
+          "class": "cv-drawer-overlay"
+        },
+        "parts": {
+          "panel": {
+            "element": "div",
+            "role": "dialog",
+            "data": {
+              "data-side": [
+                "left",
+                "right",
+                "top",
+                "bottom"
+              ],
+              "data-dragging": "string"
+            },
+            "aria": [
+              "aria-modal",
+              "aria-labelledby",
+              "aria-describedby"
+            ],
+            "children": [
+              "header",
+              "body"
+            ],
+            "local": "panel",
+            "class": "cv-drawer-panel"
+          },
+          "header": {
+            "element": "div",
+            "when": "title || description",
+            "children": [
+              "heading",
+              "close"
+            ],
+            "local": "header",
+            "class": "cv-drawer-header"
+          },
+          "heading": {
+            "element": "div",
+            "children": [
+              "title",
+              "description"
+            ],
+            "local": "heading",
+            "class": "cv-drawer-heading"
+          },
+          "title": {
+            "element": "h2",
+            "when": "title",
+            "children": [
+              "$text"
+            ],
+            "local": "title",
+            "class": "cv-drawer-title"
+          },
+          "description": {
+            "element": "p",
+            "when": "description",
+            "children": [
+              "$text"
+            ],
+            "local": "description",
+            "class": "cv-drawer-description"
+          },
+          "close": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "closeIcon"
+            ],
+            "local": "close",
+            "class": "cv-drawer-close"
+          },
+          "closeIcon": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "closeIcon",
+            "class": "cv-drawer-closeIcon"
+          },
+          "body": {
+            "element": "div",
+            "data": {
+              "data-cascivo-drawer-body": "string"
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "body",
+            "class": "cv-drawer-body"
+          }
+        }
       }
     },
     "dropdown": {
@@ -2664,6 +4509,64 @@
         "menu": "cv-dropdown-menu",
         "root": "cv-dropdown-root",
         "separator": "cv-dropdown-separator"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "children": [
+            "$slot",
+            "menu"
+          ],
+          "class": "cv-dropdown-root"
+        },
+        "parts": {
+          "menu": {
+            "element": "div",
+            "role": "menu",
+            "data": {
+              "data-placement": "string",
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "children": [
+              "item",
+              "separator"
+            ],
+            "local": "menu",
+            "class": "cv-dropdown-menu"
+          },
+          "item": {
+            "element": "button",
+            "role": "menuitem",
+            "children": [
+              "icon",
+              "$text"
+            ],
+            "local": "item",
+            "class": "cv-dropdown-item"
+          },
+          "icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "when": "item.icon",
+            "children": [
+              "$slot"
+            ],
+            "local": "icon",
+            "class": "cv-dropdown-icon"
+          },
+          "separator": {
+            "element": "div",
+            "role": "separator",
+            "local": "separator",
+            "class": "cv-dropdown-separator"
+          }
+        }
       }
     },
     "editable": {
@@ -2678,6 +4581,77 @@
         "preview": "cv-editable-preview",
         "preview-text": "cv-editable-preview-text",
         "wrapper": "cv-editable-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-disabled": "string"
+          },
+          "children": [
+            "input",
+            "preview"
+          ],
+          "class": "cv-editable-wrapper",
+          "modifiers": {
+            "editing": {
+              "class": "cv-editable-editing",
+              "when": "isEditing"
+            }
+          }
+        },
+        "parts": {
+          "input": {
+            "element": "input",
+            "aria": [
+              "aria-label",
+              "aria-labelledby",
+              "aria-describedby"
+            ],
+            "local": "input",
+            "class": "cv-editable-input"
+          },
+          "preview": {
+            "element": "button",
+            "aria": [
+              "aria-label",
+              "aria-labelledby",
+              "aria-describedby"
+            ],
+            "children": [
+              "preview-text",
+              "edit-icon"
+            ],
+            "local": "preview",
+            "class": "cv-editable-preview"
+          },
+          "preview-text": {
+            "element": "span",
+            "children": [
+              "$text",
+              "placeholder"
+            ],
+            "local": "preview-text",
+            "class": "cv-editable-preview-text"
+          },
+          "placeholder": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "placeholder",
+            "class": "cv-editable-placeholder"
+          },
+          "edit-icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "edit-icon",
+            "class": "cv-editable-edit-icon"
+          }
+        }
       }
     },
     "empty-state": {
@@ -2765,6 +4739,107 @@
         "fab": "cv-fab-fab",
         "icon": "cv-fab-icon",
         "root": "cv-fab-root"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "data": {
+            "data-position": "string"
+          },
+          "children": [
+            "dial",
+            "fab"
+          ],
+          "class": "cv-fab-root"
+        },
+        "parts": {
+          "dial": {
+            "element": "menu",
+            "role": "menu",
+            "aria": [
+              "aria-label"
+            ],
+            "when": "actions",
+            "children": [
+              "dialItem"
+            ],
+            "local": "dial",
+            "class": "cv-fab-dial"
+          },
+          "dialItem": {
+            "element": "li",
+            "role": "presentation",
+            "children": [
+              "action"
+            ],
+            "local": "dialItem",
+            "class": "cv-fab-dialItem"
+          },
+          "action": {
+            "element": "button",
+            "role": "menuitem",
+            "aria": [
+              "aria-disabled"
+            ],
+            "children": [
+              "actionLabel",
+              "actionIcon"
+            ],
+            "local": "action",
+            "class": "cv-fab-action"
+          },
+          "actionLabel": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "actionLabel",
+            "class": "cv-fab-actionLabel"
+          },
+          "actionIcon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "actionIcon",
+            "class": "cv-fab-actionIcon"
+          },
+          "fab": {
+            "element": "button",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "aria": [
+              "aria-label",
+              "aria-haspopup",
+              "aria-expanded",
+              "aria-controls"
+            ],
+            "children": [
+              "icon"
+            ],
+            "local": "fab",
+            "class": "cv-fab-fab"
+          },
+          "icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "icon",
+            "class": "cv-fab-icon"
+          }
+        }
       }
     },
     "field": {
@@ -2843,6 +4918,181 @@
         "uploader": "cv-file-uploader-uploader",
         "zone": "cv-file-uploader-zone",
         "zoneText": "cv-file-uploader-zoneText"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "uploader",
+          "children": [
+            "label",
+            "input",
+            "zone",
+            "hint",
+            "srOnly",
+            "list"
+          ],
+          "class": "cv-file-uploader-uploader"
+        },
+        "parts": {
+          "label": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-file-uploader-label"
+          },
+          "input": {
+            "element": "input",
+            "aria": [
+              "aria-labelledby"
+            ],
+            "local": "input",
+            "class": "cv-file-uploader-input"
+          },
+          "zone": {
+            "element": "button",
+            "data": {
+              "data-state": [
+                "idle",
+                "dragover"
+              ]
+            },
+            "aria": [
+              "aria-labelledby",
+              "aria-label",
+              "aria-describedby"
+            ],
+            "children": [
+              "zoneText"
+            ],
+            "local": "zone",
+            "class": "cv-file-uploader-zone"
+          },
+          "zoneText": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "zoneText",
+            "class": "cv-file-uploader-zoneText"
+          },
+          "hint": {
+            "element": "span",
+            "when": "hint",
+            "children": [
+              "$text"
+            ],
+            "local": "hint",
+            "class": "cv-file-uploader-hint"
+          },
+          "srOnly": {
+            "element": "span",
+            "role": "status",
+            "aria": [
+              "aria-live"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "srOnly",
+            "class": "cv-file-uploader-srOnly"
+          },
+          "list": {
+            "element": "ul",
+            "when": "files.length",
+            "children": [
+              "file"
+            ],
+            "local": "list",
+            "class": "cv-file-uploader-list"
+          },
+          "file": {
+            "element": "li",
+            "data": {
+              "data-state": "string"
+            },
+            "children": [
+              "status",
+              "name",
+              "size",
+              "remove",
+              "error-message"
+            ],
+            "local": "file",
+            "class": "cv-file-uploader-file"
+          },
+          "status": {
+            "element": "span",
+            "children": [
+              "@spinner",
+              "glyph-complete",
+              "glyph-error"
+            ],
+            "local": "status",
+            "class": "cv-file-uploader-status"
+          },
+          "glyph-complete": {
+            "element": "span",
+            "role": "img",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "glyph-complete",
+            "class": "cv-file-uploader-glyph-complete"
+          },
+          "glyph-error": {
+            "element": "span",
+            "role": "img",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "glyph-error",
+            "class": "cv-file-uploader-glyph-error"
+          },
+          "name": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "name",
+            "class": "cv-file-uploader-name"
+          },
+          "size": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "size",
+            "class": "cv-file-uploader-size"
+          },
+          "remove": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "remove",
+            "class": "cv-file-uploader-remove"
+          },
+          "error-message": {
+            "element": "span",
+            "role": "alert",
+            "children": [
+              "$text"
+            ],
+            "local": "error-message",
+            "class": "cv-file-uploader-error-message"
+          }
+        }
       }
     },
     "filter": {
@@ -2852,6 +5102,42 @@
       "classes": {
         "filter": "cv-filter-filter",
         "item": "cv-filter-item"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "filter",
+          "role": "group",
+          "data": {
+            "data-variant": [
+              "pill",
+              "outline"
+            ]
+          },
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "item"
+          ],
+          "class": "cv-filter-filter"
+        },
+        "parts": {
+          "item": {
+            "element": "button",
+            "data": {
+              "data-selected": "boolean"
+            },
+            "aria": [
+              "aria-pressed"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "item",
+            "class": "cv-filter-item"
+          }
+        }
       }
     },
     "form": {
@@ -2860,6 +5146,17 @@
       "alias": "cv-form",
       "classes": {
         "form": "cv-form-form"
+      },
+      "anatomy": {
+        "root": {
+          "element": "form",
+          "local": "form",
+          "children": [
+            "$slot"
+          ],
+          "class": "cv-form-form"
+        },
+        "parts": {}
       }
     },
     "header": {
@@ -2967,6 +5264,62 @@
         "header": "cv-header-panel-header",
         "panel": "cv-header-panel-panel",
         "title": "cv-header-panel-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "panel",
+          "role": "region",
+          "data": {
+            "data-state": [
+              "open",
+              "closed"
+            ]
+          },
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "header",
+            "body"
+          ],
+          "class": "cv-header-panel-panel"
+        },
+        "parts": {
+          "header": {
+            "element": "div",
+            "children": [
+              "title",
+              "close"
+            ],
+            "local": "header",
+            "class": "cv-header-panel-header"
+          },
+          "title": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "title",
+            "class": "cv-header-panel-title"
+          },
+          "close": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "local": "close",
+            "class": "cv-header-panel-close"
+          },
+          "body": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "body",
+            "class": "cv-header-panel-body"
+          }
+        }
       }
     },
     "heading": {
@@ -3012,6 +5365,34 @@
       "classes": {
         "content": "cv-hover-card-content",
         "trigger": "cv-hover-card-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "local": "trigger",
+          "children": [
+            "$slot",
+            "content"
+          ],
+          "class": "cv-hover-card-trigger"
+        },
+        "parts": {
+          "content": {
+            "element": "div",
+            "role": "complementary",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "content",
+            "class": "cv-hover-card-content"
+          }
+        }
       }
     },
     "icon-button": {
@@ -3172,6 +5553,38 @@
         "button": "cv-infinite-scroll-button",
         "root": "cv-infinite-scroll-root",
         "status": "cv-infinite-scroll-status"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "children": [
+            "status",
+            "button"
+          ],
+          "class": "cv-infinite-scroll-root"
+        },
+        "parts": {
+          "status": {
+            "element": "span",
+            "role": "status",
+            "when": "loading",
+            "children": [
+              "@spinner",
+              "$text"
+            ],
+            "local": "status",
+            "class": "cv-infinite-scroll-status"
+          },
+          "button": {
+            "element": "button",
+            "children": [
+              "$text"
+            ],
+            "local": "button",
+            "class": "cv-infinite-scroll-button"
+          }
+        }
       }
     },
     "inline-citation": {
@@ -3840,6 +6253,142 @@
         "timestamp": "cv-log-viewer-timestamp",
         "toggle": "cv-log-viewer-toggle",
         "toolbar": "cv-log-viewer-toolbar"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "children": [
+            "toolbar",
+            "scroll"
+          ],
+          "class": "cv-log-viewer-root"
+        },
+        "parts": {
+          "toolbar": {
+            "element": "div",
+            "children": [
+              "search",
+              "count",
+              "spacer",
+              "toggle",
+              "copy"
+            ],
+            "local": "toolbar",
+            "class": "cv-log-viewer-toolbar"
+          },
+          "search": {
+            "element": "input",
+            "aria": [
+              "aria-label"
+            ],
+            "local": "search",
+            "class": "cv-log-viewer-search"
+          },
+          "count": {
+            "element": "span",
+            "aria": [
+              "aria-live"
+            ],
+            "when": "search query",
+            "children": [
+              "$text"
+            ],
+            "local": "count",
+            "class": "cv-log-viewer-count"
+          },
+          "spacer": {
+            "element": "span",
+            "local": "spacer",
+            "class": "cv-log-viewer-spacer"
+          },
+          "toggle": {
+            "element": "button",
+            "aria": [
+              "aria-pressed"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "toggle",
+            "class": "cv-log-viewer-toggle"
+          },
+          "copy": {
+            "element": "button",
+            "children": [
+              "$text"
+            ],
+            "local": "copy",
+            "class": "cv-log-viewer-copy"
+          },
+          "scroll": {
+            "element": "div",
+            "role": "log",
+            "aria": [
+              "aria-live",
+              "aria-label"
+            ],
+            "children": [
+              "empty",
+              "sizer"
+            ],
+            "local": "scroll",
+            "class": "cv-log-viewer-scroll"
+          },
+          "empty": {
+            "element": "div",
+            "children": [
+              "$text"
+            ],
+            "local": "empty",
+            "class": "cv-log-viewer-empty"
+          },
+          "sizer": {
+            "element": "div",
+            "children": [
+              "line"
+            ],
+            "local": "sizer",
+            "class": "cv-log-viewer-sizer"
+          },
+          "line": {
+            "element": "div",
+            "data": {
+              "data-level": [
+                "info",
+                "warn",
+                "error",
+                "debug"
+              ]
+            },
+            "children": [
+              "timestamp",
+              "ansi",
+              "$text"
+            ],
+            "local": "line",
+            "class": "cv-log-viewer-line"
+          },
+          "timestamp": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "timestamp",
+            "class": "cv-log-viewer-timestamp"
+          },
+          "ansi": {
+            "element": "span",
+            "data": {
+              "data-ansi": "string"
+            },
+            "children": [
+              "$text"
+            ],
+            "local": "ansi",
+            "class": "cv-log-viewer-ansi"
+          }
+        }
       }
     },
     "menu": {
@@ -3851,6 +6400,58 @@
         "panel": "cv-menu-panel",
         "separator": "cv-menu-separator",
         "trigger": "cv-menu-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "panel",
+          "role": "menu",
+          "data": {
+            "data-state": [
+              "open",
+              "closed"
+            ]
+          },
+          "children": [
+            "trigger",
+            "item",
+            "separator"
+          ],
+          "class": "cv-menu-panel"
+        },
+        "parts": {
+          "trigger": {
+            "element": "button",
+            "aria": [
+              "aria-haspopup",
+              "aria-expanded",
+              "aria-label"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "trigger",
+            "class": "cv-menu-trigger"
+          },
+          "item": {
+            "element": "div",
+            "role": "menuitem",
+            "aria": [
+              "aria-disabled"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "item",
+            "class": "cv-menu-item"
+          },
+          "separator": {
+            "element": "div",
+            "role": "separator",
+            "local": "separator",
+            "class": "cv-menu-separator"
+          }
+        }
       }
     },
     "menu-button": {
@@ -3862,6 +6463,76 @@
         "menu": "cv-menu-button-menu",
         "root": "cv-menu-button-root",
         "trigger": "cv-menu-button-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "children": [
+            "trigger",
+            "menu"
+          ],
+          "class": "cv-menu-button-root"
+        },
+        "parts": {
+          "trigger": {
+            "element": "button",
+            "data": {
+              "data-variant": [
+                "primary",
+                "secondary",
+                "ghost"
+              ],
+              "data-size": [
+                "sm",
+                "md",
+                "lg"
+              ]
+            },
+            "aria": [
+              "aria-haspopup",
+              "aria-expanded",
+              "aria-controls",
+              "aria-label"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "trigger",
+            "class": "cv-menu-button-trigger"
+          },
+          "menu": {
+            "element": "div",
+            "role": "menu",
+            "data": {
+              "data-state": [
+                "open"
+              ],
+              "data-align": [
+                "start",
+                "end"
+              ]
+            },
+            "when": "open",
+            "children": [
+              "item"
+            ],
+            "local": "menu",
+            "class": "cv-menu-button-menu"
+          },
+          "item": {
+            "element": "div",
+            "role": "menuitem",
+            "aria": [
+              "aria-disabled"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "item",
+            "class": "cv-menu-button-item"
+          }
+        }
       }
     },
     "menubar": {
@@ -3873,6 +6544,67 @@
         "menubar": "cv-menubar-menubar",
         "panel": "cv-menubar-panel",
         "trigger": "cv-menubar-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "menubar",
+          "role": "menubar",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "trigger"
+          ],
+          "class": "cv-menubar-menubar"
+        },
+        "parts": {
+          "trigger": {
+            "element": "button",
+            "role": "menuitem",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "aria": [
+              "aria-haspopup",
+              "aria-expanded",
+              "aria-controls"
+            ],
+            "children": [
+              "$text",
+              "panel"
+            ],
+            "local": "trigger",
+            "class": "cv-menubar-trigger"
+          },
+          "panel": {
+            "element": "div",
+            "role": "menu",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "item"
+            ],
+            "local": "panel",
+            "class": "cv-menubar-panel"
+          },
+          "item": {
+            "element": "div",
+            "role": "menuitem",
+            "aria": [
+              "aria-disabled"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "item",
+            "class": "cv-menubar-item"
+          }
+        }
       }
     },
     "message-actions": {
@@ -3883,6 +6615,42 @@
         "actions": "cv-message-actions-actions",
         "down": "cv-message-actions-down",
         "rate": "cv-message-actions-rate"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "actions",
+          "role": "group",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "rate"
+          ],
+          "class": "cv-message-actions-actions"
+        },
+        "parts": {
+          "rate": {
+            "element": "button",
+            "data": {
+              "data-active": "boolean"
+            },
+            "aria": [
+              "aria-pressed",
+              "aria-label"
+            ],
+            "children": [
+              "down"
+            ],
+            "local": "rate",
+            "class": "cv-message-actions-rate"
+          },
+          "down": {
+            "element": "svg",
+            "local": "down",
+            "class": "cv-message-actions-down"
+          }
+        }
       }
     },
     "modal": {
@@ -4040,6 +6808,310 @@
         "trigger": "cv-multi-select-trigger",
         "trigger-label": "cv-multi-select-trigger-label",
         "wrapper": "cv-multi-select-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-state": [
+              "closed",
+              "open",
+              "error"
+            ],
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "children": [
+            "label",
+            "field",
+            "panel",
+            "sr-only",
+            "error",
+            "hint"
+          ],
+          "class": "cv-multi-select-wrapper"
+        },
+        "parts": {
+          "label": {
+            "element": "label",
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-multi-select-label"
+          },
+          "field": {
+            "element": "div",
+            "data": {
+              "data-display": [
+                "count",
+                "chips"
+              ]
+            },
+            "children": [
+              "chip",
+              "trigger",
+              "clear"
+            ],
+            "local": "field",
+            "class": "cv-multi-select-field"
+          },
+          "chip": {
+            "element": "span",
+            "when": "display === 'chips'",
+            "children": [
+              "chip-label",
+              "chip-remove"
+            ],
+            "local": "chip",
+            "class": "cv-multi-select-chip"
+          },
+          "chip-label": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "chip-label",
+            "class": "cv-multi-select-chip-label"
+          },
+          "chip-remove": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "local": "chip-remove",
+            "class": "cv-multi-select-chip-remove"
+          },
+          "trigger": {
+            "element": "button",
+            "aria": [
+              "aria-haspopup",
+              "aria-expanded",
+              "aria-controls",
+              "aria-labelledby",
+              "aria-label",
+              "aria-invalid",
+              "aria-describedby"
+            ],
+            "children": [
+              "trigger-label",
+              "chevron"
+            ],
+            "local": "trigger",
+            "class": "cv-multi-select-trigger"
+          },
+          "trigger-label": {
+            "element": "span",
+            "data": {
+              "data-empty": "boolean"
+            },
+            "children": [
+              "sr-only",
+              "$text"
+            ],
+            "local": "trigger-label",
+            "class": "cv-multi-select-trigger-label"
+          },
+          "chevron": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "chevron",
+            "class": "cv-multi-select-chevron"
+          },
+          "clear": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "clear-glyph"
+            ],
+            "local": "clear",
+            "class": "cv-multi-select-clear"
+          },
+          "clear-glyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "clear-glyph",
+            "class": "cv-multi-select-clear-glyph"
+          },
+          "panel": {
+            "element": "div",
+            "children": [
+              "search-row",
+              "select-all",
+              "options",
+              "status"
+            ],
+            "local": "panel",
+            "class": "cv-multi-select-panel"
+          },
+          "search-row": {
+            "element": "div",
+            "children": [
+              "search"
+            ],
+            "local": "search-row",
+            "class": "cv-multi-select-search-row"
+          },
+          "search": {
+            "element": "input",
+            "role": "combobox",
+            "aria": [
+              "aria-label",
+              "aria-expanded",
+              "aria-controls",
+              "aria-autocomplete",
+              "aria-activedescendant"
+            ],
+            "local": "search",
+            "class": "cv-multi-select-search"
+          },
+          "select-all": {
+            "element": "button",
+            "children": [
+              "$text"
+            ],
+            "local": "select-all",
+            "class": "cv-multi-select-select-all"
+          },
+          "options": {
+            "element": "div",
+            "role": "listbox",
+            "aria": [
+              "aria-multiselectable",
+              "aria-label",
+              "aria-busy",
+              "aria-activedescendant"
+            ],
+            "children": [
+              "group",
+              "option"
+            ],
+            "local": "options",
+            "class": "cv-multi-select-options"
+          },
+          "group": {
+            "element": "div",
+            "role": "group",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "group-label",
+              "option"
+            ],
+            "local": "group",
+            "class": "cv-multi-select-group"
+          },
+          "group-label": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "group-label",
+            "class": "cv-multi-select-group-label"
+          },
+          "option": {
+            "element": "div",
+            "role": "option",
+            "data": {
+              "data-active": "boolean",
+              "data-selected": "boolean",
+              "data-disabled": "boolean"
+            },
+            "aria": [
+              "aria-selected",
+              "aria-disabled"
+            ],
+            "children": [
+              "checkbox",
+              "option-label"
+            ],
+            "local": "option",
+            "class": "cv-multi-select-option",
+            "modifiers": {
+              "create": {
+                "class": "cv-multi-select-create",
+                "when": "create option"
+              }
+            }
+          },
+          "checkbox": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "checkbox",
+            "class": "cv-multi-select-checkbox"
+          },
+          "option-label": {
+            "element": "span",
+            "children": [
+              "match",
+              "$text"
+            ],
+            "local": "option-label",
+            "class": "cv-multi-select-option-label"
+          },
+          "match": {
+            "element": "mark",
+            "children": [
+              "$text"
+            ],
+            "local": "match",
+            "class": "cv-multi-select-match"
+          },
+          "status": {
+            "element": "div",
+            "role": "status",
+            "children": [
+              "$text"
+            ],
+            "local": "status",
+            "class": "cv-multi-select-status"
+          },
+          "sr-only": {
+            "element": "span",
+            "role": "status",
+            "aria": [
+              "aria-live"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "sr-only",
+            "class": "cv-multi-select-sr-only"
+          },
+          "error": {
+            "element": "span",
+            "role": "alert",
+            "children": [
+              "$text"
+            ],
+            "local": "error",
+            "class": "cv-multi-select-error"
+          },
+          "hint": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "hint",
+            "class": "cv-multi-select-hint"
+          }
+        }
       }
     },
     "native-select": {
@@ -4106,6 +7178,81 @@
         "nav": "cv-navigation-menu-nav",
         "panel": "cv-navigation-menu-panel",
         "trigger": "cv-navigation-menu-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "nav",
+          "local": "nav",
+          "data": {
+            "data-orientation": [
+              "horizontal",
+              "vertical",
+              "both"
+            ]
+          },
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "list"
+          ],
+          "class": "cv-navigation-menu-nav"
+        },
+        "parts": {
+          "list": {
+            "element": "ul",
+            "role": "list",
+            "children": [
+              "item"
+            ],
+            "local": "list",
+            "class": "cv-navigation-menu-list"
+          },
+          "item": {
+            "element": "li",
+            "children": [
+              "link",
+              "trigger"
+            ],
+            "local": "item",
+            "class": "cv-navigation-menu-item"
+          },
+          "link": {
+            "element": "a",
+            "children": [
+              "$text"
+            ],
+            "local": "link",
+            "class": "cv-navigation-menu-link"
+          },
+          "trigger": {
+            "element": "button",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "aria": [
+              "aria-expanded",
+              "aria-controls"
+            ],
+            "children": [
+              "$text",
+              "panel"
+            ],
+            "local": "trigger",
+            "class": "cv-navigation-menu-trigger"
+          },
+          "panel": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "panel",
+            "class": "cv-navigation-menu-panel"
+          }
+        }
       }
     },
     "notification": {
@@ -4321,6 +7468,33 @@
       "classes": {
         "slot": "cv-otp-input-slot",
         "wrapper": "cv-otp-input-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "role": "group",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "slot"
+          ],
+          "class": "cv-otp-input-wrapper"
+        },
+        "parts": {
+          "slot": {
+            "element": "input",
+            "data": {
+              "data-filled": "boolean"
+            },
+            "aria": [
+              "aria-label"
+            ],
+            "local": "slot",
+            "class": "cv-otp-input-slot"
+          }
+        }
       }
     },
     "overflow-menu": {
@@ -4331,6 +7505,41 @@
         "destructive-flag": "cv-overflow-menu-destructive-flag",
         "root": "cv-overflow-menu-root",
         "trigger": "cv-overflow-menu-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "children": [
+            "trigger",
+            "destructive-flag"
+          ],
+          "class": "cv-overflow-menu-root"
+        },
+        "parts": {
+          "trigger": {
+            "element": "button",
+            "data": {
+              "data-size": [
+                "sm",
+                "md"
+              ]
+            },
+            "aria": [
+              "aria-label"
+            ],
+            "local": "trigger",
+            "class": "cv-overflow-menu-trigger"
+          },
+          "destructive-flag": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "destructive-flag",
+            "class": "cv-overflow-menu-destructive-flag"
+          }
+        }
       }
     },
     "pagination": {
@@ -4345,6 +7554,81 @@
         "pagination": "cv-pagination-pagination",
         "range": "cv-pagination-range",
         "select": "cv-pagination-select"
+      },
+      "anatomy": {
+        "root": {
+          "element": "nav",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "group",
+            "range",
+            "buttons"
+          ],
+          "local": "pagination",
+          "class": "cv-pagination-pagination"
+        },
+        "parts": {
+          "group": {
+            "element": [
+              "label",
+              "div"
+            ],
+            "children": [
+              "label",
+              "select"
+            ],
+            "local": "group",
+            "class": "cv-pagination-group"
+          },
+          "label": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-pagination-label"
+          },
+          "select": {
+            "element": "select",
+            "aria": [
+              "aria-label"
+            ],
+            "local": "select",
+            "class": "cv-pagination-select"
+          },
+          "range": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "range",
+            "class": "cv-pagination-range"
+          },
+          "buttons": {
+            "element": "div",
+            "children": [
+              "button"
+            ],
+            "local": "buttons",
+            "class": "cv-pagination-buttons"
+          },
+          "button": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "button",
+            "class": "cv-pagination-button"
+          }
+        }
       }
     },
     "password-input": {
@@ -4459,6 +7743,41 @@
       "classes": {
         "content": "cv-popover-content",
         "trigger": "cv-popover-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "content",
+          "role": "dialog",
+          "data": {
+            "data-state": [
+              "open",
+              "closed"
+            ]
+          },
+          "children": [
+            "$slot",
+            "trigger"
+          ],
+          "class": "cv-popover-content"
+        },
+        "parts": {
+          "trigger": {
+            "element": [
+              "button",
+              "a"
+            ],
+            "aria": [
+              "aria-expanded",
+              "aria-haspopup"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "trigger",
+            "class": "cv-popover-trigger"
+          }
+        }
       }
     },
     "progress": {
@@ -4816,6 +8135,66 @@
         "root": "cv-pull-to-refresh-root",
         "srOnly": "cv-pull-to-refresh-srOnly",
         "viewport": "cv-pull-to-refresh-viewport"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "children": [
+            "indicator",
+            "srOnly",
+            "viewport"
+          ],
+          "class": "cv-pull-to-refresh-root"
+        },
+        "parts": {
+          "indicator": {
+            "element": "div",
+            "data": {
+              "data-dragging": "boolean"
+            },
+            "children": [
+              "arrow",
+              "@spinner"
+            ],
+            "local": "indicator",
+            "class": "cv-pull-to-refresh-indicator"
+          },
+          "arrow": {
+            "element": "svg",
+            "data": {
+              "data-ready": "boolean"
+            },
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "arrow",
+            "class": "cv-pull-to-refresh-arrow"
+          },
+          "srOnly": {
+            "element": "span",
+            "role": "status",
+            "aria": [
+              "aria-live"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "srOnly",
+            "class": "cv-pull-to-refresh-srOnly"
+          },
+          "viewport": {
+            "element": "div",
+            "data": {
+              "data-dragging": "boolean"
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "viewport",
+            "class": "cv-pull-to-refresh-viewport"
+          }
+        }
       }
     },
     "qr-code": {
@@ -5206,6 +8585,80 @@
         "root": "cv-reorder-list-root",
         "row": "cv-reorder-list-row",
         "srOnly": "cv-reorder-list-srOnly"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "children": [
+            "list",
+            "srOnly"
+          ],
+          "class": "cv-reorder-list-root"
+        },
+        "parts": {
+          "list": {
+            "element": "ul",
+            "children": [
+              "row"
+            ],
+            "local": "list",
+            "class": "cv-reorder-list-list"
+          },
+          "row": {
+            "element": "li",
+            "data": {
+              "data-reorder-row": "string",
+              "data-active": "boolean"
+            },
+            "children": [
+              "handle",
+              "label"
+            ],
+            "local": "row",
+            "class": "cv-reorder-list-row"
+          },
+          "handle": {
+            "element": "button",
+            "aria": [
+              "aria-label",
+              "aria-pressed"
+            ],
+            "children": [
+              "grip"
+            ],
+            "local": "handle",
+            "class": "cv-reorder-list-handle"
+          },
+          "grip": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "grip",
+            "class": "cv-reorder-list-grip"
+          },
+          "label": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "local": "label",
+            "class": "cv-reorder-list-label"
+          },
+          "srOnly": {
+            "element": "span",
+            "role": "status",
+            "aria": [
+              "aria-live"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "srOnly",
+            "class": "cv-reorder-list-srOnly"
+          }
+        }
       }
     },
     "resizable": {
@@ -5217,6 +8670,57 @@
         "handle": "cv-resizable-handle",
         "pane": "cv-resizable-pane",
         "resizable": "cv-resizable-resizable"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "data": {
+            "data-orientation": [
+              "horizontal",
+              "vertical"
+            ]
+          },
+          "children": [
+            "pane",
+            "handle"
+          ],
+          "local": "resizable",
+          "class": "cv-resizable-resizable"
+        },
+        "parts": {
+          "pane": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "pane",
+            "class": "cv-resizable-pane"
+          },
+          "handle": {
+            "element": "div",
+            "role": "separator",
+            "aria": [
+              "aria-orientation",
+              "aria-label",
+              "aria-valuenow",
+              "aria-valuemin",
+              "aria-valuemax"
+            ],
+            "children": [
+              "grip"
+            ],
+            "local": "handle",
+            "class": "cv-resizable-handle"
+          },
+          "grip": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "grip",
+            "class": "cv-resizable-grip"
+          }
+        }
       }
     },
     "scroll-area": {
@@ -5341,6 +8845,50 @@
       "classes": {
         "segment": "cv-segmented-control-segment",
         "wrapper": "cv-segmented-control-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "role": "group",
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "data-disabled": "boolean"
+          },
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "segment"
+          ],
+          "class": "cv-segmented-control-wrapper"
+        },
+        "parts": {
+          "segment": {
+            "element": "button",
+            "role": "radio",
+            "data": {
+              "data-selected": "boolean",
+              "data-size": [
+                "sm",
+                "md",
+                "lg"
+              ]
+            },
+            "aria": [
+              "aria-checked"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "segment",
+            "class": "cv-segmented-control-segment"
+          }
+        }
       }
     },
     "select": {
@@ -5486,6 +9034,129 @@
         "serverLabel": "cv-share-menu-serverLabel",
         "serverRow": "cv-share-menu-serverRow",
         "trigger": "cv-share-menu-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "local": "root",
+          "children": [
+            "trigger",
+            "panel"
+          ],
+          "class": "cv-share-menu-root"
+        },
+        "parts": {
+          "trigger": {
+            "element": "button",
+            "data": {
+              "data-size": [
+                "sm",
+                "md"
+              ]
+            },
+            "aria": [
+              "aria-expanded"
+            ],
+            "children": [
+              "icon",
+              "$text"
+            ],
+            "local": "trigger",
+            "class": "cv-share-menu-trigger"
+          },
+          "icon": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "icon",
+            "class": "cv-share-menu-icon"
+          },
+          "panel": {
+            "element": "div",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "list"
+            ],
+            "local": "panel",
+            "class": "cv-share-menu-panel"
+          },
+          "list": {
+            "element": "ul",
+            "children": [
+              "server",
+              "item",
+              "divided"
+            ],
+            "local": "list",
+            "class": "cv-share-menu-list"
+          },
+          "server": {
+            "element": "form",
+            "children": [
+              "serverLabel",
+              "serverRow"
+            ],
+            "local": "server",
+            "class": "cv-share-menu-server"
+          },
+          "serverLabel": {
+            "element": "label",
+            "children": [
+              "$text"
+            ],
+            "local": "serverLabel",
+            "class": "cv-share-menu-serverLabel"
+          },
+          "serverRow": {
+            "element": "span",
+            "children": [
+              "serverInput",
+              "item"
+            ],
+            "local": "serverRow",
+            "class": "cv-share-menu-serverRow"
+          },
+          "serverInput": {
+            "element": "input",
+            "local": "serverInput",
+            "class": "cv-share-menu-serverInput"
+          },
+          "item": {
+            "element": [
+              "a",
+              "button"
+            ],
+            "data": {
+              "data-network": [
+                "bluesky",
+                "mastodon",
+                "threads",
+                "linkedin",
+                "x"
+              ],
+              "data-state": [
+                "idle",
+                "copied"
+              ]
+            },
+            "children": [
+              "$text"
+            ],
+            "local": "item",
+            "class": "cv-share-menu-item"
+          },
+          "divided": {
+            "element": "li",
+            "children": [
+              "item"
+            ],
+            "local": "divided",
+            "class": "cv-share-menu-divided"
+          }
+        }
       }
     },
     "sheet": {
@@ -5498,6 +9169,75 @@
         "header": "cv-sheet-header",
         "sheet": "cv-sheet-sheet",
         "title": "cv-sheet-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "sheet",
+          "role": "dialog",
+          "data": {
+            "data-state": [
+              "open",
+              "closed"
+            ],
+            "data-side": [
+              "start",
+              "end",
+              "top",
+              "bottom"
+            ]
+          },
+          "aria": [
+            "aria-modal",
+            "aria-labelledby"
+          ],
+          "children": [
+            "header",
+            "body"
+          ],
+          "class": "cv-sheet-sheet"
+        },
+        "parts": {
+          "header": {
+            "element": "div",
+            "children": [
+              "title",
+              "close"
+            ],
+            "local": "header",
+            "class": "cv-sheet-header"
+          },
+          "title": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "local": "title",
+            "class": "cv-sheet-title"
+          },
+          "close": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "close",
+            "class": "cv-sheet-close"
+          },
+          "body": {
+            "element": "div",
+            "data": {
+              "data-cascivo-sheet-body": "string"
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "body",
+            "class": "cv-sheet-body"
+          }
+        }
       }
     },
     "shell-header": {
@@ -5525,6 +9265,241 @@
         "navMenuWrapper": "cv-shell-header-navMenuWrapper",
         "skipLink": "cv-shell-header-skipLink",
         "spacer": "cv-shell-header-spacer"
+      },
+      "anatomy": {
+        "root": {
+          "element": "header",
+          "local": "header",
+          "role": "banner",
+          "children": [
+            "skipLink",
+            "menuButton",
+            "brand",
+            "nav",
+            "center",
+            "spacer",
+            "actions",
+            "end"
+          ],
+          "class": "cv-shell-header-header"
+        },
+        "parts": {
+          "skipLink": {
+            "element": "a",
+            "children": [
+              "$text"
+            ],
+            "local": "skipLink",
+            "class": "cv-shell-header-skipLink"
+          },
+          "menuButton": {
+            "element": "button",
+            "aria": [
+              "aria-label",
+              "aria-expanded"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "menuButton",
+            "class": "cv-shell-header-menuButton"
+          },
+          "brand": {
+            "element": [
+              "a",
+              "div"
+            ],
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "brandPrefix",
+              "brandName",
+              "$slot"
+            ],
+            "local": "brand",
+            "class": "cv-shell-header-brand"
+          },
+          "brandPrefix": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "brandPrefix",
+            "class": "cv-shell-header-brandPrefix"
+          },
+          "brandName": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "brandName",
+            "class": "cv-shell-header-brandName"
+          },
+          "nav": {
+            "element": "nav",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "navList"
+            ],
+            "local": "nav",
+            "class": "cv-shell-header-nav"
+          },
+          "navList": {
+            "element": "ul",
+            "children": [
+              "navLink",
+              "navMenuWrapper"
+            ],
+            "local": "navList",
+            "class": "cv-shell-header-navList"
+          },
+          "navLink": {
+            "element": "a",
+            "data": {
+              "data-state": [
+                "active"
+              ]
+            },
+            "aria": [
+              "aria-current"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "navLink",
+            "class": "cv-shell-header-navLink"
+          },
+          "navMenuWrapper": {
+            "element": "li",
+            "children": [
+              "navMenuTrigger",
+              "navMenuPanel"
+            ],
+            "local": "navMenuWrapper",
+            "class": "cv-shell-header-navMenuWrapper"
+          },
+          "navMenuTrigger": {
+            "element": "button",
+            "data": {
+              "data-state": [
+                "active"
+              ]
+            },
+            "aria": [
+              "aria-haspopup",
+              "aria-expanded"
+            ],
+            "children": [
+              "$text",
+              "chevron"
+            ],
+            "local": "navMenuTrigger",
+            "class": "cv-shell-header-navMenuTrigger"
+          },
+          "chevron": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "chevron",
+            "class": "cv-shell-header-chevron"
+          },
+          "navMenuPanel": {
+            "element": "div",
+            "role": "menu",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "navMenuItem"
+            ],
+            "local": "navMenuPanel",
+            "class": "cv-shell-header-navMenuPanel"
+          },
+          "navMenuItem": {
+            "element": "a",
+            "role": "menuitem",
+            "data": {
+              "data-state": [
+                "active"
+              ]
+            },
+            "aria": [
+              "aria-current"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "navMenuItem",
+            "class": "cv-shell-header-navMenuItem"
+          },
+          "center": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "center",
+            "class": "cv-shell-header-center"
+          },
+          "spacer": {
+            "element": "div",
+            "local": "spacer",
+            "class": "cv-shell-header-spacer"
+          },
+          "actions": {
+            "element": "div",
+            "children": [
+              "action"
+            ],
+            "local": "actions",
+            "class": "cv-shell-header-actions"
+          },
+          "action": {
+            "element": "button",
+            "data": {
+              "data-state": [
+                "active"
+              ]
+            },
+            "aria": [
+              "aria-label",
+              "aria-pressed"
+            ],
+            "children": [
+              "actionIcon"
+            ],
+            "local": "action",
+            "class": "cv-shell-header-action"
+          },
+          "actionIcon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "actionIcon",
+            "class": "cv-shell-header-actionIcon"
+          },
+          "end": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "end",
+            "class": "cv-shell-header-end"
+          }
+        }
       }
     },
     "shimmer-text": {
@@ -5583,6 +9558,308 @@
         "sublist": "cv-side-nav-sublist",
         "sublistInner": "cv-side-nav-sublistInner",
         "trailing": "cv-side-nav-trailing"
+      },
+      "anatomy": {
+        "root": {
+          "element": "nav",
+          "local": "sideNav",
+          "data": {
+            "data-state": [
+              "expanded",
+              "collapsed"
+            ],
+            "data-expand-on-hover": "string"
+          },
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "header",
+            "list",
+            "footer",
+            "collapseToggle"
+          ],
+          "class": "cv-side-nav-sideNav"
+        },
+        "parts": {
+          "header": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "header",
+            "class": "cv-side-nav-header"
+          },
+          "list": {
+            "element": "ul",
+            "children": [
+              "group"
+            ],
+            "local": "list",
+            "class": "cv-side-nav-list"
+          },
+          "group": {
+            "element": "li",
+            "children": [
+              "groupLabel",
+              "groupItems"
+            ],
+            "local": "group",
+            "class": "cv-side-nav-group"
+          },
+          "groupLabel": {
+            "element": "h3",
+            "children": [
+              "$text"
+            ],
+            "local": "groupLabel",
+            "class": "cv-side-nav-groupLabel"
+          },
+          "groupItems": {
+            "element": "ul",
+            "children": [
+              "link",
+              "groupTrigger",
+              "railFlyout",
+              "sublist",
+              "customItem"
+            ],
+            "local": "groupItems",
+            "class": "cv-side-nav-groupItems"
+          },
+          "link": {
+            "element": [
+              "a",
+              "button"
+            ],
+            "role": "menuitem",
+            "data": {
+              "data-state": [
+                "active"
+              ],
+              "data-tone": [
+                "danger",
+                "warning",
+                "success"
+              ],
+              "data-selected": "boolean"
+            },
+            "aria": [
+              "aria-current",
+              "aria-label",
+              "aria-disabled"
+            ],
+            "children": [
+              "icon",
+              "fallbackIcon",
+              "label",
+              "trailing",
+              "checkMark"
+            ],
+            "local": "link",
+            "class": "cv-side-nav-link",
+            "modifiers": {
+              "sublink": {
+                "class": "cv-side-nav-sublink",
+                "when": "sub item"
+              },
+              "flyoutItem": {
+                "class": "cv-side-nav-flyoutItem",
+                "when": "in rail flyout"
+              }
+            }
+          },
+          "groupTrigger": {
+            "element": "button",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "aria": [
+              "aria-expanded",
+              "aria-controls",
+              "aria-haspopup",
+              "aria-label"
+            ],
+            "children": [
+              "icon",
+              "fallbackIcon",
+              "label",
+              "groupIndicator"
+            ],
+            "local": "groupTrigger",
+            "class": "cv-side-nav-groupTrigger"
+          },
+          "icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "icon",
+            "class": "cv-side-nav-icon"
+          },
+          "fallbackIcon": {
+            "element": "span",
+            "data": {
+              "data-fallback-icon": "boolean"
+            },
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "fallbackIcon",
+            "class": "cv-side-nav-fallbackIcon"
+          },
+          "label": {
+            "element": "span",
+            "data": {
+              "data-rail-hidden": "boolean"
+            },
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-side-nav-label"
+          },
+          "trailing": {
+            "element": "span",
+            "data": {
+              "data-rail-hidden": "boolean"
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "trailing",
+            "class": "cv-side-nav-trailing"
+          },
+          "checkMark": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "checkMark",
+            "class": "cv-side-nav-checkMark"
+          },
+          "groupIndicator": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "groupIndicator",
+            "class": "cv-side-nav-groupIndicator"
+          },
+          "sublist": {
+            "element": "div",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "children": [
+              "sublistInner"
+            ],
+            "local": "sublist",
+            "class": "cv-side-nav-sublist"
+          },
+          "sublistInner": {
+            "element": "ul",
+            "children": [
+              "subSeparator",
+              "subGroupLabel",
+              "link"
+            ],
+            "local": "sublistInner",
+            "class": "cv-side-nav-sublistInner"
+          },
+          "subSeparator": {
+            "element": "li",
+            "role": "separator",
+            "local": "subSeparator",
+            "class": "cv-side-nav-subSeparator"
+          },
+          "subGroupLabel": {
+            "element": "li",
+            "children": [
+              "$text"
+            ],
+            "local": "subGroupLabel",
+            "class": "cv-side-nav-subGroupLabel"
+          },
+          "railFlyout": {
+            "element": "div",
+            "role": "menu",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "railFlyoutCaption",
+              "flyoutSeparator",
+              "link"
+            ],
+            "local": "railFlyout",
+            "class": "cv-side-nav-railFlyout"
+          },
+          "railFlyoutCaption": {
+            "element": "div",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "railFlyoutCaption",
+            "class": "cv-side-nav-railFlyoutCaption"
+          },
+          "flyoutSeparator": {
+            "element": "div",
+            "role": "separator",
+            "local": "flyoutSeparator",
+            "class": "cv-side-nav-flyoutSeparator"
+          },
+          "customItem": {
+            "element": "li",
+            "children": [
+              "$slot"
+            ],
+            "local": "customItem",
+            "class": "cv-side-nav-customItem"
+          },
+          "footer": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "footer",
+            "class": "cv-side-nav-footer"
+          },
+          "collapseToggle": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "collapseIcon"
+            ],
+            "local": "collapseToggle",
+            "class": "cv-side-nav-collapseToggle"
+          },
+          "collapseIcon": {
+            "element": "svg",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "collapseIcon",
+            "class": "cv-side-nav-collapseIcon"
+          }
+        }
       }
     },
     "skeleton": {
@@ -6059,6 +10336,27 @@
       "classes": {
         "cursor": "cv-streaming-text-cursor",
         "root": "cv-streaming-text-root"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "local": "root",
+          "children": [
+            "$text",
+            "cursor"
+          ],
+          "class": "cv-streaming-text-root"
+        },
+        "parts": {
+          "cursor": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "cursor",
+            "class": "cv-streaming-text-cursor"
+          }
+        }
       }
     },
     "structured-list": {
@@ -6162,6 +10460,53 @@
         "off": "cv-swap-off",
         "on": "cv-swap-on",
         "swap": "cv-swap-swap"
+      },
+      "anatomy": {
+        "root": {
+          "element": "button",
+          "local": "swap",
+          "role": "switch",
+          "data": {
+            "data-checked": "boolean",
+            "data-mode": [
+              "rotate",
+              "flip"
+            ]
+          },
+          "aria": [
+            "aria-checked",
+            "aria-label"
+          ],
+          "children": [
+            "on",
+            "off"
+          ],
+          "class": "cv-swap-swap"
+        },
+        "parts": {
+          "on": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "on",
+            "class": "cv-swap-on"
+          },
+          "off": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "off",
+            "class": "cv-swap-off"
+          }
+        }
       }
     },
     "swipe-item": {
@@ -6177,6 +10522,86 @@
         "panel": "cv-swipe-item-panel",
         "root": "cv-swipe-item-root",
         "trailing": "cv-swipe-item-trailing"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "data": {
+            "data-state": [
+              "closed",
+              "leading",
+              "trailing"
+            ]
+          },
+          "children": [
+            "panel",
+            "content"
+          ],
+          "class": "cv-swipe-item-root"
+        },
+        "parts": {
+          "panel": {
+            "element": "div",
+            "children": [
+              "action"
+            ],
+            "local": "panel",
+            "class": "cv-swipe-item-panel",
+            "modifiers": {
+              "leading": {
+                "class": "cv-swipe-item-leading",
+                "when": "side === 'leading'"
+              },
+              "trailing": {
+                "class": "cv-swipe-item-trailing",
+                "when": "side === 'trailing'"
+              }
+            }
+          },
+          "action": {
+            "element": "button",
+            "data": {
+              "data-destructive": "boolean"
+            },
+            "children": [
+              "actionIcon",
+              "actionLabel"
+            ],
+            "local": "action",
+            "class": "cv-swipe-item-action"
+          },
+          "actionIcon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "actionIcon",
+            "class": "cv-swipe-item-actionIcon"
+          },
+          "actionLabel": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "actionLabel",
+            "class": "cv-swipe-item-actionLabel"
+          },
+          "content": {
+            "element": "div",
+            "data": {
+              "data-dragging": "boolean"
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "content",
+            "class": "cv-swipe-item-content"
+          }
+        }
       }
     },
     "switcher": {
@@ -6302,6 +10727,12 @@
           "content": {
             "element": "div",
             "role": "tabpanel",
+            "data": {
+              "data-state": [
+                "active",
+                "inactive"
+              ]
+            },
             "aria": [
               "aria-labelledby"
             ],
@@ -6371,6 +10802,58 @@
         "input": "cv-tags-input-input",
         "tag": "cv-tags-input-tag",
         "wrapper": "cv-tags-input-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-disabled": "boolean"
+          },
+          "children": [
+            "tag",
+            "input"
+          ],
+          "class": "cv-tags-input-wrapper"
+        },
+        "parts": {
+          "tag": {
+            "element": "span",
+            "data": {
+              "data-state": [
+                "invalid"
+              ]
+            },
+            "children": [
+              "$text",
+              "dismiss"
+            ],
+            "local": "tag",
+            "class": "cv-tags-input-tag"
+          },
+          "dismiss": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "dismiss",
+            "class": "cv-tags-input-dismiss"
+          },
+          "input": {
+            "element": "input",
+            "aria": [
+              "aria-labelledby",
+              "aria-describedby",
+              "aria-invalid",
+              "aria-label"
+            ],
+            "local": "input",
+            "class": "cv-tags-input-input"
+          }
+        }
       }
     },
     "terminal": {
@@ -6383,6 +10866,61 @@
         "prefix": "cv-terminal-prefix",
         "root": "cv-terminal-root",
         "text": "cv-terminal-text"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "role": "group",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "line"
+          ],
+          "class": "cv-terminal-root"
+        },
+        "parts": {
+          "line": {
+            "element": "div",
+            "data": {
+              "data-type": [
+                "command",
+                "output",
+                "error",
+                "comment"
+              ]
+            },
+            "children": [
+              "prefix",
+              "text",
+              "cursor"
+            ],
+            "local": "line",
+            "class": "cv-terminal-line"
+          },
+          "prefix": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "prefix",
+            "class": "cv-terminal-prefix"
+          },
+          "text": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "text",
+            "class": "cv-terminal-text"
+          },
+          "cursor": {
+            "element": "span",
+            "local": "cursor",
+            "class": "cv-terminal-cursor"
+          }
+        }
       }
     },
     "text": {
@@ -6515,6 +11053,47 @@
         "body": "cv-tile-body",
         "icon": "cv-tile-icon",
         "tile": "cv-tile-tile"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "tile",
+          "role": "checkbox",
+          "data": {
+            "data-selected": "boolean",
+            "data-disabled": "boolean"
+          },
+          "aria": [
+            "aria-checked",
+            "aria-disabled"
+          ],
+          "children": [
+            "icon",
+            "body"
+          ],
+          "class": "cv-tile-tile"
+        },
+        "parts": {
+          "icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "icon",
+            "class": "cv-tile-icon"
+          },
+          "body": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "local": "body",
+            "class": "cv-tile-body"
+          }
+        }
       }
     },
     "time-picker": {
@@ -6527,6 +11106,68 @@
         "input": "cv-time-picker-input",
         "label": "cv-time-picker-label",
         "wrapper": "cv-time-picker-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-state": [
+              "idle",
+              "focused",
+              "error"
+            ],
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "children": [
+            "label",
+            "input",
+            "error",
+            "hint"
+          ],
+          "class": "cv-time-picker-wrapper"
+        },
+        "parts": {
+          "label": {
+            "element": "label",
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-time-picker-label"
+          },
+          "input": {
+            "element": "input",
+            "aria": [
+              "aria-invalid",
+              "aria-describedby",
+              "aria-label"
+            ],
+            "local": "input",
+            "class": "cv-time-picker-input"
+          },
+          "error": {
+            "element": "span",
+            "role": "alert",
+            "children": [
+              "$text"
+            ],
+            "local": "error",
+            "class": "cv-time-picker-error"
+          },
+          "hint": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "hint",
+            "class": "cv-time-picker-hint"
+          }
+        }
       }
     },
     "timeline": {
@@ -6692,7 +11333,13 @@
           },
           "icon": {
             "element": "span",
-            "when": "false",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$text"
+            ],
+            "when": "variant !== 'default'",
             "local": "icon",
             "class": "cv-toast-icon"
           },
@@ -6765,6 +11412,58 @@
         "thumb": "cv-toggle-thumb",
         "toggle": "cv-toggle-toggle",
         "track": "cv-toggle-track"
+      },
+      "anatomy": {
+        "root": {
+          "element": "button",
+          "local": "toggle",
+          "role": "switch",
+          "data": {
+            "data-state": [
+              "off",
+              "on"
+            ],
+            "data-size": [
+              "sm",
+              "md"
+            ]
+          },
+          "aria": [
+            "aria-checked",
+            "aria-label"
+          ],
+          "children": [
+            "track",
+            "label"
+          ],
+          "class": "cv-toggle-toggle"
+        },
+        "parts": {
+          "track": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "thumb"
+            ],
+            "local": "track",
+            "class": "cv-toggle-track"
+          },
+          "thumb": {
+            "element": "span",
+            "local": "thumb",
+            "class": "cv-toggle-thumb"
+          },
+          "label": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-toggle-label"
+          }
+        }
       }
     },
     "toggle-group": {
@@ -6774,6 +11473,49 @@
       "classes": {
         "item": "cv-toggle-group-item",
         "toggleGroup": "cv-toggle-group-toggleGroup"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "toggleGroup",
+          "role": "group",
+          "data": {
+            "data-orientation": [
+              "horizontal",
+              "vertical"
+            ],
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "children": [
+            "item"
+          ],
+          "class": "cv-toggle-group-toggleGroup"
+        },
+        "parts": {
+          "item": {
+            "element": "button",
+            "data": {
+              "data-state": [
+                "on",
+                "off"
+              ]
+            },
+            "aria": [
+              "aria-checked",
+              "aria-pressed",
+              "aria-label"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "item",
+            "class": "cv-toggle-group-item"
+          }
+        }
       }
     },
     "toggletip": {
@@ -6784,6 +11526,47 @@
         "bubble": "cv-toggletip-bubble",
         "root": "cv-toggletip-root",
         "trigger": "cv-toggletip-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "local": "root",
+          "children": [
+            "trigger",
+            "bubble"
+          ],
+          "class": "cv-toggletip-root"
+        },
+        "parts": {
+          "trigger": {
+            "element": "button",
+            "aria": [
+              "aria-expanded",
+              "aria-controls",
+              "aria-label"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "trigger",
+            "class": "cv-toggletip-trigger"
+          },
+          "bubble": {
+            "element": "div",
+            "role": "status",
+            "data": {
+              "data-state": [
+                "open"
+              ],
+              "data-placement": "string"
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "bubble",
+            "class": "cv-toggletip-bubble"
+          }
+        }
       }
     },
     "tool-call": {
@@ -6939,6 +11722,36 @@
       "classes": {
         "root": "cv-tooltip-root",
         "tooltip": "cv-tooltip-tooltip"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "local": "root",
+          "children": [
+            "$slot",
+            "tooltip"
+          ],
+          "class": "cv-tooltip-root"
+        },
+        "parts": {
+          "tooltip": {
+            "element": "span",
+            "role": "tooltip",
+            "data": {
+              "data-state": [
+                "visible",
+                "hidden"
+              ],
+              "data-placement": "string",
+              "data-anchor": "string"
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "tooltip",
+            "class": "cv-tooltip-tooltip"
+          }
+        }
       }
     },
     "tree-view": {
@@ -6955,6 +11768,126 @@
         "tree": "cv-tree-view-tree",
         "twisty": "cv-tree-view-twisty",
         "twistySpacer": "cv-tree-view-twistySpacer"
+      },
+      "anatomy": {
+        "root": {
+          "element": "ul",
+          "local": "tree",
+          "role": "tree",
+          "aria": [
+            "aria-multiselectable",
+            "aria-label"
+          ],
+          "children": [
+            "item"
+          ],
+          "class": "cv-tree-view-tree"
+        },
+        "parts": {
+          "item": {
+            "element": "li",
+            "role": "treeitem",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ],
+              "data-selected": "boolean",
+              "data-disabled": "boolean"
+            },
+            "aria": [
+              "aria-labelledby",
+              "aria-level",
+              "aria-posinset",
+              "aria-setsize",
+              "aria-selected",
+              "aria-expanded",
+              "aria-disabled"
+            ],
+            "children": [
+              "row",
+              "groupWrap"
+            ],
+            "local": "item",
+            "class": "cv-tree-view-item"
+          },
+          "row": {
+            "element": "span",
+            "children": [
+              "twisty",
+              "twistySpacer",
+              "icon",
+              "label"
+            ],
+            "local": "row",
+            "class": "cv-tree-view-row"
+          },
+          "twisty": {
+            "element": "span",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "twisty",
+            "class": "cv-tree-view-twisty"
+          },
+          "twistySpacer": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "twistySpacer",
+            "class": "cv-tree-view-twistySpacer"
+          },
+          "icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "icon",
+            "class": "cv-tree-view-icon"
+          },
+          "label": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-tree-view-label"
+          },
+          "groupWrap": {
+            "element": "div",
+            "role": "presentation",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "children": [
+              "group"
+            ],
+            "local": "groupWrap",
+            "class": "cv-tree-view-groupWrap"
+          },
+          "group": {
+            "element": "ul",
+            "role": "group",
+            "children": [
+              "$slot"
+            ],
+            "local": "group",
+            "class": "cv-tree-view-group"
+          }
+        }
       }
     },
     "typing-indicator": {
@@ -7064,6 +11997,43 @@
         "canvas": "cv-virtual-list-canvas",
         "row": "cv-virtual-list-row",
         "viewport": "cv-virtual-list-viewport"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "viewport",
+          "role": "list",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "canvas"
+          ],
+          "class": "cv-virtual-list-viewport"
+        },
+        "parts": {
+          "canvas": {
+            "element": "div",
+            "children": [
+              "row"
+            ],
+            "local": "canvas",
+            "class": "cv-virtual-list-canvas"
+          },
+          "row": {
+            "element": "div",
+            "role": "listitem",
+            "aria": [
+              "aria-setsize",
+              "aria-posinset"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "row",
+            "class": "cv-virtual-list-row"
+          }
+        }
       }
     },
     "visually-hidden": {
@@ -7095,6 +12065,52 @@
         "column": "cv-wheel-picker-column",
         "option": "cv-wheel-picker-option",
         "root": "cv-wheel-picker-root"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "children": [
+            "column",
+            "band"
+          ],
+          "class": "cv-wheel-picker-root"
+        },
+        "parts": {
+          "column": {
+            "element": "div",
+            "role": "listbox",
+            "aria": [
+              "aria-label",
+              "aria-activedescendant"
+            ],
+            "children": [
+              "option"
+            ],
+            "local": "column",
+            "class": "cv-wheel-picker-column"
+          },
+          "option": {
+            "element": "div",
+            "role": "option",
+            "aria": [
+              "aria-selected"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "option",
+            "class": "cv-wheel-picker-option"
+          },
+          "band": {
+            "element": "div",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "band",
+            "class": "cv-wheel-picker-band"
+          }
+        }
       }
     }
   }

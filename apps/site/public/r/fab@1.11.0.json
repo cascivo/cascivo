@@ -27,6 +27,58 @@
     "category": "inputs",
     "clientJs": "required",
     "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "root",
+        "data": {
+          "data-position": "string"
+        },
+        "children": ["dial", "fab"]
+      },
+      "parts": {
+        "dial": {
+          "element": "menu",
+          "role": "menu",
+          "aria": ["aria-label"],
+          "when": "actions",
+          "children": ["dialItem"]
+        },
+        "dialItem": {
+          "element": "li",
+          "role": "presentation",
+          "children": ["action"]
+        },
+        "action": {
+          "element": "button",
+          "role": "menuitem",
+          "aria": ["aria-disabled"],
+          "children": ["actionLabel", "actionIcon"]
+        },
+        "actionLabel": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "actionIcon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$slot"]
+        },
+        "fab": {
+          "element": "button",
+          "data": {
+            "data-state": ["open", "closed"]
+          },
+          "aria": ["aria-label", "aria-haspopup", "aria-expanded", "aria-controls"],
+          "children": ["icon"]
+        },
+        "icon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": ["default", "open", "closed"],
     "variants": [],
     "sizes": [],

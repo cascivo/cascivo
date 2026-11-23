@@ -16,6 +16,7 @@ export const classes = {
     trigger: 'cv-accordion-trigger',
   },
   actionSheet: {
+    root: 'cv-action-sheet-overlay',
     alias: 'cv-action-sheet',
     cancel: 'cv-action-sheet-cancel',
     description: 'cv-action-sheet-description',
@@ -58,6 +59,7 @@ export const classes = {
     title: 'cv-alert-title',
   },
   alertDialog: {
+    root: 'cv-alert-dialog-dialog',
     alias: 'cv-alert-dialog',
     actions: 'cv-alert-dialog-actions',
     cancel: 'cv-alert-dialog-cancel',
@@ -110,6 +112,7 @@ export const classes = {
     footer: 'cv-blockquote-footer',
   },
   bottomSheet: {
+    root: 'cv-bottom-sheet-overlay',
     alias: 'cv-bottom-sheet',
     body: 'cv-bottom-sheet-body',
     close: 'cv-bottom-sheet-close',
@@ -261,6 +264,7 @@ export const classes = {
     trigger: 'cv-collapsible-trigger',
   },
   colorPicker: {
+    root: 'cv-color-picker-wrapper',
     alias: 'cv-color-picker',
     alpha: 'cv-color-picker-alpha',
     area: 'cv-color-picker-area',
@@ -280,6 +284,7 @@ export const classes = {
     wrapper: 'cv-color-picker-wrapper',
   },
   combobox: {
+    root: 'cv-combobox-wrapper',
     alias: 'cv-combobox',
     check: 'cv-combobox-check',
     chevron: 'cv-combobox-chevron',
@@ -305,6 +310,7 @@ export const classes = {
     wrapper: 'cv-combobox-wrapper',
   },
   commandMenu: {
+    root: 'cv-command-menu-dialog',
     alias: 'cv-command-menu',
     action: 'cv-command-menu-action',
     actionKeys: 'cv-command-menu-actionKeys',
@@ -357,6 +363,7 @@ export const classes = {
     list: 'cv-contained-list-list',
   },
   contextMenu: {
+    root: 'cv-context-menu-wrapper',
     alias: 'cv-context-menu',
     item: 'cv-context-menu-item',
     menu: 'cv-context-menu-menu',
@@ -432,6 +439,7 @@ export const classes = {
     totals: 'cv-data-table-totals',
   },
   datePicker: {
+    root: 'cv-date-picker-wrapper',
     alias: 'cv-date-picker',
     calendarGlyph: 'cv-date-picker-calendarGlyph',
     clear: 'cv-date-picker-clear',
@@ -448,6 +456,7 @@ export const classes = {
     wrapper: 'cv-date-picker-wrapper',
   },
   dateRangePicker: {
+    root: 'cv-date-range-picker-wrapper',
     alias: 'cv-date-range-picker',
     applyBtn: 'cv-date-range-picker-applyBtn',
     calNav: 'cv-date-range-picker-calNav',
@@ -473,6 +482,7 @@ export const classes = {
     label: 'cv-dock-label',
   },
   drawer: {
+    root: 'cv-drawer-overlay',
     alias: 'cv-drawer',
     body: 'cv-drawer-body',
     close: 'cv-drawer-close',
@@ -493,6 +503,7 @@ export const classes = {
     separator: 'cv-dropdown-separator',
   },
   editable: {
+    root: 'cv-editable-wrapper',
     alias: 'cv-editable',
     'edit-icon': 'cv-editable-edit-icon',
     editing: 'cv-editable-editing',
@@ -530,6 +541,7 @@ export const classes = {
     field: 'cv-field-field',
   },
   fileUploader: {
+    root: 'cv-file-uploader-uploader',
     alias: 'cv-file-uploader',
     'error-message': 'cv-file-uploader-error-message',
     file: 'cv-file-uploader-file',
@@ -571,6 +583,7 @@ export const classes = {
     spacer: 'cv-header-spacer',
   },
   headerPanel: {
+    root: 'cv-header-panel-panel',
     alias: 'cv-header-panel',
     body: 'cv-header-panel-body',
     close: 'cv-header-panel-close',
@@ -584,6 +597,7 @@ export const classes = {
     heading: 'cv-heading-heading',
   },
   hoverCard: {
+    root: 'cv-hover-card-trigger',
     alias: 'cv-hover-card',
     content: 'cv-hover-card-content',
     trigger: 'cv-hover-card-trigger',
@@ -714,6 +728,7 @@ export const classes = {
     toolbar: 'cv-log-viewer-toolbar',
   },
   menu: {
+    root: 'cv-menu-panel',
     alias: 'cv-menu',
     item: 'cv-menu-item',
     panel: 'cv-menu-panel',
@@ -736,6 +751,7 @@ export const classes = {
     trigger: 'cv-menubar-trigger',
   },
   messageActions: {
+    root: 'cv-message-actions-actions',
     alias: 'cv-message-actions',
     actions: 'cv-message-actions-actions',
     down: 'cv-message-actions-down',
@@ -754,6 +770,7 @@ export const classes = {
     title: 'cv-modal-title',
   },
   multiSelect: {
+    root: 'cv-multi-select-wrapper',
     alias: 'cv-multi-select',
     checkbox: 'cv-multi-select-checkbox',
     chevron: 'cv-multi-select-chevron',
@@ -790,6 +807,7 @@ export const classes = {
     select: 'cv-native-select-select',
   },
   navigationMenu: {
+    root: 'cv-navigation-menu-nav',
     alias: 'cv-navigation-menu',
     item: 'cv-navigation-menu-item',
     link: 'cv-navigation-menu-link',
@@ -822,6 +840,7 @@ export const classes = {
     wrapper: 'cv-number-input-wrapper',
   },
   otpInput: {
+    root: 'cv-otp-input-wrapper',
     alias: 'cv-otp-input',
     slot: 'cv-otp-input-slot',
     wrapper: 'cv-otp-input-wrapper',
@@ -855,6 +874,7 @@ export const classes = {
     wrapper: 'cv-password-input-wrapper',
   },
   popover: {
+    root: 'cv-popover-content',
     alias: 'cv-popover',
     content: 'cv-popover-content',
     trigger: 'cv-popover-trigger',
@@ -995,6 +1015,7 @@ export const classes = {
     label: 'cv-search-label',
   },
   segmentedControl: {
+    root: 'cv-segmented-control-wrapper',
     alias: 'cv-segmented-control',
     segment: 'cv-segmented-control-segment',
     wrapper: 'cv-segmented-control-wrapper',
@@ -1039,6 +1060,7 @@ export const classes = {
     title: 'cv-sheet-title',
   },
   shellHeader: {
+    root: 'cv-shell-header-header',
     alias: 'cv-shell-header',
     action: 'cv-shell-header-action',
     actionIcon: 'cv-shell-header-actionIcon',
@@ -1221,6 +1243,7 @@ export const classes = {
     tag: 'cv-tag-tag',
   },
   tagsInput: {
+    root: 'cv-tags-input-wrapper',
     alias: 'cv-tags-input',
     dismiss: 'cv-tags-input-dismiss',
     input: 'cv-tags-input-input',
@@ -1257,6 +1280,7 @@ export const classes = {
     tile: 'cv-tile-tile',
   },
   timePicker: {
+    root: 'cv-time-picker-wrapper',
     alias: 'cv-time-picker',
     error: 'cv-time-picker-error',
     hint: 'cv-time-picker-hint',
@@ -1333,6 +1357,7 @@ export const classes = {
     tooltip: 'cv-tooltip-tooltip',
   },
   treeView: {
+    root: 'cv-tree-view-tree',
     alias: 'cv-tree-view',
     group: 'cv-tree-view-group',
     groupWrap: 'cv-tree-view-groupWrap',
@@ -1360,6 +1385,7 @@ export const classes = {
     user: 'cv-user-user',
   },
   virtualList: {
+    root: 'cv-virtual-list-viewport',
     alias: 'cv-virtual-list',
     canvas: 'cv-virtual-list-canvas',
     row: 'cv-virtual-list-row',

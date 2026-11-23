@@ -90,6 +90,12 @@
     }
   }
 
+  .icon {
+    flex-shrink: 0;
+    font-weight: var(--cascivo-font-semibold);
+    line-height: 1.5;
+  }
+
   .body {
     display: flex;
     flex-direction: column;

@@ -7,6 +7,24 @@ export const meta: ComponentMeta = {
   // Selection runs through JS-only buttons — nothing can be toggled without JS.
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'toggleGroup',
+      role: 'group',
+      data: { 'data-orientation': ['horizontal', 'vertical'], 'data-size': ['sm', 'md', 'lg'] },
+      children: ['item'],
+    },
+    parts: {
+      // `role="radio"` + aria-checked when type is single; aria-pressed otherwise.
+      item: {
+        element: 'button',
+        data: { 'data-state': ['on', 'off'] },
+        aria: ['aria-checked', 'aria-pressed', 'aria-label'],
+        children: ['$slot'],
+      },
+    },
+  },
   states: ['on', 'off'],
   variants: ['single', 'multiple'],
   sizes: ['sm', 'md', 'lg'],

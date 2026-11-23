@@ -40,6 +40,11 @@ describe('Tabs', () => {
     expect(screen.getByText('Password panel')).toBeInTheDocument()
   })
 
+  it('marks the rendered panel data-state="active"', () => {
+    setup()
+    expect(screen.getByRole('tabpanel')).toHaveAttribute('data-state', 'active')
+  })
+
   it('wires up aria-controls and aria-labelledby', () => {
     setup()
     const tab = screen.getByRole('tab', { name: 'Account' })

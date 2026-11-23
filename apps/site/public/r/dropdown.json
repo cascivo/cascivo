@@ -27,6 +27,39 @@
     "category": "overlay",
     "clientJs": "required",
     "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "root",
+        "children": ["$slot", "menu"]
+      },
+      "parts": {
+        "menu": {
+          "element": "div",
+          "role": "menu",
+          "data": {
+            "data-placement": "string",
+            "data-state": ["open", "closed"]
+          },
+          "children": ["item", "separator"]
+        },
+        "item": {
+          "element": "button",
+          "role": "menuitem",
+          "children": ["icon", "$text"]
+        },
+        "icon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "when": "item.icon",
+          "children": ["$slot"]
+        },
+        "separator": {
+          "element": "div",
+          "role": "separator"
+        }
+      }
+    },
     "states": ["closed", "open"],
     "variants": [],
     "sizes": [],

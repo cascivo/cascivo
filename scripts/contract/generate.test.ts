@@ -11,6 +11,7 @@ import {
   REPO_ROOT,
   renderClasses,
 } from './generate.ts'
+import { ANATOMY_ALLOWLIST } from './anatomy-allowlist.ts'
 
 const units = await loadUnits()
 const generated = await generateAll()
@@ -103,4 +104,23 @@ test('a local named `alias` is refused', () => {
       }),
     /alias/,
   )
+})
+
+test('G2: every component with a CSS module has anatomy (or is allowlisted)', () => {
+  const allow = new Set(ANATOMY_ALLOWLIST)
+  const missing = units.filter((u) => u.modules.length && !u.meta.anatomy && !allow.has(u.unit))
+  assert.deepEqual(
+    missing.map((u) => u.unit),
+    [],
+  )
+})
+
+test('G2 allowlist only shrinks: no entry already has anatomy, no unknown or duplicate entry', () => {
+  const byUnit = new Map(units.map((u) => [u.unit, u]))
+  assert.equal(new Set(ANATOMY_ALLOWLIST).size, ANATOMY_ALLOWLIST.length)
+  const stale = ANATOMY_ALLOWLIST.filter((n) => {
+    const u = byUnit.get(n)
+    return !u || !u.modules.length || u.meta.anatomy
+  })
+  assert.deepEqual(stale, [])
 })

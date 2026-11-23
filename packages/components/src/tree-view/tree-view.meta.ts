@@ -7,6 +7,54 @@ export const meta: ComponentMeta = {
   // Collapsed branches are not rendered, so most of the tree is unreachable without JS.
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'ul',
+      local: 'tree',
+      role: 'tree',
+      aria: ['aria-multiselectable', 'aria-label'],
+      children: ['item'],
+    },
+    parts: {
+      item: {
+        element: 'li',
+        role: 'treeitem',
+        data: {
+          'data-state': ['open', 'closed'],
+          'data-selected': 'boolean',
+          'data-disabled': 'boolean',
+        },
+        aria: [
+          'aria-labelledby',
+          'aria-level',
+          'aria-posinset',
+          'aria-setsize',
+          'aria-selected',
+          'aria-expanded',
+          'aria-disabled',
+        ],
+        children: ['row', 'groupWrap'],
+      },
+      row: { element: 'span', children: ['twisty', 'twistySpacer', 'icon', 'label'] },
+      twisty: {
+        element: 'span',
+        data: { 'data-state': ['open', 'closed'] },
+        aria: ['aria-hidden'],
+      },
+      twistySpacer: { element: 'span', aria: ['aria-hidden'] },
+      icon: { element: 'span', aria: ['aria-hidden'], children: ['$slot'] },
+      label: { element: 'span', children: ['$text'] },
+      // Rendered only when the node has children.
+      groupWrap: {
+        element: 'div',
+        role: 'presentation',
+        data: { 'data-state': ['open', 'closed'] },
+        children: ['group'],
+      },
+      // Nested `item`s render here (recursive, so listed as slot).
+      group: { element: 'ul', role: 'group', children: ['$slot'] },
+    },
+  },
   states: ['default', 'expanded', 'collapsed', 'selected'],
   variants: ['single', 'multi'],
   sizes: [],

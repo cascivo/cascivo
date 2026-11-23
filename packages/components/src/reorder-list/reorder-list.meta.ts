@@ -6,6 +6,21 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'div', local: 'root', children: ['list', 'srOnly'] },
+    parts: {
+      list: { element: 'ul', children: ['row'] },
+      row: {
+        element: 'li',
+        data: { 'data-reorder-row': 'string', 'data-active': 'boolean' },
+        children: ['handle', 'label'],
+      },
+      handle: { element: 'button', aria: ['aria-label', 'aria-pressed'], children: ['grip'] },
+      grip: { element: 'svg', aria: ['aria-hidden'] },
+      label: { element: 'span', children: ['$slot'] },
+      srOnly: { element: 'span', role: 'status', aria: ['aria-live'], children: ['$text'] },
+    },
+  },
   states: ['idle', 'grabbed', 'disabled'],
   variants: [],
   sizes: [],

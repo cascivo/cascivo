@@ -7,6 +7,27 @@ export const meta: ComponentMeta = {
   // The text renders, but click-to-edit is the feature and it needs JS.
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      data: { 'data-disabled': 'string' },
+      modifiers: { editing: 'isEditing' },
+      children: ['input', 'preview'],
+    },
+    parts: {
+      // Editing mode renders the input; otherwise the preview button.
+      input: { element: 'input', aria: ['aria-label', 'aria-labelledby', 'aria-describedby'] },
+      preview: {
+        element: 'button',
+        aria: ['aria-label', 'aria-labelledby', 'aria-describedby'],
+        children: ['preview-text', 'edit-icon'],
+      },
+      'preview-text': { element: 'span', children: ['$text', 'placeholder'] },
+      placeholder: { element: 'span', children: ['$text'] },
+      'edit-icon': { element: 'span', aria: ['aria-hidden'] },
+    },
+  },
   states: ['preview', 'editing', 'disabled'],
   variants: [],
   sizes: [],

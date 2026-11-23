@@ -30,8 +30,13 @@ export const meta: ComponentMeta = {
         aria: ['aria-live'],
         children: ['icon', 'body', 'close'],
       },
-      // Styled per variant in the CSS module, but toast.tsx does not render it yet.
-      icon: { element: 'span', when: 'false' },
+      // A decorative glyph for every tone but `default`.
+      icon: {
+        element: 'span',
+        aria: ['aria-hidden'],
+        children: ['$text'],
+        when: "variant !== 'default'",
+      },
       body: { element: 'div', children: ['title', 'description'] },
       title: { element: 'div', children: ['$text'] },
       description: { element: 'div', children: ['$text'], when: 'description' },

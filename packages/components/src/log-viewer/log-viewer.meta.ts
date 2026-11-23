@@ -7,6 +7,32 @@ export const meta: ComponentMeta = {
   // Virtualized rendering plus a live stream — with JS off the viewport renders no rows.
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'div', local: 'root', children: ['toolbar', 'scroll'] },
+    parts: {
+      toolbar: { element: 'div', children: ['search', 'count', 'spacer', 'toggle', 'copy'] },
+      search: { element: 'input', aria: ['aria-label'] },
+      count: { element: 'span', aria: ['aria-live'], when: 'search query', children: ['$text'] },
+      spacer: { element: 'span' },
+      toggle: { element: 'button', aria: ['aria-pressed'], children: ['$text'] },
+      copy: { element: 'button', children: ['$text'] },
+      scroll: {
+        element: 'div',
+        role: 'log',
+        aria: ['aria-live', 'aria-label'],
+        children: ['empty', 'sizer'],
+      },
+      empty: { element: 'div', children: ['$text'] },
+      sizer: { element: 'div', children: ['line'] },
+      line: {
+        element: 'div',
+        data: { 'data-level': ['info', 'warn', 'error', 'debug'] },
+        children: ['timestamp', 'ansi', '$text'],
+      },
+      timestamp: { element: 'span', children: ['$text'] },
+      ansi: { element: 'span', data: { 'data-ansi': 'string' }, children: ['$text'] },
+    },
+  },
   states: ['following', 'paused', 'empty'],
   variants: [],
   sizes: [],

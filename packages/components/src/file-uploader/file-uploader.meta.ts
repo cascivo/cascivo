@@ -8,6 +8,42 @@ export const meta: ComponentMeta = {
   // this component.
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'uploader',
+      children: ['label', 'input', 'zone', 'hint', 'srOnly', 'list'],
+    },
+    parts: {
+      label: { element: 'span', children: ['$text'] },
+      input: { element: 'input', aria: ['aria-labelledby'] },
+      zone: {
+        element: 'button',
+        data: { 'data-state': ['idle', 'dragover'] },
+        aria: ['aria-labelledby', 'aria-label', 'aria-describedby'],
+        children: ['zoneText'],
+      },
+      zoneText: { element: 'span', children: ['$text'] },
+      hint: { element: 'span', when: 'hint', children: ['$text'] },
+      srOnly: { element: 'span', role: 'status', aria: ['aria-live'], children: ['$text'] },
+      list: { element: 'ul', when: 'files.length', children: ['file'] },
+      file: {
+        element: 'li',
+        data: { 'data-state': 'string' },
+        children: ['status', 'name', 'size', 'remove', 'error-message'],
+      },
+      status: {
+        element: 'span',
+        children: ['@spinner', 'glyph-complete', 'glyph-error'],
+      },
+      'glyph-complete': { element: 'span', role: 'img', aria: ['aria-label'], children: ['$text'] },
+      'glyph-error': { element: 'span', role: 'img', aria: ['aria-label'], children: ['$text'] },
+      name: { element: 'span', children: ['$text'] },
+      size: { element: 'span', children: ['$text'] },
+      remove: { element: 'button', aria: ['aria-label'], children: ['$text'] },
+      'error-message': { element: 'span', role: 'alert', children: ['$text'] },
+    },
+  },
   states: ['idle', 'dragover', 'uploading', 'complete', 'error', 'disabled'],
   variants: [],
   sizes: [],

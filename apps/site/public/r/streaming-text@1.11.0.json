@@ -27,6 +27,19 @@
     "category": "display",
     "clientJs": "required",
     "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "span",
+        "local": "root",
+        "children": ["$text", "cursor"]
+      },
+      "parts": {
+        "cursor": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

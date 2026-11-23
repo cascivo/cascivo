@@ -328,6 +328,11 @@ fn tabs(node: &Node, cx: &mut Cx, out: &mut String) {
         attr(out, "id", &format!("{base}-content-{value}"));
         attr(out, "aria-labelledby", &format!("{base}-trigger-{value}"));
         attr(out, "tabindex", "0");
+        attr(
+            out,
+            "data-state",
+            if i == checked { "active" } else { "inactive" },
+        );
         attr(out, "class", tabs::CONTENT);
         // Without the script (`cv-tabs:not(:defined)`) the CSS shows every panel stacked.
         if i != checked {

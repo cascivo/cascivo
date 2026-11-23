@@ -7,6 +7,27 @@ export const meta: ComponentMeta = {
   // Wraps a native <input type="time">, so a value can be picked and submitted with JS off.
   clientJs: 'enhancement',
   contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      data: {
+        'data-state': ['idle', 'focused', 'error'],
+        'data-size': ['sm', 'md', 'lg'],
+      },
+      children: ['label', 'input', 'error', 'hint'],
+    },
+    parts: {
+      label: { element: 'label', children: ['$text'] },
+      input: {
+        element: 'input',
+        aria: ['aria-invalid', 'aria-describedby', 'aria-label'],
+      },
+      // `error` replaces `hint` when set.
+      error: { element: 'span', role: 'alert', children: ['$text'] },
+      hint: { element: 'span', children: ['$text'] },
+    },
+  },
   states: ['idle', 'focused', 'error'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

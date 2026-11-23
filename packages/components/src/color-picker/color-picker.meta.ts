@@ -9,6 +9,42 @@ export const meta: ComponentMeta = {
   // to submit.
   clientJs: 'required',
   contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      data: { 'data-size': ['sm', 'md', 'lg'], 'data-disabled': 'string' },
+      children: ['label', 'area', 'sliders', 'row', 'presets', 'srOnly'],
+    },
+    parts: {
+      label: { element: 'label', children: ['$text'] },
+      // Two native range inputs carry the 2-D area's slider semantics.
+      area: { element: 'div', role: 'group', aria: ['aria-label'], children: ['axis', 'thumb'] },
+      axis: { element: 'input', aria: ['aria-label', 'aria-valuetext'] },
+      thumb: { element: 'span', aria: ['aria-hidden'] },
+      sliders: { element: 'div', children: ['slider'] },
+      slider: {
+        element: 'input',
+        aria: ['aria-label', 'aria-valuetext'],
+        modifiers: { hue: 'hue slider', alpha: 'alpha slider' },
+      },
+      row: { element: 'div', children: ['preview', 'hex', 'eyedropper'] },
+      preview: { element: 'span', aria: ['aria-hidden'] },
+      hex: {
+        element: 'input',
+        aria: ['aria-label', 'aria-labelledby', 'aria-describedby', 'aria-invalid'],
+      },
+      eyedropper: { element: 'button', when: 'EyeDropper support', aria: ['aria-label'] },
+      presets: {
+        element: 'div',
+        role: 'group',
+        aria: ['aria-label'],
+        children: ['preset'],
+      },
+      preset: { element: 'button', aria: ['aria-label', 'aria-pressed'] },
+      srOnly: { element: 'span', role: 'status', aria: ['aria-live'], children: ['$text'] },
+    },
+  },
   states: ['default', 'disabled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

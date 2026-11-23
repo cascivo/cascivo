@@ -34,6 +34,162 @@
     "category": "inputs",
     "clientJs": "required",
     "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "wrapper",
+        "data": {
+          "data-state": ["closed", "open", "error"],
+          "data-size": ["sm", "md", "lg"]
+        },
+        "children": ["label", "field", "panel", "sr-only", "error", "hint"]
+      },
+      "parts": {
+        "label": {
+          "element": "label",
+          "children": ["$text"]
+        },
+        "field": {
+          "element": "div",
+          "data": {
+            "data-display": ["count", "chips"]
+          },
+          "children": ["chip", "trigger", "clear"]
+        },
+        "chip": {
+          "element": "span",
+          "when": "display === 'chips'",
+          "children": ["chip-label", "chip-remove"]
+        },
+        "chip-label": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "chip-remove": {
+          "element": "button",
+          "aria": ["aria-label"]
+        },
+        "trigger": {
+          "element": "button",
+          "aria": [
+            "aria-haspopup",
+            "aria-expanded",
+            "aria-controls",
+            "aria-labelledby",
+            "aria-label",
+            "aria-invalid",
+            "aria-describedby"
+          ],
+          "children": ["trigger-label", "chevron"]
+        },
+        "trigger-label": {
+          "element": "span",
+          "data": {
+            "data-empty": "boolean"
+          },
+          "children": ["sr-only", "$text"]
+        },
+        "chevron": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        },
+        "clear": {
+          "element": "button",
+          "aria": ["aria-label"],
+          "children": ["clear-glyph"]
+        },
+        "clear-glyph": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        },
+        "panel": {
+          "element": "div",
+          "children": ["search-row", "select-all", "options", "status"]
+        },
+        "search-row": {
+          "element": "div",
+          "children": ["search"]
+        },
+        "search": {
+          "element": "input",
+          "role": "combobox",
+          "aria": [
+            "aria-label",
+            "aria-expanded",
+            "aria-controls",
+            "aria-autocomplete",
+            "aria-activedescendant"
+          ]
+        },
+        "select-all": {
+          "element": "button",
+          "children": ["$text"]
+        },
+        "options": {
+          "element": "div",
+          "role": "listbox",
+          "aria": ["aria-multiselectable", "aria-label", "aria-busy", "aria-activedescendant"],
+          "children": ["group", "option"]
+        },
+        "group": {
+          "element": "div",
+          "role": "group",
+          "aria": ["aria-label"],
+          "children": ["group-label", "option"]
+        },
+        "group-label": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$text"]
+        },
+        "option": {
+          "element": "div",
+          "role": "option",
+          "data": {
+            "data-active": "boolean",
+            "data-selected": "boolean",
+            "data-disabled": "boolean"
+          },
+          "aria": ["aria-selected", "aria-disabled"],
+          "modifiers": {
+            "create": "create option"
+          },
+          "children": ["checkbox", "option-label"]
+        },
+        "checkbox": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        },
+        "option-label": {
+          "element": "span",
+          "children": ["match", "$text"]
+        },
+        "match": {
+          "element": "mark",
+          "children": ["$text"]
+        },
+        "status": {
+          "element": "div",
+          "role": "status",
+          "children": ["$text"]
+        },
+        "sr-only": {
+          "element": "span",
+          "role": "status",
+          "aria": ["aria-live"],
+          "children": ["$text"]
+        },
+        "error": {
+          "element": "span",
+          "role": "alert",
+          "children": ["$text"]
+        },
+        "hint": {
+          "element": "span",
+          "children": ["$text"]
+        }
+      }
+    },
     "states": ["closed", "open", "error"],
     "variants": [],
     "sizes": ["sm", "md", "lg"],

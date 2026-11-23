@@ -27,6 +27,31 @@
     "category": "inputs",
     "clientJs": "required",
     "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "root",
+        "children": ["column", "band"]
+      },
+      "parts": {
+        "column": {
+          "element": "div",
+          "role": "listbox",
+          "aria": ["aria-label", "aria-activedescendant"],
+          "children": ["option"]
+        },
+        "option": {
+          "element": "div",
+          "role": "option",
+          "aria": ["aria-selected"],
+          "children": ["$text"]
+        },
+        "band": {
+          "element": "div",
+          "aria": ["aria-hidden"]
+        }
+      }
+    },
     "states": ["idle", "focused", "scrolling"],
     "variants": [],
     "sizes": [],
