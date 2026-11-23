@@ -7,25 +7,44 @@
 //! ([`check_fragment`]). Every response gets security headers and a strict CSP whose
 //! per-request [`Nonce`] the engine's `theme_script()` and `islands_script()` carry.
 //!
+//! Sessions ([`App::sessions`]: [`CookieStore`], [`MemoryStore`], `SqliteStore`, or any
+//! [`SessionStore`]) carry the CSRF token and flash messages and fill [`Facts`]; [`Csrf`]
+//! checks every unsafe method; an [`Authenticator`] ([`App::auth`]) feeds [`User`] and
+//! [`MaybeUser`].
+//!
 //! Untrusted input: `HX-*` request headers are facts ([`Hx`]); they never pick a template or a
 //! block. Redirect targets are [`LocalPath`]s.
 //!
-//! Features: `native` (default; tokio, [`App::serve`]) and `workers` (wasm32 Workers without
+//! Features: `native` (default; tokio, [`App::serve`]), `password` (default; Argon2id),
+//! `sqlite` (`SqliteStore`, sqlx) and `workers` (wasm32 Workers without
 //! tokio; [`MaybeSend`] has no `Send` bound when `native` is off).
 
 mod app;
+mod auth;
+mod csrf;
 mod error;
 mod headers;
 mod hx;
 mod path;
+mod session;
+mod stores;
+mod util;
 mod view;
 
 pub use app::{App, Facts};
+pub use auth::{Authenticator, MaybeUser, OAuthCallback, OAuthStart, User};
+#[cfg(feature = "password")]
+pub use auth::{hash_password, verify_password};
 pub use cascivo_web::{Engine, Flash, ReqCtx};
+pub use csrf::Csrf;
 pub use error::AppError;
 pub use headers::{Headers, Nonce};
 pub use hx::Hx;
 pub use path::{LocalPath, LocalPathError, see_other};
+pub use session::{Record, SameSite, Session, SessionConfig, SessionId, SessionStore, StoreError};
+#[cfg(feature = "sqlite")]
+pub use stores::SqliteStore;
+pub use stores::{CookieStore, MemoryStore};
 pub use view::{ToastKind, View, check_fragment};
 
 /// `Send` on native targets, nothing on Workers (`workers` without `native`), whose

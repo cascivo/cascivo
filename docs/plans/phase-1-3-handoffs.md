@@ -54,3 +54,15 @@ cannot auto-emit them.
 - `AppError`, `MaybeSend`, `check_fragment(engine, tpl, block, ctx, req)` (checkpoint β holds).
 - No compression in `native` (BREACH with CSRF tokens). cascivo-web scripts now carry the nonce.
   wasm32 check step added to `rust.yml`.
+
+## Phase 3 B3 (branch `claude/p3-b3-sessions`): sessions, CSRF, auth
+- `App::sessions(store, SessionConfig)`, `.auth(A: Authenticator)`, `.csrf(Csrf{check_origin, header, field, origins, exempt, body_limit})`.
+  Layers outer→inner: render → session → auth → CSRF → routes. Session layer fills `Facts` (request ext; response ext for a `View`).
+- `trait SessionStore: MaybeSend + Sync { load(&SessionId) -> Result<Option<Record>, StoreError>; save(&SessionId, &Record, ttl: Duration); delete(&SessionId) }`
+  (futures `+ MaybeSend`). F's `KvStore`: key `SessionId::storage_key()` (sha256 hex), value `serde_json(Record)`, KV `expirationTtl = ttl`.
+  `Record { data: Map, csrf, flash: Vec<Flash>, created, touched }`. Built in: `CookieStore::new(&[&[u8]])` (XChaCha20-Poly1305), `MemoryStore`, `SqliteStore` (`sqlite`).
+- Workers: `!Send` stores/authenticators work in workers-only builds via `util::Local` (unsafe `Send` on single-threaded wasm, `atomics` rejected).
+- `Session` extractor: `get/insert/remove/flash(ToastKind, key)/rotate_id/destroy/csrf_token/oauth_begin/oauth_callback`.
+- `Authenticator { type User; const LOGIN = "/login"; fn user(&Session, &Parts) }`; `User<U>`, `MaybeUser<U>`.
+- `hash_password`/`verify_password(pw, Option<&str>)` (`password`, default). `LocalPath::parse_or_root`, serde `Deserialize` validates.
+- For C: the island HMAC needs its own key from `APP_SECRET`; derive it like `CookieStore::new` (HMAC-SHA256 with a distinct label), do not reuse the cookie key.

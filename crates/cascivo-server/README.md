@@ -27,6 +27,30 @@ app.serve("0.0.0.0:3000").await?; // feature `native`; or `into_router()`
   `App::security_headers(Headers { .. })`.
 - `Hx` headers are untrusted facts and never select a template or block.
 
-Features: `native` (default: tokio, `App::serve`), `workers` (Cloudflare Workers, wasm32, no
+## Sessions, CSRF, auth
+
+```rust
+let app = App::new(engine)
+    .sessions(CookieStore::new(&[secret.as_bytes()])?, SessionConfig::default())
+    .auth(MyAuth) // impl Authenticator { type User; async fn user(&self, &Session, &Parts) }
+    .routes(router);
+// Login handler: verify_password(pw, row.map(|r| r.hash)) → s.rotate_id(); s.insert("uid", id)?;
+//                see_other(&hx, &LocalPath::parse_or_root(form.next.as_deref()))
+```
+
+- Stores: `CookieStore` (encrypted, stateless, key list for rotation), `MemoryStore`,
+  `SqliteStore` (`sqlite`), or your own `SessionStore` (records keyed by
+  `SessionId::storage_key()`). Cookie `__Host-cv-session; HttpOnly; Secure; SameSite=Lax;
+  Path=/`; idle and absolute TTLs; unknown ids are never adopted; `rotate_id()` on login,
+  `destroy()` on logout.
+- CSRF on every unsafe method: `Sec-Fetch-Site`/`Origin` must be same-origin, and with sessions
+  the token (`request.csrf`) must arrive as form field `csrf` or header `X-CSRF-Token`
+  (`hx-headers` on `<body>`). `Csrf { exempt: vec!["/hooks/*"], .. }` opts routes out.
+- `Session::flash(kind, key)` shows on the next rendered page (`flash` in templates).
+- `User<U>` redirects anonymous visitors to `Authenticator::LOGIN?next=…`; `MaybeUser<U>`.
+- `hash_password`/`verify_password` (Argon2id, `password`); `Session::oauth_begin` /
+  `oauth_callback` (state + PKCE S256) for OAuth providers.
+
+Features: `native` (default: tokio, `App::serve`), `password` (default), `sqlite`, `workers` (Cloudflare Workers, wasm32, no
 tokio; `MaybeSend` drops `Send` without `native`). Check:
 `cargo check -p cascivo-server --target wasm32-unknown-unknown --no-default-features --features workers`.
