@@ -911,7 +911,7 @@ pub static CATALOG: &[CompSpec] = &[
             PropSpec { name: "value", kind: PropKind::Str, default: None, summary: "The controlled value" },
         ],
         children: Children::Nodes,
-        client_js: ClientJs::None,
+        client_js: ClientJs::Enhancement,
         css: &["tabs"],
         summary: "Switch between related panels of content",
     },

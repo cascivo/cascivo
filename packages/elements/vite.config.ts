@@ -25,6 +25,7 @@ export default defineConfig({
       // runtime (signals-core, i18n, base) into a common chunk. `elements:check` measures it.
       entry: {
         menu: './src/menu.ts',
+        tabs: './src/tabs.ts',
         combobox: './src/combobox.ts',
         'date-picker': './src/date-picker.ts',
       },

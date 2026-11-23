@@ -36,6 +36,17 @@ export const ELEMENTS: Entry[] = [
     events: [['cv-select', 'An item was activated. `detail: { value: string }` (data-value).']],
   },
   {
+    tag: 'cv-tabs',
+    className: 'CvTabs',
+    module: 'tabs',
+    description: 'Tabs: enhances a [role=tablist] of [role=tab] and their [role=tabpanel] panels.',
+    formAssociated: false,
+    attributes: [
+      ['activation', "'auto' | 'manual'", 'Manual: arrow keys move focus, Enter/Space selects.'],
+    ],
+    events: [['cv-value-change', 'A tab was selected. `detail: { value: string }` (data-value).']],
+  },
+  {
     tag: 'cv-combobox',
     className: 'CvCombobox',
     module: 'combobox',
