@@ -14,10 +14,13 @@ use crate::render::Cx;
 pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) -> bool {
     match node.spec.name {
         "button" => button_auto(node, cx, out),
+        "button-group" => button_group_auto(node, cx, out),
         "code" => code_auto(node, cx, out),
+        "join" => join_auto(node, cx, out),
         "kbd" => kbd_auto(node, cx, out),
         "prose" => prose_auto(node, cx, out),
         "tag" => tag_auto(node, cx, out),
+        "visually-hidden" => visually_hidden_auto(node, cx, out),
         _ => return false,
     }
     true
@@ -59,6 +62,18 @@ pub(super) fn button_auto(node: &Node, cx: &mut Cx, out: &mut String) {
     out.push_str(tag);
     out.push('>');
 }
+/// `button-group` (unit `button-group`).
+pub(super) fn button_group_auto(node: &Node, cx: &mut Cx, out: &mut String) {
+    use crate::contract::button_group as c;
+    out.push_str("<div");
+    attr(out, "role", "group");
+    attr(out, "data-orientation", &node.prop_str("orientation").unwrap_or_else(|| "horizontal".into()));
+    attr(out, "data-size", &node.prop_str("size").unwrap_or_else(|| "md".into()));
+    attr(out, "class", c::ROOT);
+    out.push('>');
+    emit_children(node, cx, out);
+    out.push_str("</div>");
+}
 /// `code` (unit `code`).
 pub(super) fn code_auto(node: &Node, _cx: &mut Cx, out: &mut String) {
     use crate::contract::code as c;
@@ -68,6 +83,16 @@ pub(super) fn code_auto(node: &Node, _cx: &mut Cx, out: &mut String) {
     out.push('>');
     esc(out, node.text.as_deref().unwrap_or(""));
     out.push_str("</code>");
+}
+/// `join` (unit `join`).
+pub(super) fn join_auto(node: &Node, cx: &mut Cx, out: &mut String) {
+    use crate::contract::join as c;
+    out.push_str("<div");
+    attr(out, "data-orientation", &node.prop_str("orientation").unwrap_or_else(|| "horizontal".into()));
+    attr(out, "class", c::ROOT);
+    out.push('>');
+    emit_children(node, cx, out);
+    out.push_str("</div>");
 }
 /// `kbd` (unit `kbd`).
 pub(super) fn kbd_auto(node: &Node, _cx: &mut Cx, out: &mut String) {
@@ -94,6 +119,15 @@ pub(super) fn tag_auto(node: &Node, _cx: &mut Cx, out: &mut String) {
     out.push_str("<span");
     attr(out, "data-variant", &node.prop_str("variant").unwrap_or_else(|| "default".into()));
     attr(out, "data-size", &node.prop_str("size").unwrap_or_else(|| "md".into()));
+    attr(out, "class", c::ROOT);
+    out.push('>');
+    esc(out, node.text.as_deref().unwrap_or(""));
+    out.push_str("</span>");
+}
+/// `visually-hidden` (unit `visually-hidden`).
+pub(super) fn visually_hidden_auto(node: &Node, _cx: &mut Cx, out: &mut String) {
+    use crate::contract::visually_hidden as c;
+    out.push_str("<span");
     attr(out, "class", c::ROOT);
     out.push('>');
     esc(out, node.text.as_deref().unwrap_or(""));

@@ -63,6 +63,11 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('section', { children: 'nodes', args: [a('title', 'str')] }),
   e('page-header', { children: 'nodes', args: [a('title', 'str', true), a('description', 'str')] }),
   e('dashboard-layout', { children: 'nodes' }),
+  // layout primitives (contract E1)
+  e('join', { children: 'nodes' }),
+  e('button-group', { children: 'nodes' }),
+  e('shimmer-text', { children: 'text' }),
+  e('visually-hidden', { children: 'text' }),
   e('separator'),
   e('spacer'),
   // display

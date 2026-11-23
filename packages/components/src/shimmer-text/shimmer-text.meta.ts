@@ -11,7 +11,7 @@ export const meta: ComponentMeta = {
     root: {
       element: ['span', 'p', 'div'],
       children: ['$slot'],
-      emit: 'auto',
+      emit: 'manual',
     },
   },
   states: [],

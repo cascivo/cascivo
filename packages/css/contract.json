@@ -1701,7 +1701,7 @@
             "avatar",
             "content"
           ],
-          "emit": "auto",
+          "emit": "manual",
           "class": "cv-chat-bubble-bubble"
         },
         "parts": {
@@ -9519,7 +9519,7 @@
           "children": [
             "$slot"
           ],
-          "emit": "auto",
+          "emit": "manual",
           "local": "shimmer-text",
           "class": "cv-shimmer-text-shimmer-text"
         },

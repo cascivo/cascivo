@@ -10,6 +10,7 @@ pub static COMPONENT_CSS: &[(&str, &str)] = &[
     ("blockquote", include_str!("../assets/css/blockquote.css")),
     ("breadcrumb", include_str!("../assets/css/breadcrumb.css")),
     ("button", include_str!("../assets/css/button.css")),
+    ("button-group", include_str!("../assets/css/button-group.css")),
     ("card", include_str!("../assets/css/card.css")),
     ("center", include_str!("../assets/css/center.css")),
     ("chart-legend", include_str!("../assets/css/chart-legend.css")),
@@ -24,6 +25,7 @@ pub static COMPONENT_CSS: &[(&str, &str)] = &[
     ("grid", include_str!("../assets/css/grid.css")),
     ("heading", include_str!("../assets/css/heading.css")),
     ("image", include_str!("../assets/css/image.css")),
+    ("join", include_str!("../assets/css/join.css")),
     ("kbd", include_str!("../assets/css/kbd.css")),
     ("kpi", include_str!("../assets/css/kpi.css")),
     ("link", include_str!("../assets/css/link.css")),
@@ -36,6 +38,7 @@ pub static COMPONENT_CSS: &[(&str, &str)] = &[
     ("prose", include_str!("../assets/css/prose.css")),
     ("section", include_str!("../assets/css/section.css")),
     ("separator", include_str!("../assets/css/separator.css")),
+    ("shimmer-text", include_str!("../assets/css/shimmer-text.css")),
     ("skeleton", include_str!("../assets/css/skeleton.css")),
     ("spacer", include_str!("../assets/css/spacer.css")),
     ("spinner", include_str!("../assets/css/spinner.css")),
@@ -46,6 +49,7 @@ pub static COMPONENT_CSS: &[(&str, &str)] = &[
     ("tag", include_str!("../assets/css/tag.css")),
     ("text", include_str!("../assets/css/text.css")),
     ("timeline", include_str!("../assets/css/timeline.css")),
+    ("visually-hidden", include_str!("../assets/css/visually-hidden.css")),
 ];
 
 pub static BASE_CSS: &str = include_str!("../assets/css/base.css");

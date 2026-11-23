@@ -593,7 +593,7 @@ fn image(node: &Node, cx: &mut Cx<'_>, out: &mut String) {
     // `fallbackSrc` only matters after a load error, which static HTML cannot observe.
     if node.prop_bool("removeWrapper") {
         out.push_str("<img");
-        attr(out, "class", image::ROOT);
+        attr(out, "class", image::IMAGE);
         attr(out, "src", &src);
         attr(out, "alt", &alt);
         let both = [style.as_str(), img_style.as_str()]
@@ -621,7 +621,7 @@ fn image(node: &Node, cx: &mut Cx<'_>, out: &mut String) {
     attr(out, "class", image::PLACEHOLDER);
     attr(out, "aria-hidden", "true");
     out.push_str("></span><img");
-    attr(out, "class", image::ROOT);
+    attr(out, "class", image::IMAGE);
     attr(out, "src", &src);
     attr(out, "alt", &alt);
     cx.style(out, &img_style);
