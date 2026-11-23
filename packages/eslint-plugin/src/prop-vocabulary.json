@@ -30,7 +30,11 @@
       "report": "2026-08-08"
     }
   ],
-  "numericProps": ["gap", "columnGap", "rowGap"],
+  "numericProps": [
+    "gap",
+    "columnGap",
+    "rowGap"
+  ],
   "tupleHooks": [
     {
       "hook": "useTheme",

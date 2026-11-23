@@ -32,14 +32,14 @@ The trigger is a native <button popovertarget>, so the browser supplies aria-exp
 
 ## Props
 
-| Name        | Type                                                                                                                            | Required | Default                                             | Description                                                              |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------- | ------------------------------------------------------------------------ |
-| `url`       | `string`                                                                                                                        | Yes      | —                                                   | The page being shared                                                    |
-| `text`      | `string`                                                                                                                        | No       | —                                                   | Text to post alongside the link (LinkedIn takes none; it reads the page) |
-| `items`     | `Array<'bluesky' \| 'mastodon' \| 'threads' \| 'linkedin' \| 'x'>`                                                              | No       | ['bluesky', 'mastodon', 'threads', 'linkedin', 'x'] | The networks offered, in order                                           |
-| `size`      | `'sm' \| 'md'`                                                                                                                  | No       | md                                                  | Visual size of the component (e.g. 'sm', 'md', 'lg').                    |
-| `labels`    | `{ share?: string; copyLink?: string; copied?: string; more?: string; server?: string; shareOn?: (network: string) => string }` | No       | —                                                   | Overrides the built-in i18n labels per instance                          |
-| `className` | `string`                                                                                                                        | No       | —                                                   | Class added to the root element                                          |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `url` | `string` | Yes | — | The page being shared |
+| `text` | `string` | No | — | Text to post alongside the link (LinkedIn takes none; it reads the page) |
+| `items` | `Array<'bluesky' \| 'mastodon' \| 'threads' \| 'linkedin' \| 'x'>` | No | ['bluesky', 'mastodon', 'threads', 'linkedin', 'x'] | The networks offered, in order |
+| `size` | `'sm' \| 'md'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `labels` | `{ share?: string; copyLink?: string; copied?: string; more?: string; server?: string; shareOn?: (network: string) => string }` | No | — | Overrides the built-in i18n labels per instance |
+| `className` | `string` | No | — | Class added to the root element |
 
 ## Tokens
 
@@ -91,15 +91,15 @@ shareIntentUrl builds the same compose link for your own markup; it returns null
 ```jsx
 import { shareIntentUrl } from './share-menu'
 
-;<a href={shareIntentUrl('bluesky', { url, text }) ?? undefined}>Post to Bluesky</a>
+<a href={shareIntentUrl('bluesky', { url, text }) ?? undefined}>Post to Bluesky</a>
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                                        |
-| ----------- | -------- | ------------------------------------------------------------------------------------------- |
-| networks    | flexible | items picks and orders the networks; shareIntentUrl builds the same links for custom markup |
-| token names | strict   | Styling resolves to the listed semantic --cascivo-* tokens                                  |
+| Area | Level | Note |
+|------|-------|------|
+| networks | flexible | items picks and orders the networks; shareIntentUrl builds the same links for custom markup |
+| token names | strict | Styling resolves to the listed semantic --cascivo-* tokens |
 
 ## AI context prompt
 

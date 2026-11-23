@@ -34,10 +34,10 @@ role="status" with an accessible name ("Assistant is typing") is announced once 
 
 ## Props
 
-| Name        | Type     | Required | Default             | Description                                                                                                           |
-| ----------- | -------- | -------- | ------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `ariaLabel` | `string` | No       | Assistant is typing | Accessible name announced by the status region. Not rendered — screen readers only.                                   |
-| `label`     | `string` | No       | —                   | Alias of `ariaLabel` — the same invisible accessible name. Neither is deprecated. Not rendered — screen readers only. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | No | Assistant is typing | Accessible name announced by the status region. Not rendered — screen readers only. |
+| `label` | `string` | No | — | Alias of `ariaLabel` — the same invisible accessible name. Neither is deprecated. Not rendered — screen readers only. |
 
 ## Tokens
 
@@ -60,9 +60,7 @@ role="status" with an accessible name ("Assistant is typing") is announced once 
 ### In a chat bubble
 
 ```jsx
-<ChatBubble name="Assistant">
-  <TypingIndicator />
-</ChatBubble>
+<ChatBubble name="Assistant"><TypingIndicator /></ChatBubble>
 ```
 
 ### A person typing
@@ -73,10 +71,10 @@ role="status" with an accessible name ("Assistant is typing") is announced once 
 
 ## Boundaries
 
-| Area            | Level    | Note                                                                      |
-| --------------- | -------- | ------------------------------------------------------------------------- |
-| colour          | flexible | Override --cascivo-typing-indicator-color (defaults to muted text)        |
-| accessible name | strict   | Keep the status name — the dots alone carry no meaning for assistive tech |
+| Area | Level | Note |
+|------|-------|------|
+| colour | flexible | Override --cascivo-typing-indicator-color (defaults to muted text) |
+| accessible name | strict | Keep the status name — the dots alone carry no meaning for assistive tech |
 
 ## AI context prompt
 

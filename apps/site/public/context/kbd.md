@@ -31,10 +31,10 @@ Renders a native <kbd> element so assistive tech identifies the content as keybo
 
 ## Props
 
-| Name       | Type           | Required | Default | Description                                           |
-| ---------- | -------------- | -------- | ------- | ----------------------------------------------------- |
-| `size`     | `'sm' \| 'md'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `children` | `ReactNode`    | No       | —       | The key label                                         |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `size` | `'sm' \| 'md'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `children` | `ReactNode` | No | — | The key label |
 
 ## Tokens
 
@@ -57,9 +57,7 @@ Renders a native <kbd> element so assistive tech identifies the content as keybo
 Compose multiple keys to show a shortcut
 
 ```jsx
-<span>
-  <Kbd>⌘</Kbd> + <Kbd>K</Kbd>
-</span>
+<span><Kbd>⌘</Kbd> + <Kbd>K</Kbd></span>
 ```
 
 ### Small
@@ -70,10 +68,10 @@ Compose multiple keys to show a shortcut
 
 ## Boundaries
 
-| Area        | Level    | Note                                                  |
-| ----------- | -------- | ----------------------------------------------------- |
-| size        | flexible | sm fits inline help; md matches body text             |
-| token names | strict   | Surface and border must resolve to --cascivo-* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| size | flexible | sm fits inline help; md matches body text |
+| token names | strict | Surface and border must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

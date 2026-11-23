@@ -3,23 +3,22 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MessageActions } from '@cascivo/react'
 
 const meta: Meta = {
-  title: 'Inputs/MessageActions',
+  title: "Inputs/MessageActions",
 }
 export default meta
 type Story = StoryObj
 
 export const CopyRateAndRegenerate: Story = {
-  name: 'Copy, rate and regenerate',
+  name: "Copy, rate and regenerate",
   render: () => (
-    <MessageActions
-      copyValue="Refunds are available for 30 days."
-      onFeedbackChange={() => {}}
-      onRegenerate={() => {}}
-    />
+    <MessageActions copyValue="Refunds are available for 30 days." onFeedbackChange={() => {}} onRegenerate={() => {}} />
   ),
 }
 
 export const CopyOnly: Story = {
-  name: 'Copy only',
-  render: () => <MessageActions copyValue="Hello" />,
+  name: "Copy only",
+  render: () => (
+    <MessageActions copyValue="Hello" />
+  ),
 }
+

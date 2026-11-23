@@ -32,10 +32,10 @@ A plain paragraph: read in document order, never a live region, because it is st
 
 ## Props
 
-| Name       | Type                | Required | Default | Description                                                                |
-| ---------- | ------------------- | -------- | ------- | -------------------------------------------------------------------------- |
-| `children` | `ReactNode`         | No       | —       | Replaces the default text — e.g. naming the model or what to double-check. |
-| `labels`   | `{ text?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n).                 |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | No | — | Replaces the default text — e.g. naming the model or what to double-check. |
+| `labels` | `{ text?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Tokens
 
@@ -59,9 +59,9 @@ A plain paragraph: read in document order, never a live region, because it is st
 
 ## Boundaries
 
-| Area      | Level    | Note                                                    |
-| --------- | -------- | ------------------------------------------------------- |
-| text      | flexible | Replace via children or labels.text                     |
+| Area | Level | Note |
+|------|-------|------|
+| text | flexible | Replace via children or labels.text |
 | placement | flexible | Typically under a composer or at the foot of AI content |
 
 ## AI context prompt

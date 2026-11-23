@@ -45,10 +45,10 @@ The bare mark carries role="img" and a <title> so it is announced as "cascivo"; 
 
 ## Props
 
-| Name      | Type                                                            | Required | Default                    | Description                                                                                                                                          |
-| --------- | --------------------------------------------------------------- | -------- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant` | `'mark' \| 'mark-accent' \| 'horizontal' \| 'stacked' \| 'nav'` | No       | mark                       | `mark` and `mark-accent` render the square alone; `horizontal`, `stacked` and `nav` add the wordmark. `nav` is the only lockup permitted below 24px. |
-| `size`    | `number`                                                        | No       | 18 for `nav`, 32 otherwise | Mark height in px. Clamped to a 16px floor — below that the notch closes optically.                                                                  |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'mark' \| 'mark-accent' \| 'horizontal' \| 'stacked' \| 'nav'` | No | mark | `mark` and `mark-accent` render the square alone; `horizontal`, `stacked` and `nav` add the wordmark. `nav` is the only lockup permitted below 24px. |
+| `size` | `number` | No | 18 for `nav`, 32 otherwise | Mark height in px. Clamped to a 16px floor — below that the notch closes optically. |
 
 ## Tokens
 
@@ -93,11 +93,11 @@ The accent fills the notch. Decoration — the mark is complete without it.
 
 ## Boundaries
 
-| Area    | Level    | Note                                                                                                                               |
-| ------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| size    | flexible | Any size at or above the 16px floor; the wordmark and gap scale from it                                                            |
-| variant | strict   | A closed set of five. Do not invent a lockup — clear space, gaps and ratios are specified at https://cascivo.com/docs/brand        |
-| colour  | strict   | Ink is currentColor and the notch is --cascivo-color-accent. Never recolour the ink off-token or fill the notch with anything else |
+| Area | Level | Note |
+|------|-------|------|
+| size | flexible | Any size at or above the 16px floor; the wordmark and gap scale from it |
+| variant | strict | A closed set of five. Do not invent a lockup — clear space, gaps and ratios are specified at https://cascivo.com/docs/brand |
+| colour | strict | Ink is currentColor and the notch is --cascivo-color-accent. Never recolour the ink off-token or fill the notch with anything else |
 
 ## AI context prompt
 
