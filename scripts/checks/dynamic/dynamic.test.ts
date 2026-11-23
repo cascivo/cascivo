@@ -268,7 +268,9 @@ describe(`dynamic conformance: ${target.name}`, () => {
       // Light dismiss flips data-state a task after the popover hides: the late fade the
       // single-pass settle used to miss (scripts/checks/lib/settle.ts).
       await page.click('#actions [aria-haspopup]')
-      await page.mouse.click(5, 5) // a click on blank page legitimately leaves focus on <body>
+      // A click on plain text (not 5,5: an app header may put a link there) legitimately
+      // leaves focus on <body>.
+      await page.click('h1')
       await axe(page, 'toast: menu light-dismissed')
 
       await page.focus('#cv-toaster .cv-toast-close')
@@ -322,8 +324,67 @@ describe(`dynamic conformance: ${target.name}`, () => {
     })
   })
 
+  // Only targets with sign-in + CRUD (the H starter): create with a validation error, delete
+  // with htmx, edit with post/redirect/get. Every state axe-clean, focus never on <body>.
+  const { login, notes } = paths
+  if (login && notes)
+    describe('notes CRUD in Chromium', () => {
+      it('sign in, create (with errors), delete, edit; every state axe-clean, focus kept', async () => {
+        const { page, errors, close } = await open(notes)
+        await page.waitForSelector('#f-name')
+        assert.match(page.url(), /\/login\?next=%2Fnotes$/, 'anonymous visitors sign in first')
+        await axe(page, 'notes: sign-in form')
+        await page.fill('#f-name', 'ada')
+        await page.keyboard.press('Enter')
+        await page.waitForSelector('h1:has-text("Notes")')
+        await page.waitForSelector('#cv-toaster [role=status]:has-text("Signed in")')
+        await axe(page, 'notes: empty list')
+
+        // An empty title never leaves the browser; focus goes to it.
+        await page.focus('#note_form button[type=submit]')
+        await page.keyboard.press('Enter')
+        await page.waitForSelector('#f-title[aria-invalid=true]')
+        assert.equal(await active(page), 'f-title')
+        await axe(page, 'notes: client validation error')
+
+        await page.fill('#f-body', 'Hello')
+        await page.fill('#f-title', 'First') // Enter from the title: in the textarea it is a newline
+        await page.keyboard.press('Enter')
+        await page.waitForSelector('#notes li:has-text("First")')
+        await page.waitForSelector('#cv-toaster [role=status]:has-text("Note added")')
+        assert.equal(await page.inputValue('#f-title'), '', 'fresh form after create')
+        await axe(page, 'notes: created')
+        await focusKept(page, 'notes create')
+
+        const del = page.locator('#notes li button:has-text("Delete First")')
+        await del.focus()
+        await page.keyboard.press('Enter')
+        await page.waitForSelector('#notes:has-text("No notes yet")')
+        await page.waitForSelector('#cv-toaster [role=status]:has-text("Note deleted")')
+        await axe(page, 'notes: deleted')
+        await focusKept(page, 'notes delete')
+
+        await page.fill('#f-title', 'Second')
+        await page.keyboard.press('Enter')
+        await page.click('#notes a:has-text("Edit Second")')
+        await page.waitForSelector('h1:has-text("Edit note")')
+        assert.equal(await page.inputValue('#f-title'), 'Second')
+        await axe(page, 'notes: edit form')
+        await page.fill('#f-title', 'Renamed')
+        await page.keyboard.press('Enter')
+        await page.waitForSelector('#notes li:has-text("Renamed")')
+        await page.waitForSelector('#cv-toaster [role=status]:has-text("Note saved")')
+        await axe(page, 'notes: saved')
+        await focusKept(page, 'notes edit')
+        assert.deepEqual(errors, [])
+        await close()
+      })
+    })
+
   describe('JS weight per page (checkpoint δ)', () => {
-    const pages = Object.entries(paths).filter(([k]) => k !== 'sseStream')
+    const pages = Object.entries(paths).filter(
+      (e): e is [string, string] => e[0] !== 'sseStream' && e[1] !== undefined,
+    )
 
     for (const [name, path] of pages) {
       it(`${name} (${path}): cascivo JS ≤ ${target.budgets.pageJs / 1024} KB gz, htmx reported`, async () => {

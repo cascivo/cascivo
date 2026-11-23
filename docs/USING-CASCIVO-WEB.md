@@ -404,7 +404,7 @@ A broken build prints the errors in the terminal and in the browser; fix the fil
 ## Commands
 
 ```text
-cascivo-web new <dir>
+cascivo-web new <dir> [--dynamic [--target native|workers|containers] [--checkout <dir>]]
 cascivo-web build [site] [--out <dir>] [--no-clean] [--bundle] [--bundle-out <file>]
 cascivo-web dev [site] [--port <n>]
 cascivo-web deploy [site] [--out <dir>] [--no-clean] [--pages] [--project-name <name>] [--dry-run] [-- <wrangler args>]

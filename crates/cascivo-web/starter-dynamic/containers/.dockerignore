@@ -1,3 +1,4 @@
 target
 worker
-node_modules
+web
+.dev.vars

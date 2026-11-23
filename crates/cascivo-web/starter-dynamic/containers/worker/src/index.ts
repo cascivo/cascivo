@@ -1,14 +1,22 @@
 import { Container, getContainer } from '@cloudflare/containers'
 
-export class App extends Container {
-  // Must match `PORT` in the Dockerfile.
+interface Env {
+  APP: DurableObjectNamespace<App>
+  /** `wrangler secret put APP_SECRET`: signs sessions and island props. */
+  APP_SECRET: string
+}
+
+export class App extends Container<Env> {
+  // Must match `ADDR` in the Dockerfile.
   defaultPort = 8080
   // Stop the (billed) container after 5 idle minutes; the next request starts it again.
   sleepAfter = '5m'
-}
 
-interface Env {
-  APP: DurableObjectNamespace<App>
+  constructor(ctx: DurableObjectState, env: Env) {
+    super(ctx, env)
+    // The release binary refuses to start without it.
+    this.envVars = { APP_SECRET: env.APP_SECRET }
+  }
 }
 
 export default {

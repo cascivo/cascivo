@@ -4,8 +4,8 @@
   "name": "__NAME__",
   "main": "src/index.ts",
   "compatibility_date": "2026-11-01",
-  // Static assets stay at the edge; only requests with no matching file reach the container.
-  "assets": { "directory": "./public" },
+  // web/dist (/assets/*.js|css) stays at the edge; other requests reach the container.
+  "assets": { "directory": "../web/dist" },
   "containers": [
     { "class_name": "App", "image": "../Dockerfile", "max_instances": 2, "instance_type": "basic" },
   ],

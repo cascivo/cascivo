@@ -297,6 +297,11 @@ jobs:
       - name: Dynamic-app conformance (flows, axe per state, focus, JS budget)
         run: pnpm run dynamic:check
 
+      # The same harness on a fresh `cascivo-web new --dynamic --target native` (workstream H),
+      # plus its notes CRUD flow (sign-in, 422, htmx delete, PRG edit).
+      - name: Dynamic-app conformance on the starter
+        run: pnpm run dynamic:check:starter
+
       # The bare-page leg: shipped styles.css and NOTHING else, full viewport, several
       # components stacked so hit-testing is meaningful. computed:check mounts one
       # component at a time in a styled 640px box, so it structurally cannot see a

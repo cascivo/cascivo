@@ -3,14 +3,19 @@
  *
  * A target is a server that serves the fixture contract in `README.md`: one small page per
  * flow at the paths below. `solid-htmx` builds and spawns the example's `cascivo-server` binary;
- * pointing the harness at another server (the H starter, a `wrangler dev`, a container) is
+ * `starter` (`DYNAMIC_TARGET=starter`) generates `cascivo-web new --dynamic --target native`,
+ * builds its `web/` and its binary, and adds the notes CRUD flow. Pointing the harness at
+ * another server (a `wrangler dev`, a container) is
  *
  *     DYNAMIC_URL=http://127.0.0.1:8787 pnpm dynamic:check
  *
  * plus `DYNAMIC_PATHS='{"form":"/demo/form"}'` for any path that differs.
  */
 import { type ChildProcess, execFileSync, spawn } from 'node:child_process'
+import { copyFileSync, mkdtempSync, rmSync } from 'node:fs'
 import { createServer } from 'node:net'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('../../../', import.meta.url))
@@ -25,6 +30,9 @@ export interface Paths {
   sse: string
   sseStream: string
   tabs: string
+  /** Sign-in page and the CRUD list behind it: only apps that have them (the H starter). */
+  login?: string
+  notes?: string
 }
 
 export interface Target {
@@ -111,10 +119,82 @@ const solidHtmx: Target = {
   },
 }
 
+async function spawnServer(bin: string, env: Record<string, string>, cwd: string) {
+  const port = await freePort()
+  const url = `http://localhost:${port}`
+  const child = spawn(bin, [], {
+    cwd,
+    env: { ...process.env, ...env, ADDR: `127.0.0.1:${port}` },
+    stdio: ['ignore', 'ignore', 'inherit'],
+  })
+  try {
+    await waitFor(`${url}/`, child)
+  } catch (e) {
+    child.kill()
+    throw e
+  }
+  return { url, stop: () => child.kill() }
+}
+
+/**
+ * A fresh `cascivo-web new --dynamic --target native` (workstream H), linked to this checkout:
+ * Cargo `path` deps, npm `link:` deps. Its own lockfile is this workspace's, so the build shares
+ * `target/starter` with earlier runs. Needs `pnpm build` (the linked `@cascivo/*` dists).
+ */
+const starter: Target = {
+  ...solidHtmx,
+  name: 'starter (native)',
+  paths: { ...PATHS, login: '/login', notes: '/notes' },
+  async start() {
+    const dir = join(mkdtempSync(join(tmpdir(), 'cv-starter-')), 'notes-app')
+    const run = (cmd: string, args: string[], cwd: string, env: Record<string, string> = {}) =>
+      execFileSync(cmd, args, { cwd, stdio: 'inherit', env: { ...process.env, ...env } })
+    run(
+      'cargo',
+      [
+        'run',
+        '-q',
+        '-p',
+        'cascivo-web',
+        '--locked',
+        '--',
+        'new',
+        dir,
+        '--dynamic',
+        '--target',
+        'native',
+        '--checkout',
+        ROOT,
+      ],
+      ROOT,
+    )
+    copyFileSync(join(ROOT, 'Cargo.lock'), join(dir, 'Cargo.lock'))
+    const web = join(dir, 'web')
+    // Outside the workspace: its own install, from the store this workspace already filled.
+    run('pnpm', ['install', '--ignore-workspace', '--prefer-offline', '--no-frozen-lockfile'], web)
+    run('pnpm', ['run', 'build'], web)
+    const targetDir = join(ROOT, 'target', 'starter')
+    // Not --locked: the copied lock gains the starter's own package.
+    run('cargo', ['build'], dir, { CARGO_TARGET_DIR: targetDir })
+    const server = await spawnServer(
+      join(targetDir, 'debug', 'notes-app'),
+      { ASSETS_DIR: join(web, 'dist') },
+      dir,
+    )
+    return {
+      url: server.url,
+      stop() {
+        server.stop()
+        rmSync(join(dir, '..'), { recursive: true, force: true })
+      },
+    }
+  },
+}
+
 /** `DYNAMIC_URL` points the harness at an already running server with the same fixtures. */
 export function resolveTarget(env: NodeJS.ProcessEnv = process.env): Target {
   const url = env['DYNAMIC_URL']
-  if (!url) return solidHtmx
+  if (!url) return env['DYNAMIC_TARGET'] === 'starter' ? starter : solidHtmx
   const paths = { ...PATHS, ...(JSON.parse(env['DYNAMIC_PATHS'] ?? '{}') as Partial<Paths>) }
   return {
     ...solidHtmx,

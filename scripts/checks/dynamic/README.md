@@ -17,6 +17,14 @@ Every state a swap produces is checked with axe (WCAG 2.2 AA, 0 violations, afte
 (checkpoint γ). Per page, the JS loaded is gzipped and split into cascivo, island and htmx
 (checkpoint δ): cascivo ≤ 15 KB, island ≤ `budgets.islandJs`, htmx only reported.
 
+## The H starter
+
+`pnpm dynamic:check:starter` (`DYNAMIC_TARGET=starter`, in `ready` and CI) generates
+`cascivo-web new --dynamic --target native --checkout .` in a temp dir, installs and builds
+its `web/` outside the workspace, builds it into `target/starter` and runs every flow above on
+it, plus `notes` (sign in, create with a validation error, delete over htmx, edit with
+post/redirect/get), axe and focus checked after each step.
+
 ## Another target
 
 A target serves the same fixture pages and ids (copy `apps/examples/solid-htmx/server/templates/c`).

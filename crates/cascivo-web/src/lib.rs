@@ -41,6 +41,8 @@ pub mod rss;
 pub mod site;
 #[cfg(feature = "fs")]
 pub mod starter;
+#[cfg(feature = "fs")]
+pub mod starter_dynamic;
 pub mod theme;
 pub mod vite;
 pub mod web;
