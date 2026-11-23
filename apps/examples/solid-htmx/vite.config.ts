@@ -7,7 +7,11 @@ const root = resolve(fileURLToPath(new URL('.', import.meta.url)), '../../..')
 
 // One island bundle with fixed names: the axum server links /assets/island.{js,css}.
 export default defineConfig({
-  plugins: [cascivoSolid({ islands: { island: 'src/island.tsx', htmx: 'src/htmx.ts', elements: 'src/elements.ts' } })],
+  plugins: [
+    cascivoSolid({
+      islands: { island: 'src/island.tsx', htmx: 'src/htmx.ts', elements: 'src/elements.ts' },
+    }),
+  ],
   resolve: {
     alias: [
       // Source aliases for the JS entries only; `@cascivo/css/cascivo.css` resolves through the
