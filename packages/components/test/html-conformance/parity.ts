@@ -54,6 +54,9 @@ export const PARITY_COMPONENTS = [
   'tag',
   'text',
   'timeline',
+  'user',
+  'item',
+  'inline-loading',
 ] as const
 
 export type Fact = { facet: Facet; text: string }

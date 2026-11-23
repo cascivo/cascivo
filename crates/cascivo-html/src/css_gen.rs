@@ -31,9 +31,12 @@ pub static COMPONENT_CSS: &[(&str, &str)] = &[
     ("header", include_str!("../assets/css/header.css")),
     ("heading", include_str!("../assets/css/heading.css")),
     ("image", include_str!("../assets/css/image.css")),
+    ("inline-loading", include_str!("../assets/css/inline-loading.css")),
+    ("item", include_str!("../assets/css/item.css")),
     ("join", include_str!("../assets/css/join.css")),
     ("kbd", include_str!("../assets/css/kbd.css")),
     ("kpi", include_str!("../assets/css/kpi.css")),
+    ("label", include_str!("../assets/css/label.css")),
     ("large-title-header", include_str!("../assets/css/large-title-header.css")),
     ("link", include_str!("../assets/css/link.css")),
     ("list", include_str!("../assets/css/list.css")),
@@ -53,6 +56,7 @@ pub static COMPONENT_CSS: &[(&str, &str)] = &[
     ("spinner", include_str!("../assets/css/spinner.css")),
     ("stack", include_str!("../assets/css/stack.css")),
     ("stat", include_str!("../assets/css/stat.css")),
+    ("status", include_str!("../assets/css/status.css")),
     ("steps", include_str!("../assets/css/steps.css")),
     ("structured-list", include_str!("../assets/css/structured-list.css")),
     ("tabs", include_str!("../assets/css/tabs.css")),
@@ -61,6 +65,7 @@ pub static COMPONENT_CSS: &[(&str, &str)] = &[
     ("timeline", include_str!("../assets/css/timeline.css")),
     ("toc", include_str!("../assets/css/toc.css")),
     ("typing-indicator", include_str!("../assets/css/typing-indicator.css")),
+    ("user", include_str!("../assets/css/user.css")),
     ("visually-hidden", include_str!("../assets/css/visually-hidden.css")),
 ];
 
