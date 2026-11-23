@@ -83,11 +83,12 @@ gates (`test_font.py` plus the full woff2 budget) on the best point, next best o
 (about 9 min). `--no-gates` skips them. It writes nothing; copy the printed value into the source,
 then run the full gates above. Tests: `python3 -I src/test_score.py`.
 
-Calibration: the committed font scores 7.5 overall (rhythm 5.2, weight axis 8.5, shape 8.5, colour
-9.1, small sizes 8.3, optical sizes 2.8) against the blind baseline of 6.9. Its worst rows are the
-defects above (Black `nn` gap, Black `I/1`, opsz x-height, Black `2` kink). The R5 > R4 > 0.6.1
-check needs those builds; they are not in git history, so the correlation with 6.84 / 6.69 / 5.09
-is still to do.
+Calibration, from the fonts committed at each commit (0.6.1 `5e450f8d`, round 4 `a27d7610`, round
+5 `59f5fcf4`): the scorer ranks R5 > R4 > 0.6.1 as the blind judge does (6.84 / 6.69 / 5.09).
+Upright 8.14 / 8.11 / 7.53, upright and italic mean 8.04 / 8.01 / 7.60; Pearson r = 0.97 (upright)
+and 0.96 (mean). The range is compressed (0.6 against 1.75 points) and R5 over R4 is a +0.03 step,
+inside the noise: trust the sign of a change, not its size. Optical sizes stay at 2.8 in all three
+(x-height delta 14 to 32 is -5 units against Inter's -30), which is defect 8, not a scorer error.
 
 ## Must not regress
 
