@@ -5,8 +5,9 @@
 
 use super::{NodeExt, emit_children};
 use crate::ast::Node;
+use crate::contract::{accordion, breadcrumb, collapsible, data_table, steps, tabs};
 use crate::html::{attr, esc, flag, safe_url};
-use crate::render::Cx;
+use crate::render::{CV_TABS, Cx};
 
 pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
     match node.spec.name {
@@ -71,7 +72,7 @@ fn breadcrumb(node: &Node, out: &mut String) {
     }
     out.push_str("<nav");
     attr(out, "aria-label", &label);
-    attr(out, "class", "cv-breadcrumb-breadcrumb");
+    attr(out, "class", breadcrumb::ROOT);
     out.push_str("><ol>");
     let last = visible.len().saturating_sub(1);
     for (i, (text, href)) in visible.iter().enumerate() {
@@ -107,7 +108,7 @@ fn steps(node: &Node, out: &mut String) {
         .unwrap_or_else(|| "horizontal".into());
     let active = node.prop_num("activeStep").unwrap_or(0.0);
     out.push_str("<ol");
-    attr(out, "class", "cv-steps-steps");
+    attr(out, "class", steps::ROOT);
     attr(out, "data-orientation", &orientation);
     attr(out, "aria-label", &label);
     out.push('>');
@@ -121,7 +122,7 @@ fn steps(node: &Node, out: &mut String) {
             "pending"
         };
         out.push_str("<li");
-        attr(out, "class", "cv-steps-step");
+        attr(out, "class", steps::STEP);
         attr(out, "data-state", state);
         if state == "active" {
             attr(out, "aria-current", "step");
@@ -132,7 +133,7 @@ fn steps(node: &Node, out: &mut String) {
         }
         out.push('>');
         out.push_str("<div");
-        attr(out, "class", "cv-steps-circle");
+        attr(out, "class", steps::CIRCLE);
         out.push('>');
         if state == "complete" {
             out.push('\u{2713}');
@@ -140,7 +141,7 @@ fn steps(node: &Node, out: &mut String) {
             out.push_str(&(i + 1).to_string());
         }
         out.push_str("</div>");
-        text_el(out, "span", "cv-steps-label", cell(row, 0));
+        text_el(out, "span", steps::LABEL, cell(row, 0));
         out.push_str("</li>");
     }
     out.push_str("</ol>");
@@ -168,7 +169,7 @@ fn collapsible(node: &Node, cx: &mut Cx, out: &mut String) {
         .unwrap_or_default();
     out.push_str("<details");
     attr(out, "data-state", state(open));
-    attr(out, "class", "cv-collapsible-root");
+    attr(out, "class", collapsible::ROOT);
     if open {
         flag(out, "open");
     }
@@ -180,7 +181,7 @@ fn collapsible(node: &Node, cx: &mut Cx, out: &mut String) {
         attr(out, "aria-disabled", "true");
     }
     attr(out, "data-state", state(open));
-    attr(out, "class", "cv-collapsible-trigger");
+    attr(out, "class", collapsible::TRIGGER);
     out.push('>');
     esc(out, &title);
     out.push_str("</summary>");
@@ -188,7 +189,7 @@ fn collapsible(node: &Node, cx: &mut Cx, out: &mut String) {
     attr(out, "id", &format!("{base}-content"));
     attr(out, "role", "region");
     attr(out, "aria-labelledby", &format!("{base}-trigger"));
-    attr(out, "class", "cv-collapsible-content");
+    attr(out, "class", collapsible::CONTENT);
     out.push('>');
     emit_children(node, cx, out);
     out.push_str("</div></details>");
@@ -221,7 +222,7 @@ fn accordion(node: &Node, cx: &mut Cx, out: &mut String) {
     let single = node.prop_str("type").as_deref() != Some("multiple");
     out.push_str("<div");
     attr(out, "data-type", if single { "single" } else { "multiple" });
-    attr(out, "class", "cv-accordion-accordion");
+    attr(out, "class", accordion::ROOT);
     out.push('>');
     for (i, child) in node.children.iter().enumerate() {
         let value = (i + 1).to_string();
@@ -234,7 +235,7 @@ fn accordion(node: &Node, cx: &mut Cx, out: &mut String) {
         }
         attr(out, "data-value", &value);
         attr(out, "data-state", state(open));
-        attr(out, "class", "cv-accordion-item");
+        attr(out, "class", accordion::ITEM);
         if open {
             flag(out, "open");
         }
@@ -243,18 +244,18 @@ fn accordion(node: &Node, cx: &mut Cx, out: &mut String) {
         attr(out, "id", &format!("{base}-trigger-{value}"));
         attr(out, "aria-controls", &format!("{base}-content-{value}"));
         attr(out, "data-state", state(open));
-        attr(out, "class", "cv-accordion-trigger");
+        attr(out, "class", accordion::TRIGGER);
         out.push('>');
-        text_el(out, "h3", "cv-accordion-heading", &title);
+        text_el(out, "h3", accordion::HEADING, &title);
         out.push_str("<span");
-        attr(out, "class", "cv-accordion-indicator");
+        attr(out, "class", accordion::INDICATOR);
         attr(out, "aria-hidden", "true");
         out.push_str("></span></summary>");
         out.push_str("<div");
         attr(out, "role", "region");
         attr(out, "id", &format!("{base}-content-{value}"));
         attr(out, "aria-labelledby", &format!("{base}-trigger-{value}"));
-        attr(out, "class", "cv-accordion-content");
+        attr(out, "class", accordion::CONTENT);
         out.push('>');
         emit_content(child, unwrap, cx, out);
         out.push_str("</div></details>");
@@ -285,11 +286,13 @@ fn tabs(node: &Node, cx: &mut Cx, out: &mut String) {
         })
         .unwrap_or(0);
     let values = tab_values(&labels);
-    cx.scripts.insert("cv-tabs");
-    out.push_str("<cv-tabs><div");
-    attr(out, "class", "cv-tabs-tabs");
+    cx.scripts.insert(CV_TABS);
+    out.push('<');
+    out.push_str(CV_TABS);
     out.push_str("><div");
-    attr(out, "class", "cv-tabs-list");
+    attr(out, "class", tabs::ROOT);
+    out.push_str("><div");
+    attr(out, "class", tabs::LIST);
     attr(out, "role", "tablist");
     out.push('>');
     for (i, (title, _)) in labels.iter().enumerate() {
@@ -311,7 +314,7 @@ fn tabs(node: &Node, cx: &mut Cx, out: &mut String) {
             if i == checked { "active" } else { "inactive" },
         );
         attr(out, "data-value", value);
-        attr(out, "class", "cv-tabs-trigger");
+        attr(out, "class", tabs::TRIGGER);
         out.push('>');
         esc(out, title);
         out.push_str("</button>");
@@ -325,7 +328,7 @@ fn tabs(node: &Node, cx: &mut Cx, out: &mut String) {
         attr(out, "id", &format!("{base}-content-{value}"));
         attr(out, "aria-labelledby", &format!("{base}-trigger-{value}"));
         attr(out, "tabindex", "0");
-        attr(out, "class", "cv-tabs-content");
+        attr(out, "class", tabs::CONTENT);
         // Without the script (`cv-tabs:not(:defined)`) the CSS shows every panel stacked.
         if i != checked {
             flag(out, "hidden");
@@ -334,7 +337,9 @@ fn tabs(node: &Node, cx: &mut Cx, out: &mut String) {
         emit_content(child, unwrap, cx, out);
         out.push_str("</div>");
     }
-    out.push_str("</div></cv-tabs>");
+    out.push_str("</div></");
+    out.push_str(CV_TABS);
+    out.push('>');
 }
 
 /// Tab values: the label as a lowercase slug (`Overview` is `overview`, like a React `value`),
@@ -381,7 +386,7 @@ fn table(node: &Node, cx: &mut Cx, out: &mut String) {
     let loading = node.prop_bool("loading");
 
     out.push_str("<div");
-    attr(out, "class", "cv-data-table-root");
+    attr(out, "class", data_table::ROOT);
     attr(
         out,
         "data-density",
@@ -394,13 +399,19 @@ fn table(node: &Node, cx: &mut Cx, out: &mut String) {
         attr(out, "data-sticky-header", "true");
     }
     out.push('>');
-    out.push_str("<span aria-live=\"polite\" class=\"cv-data-table-srOnly\"></span>");
+    out.push_str("<span aria-live=\"polite\" class=\"");
+    out.push_str(data_table::SR_ONLY);
+    out.push_str("\"></span>");
     if title.is_some() || description.is_some() {
-        out.push_str("<div class=\"cv-data-table-toolbar\"><div class=\"cv-data-table-heading\">");
+        out.push_str("<div class=\"");
+        out.push_str(data_table::TOOLBAR);
+        out.push_str("\"><div class=\"");
+        out.push_str(data_table::HEADING);
+        out.push_str("\">");
         if let Some(t) = &title {
             out.push_str("<div");
             attr(out, "id", &format!("{base}-title"));
-            attr(out, "class", "cv-data-table-title");
+            attr(out, "class", data_table::TITLE);
             out.push('>');
             esc(out, t);
             out.push_str("</div>");
@@ -408,15 +419,19 @@ fn table(node: &Node, cx: &mut Cx, out: &mut String) {
         if let Some(d) = &description {
             out.push_str("<div");
             attr(out, "id", &format!("{base}-description"));
-            attr(out, "class", "cv-data-table-description");
+            attr(out, "class", data_table::DESCRIPTION);
             out.push('>');
             esc(out, d);
             out.push_str("</div>");
         }
-        out.push_str("</div><div class=\"cv-data-table-toolbarActions\"></div></div>");
+        out.push_str("</div><div class=\"");
+        out.push_str(data_table::TOOLBAR_ACTIONS);
+        out.push_str("\"></div></div>");
     }
-    out.push_str("<div class=\"cv-data-table-scroller\"><table");
-    attr(out, "class", "cv-data-table-table");
+    out.push_str("<div class=\"");
+    out.push_str(data_table::SCROLLER);
+    out.push_str("\"><table");
+    attr(out, "class", data_table::TABLE);
     if title.is_some() {
         attr(out, "aria-labelledby", &format!("{base}-title"));
     } else if let Some(l) = explicit_str(node, "ariaLabel") {
@@ -437,15 +452,19 @@ fn table(node: &Node, cx: &mut Cx, out: &mut String) {
     }
     out.push_str("</colgroup><thead><tr>");
     for i in 0..ncols {
-        out.push_str("<th scope=\"col\" class=\"cv-data-table-headerCell\" data-align=\"start\"");
+        out.push_str("<th scope=\"col\" class=\"");
+        out.push_str(data_table::HEADER_CELL);
+        out.push_str("\" data-align=\"start\"");
         if sortable {
             out.push_str(" aria-sort=\"none\"");
         }
-        out.push_str("><span class=\"cv-data-table-headerInner\">");
+        out.push_str("><span class=\"");
+        out.push_str(data_table::HEADER_INNER);
+        out.push_str("\">");
         if sortable {
-            out.push_str(
-                "<button type=\"button\" class=\"cv-data-table-sortButton\" data-state=\"none\">",
-            );
+            out.push_str("<button type=\"button\" class=\"");
+            out.push_str(data_table::SORT_BUTTON);
+            out.push_str("\" data-state=\"none\">");
             esc(out, cell(head, i));
             out.push_str("</button>");
         } else {
@@ -456,11 +475,13 @@ fn table(node: &Node, cx: &mut Cx, out: &mut String) {
     out.push_str("</tr></thead><tbody>");
     if loading {
         for _ in 0..5 {
-            out.push_str("<tr class=\"cv-data-table-row\">");
+            out.push_str("<tr class=\"");
+            out.push_str(data_table::ROW);
+            out.push_str("\">");
             for _ in 0..ncols {
-                out.push_str(
-                    "<td><span class=\"cv-data-table-shimmer\" aria-hidden=\"true\"></span></td>",
-                );
+                out.push_str("<td><span class=\"");
+                out.push_str(data_table::SHIMMER);
+                out.push_str("\" aria-hidden=\"true\"></span></td>");
             }
             out.push_str("</tr>");
         }
@@ -468,7 +489,7 @@ fn table(node: &Node, cx: &mut Cx, out: &mut String) {
         // React serialises `colSpan` with that casing; HTML attribute names are case-insensitive.
         out.push_str("<tr data-empty-row=\"true\"><td");
         attr(out, "colSpan", &ncols.max(1).to_string());
-        attr(out, "class", "cv-data-table-emptyCell");
+        attr(out, "class", data_table::EMPTY_CELL);
         out.push('>');
         esc(
             out,
@@ -477,7 +498,9 @@ fn table(node: &Node, cx: &mut Cx, out: &mut String) {
         out.push_str("</td></tr>");
     } else {
         for (r, row) in body.iter().enumerate() {
-            out.push_str("<tr class=\"cv-data-table-row\"");
+            out.push_str("<tr class=\"");
+            out.push_str(data_table::ROW);
+            out.push('"');
             attr(out, "data-parity", if r % 2 == 0 { "even" } else { "odd" });
             out.push('>');
             for i in 0..ncols {

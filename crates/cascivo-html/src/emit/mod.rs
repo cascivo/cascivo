@@ -3,8 +3,11 @@
 use crate::ast::{Node, Value};
 use crate::render::Cx;
 
+#[rustfmt::skip]
+mod auto_gen;
 pub mod chart;
 mod display;
+mod embed;
 mod feedback;
 mod layout;
 mod nav;
@@ -16,12 +19,15 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
     for unit in node.spec.css {
         cx.used.insert(unit);
     }
+    if auto_gen::emit(node, cx, out) {
+        return;
+    }
     match node.spec.name {
         "flex" | "grid" | "columns" | "auto-grid" | "center" | "section" | "page-header"
         | "dashboard-layout" | "separator" | "spacer" => layout::emit(node, cx, out),
         "heading" | "text" | "prose" | "card" | "stat" | "kpi" | "badge" | "tag" | "avatar"
         | "avatar-group" | "image" | "svg" | "list" | "data-list" | "structured-list"
-        | "timeline" | "empty-state" | "blockquote" | "code" | "kbd" | "link" | "button" => {
+        | "timeline" | "empty-state" | "blockquote" | "code" | "kbd" | "link" => {
             display::emit(node, cx, out);
         }
         "alert" | "notification" | "progress-bar" | "progress-circle" | "meter" | "skeleton"

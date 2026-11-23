@@ -6,6 +6,10 @@
 use super::{NodeExt, emit_children};
 use crate::asset::{SvgOpts, data_uri, sanitize_svg};
 use crate::ast::Node;
+use crate::contract::{
+    avatar, avatar_group, badge, blockquote, card, code, data_list, empty_state, heading, image,
+    kbd, kpi, link, list, prose, stat, structured_list, tag, text, timeline,
+};
 use crate::html::{attr, css_len, esc, flag, num, safe_url};
 use crate::render::{Asset, Cx};
 
@@ -29,10 +33,9 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         "timeline" => timeline(node, out),
         "empty-state" => empty_state(node, out),
         "blockquote" => blockquote(node, out),
-        "code" => simple_text(node, out, "code", "cv-code-code"),
-        "kbd" => simple_text(node, out, "kbd", "cv-kbd-kbd"),
+        "code" => simple_text(node, out, "code", code::ROOT),
+        "kbd" => simple_text(node, out, "kbd", kbd::ROOT),
         "link" => link(node, out),
-        "button" => button(node, cx, out),
         _ => emit_children(node, cx, out),
     }
 }
@@ -91,7 +94,7 @@ fn heading(node: &Node, out: &mut String) {
     };
     out.push_str(&format!("<h{level}"));
     attr(out, "data-size", &size);
-    attr(out, "class", "cv-heading-heading");
+    attr(out, "class", heading::ROOT);
     out.push('>');
     esc(out, raw_text(node));
     out.push_str(&format!("</h{level}>"));
@@ -110,7 +113,7 @@ fn text(node: &Node, out: &mut String) {
     if node.prop_bool("muted") {
         flag(out, "data-muted");
     }
-    attr(out, "class", "cv-text-text");
+    attr(out, "class", text::ROOT);
     out.push('>');
     esc(out, raw_text(node));
     out.push_str("</");
@@ -120,7 +123,7 @@ fn text(node: &Node, out: &mut String) {
 
 fn prose(node: &Node, cx: &mut Cx, out: &mut String) {
     out.push_str("<div");
-    attr(out, "class", "cv-prose-prose");
+    attr(out, "class", prose::ROOT);
     out.push('>');
     emit_children(node, cx, out);
     out.push_str("</div>");
@@ -137,7 +140,7 @@ fn card(node: &Node, cx: &mut Cx, out: &mut String) {
     if node.prop_bool("ai") {
         flag(out, "data-ai");
     }
-    attr(out, "class", "cv-card-card");
+    attr(out, "class", card::ROOT);
     out.push('>');
     let title = node.arg_str(0).filter(|t| !t.is_empty());
     let actions = node.prop_str("actions");
@@ -145,7 +148,7 @@ fn card(node: &Node, cx: &mut Cx, out: &mut String) {
         card_header(out, title.as_deref(), actions.as_deref());
         if !node.children.is_empty() {
             out.push_str("<div");
-            attr(out, "class", "cv-card-content");
+            attr(out, "class", card::CONTENT);
             out.push('>');
             emit_children(node, cx, out);
             out.push_str("</div>");
@@ -159,24 +162,28 @@ fn card(node: &Node, cx: &mut Cx, out: &mut String) {
 fn card_header(out: &mut String, title: Option<&str>, actions: Option<&str>) {
     let title_html = |out: &mut String| {
         if let Some(t) = title {
-            text_el(out, "h3", "cv-card-title", t);
+            text_el(out, "h3", card::TITLE, t);
         }
     };
     out.push_str("<div");
     match actions {
         None => {
-            attr(out, "class", "cv-card-header");
+            attr(out, "class", card::HEADER);
             out.push('>');
             title_html(out);
         }
         Some(a) => {
-            attr(out, "class", "cv-card-header cv-card-headerRow");
+            attr(
+                out,
+                "class",
+                &format!("{} {}", card::HEADER, card::HEADER_ROW),
+            );
             out.push_str("><div");
-            attr(out, "class", "cv-card-headerMain");
+            attr(out, "class", card::HEADER_MAIN);
             out.push('>');
             title_html(out);
             out.push_str("</div><div");
-            attr(out, "class", "cv-card-headerActions");
+            attr(out, "class", card::HEADER_ACTIONS);
             out.push('>');
             esc(out, a);
             out.push_str("</div>");
@@ -225,28 +232,28 @@ fn stat(node: &Node, out: &mut String) {
         // React renders `data-card={true}` as the string "true".
         attr(out, "data-card", "true");
     }
-    attr(out, "class", "cv-stat-stat");
+    attr(out, "class", stat::ROOT);
     out.push('>');
     text_el(
         out,
         "span",
-        "cv-stat-label",
+        stat::LABEL,
         &node.arg_str(0).unwrap_or_default(),
     );
     text_el(
         out,
         "span",
-        "cv-stat-value",
+        stat::VALUE,
         &node.arg_str(1).unwrap_or_default(),
     );
     if let Some(delta) = delta_arg {
         out.push_str("<span");
         attr(out, "data-trend", &trend);
         attr(out, "data-sentiment", sentiment(&trend, &good));
-        attr(out, "class", "cv-stat-delta");
+        attr(out, "class", stat::DELTA);
         out.push_str("><span");
         attr(out, "aria-hidden", "true");
-        attr(out, "class", "cv-stat-arrow");
+        attr(out, "class", stat::ARROW);
         out.push('>');
         out.push_str(arrow(&trend));
         out.push_str("</span>");
@@ -254,7 +261,7 @@ fn stat(node: &Node, out: &mut String) {
         out.push_str("</span>");
     }
     if let Some(h) = node.prop_str("helpText").filter(|h| !h.is_empty()) {
-        text_el(out, "span", "cv-stat-help", &h);
+        text_el(out, "span", stat::HELP, &h);
     }
     out.push_str("</div>");
 }
@@ -321,14 +328,14 @@ fn kpi_delta(raw: &str) -> KpiDelta {
 
 fn kpi(node: &Node, out: &mut String) {
     out.push_str("<div");
-    attr(out, "class", "cv-kpi-kpi");
+    attr(out, "class", kpi::ROOT);
     out.push_str("><div");
-    attr(out, "class", "cv-kpi-head");
+    attr(out, "class", kpi::HEAD);
     out.push('>');
     text_el(
         out,
         "span",
-        "cv-kpi-label",
+        kpi::LABEL,
         &node.arg_str(0).unwrap_or_default(),
     );
     if let Some(icon) = node.prop_str("icon").filter(|i| !i.is_empty()) {
@@ -339,12 +346,12 @@ fn kpi(node: &Node, out: &mut String) {
         out.push_str("</span>");
     }
     out.push_str("</div><div");
-    attr(out, "class", "cv-kpi-valueRow");
+    attr(out, "class", kpi::VALUE_ROW);
     out.push('>');
     text_el(
         out,
         "span",
-        "cv-kpi-value",
+        kpi::VALUE,
         &node.arg_str(1).unwrap_or_default(),
     );
     if let Some(raw) = node.arg_str(2).filter(|d| !d.trim().is_empty()) {
@@ -357,7 +364,7 @@ fn kpi(node: &Node, out: &mut String) {
             .unwrap_or_default();
         out.push_str("<span");
         attr(out, "role", "img");
-        attr(out, "class", "cv-kpi-delta");
+        attr(out, "class", kpi::DELTA);
         attr(out, "data-trend", d.trend);
         attr(out, "data-sentiment", sentiment(d.trend, &good));
         attr(out, "aria-label", &format!("Trend: {}{suffix}", d.text));
@@ -381,7 +388,7 @@ fn badge(node: &Node, out: &mut String) {
     out.push_str("<span");
     attr(out, "data-variant", &variant);
     attr(out, "data-size", &prop_or(node, "size", "md"));
-    attr(out, "class", "cv-badge-badge");
+    attr(out, "class", badge::ROOT);
     out.push('>');
     esc(out, raw_text(node));
     out.push_str("</span>");
@@ -392,7 +399,7 @@ fn tag(node: &Node, out: &mut String) {
     out.push_str("<span");
     attr(out, "data-variant", &prop_or(node, "variant", "default"));
     attr(out, "data-size", &prop_or(node, "size", "md"));
-    attr(out, "class", "cv-tag-tag");
+    attr(out, "class", tag::ROOT);
     out.push('>');
     esc(out, raw_text(node));
     out.push_str("</span>");
@@ -469,7 +476,7 @@ fn avatar_view(out: &mut String, v: &AvatarView) {
     if show_image {
         let alt = [v.alt, v.name].into_iter().find(|s| !s.is_empty());
         out.push_str("<img");
-        attr(out, "class", "cv-avatar-image");
+        attr(out, "class", avatar::IMAGE);
         if let Some(u) = safe_url(v.src, true) {
             attr(out, "src", &u);
         }
@@ -477,7 +484,7 @@ fn avatar_view(out: &mut String, v: &AvatarView) {
         out.push('>');
     } else {
         out.push_str("<span");
-        attr(out, "class", "cv-avatar-fallback");
+        attr(out, "class", avatar::FALLBACK);
         attr(out, "aria-hidden", "true");
         out.push('>');
         esc(out, fallback_text.as_deref().unwrap_or(""));
@@ -485,7 +492,7 @@ fn avatar_view(out: &mut String, v: &AvatarView) {
     }
     if v.status.is_some() {
         out.push_str("<span");
-        attr(out, "class", "cv-avatar-status");
+        attr(out, "class", avatar::STATUS);
         attr(out, "aria-hidden", "true");
         out.push_str("></span>");
     }
@@ -508,7 +515,7 @@ fn avatar_node(node: &Node, out: &mut String) {
             fallback: fallback.as_deref(),
             size: &size,
             status: status.as_deref(),
-            class: "cv-avatar-avatar",
+            class: avatar::ROOT,
             aria_label: None,
         },
     );
@@ -528,7 +535,7 @@ fn avatar_group(node: &Node, cx: &mut Cx, out: &mut String) {
     if node.prop_bool("isGrid") {
         attr(out, "data-grid", "true");
     }
-    attr(out, "class", "cv-avatar-group-group");
+    attr(out, "class", avatar_group::GROUP);
     out.push('>');
     for child in node.children.iter().take(visible) {
         super::emit(child, cx, out);
@@ -543,7 +550,7 @@ fn avatar_group(node: &Node, cx: &mut Cx, out: &mut String) {
                 fallback: Some(&format!("+{overflow}")),
                 size: "md",
                 status: None,
-                class: "cv-avatar-avatar cv-avatar-group-overflow",
+                class: &format!("{} {}", avatar::ROOT, avatar_group::OVERFLOW),
                 aria_label: Some(&format!("{overflow} more")),
             },
         );
@@ -586,7 +593,7 @@ fn image(node: &Node, cx: &mut Cx<'_>, out: &mut String) {
     // `fallbackSrc` only matters after a load error, which static HTML cannot observe.
     if node.prop_bool("removeWrapper") {
         out.push_str("<img");
-        attr(out, "class", "cv-image-image");
+        attr(out, "class", image::ROOT);
         attr(out, "src", &src);
         attr(out, "alt", &alt);
         let both = [style.as_str(), img_style.as_str()]
@@ -608,13 +615,13 @@ fn image(node: &Node, cx: &mut Cx<'_>, out: &mut String) {
     if node.prop_bool("isBlurred") {
         attr(out, "data-blurred", "true");
     }
-    attr(out, "class", "cv-image-wrapper");
+    attr(out, "class", image::WRAPPER);
     cx.style(out, &style);
     out.push_str("><span");
-    attr(out, "class", "cv-image-placeholder");
+    attr(out, "class", image::PLACEHOLDER);
     attr(out, "aria-hidden", "true");
     out.push_str("></span><img");
-    attr(out, "class", "cv-image-image");
+    attr(out, "class", image::ROOT);
     attr(out, "src", &src);
     attr(out, "alt", &alt);
     cx.style(out, &img_style);
@@ -691,11 +698,11 @@ fn list(node: &Node, cx: &mut Cx, out: &mut String) {
     out.push('<');
     out.push_str(tag);
     attr(out, "data-marker", &marker);
-    attr(out, "class", "cv-list-list");
+    attr(out, "class", list::ROOT);
     out.push('>');
     for child in &node.children {
         out.push_str("<li");
-        attr(out, "class", "cv-list-item");
+        attr(out, "class", list::ITEM);
         out.push('>');
         super::emit(child, cx, out);
         out.push_str("</li>");
@@ -727,14 +734,14 @@ fn data_list(node: &Node, out: &mut String) {
     if node.prop_bool("dividers") {
         flag(out, "data-dividers");
     }
-    attr(out, "class", "cv-data-list-list");
+    attr(out, "class", data_list::LIST);
     out.push('>');
     for row in node.arg_rows(0).unwrap_or_default() {
         out.push_str("<div");
-        attr(out, "class", "cv-data-list-row");
+        attr(out, "class", data_list::ROW);
         out.push('>');
-        text_el(out, "dt", "cv-data-list-term", cell(row, 0));
-        text_el(out, "dd", "cv-data-list-detail", &rest_joined(row, 1));
+        text_el(out, "dt", data_list::TERM, cell(row, 0));
+        text_el(out, "dd", data_list::DETAIL, &rest_joined(row, 1));
         out.push_str("</div>");
     }
     out.push_str("</dl>");
@@ -761,17 +768,17 @@ fn structured_list(node: &Node, cx: &mut Cx, out: &mut String) {
     if let Some(a) = &aria {
         attr(out, "aria-label", a);
     }
-    attr(out, "class", "cv-structured-list-list");
+    attr(out, "class", structured_list::LIST);
     out.push('>');
     if let Some(h) = headers {
         out.push_str("<div");
         attr(out, "role", "row");
-        attr(out, "class", "cv-structured-list-headerRow");
+        attr(out, "class", structured_list::HEADER_ROW);
         out.push('>');
         for c in h {
             out.push_str("<div");
             attr(out, "role", "columnheader");
-            attr(out, "class", "cv-structured-list-headerCell");
+            attr(out, "class", structured_list::HEADER_CELL);
             out.push('>');
             esc(out, c);
             out.push_str("</div>");
@@ -780,17 +787,17 @@ fn structured_list(node: &Node, cx: &mut Cx, out: &mut String) {
     }
     out.push_str("<div");
     attr(out, "role", "rowgroup");
-    attr(out, "class", "cv-structured-list-body");
+    attr(out, "class", structured_list::BODY);
     out.push('>');
     for row in items {
         out.push_str("<div");
         attr(out, "role", "row");
-        attr(out, "class", "cv-structured-list-row");
+        attr(out, "class", structured_list::ROW);
         out.push('>');
         for c in row {
             out.push_str("<div");
             attr(out, "role", "cell");
-            attr(out, "class", "cv-structured-list-cell");
+            attr(out, "class", structured_list::CELL);
             out.push('>');
             esc(out, c);
             out.push_str("</div>");
@@ -828,23 +835,23 @@ fn selectable_list(
     attr(
         out,
         "class",
-        "cv-structured-list-list cv-structured-list-selectable",
+        &format!("{} {}", structured_list::LIST, structured_list::SELECTABLE),
     );
     out.push('>');
     if let Some(h) = headers {
         out.push_str("<div");
-        attr(out, "class", "cv-structured-list-headerRow");
+        attr(out, "class", structured_list::HEADER_ROW);
         out.push_str("><div");
-        attr(out, "class", "cv-structured-list-headerCell");
+        attr(out, "class", structured_list::HEADER_CELL);
         attr(out, "aria-hidden", "true");
         out.push_str("></div>");
         for c in h {
-            text_el(out, "div", "cv-structured-list-headerCell", c);
+            text_el(out, "div", structured_list::HEADER_CELL, c);
         }
         out.push_str("</div>");
     }
     out.push_str("<div");
-    attr(out, "class", "cv-structured-list-body");
+    attr(out, "class", structured_list::BODY);
     out.push('>');
     for (i, row) in items.iter().enumerate() {
         let checked = selected == Some(i);
@@ -856,16 +863,16 @@ fn selectable_list(
         if checked {
             attr(out, "data-selected", "true");
         }
-        attr(out, "class", "cv-structured-list-row");
+        attr(out, "class", structured_list::ROW);
         // Roving focus: only the first row is in the tab order.
         attr(out, "tabindex", if i == 0 { "0" } else { "-1" });
         out.push_str("><div");
-        attr(out, "class", "cv-structured-list-cell");
+        attr(out, "class", structured_list::CELL);
         attr(out, "aria-hidden", "true");
         out.push_str("><span");
-        attr(out, "class", "cv-structured-list-indicator");
+        attr(out, "class", structured_list::INDICATOR);
         out.push_str("></span></div><div");
-        attr(out, "class", "cv-structured-list-cell");
+        attr(out, "class", structured_list::CELL);
         attr(out, "id", &label_id);
         out.push('>');
         esc(out, cell(row, 0));
@@ -873,7 +880,7 @@ fn selectable_list(
         for c in row.iter().skip(1) {
             out.push_str("<div");
             attr(out, "role", "cell");
-            attr(out, "class", "cv-structured-list-cell");
+            attr(out, "class", structured_list::CELL);
             out.push('>');
             esc(out, c);
             out.push_str("</div>");
@@ -891,7 +898,7 @@ fn timeline(node: &Node, out: &mut String) {
         "data-orientation",
         &prop_or(node, "orientation", "vertical"),
     );
-    attr(out, "class", "cv-timeline-list");
+    attr(out, "class", timeline::LIST);
     out.push('>');
     for row in node.arg_rows(0).unwrap_or_default() {
         timeline_item(out, row);
@@ -926,9 +933,9 @@ fn timeline_item(out: &mut String, row: &[String]) {
     if status == "active" {
         attr(out, "aria-current", "step");
     }
-    attr(out, "class", "cv-timeline-item");
+    attr(out, "class", timeline::ITEM);
     out.push_str("><span");
-    attr(out, "class", "cv-timeline-marker");
+    attr(out, "class", timeline::MARKER);
     attr(out, "aria-hidden", "true");
     out.push('>');
     // A failed entry keeps a glyph so it survives without colour vision.
@@ -936,14 +943,14 @@ fn timeline_item(out: &mut String, row: &[String]) {
         out.push('✕');
     }
     out.push_str("</span><div");
-    attr(out, "class", "cv-timeline-content");
+    attr(out, "class", timeline::CONTENT);
     out.push('>');
-    text_el(out, "div", "cv-timeline-title", cell(row, 0));
+    text_el(out, "div", timeline::TITLE, cell(row, 0));
     if !cell(row, 2).is_empty() {
-        text_el(out, "time", "cv-timeline-time", cell(row, 2));
+        text_el(out, "time", timeline::TIME, cell(row, 2));
     }
     if !cell(row, 1).is_empty() {
-        text_el(out, "div", "cv-timeline-description", cell(row, 1));
+        text_el(out, "div", timeline::DESCRIPTION, cell(row, 1));
     }
     out.push_str("</div></li>");
 }
@@ -951,11 +958,11 @@ fn timeline_item(out: &mut String, row: &[String]) {
 fn empty_state(node: &Node, out: &mut String) {
     out.push_str("<div");
     attr(out, "data-size", &prop_or(node, "size", "md"));
-    attr(out, "class", "cv-empty-state-empty-state");
+    attr(out, "class", empty_state::ROOT);
     out.push('>');
     if let Some(icon) = node.prop_str("icon").filter(|i| !i.is_empty()) {
         out.push_str("<span");
-        attr(out, "class", "cv-empty-state-icon");
+        attr(out, "class", empty_state::ICON);
         attr(out, "aria-hidden", "true");
         out.push('>');
         esc(out, &icon);
@@ -964,28 +971,28 @@ fn empty_state(node: &Node, out: &mut String) {
     text_el(
         out,
         "h3",
-        "cv-empty-state-title",
+        empty_state::TITLE,
         &node.arg_str(0).unwrap_or_default(),
     );
     if let Some(d) = node.arg_str(1).filter(|d| !d.is_empty()) {
-        text_el(out, "p", "cv-empty-state-description", &d);
+        text_el(out, "p", empty_state::DESCRIPTION, &d);
     }
     if let Some(a) = node.prop_str("action").filter(|a| !a.is_empty()) {
-        text_el(out, "div", "cv-empty-state-action", &a);
+        text_el(out, "div", empty_state::ACTION, &a);
     }
     out.push_str("</div>");
 }
 
 fn blockquote(node: &Node, out: &mut String) {
     out.push_str("<blockquote");
-    attr(out, "class", "cv-blockquote-blockquote");
+    attr(out, "class", blockquote::ROOT);
     out.push('>');
     esc(out, raw_text(node));
     // The catalog default for `cite` is the literal "undefined"; only an explicit value counts.
     if let Some(c) = node.prop_str("cite").filter(|_| node.prop_set("cite")) {
         if !c.is_empty() {
             out.push_str("<footer");
-            attr(out, "class", "cv-blockquote-footer");
+            attr(out, "class", blockquote::FOOTER);
             out.push_str("><cite>");
             esc(out, &c);
             out.push_str("</cite></footer>");
@@ -1002,7 +1009,7 @@ fn link(node: &Node, out: &mut String) {
     if external {
         attr(out, "data-external", "true");
     }
-    attr(out, "class", "cv-link-link");
+    attr(out, "class", link::ROOT);
     if external {
         attr(out, "target", "_blank");
         attr(out, "rel", "noreferrer");
@@ -1012,50 +1019,4 @@ fn link(node: &Node, out: &mut String) {
     out.push('>');
     esc(out, raw_text(node));
     out.push_str("</a>");
-}
-
-fn button(node: &Node, cx: &mut Cx, out: &mut String) {
-    let loading = node.prop_bool("loading");
-    let disabled = node.prop_bool("disabled") || loading;
-    // `href` renders the `asChild` link form; a disabled or loading one stays a disabled button.
-    let href = node
-        .prop_str("href")
-        .and_then(|h| safe_url(&h, false))
-        .filter(|_| !disabled);
-    let tag = if href.is_some() { "a" } else { "button" };
-    out.push('<');
-    out.push_str(tag);
-    attr(out, "data-variant", &prop_or(node, "variant", "primary"));
-    attr(out, "data-size", &prop_or(node, "size", "md"));
-    attr(out, "data-state", if loading { "loading" } else { "idle" });
-    if loading {
-        attr(out, "aria-busy", "true");
-    }
-    attr(out, "class", "cv-button-button");
-    if let Some(h) = &href {
-        attr(out, "href", h);
-    }
-    // A loading button is disabled, like the component's `disabled || loading`.
-    if disabled {
-        flag(out, "disabled");
-    }
-    out.push('>');
-    if loading {
-        // The Spinner is a separate unit the button's own CSS unit list does not name.
-        cx.used.insert("spinner");
-        out.push_str("<span");
-        attr(out, "role", "status");
-        attr(out, "aria-label", "Loading");
-        attr(out, "data-size", "sm");
-        attr(out, "aria-hidden", "true");
-        attr(out, "class", "cv-spinner-spinner");
-        out.push_str("></span>");
-    }
-    out.push_str("<span");
-    attr(out, "class", "cv-button-label");
-    out.push('>');
-    esc(out, raw_text(node));
-    out.push_str("</span></");
-    out.push_str(tag);
-    out.push('>');
 }

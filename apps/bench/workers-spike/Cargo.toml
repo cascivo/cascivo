@@ -12,7 +12,11 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 cascivo-html = { path = "../../../crates/cascivo-html" }
-minijinja = { version = "2", default-features = false, features = ["builtins", "serde", "std_collections"] }
+minijinja = { version = "2", default-features = false, features = [
+  "builtins",
+  "serde",
+  "std_collections",
+] }
 axum = { version = "0.8", default-features = false }
 tower-service = "0.3"
 worker = { version = "0.9", features = ["http", "axum"] }
