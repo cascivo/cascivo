@@ -55,7 +55,7 @@ fn home(count: u32) -> View {
 /// Serves only the two files the Vite build emits, never a request-chosen path.
 async fn asset(State(s): State<Notes>, Path(name): Path<String>) -> Response {
     let ctype = match name.as_str() {
-        "island.js" => "text/javascript; charset=utf-8",
+        "island.js" | "htmx.js" => "text/javascript; charset=utf-8",
         "island.css" => "text/css; charset=utf-8",
         _ => return StatusCode::NOT_FOUND.into_response(),
     };
