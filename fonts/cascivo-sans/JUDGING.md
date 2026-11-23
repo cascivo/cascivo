@@ -470,3 +470,23 @@ Known limits (the reviewer's ranked list, with what blocks each):
 6. Black closing quote a wedge pair; `7,` and italic `f)` loose. The italic `f)` needs a `WHITE_BAND_SHAPE` entry (owner decision).
 7. `O0` at 11-12 px at 300-400 (the zero barely narrower), 300 pale at 11 px.
 8. Optical sizes: most of the width change is between 8 and 14; 14 to 48 changes little.
+
+## Round 6 result (numeric scorer, no blind judge)
+
+`score.py` upright 8.14 -> 8.67 (rhythm 7.8 -> 8.2, weight axis 7.9 -> 8.1, shape 8.5, colour 9.0, small sizes 9.5 -> 9.4, optical
+sizes 2.8 -> 10.0); italic 7.93 unchanged. The target 8.9 was not met.
+
+- `DISPLAY_XH` 10 -> 60 (`tune.py`: score rises to 60, then flat): opsz 32 is 26 units under opsz 14 (Inter 30). Display spacing
+  (`DISPLAY_SPACING`) does not move the score; it stays 0.88.
+- `CAP_SB_BOLD` 0.1, upright only: Bold capital sidebearings +10% (+0.09). Retuning `HEAVY_TIGHTEN_ITALIC` 0.067 and `BOLD_TIGHTEN_ITALIC` 0.18 gave italic +0.10 but failed six italic gates (n gap 0.54 < 0.56 at 700, brackets, figures, `rf`, `Vo`, capital sidebearings 1.45): reverted.
+- Dot accent, `i` and `j` dot: the full stop's size (105; the gate in `test_dot_floor_is_a_params_constant`).
+- Gate decisions (owner): 600 width cap +2.5%, 900 +12% (line from 700 +4%), 700 rhythm ceiling 0.63, i-dot 105. Resolved here:
+  `COUNTER_MAX['a']` 1.3 -> 1.4; italic `f)` shares the upright's `WHITE_BAND_SHAPE`; the `quality.py` tip gate is unchanged (no
+  drawn change this round needed a sharper `a` notch). Italic Light at opsz 48 pinned at 61.7 (62.3), a result of the lower x-height.
+- Byte caps (woff2): full 77,600; Latin[opsz,wght] 32,500; Latin[wght] 25,800; Regular 25,200; italic full 83,900; italic Latin
+  [opsz,wght] 35,800.
+
+Remaining flaws: the wstep kink at 700 (diagonal capitals and `m w g`: advances flat 400-700, +48 per step to 900; the Bold master's
+advance, not a constant, sets it), Black `Q D O B d` counters 1.3-1.5x Inter's by area, the `I/1` ambiguity at 800-900 (identity
+glyphs), italic small sizes 7.4 and italic shape 7.2. Black `0 a e 4 6 9` outlines were not redrawn (an outline job for the Opus
+tier); `O` against `0` at 11-12 px is unchanged.

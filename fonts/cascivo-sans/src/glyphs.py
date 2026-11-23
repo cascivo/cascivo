@@ -3100,7 +3100,7 @@ def m_dieresis(g, p, s):
 
 
 def m_dot(g, p, s):
-    g.dot(0, lift_dots(p))
+    g.dot(0, lift_dots(p), period_dot(p))  # round 6: the full stop's size, as the i dot
 
 
 def m_macron(g, p, s):
