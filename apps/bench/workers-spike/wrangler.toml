@@ -1,0 +1,6 @@
+name = "cascivo-workers-spike"
+main = "build/worker/shim.mjs"
+compatibility_date = "2025-11-01"
+
+[build]
+command = "worker-build --release"
