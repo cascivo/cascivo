@@ -490,3 +490,11 @@ Remaining flaws: the wstep kink at 700 (diagonal capitals and `m w g`: advances 
 advance, not a constant, sets it), Black `Q D O B d` counters 1.3-1.5x Inter's by area, the `I/1` ambiguity at 800-900 (identity
 glyphs), italic small sizes 7.4 and italic shape 7.2. Black `0 a e 4 6 9` outlines were not redrawn (an outline job for the Opus
 tier); `O` against `0` at 11-12 px is unchanged.
+
+Round 6, second sitting (no font change; score still upright 8.67, italic 7.93). Two knobs for the wstep kink were tried with
+`tune.py` and removed: a blend of the Bold lowercase advance toward the Regular-Black line (`BOLD_ADV_BLEND`) fails
+`test_heavy_f_leaves_no_hole` (`ft` at 700) from 0.2, so `f` and `t` need their own Bold drawing first; an earlier start of the
+capitals' widening (`CAPW_START`, `glyphs.capw`) fails `test_weight_changes_do_not_reflow_text` from about 530 (the 600 width cap).
+The Bold master's capitals `T V W X Y Z` are `BOLD_OWN`, so no lowercase blend reaches them. Untouched: italic gates, Black counters
+(`0 a e 4 6 9`, `Q D O B d`) and `O`/`0` at 11-12 px, which need redrawn outlines, not constants.
+
