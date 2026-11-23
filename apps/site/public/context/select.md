@@ -35,19 +35,19 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | No | — | Text label for the control. Rendered on screen. |
-| `hint` | `string` | No | — | Supplementary hint text shown with the control. |
-| `error` | `string` | No | — | Error message shown when the value is invalid. |
-| `placeholder` | `string` | No | — | Placeholder text shown when the field is empty. |
-| `options` | `{ value: string; label: string; disabled?: boolean }[]` | Yes | — | The selectable options. |
-| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
-| `value` | `string` | No | — | The controlled value. |
-| `defaultValue` | `string` | No | — | The initial value when uncontrolled. |
-| `onChange` | `React.ChangeEventHandler<HTMLSelectElement>` | No | — | Called with the change event; read the new value from `event.target.value`. |
-| `ariaLabel` | `string` | No | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| Name           | Type                                                     | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                          |
+| -------------- | -------------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`        | `string`                                                 | No       | —       | Text label for the control. Rendered on screen.                                                                                                                                                                                                                                                                                                                                                      |
+| `hint`         | `string`                                                 | No       | —       | Supplementary hint text shown with the control.                                                                                                                                                                                                                                                                                                                                                      |
+| `error`        | `string`                                                 | No       | —       | Error message shown when the value is invalid.                                                                                                                                                                                                                                                                                                                                                       |
+| `placeholder`  | `string`                                                 | No       | —       | Placeholder text shown when the field is empty.                                                                                                                                                                                                                                                                                                                                                      |
+| `options`      | `{ value: string; label: string; disabled?: boolean }[]` | Yes      | —       | The selectable options.                                                                                                                                                                                                                                                                                                                                                                              |
+| `size`         | `'sm' \| 'md' \| 'lg'`                                   | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                                                                                                                                                |
+| `disabled`     | `boolean`                                                | No       | false   | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
+| `value`        | `string`                                                 | No       | —       | The controlled value.                                                                                                                                                                                                                                                                                                                                                                                |
+| `defaultValue` | `string`                                                 | No       | —       | The initial value when uncontrolled.                                                                                                                                                                                                                                                                                                                                                                 |
+| `onChange`     | `React.ChangeEventHandler<HTMLSelectElement>`            | No       | —       | Called with the change event; read the new value from `event.target.value`.                                                                                                                                                                                                                                                                                                                          |
+| `ariaLabel`    | `string`                                                 | No       | —       | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Tokens
 
@@ -63,7 +63,7 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 ### Basic
 
 ```jsx
-<Select label="Role" options={[{ value: "admin", label: "Admin" }]} />
+<Select label="Role" options={[{ value: 'admin', label: 'Admin' }]} />
 ```
 
 ### With placeholder
@@ -74,10 +74,10 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Visual props must resolve to --cascivo-color-* / radius / focus-ring tokens |
-| option labels | flexible | Free, supplied by the consumer via the options array |
+| Area          | Level    | Note                                                                        |
+| ------------- | -------- | --------------------------------------------------------------------------- |
+| token names   | strict   | Visual props must resolve to --cascivo-color-* / radius / focus-ring tokens |
+| option labels | flexible | Free, supplied by the consumer via the options array                        |
 
 ## AI context prompt
 

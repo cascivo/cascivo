@@ -42,12 +42,12 @@ The label lives in a role="status" node holding one stable string per phase, so 
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `status` | `'thinking' \| 'generating' \| 'complete' \| 'error' \| 'stopped'` | Yes | — | The phase: `thinking` (working, nothing produced yet), `generating` (output is streaming), `complete`, `error`, or `stopped` (the reader pressed Stop). |
-| `label` | `ReactNode` | No | — | Replaces the default text for the current status, e.g. "Searching 12 documents…". Rendered on screen. |
-| `labels` | `{ thinking?: string; generating?: string; complete?: string; error?: string; stopped?: string; stop?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
-| `onStop` | `() => void` | No | — | Called when the reader presses Stop. When set, a Stop button renders while the status is `thinking` or `generating`. |
+| Name     | Type                                                                                                             | Required | Default | Description                                                                                                                                             |
+| -------- | ---------------------------------------------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `status` | `'thinking' \| 'generating' \| 'complete' \| 'error' \| 'stopped'`                                               | Yes      | —       | The phase: `thinking` (working, nothing produced yet), `generating` (output is streaming), `complete`, `error`, or `stopped` (the reader pressed Stop). |
+| `label`  | `ReactNode`                                                                                                      | No       | —       | Replaces the default text for the current status, e.g. "Searching 12 documents…". Rendered on screen.                                                   |
+| `labels` | `{ thinking?: string; generating?: string; complete?: string; error?: string; stopped?: string; stop?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n).                                                                                              |
+| `onStop` | `() => void`                                                                                                     | No       | —       | Called when the reader presses Stop. When set, a Stop button renders while the status is `thinking` or `generating`.                                    |
 
 ## Tokens
 
@@ -92,10 +92,10 @@ The label lives in a role="status" node holding one stable string per phase, so 
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| label | flexible | Defaults per status come from the i18n catalog; override with label or the labels map |
-| status semantics | strict | thinking/generating are in progress (sparkle + shimmer); complete/error/stopped are terminal — do not repurpose |
+| Area             | Level    | Note                                                                                                            |
+| ---------------- | -------- | --------------------------------------------------------------------------------------------------------------- |
+| label            | flexible | Defaults per status come from the i18n catalog; override with label or the labels map                           |
+| status semantics | strict   | thinking/generating are in progress (sparkle + shimmer); complete/error/stopped are terminal — do not repurpose |
 
 ## AI context prompt
 

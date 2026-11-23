@@ -32,16 +32,16 @@ Rendered as role="img" with an accessible label so screen-reader users know a QR
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | Yes | — | Text or URL to encode |
-| `size` | `number` | No | 128 | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `errorCorrection` | `'L' \| 'M' \| 'Q' \| 'H'` | No | M | Higher levels tolerate more damage but hold less data |
-| `radius` | `string` | No | — | CSS length rounding the corners |
-| `fill` | `string` | No | currentColor | Foreground color of the QR modules. |
-| `background` | `string` | No | transparent | Background color behind the QR code. |
-| `ariaLabel` | `string` | No | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `label` | `string` | No | — | Accessible name for the QR image. Not rendered — screen readers only. |
+| Name              | Type                       | Required | Default      | Description                                                                                                                                  |
+| ----------------- | -------------------------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`           | `string`                   | Yes      | —            | Text or URL to encode                                                                                                                        |
+| `size`            | `number`                   | No       | 128          | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                        |
+| `errorCorrection` | `'L' \| 'M' \| 'Q' \| 'H'` | No       | M            | Higher levels tolerate more damage but hold less data                                                                                        |
+| `radius`          | `string`                   | No       | —            | CSS length rounding the corners                                                                                                              |
+| `fill`            | `string`                   | No       | currentColor | Foreground color of the QR modules.                                                                                                          |
+| `background`      | `string`                   | No       | transparent  | Background color behind the QR code.                                                                                                         |
+| `ariaLabel`       | `string`                   | No       | —            | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label`           | `string`                   | No       | —            | Accessible name for the QR image. Not rendered — screen readers only.                                                                        |
 
 ## Tokens
 
@@ -64,15 +64,19 @@ Rendered as role="img" with an accessible label so screen-reader users know a QR
 ### Custom colors
 
 ```jsx
-<QrCode value="cascivo" fill="var(--cascivo-color-accent)" background="var(--cascivo-color-surface)" />
+<QrCode
+  value="cascivo"
+  fill="var(--cascivo-color-accent)"
+  background="var(--cascivo-color-surface)"
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| errorCorrection | flexible | Raise to Q/H when the code may be printed small or partially obscured |
-| colors | flexible | Defaults to currentColor; keep sufficient contrast between fill and background to stay scannable |
+| Area            | Level    | Note                                                                                             |
+| --------------- | -------- | ------------------------------------------------------------------------------------------------ |
+| errorCorrection | flexible | Raise to Q/H when the code may be printed small or partially obscured                            |
+| colors          | flexible | Defaults to currentColor; keep sufficient contrast between fill and background to stay scannable |
 
 ## AI context prompt
 

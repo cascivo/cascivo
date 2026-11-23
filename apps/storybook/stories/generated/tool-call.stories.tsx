@@ -3,20 +3,20 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button, ToolCall } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Display/ToolCall",
+  title: 'Display/ToolCall',
 }
 export default meta
 type Story = StoryObj
 
 export const Running: Story = {
-  name: "Running",
+  name: 'Running',
   render: () => (
     <ToolCall name="search_web" status="running" input={'{ "query": "cascivo pricing" }'} />
   ),
 }
 
 export const Complete: Story = {
-  name: "Complete",
+  name: 'Complete',
   render: () => (
     <ToolCall
       name="get_weather"
@@ -28,7 +28,7 @@ export const Complete: Story = {
 }
 
 export const AwaitingApproval: Story = {
-  name: "Awaiting approval",
+  name: 'Awaiting approval',
   render: () => (
     <ToolCall
       name="send_email"
@@ -36,7 +36,9 @@ export const AwaitingApproval: Story = {
       input={'{ "to": "team@example.com", "subject": "Weekly report" }'}
       actions={
         <>
-          <Button variant="ghost" size="sm">Deny</Button>
+          <Button variant="ghost" size="sm">
+            Deny
+          </Button>
           <Button size="sm">Approve</Button>
         </>
       }
@@ -45,9 +47,6 @@ export const AwaitingApproval: Story = {
 }
 
 export const Error: Story = {
-  name: "Error",
-  render: () => (
-    <ToolCall name="fetch_page" status="error" error="The page returned 404." />
-  ),
+  name: 'Error',
+  render: () => <ToolCall name="fetch_page" status="error" error="The page returned 404." />,
 }
-

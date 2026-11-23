@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ContainedList, ContainedListItem } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Display/ContainedList",
+  title: 'Display/ContainedList',
 }
 export default meta
 type Story = StoryObj
 
 export const BasicContainedList: Story = {
-  name: "Basic contained list",
+  name: 'Basic contained list',
   render: () => (
     <ContainedList label="Members">
       <ContainedListItem>Ada Lovelace</ContainedListItem>
@@ -17,4 +17,3 @@ export const BasicContainedList: Story = {
     </ContainedList>
   ),
 }
-

@@ -32,11 +32,11 @@ role="status" lets assistive tech expose the label as state; meaning is reinforc
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline' \| 'info' \| 'primary'` | No | default | Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral \| info \| success \| warning \| danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only). |
-| `size` | `'sm' \| 'md'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `children` | `ReactNode` | No | — | Badge label |
+| Name       | Type                                                                                                      | Required | Default | Description                                                                                                                                                                                                                                                                                            |
+| ---------- | --------------------------------------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `variant`  | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline' \| 'info' \| 'primary'` | No       | default | Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral \| info \| success \| warning \| danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only). |
+| `size`     | `'sm' \| 'md'`                                                                                            | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                                                  |
+| `children` | `ReactNode`                                                                                               | No       | —       | Badge label                                                                                                                                                                                                                                                                                            |
 
 ## Tokens
 
@@ -89,10 +89,10 @@ role="status" lets assistive tech expose the label as state; meaning is reinforc
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| variant | flexible | Choose the variant that matches the semantic meaning |
-| token names | strict | Colors and radius must resolve to --cascivo-* tokens (--cascivo-radius-badge) |
+| Area        | Level    | Note                                                                          |
+| ----------- | -------- | ----------------------------------------------------------------------------- |
+| variant     | flexible | Choose the variant that matches the semantic meaning                          |
+| token names | strict   | Colors and radius must resolve to --cascivo-* tokens (--cascivo-radius-badge) |
 
 ## AI context prompt
 
