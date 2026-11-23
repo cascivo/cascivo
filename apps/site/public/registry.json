@@ -4028,7 +4028,7 @@
         "chat-bubble.tsx": "sha256-333523aff3d09931648544fb7dc66199493fcb54af1f56924aea403cd834c804",
         "index.ts": "sha256-60c31be4b82d8ee45b93e2216fa79a2e1e92013a82c734709ae61d5703f6ce17",
         "chat-bubble.module.css": "sha256-057b48821b086f66878e1f2557b1f233847315d6487dd33fb3a5feadfbda16b1",
-        "chat-bubble.meta.ts": "sha256-6b04b31d72c7dbd64abd4934965b78828cf9cbe0f4baaa78da6957a4227c1318"
+        "chat-bubble.meta.ts": "sha256-4343d9bc26561d5c62363e4591ece105d22d77d7745a190848f3c0ff4d19de95"
       },
       "dependencies": [],
       "tags": ["chat", "message", "conversation", "messaging"],
@@ -4046,7 +4046,7 @@
               "data-side": ["start", "end"]
             },
             "children": ["avatar", "content"],
-            "emit": "manual"
+            "emit": "auto"
           },
           "parts": {
             "avatar": {
@@ -22396,7 +22396,7 @@
         "shimmer-text.tsx": "sha256-e02cd5a123716a7b0b88b8470bead9ecdc5e454912bc9f7b90d88c634f71236b",
         "index.ts": "sha256-a5768baddb403e68386a219e113f3406da433379eb8c61a6b1172dffa8622348",
         "shimmer-text.module.css": "sha256-7901a2420bba33695d46891cdfa5f6028133a1c01adbf344a1ab03f15154d073",
-        "shimmer-text.meta.ts": "sha256-d24c26cccbca5e72c8f89091d8611ad2a2e088670e8883816e69e47bb8b30cc7"
+        "shimmer-text.meta.ts": "sha256-e775d6b3aeccb165b9972dd8ae884a2bfce63cc77558eebaea3ae2d3f34ac497"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -22414,7 +22414,7 @@
           "root": {
             "element": ["span", "p", "div"],
             "children": ["$slot"],
-            "emit": "manual"
+            "emit": "auto"
           }
         },
         "states": [],
@@ -23200,7 +23200,7 @@
         "slider.tsx": "sha256-c49476378ead6c842e27d4ae0078cc8900de23b4f66f7239fe88fb17a38a3e72",
         "index.ts": "sha256-8dc2b339ea4246a3740ab8294c12e2b5405113ee0bae262e794ffb0771157b6f",
         "slider.module.css": "sha256-4bff460e358e21d6595f9e3d4472642bcd9f9ee2826b810c76387c712d5c8632",
-        "slider.meta.ts": "sha256-4a1f1a6778ef624a28e5abaf1e6a816b6076b4cef0529a707f4c8c87b12d6501"
+        "slider.meta.ts": "sha256-4ca24b728a16dd55c363c1c4f110a7b8717c56d57eb4fee9e3d7e6d4c9db9625"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -23221,7 +23221,7 @@
               "data-disabled": [""]
             },
             "children": ["label", "slider"],
-            "emit": "auto"
+            "emit": "manual"
           },
           "parts": {
             "label": {
@@ -26167,7 +26167,7 @@
         "textarea.tsx": "sha256-74f851b2888d4f8691effa629663ef65a5579f74f43c26da7225c6a2b36772b2",
         "index.ts": "sha256-faa6e1544725eaeb285606e523d371b45b46d79cf0ab71ab9d5fe4e09ef244b7",
         "textarea.module.css": "sha256-a9ab00f28d9c14d5024b89fa25dab5a8ca13991ec1fe0a3bd68ce12cf01c8f63",
-        "textarea.meta.ts": "sha256-3e7f304e9d68aa49d102d44d28e4e54b44cfdc0af6f4fe468271fd14722d80b4"
+        "textarea.meta.ts": "sha256-00a0d7208a19d11137eb797b8dba8b7e6aaca21bf63ea1b33ba064d2daae5ae4"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -26259,6 +26259,12 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "disabled",

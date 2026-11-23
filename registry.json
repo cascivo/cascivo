@@ -23200,7 +23200,7 @@
         "slider.tsx": "sha256-c49476378ead6c842e27d4ae0078cc8900de23b4f66f7239fe88fb17a38a3e72",
         "index.ts": "sha256-8dc2b339ea4246a3740ab8294c12e2b5405113ee0bae262e794ffb0771157b6f",
         "slider.module.css": "sha256-4bff460e358e21d6595f9e3d4472642bcd9f9ee2826b810c76387c712d5c8632",
-        "slider.meta.ts": "sha256-4a1f1a6778ef624a28e5abaf1e6a816b6076b4cef0529a707f4c8c87b12d6501"
+        "slider.meta.ts": "sha256-4ca24b728a16dd55c363c1c4f110a7b8717c56d57eb4fee9e3d7e6d4c9db9625"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -23221,7 +23221,7 @@
               "data-disabled": [""]
             },
             "children": ["label", "slider"],
-            "emit": "auto"
+            "emit": "manual"
           },
           "parts": {
             "label": {
@@ -26167,7 +26167,7 @@
         "textarea.tsx": "sha256-74f851b2888d4f8691effa629663ef65a5579f74f43c26da7225c6a2b36772b2",
         "index.ts": "sha256-faa6e1544725eaeb285606e523d371b45b46d79cf0ab71ab9d5fe4e09ef244b7",
         "textarea.module.css": "sha256-a9ab00f28d9c14d5024b89fa25dab5a8ca13991ec1fe0a3bd68ce12cf01c8f63",
-        "textarea.meta.ts": "sha256-3e7f304e9d68aa49d102d44d28e4e54b44cfdc0af6f4fe468271fd14722d80b4"
+        "textarea.meta.ts": "sha256-00a0d7208a19d11137eb797b8dba8b7e6aaca21bf63ea1b33ba064d2daae5ae4"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -26259,6 +26259,12 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "disabled",

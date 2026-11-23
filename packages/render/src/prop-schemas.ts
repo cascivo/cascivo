@@ -7968,6 +7968,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'placeholder',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'disabled',
       required: false,
       primitives: ['boolean'],

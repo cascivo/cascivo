@@ -9943,7 +9943,7 @@
             "label",
             "slider"
           ],
-          "emit": "auto",
+          "emit": "manual",
           "class": "cv-slider-wrapper"
         },
         "parts": {

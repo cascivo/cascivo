@@ -4397,6 +4397,10 @@
               "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
               "description": "Text label for the control (standalone use). Omit it when wrapping the Textarea in a Field — the Field owns the label, and setting both double-labels the control."
             },
+            "placeholder": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "Placeholder text shown when the field is empty."
+            },
             "resize": {
               "type": "string",
               "enum": ["none", "vertical", "both"],

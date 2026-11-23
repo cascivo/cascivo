@@ -70,6 +70,18 @@ pub struct Cx<'a> {
     pub scripts: BTreeSet<&'static str>,
     /// CSP-safe mode only: `data-cv-style` key → declarations.
     pub styles: BTreeMap<String, String>,
+    /// Set by `field` for the control it wraps; the control takes it (React's `cloneElement`).
+    pub(crate) field: Option<FieldCtx>,
+}
+
+/// What a `field` hands its control: the id and the ARIA wiring.
+#[derive(Debug, Default, Clone)]
+pub(crate) struct FieldCtx {
+    pub id: String,
+    pub labelled_by: Option<String>,
+    pub described_by: Option<String>,
+    pub invalid: bool,
+    pub disabled: bool,
 }
 
 impl Cx<'_> {

@@ -13,6 +13,10 @@ mod e1_c;
 mod e1_d;
 mod embed;
 mod feedback;
+mod form;
+mod form_ai;
+mod form_pick;
+mod form_text;
 mod layout;
 mod nav;
 
@@ -47,6 +51,15 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         "breadcrumb" | "steps" | "accordion" | "collapsible" | "tabs" | "table" => {
             nav::emit(node, cx, out);
         }
+        "field" | "input" | "textarea" | "select" | "checkbox" => form::emit(node, cx, out),
+        "checkbox-card" | "radio" | "radio-card" | "rating-group" | "slider" | "native-select" => {
+            form_pick::emit(node, cx, out);
+        }
+        "number-input" | "password-input" | "search" | "contained-list" => {
+            form_text::emit(node, cx, out);
+        }
+        "ai-badge" | "ai-status" | "chain-of-thought" | "reasoning" | "sources" | "tool-call"
+        | "prompt-suggestions" => form_ai::emit(node, cx, out),
         "bar" | "line" | "area" | "pie" | "scatter" | "spark" | "gauge" => {
             emit_chart(node, cx, out);
         }

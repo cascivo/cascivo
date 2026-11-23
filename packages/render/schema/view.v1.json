@@ -12506,6 +12506,16 @@
                       }
                     ]
                   },
+                  "placeholder": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "$ref": "#/$defs/TranslationRef"
+                      }
+                    ]
+                  },
                   "disabled": {
                     "anyOf": [
                       {

@@ -12,7 +12,7 @@ export const meta: ComponentMeta = {
       local: 'wrapper',
       data: { 'data-disabled': [''] },
       children: ['label', 'slider'],
-      emit: 'auto',
+      emit: 'manual',
     },
     parts: {
       label: { element: 'label', children: ['$text'], when: 'label' },

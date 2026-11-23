@@ -2317,6 +2317,7 @@
         { "name": "rows", "type": "number", "required": false },
         { "name": "resize", "type": "'none' | 'vertical' | 'both'", "required": false },
         { "name": "autosize", "type": "boolean", "required": false },
+        { "name": "placeholder", "type": "string", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
         { "name": "value", "type": "string", "required": false },
         { "name": "defaultValue", "type": "string", "required": false },

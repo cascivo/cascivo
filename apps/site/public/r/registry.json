@@ -31541,7 +31541,7 @@
               "data-disabled": [""]
             },
             "children": ["label", "slider"],
-            "emit": "auto"
+            "emit": "manual"
           },
           "parts": {
             "label": {
@@ -34382,6 +34382,12 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "disabled",
