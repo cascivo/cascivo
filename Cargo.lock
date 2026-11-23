@@ -4031,6 +4031,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "solid-htmx-server"
+version = "0.0.0"
+dependencies = [
+ "axum",
+ "cascivo-server",
+ "cascivo-web",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tower",
+]
+
+[[package]]
 name = "spin"
 version = "0.9.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"

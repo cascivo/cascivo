@@ -337,6 +337,7 @@ All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md
 - Sign-in, connected accounts and social posting (OAuth, Bluesky, Mastodon, LinkedIn, Threads, Buffer, ShareMenu): https://cascivo.com/docs/recipe-social.md
 - Every @cascivo/email component, with props and examples: https://cascivo.com/docs/email-primitives.md
 - Email client support matrix (what the conformance lint enforces): https://cascivo.com/docs/email-client-support.md
+- Markup contract for HTML, htmx, Solid and Rust apps (@cascivo/css: cv-* classes + data-* attributes, typed class map, example): https://cascivo.com/docs/contract.md
 - Static HTML from .cv text (cascivo-html Rust crate + CLI, no React): https://cascivo.com/docs/using-cascivo-html.md
 - Static sites from Markdown, collections, i18n and RSS (cascivo-web Rust CLI, no React): https://cascivo.com/docs/using-cascivo-web.md
 - Terminal UIs in Rust (cascivo-tui ratatui toolkit, class strings + themes): https://cascivo.com/docs/using-cascivo-tui.md
