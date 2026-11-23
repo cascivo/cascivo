@@ -27,6 +27,22 @@
     "category": "inputs",
     "clientJs": "required",
     "contractTier": "native",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "suggestions",
+        "role": "group",
+        "aria": ["aria-label"],
+        "children": ["chip"],
+        "emit": "manual"
+      },
+      "parts": {
+        "chip": {
+          "element": "button",
+          "children": ["$text"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

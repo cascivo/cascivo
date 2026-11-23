@@ -27,6 +27,17 @@
     "category": "feedback",
     "clientJs": "enhancement",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "span",
+        "data": {
+          "data-size": ["sm", "md", "lg"]
+        },
+        "role": "status",
+        "aria": ["aria-label"],
+        "emit": "auto"
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": ["sm", "md", "lg"],

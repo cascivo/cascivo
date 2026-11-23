@@ -12,7 +12,10 @@ export const meta: ComponentMeta = {
       element: 'label',
       local: 'wrapper',
       // Presence-only: `'true'` when disabled, absent otherwise.
-      data: { 'data-disabled': ['true'] },
+      data: {
+        'data-disabled': ['true'],
+        'data-state': ['unchecked', 'checked', 'indeterminate'],
+      },
       children: ['input', 'control', 'label'],
       emit: 'manual',
     },

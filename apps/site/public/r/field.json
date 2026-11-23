@@ -32,7 +32,8 @@
       "root": {
         "element": "div",
         "data": {
-          "data-disabled": [""]
+          "data-disabled": [""],
+          "data-state": ["default", "disabled", "invalid"]
         },
         "children": ["@label", "$slot", "description", "error"],
         "emit": "manual"

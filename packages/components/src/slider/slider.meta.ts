@@ -6,6 +6,19 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   clientJs: 'none',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      data: { 'data-disabled': [''] },
+      children: ['label', 'slider'],
+      emit: 'auto',
+    },
+    parts: {
+      label: { element: 'label', children: ['$text'], when: 'label' },
+      slider: { element: 'input', aria: ['aria-label'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

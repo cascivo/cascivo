@@ -7,6 +7,20 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   clientJs: 'required',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'suggestions',
+      role: 'group',
+      aria: ['aria-label'],
+      children: ['chip'],
+      emit: 'manual',
+    },
+    parts: {
+      // One per `items` entry.
+      chip: { element: 'button', children: ['$text'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

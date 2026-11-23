@@ -189,6 +189,7 @@ export const classes = {
     viewport: 'cv-carousel-viewport',
   },
   chainOfThought: {
+    root: 'cv-chain-of-thought-chain',
     alias: 'cv-chain-of-thought',
     body: 'cv-chain-of-thought-body',
     chain: 'cv-chain-of-thought-chain',
@@ -222,6 +223,7 @@ export const classes = {
     wrapper: 'cv-checkbox-wrapper',
   },
   checkboxCard: {
+    root: 'cv-checkbox-card-card',
     alias: 'cv-checkbox-card',
     body: 'cv-checkbox-card-body',
     card: 'cv-checkbox-card-card',
@@ -592,7 +594,7 @@ export const classes = {
     iconButton: 'cv-icon-button-iconButton',
   },
   image: {
-    root: 'cv-image-image',
+    root: 'cv-image-wrapper',
     alias: 'cv-image',
     fallback: 'cv-image-fallback',
     image: 'cv-image-image',
@@ -808,6 +810,7 @@ export const classes = {
     title: 'cv-notification-title',
   },
   numberInput: {
+    root: 'cv-number-input-wrapper',
     alias: 'cv-number-input',
     error: 'cv-number-input-error',
     field: 'cv-number-input-field',
@@ -841,6 +844,7 @@ export const classes = {
     select: 'cv-pagination-select',
   },
   passwordInput: {
+    root: 'cv-password-input-wrapper',
     alias: 'cv-password-input',
     input: 'cv-password-input-input',
     'input-row': 'cv-password-input-input-row',
@@ -890,6 +894,7 @@ export const classes = {
     text: 'cv-progress-indicator-text',
   },
   promptSuggestions: {
+    root: 'cv-prompt-suggestions-suggestions',
     alias: 'cv-prompt-suggestions',
     chip: 'cv-prompt-suggestions-chip',
     suggestions: 'cv-prompt-suggestions-suggestions',
@@ -920,6 +925,7 @@ export const classes = {
     radialProgress: 'cv-radial-progress-radialProgress',
   },
   radio: {
+    root: 'cv-radio-wrapper',
     alias: 'cv-radio',
     control: 'cv-radio-control',
     group: 'cv-radio-group',
@@ -928,6 +934,7 @@ export const classes = {
     wrapper: 'cv-radio-wrapper',
   },
   radioCard: {
+    root: 'cv-radio-card-group',
     alias: 'cv-radio-card',
     body: 'cv-radio-card-body',
     card: 'cv-radio-card-card',
@@ -938,6 +945,7 @@ export const classes = {
     title: 'cv-radio-card-title',
   },
   ratingGroup: {
+    root: 'cv-rating-group-wrapper',
     alias: 'cv-rating-group',
     star: 'cv-rating-group-star',
     wrapper: 'cv-rating-group-wrapper',
@@ -1101,7 +1109,7 @@ export const classes = {
     link: 'cv-skip-nav-link',
   },
   slider: {
-    root: 'cv-slider-slider',
+    root: 'cv-slider-wrapper',
     alias: 'cv-slider',
     label: 'cv-slider-label',
     slider: 'cv-slider-slider',
@@ -1161,6 +1169,7 @@ export const classes = {
     cursor: 'cv-streaming-text-cursor',
   },
   structuredList: {
+    root: 'cv-structured-list-list',
     alias: 'cv-structured-list',
     body: 'cv-structured-list-body',
     cell: 'cv-structured-list-cell',
@@ -1232,7 +1241,7 @@ export const classes = {
     text: 'cv-text-text',
   },
   textarea: {
-    root: 'cv-textarea-textarea',
+    root: 'cv-textarea-wrapper',
     alias: 'cv-textarea',
     error: 'cv-textarea-error',
     hint: 'cv-textarea-hint',

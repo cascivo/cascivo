@@ -27,6 +27,49 @@
     "category": "display",
     "clientJs": "enhancement",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "list",
+        "aria": ["aria-label"],
+        "modifiers": {
+          "selectable": "selectable"
+        },
+        "children": ["headerRow", "body"],
+        "emit": "manual"
+      },
+      "parts": {
+        "headerRow": {
+          "element": "div",
+          "children": ["headerCell"],
+          "when": "headers"
+        },
+        "headerCell": {
+          "element": "div",
+          "children": ["$slot"]
+        },
+        "body": {
+          "element": "div",
+          "children": ["row"]
+        },
+        "row": {
+          "element": "div",
+          "data": {
+            "data-selected": "boolean"
+          },
+          "aria": ["aria-checked", "aria-labelledby"],
+          "children": ["cell"]
+        },
+        "cell": {
+          "element": "div",
+          "children": ["$slot", "indicator"]
+        },
+        "indicator": {
+          "element": "span",
+          "when": "selectable"
+        }
+      }
+    },
     "states": ["default", "selected"],
     "variants": ["static", "selectable"],
     "sizes": [],

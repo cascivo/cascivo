@@ -8,6 +8,22 @@ export const meta: ComponentMeta = {
   // The status renders and is announced from server HTML; only the Stop button needs JS.
   clientJs: 'enhancement',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'ai-status',
+      // Not `data-state`: the phase rides `data-status`.
+      data: { 'data-status': ['thinking', 'generating', 'complete', 'error', 'stopped'] },
+      children: ['glyph', 'label', 'stop'],
+      emit: 'manual',
+    },
+    parts: {
+      glyph: { element: 'span', aria: ['aria-hidden'] },
+      label: { element: 'span', role: 'status', children: ['$slot'] },
+      // A Button (`@button`) carrying this class, only while thinking/generating with `onStop`.
+      stop: { element: 'button', children: ['$text'], when: 'onStop' },
+    },
+  },
   states: ['thinking', 'generating', 'complete', 'error', 'stopped'],
   variants: [],
   sizes: [],

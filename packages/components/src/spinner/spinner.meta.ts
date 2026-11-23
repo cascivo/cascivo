@@ -9,6 +9,15 @@ export const meta: ComponentMeta = {
   // calls useSignals() and carries 'use client'. Nothing is unreachable with JS off.
   clientJs: 'enhancement',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'span',
+      data: { 'data-size': ['sm', 'md', 'lg'] },
+      role: 'status',
+      aria: ['aria-label'],
+      emit: 'auto',
+    },
+  },
   states: [],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

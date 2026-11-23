@@ -7,6 +7,19 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   clientJs: 'none',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'root',
+      data: { 'data-size': ['sm', 'md', 'lg'], 'data-invalid': [''] },
+      children: ['select', 'chevron'],
+      emit: 'manual',
+    },
+    parts: {
+      select: { element: 'select', aria: ['aria-invalid'], children: ['$slot'] },
+      chevron: { element: 'span', aria: ['aria-hidden'] },
+    },
+  },
   states: ['default', 'focus', 'disabled', 'invalid'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

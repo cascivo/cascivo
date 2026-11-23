@@ -27,6 +27,33 @@
     "category": "display",
     "clientJs": "enhancement",
     "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "details",
+        "local": "root",
+        "data": {
+          "data-state": ["open", "closed"]
+        },
+        "children": ["trigger", "content"],
+        "emit": "manual"
+      },
+      "parts": {
+        "trigger": {
+          "element": "summary",
+          "data": {
+            "data-state": ["open", "closed"]
+          },
+          "aria": ["aria-controls", "aria-disabled"],
+          "children": ["$slot"]
+        },
+        "content": {
+          "element": "div",
+          "role": "region",
+          "aria": ["aria-labelledby"],
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": ["open", "closed"],
     "variants": [],
     "sizes": [],

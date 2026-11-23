@@ -13,6 +13,87 @@
         "indicator": "cv-accordion-indicator",
         "item": "cv-accordion-item",
         "trigger": "cv-accordion-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "data": {
+            "data-type": [
+              "single",
+              "multiple"
+            ]
+          },
+          "children": [
+            "item"
+          ],
+          "emit": "manual",
+          "local": "accordion",
+          "class": "cv-accordion-accordion"
+        },
+        "parts": {
+          "item": {
+            "element": "details",
+            "data": {
+              "data-value": "string",
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "children": [
+              "trigger",
+              "content"
+            ],
+            "local": "item",
+            "class": "cv-accordion-item"
+          },
+          "trigger": {
+            "element": "summary",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "aria": [
+              "aria-controls"
+            ],
+            "children": [
+              "heading",
+              "indicator"
+            ],
+            "local": "trigger",
+            "class": "cv-accordion-trigger"
+          },
+          "heading": {
+            "element": "h3",
+            "children": [
+              "$slot"
+            ],
+            "local": "heading",
+            "class": "cv-accordion-heading"
+          },
+          "indicator": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "indicator",
+            "class": "cv-accordion-indicator"
+          },
+          "content": {
+            "element": "div",
+            "role": "region",
+            "aria": [
+              "aria-labelledby"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "content",
+            "class": "cv-accordion-content"
+          }
+        }
       }
     },
     "action-sheet": {
@@ -38,6 +119,37 @@
         "badge": "cv-ai-badge-badge",
         "revert": "cv-ai-badge-revert",
         "root": "cv-ai-badge-root"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "local": "root",
+          "children": [
+            "badge",
+            "revert"
+          ],
+          "emit": "manual",
+          "class": "cv-ai-badge-root"
+        },
+        "parts": {
+          "badge": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "badge",
+            "class": "cv-ai-badge-badge"
+          },
+          "revert": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "when": "edited && onRevert",
+            "local": "revert",
+            "class": "cv-ai-badge-revert"
+          }
+        }
       }
     },
     "ai-disclaimer": {
@@ -80,6 +192,56 @@
         "glyph": "cv-ai-status-glyph",
         "label": "cv-ai-status-label",
         "stop": "cv-ai-status-stop"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "ai-status",
+          "data": {
+            "data-status": [
+              "thinking",
+              "generating",
+              "complete",
+              "error",
+              "stopped"
+            ]
+          },
+          "children": [
+            "glyph",
+            "label",
+            "stop"
+          ],
+          "emit": "manual",
+          "class": "cv-ai-status-ai-status"
+        },
+        "parts": {
+          "glyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "glyph",
+            "class": "cv-ai-status-glyph"
+          },
+          "label": {
+            "element": "span",
+            "role": "status",
+            "children": [
+              "$slot"
+            ],
+            "local": "label",
+            "class": "cv-ai-status-label"
+          },
+          "stop": {
+            "element": "button",
+            "children": [
+              "$text"
+            ],
+            "when": "onStop",
+            "local": "stop",
+            "class": "cv-ai-status-stop"
+          }
+        }
       }
     },
     "alert": {
@@ -822,6 +984,125 @@
         "step": "cv-chain-of-thought-step",
         "summary": "cv-chain-of-thought-summary",
         "title": "cv-chain-of-thought-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "ol",
+          "local": "chain",
+          "aria": [
+            "aria-busy"
+          ],
+          "children": [
+            "step"
+          ],
+          "emit": "manual",
+          "class": "cv-chain-of-thought-chain"
+        },
+        "parts": {
+          "step": {
+            "element": "li",
+            "data": {
+              "data-status": [
+                "pending",
+                "active",
+                "complete",
+                "error"
+              ]
+            },
+            "aria": [
+              "aria-current"
+            ],
+            "children": [
+              "marker",
+              "body"
+            ],
+            "local": "step",
+            "class": "cv-chain-of-thought-step"
+          },
+          "marker": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "marker",
+            "class": "cv-chain-of-thought-marker"
+          },
+          "body": {
+            "element": "div",
+            "children": [
+              "disclosure",
+              "heading",
+              "description"
+            ],
+            "local": "body",
+            "class": "cv-chain-of-thought-body"
+          },
+          "disclosure": {
+            "element": "details",
+            "children": [
+              "summary",
+              "description",
+              "detail"
+            ],
+            "when": "detail",
+            "local": "disclosure",
+            "class": "cv-chain-of-thought-disclosure"
+          },
+          "summary": {
+            "element": "summary",
+            "children": [
+              "title",
+              "indicator"
+            ],
+            "local": "summary",
+            "class": "cv-chain-of-thought-summary"
+          },
+          "indicator": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "indicator",
+            "class": "cv-chain-of-thought-indicator"
+          },
+          "heading": {
+            "element": "div",
+            "children": [
+              "title"
+            ],
+            "when": "!detail",
+            "local": "heading",
+            "class": "cv-chain-of-thought-heading"
+          },
+          "title": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "local": "title",
+            "class": "cv-chain-of-thought-title"
+          },
+          "description": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "when": "description",
+            "local": "description",
+            "class": "cv-chain-of-thought-description"
+          },
+          "detail": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "detail",
+            "class": "cv-chain-of-thought-detail"
+          }
+        }
       }
     },
     "chat-bubble": {
@@ -932,6 +1213,11 @@
           "data": {
             "data-disabled": [
               "true"
+            ],
+            "data-state": [
+              "unchecked",
+              "checked",
+              "indeterminate"
             ]
           },
           "children": [
@@ -983,6 +1269,73 @@
         "glyph": "cv-checkbox-card-glyph",
         "input": "cv-checkbox-card-input",
         "title": "cv-checkbox-card-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "label",
+          "local": "card",
+          "data": {
+            "data-disabled": [
+              ""
+            ]
+          },
+          "children": [
+            "input",
+            "glyph",
+            "body"
+          ],
+          "emit": "manual",
+          "class": "cv-checkbox-card-card"
+        },
+        "parts": {
+          "input": {
+            "element": "input",
+            "local": "input",
+            "class": "cv-checkbox-card-input"
+          },
+          "glyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "check"
+            ],
+            "local": "glyph",
+            "class": "cv-checkbox-card-glyph"
+          },
+          "check": {
+            "element": "svg",
+            "local": "check",
+            "class": "cv-checkbox-card-check"
+          },
+          "body": {
+            "element": "span",
+            "children": [
+              "title",
+              "description"
+            ],
+            "local": "body",
+            "class": "cv-checkbox-card-body"
+          },
+          "title": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "local": "title",
+            "class": "cv-checkbox-card-title"
+          },
+          "description": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "when": "description",
+            "local": "description",
+            "class": "cv-checkbox-card-description"
+          }
+        }
       }
     },
     "code": {
@@ -1183,6 +1536,56 @@
         "content": "cv-collapsible-content",
         "root": "cv-collapsible-root",
         "trigger": "cv-collapsible-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "details",
+          "local": "root",
+          "data": {
+            "data-state": [
+              "open",
+              "closed"
+            ]
+          },
+          "children": [
+            "trigger",
+            "content"
+          ],
+          "emit": "manual",
+          "class": "cv-collapsible-root"
+        },
+        "parts": {
+          "trigger": {
+            "element": "summary",
+            "data": {
+              "data-state": [
+                "open",
+                "closed"
+              ]
+            },
+            "aria": [
+              "aria-controls",
+              "aria-disabled"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "trigger",
+            "class": "cv-collapsible-trigger"
+          },
+          "content": {
+            "element": "div",
+            "role": "region",
+            "aria": [
+              "aria-labelledby"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "content",
+            "class": "cv-collapsible-content"
+          }
+        }
       }
     },
     "color-picker": {
@@ -1298,6 +1701,85 @@
         "label": "cv-contained-list-label",
         "list": "cv-contained-list-list",
         "root": "cv-contained-list-root"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "data": {
+            "data-kind": [
+              "on-page",
+              "disclosed"
+            ]
+          },
+          "children": [
+            "header",
+            "list"
+          ],
+          "emit": "manual",
+          "class": "cv-contained-list-root"
+        },
+        "parts": {
+          "header": {
+            "element": "div",
+            "children": [
+              "label",
+              "action"
+            ],
+            "local": "header",
+            "class": "cv-contained-list-header"
+          },
+          "label": {
+            "element": "h3",
+            "children": [
+              "$slot"
+            ],
+            "local": "label",
+            "class": "cv-contained-list-label"
+          },
+          "action": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "when": "action",
+            "local": "action",
+            "class": "cv-contained-list-action"
+          },
+          "list": {
+            "element": "ul",
+            "children": [
+              "item"
+            ],
+            "local": "list",
+            "class": "cv-contained-list-list"
+          },
+          "item": {
+            "element": "li",
+            "data": {
+              "data-interactive": [
+                ""
+              ]
+            },
+            "children": [
+              "itemContent"
+            ],
+            "local": "item",
+            "class": "cv-contained-list-item"
+          },
+          "itemContent": {
+            "element": [
+              "div",
+              "a",
+              "button"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "itemContent",
+            "class": "cv-contained-list-itemContent"
+          }
+        }
       }
     },
     "context-menu": {
@@ -2300,6 +2782,11 @@
           "data": {
             "data-disabled": [
               ""
+            ],
+            "data-state": [
+              "default",
+              "disabled",
+              "invalid"
             ]
           },
           "children": [
@@ -2574,6 +3061,65 @@
         "image": "cv-image-image",
         "placeholder": "cv-image-placeholder",
         "wrapper": "cv-image-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "local": "wrapper",
+          "data": {
+            "data-state": [
+              "loading",
+              "loaded",
+              "error"
+            ],
+            "data-radius": [
+              "none",
+              "sm",
+              "md",
+              "lg",
+              "full"
+            ],
+            "data-zoom": "boolean",
+            "data-blurred": "boolean"
+          },
+          "aria": [
+            "aria-label"
+          ],
+          "role": "img",
+          "children": [
+            "placeholder",
+            "fallback",
+            "image"
+          ],
+          "emit": "manual",
+          "class": "cv-image-wrapper"
+        },
+        "parts": {
+          "placeholder": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "when": "state === 'loading'",
+            "local": "placeholder",
+            "class": "cv-image-placeholder"
+          },
+          "fallback": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "when": "state === 'error' && !fallbackSrc",
+            "local": "fallback",
+            "class": "cv-image-fallback"
+          },
+          "image": {
+            "element": "img",
+            "when": "state !== 'error' || fallbackSrc",
+            "local": "image",
+            "class": "cv-image-image"
+          }
+        }
       }
     },
     "indicator": {
@@ -3504,6 +4050,49 @@
         "chevron": "cv-native-select-chevron",
         "root": "cv-native-select-root",
         "select": "cv-native-select-select"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "data-invalid": [
+              ""
+            ]
+          },
+          "children": [
+            "select",
+            "chevron"
+          ],
+          "emit": "manual",
+          "class": "cv-native-select-root"
+        },
+        "parts": {
+          "select": {
+            "element": "select",
+            "aria": [
+              "aria-invalid"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "select",
+            "class": "cv-native-select-select"
+          },
+          "chevron": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "chevron",
+            "class": "cv-native-select-chevron"
+          }
+        }
       }
     },
     "navigation-menu": {
@@ -3531,6 +4120,88 @@
         "icon": "cv-notification-icon",
         "notification": "cv-notification-notification",
         "title": "cv-notification-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "data": {
+            "data-variant": [
+              "info",
+              "success",
+              "warning",
+              "error"
+            ]
+          },
+          "children": [
+            "icon",
+            "body",
+            "dismiss"
+          ],
+          "emit": "manual",
+          "local": "notification",
+          "class": "cv-notification-notification"
+        },
+        "parts": {
+          "icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "icon",
+            "class": "cv-notification-icon"
+          },
+          "body": {
+            "element": "div",
+            "children": [
+              "title",
+              "description",
+              "actions"
+            ],
+            "local": "body",
+            "class": "cv-notification-body"
+          },
+          "title": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "title",
+            "class": "cv-notification-title"
+          },
+          "description": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "when": "description",
+            "local": "description",
+            "class": "cv-notification-description"
+          },
+          "actions": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "when": "actions",
+            "local": "actions",
+            "class": "cv-notification-actions"
+          },
+          "dismiss": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "$text"
+            ],
+            "when": "dismissible || onDismiss",
+            "local": "dismiss",
+            "class": "cv-notification-dismiss"
+          }
+        }
       }
     },
     "number-input": {
@@ -3546,6 +4217,101 @@
         "stepper": "cv-number-input-stepper",
         "steppers": "cv-number-input-steppers",
         "wrapper": "cv-number-input-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-state": [
+              "idle",
+              "focused",
+              "error"
+            ],
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "children": [
+            "label",
+            "field",
+            "error",
+            "hint"
+          ],
+          "emit": "manual",
+          "class": "cv-number-input-wrapper"
+        },
+        "parts": {
+          "label": {
+            "element": "label",
+            "children": [
+              "$text"
+            ],
+            "when": "label",
+            "local": "label",
+            "class": "cv-number-input-label"
+          },
+          "field": {
+            "element": "div",
+            "children": [
+              "input",
+              "steppers"
+            ],
+            "local": "field",
+            "class": "cv-number-input-field"
+          },
+          "input": {
+            "element": "input",
+            "role": "spinbutton",
+            "aria": [
+              "aria-valuenow",
+              "aria-valuemin",
+              "aria-valuemax",
+              "aria-invalid",
+              "aria-describedby",
+              "aria-label"
+            ],
+            "local": "input",
+            "class": "cv-number-input-input"
+          },
+          "steppers": {
+            "element": "div",
+            "children": [
+              "stepper"
+            ],
+            "local": "steppers",
+            "class": "cv-number-input-steppers"
+          },
+          "stepper": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "local": "stepper",
+            "class": "cv-number-input-stepper"
+          },
+          "error": {
+            "element": "span",
+            "role": "alert",
+            "children": [
+              "$text"
+            ],
+            "when": "error",
+            "local": "error",
+            "class": "cv-number-input-error"
+          },
+          "hint": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "when": "!error && hint",
+            "local": "hint",
+            "class": "cv-number-input-hint"
+          }
+        }
       }
     },
     "otp-input": {
@@ -3593,6 +4359,97 @@
         "strength-meter": "cv-password-input-strength-meter",
         "strength-segment": "cv-password-input-strength-segment",
         "wrapper": "cv-password-input-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "data-revealed": [
+              ""
+            ]
+          },
+          "children": [
+            "input-row",
+            "strength-meter"
+          ],
+          "emit": "manual",
+          "class": "cv-password-input-wrapper"
+        },
+        "parts": {
+          "input-row": {
+            "element": "div",
+            "children": [
+              "input",
+              "reveal-btn"
+            ],
+            "local": "input-row",
+            "class": "cv-password-input-input-row"
+          },
+          "input": {
+            "element": "input",
+            "local": "input",
+            "class": "cv-password-input-input"
+          },
+          "reveal-btn": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "reveal-icon"
+            ],
+            "local": "reveal-btn",
+            "class": "cv-password-input-reveal-btn"
+          },
+          "reveal-icon": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "reveal-icon",
+            "class": "cv-password-input-reveal-icon"
+          },
+          "strength-meter": {
+            "element": "div",
+            "role": "meter",
+            "data": {
+              "data-strength": [
+                "weak",
+                "fair",
+                "good",
+                "strong"
+              ]
+            },
+            "aria": [
+              "aria-label",
+              "aria-valuenow",
+              "aria-valuemin",
+              "aria-valuemax"
+            ],
+            "children": [
+              "strength-segment"
+            ],
+            "when": "showStrengthMeter",
+            "local": "strength-meter",
+            "class": "cv-password-input-strength-meter"
+          },
+          "strength-segment": {
+            "element": "div",
+            "data": {
+              "data-filled": [
+                ""
+              ]
+            },
+            "local": "strength-segment",
+            "class": "cv-password-input-strength-segment"
+          }
+        }
       }
     },
     "popover": {
@@ -3902,6 +4759,31 @@
       "classes": {
         "chip": "cv-prompt-suggestions-chip",
         "suggestions": "cv-prompt-suggestions-suggestions"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "suggestions",
+          "role": "group",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "chip"
+          ],
+          "emit": "manual",
+          "class": "cv-prompt-suggestions-suggestions"
+        },
+        "parts": {
+          "chip": {
+            "element": "button",
+            "children": [
+              "$text"
+            ],
+            "local": "chip",
+            "class": "cv-prompt-suggestions-chip"
+          }
+        }
       }
     },
     "prose": {
@@ -4029,6 +4911,67 @@
         "input": "cv-radio-input",
         "label": "cv-radio-label",
         "wrapper": "cv-radio-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "label",
+          "local": "wrapper",
+          "data": {
+            "data-disabled": [
+              ""
+            ]
+          },
+          "children": [
+            "input",
+            "control",
+            "label",
+            "group"
+          ],
+          "emit": "manual",
+          "class": "cv-radio-wrapper"
+        },
+        "parts": {
+          "input": {
+            "element": "input",
+            "aria": [
+              "aria-label"
+            ],
+            "local": "input",
+            "class": "cv-radio-input"
+          },
+          "control": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "control",
+            "class": "cv-radio-control"
+          },
+          "label": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "when": "label",
+            "local": "label",
+            "class": "cv-radio-label"
+          },
+          "group": {
+            "element": "div",
+            "role": "radiogroup",
+            "data": {
+              "data-orientation": [
+                "horizontal",
+                "vertical"
+              ]
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "group",
+            "class": "cv-radio-group"
+          }
+        }
       }
     },
     "radio-card": {
@@ -4043,6 +4986,78 @@
         "group": "cv-radio-card-group",
         "input": "cv-radio-card-input",
         "title": "cv-radio-card-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "group",
+          "role": "radiogroup",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "card"
+          ],
+          "emit": "manual",
+          "class": "cv-radio-card-group"
+        },
+        "parts": {
+          "card": {
+            "element": "label",
+            "data": {
+              "data-disabled": [
+                ""
+              ]
+            },
+            "children": [
+              "input",
+              "glyph",
+              "body"
+            ],
+            "local": "card",
+            "class": "cv-radio-card-card"
+          },
+          "input": {
+            "element": "input",
+            "local": "input",
+            "class": "cv-radio-card-input"
+          },
+          "glyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "when": "!hideIndicator",
+            "local": "glyph",
+            "class": "cv-radio-card-glyph"
+          },
+          "body": {
+            "element": "span",
+            "children": [
+              "title",
+              "description"
+            ],
+            "local": "body",
+            "class": "cv-radio-card-body"
+          },
+          "title": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "local": "title",
+            "class": "cv-radio-card-title"
+          },
+          "description": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "when": "description",
+            "local": "description",
+            "class": "cv-radio-card-description"
+          }
+        }
       }
     },
     "rating-group": {
@@ -4052,6 +5067,43 @@
       "classes": {
         "star": "cv-rating-group-star",
         "wrapper": "cv-rating-group-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "role": "radiogroup",
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "children": [
+            "star"
+          ],
+          "emit": "manual",
+          "class": "cv-rating-group-wrapper"
+        },
+        "parts": {
+          "star": {
+            "element": "button",
+            "role": "radio",
+            "data": {
+              "data-filled": [
+                ""
+              ],
+              "data-value": "number"
+            },
+            "aria": [
+              "aria-checked",
+              "aria-label"
+            ],
+            "local": "star",
+            "class": "cv-rating-group-star"
+          }
+        }
       }
     },
     "reasoning": {
@@ -4064,6 +5116,62 @@
         "indicator": "cv-reasoning-indicator",
         "reasoning": "cv-reasoning-reasoning",
         "trigger": "cv-reasoning-trigger"
+      },
+      "anatomy": {
+        "root": {
+          "element": "details",
+          "data": {
+            "data-streaming": [
+              ""
+            ]
+          },
+          "children": [
+            "trigger",
+            "content"
+          ],
+          "emit": "manual",
+          "local": "reasoning",
+          "class": "cv-reasoning-reasoning"
+        },
+        "parts": {
+          "trigger": {
+            "element": "summary",
+            "children": [
+              "glyph",
+              "$slot",
+              "indicator"
+            ],
+            "local": "trigger",
+            "class": "cv-reasoning-trigger"
+          },
+          "glyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "glyph",
+            "class": "cv-reasoning-glyph"
+          },
+          "indicator": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "indicator",
+            "class": "cv-reasoning-indicator"
+          },
+          "content": {
+            "element": "div",
+            "aria": [
+              "aria-busy"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "local": "content",
+            "class": "cv-reasoning-content"
+          }
+        }
       }
     },
     "relative-time": {
@@ -4157,6 +5265,73 @@
         "input": "cv-search-input",
         "label": "cv-search-label",
         "root": "cv-search-root"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "root",
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "data-state": [
+              "empty",
+              "filled"
+            ]
+          },
+          "children": [
+            "label",
+            "icon",
+            "input",
+            "clear"
+          ],
+          "emit": "manual",
+          "class": "cv-search-root"
+        },
+        "parts": {
+          "label": {
+            "element": "label",
+            "children": [
+              "$text"
+            ],
+            "when": "label",
+            "local": "label",
+            "class": "cv-search-label"
+          },
+          "icon": {
+            "element": "span",
+            "children": [
+              "$slot"
+            ],
+            "local": "icon",
+            "class": "cv-search-icon"
+          },
+          "input": {
+            "element": "input",
+            "aria": [
+              "aria-labelledby",
+              "aria-label",
+              "aria-describedby",
+              "aria-invalid"
+            ],
+            "local": "input",
+            "class": "cv-search-input"
+          },
+          "clear": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "$slot"
+            ],
+            "when": "filled",
+            "local": "clear",
+            "class": "cv-search-clear"
+          }
+        }
       }
     },
     "segmented-control": {
@@ -4477,6 +5652,42 @@
         "label": "cv-slider-label",
         "slider": "cv-slider-slider",
         "wrapper": "cv-slider-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-disabled": [
+              ""
+            ]
+          },
+          "children": [
+            "label",
+            "slider"
+          ],
+          "emit": "auto",
+          "class": "cv-slider-wrapper"
+        },
+        "parts": {
+          "label": {
+            "element": "label",
+            "children": [
+              "$text"
+            ],
+            "when": "label",
+            "local": "label",
+            "class": "cv-slider-label"
+          },
+          "slider": {
+            "element": "input",
+            "aria": [
+              "aria-label"
+            ],
+            "local": "slider",
+            "class": "cv-slider-slider"
+          }
+        }
       }
     },
     "sources": {
@@ -4492,6 +5703,82 @@
         "sources": "cv-sources-sources",
         "summary": "cv-sources-summary",
         "title": "cv-sources-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "details",
+          "local": "sources",
+          "children": [
+            "summary",
+            "list"
+          ],
+          "emit": "manual",
+          "class": "cv-sources-sources"
+        },
+        "parts": {
+          "summary": {
+            "element": "summary",
+            "children": [
+              "$text",
+              "indicator"
+            ],
+            "local": "summary",
+            "class": "cv-sources-summary"
+          },
+          "indicator": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "indicator",
+            "class": "cv-sources-indicator"
+          },
+          "list": {
+            "element": "ol",
+            "children": [
+              "item"
+            ],
+            "local": "list",
+            "class": "cv-sources-list"
+          },
+          "item": {
+            "element": "li",
+            "children": [
+              "title",
+              "host",
+              "description"
+            ],
+            "local": "item",
+            "class": "cv-sources-item"
+          },
+          "title": {
+            "element": [
+              "a",
+              "span"
+            ],
+            "children": [
+              "$text"
+            ],
+            "local": "title",
+            "class": "cv-sources-title"
+          },
+          "host": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "host",
+            "class": "cv-sources-host"
+          },
+          "description": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "description",
+            "class": "cv-sources-description"
+          }
+        }
       }
     },
     "spinner": {
@@ -4500,6 +5787,26 @@
       "alias": "cv-spinner",
       "classes": {
         "spinner": "cv-spinner-spinner"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "data": {
+            "data-size": [
+              "sm",
+              "md",
+              "lg"
+            ]
+          },
+          "role": "status",
+          "aria": [
+            "aria-label"
+          ],
+          "emit": "auto",
+          "local": "spinner",
+          "class": "cv-spinner-spinner"
+        },
+        "parts": {}
       }
     },
     "stack": {
@@ -4685,6 +5992,64 @@
         "label": "cv-steps-label",
         "step": "cv-steps-step",
         "steps": "cv-steps-steps"
+      },
+      "anatomy": {
+        "root": {
+          "element": "ol",
+          "data": {
+            "data-orientation": [
+              "horizontal",
+              "vertical"
+            ]
+          },
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "step"
+          ],
+          "emit": "manual",
+          "local": "steps",
+          "class": "cv-steps-steps"
+        },
+        "parts": {
+          "step": {
+            "element": "li",
+            "data": {
+              "data-state": [
+                "pending",
+                "active",
+                "complete",
+                "error"
+              ]
+            },
+            "aria": [
+              "aria-current"
+            ],
+            "children": [
+              "circle",
+              "label"
+            ],
+            "local": "step",
+            "class": "cv-steps-step"
+          },
+          "circle": {
+            "element": "div",
+            "children": [
+              "$text"
+            ],
+            "local": "circle",
+            "class": "cv-steps-circle"
+          },
+          "label": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "label",
+            "class": "cv-steps-label"
+          }
+        }
       }
     },
     "streaming-text": {
@@ -4709,6 +6074,84 @@
         "list": "cv-structured-list-list",
         "row": "cv-structured-list-row",
         "selectable": "cv-structured-list-selectable"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "list",
+          "aria": [
+            "aria-label"
+          ],
+          "children": [
+            "headerRow",
+            "body"
+          ],
+          "emit": "manual",
+          "class": "cv-structured-list-list",
+          "modifiers": {
+            "selectable": {
+              "class": "cv-structured-list-selectable",
+              "when": "selectable"
+            }
+          }
+        },
+        "parts": {
+          "headerRow": {
+            "element": "div",
+            "children": [
+              "headerCell"
+            ],
+            "when": "headers",
+            "local": "headerRow",
+            "class": "cv-structured-list-headerRow"
+          },
+          "headerCell": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "headerCell",
+            "class": "cv-structured-list-headerCell"
+          },
+          "body": {
+            "element": "div",
+            "children": [
+              "row"
+            ],
+            "local": "body",
+            "class": "cv-structured-list-body"
+          },
+          "row": {
+            "element": "div",
+            "data": {
+              "data-selected": "boolean"
+            },
+            "aria": [
+              "aria-checked",
+              "aria-labelledby"
+            ],
+            "children": [
+              "cell"
+            ],
+            "local": "row",
+            "class": "cv-structured-list-row"
+          },
+          "cell": {
+            "element": "div",
+            "children": [
+              "$slot",
+              "indicator"
+            ],
+            "local": "cell",
+            "class": "cv-structured-list-cell"
+          },
+          "indicator": {
+            "element": "span",
+            "when": "selectable",
+            "local": "indicator",
+            "class": "cv-structured-list-indicator"
+          }
+        }
       }
     },
     "swap": {
@@ -4878,6 +6321,45 @@
       "classes": {
         "dismiss": "cv-tag-dismiss",
         "tag": "cv-tag-tag"
+      },
+      "anatomy": {
+        "root": {
+          "element": "span",
+          "data": {
+            "data-variant": [
+              "default",
+              "info",
+              "success",
+              "warning",
+              "error"
+            ],
+            "data-size": [
+              "sm",
+              "md"
+            ]
+          },
+          "children": [
+            "$slot",
+            "dismiss"
+          ],
+          "emit": "auto",
+          "local": "tag",
+          "class": "cv-tag-tag"
+        },
+        "parts": {
+          "dismiss": {
+            "element": "button",
+            "aria": [
+              "aria-label"
+            ],
+            "children": [
+              "$text"
+            ],
+            "when": "onDismiss",
+            "local": "dismiss",
+            "class": "cv-tag-dismiss"
+          }
+        }
       }
     },
     "tags-input": {
@@ -4950,6 +6432,79 @@
         "label": "cv-textarea-label",
         "textarea": "cv-textarea-textarea",
         "wrapper": "cv-textarea-wrapper"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "wrapper",
+          "data": {
+            "data-state": [
+              "idle",
+              "focused",
+              "error"
+            ],
+            "data-resize": [
+              "none",
+              "vertical",
+              "both"
+            ],
+            "data-autosize": [
+              ""
+            ],
+            "data-ai": [
+              ""
+            ]
+          },
+          "children": [
+            "label",
+            "textarea",
+            "error",
+            "hint"
+          ],
+          "emit": "manual",
+          "class": "cv-textarea-wrapper"
+        },
+        "parts": {
+          "label": {
+            "element": "label",
+            "children": [
+              "$text"
+            ],
+            "when": "label",
+            "local": "label",
+            "class": "cv-textarea-label"
+          },
+          "textarea": {
+            "element": "textarea",
+            "aria": [
+              "aria-multiline",
+              "aria-invalid",
+              "aria-describedby",
+              "aria-label"
+            ],
+            "local": "textarea",
+            "class": "cv-textarea-textarea"
+          },
+          "error": {
+            "element": "span",
+            "role": "alert",
+            "children": [
+              "$text"
+            ],
+            "when": "error",
+            "local": "error",
+            "class": "cv-textarea-error"
+          },
+          "hint": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "when": "!error && hint",
+            "local": "hint",
+            "class": "cv-textarea-hint"
+          }
+        }
       }
     },
     "tile": {
@@ -5248,6 +6803,133 @@
         "section-label": "cv-tool-call-section-label",
         "summary": "cv-tool-call-summary",
         "tool-call": "cv-tool-call-tool-call"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "data": {
+            "data-status": [
+              "pending",
+              "running",
+              "awaiting-approval",
+              "complete",
+              "error",
+              "denied"
+            ]
+          },
+          "children": [
+            "disclosure",
+            "summary",
+            "actions"
+          ],
+          "emit": "manual",
+          "local": "tool-call",
+          "class": "cv-tool-call-tool-call"
+        },
+        "parts": {
+          "disclosure": {
+            "element": "details",
+            "children": [
+              "summary",
+              "body"
+            ],
+            "local": "disclosure",
+            "class": "cv-tool-call-disclosure"
+          },
+          "summary": {
+            "element": [
+              "summary",
+              "div"
+            ],
+            "children": [
+              "glyph",
+              "name",
+              "badge",
+              "indicator"
+            ],
+            "local": "summary",
+            "class": "cv-tool-call-summary"
+          },
+          "glyph": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "glyph",
+            "class": "cv-tool-call-glyph"
+          },
+          "name": {
+            "element": "code",
+            "children": [
+              "$text"
+            ],
+            "local": "name",
+            "class": "cv-tool-call-name"
+          },
+          "badge": {
+            "element": "span",
+            "children": [
+              "$text"
+            ],
+            "local": "badge",
+            "class": "cv-tool-call-badge"
+          },
+          "indicator": {
+            "element": "span",
+            "aria": [
+              "aria-hidden"
+            ],
+            "local": "indicator",
+            "class": "cv-tool-call-indicator"
+          },
+          "body": {
+            "element": "div",
+            "children": [
+              "section"
+            ],
+            "local": "body",
+            "class": "cv-tool-call-body"
+          },
+          "section": {
+            "element": "div",
+            "data": {
+              "data-kind": [
+                "error"
+              ]
+            },
+            "children": [
+              "section-label",
+              "code"
+            ],
+            "local": "section",
+            "class": "cv-tool-call-section"
+          },
+          "section-label": {
+            "element": "div",
+            "children": [
+              "$text"
+            ],
+            "local": "section-label",
+            "class": "cv-tool-call-section-label"
+          },
+          "code": {
+            "element": "pre",
+            "children": [
+              "$text"
+            ],
+            "local": "code",
+            "class": "cv-tool-call-code"
+          },
+          "actions": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "when": "actions",
+            "local": "actions",
+            "class": "cv-tool-call-actions"
+          }
+        }
       }
     },
     "tooltip": {
