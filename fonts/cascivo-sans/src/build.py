@@ -107,12 +107,22 @@ def italicize_raw(contours, p):
     return [transform_contour(c, lambda q: (q[0] + (q[1] - yc) * p.slant, q[1])) for c in contours]
 
 
+# Round 5 (2), the upright Bold's rhythm and width ramp: the arched and round letters take BOLD_OPEN_SB of a stem sidebearing more a
+# side at Bold, the straight i j t less (the h (1 - h) term is nothing at Regular and Black). Bold set n m h u o b d p q 2-8 units
+# narrower than Regular (Inter's +14 to +37), so a line rich in them grew +1.2% at 700 and +4.5% at 800, a knee the eye reads on the
+# weight axis, and its n gap over counter was 0.55 (Inter's 0.62). Now +1.6% at 700 and 0.586: the rhythm test's 0.59 ceiling at 700
+# and the +2% cap at 600 ('Overview Activity...', 1.99%, which carries more i and t) hold it there.
+BOLD_OPEN_SB = {**{n: 0.3 for n in 'nhmuobdpq'}, **{n: -0.15 for n in ('dotlessi', 'dotlessj', 't')}}
+
+
 def draw_master(p):
     o = Out(p)
     for name in GL.ORDER:
         cps, fn = GL.GLYPHS[name]
         g = GL.G(p)
         fn(g, p)
+        if not p.italic and name in BOLD_OPEN_SB:  # Bold only: the h (1 - h) term is nothing at Regular and Black
+            g.sb = tuple(sb + BOLD_OPEN_SB[name] * p.heavy * (1 - p.heavy) for sb in g.sb)
         cs = []
         for s in g.strokes:
             cs += expand(s, p.V, p.H)
@@ -141,11 +151,14 @@ def draw_master(p):
             unit = p.Sc if is_cap(name) else p.S
             l, r = g.sb[0] * unit, g.sb[1] * unit
             dx = l - xmin
-            if p.heavy:
+            if p.heavy or (p.wght == 100 and not p.italic):
+                # Thin upright too, a quarter unit over (round 5): its tighter sidebearings (THIN_OPEN_UPRIGHT) left the dots' edges on
+                # half units, so the 53.6-unit dot rounded to 53 at Thin and 49 at Thin Display (test_dots_survive_thin asks 50), and
+                # u's and mu's bowls a unit apart at 250 (55 px, test_eng_and_mu_share_the_arch_of_n_and_u asks 24): 54, 50 and 20 now.
                 # A whole unit, so the heavy outlines round the same way whatever the spacing: a counter tip a few units
                 # long moved by 6 degrees with the fraction. The italic's half unit over is the phase its s tip was fitted
                 # at (27.3 / 35.8 / 47.8 / 58.4 at 750-900); the upright's ae tip would read 30.3 against 28.6 at 800 there.
-                dx = round(dx) + (0.5 if p.italic else 0)
+                dx = round(dx) + (0.5 if p.italic else 0 if p.heavy else 0.25)
             adv = l + (xmax - xmin) + r
         cs = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in (italic_cs if italic_cs is not None else cs)]
         o.contours[name] = cs
@@ -271,9 +284,11 @@ def add_composites(o):
 
     # i and j are dotless + dot so every accent on them is consistent
     # (the i and j dots keep their own height: the dot accent's lift is for ż, ė, ċ)
+    # Round 5, upright 3: the Caption master lifts them I_DOT_CAP8 units (the dot's size is P.dot's): 68 units over the stem read as one
+    # mark with it at 11 px, DPR 1 ("Settings" at 300 and 400), where Inter keeps 89-101. opsz 11 carries half of it (88 units).
     def dot_ij(base):
         m, bx, by, a = at(base, 'dotaccentcomb', 'top')
-        return (m, bx, by - GL.lift_dots(p), a)
+        return (m, bx, by - GL.lift_dots(p) + (GL.I_DOT_CAP8 * GL.caption(p) if not p.italic else 0), a)
 
     comp('i', [('dotlessi', 0, 0, 1), dot_ij('dotlessi')], o.adv['dotlessi'], ord('i'))
     comp('j', [('dotlessj', 0, 0, 1), dot_ij('dotlessj')], o.adv['dotlessj'], ord('j'))
@@ -324,8 +339,14 @@ def add_composites(o):
 
     S = p.S
     ov = lambda name: o.adv[name]  # noqa: E731
-    comp('colon', [('period', 0, 0, 1), ('period', 0, p.xh - p.dot, 1)], ov('period'), ord(':'))
-    comp('semicolon', [('comma', 0, 0, 1), ('period', 0, p.xh - p.dot, 1)], ov('comma'), ord(';'))
+    pd = GL.period_dot(p)
+    comp('colon', [('period', 0, 0, 1), ('period', 0, p.xh - pd, 1)], ov('period'), ord(':'))
+    # the semicolon's dot stands over the comma's head (its flat top), not at the period's place: the comma's tail swings left of
+    # its head, so the dot sat 25 units left of it at Regular (40 after round 5's longer swing)
+    ctop = max(q[1] for c in o.contours['comma'] for sg in c for q in sg[1:])
+    head = [q[0] for c in o.contours['comma'] for sg in c for q in sg[1:] if q[1] > ctop - 0.5]
+    pb = o.bounds['period']
+    comp('semicolon', [('comma', 0, 0, 1), ('period', (min(head) + max(head)) / 2 - (pb[0] + pb[2]) / 2, p.xh - pd, 1)], ov('comma'), ord(';'))
     comp('exclamdown', [('exclam', ov('exclam'), p.xh, -1)], ov('exclam'), 0xA1)
     comp('questiondown', [('question', ov('question'), p.xh + 10, -1)], ov('question'), 0xBF)
     d = p.dot
@@ -527,7 +548,7 @@ def add_composites(o):
     comp('tonos', [('tonoscomb', tw / 2, p.xh + 68, 1)], tw, 0x384)
     _spacing_group(o, comp, 'dieresistonos', ['dieresiscomb', 'tonoscomb'], 0x385)
     # ano teleia: the colon's upper dot, at the x-height as in Inter and Plex (· sat mid-height)
-    comp('anoteleia', [('period', 0, p.xh - p.dot, 1)], o.adv['period'], 0x387)
+    comp('anoteleia', [('period', 0, p.xh - GL.period_dot(p), 1)], o.adv['period'], 0x387)
 
     add_polytonic(o, comp, at, tw)
 

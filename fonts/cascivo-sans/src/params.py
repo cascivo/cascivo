@@ -41,6 +41,7 @@ WGHT_MAP = _wght_map()
 
 DOT_MIN_EM = 0.05  # the smallest dot (period, colon, i dot, ...) at wght 100, in em
 DOT_FLOOR = DOT_MIN_EM * 1000 + 3 * 1.12 * 1.06  # units; see P.dot
+DISPLAY_FACE = 20.0
 ITALIC_ANGLE = 10  # degrees; Plex and Inter italics sit near 10-11
 
 MASTERS = [
@@ -95,6 +96,10 @@ CH_BLACK_ITALIC = 305
 #   and x z 0.80x (Inter's 0.97x, 0.94x, 0.91x).
 DIAG_TRIM = 45
 THIN_OPEN = 0.30  # share of the stem sidebearing Thin opens by, see P.__init__; 0.30 is held by the italic mixed-case line at Thin (-2.7% at 0.23), which the reflow test covers
+# The upright's (round 5): at 0.30 Thin's n sidebearing was 93 units at opsz 14 and 89 at Display sizes (Inter 97 and, at its opsz 32, 65), and
+# nnn, HHH and a text line at 100 set looser than Inter's on the proof sheets. 0.235 puts n's at 89 (quality.py's floor is 0.9 x Inter's 97)
+# and the tightest reflow string at 100 at -1.7% of Regular's (the gate's floor is -2%).
+THIN_OPEN_UPRIGHT = 0.235
 
 
 class P:
@@ -117,6 +122,10 @@ class P:
             xh -= 10
             spacing, counter, k, aperture = 0.92, 0.97, 0.60, -5.0  # 0.92 (round 3; it was 0.88, and Black at opsz 32 to 48 set ns, st, rg, ef a few units apart). The earlier floor still holds: Display's tightening and Black's (HEAVY_TIGHTEN) add up at 900/48, and any tighter leaves the round pairs (OO oo ss SS) under their 12-unit floor and the italic GO overlapping
         self.V = V
+        # Round 5, upright 3: degrees the Display master turns the c, e (and æ) and g terminals' faces toward flat (geom.Stroke turn). Inter's
+        # opsz 32 cuts them on the horizontal; ours stayed square to the stroke, and at 900 / 48, Black's near-flat faces plus the Display delta,
+        # the e and c apertures read as slanted slits beside Inter Black (faces 8-10 deg; 0-2 now, Regular Display's 0-9). The italic keeps its own.
+        self.face = DISPLAY_FACE if opsz == 48 and not italic else 0.0
         self.H = V * contrast
         # crossbars (e, A, H...) thin faster than bowls as weight rises, or heavy counters close
         self.bar = self.H * (1 - 0.22 * self.heavy)
@@ -143,7 +152,7 @@ class P:
         # add up, the full amount closed lz, YT and xt.)
         # Thin's hairline stems left it 25% tighter than Inter's Thin (n sidebearing 72 against 97), so the
         # white opens as the weight falls below Regular; Regular and heavier are unchanged.
-        self.opened = opened = 1 + THIN_OPEN * max(0.0, (400 - wght) / 300)  # 1 from Regular up
+        self.opened = opened = 1 + (THIN_OPEN if italic else THIN_OPEN_UPRIGHT) * max(0.0, (400 - wght) / 300)  # 1 from Regular up
         self.S *= opened
         self.S *= (0.97 - 0.04 * self.heavy) if italic else (0.91 + 0.04 * self.heavy)
         self.Sfig = self.S  # figures and math signs keep their ink: their advance is fixed, so a tighter S would widen them

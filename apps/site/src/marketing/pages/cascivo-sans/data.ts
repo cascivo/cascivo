@@ -11,6 +11,15 @@ export interface FontFile {
 
 const BUILD = 'fonts/cascivo-sans/fonts/'
 
+/** OFL reference faces for the compare switch, self-hosted under /fonts/compare/ and loaded
+ *  only once a visitor turns the switch on (font.css). Named here so the landing budget can
+ *  sanction them by exact name. */
+export const COMPARE_FONT_FILES = [
+  'inter-latin-wght-normal.woff2',
+  'geist-latin-wght-normal.woff2',
+  'ibm-plex-sans-latin-wght-normal.woff2',
+] as const
+
 export const FONT_FILES: readonly FontFile[] = [
   {
     name: 'CascivoSans-Latin[opsz,wght].woff2',
