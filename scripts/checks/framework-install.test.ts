@@ -261,7 +261,11 @@ function unstyledClasses(app: string): { page: string; used: number; unmatched: 
   for (const file of walk(dist).filter((f) => f.endsWith('.html'))) {
     const html = readFileSync(file, 'utf8')
     const used = [
-      ...new Set([...html.matchAll(/\b(_[a-zA-Z][\w-]*_[a-z0-9]{5,}_\d+)\b/g)].map((m) => m[1]!)),
+      ...new Set(
+        [...html.matchAll(/\bclass="([^"]*)"/g)]
+          .flatMap((m) => m[1]!.split(/\s+/))
+          .filter((c) => /^cv-[a-z0-9]+(-[\w-]+)+$/.test(c)),
+      ),
     ]
     const linked = [...html.matchAll(/href="([^"]+\.css)"/g)].map((m) => m[1]!)
     const css = linked
@@ -772,7 +776,7 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
       // The shell composition the scaffold ships must be styled.
       assert.match(
         css,
-        /\._shell_[a-z0-9]+_\d+/,
+        /\.cv-app-shell-shell\b/,
         'AppShell CSS is missing from the built stylesheet — the scaffold renders unstyled.',
       )
       // The whole point of the per-component path: NOT the ~308 KB aggregate.
@@ -910,7 +914,7 @@ describe('framework-install — a scaffolded app renders styled from packed tarb
         .filter((f) => f.endsWith('.css'))
         .map((f) => readFileSync(join(assets, f), 'utf8'))
         .join('\n')
-      assert.match(css, /\._shell_[a-z0-9]+_\d+/, 'AppShell CSS is missing from the client build.')
+      assert.match(css, /\.cv-app-shell-shell\b/, 'AppShell CSS is missing from the client build.')
       const worker = workerEntry()
       assert.ok(worker && existsSync(worker), 'vite build emitted no Worker bundle.')
     })
