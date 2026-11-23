@@ -196,88 +196,60 @@ Everything else is Phase 4.
 
 ## Testing
 
-- **Rust integration** (`tower::ServiceExt::oneshot`, already a dev-dependency):
-  - full page vs `HX-Request` fragment;
-  - fragment equals the page subtree (normalised, reusing the parity normaliser);
-  - OOB present;
-  - 422 re-render keeps the values and shows the errors;
-  - 303 vs `HX-Location`;
-  - CSRF missing, wrong or cross-origin → 403;
-  - session rotate on login;
-  - a tampered island MAC → 400;
-  - SSE framing (`event:`/`data:` lines; Datastar format);
-  - `LocalPath` rejects `//evil`, `https:`, `\\`.
-- **Conformance suite** (TS, black-box HTTP + Playwright): one suite runs against three targets:
-  native `cargo run`, `wrangler dev` (Miniflare with KV/D1 locally) and the container image. A
-  target that is not in CI must say so.
-- **Playwright flows on the starter**:
-  - create, edit and delete with a validation error;
-  - JS disabled (full-page PRG);
-  - history back/forward with `hx-push-url`;
-  - after a swap, the dialog returns focus and the toast is announced (`aria-live` text asserted);
-  - element state survives an idiomorph morph;
-  - a Solid island mounts, emits `cv-value-change` and submits with the form;
-  - the server island loads.
-- **A11y**: axe WCAG 2.2 AA on every state, not only on first load: after a swap, with the
-  dialog open, with an error, with a toast. Also: keyboard APG suites for new elements, the
-  320/360/390/414 overflow and ≥ 44 px touch sweep, reduced motion, forced colors.
-- **Budgets in CI**:
-  - element ≤ 3 KB gz;
-  - cascivo page JS ≤ 15 KB gz, without htmx (counted separately, see Risks);
-  - Solid island ≤ 10 KB gz;
-  - Worker wasm ≤ 3 MB gz (`wasm-opt -Oz`).
-- **Gates**:
-  - `cargo clippy --all-features -D warnings`;
-  - `cargo build -p cascivo-worker --target wasm32-unknown-unknown`;
-  - `cargo test --workspace`;
-  - `pnpm ready` (elements, solid);
-  - `isolated:check`/`pack:check` if a package is published.
+- **Rust integration** (`tower::ServiceExt::oneshot`, already a dev-dependency): full page vs
+  `HX-Request` fragment; the fragment equals the page subtree (normalised with the parity
+  normaliser); OOB present; 422 re-render keeps values and shows errors; 303 vs `HX-Location`;
+  CSRF missing, wrong or cross-origin → 403; session id rotates on login; tampered island MAC →
+  400; SSE framing (htmx and Datastar); `LocalPath` rejects `//evil`, `https:`, `\\`.
+- **Conformance suite** (TS, black-box HTTP + Playwright), run against three targets: native
+  `cargo run`, `wrangler dev` (Miniflare with local KV/D1) and the container image. A target not
+  run in CI must say so.
+- **Playwright flows on the starter:** create, edit and delete with a validation error; JS
+  disabled (full-page POST/redirect/GET); history back/forward with `hx-push-url`; after a swap
+  the dialog returns focus and the toast is announced (`aria-live` text asserted); element state
+  survives an idiomorph morph; a Solid island mounts, emits `cv-value-change` and submits with
+  the form; the server island loads.
+- **A11y** in every state, not only on first load (after a swap, dialog open, error, toast): axe
+  WCAG 2.2 AA, APG keyboard suites for new elements, the 320/360/390/414 overflow and ≥ 44 px
+  touch sweep, reduced motion, forced colors.
+- **Budgets in CI:** element ≤ 3 KB gz; cascivo page JS ≤ 15 KB gz without htmx (counted
+  separately, see Risks); Solid island ≤ 10 KB gz; Worker wasm ≤ 3 MB gz after `wasm-opt -Oz`.
+- **Gates:** `cargo clippy --all-features -D warnings`, `cargo build -p cascivo-worker --target
+  wasm32-unknown-unknown`, `cargo test --workspace`, `pnpm ready` (elements, solid), and
+  `isolated:check`/`pack:check` for a published package.
 
 ## Security
 
-- **Escaping.** minijinja autoescape is forced on for every template (do not rely on the
-  extension). Add a test that `{{ "<x>" }}` escapes inside `.html`, `.cv` and blocks, and a
-  lint that lists every `|safe` use.
-- **CSRF.**
-  - A synchronizer token in the session goes in the hidden field and in the `X-CSRF-Token`
-    header (`hx-headers` on `<body>`).
-  - Also check `Sec-Fetch-Site`/`Origin` on unsafe methods.
-  - `SameSite=Lax` is defence in depth only.
-- **Sessions.**
-  - Cookie: `__Host-` prefix, `HttpOnly; Secure; SameSite=Lax; Path=/`.
-  - The id is rotated on login and privilege change.
-  - Idle and absolute TTLs.
-  - Key rotation (list of keys).
-  - Logout deletes the session on the server.
-- **Auth.** Hooks only. The crate does not ship password storage. The starter shows an OAuth
-  (or Cloudflare Access) hook. Argon2 on Workers is slow and memory-capped (see Open questions).
-  Responses with `Vary: HX-Request` and `Cache-Control: private` for authed pages.
-- **Untrusted htmx headers.** `HX-Target`/`HX-Trigger` never choose a block. Handlers name
-  blocks statically. `HX-Current-URL` is informational only.
-- **CSP.**
-  - Strict, with a per-request nonce: `script-src 'nonce-…' 'strict-dynamic'`, no
-    `unsafe-eval`.
-  - htmx: `allowEval=false`, `includeIndicatorStyles=false`, no `hx-on`/`hx-vals="js:"`.
-  - Datastar expressions need `unsafe-eval`. The guide states this, and its starter variant
-    ships a weaker CSP that the guide flags.
-- **Vendored scripts.** htmx/idiomorph/Datastar are pinned, self-hosted and hashed. No CDN.
-- **Input.**
-  - Body size limits (form 64 KB, multipart configurable).
-  - Typed serde parsing, then `Validate`.
-  - R2 uploads: size and type limits, server-generated keys, `Content-Disposition: attachment`
-    for user files.
-- **Open redirects.** Only `LocalPath` for `next`/redirects.
-- **Server islands and SSE.**
-  - Props are HMAC-signed with a TTL.
-  - Topics are allowlisted.
-  - SSE needs a session when the page does.
-  - A connection cap per session (`Hub`).
-- **Headers.** HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `frame-ancestors 'none'`,
+- **Escaping:** force minijinja autoescape on for every template (do not rely on the file
+  extension). Test that `{{ "<x>" }}` escapes in `.html`, `.cv` and blocks; a lint lists every
+  `|safe`.
+- **CSRF:** a synchronizer token in the session, sent as a hidden field and as `X-CSRF-Token`
+  (`hx-headers` on `<body>`), plus a `Sec-Fetch-Site`/`Origin` check on unsafe methods.
+  `SameSite=Lax` is defence in depth only.
+- **Sessions:** `__Host-` cookie, `HttpOnly; Secure; SameSite=Lax; Path=/`; id rotated on login
+  and privilege change; idle and absolute TTLs; a key list for rotation; logout deletes the
+  server record.
+- **Auth:** hooks only; no password storage in the crate. The starter shows an OAuth (or
+  Cloudflare Access) hook; Argon2 on Workers is slow and memory-capped. Authed pages send
+  `Vary: HX-Request` and `Cache-Control: private`.
+- **Untrusted htmx headers:** `HX-Target`/`HX-Trigger` never choose a block (handlers name blocks
+  statically); `HX-Current-URL` is informational only.
+- **CSP:** strict with a per-request nonce (`script-src 'nonce-…' 'strict-dynamic'`, no
+  `unsafe-eval`); htmx with `allowEval=false`, `includeIndicatorStyles=false`, no `hx-on` or
+  `hx-vals="js:"`. Datastar expressions need `unsafe-eval`: its guide and starter variant say so
+  and ship the weaker CSP knowingly.
+- **Vendored scripts:** htmx, idiomorph and Datastar pinned, self-hosted, hashed; no CDN.
+- **Input:** body limits (form 64 KB, multipart configurable); typed serde parsing, then
+  `Validate`. R2 uploads: size and type limits, server-generated keys,
+  `Content-Disposition: attachment` for user files. Redirects and `next` only via `LocalPath`.
+- **Server islands and SSE:** props HMAC-signed with a TTL; topics allowlisted; SSE needs a
+  session when the page does; connection cap per session in `Hub`.
+- **Headers:** HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `frame-ancestors 'none'`,
   `Permissions-Policy`.
-- **Secrets.** `APP_SECRET` comes from env or a wrangler secret. The starter refuses to start in
-  release without it. Secrets never go in `site.toml`.
-- **Review.** A `security-review` pass on `cascivo-server` before the checkpoint. Add
-  `cargo-deny` (advisories, licenses) for the new crates.
+- **Secrets:** `APP_SECRET` from env or a wrangler secret; the starter refuses to start in release
+  without it; never in `site.toml`.
+- **Review:** a `security-review` pass on `cascivo-server` before the checkpoint; `cargo-deny`
+  (advisories, licenses) for the new crates.
 
 ## Workstreams (child sessions) and order
 
