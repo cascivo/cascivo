@@ -100,6 +100,16 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('code', { children: 'text' }),
   e('kbd', { children: 'text' }),
   e('link', { children: 'text', args: [a('href', 'str', true)] }),
+  // display units (contract E1, batch b)
+  e('label', {
+    children: 'text',
+    extraProps: [
+      { name: 'htmlFor', type: 'string', summary: 'Id of the form control this label names' },
+    ],
+  }),
+  e('status', { children: 'text' }),
+  e('user', { args: [a('name', 'str', true)], css: ['user', 'avatar'] }),
+  e('item', { children: 'nodes' }),
   e('button', {
     children: 'text',
     // React reaches a link-styled button through `asChild`; in `.cv` it is one prop.
@@ -115,6 +125,7 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('meter', { args: [a('value', 'num', true)] }),
   e('skeleton'),
   e('spinner'),
+  e('inline-loading', { css: ['inline-loading', 'spinner'] }),
   // navigation / disclosure
   e('breadcrumb', { args: [a('items', 'rows', true)] }),
   e('steps', { args: [a('items', 'rows', true)] }),

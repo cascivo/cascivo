@@ -435,19 +435,19 @@ fn initials_from(name: &str) -> Option<String> {
     (!s.is_empty()).then_some(s)
 }
 
-struct AvatarView<'a> {
-    src: &'a str,
-    alt: &'a str,
-    name: &'a str,
-    fallback: Option<&'a str>,
-    size: &'a str,
-    status: Option<&'a str>,
-    class: &'a str,
+pub(super) struct AvatarView<'a> {
+    pub(super) src: &'a str,
+    pub(super) alt: &'a str,
+    pub(super) name: &'a str,
+    pub(super) fallback: Option<&'a str>,
+    pub(super) size: &'a str,
+    pub(super) status: Option<&'a str>,
+    pub(super) class: &'a str,
     /// Replaces the computed `aria-label` (the +N chip passes its own).
-    aria_label: Option<&'a str>,
+    pub(super) aria_label: Option<&'a str>,
 }
 
-fn avatar_view(out: &mut String, v: &AvatarView) {
+pub(super) fn avatar_view(out: &mut String, v: &AvatarView) {
     let show_image = !v.src.is_empty();
     let fallback_text = v
         .fallback

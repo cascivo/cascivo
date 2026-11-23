@@ -7,6 +7,7 @@ use crate::render::Cx;
 mod auto_gen;
 pub mod chart;
 mod display;
+mod e1_b;
 mod embed;
 mod feedback;
 mod layout;
@@ -30,6 +31,7 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         | "timeline" | "empty-state" | "blockquote" | "code" | "kbd" | "link" => {
             display::emit(node, cx, out);
         }
+        "label" | "status" | "user" | "item" | "inline-loading" => e1_b::emit(node, cx, out),
         "alert" | "notification" | "progress-bar" | "progress-circle" | "meter" | "skeleton"
         | "spinner" => feedback::emit(node, cx, out),
         "breadcrumb" | "steps" | "accordion" | "collapsible" | "tabs" | "table" => {
