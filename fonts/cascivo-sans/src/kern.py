@@ -85,6 +85,12 @@ STRONG = {(a, b): (reach, more, gain, limit) for lefts, rights, reach, more, gai
 WHITE_DEPTH, WHITE_BAND, WHITE_LEAST = 400, (0.85, 1.1), 0.75
 AIM_BAND, AIM_LEAST = (0.88, 1.06), 0.78
 AIM_OWN = {('f', 't'): (0.88, 1.09)}
+# Round 5, upright f) at 800-900: its closest row is the hook (35 units at Black, 0.95x Inter's 37), and at the band's mean the pair read
+# as touching. Its closest row aims at AIM_LEAST_OWN of Inter's and its mean may run to AIM_OWN_UPRIGHT's ceiling (under test_font's
+# WHITE_BAND_SHAPE: 1.17 at 800, 1.26 at 900), so the kerning closes the hole under the crossbar only as far as the hook allows:
+# Black's f) kerns -34 (it was -46), the hook 47 units clear (mean white 1.16x Inter's), 800's 53 (1.14x).
+AIM_OWN_UPRIGHT = {('f', 'parenright'): (0.88, 1.17)}
+AIM_LEAST_OWN = {('f', 'parenright'): 1.15}
 WHITE_REF = {
     'upright': {
         'Wa': {100: (275, 131), 200: (259, 127)},
@@ -578,7 +584,14 @@ def _design(w):
     raise ValueError(w)
 
 
-def _clamp_white(refs, value, mean0, least0, share, aim=AIM_BAND):
+def _aim(pair, italic):
+    """(mean band, closest-row aim) a WHITE_REF pair is fitted to."""
+    if not italic and pair in AIM_OWN_UPRIGHT:
+        return AIM_OWN_UPRIGHT[pair], AIM_LEAST_OWN.get(pair, AIM_LEAST)
+    return AIM_OWN.get(pair, AIM_BAND), AIM_LEAST
+
+
+def _clamp_white(refs, value, mean0, least0, share, aim=AIM_BAND, least_aim=AIM_LEAST):
     """The value nearest `value` that puts the white inside AIM_BAND of Inter's at the weights `share` reads, and its closest row over AIM_LEAST.
     share(w) is None for a weight this master does not carry, else (this master's share of it, the other master's mean and least, kerned)."""
     def bounds(band, least_aim):
@@ -592,7 +605,7 @@ def _clamp_white(refs, value, mean0, least0, share, aim=AIM_BAND):
             hi = min(hi, (band[1] * i_mean - base_mean) / f - mean0)
         return lo, hi
 
-    aim_lo, aim_hi = lo, hi = bounds(aim, AIM_LEAST)
+    aim_lo, aim_hi = lo, hi = bounds(aim, least_aim)
     if lo > hi:  # a pair whose closest row and whose mean pull apart at two weights: the margins go before the band does
         lo, hi = bounds(WHITE_BAND, WHITE_LEAST + 0.01)
     if lo > hi:  # and when they still do, the shapes decide (f) at Black: its hook is the nearest ink and the hole under the bar stays): the closest row wins
@@ -626,7 +639,7 @@ def _fit_white(o, vals, loc):
             m4, l4, v4 = _WHITE0[(a, b), 400]
             return f, (1 - f) * (m4 + v4), (1 - f) * (l4 + v4)
 
-        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, AIM_OWN.get((a, b), AIM_BAND))
+        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, *_aim((a, b), o.p.italic))
         _WHITE0[(a, b), w0] = (mean0, least0, vals[(a, b)])
     _FIT_O[w0] = o
     for (a, b), by in FIT_HH.items():
@@ -685,7 +698,7 @@ def _fit_white_bold(o, vals):
             mean_d, least_d = _white0(_Between(other, o, f, (a, b)), a, b)
             return f, mean_d + (1 - f) * v_other - f * mean0, least_d + (1 - f) * v_other - f * least0
 
-        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, AIM_OWN.get((a, b), AIM_BAND))
+        vals[(a, b)] = _clamp_white(refs, vals[(a, b)], mean0, least0, share, *_aim((a, b), o.p.italic))
 
 
 def _values(o, pairs):

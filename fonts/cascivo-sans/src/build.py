@@ -141,11 +141,14 @@ def draw_master(p):
             unit = p.Sc if is_cap(name) else p.S
             l, r = g.sb[0] * unit, g.sb[1] * unit
             dx = l - xmin
-            if p.heavy:
+            if p.heavy or (p.wght == 100 and not p.italic):
+                # Thin upright too, a quarter unit over (round 5): its tighter sidebearings (THIN_OPEN_UPRIGHT) left the dots' edges on
+                # half units, so the 53.6-unit dot rounded to 53 at Thin and 49 at Thin Display (test_dots_survive_thin asks 50), and
+                # u's and mu's bowls a unit apart at 250 (55 px, test_eng_and_mu_share_the_arch_of_n_and_u asks 24): 54, 50 and 20 now.
                 # A whole unit, so the heavy outlines round the same way whatever the spacing: a counter tip a few units
                 # long moved by 6 degrees with the fraction. The italic's half unit over is the phase its s tip was fitted
                 # at (27.3 / 35.8 / 47.8 / 58.4 at 750-900); the upright's ae tip would read 30.3 against 28.6 at 800 there.
-                dx = round(dx) + (0.5 if p.italic else 0)
+                dx = round(dx) + (0.5 if p.italic else 0 if p.heavy else 0.25)
             adv = l + (xmax - xmin) + r
         cs = [transform_contour(c, lambda q, dx=dx: (q[0] + dx, q[1])) for c in (italic_cs if italic_cs is not None else cs)]
         o.contours[name] = cs
@@ -324,8 +327,14 @@ def add_composites(o):
 
     S = p.S
     ov = lambda name: o.adv[name]  # noqa: E731
-    comp('colon', [('period', 0, 0, 1), ('period', 0, p.xh - p.dot, 1)], ov('period'), ord(':'))
-    comp('semicolon', [('comma', 0, 0, 1), ('period', 0, p.xh - p.dot, 1)], ov('comma'), ord(';'))
+    pd = GL.period_dot(p)
+    comp('colon', [('period', 0, 0, 1), ('period', 0, p.xh - pd, 1)], ov('period'), ord(':'))
+    # the semicolon's dot stands over the comma's head (its flat top), not at the period's place: the comma's tail swings left of
+    # its head, so the dot sat 25 units left of it at Regular (40 after round 5's longer swing)
+    ctop = max(q[1] for c in o.contours['comma'] for sg in c for q in sg[1:])
+    head = [q[0] for c in o.contours['comma'] for sg in c for q in sg[1:] if q[1] > ctop - 0.5]
+    pb = o.bounds['period']
+    comp('semicolon', [('comma', 0, 0, 1), ('period', (min(head) + max(head)) / 2 - (pb[0] + pb[2]) / 2, p.xh - pd, 1)], ov('comma'), ord(';'))
     comp('exclamdown', [('exclam', ov('exclam'), p.xh, -1)], ov('exclam'), 0xA1)
     comp('questiondown', [('question', ov('question'), p.xh + 10, -1)], ov('question'), 0xBF)
     d = p.dot
@@ -527,7 +536,7 @@ def add_composites(o):
     comp('tonos', [('tonoscomb', tw / 2, p.xh + 68, 1)], tw, 0x384)
     _spacing_group(o, comp, 'dieresistonos', ['dieresiscomb', 'tonoscomb'], 0x385)
     # ano teleia: the colon's upper dot, at the x-height as in Inter and Plex (· sat mid-height)
-    comp('anoteleia', [('period', 0, p.xh - p.dot, 1)], o.adv['period'], 0x387)
+    comp('anoteleia', [('period', 0, p.xh - GL.period_dot(p), 1)], o.adv['period'], 0x387)
 
     add_polytonic(o, comp, at, tw)
 

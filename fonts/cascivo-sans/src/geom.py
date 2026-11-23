@@ -528,7 +528,10 @@ def expand(stroke, V, H):
     contour.append(end_cap)
     contour += [reverse_seg(s) for s in reversed(right)]
     contour.append(start_cap)
-    return [orient(contour, outer=True)]
+    out = [orient(contour, outer=True)]
+    # a glyph may adjust its own expanded outline (glyphs._l): set on the drawn stroke only, so a transformed copy (the italic's) has none
+    post = getattr(stroke, 'post', None)
+    return post(out) if post else out
 
 
 def _area(contour):
