@@ -10,7 +10,7 @@ export const meta: ComponentMeta = {
     root: {
       element: 'blockquote',
       children: ['$slot', 'footer'],
-      emit: 'auto',
+      emit: 'manual',
     },
     parts: {
       footer: { element: 'footer', children: ['$text'], when: 'cite' },

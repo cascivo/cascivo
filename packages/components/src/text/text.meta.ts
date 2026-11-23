@@ -15,7 +15,7 @@ export const meta: ComponentMeta = {
         'data-muted': 'boolean',
       },
       children: ['$slot'],
-      emit: 'auto',
+      emit: 'manual',
     },
   },
   states: [],

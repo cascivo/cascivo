@@ -15,7 +15,7 @@ export const meta: ComponentMeta = {
       data: { 'data-size': ['sm', 'md', 'lg'] },
       role: 'status',
       aria: ['aria-label'],
-      emit: 'auto',
+      emit: 'manual',
     },
   },
   states: [],

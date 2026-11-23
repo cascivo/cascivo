@@ -27,3 +27,30 @@ Flash{kind, message}; Bundle{format, config, templates, messages, vite_manifest,
 
 ## Phase 3 X1 (merged): checkpoint α passes
 0.46 MB gz wasm; cold start p50 49.5 ms (marginal, local wrangler); warm 4.9 ms. Workers for F, Containers second; re-measure cold start on a real workers.dev deploy early in F. `!Send` binding handlers untested. Details `phase-3-x1-results.md`.
+
+## Phase 1 WS-2 C1/C2/C3 (merged)
+Anatomy: C1 43 static, C2 26 (P′ + native), C3 56 behaviour (parts only). Some TSX ↔ meta state
+mismatches stay open (see each branch's last commit message). On merge, `blockquote`,
+`empty-state`, `spinner` and `text` were switched from `emit:'auto'` to `'manual'`: WS-3's generator
+cannot auto-emit them.
+
+## Phase 1 WS-3 (merged)
+- `crates/cascivo-html/src/contract_gen.rs`: per unit class consts, `ROOT`/`ALIAS`, `data-*` value
+  enums. `tests/contract.rs` fails on any `"cv-` literal in `src/emit` (G4).
+- `emit/auto_gen.rs` from `emit:'auto'`. Auto only when parts need no `aria-*` beyond
+  `aria-busy`/`aria-hidden` and `when` is `'p'`/`'!p'`; else `regen` errors. Conventions at the top
+  of `scripts/html-kit/gen-contract.ts`.
+- `@unit` children need a hand-written fn in `emit/embed.rs` (only `spinner` exists); the unit must
+  be in `cv-spec.ts` or no emitter is generated. Manual emitters use `crate::contract::<unit>::*`.
+
+## Phase 3 B1 (merged): `crates/cascivo-server` (`publish = false`)
+- `App::new(engine).with_state(s).routes(Router<S>).security_headers(Headers).toaster(tpl, block)
+  .into_router()`, `.serve(addr)` (`native`).
+- `View::page(tpl)` `.ctx` `.fragment(block)` `.oob(tpl, block, ctx)` `.toast(ToastKind, key)`
+  `.trigger` `.status` `.push_url`; App layer renders, sends `Vary: HX-Request`.
+- `Hx` extractor (`request, boosted, history_restore, target, trigger, current_url, is_partial()`);
+  `see_other(&Hx, &LocalPath)`; `LocalPath::parse`; `Nonce`; `Headers` (strict CSP `{nonce}`, HSTS…).
+- `Facts { locale, csrf, user, flash }` in request extensions: B3's session/auth layer fills it.
+- `AppError`, `MaybeSend`, `check_fragment(engine, tpl, block, ctx, req)` (checkpoint β holds).
+- No compression in `native` (BREACH with CSRF tokens). cascivo-web scripts now carry the nonce.
+  wasm32 check step added to `rust.yml`.

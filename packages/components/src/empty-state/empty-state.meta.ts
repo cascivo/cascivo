@@ -11,7 +11,7 @@ export const meta: ComponentMeta = {
       element: 'div',
       data: { 'data-size': ['md', 'lg'] },
       children: ['icon', 'title', 'description', 'action'],
-      emit: 'auto',
+      emit: 'manual',
     },
     parts: {
       icon: { element: 'span', aria: ['aria-hidden'], children: ['$slot'], when: 'icon' },
