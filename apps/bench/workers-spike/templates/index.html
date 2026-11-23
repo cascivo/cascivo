@@ -1,2 +1,3 @@
 <h1>{{ title }}</h1>
-{{ ("card \"" ~ title ~ "\"\n") | cv | safe }}
+{{ cv("card \"" ~ title ~ "\"\n") }}
+<p id="visits">{{ visits }}</p>

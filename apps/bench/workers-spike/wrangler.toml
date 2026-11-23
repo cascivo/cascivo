@@ -4,3 +4,12 @@ compatibility_date = "2025-11-01"
 
 [build]
 command = "worker-build --release"
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "local"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "spike"
+database_id = "local"

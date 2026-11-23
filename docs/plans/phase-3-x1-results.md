@@ -46,3 +46,28 @@ renders an embedded template; a `cv` filter turns `.cv` text into a full cascivo
    dominated by wasm instantiate, and the 4.9 ms warm render has room.
 3. Split `cascivo-html` CSS/JS from the Worker bundle (serve as static assets) if size
    grows; it is the bulk of the wasm.
+
+## Re-measure on `cascivo-worker` (workstream F, 2026-11-23)
+
+The spike now runs the real stack: `cascivo_worker::serve_router` + `cascivo-server` `App`
+(strict CSP, sessions in `KvStore`, CSRF) + `cascivo_web::Engine` bundle (`cv()` card) + a `D1`
+route. All three routes worked on the edge (session counter persisted in KV, `select 1` on D1).
+
+| Metric | X1 | F | Target |
+|---|---|---|---|
+| wasm raw (`cargo build --release`) | 2.15 MB | 3.02 MB | |
+| wasm after `worker-build --release` (wasm-opt; extra `-Oz` saves < 1 %) | 1.31 MB | 2.07 MB | |
+| wasm gz -9 | 0.46 MB | **0.74 MB** | ≤ 3 MB |
+| Edge `startup_time_ms` (upload API, n=8) | — | **p50 2 ms** (1–3) | ≤ 50 ms |
+| First request after each re-upload, client TTFB p50 (n=8) | 49.5 ms (local) | 487 ms | |
+| Warm request, client TTFB p50 (n=40) | 4.9 ms (local) | 476 ms | |
+
+Method: a temporary script `cascivo-f-spike-tmp-56c7b1ef` on `*.workers.dev`, with a temporary
+KV namespace and D1 database, uploaded through the Cloudflare API 9 times (each upload = a new
+version, so a fresh isolate). Client TTFB goes through the session's proxy, so it is dominated by
+network (cold − warm = 11 ms, inside the noise); the edge's own `startup_time_ms` is the cold-start
+figure. Every request also does a KV read + write (session). **Deleted** 2026-11-23T15:51:10Z:
+script, KV namespace and D1 database (API `success: true`; listings show no `cascivo*` left).
+
+Checkpoint α still passes with 4x size headroom. Growth vs X1 (+0.28 MB gz) is `cascivo-server`
+(crypto, sessions) and the full `Engine` (minijinja features, pulldown-cmark, toml).
