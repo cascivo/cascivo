@@ -46,3 +46,6 @@ jobs:
       # cascivo-blitz without its default `window` feature: the headless build embedders use.
       - run: cargo clippy -p cascivo-blitz --no-default-features --all-targets -- -D warnings
       - run: cargo test -p cascivo-blitz --no-default-features --locked
+      # cascivo-server on Cloudflare Workers: wasm32, no tokio, `?Send`.
+      - run: rustup target add wasm32-unknown-unknown
+      - run: cargo check -p cascivo-server --target wasm32-unknown-unknown --no-default-features --features workers --locked
