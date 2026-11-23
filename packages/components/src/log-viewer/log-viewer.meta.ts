@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'display',
   // Virtualized rendering plus a live stream — with JS off the viewport renders no rows.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['following', 'paused', 'empty'],
   variants: [],
   sizes: [],

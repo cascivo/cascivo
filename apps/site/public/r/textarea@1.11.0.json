@@ -26,6 +26,7 @@
     "description": "Multi-line text input with optional label, hint, and error state",
     "category": "inputs",
     "clientJs": "enhancement",
+    "contractTier": "native",
     "states": ["idle", "focused", "error"],
     "variants": [],
     "sizes": [],

@@ -26,6 +26,7 @@
     "description": "Site navigation bar with links and dropdown flyout panels",
     "category": "navigation",
     "clientJs": "enhancement",
+    "contractTier": "behaviour",
     "states": ["closed", "open"],
     "variants": [],
     "sizes": [],

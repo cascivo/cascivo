@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   // Writing to the clipboard is its only job, and that is a browser API.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['idle', 'copied'],
   variants: [],
   sizes: ['sm', 'md'],

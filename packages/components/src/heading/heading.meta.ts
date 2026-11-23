@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Section heading with semantic level decoupled from visual size',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: ['sm', 'md', 'lg', 'xl', '2xl'],

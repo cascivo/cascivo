@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // Drag-and-drop, the file list and status all need JS; the bare native input alone is not
   // this component.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['idle', 'dragover', 'uploading', 'complete', 'error', 'disabled'],
   variants: [],
   sizes: [],

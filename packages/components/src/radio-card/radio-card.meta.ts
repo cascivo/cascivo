@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   // Backed by a native radio input, so selection works and submits without JS.
   clientJs: 'enhancement',
+  contractTier: 'native',
   states: ['default', 'checked', 'disabled'],
   variants: [],
   sizes: [],

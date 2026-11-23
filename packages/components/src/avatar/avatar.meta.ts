@@ -7,6 +7,27 @@ export const meta: ComponentMeta = {
   // The <img> (or initials fallback) is in the server HTML; the machine only swaps in the
   // fallback after a load error.
   clientJs: 'enhancement',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'span',
+      data: {
+        'data-size': ['xs', 'sm', 'md', 'lg', 'xl'],
+        'data-status': ['online', 'offline', 'busy'],
+      },
+      // `role="img"` and `aria-label` apply only to the fallback; an image child labels itself.
+      aria: ['aria-label'],
+      role: 'img',
+      children: ['image', 'fallback', 'status'],
+      // Initials are derived at render time and the image/fallback switch is a machine.
+      emit: 'manual',
+    },
+    parts: {
+      image: { element: 'img', when: 'src' },
+      fallback: { element: 'span', aria: ['aria-hidden'], children: ['$text'], when: '!src' },
+      status: { element: 'span', aria: ['aria-hidden'], when: 'status' },
+    },
+  },
   states: ['loading', 'loaded', 'error'],
   variants: [],
   sizes: ['xs', 'sm', 'md', 'lg', 'xl'],

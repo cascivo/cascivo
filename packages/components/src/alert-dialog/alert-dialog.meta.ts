@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Confirmation dialog requiring explicit user action; no light-dismiss',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['open', 'closed'],
   variants: ['default', 'destructive'],
   sizes: [],

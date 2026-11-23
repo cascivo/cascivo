@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'display',
   // The formatted phrase is server-rendered; JS only re-ticks it as the clock moves.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: ['default'],
   variants: [],
   sizes: [],

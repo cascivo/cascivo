@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Hides content visually while keeping it available to screen readers',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],

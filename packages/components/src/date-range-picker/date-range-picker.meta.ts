@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'A dual-calendar picker for selecting a contiguous date range.',
   category: 'inputs',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['default', 'open', 'selecting'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

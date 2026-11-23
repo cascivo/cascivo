@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Circular determinate progress indicator rendered as an SVG arc',
   category: 'feedback',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

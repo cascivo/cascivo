@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // The full month grid server-renders (6.9 KB, 32 buttons) but every day is a JS-only
   // button, so no date can be picked.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['default', 'selected', 'today', 'disabled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

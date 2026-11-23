@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

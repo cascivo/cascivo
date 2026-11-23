@@ -26,6 +26,7 @@
     "description": "Icon button that copies a value to the clipboard with copied feedback",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["idle", "copied"],
     "variants": [],
     "sizes": ["sm", "md"],

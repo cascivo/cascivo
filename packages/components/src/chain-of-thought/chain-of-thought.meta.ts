@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'The steps an AI agent takes — searching, reading, calling tools — each with its status, and optional collapsible detail',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'native',
   states: ['pending', 'active', 'complete', 'error'],
   variants: [],
   sizes: [],

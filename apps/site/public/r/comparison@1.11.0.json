@@ -26,6 +26,7 @@
     "description": "Reveals the difference between two layers with a draggable divider",
     "category": "display",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["default"],
     "variants": [],
     "sizes": [],

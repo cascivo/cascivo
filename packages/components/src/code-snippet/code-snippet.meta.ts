@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   category: 'display',
   // The code and its syntax highlighting are server-rendered; only the copy button needs JS.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: ['idle', 'copied'],
   variants: ['inline', 'single', 'multi'],
   sizes: [],

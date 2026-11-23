@@ -29,6 +29,7 @@
     "description": "Interactive color selection widget with saturation/lightness area, hue and alpha sliders",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["default", "disabled"],
     "variants": [],
     "sizes": ["sm", "md", "lg"],

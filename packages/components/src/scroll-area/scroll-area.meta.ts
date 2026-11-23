@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'layout',
   // Scrolling is native and the content is all present; JS only adds the overflow shadows.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],

@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Hover-triggered popover with configurable open/close delay',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

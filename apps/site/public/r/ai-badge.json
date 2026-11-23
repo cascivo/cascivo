@@ -27,6 +27,7 @@
     "description": "Small \"AI\" marker for AI-generated content; with children it opens a toggletip explaining how AI was involved",
     "category": "display",
     "clientJs": "enhancement",
+    "contractTier": "native",
     "states": [],
     "variants": [],
     "sizes": [],

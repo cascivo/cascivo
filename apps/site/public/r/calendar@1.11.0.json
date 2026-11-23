@@ -29,6 +29,7 @@
     "description": "An accessible standalone month-grid date picker.",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["default", "selected", "today", "disabled"],
     "variants": [],
     "sizes": ["sm", "md", "lg"],

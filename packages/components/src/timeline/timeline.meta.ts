@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Ordered sequence of events with status markers and a connector line',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
   states: ['complete', 'current', 'upcoming'],
   variants: ['vertical', 'horizontal'],
   sizes: [],

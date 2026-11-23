@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Identity composite: an avatar with a name, description, and optional action slot',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
   states: ['default'],
   variants: [],
   sizes: [],

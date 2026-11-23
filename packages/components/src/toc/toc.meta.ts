@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // The entries are real anchors, so the document stays navigable; JS only adds scroll-spy
   // highlighting.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],

@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Placeholder for views that have no data to display',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: ['md', 'lg'],

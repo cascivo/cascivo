@@ -26,6 +26,7 @@
     "description": "Animated toggle between two icon/content states with rotate or flip transition",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["unchecked", "checked"],
     "variants": ["rotate", "flip"],
     "sizes": [],

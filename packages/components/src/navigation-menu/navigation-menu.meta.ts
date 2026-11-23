@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // Top-level items are real anchors so the site stays navigable; only the flyout panels need
   // JS.
   clientJs: 'enhancement',
+  contractTier: 'behaviour',
   states: ['closed', 'open'],
   variants: [],
   sizes: [],

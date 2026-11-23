@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'display',
   // Collapsed branches are not rendered, so most of the tree is unreachable without JS.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['default', 'expanded', 'collapsed', 'selected'],
   variants: ['single', 'multi'],
   sizes: [],

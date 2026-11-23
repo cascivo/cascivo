@@ -26,6 +26,7 @@
     "description": "App top bar with brand, primary navigation links, and an actions slot",
     "category": "navigation",
     "clientJs": "enhancement",
+    "contractTier": "static",
     "states": ["default"],
     "variants": [],
     "sizes": [],

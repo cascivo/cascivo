@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Square, icon-only button with a required accessible label',
   category: 'inputs',
   clientJs: 'none',
+  contractTier: 'static',
   states: ['idle'],
   variants: ['ghost', 'outline', 'filled'],
   sizes: ['sm', 'md', 'lg'],

@@ -8,6 +8,7 @@ export const meta: ComponentMeta = {
   // The visible lines are typed by a requestAnimationFrame loop. The full script is in the
   // server HTML for screen readers, but nothing is visible until JS runs.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: [],
   variants: [],
   sizes: [],

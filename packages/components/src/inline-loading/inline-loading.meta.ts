@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Compact inline status indicator that pairs a label with a loading, success, or error state',
   category: 'feedback',
   clientJs: 'none',
+  contractTier: 'static',
   states: ['inactive', 'active', 'finished', 'error'],
   variants: [],
   sizes: [],

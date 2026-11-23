@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // A plain <img> is in the server HTML; the machine only handles the blur-up and error
   // fallback.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: ['loading', 'loaded', 'error'],
   variants: [],
   sizes: [],

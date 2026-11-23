@@ -26,6 +26,7 @@
     "description": "Controls for navigating paged data sets, with page size selection",
     "category": "navigation",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": [],
     "variants": [],
     "sizes": [],

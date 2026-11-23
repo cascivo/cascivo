@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Cmd+K command palette with fuzzy search over grouped commands',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['closed', 'open'],
   variants: [],
   sizes: [],

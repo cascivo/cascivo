@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   // Wraps a native <input type="time">, so a value can be picked and submitted with JS off.
   clientJs: 'enhancement',
+  contractTier: 'behaviour',
   states: ['idle', 'focused', 'error'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

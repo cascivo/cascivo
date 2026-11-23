@@ -5,6 +5,19 @@ export const meta: ComponentMeta = {
   description: 'Horizontal bar showing the completion progress of a tracked operation',
   category: 'feedback',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'progress',
+      data: {
+        'data-variant': ['primary', 'info', 'success', 'warning', 'error'],
+        'data-size': ['sm', 'md', 'lg'],
+      },
+      aria: ['aria-label', 'aria-describedby'],
+      // `max` is derived from `value`, so the markup is not static.
+      emit: 'manual',
+    },
+  },
   states: ['determinate', 'indeterminate'],
   variants: ['primary', 'info', 'success', 'warning', 'error'],
   sizes: ['sm', 'md', 'lg'],

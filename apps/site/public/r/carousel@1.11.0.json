@@ -26,6 +26,7 @@
     "description": "Scroll-snap slide deck with previous/next controls and dot indicators",
     "category": "display",
     "clientJs": "enhancement",
+    "contractTier": "behaviour",
     "states": [],
     "variants": [],
     "sizes": [],

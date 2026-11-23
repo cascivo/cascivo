@@ -8,6 +8,7 @@ export const meta: ComponentMeta = {
   // Selection rides on role=radio/checkbox over a click handler, not a native input, so
   // nothing can be selected without JS.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['default', 'selected', 'focus', 'disabled'],
   variants: ['single', 'multi'],
   sizes: [],

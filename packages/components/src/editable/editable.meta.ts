@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   // The text renders, but click-to-edit is the feature and it needs JS.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['preview', 'editing', 'disabled'],
   variants: [],
   sizes: [],

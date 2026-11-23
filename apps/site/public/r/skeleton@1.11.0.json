@@ -26,6 +26,7 @@
     "description": "Animated loading placeholder that mirrors the shape of pending content",
     "category": "display",
     "clientJs": "none",
+    "contractTier": "static",
     "states": [],
     "variants": ["text", "circle", "rect"],
     "sizes": [],

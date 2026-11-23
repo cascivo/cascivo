@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   // The content is gated behind the open signal, so it is absent from the server HTML
   // entirely.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

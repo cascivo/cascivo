@@ -26,6 +26,7 @@
     "description": "Image with load state, blur-up placeholder, graceful fallback, and optional zoom",
     "category": "display",
     "clientJs": "enhancement",
+    "contractTier": "static",
     "states": ["loading", "loaded", "error"],
     "variants": [],
     "sizes": [],

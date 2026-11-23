@@ -26,6 +26,7 @@
     "description": "Displays a date as a localized phrase relative to now, auto-updating",
     "category": "display",
     "clientJs": "enhancement",
+    "contractTier": "static",
     "states": ["default"],
     "variants": [],
     "sizes": [],

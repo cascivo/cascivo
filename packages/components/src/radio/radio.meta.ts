@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Single choice from a set, grouped with RadioGroup',
   category: 'inputs',
   clientJs: 'none',
+  contractTier: 'native',
   states: ['unchecked', 'checked'],
   variants: [],
   sizes: [],

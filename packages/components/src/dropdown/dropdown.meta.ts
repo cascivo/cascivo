@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Menu of actions revealed from a trigger',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['closed', 'open'],
   variants: [],
   sizes: [],

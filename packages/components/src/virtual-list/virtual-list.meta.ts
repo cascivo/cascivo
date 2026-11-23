@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Renders only the rows inside the viewport, so list length costs no extra DOM',
   category: 'display',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['default'],
   variants: [],
   sizes: [],

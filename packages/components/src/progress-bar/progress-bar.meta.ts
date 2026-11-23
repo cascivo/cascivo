@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Shows determinate or indeterminate progress of a task',
   category: 'feedback',
   clientJs: 'none',
+  contractTier: 'static',
   states: ['determinate', 'indeterminate'],
   variants: ['active', 'success', 'error'],
   sizes: ['sm', 'md'],

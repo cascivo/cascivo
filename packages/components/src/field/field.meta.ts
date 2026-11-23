@@ -5,6 +5,20 @@ export const meta: ComponentMeta = {
   description: 'Form-field wrapper composing label, control, description, and error',
   category: 'inputs',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      // Presence-only: `''` when disabled, absent otherwise.
+      data: { 'data-disabled': [''] },
+      children: ['@label', '$slot', 'description', 'error'],
+      emit: 'manual',
+    },
+    parts: {
+      description: { element: 'p', children: ['$slot'], when: 'description || hint' },
+      error: { element: 'p', role: 'alert', children: ['$slot'], when: 'error' },
+    },
+  },
   states: ['default', 'disabled', 'invalid'],
   variants: [],
   sizes: [],

@@ -26,6 +26,7 @@
     "description": "Key-value pairs rendered as a description list",
     "category": "display",
     "clientJs": "none",
+    "contractTier": "static",
     "states": [],
     "variants": ["horizontal", "vertical"],
     "sizes": ["sm", "md"],

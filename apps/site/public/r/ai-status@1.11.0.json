@@ -27,6 +27,7 @@
     "description": "Announces what an AI is doing — thinking, generating, done, failed or stopped — with a shimmering label and an optional Stop button",
     "category": "feedback",
     "clientJs": "enhancement",
+    "contractTier": "native",
     "states": ["thinking", "generating", "complete", "error", "stopped"],
     "variants": [],
     "sizes": [],

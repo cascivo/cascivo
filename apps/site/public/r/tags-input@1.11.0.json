@@ -26,6 +26,7 @@
     "description": "Free-form multi-value chip input",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["idle", "focused", "disabled"],
     "variants": [],
     "sizes": [],

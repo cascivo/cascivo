@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'iOS-style drum picker — a column of options that scrolls and snaps to a selection',
   category: 'inputs',
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['idle', 'focused', 'scrolling'],
   variants: [],
   sizes: [],

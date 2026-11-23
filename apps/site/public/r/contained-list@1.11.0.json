@@ -26,6 +26,7 @@
     "description": "Labelled list of rows inside a bordered container",
     "category": "display",
     "clientJs": "enhancement",
+    "contractTier": "native",
     "states": [],
     "variants": ["on-page", "disclosed"],
     "sizes": [],

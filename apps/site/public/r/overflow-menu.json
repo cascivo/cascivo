@@ -27,6 +27,7 @@
     "description": "Kebab icon button revealing a menu of row-level actions",
     "category": "overlay",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["closed", "open"],
     "variants": [],
     "sizes": ["sm", "md"],

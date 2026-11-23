@@ -26,6 +26,7 @@
     "description": "Star rating input with accessible radio group pattern",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "native",
     "states": ["idle", "disabled", "readOnly"],
     "variants": [],
     "sizes": ["sm", "md", "lg"],

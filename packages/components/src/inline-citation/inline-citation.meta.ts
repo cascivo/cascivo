@@ -8,6 +8,7 @@ export const meta: ComponentMeta = {
   // The marker and its link work with JS off; the hover-card preview is HoverCard's own
   // client boundary, so this file adds none.
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],

@@ -28,10 +28,13 @@ export default defineConfig({
     // formatting them would make the generator and the formatter fight.
     // packages/cli/recipes/ must stay byte-identical to what `cascivo create` has always written.
     // comparison.generated.ts is JSON.stringify output (fonts:site:sync), also never reformatted.
+    // packages/css contract files are compared byte-for-byte by scripts/contract/generate.test.ts.
     ignorePatterns: [
       'docs/**',
       '**/routes.gen.ts',
       '**/comparison.generated.ts',
+      'packages/css/contract.json',
+      'packages/css/src/classes.gen.ts',
       'starters/**',
       'packages/cli/recipes/**',
       'crates/cascivo-html/assets/**',

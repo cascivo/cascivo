@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
     'Scrolling region whose large title collapses into a compact sticky bar as it scrolls',
   category: 'navigation',
   clientJs: 'none',
+  contractTier: 'static',
   states: ['expanded', 'collapsed'],
   variants: [],
   sizes: [],

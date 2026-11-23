@@ -27,6 +27,7 @@
     "description": "Drag-and-drop file upload zone with file list and status indicators.",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["idle", "dragover", "uploading", "complete", "error", "disabled"],
     "variants": [],
     "sizes": [],

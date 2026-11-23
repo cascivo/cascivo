@@ -8,6 +8,7 @@ export const meta: ComponentMeta = {
   // A color is produced only by dragging the saturation area; with JS off there is no value
   // to submit.
   clientJs: 'required',
+  contractTier: 'behaviour',
   states: ['default', 'disabled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

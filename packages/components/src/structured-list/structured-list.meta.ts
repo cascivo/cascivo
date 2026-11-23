@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   category: 'display',
   // All rows render; JS only adds the optional roving-focus selection.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: ['default', 'selected'],
   variants: ['static', 'selectable'],
   sizes: [],

@@ -27,6 +27,7 @@
     "description": "An animated terminal that types out a script of commands and output — for demos, onboarding and agent transcripts",
     "category": "display",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": [],
     "variants": [],
     "sizes": [],

@@ -7,6 +7,7 @@ export const meta: ComponentMeta = {
   category: 'layout',
   // Header, nav and content all render; JS drives the collapse toggle and scroll sync.
   clientJs: 'enhancement',
+  contractTier: 'static',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

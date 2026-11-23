@@ -26,6 +26,7 @@
     "description": "A group of toggleable pill or outline buttons for filtering content by category",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "behaviour",
     "states": ["default", "selected", "hover", "focus"],
     "variants": ["pill", "outline"],
     "sizes": [],

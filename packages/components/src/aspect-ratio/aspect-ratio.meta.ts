@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Constrains content to a fixed width-to-height ratio',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],

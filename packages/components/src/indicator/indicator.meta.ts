@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description: 'Positions an overlay element (badge, dot, count) at a corner of its child',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
   states: [],
   variants: [],
   sizes: [],
