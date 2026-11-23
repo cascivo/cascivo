@@ -107,12 +107,22 @@ def italicize_raw(contours, p):
     return [transform_contour(c, lambda q: (q[0] + (q[1] - yc) * p.slant, q[1])) for c in contours]
 
 
+# Round 5 (2), the upright Bold's rhythm and width ramp: the arched and round letters take BOLD_OPEN_SB of a stem sidebearing more a
+# side at Bold, the straight i j t less (the h (1 - h) term is nothing at Regular and Black). Bold set n m h u o b d p q 2-8 units
+# narrower than Regular (Inter's +14 to +37), so a line rich in them grew +1.2% at 700 and +4.5% at 800, a knee the eye reads on the
+# weight axis, and its n gap over counter was 0.55 (Inter's 0.62). Now +1.6% at 700 and 0.586: the rhythm test's 0.59 ceiling at 700
+# and the +2% cap at 600 ('Overview Activity...', 1.99%, which carries more i and t) hold it there.
+BOLD_OPEN_SB = {**{n: 0.3 for n in 'nhmuobdpq'}, **{n: -0.15 for n in ('dotlessi', 'dotlessj', 't')}}
+
+
 def draw_master(p):
     o = Out(p)
     for name in GL.ORDER:
         cps, fn = GL.GLYPHS[name]
         g = GL.G(p)
         fn(g, p)
+        if not p.italic and name in BOLD_OPEN_SB:  # Bold only: the h (1 - h) term is nothing at Regular and Black
+            g.sb = tuple(sb + BOLD_OPEN_SB[name] * p.heavy * (1 - p.heavy) for sb in g.sb)
         cs = []
         for s in g.strokes:
             cs += expand(s, p.V, p.H)
