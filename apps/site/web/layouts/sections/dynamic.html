@@ -1,0 +1,28 @@
+{% macro snippet(code, lang, variant, cls="") %}<div data-variant="{{ variant }}" class="{{ m("code-snippet", "root") }}{% if cls %} {{ cls }}{% endif %}"><pre class="{{ m("code-snippet", "pre") }}">{{ code | highlight(lang) }}</pre><button type="button" aria-label="Copy code" data-state="idle" data-copy="{{ code }}" class="{{ m("code-snippet", "copy") }}"><svg aria-hidden="true" viewBox="0 0 16 16" class="{{ m("code-snippet", "icon") }}"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg></button></div>{% endmacro %}
+{% set scaffold = 'cargo install cascivo-web\ncascivo-web new my-app \\\n  --dynamic --target workers' %}
+{% set layers = [
+  {"title": "Rust server", "body": "axum renders the page, or one block of it as the htmx fragment. Forms, sessions, CSRF, auth and SSE included; every response gets a nonce CSP.", "tag": "cascivo-server", "href": "/docs/guides/using-cascivo-server"},
+  {"title": "Elements", "body": "Light-DOM cv-tabs, cv-dialog, cv-toaster and cv-form enhance the server's markup, plus htmx glue. No React, no shadow DOM.", "tag": "@cascivo/elements", "href": "/docs/guides/using-cascivo-server"},
+  {"title": "Islands", "body": "Where a widget needs client state, a Solid island mounts on the same markup and is disposed when htmx swaps it out.", "tag": "@cascivo/solid", "href": "/docs/guides/using-cascivo-server"},
+  {"title": "One class contract", "body": "Server templates, elements, islands and React render the same unhashed cv-* classes and data-* attributes, versioned like an API.", "tag": "@cascivo/css", "href": "/docs/guides/contract"},
+] %}
+<section class="pg-section" id="dynamic" aria-label="HTML-first dynamic apps">
+  <div class="pg-pad pg-head">
+    <h2 class="pg-display pg-display--section">HTML-first dynamic apps</h2>
+    <p class="pg-eyebrow">rust server + htmx + elements + islands</p>
+  </div>
+  <div class="pg-tiles pg-tiles--4">
+    {% for c in layers %}<div class="pg-pad pg-diff">
+      <h3 class="pg-display pg-display--tile">{{ c.title }}</h3>
+      <p class="pg-body">{{ c.body }}</p>
+      <a class="pg-diff-tag" href="{{ c.href }}">{{ c.tag }}</a>
+    </div>{% endfor %}
+  </div>
+  <div class="pg-cols">
+    <div class="pg-pad">
+      <p class="pg-body">Deploy the same app native, on Cloudflare Workers (KV sessions, D1, R2) or in Cloudflare Containers. <code>pnpm dynamic:check</code> holds the JS budget: the starter ships 6.2 KB gzip of cascivo JS per page (budget 15 KB) and 4.4 KB for its island (budget 10 KB).</p>
+      <a class="pg-link" href="/docs/guides/using-cascivo-server">Read the server guide →</a>
+    </div>
+    <div class="pg-pad">{{ snippet(scaffold, "bash", "multi") }}</div>
+  </div>
+</section>
