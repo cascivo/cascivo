@@ -1,0 +1,44 @@
+[package]
+name = "cascivo-server"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+description = "axum layer for dynamic cascivo apps: htmx-aware views, out-of-band swaps, strict CSP with per-request nonces"
+license = "MIT"
+repository = "https://github.com/cascivo/cascivo"
+homepage = "https://github.com/cascivo/cascivo/tree/main/crates/cascivo-server"
+documentation = "https://docs.rs/cascivo-server"
+readme = "README.md"
+keywords = ["htmx", "axum", "server", "cascivo", "csp"]
+categories = ["web-programming::http-server"]
+# Unreleased until the Phase 3 "tool vs product" decision: the release tool skips it and a
+# changeset cannot name it. Remove this line to release it.
+publish = false
+exclude = ["tests/"]
+
+[package.metadata.docs.rs]
+all-features = true
+
+[dependencies]
+axum = { version = "0.8.9", default-features = false }
+cascivo-web = { path = "../cascivo-web", version = "0.2.1", default-features = false }
+getrandom = "0.4.3"
+minijinja = { version = "3.1.0", default-features = false, features = ["serde"] }
+serde = "1.0.229"
+serde_json = "1.0.154"
+tokio = { version = "1.54.1", optional = true, features = ["net"] }
+
+[target.'cfg(all(target_arch = "wasm32", target_os = "unknown"))'.dependencies]
+# Workers: `crypto.getRandomValues` for the CSP nonce.
+getrandom = { version = "0.4.3", features = ["wasm_js"] }
+
+[features]
+default = ["native"]
+# tokio + hyper: `App::serve`.
+native = ["dep:tokio", "axum/tokio", "axum/http1"]
+# Cloudflare Workers (wasm32, no tokio): `MaybeSend` drops its `Send` bound.
+workers = []
+
+[dev-dependencies]
+tokio = { version = "1.54.1", features = ["macros", "rt"] }
+tower = { version = "0.5.3", features = ["util"] }

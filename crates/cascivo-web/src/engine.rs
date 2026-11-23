@@ -9,8 +9,9 @@
 //! by their path below `templates/`). Every template is HTML-escaped, whatever its extension.
 //! Each render sees the [`ReqCtx`] as `request` (`path`, `locale`, `csrf`, `nonce`), `user` and
 //! `flash`, and a default `page.url` (the request path, for `head()`), next to the caller's
-//! context. `t()` uses the request locale; `asset()`, `css_bundle()` and `img()` are not
-//! available (they write files): link the static build's or `@cascivo/css`'s stylesheet.
+//! context. `theme_script()` and `islands_script()` carry `request.nonce` for a strict CSP.
+//! `t()` uses the request locale; `asset()`, `css_bundle()` and `img()` are not available
+//! (they write files): link the static build's or `@cascivo/css`'s stylesheet.
 
 use std::collections::BTreeMap;
 #[cfg(feature = "fs")]
@@ -577,6 +578,26 @@ mod tests {
         let e = Engine::new(&bundle(&[("p", "{{ page.url }}")])).unwrap();
         let ctx = context! { page => context! { url => "x" } };
         assert_eq!(e.render("p", &ctx, &ReqCtx::default()).unwrap(), "x");
+    }
+
+    #[test]
+    fn scripts_carry_the_request_nonce() {
+        let e = Engine::new(&bundle(&[(
+            "p.html",
+            "{{ theme_script() }}{{ islands_script() }}",
+        )]))
+        .unwrap();
+        let req = ReqCtx {
+            nonce: "abc123",
+            ..ReqCtx::default()
+        };
+        let out = e.render("p.html", &Value::UNDEFINED, &req).unwrap();
+        assert_eq!(out.matches("<script nonce=\"abc123\"").count(), 2, "{out}");
+        // No request nonce (the static build): no attribute.
+        let out = e
+            .render("p.html", &Value::UNDEFINED, &ReqCtx::default())
+            .unwrap();
+        assert!(!out.contains("nonce"), "{out}");
     }
 
     #[test]

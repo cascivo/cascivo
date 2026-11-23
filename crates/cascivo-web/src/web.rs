@@ -260,6 +260,21 @@ pub(crate) fn register(
     state
 }
 
+/// ` nonce="…"` from `request.nonce` (set per request by [`crate::engine::Engine`]), so a strict
+/// `script-src 'nonce-…'` CSP admits the script inline or as a file; empty in the static build.
+fn nonce_attr(st: &State) -> String {
+    let nonce = st
+        .lookup("request")
+        .and_then(|r| r.get_attr("nonce").ok())
+        .and_then(|n| n.as_str().map(str::to_string))
+        .unwrap_or_default();
+    let mut s = String::new();
+    if !nonce.is_empty() {
+        cascivo_html::html::attr(&mut s, "nonce", &nonce);
+    }
+    s
+}
+
 /// The functions that need no file access: `head`, `vite`, `vite_css`, `m`, `island`,
 /// `islands_script`, `theme_script` and the `highlight` filter. Shared by the static build and
 /// [`crate::engine::Engine`].
@@ -296,15 +311,20 @@ pub(crate) fn register_pure(env: &mut Environment<'static>, state: &Arc<WebState
         safe(islands::attrs(&s, &a))
     });
     let s = Arc::clone(state);
-    env.add_function("islands_script", move || {
-        safe(s.script("cascivo-islands", islands::LOADER, " type=\"module\""))
+    env.add_function("islands_script", move |st: &State| {
+        let attrs = format!("{} type=\"module\"", nonce_attr(st));
+        safe(s.script("cascivo-islands", islands::LOADER, &attrs))
     });
     let s = Arc::clone(state);
     // Stays blocking (no `defer`) even as a file: it must set `data-theme` before first paint.
-    env.add_function("theme_script", move |rest: Rest<Value>, kw: Kwargs| {
-        let a = Args::parse("theme_script", theme::PARAMS, &rest, Some(kw))?;
-        safe(theme::body(&a).and_then(|js| s.script("cascivo-theme", &js, "")))
-    });
+    env.add_function(
+        "theme_script",
+        move |st: &State, rest: Rest<Value>, kw: Kwargs| {
+            let a = Args::parse("theme_script", theme::PARAMS, &rest, Some(kw))?;
+            let attrs = nonce_attr(st);
+            safe(theme::body(&a).and_then(|js| s.script("cascivo-theme", &js, &attrs)))
+        },
+    );
     let s = Arc::clone(state);
     env.add_filter("highlight", move |code: String, lang: String| {
         safe(highlight::render(
