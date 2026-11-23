@@ -26,6 +26,7 @@ export default defineConfig({
       entry: {
         menu: './src/menu.ts',
         tabs: './src/tabs.ts',
+        form: './src/form.ts',
         combobox: './src/combobox.ts',
         'date-picker': './src/date-picker.ts',
       },

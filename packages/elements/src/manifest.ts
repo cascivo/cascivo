@@ -47,6 +47,16 @@ export const ELEMENTS: Entry[] = [
     events: [['cv-value-change', 'A tab was selected. `detail: { value: string }` (data-value).']],
   },
   {
+    tag: 'cv-form',
+    className: 'CvForm',
+    module: 'form',
+    description:
+      'Form: renders constraint-validation errors with server-provided messages, guards double submit, swaps htmx 422 and focuses the first error.',
+    formAssociated: false,
+    attributes: [],
+    events: [],
+  },
+  {
     tag: 'cv-combobox',
     className: 'CvCombobox',
     module: 'combobox',

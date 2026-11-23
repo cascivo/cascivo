@@ -340,15 +340,15 @@ Published packages install from npm. Components themselves are copy-pasted into 
 
 Not published to npm. `components` and `layouts` are the source of truth the CLI copies from; the rest power the docs, AI, and search surfaces.
 
-| Package                                      | Description                                                                                                                                                        |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`@cascivo/components`](packages/components) | Registry source — copy-paste component TSX + CSS + manifests (not published)                                                                                       |
-| [`@cascivo/elements`](packages/elements)     | Light-DOM custom elements (cv-menu, cv-tabs, cv-combobox, cv-date-picker) that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure |
-| [`@cascivo/layouts`](packages/layouts)       | Registry source — copy-paste app shells and page layouts (not published)                                                                                           |
-| [`@cascivo/search`](packages/search)         | Experimental — registry search index for the cascivo ecosystem (API unstable)                                                                                      |
-| [`@cascivo/theme-kit`](packages/theme-kit)   | Shared theme-config codec + CSS generator for the /create theme builder and the cascivo CLI                                                                        |
-| [`@cascivo/video`](packages/video)           | Experimental — Remotion video studio for cascivo (animated explainers and launch films)                                                                            |
-| [`@cascivo/workbench`](packages/workbench)   | Experimental — browse copied components: every manifest example, in every theme and width                                                                          |
+| Package                                      | Description                                                                                                                                                                 |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`@cascivo/components`](packages/components) | Registry source — copy-paste component TSX + CSS + manifests (not published)                                                                                                |
+| [`@cascivo/elements`](packages/elements)     | Light-DOM custom elements (cv-menu, cv-tabs, cv-combobox, cv-date-picker, cv-form) that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure |
+| [`@cascivo/layouts`](packages/layouts)       | Registry source — copy-paste app shells and page layouts (not published)                                                                                                    |
+| [`@cascivo/search`](packages/search)         | Experimental — registry search index for the cascivo ecosystem (API unstable)                                                                                               |
+| [`@cascivo/theme-kit`](packages/theme-kit)   | Shared theme-config codec + CSS generator for the /create theme builder and the cascivo CLI                                                                                 |
+| [`@cascivo/video`](packages/video)           | Experimental — Remotion video studio for cascivo (animated explainers and launch films)                                                                                     |
+| [`@cascivo/workbench`](packages/workbench)   | Experimental — browse copied components: every manifest example, in every theme and width                                                                                   |
 
 ### Apps
 
