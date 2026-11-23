@@ -651,4 +651,5 @@ see [USING-CASCIVO-TUI.md](/docs/using-cascivo-tui.md).
 - [CONTRACT.md](/docs/contract.md) — the `@cascivo/css` class and `data-*` contract for non-React apps.
 - [USING-CASCIVO-HTML.md](/docs/using-cascivo-html.md) — one static HTML file from `.cv` text.
 - [USING-CASCIVO-WEB.md](/docs/using-cascivo-web.md) — a static site (Markdown, collections, i18n, RSS) in Rust.
+- [USING-CASCIVO-SERVER.md](/docs/using-cascivo-server.md) — a dynamic htmx app (axum, forms, sessions) in Rust.
 - [USING-CASCIVO-TUI.md](/docs/using-cascivo-tui.md) — a terminal UI in Rust with cascivo themes.

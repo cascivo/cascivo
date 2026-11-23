@@ -340,6 +340,7 @@ All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md
 - Markup contract for HTML, htmx, Solid and Rust apps (@cascivo/css: cv-* classes + data-* attributes, typed class map, example): https://cascivo.com/docs/contract.md
 - Static HTML from .cv text (cascivo-html Rust crate + CLI, no React): https://cascivo.com/docs/using-cascivo-html.md
 - Static sites from Markdown, collections, i18n and RSS (cascivo-web Rust CLI, no React): https://cascivo.com/docs/using-cascivo-web.md
+- Dynamic server-rendered apps (cascivo-server axum + htmx, forms, sessions, Workers/Containers, Solid islands): https://cascivo.com/docs/using-cascivo-server.md
 - Terminal UIs in Rust (cascivo-tui ratatui toolkit, class strings + themes): https://cascivo.com/docs/using-cascivo-tui.md
 - Native windows from .cv text (cascivo-blitz Rust crate on the Blitz engine, no browser): https://cascivo.com/docs/using-cascivo-blitz.md
 - Compatibility & support matrix: https://cascivo.com/docs/compatibility.md

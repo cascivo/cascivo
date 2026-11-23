@@ -1861,6 +1861,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/guides/using-cascivo-server</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/guides/using-cascivo-tui</loc>
     <priority>0.6</priority>
   </url>
