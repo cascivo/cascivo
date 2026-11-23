@@ -199,8 +199,11 @@ def _F(g, p):
 CAPW_BLACK = {'T': (0.072, 0.118), 'V': (0.067, 0.066), 'W': (0.110, 0.113), 'X': (0.102, 0.017), 'Y': (0.114, 0.113), 'Z': (0.080, 0.115)}
 
 
+CAPW_START = MID_WGHT  # where the six capitals begin to widen: Bold's own coordinate leaves 400-700 flat, an earlier start bends the line at 700 less (JUDGING.md round 6)
+
+
 def capw(p):
-    return max(0.0, (p.wght - MID_WGHT) / (900 - MID_WGHT))
+    return max(0.0, (p.wght - CAPW_START) / (900 - CAPW_START))
 
 
 @glyph('T', 0x54)
