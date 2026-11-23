@@ -385,3 +385,57 @@ Known limits (the reviewer's ranked list, with why each is still there):
 9. Carried over: `u`/`µ` arch test at 24 px between masters (IUP tolerance), `KERNING_SHORT` upright `Wa` and italic `YA Ye Yc Yo`
    at 100, the `f` hook weak at 12 to 13 px, Cyrillic `Ч Ћ Ђ ђ` and Greek `α` on the old arch, the Black `3` bump, the italic `g`
    counter flat against the stem, the italic `6 9` stem corner, the italic `b` foot notch and Black `ft` (1.2-1.3x Inter's white).
+
+## Round 5 result / final
+
+One fresh reviewer scored three states blind in one sitting on 2026-11-23: 0.6.1 (`66d88e63`, before the polish rounds), round 4
+(`a27d7610`) and round 5, rendered with the same `proofs.cjs` plus a site sheet (the `/cascivo-sans` sample "Signals move fast; the
+cascade decides." at 22 and 44 px, 100 to 900, each row above Inter's), under shuffled labels, with only the "Proof set" and "Rubric"
+sections. The reviewer's scale differs again (it gives round 4 6.69, not 7.0), so compare the columns. Two earlier sittings during the
+round agreed within noise (round 4 6.44 / 6.85 against 6.87 / 6.95 for the sub-rounds). `rhythm.py`: upright 0.48 / 0.53 / 0.59 / 0.59,
+italic 0.57 / 0.58 / 0.59 / 0.60 (100 / 400 / 700 / 900).
+
+| #   | Criterion (weight)             | 0.6.1    | Round 4  | Round 5  |
+| --- | ------------------------------ | -------- | -------- | -------- |
+| 1   | Rhythm and spacing (15)        | 3        | 7        | 8        |
+| 2   | Weight axis (12)               | 5        | 7        | 7        |
+| 3   | Shape and curve quality (15)   | 5        | 6        | 6        |
+| 4   | Proportions (8)                | 7        | 7        | 7        |
+| 5   | Joins, terminals, contrast (8) | 5        | 6        | 6        |
+| 6   | Paragraph colour (12)          | 6        | 7        | 7        |
+| 7   | Small sizes (10)               | 7        | 7        | 7        |
+| 8   | Italic (8)                     | 4        | 6        | 6        |
+| 9   | Kerning (5)                    | 5        | 7        | 7        |
+| 10  | Optical sizes (4)              | 4        | 7        | 7        |
+| 11  | Character (3)                  | 6        | 7        | 7        |
+|     | **Weighted total**             | **5.09** | **6.69** | **6.84** |
+
+The target 9 was not met. No criterion is under round 4. The owner stopped the round after three drawing sub-rounds (cost).
+
+Round 5 did (each change held by a test in `test_font.py` or a gate in `quality.py`):
+
+- Upright: Black `S` on Inter's columns (top / counter / spine / counter / bottom 164 / 116 / 160 / 122 / 164, Inter 162 / 121 / 170 /
+  130 / 162), level terminals; Black `a` with a curved bowl top and a D-shaped counter (0.047 -> 0.055 of x-height squared); Black `l`
+  tail one even curve; Black `r` arm join at 0.65 of the stroke; Display `e c g S` terminals cut level (`DISPLAY_FACE`); Caption `i j`
+  dots 40 units higher (gap 68 -> 88 at opsz 11, Inter 89-101); Black `o` sidebearings (`O_SB`); Bold round letters 3.7 units more air.
+- Punctuation: comma and quote head one stem + 16 (Regular 115 -> 100), full stop 8% smaller at Regular, `;` dot over the comma.
+- Spacing and kerning: Thin opening 0.30 -> 0.235 (−1.7% of Regular width); `f)` at 900 47 units of white (35, Inter 37); `“A”` at 800-900
+  1.06x Inter's white (1.42x); `|` wider at heavy weights.
+- Italic: Black `c` and `e` terminals redrawn (mouth 166 -> 197 and 42 -> 68 units at opsz 14; Inter 89 / 63), Black `a` takes the `d`
+  bowl, the heavy rounds `o b d p q 6 9 O Q` turn their sides back before the slant (`ROUND_IT`), `z Z` bars end along the slant, `g`
+  bowl closes round on its stem, Regular `f` tail no longer curls back, 700 `l` ends in a foot, `qf jf gf ef` kerned.
+- Bytes (owner's round 5 caps): full 76,592 / 76,735, Latin[opsz,wght] 31,968 / 32,445, Latin[wght] 25,672 / 25,750, Regular 25,044 /
+  26,265, italic full 82,880 / 83,945, italic Latin[opsz,wght] 35,236 / 36,050, italic Latin[wght] 28,500 / 28,840.
+
+Known limits (the reviewer's ranked list, with what blocks each):
+
+1. Black `0`: the counter pinches to a lemon with pointed ends (Inter: an oval with parallel sides). Not attempted.
+2. Black `2`: the spine lands on the base bar with a lump and a kink at the bottom-left join. Not attempted.
+3. Black counters `a e 4 6 9` still smaller than Inter's. Blocked by gates: the width cap at 900 (+9.92% of +10% on "Overview…"),
+   `COUNTER_MAX['a']` (the `a` counter is 1.28x Inter's by area; it reads small by shape), and the tip gate for a sharper `a` notch.
+4. Italic Black `a c e`: the `a` counter still nearly closes, the `c` lower terminal reads curled. The italic width at 900 has 0.1% left.
+5. Width step 600 -> 700 -> 800 (on the `weights` sentence +1.0 / +1.6 / +4.5 / +7.5%): blocked by the 600 cap (+1.99% of +2% on
+   "Overview…") and the 700 rhythm ceiling 0.59 in `test_black_arch_joins_are_thin` (owner decision; not asked in round 5).
+6. Black closing quote a wedge pair; `7,` and italic `f)` loose. The italic `f)` needs a `WHITE_BAND_SHAPE` entry (owner decision).
+7. `O0` at 11-12 px at 300-400 (the zero barely narrower), 300 pale at 11 px.
+8. Optical sizes: most of the width change is between 8 and 14; 14 to 48 changes little.
