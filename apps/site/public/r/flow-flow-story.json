@@ -5,16 +5,8 @@
   "description": "A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.",
   "version": "1.11.0",
   "files": [],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "flow",
-    "animation",
-    "storyline",
-    "walkthrough",
-    "sequence"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["flow", "animation", "storyline", "walkthrough", "sequence"],
   "category": "display",
   "install": "@cascivo/flow",
   "styles": "@cascivo/flow/styles.css",
@@ -23,10 +15,7 @@
     "description": "A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.",
     "category": "display",
     "clientJs": "required",
-    "states": [
-      "playing",
-      "paused"
-    ],
+    "states": ["playing", "paused"],
     "variants": [],
     "sizes": [],
     "props": [
@@ -259,18 +248,11 @@
         ]
       }
     ],
-    "tokens": [
-      "--cascivo-color-surface",
-      "--cascivo-color-accent",
-      "--cascivo-color-text-muted"
-    ],
+    "tokens": ["--cascivo-color-surface", "--cascivo-color-accent", "--cascivo-color-text-muted"],
     "accessibility": {
       "role": "group",
       "wcag": "2.1-AA",
-      "keyboard": [
-        "Tab (focus controls)",
-        "Enter/Space (play/pause, prev, next)"
-      ],
+      "keyboard": ["Tab (focus controls)", "Enter/Space (play/pause, prev, next)"],
       "reducedMotion": true
     },
     "examples": [
@@ -285,16 +267,8 @@
         "code": "() => (\n  <FlowStory\n    style={{ height: 320 }}\n    nodes={[\n      { id: 'ingest', position: { x: 0, y: 100 }, data: { label: 'Ingest' } },\n      { id: 'transform', position: { x: 240, y: 100 }, data: { label: 'Transform' } },\n      { id: 'load', position: { x: 480, y: 100 }, data: { label: 'Load' } },\n    ]}\n    edges={[\n      { id: 'it', source: 'ingest', target: 'transform' },\n      { id: 'tl', source: 'transform', target: 'load' },\n    ]}\n    script={[\n      { from: 'ingest', to: 'transform', label: 'Records ingested', description: 'Raw events read from the source' },\n      { from: 'transform', to: 'load', label: 'Transformed', description: 'Cleaned and enriched' },\n    ]}\n  />\n)"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "flow",
-      "animation",
-      "storyline",
-      "walkthrough",
-      "sequence"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["flow", "animation", "storyline", "walkthrough", "sequence"],
     "intent": {
       "whenToUse": [
         "Explaining how a flow works step by step, not just showing a static diagram",

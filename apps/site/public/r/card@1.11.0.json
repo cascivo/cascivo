@@ -18,15 +18,8 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/card.meta.ts"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "container",
-    "layout",
-    "surface",
-    "ai"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["container", "layout", "surface", "ai"],
   "category": "display",
   "meta": {
     "name": "Card",
@@ -38,32 +31,12 @@
       "root": {
         "element": "div",
         "data": {
-          "data-cascivo-card": [
-            ""
-          ],
-          "data-variant": [
-            "default",
-            "outlined",
-            "elevated"
-          ],
-          "data-padding": [
-            "none",
-            "sm",
-            "md",
-            "lg"
-          ],
-          "data-ai": [
-            "",
-            "generating"
-          ]
+          "data-cascivo-card": [""],
+          "data-variant": ["default", "outlined", "elevated"],
+          "data-padding": ["none", "sm", "md", "lg"],
+          "data-ai": ["", "generating"]
         },
-        "children": [
-          "$slot",
-          "header",
-          "title",
-          "content",
-          "footer"
-        ],
+        "children": ["$slot", "header", "title", "content", "footer"],
         "emit": "manual"
       },
       "parts": {
@@ -72,52 +45,34 @@
           "modifiers": {
             "headerRow": "actions"
           },
-          "children": [
-            "$slot",
-            "headerMain",
-            "headerActions"
-          ]
+          "children": ["$slot", "headerMain", "headerActions"]
         },
         "headerMain": {
           "element": "div",
-          "children": [
-            "$slot"
-          ],
+          "children": ["$slot"],
           "when": "actions"
         },
         "headerActions": {
           "element": "div",
-          "children": [
-            "$slot"
-          ],
+          "children": ["$slot"],
           "when": "actions"
         },
         "title": {
           "element": "h3",
-          "children": [
-            "$slot"
-          ]
+          "children": ["$slot"]
         },
         "content": {
           "element": "div",
-          "children": [
-            "$slot"
-          ]
+          "children": ["$slot"]
         },
         "footer": {
           "element": "div",
-          "children": [
-            "$slot"
-          ]
+          "children": ["$slot"]
         }
       }
     },
     "states": [],
-    "variants": [
-      "default",
-      "outlined",
-      "elevated"
-    ],
+    "variants": ["default", "outlined", "elevated"],
     "sizes": [],
     "props": [
       {
@@ -175,18 +130,9 @@
         "code": "<Card ai>\n  <CardHeader actions={<AiBadge />}><CardTitle>Summary</CardTitle></CardHeader>\n  <CardContent>Revenue grew 12% quarter over quarter.</CardContent>\n</Card>"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "styleHooks": [
-      "data-cascivo-card"
-    ],
-    "tags": [
-      "container",
-      "layout",
-      "surface",
-      "ai"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "styleHooks": ["data-cascivo-card"],
+    "tags": ["container", "layout", "surface", "ai"],
     "intent": {
       "whenToUse": [
         "Grouping related content into a visually distinct surface with border/shadow",

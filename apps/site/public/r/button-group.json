@@ -18,15 +18,8 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/button-group.meta.ts"
     }
   ],
-  "dependencies": [
-    "@cascivo/core"
-  ],
-  "tags": [
-    "action",
-    "segmented",
-    "toolbar",
-    "layout"
-  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["action", "segmented", "toolbar", "layout"],
   "category": "inputs",
   "meta": {
     "name": "ButtonGroup",
@@ -40,31 +33,16 @@
         "local": "buttonGroup",
         "role": "group",
         "data": {
-          "data-orientation": [
-            "horizontal",
-            "vertical"
-          ],
-          "data-size": [
-            "sm",
-            "md",
-            "lg"
-          ]
+          "data-orientation": ["horizontal", "vertical"],
+          "data-size": ["sm", "md", "lg"]
         },
-        "children": [
-          "$slot"
-        ],
+        "children": ["$slot"],
         "emit": "auto"
       }
     },
-    "states": [
-      "idle"
-    ],
+    "states": ["idle"],
     "variants": [],
-    "sizes": [
-      "sm",
-      "md",
-      "lg"
-    ],
+    "sizes": ["sm", "md", "lg"],
     "props": [
       {
         "name": "orientation",
@@ -107,21 +85,11 @@
         "required": false
       }
     ],
-    "tokens": [
-      "--cascivo-button-radius",
-      "--cascivo-radius-control"
-    ],
+    "tokens": ["--cascivo-button-radius", "--cascivo-radius-control"],
     "accessibility": {
       "role": "group",
       "wcag": "2.2-AA",
-      "keyboard": [
-        "ArrowRight",
-        "ArrowLeft",
-        "ArrowUp",
-        "ArrowDown",
-        "Home",
-        "End"
-      ],
+      "keyboard": ["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown", "Home", "End"],
       "forcedColors": true
     },
     "examples": [
@@ -134,15 +102,8 @@
         "code": "<ButtonGroup orientation=\"vertical\" roving aria-label=\"View\"><Button>List</Button><Button>Grid</Button></ButtonGroup>"
       }
     ],
-    "dependencies": [
-      "@cascivo/core"
-    ],
-    "tags": [
-      "action",
-      "segmented",
-      "toolbar",
-      "layout"
-    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["action", "segmented", "toolbar", "layout"],
     "intent": {
       "whenToUse": [
         "Presenting several related, independent actions that read as one control (e.g. an editor toolbar)",

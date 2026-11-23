@@ -3,7 +3,9 @@ import { Idiomorph } from 'idiomorph'
 import { beforeAll, describe, expect, it } from 'vitest'
 import { define } from './dialog.ts'
 
-const html = (attrs = '') => `<main><button id="go" type="button" data-cv-dialog-open="dlg">Open</button>
+const html = (
+  attrs = '',
+) => `<main><button id="go" type="button" data-cv-dialog-open="dlg">Open</button>
 <cv-dialog id="dlg"${attrs}><dialog class="cv-modal-dialog" aria-labelledby="dlg-t" data-size="md">
 <div class="cv-modal-panel"><div class="cv-modal-header"><h2 class="cv-modal-title" id="dlg-t">Title</h2>
 <button type="button" class="cv-modal-close" data-cv-dialog-close aria-label="Close modal">×</button></div>
