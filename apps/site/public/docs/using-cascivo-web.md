@@ -8,7 +8,7 @@
 
 `cascivo-web` builds a static website from a folder of Markdown, content collections and
 templates. Components from cascivo-html work inside Markdown. It also does locales (`/de/...`),
-RSS feeds and a sitemap, and it deploys to Cloudflare Workers Static Assets. It needs no React,
+RSS feeds and a sitemap, and it deploys to Cloudflare Workers Static Assets or Cloudflare Pages. It needs no React,
 no Node build and no JavaScript runtime to build the site. The same input gives the same files.
 
 It is a command-line tool and a Rust library.
@@ -27,8 +27,9 @@ It is a command-line tool and a Rust library.
 cargo install cascivo-web
 ```
 
-Prebuilt binaries are attached to the GitHub release `cascivo-web@<version>`. See
-[RELEASING.md](https://github.com/cascivo/cascivo/blob/main/docs/RELEASING.md). From a checkout: `cargo install --path crates/cascivo-web`.
+Prebuilt binaries are attached to each GitHub release `cascivo-web@<version>`. See
+[RELEASING.md](https://github.com/cascivo/cascivo/blob/main/docs/RELEASING.md). To run the latest unreleased code, install from a checkout of the
+repository: `cargo install --path crates/cascivo-web`.
 
 ## Quick start
 
@@ -57,8 +58,9 @@ public/**                       copied as is
 wrangler.jsonc                  deploy config
 ```
 
-Files and folders that start with `.` or `_` in `pages/` and `public/` are skipped. Symlinks are
-not followed. Slugs and page folders use only `a-z`, `0-9` and `-`.
+Files and folders that start with `.` or `_` in `pages/` are skipped. Everything in `public/` is
+copied, including `_headers`, `_redirects` and `.well-known/`; only `.DS_Store`, `.git`,
+`Thumbs.db`, `desktop.ini` and `._*` are skipped. Symlinks are not followed. Slugs and page folders use only `a-z`, `0-9` and `-`.
 
 ## site.toml
 
@@ -81,22 +83,74 @@ description = "New posts"
 limit = 20
 ```
 
-| Key                    | Meaning                                                                               |
-| ---------------------- | ------------------------------------------------------------------------------------- |
-| `title`                | Required. Site name.                                                                  |
-| `base_url`             | Absolute origin. Default empty. Without it there is no `sitemap.xml`, and feeds fail. |
-| `lang`                 | Language of the site. Default `en`.                                                   |
-| `theme`                | A cascivo theme name. Default `light`.                                                |
-| `[i18n] default`       | Default locale, served at `/`. Must be in `locales`.                                  |
-| `[i18n] locales`       | All locales. Others are served at `/<locale>/`.                                       |
-| `[i18n] fallback`      | Default `true`. See [Locales](#locales).                                              |
-| `[[feeds]] collection` | Required. The collection to publish.                                                  |
-| `path`                 | Feed file. Default `rss.xml`.                                                         |
-| `title`                | Feed title. Default: the site title.                                                  |
-| `description`          | Feed description. Default empty.                                                      |
-| `limit`                | Newest items to include. Default `20`.                                                |
+| Key                        | Meaning                                                                                                                                                                                                                            |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`                    | Required. Site name.                                                                                                                                                                                                               |
+| `base_url`                 | Absolute origin. Default empty. Without it there is no `sitemap.xml`, and feeds fail.                                                                                                                                              |
+| `lang`                     | Language of the site. Default `en`.                                                                                                                                                                                                |
+| `theme`                    | A cascivo theme name. Default `light`.                                                                                                                                                                                             |
+| `dark_theme`               | Optional second theme. `cascivo.css` applies it under `prefers-color-scheme: dark` to pages whose `<html>` has no `data-theme` (then `theme` applies to them otherwise). `[data-theme=<name>]` still works for both.               |
+| `[brand]`                  | Token overrides: `primary`, `accent` (`#rgb` or `#rrggbb`), `radius` (px, 0–64), `gap` (space step), `density` (`compact`, `normal`, `comfy`), `font`, `mono`. The same keys as `@brand` in cascivo-html. See [Theming](#theming). |
+| `[i18n] default`           | Default locale, served at `/`. Must be in `locales`.                                                                                                                                                                               |
+| `[i18n] locales`           | All locales. Others are served at `/<locale>/`.                                                                                                                                                                                    |
+| `[i18n] fallback`          | Default `true`. See [Locales](#locales).                                                                                                                                                                                           |
+| `[build] trailing_slash`   | Default `true`: `/about/` (`about/index.html`). `false`: `/about` (`about.html`) in output files, `page.url`, entry URLs, canonical, sitemap, hreflang and feeds.                                                                  |
+| `[build] cascivo_css`      | Default `true`. `false`: no `cascivo.css` and no link to it.                                                                                                                                                                       |
+| `[build] inline_styles`    | Default `true`. `false`: components write no `style=""`. They get `data-cv-style` hooks, and the rules go into `cascivo.css`. See [Strict CSP](#strict-csp).                                                                       |
+| `[build] external_scripts` | Default `false`. `true`: component scripts, `theme_script()` and `islands_script()` go into `.js` files with `<script src>`.                                                                                                       |
+| `[build] hash_assets`      | Default `false`. `true`: `cascivo.css` and the generated `.js` files get content-hashed names under `/_cw/`, like `asset()`.                                                                                                       |
+| `[head] robots`            | Default `robots` of `head()`. Default `"index, follow"`; `""` omits the tag.                                                                                                                                                       |
+| `[deploy] target`          | `"workers"` (default) or `"pages"`. See [Deploy](#deploy-to-cloudflare).                                                                                                                                                           |
+| `[deploy] project`         | Cloudflare Pages project name (`--project-name`).                                                                                                                                                                                  |
+| `[[feeds]] collection`     | Required. The collection to publish.                                                                                                                                                                                               |
+| `path`                     | Feed file. Default `rss.xml`.                                                                                                                                                                                                      |
+| `title`                    | Feed title. Default: the site title.                                                                                                                                                                                               |
+| `description`              | Feed description. Default empty.                                                                                                                                                                                                   |
+| `limit`                    | Newest items to include. Default `20`.                                                                                                                                                                                             |
 
 An unknown key is an error with the line number.
+
+## Theming
+
+`theme` picks the cascivo theme in `cascivo.css`. Add `dark_theme` to follow the OS colour
+scheme, and `[brand]` to change the tokens:
+
+```toml
+theme = "light"
+dark_theme = "dark"
+
+[brand]
+primary = "#4f46e5"
+accent = "#f59e0b"
+radius = 8
+font = "Inter"
+```
+
+`[brand]` writes `--cascivo-color-*` scales (and radius, gap, density and font tokens) into
+`cascivo.css`. With `dark_theme`, the brand colours also get a dark variant in the media query.
+The `prefers-color-scheme` rules apply only when `<html>` has no `data-theme`. Leave it off the
+layout, or let `theme_script()` set it.
+
+## Strict CSP
+
+For a policy like `default-src 'self'` (no `'unsafe-inline'` for styles or scripts):
+
+```toml
+[build]
+inline_styles = false
+external_scripts = true
+hash_assets = true    # optional: /_cw/cascivo.<hash>.css, safe to cache as immutable
+```
+
+- Components (columns, grid, charts, gauges, sized images, …) get `data-cv-style="<hash>"`
+  instead of `style=""`. `cascivo.css` holds one rule per hash, in `@layer cascivo.override`.
+- Component scripts (sortable tables) go into `/cascivo.js` with `defer`.
+- `islands_script()` gives `<script type="module" src="/cascivo-islands.js">`.
+- `theme_script()` gives `<script src="/cascivo-theme.js">`. It has no `defer`: it must set
+  `data-theme` before the first paint, so keep it in `<head>`. Without `hash_assets`, every page
+  must call it with the same arguments.
+
+Your own layouts must also have no inline `style` or `<script>`.
 
 ## Content collections
 
@@ -140,17 +194,30 @@ collection needs a schema file.
 
 Files in `pages/` become routes.
 
-| File                      | URL                                        |
-| ------------------------- | ------------------------------------------ |
-| `pages/index.md`          | `/`                                        |
-| `pages/about.md`          | `/about/`                                  |
-| `pages/blog/index.html`   | `/blog/`                                   |
-| `pages/blog/[posts].html` | `/blog/<slug>/`, once per entry of `posts` |
+| File                               | URL                                                    |
+| ---------------------------------- | ------------------------------------------------------ |
+| `pages/index.md`                   | `/`                                                    |
+| `pages/about.md`                   | `/about/`                                              |
+| `pages/blog/index.html`            | `/blog/`                                               |
+| `pages/blog/[posts].html`          | `/blog/<slug>/`, once per entry of `posts`             |
+| `pages/404.md` or `pages/404.html` | `/404.html` (`pages/de/404.html` gives `/de/404.html`) |
 
-A Markdown page has optional front matter. `layout = "post"` picks `layouts/post.html`; the
-default is `default`. Other front matter keys are available as `page.<key>`. A `.html` page is a
-template. A dynamic route `[collection].html` must be a `.html` template, and the collection
+Markdown and `.html` pages have optional `+++` TOML front matter. In a Markdown page,
+`layout = "post"` picks `layouts/post.html`; the default is `default`. Front matter keys are
+available as `page.<key>`, for example `{{ head(page.title, page.description) }}`. A `.html` page
+is a template. A dynamic route `[collection].html` must be a `.html` template, and the collection
 must exist. Two files that give the same URL are an error.
+
+Two front matter keys control the sitemap, on pages and on collection entries (no schema field
+needed):
+
+| Key                    | Meaning                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------- |
+| `sitemap = false`      | Leave the page out of `sitemap.xml`. On a `[collection].html` template it leaves out every entry. |
+| `lastmod = 2026-03-04` | Adds `<lastmod>` to its sitemap entry. A TOML date or a `YYYY-MM-DD` string.                      |
+
+The 404 page renders with its layout like any page and is never in the sitemap. `head()` gives
+it `robots` `noindex` by default. `cascivo-web dev` serves it, with status 404, for unknown URLs.
 
 ## Layouts and templates
 
@@ -329,6 +396,15 @@ one the command fails before it builds. You need Node (for `npx`) and a Cloudfla
 `npx wrangler login`, or `CLOUDFLARE_API_TOKEN` in the environment. If you use `--out`, point
 `assets.directory` at the same folder (the tool warns when they differ).
 
+**Cloudflare Pages.** `--pages` (or `[deploy] target = "pages"`) runs
+`npx wrangler pages deploy <dist> --project-name <name>` instead; no wrangler config is needed.
+The project name comes from `--project-name` or `[deploy] project`. `_headers` and `_redirects`
+in `public/` are copied to `dist/`, so Pages applies them.
+
+```sh
+cascivo-web deploy --pages --project-name my-site --dry-run
+```
+
 ## Dev server
 
 `cascivo-web dev [site] [--port 4321]` serves the site on `127.0.0.1`. It checks your files every
@@ -339,12 +415,14 @@ A broken build prints the errors in the terminal and in the browser; fix the fil
 
 ```text
 cascivo-web new <dir>
-cascivo-web build [site] [--out <dir>]
+cascivo-web build [site] [--out <dir>] [--no-clean]
 cascivo-web dev [site] [--port <n>]
-cascivo-web deploy [site] [--out <dir>] [--dry-run] [-- <wrangler args>]
+cascivo-web deploy [site] [--out <dir>] [--no-clean] [--pages] [--project-name <name>] [--dry-run] [-- <wrangler args>]
 ```
 
-`site` defaults to `.` and `--out` to `<site>/dist`. Exit code is `0` on success and `1` on error.
+`site` defaults to `.` and `--out` to `<site>/dist`. `build` and `deploy` delete the output folder
+first, so removed pages do not linger; `--no-clean` keeps it. Only a plain folder inside the site
+that holds no sources is deleted; any other `--out` prints a warning and is not cleaned. Exit code is `0` on success and `1` on error.
 
 ## Errors
 

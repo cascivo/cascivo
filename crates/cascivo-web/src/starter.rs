@@ -29,7 +29,7 @@ const FILES: &[(&str, &str)] = starter![
     "pages/blog/index.html",
     "pages/blog/[posts].html",
     "public/favicon.svg",
-    "public/404.html",
+    "pages/404.md",
 ];
 
 /// Relative path → contents of the starter, with `name` substituted where it applies.
@@ -143,6 +143,8 @@ mod tests {
         ] {
             assert!(out.files.contains_key(f), "missing {f}");
         }
+        // The 404 page is a page, so it shares the layout's nav.
+        assert!(String::from_utf8_lossy(&out.files["404.html"]).contains("<nav>"));
         let _ = std::fs::remove_dir_all(tmp("build"));
     }
 }

@@ -6,7 +6,7 @@ use super::*;
 use crate::ast::{Node, Value};
 use crate::render::Cx;
 
-pub fn emit(node: &Node, _cx: &mut Cx, out: &mut String) {
+pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
     let value = match node.args.first() {
         Some(Value::Num(v)) => sane(*v),
         _ => 0.0,
@@ -41,7 +41,7 @@ pub fn emit(node: &Node, _cx: &mut Cx, out: &mut String) {
         title: &c.title,
         desc: c.desc,
     };
-    open(out, &f, false);
+    open(out, cx, &f, false);
     let _ = write!(
         out,
         "<g><path d=\"{}\" fill=\"var(--cascivo-chart-grid)\" fill-opacity=\"0.25\" data-track=\"\"/><path d=\"{}\" fill=\"var(--cascivo-color-accent)\" data-zone=\"\"/>",

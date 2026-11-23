@@ -1,7 +1,7 @@
 import { Alert } from '../../src/alert/alert'
 
 export default (
-  <Alert title="T" icon="i">
+  <Alert role="note" title="T" icon="i">
     B
   </Alert>
 )

@@ -21,7 +21,7 @@ Markdown + collections + minijinja layouts in, a `dist/` folder of static files 
    **Never run `cascivo-web deploy` without `--dry-run` unless the user says so.** It needs Node and a
    Cloudflare login (`wrangler login` or `CLOUDFLARE_API_TOKEN`). Extra args: `deploy -- --env staging`.
 
-If the binary is missing: `cargo install cascivo-web` (or `cargo install --path crates/cascivo-web` from the cascivo repo while unreleased).
+If the binary is missing: `cargo install cascivo-web` (or `cargo install --path crates/cascivo-web` from the cascivo repo for unreleased changes).
 Full guide: <https://cascivo.com/docs/guides/using-cascivo-web>.
 
 ## Facts

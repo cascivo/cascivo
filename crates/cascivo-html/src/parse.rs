@@ -421,11 +421,34 @@ fn parse_node(
     (Some((node, repeat)), rows_from)
 }
 
+/// Rows split on ` | `, cells on `,`. `\,` and `\|` keep a literal comma or bar in a cell and
+/// `\\` a backslash; any other backslash is kept as written.
 fn rows(raw: &str) -> Vec<Vec<String>> {
-    raw.trim_end()
-        .split(" | ")
-        .map(|r| r.split(',').map(|c| c.trim().to_string()).collect())
-        .collect()
+    let mut out = Vec::new();
+    let mut row = Vec::new();
+    let mut cell = String::new();
+    let mut chars = raw.trim_end().chars().peekable();
+    while let Some(c) = chars.next() {
+        match c {
+            '\\' => match chars.peek() {
+                Some(&e @ (',' | '|' | '\\')) => {
+                    cell.push(e);
+                    chars.next();
+                }
+                _ => cell.push('\\'),
+            },
+            ',' => row.push(std::mem::take(&mut cell).trim().to_string()),
+            ' ' if chars.clone().take(2).eq(['|', ' ']) => {
+                chars.nth(1);
+                row.push(std::mem::take(&mut cell).trim().to_string());
+                out.push(std::mem::take(&mut row));
+            }
+            _ => cell.push(c),
+        }
+    }
+    row.push(cell.trim().to_string());
+    out.push(row);
+    out
 }
 
 /// Props a bare word could set: enums listing it as a value, bools named by it.

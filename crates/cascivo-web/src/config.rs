@@ -16,6 +16,13 @@ pub struct Config {
     /// A cascivo theme name (`light`, `dark`, `midnight`, …); picks the theme CSS shipped.
     #[serde(default = "theme")]
     pub theme: String,
+    /// A second theme for `prefers-color-scheme: dark`: `cascivo.css` applies `theme` and, in
+    /// the media query, this one to pages whose `<html>` has no `data-theme`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub dark_theme: Option<String>,
+    /// `[brand]`: colour, radius, spacing and font overrides of the theme tokens.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub brand: Option<BrandConfig>,
     /// `[i18n]`: locale routes; absent means a single-language site in `lang`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub i18n: Option<crate::i18n::I18n>,
@@ -30,6 +37,10 @@ pub struct Config {
     pub images: ImagesConfig,
     #[serde(default)]
     pub vite: ViteConfig,
+    #[serde(default)]
+    pub head: HeadConfig,
+    #[serde(default)]
+    pub deploy: DeployConfig,
     /// `name = "path"` (JSON or TOML by extension) → template global `data.<name>`.
     #[serde(default)]
     pub data: std::collections::BTreeMap<String, String>,
@@ -41,12 +52,140 @@ pub struct BuildConfig {
     /// `false`: neither write `cascivo.css` nor link it (the site brings its own CSS).
     #[serde(default = "yes")]
     pub cascivo_css: bool,
+    /// `true`: `/about/` (`about/index.html`); `false`: `/about` (`about.html`). Applies to
+    /// output files, `page.url`, entry URLs, canonical, sitemap, hreflang and feed links.
+    #[serde(default = "yes")]
+    pub trailing_slash: bool,
+    /// `false` (CSP `style-src 'self'`): components get `data-cv-style` hooks instead of
+    /// `style=""`, and their rules go into `cascivo.css`.
+    #[serde(default = "yes")]
+    pub inline_styles: bool,
+    /// `true` (CSP without `'unsafe-inline'`): component scripts, `theme_script()` and
+    /// `islands_script()` are written to files and referenced with `<script src>`.
+    #[serde(default)]
+    pub external_scripts: bool,
+    /// `true`: `cascivo.css` and the external scripts get content-hashed names under `_cw/`
+    /// (like `asset()`), so they can be served `immutable`.
+    #[serde(default)]
+    pub hash_assets: bool,
 }
 
 impl Default for BuildConfig {
     fn default() -> Self {
-        Self { cascivo_css: true }
+        Self {
+            cascivo_css: true,
+            trailing_slash: true,
+            inline_styles: true,
+            external_scripts: false,
+            hash_assets: false,
+        }
     }
+}
+
+/// `[brand]`: the keys of cascivo-html's `@brand`, as a table.
+#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct BrandConfig {
+    /// `#rgb` / `#rrggbb`: the primary colour scale.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub primary: Option<String>,
+    /// `#rgb` / `#rrggbb`: the accent colour scale.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub accent: Option<String>,
+    /// Base radius in px (0–64).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub radius: Option<u32>,
+    /// Default gap, a space-scale step (`4` → `--cascivo-space-4`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub gap: Option<u32>,
+    /// `compact`, `normal` or `comfy`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub density: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub font: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mono: Option<String>,
+}
+
+impl BrandConfig {
+    /// Validates through cascivo-html's `@brand` parser, so both accept the same values.
+    pub fn to_brand(&self) -> std::result::Result<cascivo_html::Brand, Vec<String>> {
+        let item = |key: String, value: Option<&String>| cascivo_html::BrandItem {
+            key,
+            value: value.cloned(),
+        };
+        let mut items = Vec::new();
+        let mut errs = Vec::new();
+        if let Some(p) = &self.primary {
+            if p.starts_with('#') {
+                items.push(item(p.clone(), None));
+            } else {
+                errs.push(format!(
+                    "[brand] primary: '{p}' is not a color; expected #rgb or #rrggbb"
+                ));
+            }
+        }
+        if let Some(a) = &self.accent {
+            items.push(item("accent".into(), Some(a)));
+        }
+        if let Some(r) = self.radius {
+            items.push(item(format!("r{r}"), None));
+        }
+        if let Some(g) = self.gap {
+            items.push(item(format!("gap{g}"), None));
+        }
+        for (k, v) in [
+            ("density", &self.density),
+            ("font", &self.font),
+            ("mono", &self.mono),
+        ] {
+            if let Some(v) = v {
+                items.push(item(k.into(), Some(v)));
+            }
+        }
+        match cascivo_html::brand::parse_brand(&items) {
+            Ok(b) if errs.is_empty() => Ok(b),
+            Ok(_) => Err(errs),
+            Err(ds) => {
+                errs.extend(ds.into_iter().map(|d| format!("[brand]: {}", d.msg)));
+                Err(errs)
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct HeadConfig {
+    /// Default `robots` of `head()`; `""` omits the tag.
+    #[serde(default = "robots")]
+    pub robots: String,
+}
+
+impl Default for HeadConfig {
+    fn default() -> Self {
+        Self { robots: robots() }
+    }
+}
+
+#[derive(Debug, Clone, Copy, Default, Deserialize, Serialize, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum DeployTarget {
+    /// `wrangler deploy` (Workers Static Assets, needs a wrangler config).
+    #[default]
+    Workers,
+    /// `wrangler pages deploy <dist>` (Cloudflare Pages).
+    Pages,
+}
+
+#[derive(Debug, Clone, Default, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct DeployConfig {
+    #[serde(default)]
+    pub target: DeployTarget,
+    /// Cloudflare Pages project (`--project-name`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub project: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
@@ -105,6 +244,10 @@ fn yes() -> bool {
     true
 }
 
+fn robots() -> String {
+    "index, follow".into()
+}
+
 fn assets_dir() -> String {
     "assets".into()
 }
@@ -123,10 +266,37 @@ fn theme() -> String {
 
 impl Config {
     pub fn parse(src: &str) -> Result<Self> {
-        toml::from_str(src).map_err(|e| {
+        let c: Self = toml::from_str(src).map_err(|e| {
             let line = e.span().map(|s| line_of(src, s.start));
             Errors::one("site.toml", line, e.message().to_string())
-        })
+        })?;
+        let mut errs = Vec::new();
+        if let Some(d) = &c.dark_theme
+            && cascivo_html::theme_css(d).is_none()
+        {
+            let names: Vec<_> = cascivo_html::theme_names().collect();
+            errs.push(format!(
+                "unknown dark_theme '{d}'; expected one of: {}",
+                names.join(", ")
+            ));
+        }
+        if let Some(Err(e)) = c.brand.as_ref().map(BrandConfig::to_brand) {
+            errs.extend(e);
+        }
+        if errs.is_empty() {
+            Ok(c)
+        } else {
+            Err(Errors(
+                errs.into_iter()
+                    .map(|m| crate::error::Error::new("site.toml", None, m))
+                    .collect(),
+            ))
+        }
+    }
+
+    /// The public form of an internal route URL (`/about/`), per `build.trailing_slash`.
+    pub fn url(&self, internal: &str) -> String {
+        crate::routes::public_url(internal, self.build.trailing_slash)
     }
 }
 
@@ -147,7 +317,11 @@ mod tests {
     fn defaults() {
         let c = Config::parse("title = \"Hi\"").unwrap();
         assert_eq!((c.lang.as_str(), c.theme.as_str()), ("en", "light"));
-        assert!(c.build.cascivo_css);
+        assert!(c.build.cascivo_css && c.build.trailing_slash && c.build.inline_styles);
+        assert!(!c.build.external_scripts && !c.build.hash_assets);
+        assert!(c.dark_theme.is_none() && c.brand.is_none());
+        assert_eq!(c.head.robots, "index, follow");
+        assert_eq!(c.deploy, DeployConfig::default());
         assert_eq!(
             (c.assets.dir.as_str(), c.images.dir.as_str()),
             ("assets", "assets")
@@ -171,6 +345,42 @@ mod tests {
         assert_eq!(c.vite.islands, "i/{name}.js");
         assert_eq!(c.data["web"], "w.json");
         assert!(Config::parse("title = \"x\"\n[vite]\nbogus = 1").is_err());
+        let c = Config::parse(
+            "title = \"x\"\n[build]\ntrailing_slash = false\n[head]\nrobots = \"\"\n[deploy]\ntarget = \"pages\"\nproject = \"p\"\n",
+        )
+        .unwrap();
+        assert!(!c.build.trailing_slash && c.head.robots.is_empty());
+        assert_eq!(c.deploy.target, DeployTarget::Pages);
+        assert_eq!(c.deploy.project.as_deref(), Some("p"));
+        assert_eq!((c.url("/"), c.url("/a/b/")), ("/".into(), "/a/b".into()));
+        assert!(Config::parse("title = \"x\"\n[deploy]\ntarget = \"x\"").is_err());
+    }
+
+    #[test]
+    fn brand_and_dark_theme() {
+        let c = Config::parse(
+            "title = \"x\"\ndark_theme = \"dark\"\n[build]\ninline_styles = false\nexternal_scripts = true\nhash_assets = true\n[brand]\nprimary = \"#4f46e5\"\naccent = \"#f59e0b\"\nradius = 8\ngap = 4\ndensity = \"compact\"\nfont = \"Inter Tight\"\n",
+        )
+        .unwrap();
+        assert_eq!(c.dark_theme.as_deref(), Some("dark"));
+        assert!(!c.build.inline_styles && c.build.external_scripts && c.build.hash_assets);
+        let b = c.brand.unwrap().to_brand().unwrap();
+        assert!(b.primary.is_some() && b.accent.is_some());
+        assert_eq!(
+            (b.radius, b.gap, b.font.as_deref()),
+            (Some(8), Some(4), Some("Inter Tight"))
+        );
+        for bad in [
+            "dark_theme = \"nope\"",
+            "[brand]\nprimary = \"red\"",
+            "[brand]\naccent = \"#zz\"",
+            "[brand]\ngap = 7",
+            "[brand]\ndensity = \"huge\"",
+            "[brand]\ncolor = \"#fff\"",
+        ] {
+            let e = Config::parse(&format!("title = \"x\"\n{bad}")).unwrap_err();
+            assert!(!e.0.is_empty(), "{bad}");
+        }
     }
 
     #[test]

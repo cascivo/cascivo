@@ -1,3 +1,3 @@
 import { Alert } from '../../src/alert/alert'
 
-export default <Alert title="Only title" />
+export default <Alert role="note" title="Only title" />

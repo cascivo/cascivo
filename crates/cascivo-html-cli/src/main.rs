@@ -14,6 +14,7 @@ usage:
   cascivo-html render [in.cv|-] [-o out.html] [--brand brand.cv] [--target t] [asset options]
   cascivo-html check [in.cv|-] [--brand brand.cv] [--target t] [asset options]
   cascivo-html guide [component]
+  cascivo-html script           print every client script (for --script-src)
   cascivo-html --help | --version
 
 `-` or no input reads stdin. Without -o, HTML goes to stdout.
@@ -29,6 +30,10 @@ asset options:
   --assets <dir>       extra directory to read assets from (repeatable)
   --fetch              also download http(s) images and embed them (default: URLs stay links)
   --max-asset <bytes>  largest embedded asset (default 2097152)
+output options (render):
+  --no-inline-styles   CSP-safe: no style=\"\" attributes; rules go in the <style> block
+  --script-src <url>   reference scripts as <script src=url defer> instead of inlining them
+                       (write the source with `cascivo-html script > file.js`)
 exit: 0 ok, 1 invalid .cv, 2 usage or I/O error";
 
 /// `Err` carries a message and the exit code.
@@ -67,8 +72,13 @@ fn run(args: &[String]) -> Result<(), Fail> {
         "render" => build(rest, true),
         "check" => build(rest, false),
         "guide" => guide(rest),
+        "script" if rest.is_empty() => {
+            print!("{}", cascivo_html::script_bundle(None));
+            Ok(())
+        }
+        "script" => Err(usage_err("script takes no arguments")),
         other => Err(usage_err(format!(
-            "unknown command '{other}'; expected render, check or guide"
+            "unknown command '{other}'; expected render, check, guide or script"
         ))),
     }
 }
@@ -100,6 +110,8 @@ struct BuildArgs {
     assets: Vec<String>,
     fetch: bool,
     max_asset: Option<usize>,
+    inline_styles: bool,
+    script_src: Option<String>,
     target: Target,
 }
 
@@ -111,6 +123,8 @@ fn parse_build_args(args: &[String], render: bool) -> Result<BuildArgs, Fail> {
         assets: Vec::new(),
         fetch: false,
         max_asset: None,
+        inline_styles: true,
+        script_src: None,
         target: Target::Browser,
     };
     let mut it = args.iter();
@@ -138,6 +152,14 @@ fn parse_build_args(args: &[String], render: bool) -> Result<BuildArgs, Fail> {
                 );
             }
             "--fetch" => a.fetch = true,
+            "--no-inline-styles" if render => a.inline_styles = false,
+            "--script-src" if render => {
+                a.script_src = Some(
+                    it.next()
+                        .ok_or_else(|| usage_err("--script-src needs a URL"))?
+                        .clone(),
+                );
+            }
             "--target" => {
                 a.target = it
                     .next()
@@ -290,6 +312,8 @@ fn build(args: &[String], render: bool) -> Result<(), Fail> {
         asset_resolver: Some(asset_resolver),
         embed_urls: a.fetch,
         max_asset_bytes: a.max_asset,
+        inline_styles: a.inline_styles,
+        script_src: a.script_src.clone(),
         target: a.target,
         ..Options::default()
     };

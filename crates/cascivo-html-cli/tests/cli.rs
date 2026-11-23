@@ -20,12 +20,12 @@ fn run(args: &[&str], stdin: &str, cwd: Option<&PathBuf>) -> Out {
         c.current_dir(d);
     }
     let mut child = c.spawn().unwrap();
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(stdin.as_bytes())
-        .unwrap();
+    // A usage error exits before reading stdin; if it has already gone, the write races its
+    // exit and fails with EPIPE. That is the child's choice, not a test failure: the caller
+    // asserts on the exit code instead.
+    if let Err(e) = child.stdin.take().unwrap().write_all(stdin.as_bytes()) {
+        assert_eq!(e.kind(), std::io::ErrorKind::BrokenPipe, "{e}");
+    }
     let o = child.wait_with_output().unwrap();
     Out {
         code: o.status.code().unwrap(),
@@ -340,6 +340,36 @@ fn fetch_embeds_urls_with_a_size_cap() {
 }
 
 #[test]
+fn csp_flags_and_script_command() {
+    let src = "row gap=2\n  text \"a\"\ntable sort A | b\n";
+    let o = run(
+        &[
+            "render",
+            "--no-inline-styles",
+            "--script-src",
+            "/cascivo.js",
+        ],
+        src,
+        None,
+    );
+    assert_eq!(o.code, 0, "{}", o.stderr);
+    let body = &o.stdout[o.stdout.find("<body>").unwrap()..];
+    assert!(!body.contains(" style="), "{body}");
+    assert!(body.contains("data-cv-style="));
+    assert!(o.stdout.contains("[data-cv-style="));
+    assert!(
+        o.stdout
+            .contains("<script src=\"/cascivo.js\" defer></script>")
+    );
+    assert!(!o.stdout.contains("<script>"));
+    assert_eq!(run(&["render", "--script-src"], src, None).code, 2);
+    assert_eq!(run(&["check", "--no-inline-styles"], src, None).code, 2);
+    let js = run(&["script"], "", None);
+    assert_eq!(js.code, 0);
+    assert!(js.stdout.contains("aria-sort"));
+}
+
+#[test]
 fn target_blitz_lowers_css() {
     let src = "grid\n  button \"Go\"\n";
     let browser = run(&["render"], src, None);
@@ -373,4 +403,12 @@ fn bad_target_is_a_usage_error() {
     let o = run(&["check", "--target", "tui"], "", None);
     assert_eq!(o.code, 2);
     assert!(o.stderr.contains("--target needs"));
+}
+
+#[test]
+fn usage_error_with_unread_stdin_reports_exit_code() {
+    // Larger than any pipe buffer, so the write blocks until the child exits without reading it:
+    // the EPIPE that `csp_flags_and_script_command` hit only by chance in CI, made certain.
+    let big = "text \"a\"\n".repeat(64 * 1024);
+    assert_eq!(run(&["render", "--script-src"], &big, None).code, 2);
 }

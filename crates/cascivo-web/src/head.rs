@@ -75,12 +75,16 @@ pub fn render(cfg: &Config, page_url: &str, a: &Args) -> Result<String, String> 
         s.push_str("\">");
         t.push(s);
     }
-    meta(
-        &mut t,
-        "name",
-        "robots",
-        &a.or("robots", "index, follow").map_err(e)?,
-    );
+    // `robots=false` or `''` omits the tag; the default is `[head] robots`, `noindex` on 404s.
+    let robots = match a.value("robots") {
+        Some(v) if v.kind() == minijinja::value::ValueKind::Bool && !v.is_true() => String::new(),
+        Some(_) => a.req("robots").map_err(e)?,
+        None if page_url.ends_with("/404.html") => "noindex".into(),
+        None => cfg.head.robots.clone(),
+    };
+    if !robots.is_empty() {
+        meta(&mut t, "name", "robots", &robots);
+    }
     match a.value("theme_color") {
         None => {}
         Some(v) if v.as_str().is_some() => {
@@ -249,6 +253,27 @@ mod tests {
         .unwrap();
         assert!(h.contains("<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"name\":\"<\\/script><b>\"}]}</script>"), "{h}");
         assert_eq!(h.matches("</script>").count(), 1);
+    }
+
+    #[test]
+    fn robots_can_be_omitted_or_defaulted() {
+        for call in [
+            "{{ head('T', 'D', robots=false) }}",
+            "{{ head('T', 'D', robots='') }}",
+        ] {
+            assert!(!run("", call).unwrap().contains("robots"), "{call}");
+        }
+        let mut c = cfg("");
+        c.head.robots = String::new();
+        let a = Args::parse("head", PARAMS, &[Value::from("T"), Value::from("D")], None).unwrap();
+        assert!(!render(&c, "/", &a).unwrap().contains("robots"));
+        c.head.robots = "noai".into();
+        assert!(render(&c, "/", &a).unwrap().contains("content=\"noai\""));
+        assert!(
+            render(&c, "/404.html", &a)
+                .unwrap()
+                .contains("content=\"noindex\"")
+        );
     }
 
     #[test]

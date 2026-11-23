@@ -88,7 +88,7 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
 
     let show_legend = !c.plain && c.legend.unwrap_or(ns > 1);
     let wrap = show_legend;
-    open(out, &c.frame(), wrap);
+    open(out, cx, &c.frame(), wrap);
     let _ = write!(
         out,
         "<g><g transform=\"translate({},{})\">",
@@ -146,10 +146,11 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
                     } else {
                         (end + 4.0, "start")
                     };
-                    data_label(out, lx, center + 4.0, &text, inside, anchor);
+                    data_label(out, cx, lx, center + 4.0, &text, inside, anchor);
                 } else {
                     data_label(
                         out,
+                        cx,
                         center,
                         if inside { start + 13.0 } else { start - 4.0 },
                         &text,

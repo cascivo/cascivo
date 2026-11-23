@@ -125,7 +125,7 @@ pub fn render(
     // Newest first; slug breaks ties so equal dates stay deterministic.
     items.sort_by(|a, b| b.0.cmp(&a.0).then_with(|| a.3.slug.cmp(&b.3.slug)));
     items.truncate(feed.limit);
-    let home = format!("{base}{prefix}/");
+    let home = format!("{base}{}", cfg.url(&format!("{prefix}/")));
     let self_url = format!("{base}{prefix}/{}", feed.path);
     let mut s = String::from(
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n<channel>\n",
@@ -146,7 +146,7 @@ pub fn render(
         s += &format!("  <lastBuildDate>{d}</lastBuildDate>\n");
     }
     for (_, t, d, e) in &items {
-        let link = format!("{base}{}", route.entry_url(&e.slug));
+        let link = format!("{base}{}", cfg.url(&route.entry_url(&e.slug)));
         s += "  <item>\n";
         s += &format!("    <title>{}</title>\n", esc(t));
         s += &format!("    <link>{}</link>\n", esc(&link));
