@@ -160,6 +160,75 @@ export const CV_SPEC: readonly CvEntry[] = [
     extraProps: controlProps('select'),
   }),
   e('checkbox', { args: [a('label', 'str')], extraProps: controlProps('checkbox') }),
+  // AI disclosure: handlers (revert, stop, select) and the toggletip need JS, so `.cv` renders
+  // only the static, server-rendered state.
+  e('ai-badge', { css: ['ai-badge', 'visually-hidden'] }),
+  e('ai-status', { args: [a('status', 'str', true), a('label', 'str')], css: ['ai-status', 'shimmer-text'] }),
+  e('chain-of-thought', {
+    args: [a('items', 'rows', true)],
+    css: ['chain-of-thought', 'shimmer-text', 'visually-hidden'],
+  }),
+  e('reasoning', { children: 'nodes', css: ['reasoning', 'shimmer-text'] }),
+  e('sources', { args: [a('items', 'rows', true)] }),
+  e('tool-call', {
+    args: [a('name', 'str', true), a('status', 'str', true)],
+    css: ['tool-call', 'badge'],
+    extraProps: [
+      { name: 'actions', type: 'string', summary: 'Text shown in the actions row under the call' },
+    ],
+  }),
+  e('prompt-suggestions', { args: [a('items', 'rows', true)] }),
+  // pickers
+  e('checkbox-card', {
+    args: [a('title', 'str', true)],
+    extraProps: [
+      { name: 'name', type: 'string', summary: 'Field name sent with the form' },
+      { name: 'value', type: 'string', summary: 'Value sent when checked (default on)' },
+      { name: 'required', type: 'boolean', summary: 'The browser blocks submit until it is checked' },
+    ],
+  }),
+  e('radio', {
+    args: [a('label', 'str')],
+    extraProps: [
+      { name: 'checked', type: 'boolean', summary: 'Initially selected' },
+      { name: 'required', type: 'boolean', summary: 'The browser blocks submit until one is picked' },
+    ],
+  }),
+  // One cv element is the whole group: rows are `value | title | description`.
+  e('radio-card', {
+    args: [a('items', 'rows', true)],
+    extraProps: [
+      { name: 'name', type: 'string', summary: 'Field name shared by every card' },
+      { name: 'label', type: 'string', summary: 'Accessible name of the group' },
+      { name: 'value', type: 'string', summary: 'Value of the initially selected card' },
+      { name: 'hideIndicator', type: 'boolean', summary: 'Hide the radio dot on every card' },
+    ],
+  }),
+  e('rating-group', { args: [a('value', 'num', true)] }),
+  e('slider', {
+    args: [a('label', 'str')],
+    extraProps: [{ name: 'name', type: 'string', summary: 'Field name sent with the form' }],
+  }),
+  e('native-select', {
+    args: [a('options', 'rows', true)],
+    extraProps: [
+      { name: 'name', type: 'string', summary: 'Field name sent with the form' },
+      { name: 'required', type: 'boolean', summary: 'The browser blocks submit while none is picked' },
+    ],
+  }),
+  e('number-input', { args: [a('label', 'str')] }),
+  e('password-input', {
+    extraProps: [
+      { name: 'name', type: 'string', summary: 'Field name sent with the form' },
+      { name: 'required', type: 'boolean', summary: 'The browser blocks submit while it is empty' },
+    ],
+  }),
+  e('search', {}),
+  e('contained-list', {
+    children: 'nodes',
+    args: [a('label', 'str', true)],
+    extraProps: [{ name: 'action', type: 'string', summary: 'Text shown in the header action slot' }],
+  }),
   // charts
   e('bar-chart', { cv: 'bar', args: [a('data', 'pairs', true)], css: [chart] }),
   e('line-chart', { cv: 'line', args: [a('data', 'nums', true)], css: [chart] }),

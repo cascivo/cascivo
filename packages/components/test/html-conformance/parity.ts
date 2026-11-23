@@ -19,6 +19,16 @@ export const PARITY_COMPONENTS = [
   'select',
   'checkbox',
   'textarea',
+  'checkbox-card',
+  'radio',
+  'radio-card',
+  'rating-group',
+  'slider',
+  'native-select',
+  'number-input',
+  'password-input',
+  'search',
+  'contained-list',
 ] as const
 
 export type Fact = { facet: Facet; text: string }

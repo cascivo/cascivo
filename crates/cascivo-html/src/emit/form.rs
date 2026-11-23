@@ -24,7 +24,7 @@ fn non_empty(s: Option<String>) -> Option<String> {
 }
 
 /// React's `cascade-<unit>-<label lowercased, whitespace runs as -->`.
-fn auto_id(unit: &str, label: &str) -> String {
+pub(super) fn auto_id(unit: &str, label: &str) -> String {
     let mut slug = String::new();
     let mut gap = false;
     for c in label.to_lowercase().chars() {
@@ -42,12 +42,12 @@ fn auto_id(unit: &str, label: &str) -> String {
 }
 
 /// What `<unit>` needs from its surroundings: the id and the field's ARIA overrides.
-struct Control {
-    id: Option<String>,
-    ctx: Option<FieldCtx>,
+pub(super) struct Control {
+    pub(super) id: Option<String>,
+    pub(super) ctx: Option<FieldCtx>,
 }
 
-fn control(node: &Node, cx: &mut Cx, unit: &str, label: Option<&str>) -> Control {
+pub(super) fn control(node: &Node, cx: &mut Cx, unit: &str, label: Option<&str>) -> Control {
     let ctx = cx.field.take();
     let id = non_empty(node.prop_str("id"))
         .or_else(|| ctx.as_ref().map(|c| c.id.clone()))
@@ -57,7 +57,7 @@ fn control(node: &Node, cx: &mut Cx, unit: &str, label: Option<&str>) -> Control
 
 /// `aria-invalid`, `aria-describedby`, `aria-labelledby` and `disabled` of a control, with the
 /// field's wiring winning over the control's own, as React's prop spread does.
-fn aria(out: &mut String, c: &Control, error: Option<&str>, hint: Option<&str>) {
+pub(super) fn aria(out: &mut String, c: &Control, error: Option<&str>, hint: Option<&str>) {
     let own_describe = c.id.as_ref().and_then(|id| {
         error
             .map(|_| format!("{id}-error"))
@@ -75,11 +75,11 @@ fn aria(out: &mut String, c: &Control, error: Option<&str>, hint: Option<&str>) 
     }
 }
 
-fn disabled(node: &Node, c: &Control) -> bool {
+pub(super) fn disabled(node: &Node, c: &Control) -> bool {
     node.prop_bool("disabled") || c.ctx.as_ref().is_some_and(|f| f.disabled)
 }
 
-fn aria_label(out: &mut String, node: &Node) {
+pub(super) fn aria_label(out: &mut String, node: &Node) {
     if let Some(l) = node.prop_str("ariaLabel") {
         attr(out, "aria-label", &l);
     }
@@ -110,7 +110,7 @@ fn text_el(
 }
 
 /// The label, then (after the control) the error or hint of a wrapper control.
-fn label_el(out: &mut String, class: &str, id: Option<&str>, text: &str) {
+pub(super) fn label_el(out: &mut String, class: &str, id: Option<&str>, text: &str) {
     out.push_str("<label");
     attr(out, "class", class);
     if let Some(id) = id {
