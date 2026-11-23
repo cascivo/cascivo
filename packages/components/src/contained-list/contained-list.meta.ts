@@ -7,6 +7,25 @@ export const meta: ComponentMeta = {
   // A static bordered list — the rows are all in the server HTML.
   clientJs: 'enhancement',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'root',
+      data: { 'data-kind': ['on-page', 'disclosed'] },
+      children: ['header', 'list'],
+      emit: 'manual',
+    },
+    parts: {
+      header: { element: 'div', children: ['label', 'action'] },
+      label: { element: 'h3', children: ['$slot'] },
+      action: { element: 'div', children: ['$slot'], when: 'action' },
+      list: { element: 'ul', children: ['item'] },
+      // `ContainedListItem`; `data-interactive` is `''` with `asChild` or `onClick`.
+      item: { element: 'li', data: { 'data-interactive': [''] }, children: ['itemContent'] },
+      // With `asChild` the classes go on the caller's element.
+      itemContent: { element: ['div', 'a', 'button'], children: ['$slot'] },
+    },
+  },
   states: [],
   variants: ['on-page', 'disclosed'],
   sizes: [],

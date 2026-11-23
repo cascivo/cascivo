@@ -8,6 +8,33 @@ export const meta: ComponentMeta = {
   // fallback.
   clientJs: 'enhancement',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      // With `removeWrapper` the bare `<img>` (class `image`) is rendered instead.
+      element: 'span',
+      local: 'wrapper',
+      data: {
+        'data-state': ['loading', 'loaded', 'error'],
+        'data-radius': ['none', 'sm', 'md', 'lg', 'full'],
+        'data-zoom': 'boolean',
+        'data-blurred': 'boolean',
+      },
+      aria: ['aria-label'],
+      role: 'img',
+      children: ['placeholder', 'fallback', 'image'],
+      // The load machine picks which child renders: not a static tree.
+      emit: 'manual',
+    },
+    parts: {
+      placeholder: { element: 'span', aria: ['aria-hidden'], when: "state === 'loading'" },
+      fallback: {
+        element: 'span',
+        aria: ['aria-hidden'],
+        when: "state === 'error' && !fallbackSrc",
+      },
+      image: { element: 'img', when: "state !== 'error' || fallbackSrc" },
+    },
+  },
   states: ['loading', 'loaded', 'error'],
   variants: [],
   sizes: [],

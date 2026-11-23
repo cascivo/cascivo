@@ -8,6 +8,29 @@ export const meta: ComponentMeta = {
   // The title and message render in full; JS only drives the optional action and dismissal.
   clientJs: 'enhancement',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      // `role` is `alert` (warning, error) or `status` (the rest), so it is not pinned here.
+      data: { 'data-variant': ['info', 'success', 'warning', 'error'] },
+      children: ['icon', 'body', 'dismiss'],
+      // Dismissal is a signal wrapped in Presence: not a static tree.
+      emit: 'manual',
+    },
+    parts: {
+      icon: { element: 'span', aria: ['aria-hidden'], children: ['$slot'] },
+      body: { element: 'div', children: ['title', 'description', 'actions'] },
+      title: { element: 'div', children: ['$slot'] },
+      description: { element: 'div', children: ['$slot'], when: 'description' },
+      actions: { element: 'div', children: ['$slot'], when: 'actions' },
+      dismiss: {
+        element: 'button',
+        aria: ['aria-label'],
+        children: ['$text'],
+        when: 'dismissible || onDismiss',
+      },
+    },
+  },
   states: [],
   variants: ['info', 'success', 'warning', 'error'],
   sizes: [],

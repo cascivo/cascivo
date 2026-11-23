@@ -6,6 +6,28 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   clientJs: 'none',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'label',
+      local: 'wrapper',
+      data: { 'data-disabled': [''] },
+      // `group` is RadioGroup, a second component in this file that wraps Radios; listed
+      // here because the tree has a single root.
+      children: ['input', 'control', 'label', 'group'],
+      emit: 'manual',
+    },
+    parts: {
+      input: { element: 'input', aria: ['aria-label'] },
+      control: { element: 'span', aria: ['aria-hidden'] },
+      label: { element: 'span', children: ['$text'], when: 'label' },
+      group: {
+        element: 'div',
+        role: 'radiogroup',
+        data: { 'data-orientation': ['horizontal', 'vertical'] },
+        children: ['$slot'],
+      },
+    },
+  },
   states: ['unchecked', 'checked'],
   variants: [],
   sizes: [],

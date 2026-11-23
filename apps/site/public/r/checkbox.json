@@ -32,7 +32,8 @@
         "element": "label",
         "local": "wrapper",
         "data": {
-          "data-disabled": ["true"]
+          "data-disabled": ["true"],
+          "data-state": ["unchecked", "checked", "indeterminate"]
         },
         "children": ["input", "control", "label"],
         "emit": "manual"

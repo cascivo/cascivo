@@ -6,6 +6,30 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   clientJs: 'enhancement',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      data: {
+        'data-state': ['idle', 'focused', 'error'],
+        'data-resize': ['none', 'vertical', 'both'],
+        // Presence-only: `''` when set, absent otherwise.
+        'data-autosize': [''],
+        'data-ai': [''],
+      },
+      children: ['label', 'textarea', 'error', 'hint'],
+      emit: 'manual',
+    },
+    parts: {
+      label: { element: 'label', children: ['$text'], when: 'label' },
+      textarea: {
+        element: 'textarea',
+        aria: ['aria-multiline', 'aria-invalid', 'aria-describedby', 'aria-label'],
+      },
+      error: { element: 'span', role: 'alert', children: ['$text'], when: 'error' },
+      hint: { element: 'span', children: ['$text'], when: '!error && hint' },
+    },
+  },
   states: ['idle', 'focused', 'error'],
   variants: [],
   sizes: [],

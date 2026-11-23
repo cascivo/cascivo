@@ -7,6 +7,25 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'details',
+      local: 'sources',
+      children: ['summary', 'list'],
+      emit: 'manual',
+    },
+    parts: {
+      summary: { element: 'summary', children: ['$text', 'indicator'] },
+      indicator: { element: 'span', aria: ['aria-hidden'] },
+      list: { element: 'ol', children: ['item'] },
+      // One per source, in a loop.
+      item: { element: 'li', children: ['title', 'host', 'description'] },
+      // A link for http(s) URLs, plain text otherwise.
+      title: { element: ['a', 'span'], children: ['$text'] },
+      host: { element: 'span', children: ['$text'] },
+      description: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

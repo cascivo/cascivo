@@ -7,6 +7,39 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      data: {
+        'data-status': ['pending', 'running', 'awaiting-approval', 'complete', 'error', 'denied'],
+      },
+      children: ['disclosure', 'summary', 'actions'],
+      emit: 'manual',
+    },
+    parts: {
+      // With an input/output/error the header is a `<details>` summary, otherwise a plain div.
+      disclosure: { element: 'details', children: ['summary', 'body'] },
+      summary: {
+        element: ['summary', 'div'],
+        children: ['glyph', 'name', 'badge', 'indicator'],
+      },
+      glyph: { element: 'span', aria: ['aria-hidden'] },
+      name: { element: 'code', children: ['$text'] },
+      badge: { element: 'span', children: ['$text'] },
+      indicator: { element: 'span', aria: ['aria-hidden'] },
+      body: { element: 'div', children: ['section'] },
+      // One per present input / output / error.
+      section: {
+        element: 'div',
+        data: { 'data-kind': ['error'] },
+        children: ['section-label', 'code'],
+      },
+      'section-label': { element: 'div', children: ['$text'] },
+      // String payloads only; node payloads render in the caller's own element.
+      code: { element: 'pre', children: ['$text'] },
+      actions: { element: 'div', children: ['$slot'], when: 'actions' },
+    },
+  },
   states: ['pending', 'running', 'awaiting-approval', 'complete', 'error', 'denied'],
   variants: [],
   sizes: [],

@@ -27,6 +27,46 @@
     "category": "inputs",
     "clientJs": "enhancement",
     "contractTier": "native",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "group",
+        "role": "radiogroup",
+        "aria": ["aria-label"],
+        "children": ["card"],
+        "emit": "manual"
+      },
+      "parts": {
+        "card": {
+          "element": "label",
+          "data": {
+            "data-disabled": [""]
+          },
+          "children": ["input", "glyph", "body"]
+        },
+        "input": {
+          "element": "input"
+        },
+        "glyph": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "when": "!hideIndicator"
+        },
+        "body": {
+          "element": "span",
+          "children": ["title", "description"]
+        },
+        "title": {
+          "element": "span",
+          "children": ["$slot"]
+        },
+        "description": {
+          "element": "span",
+          "children": ["$slot"],
+          "when": "description"
+        }
+      }
+    },
     "states": ["default", "checked", "disabled"],
     "variants": [],
     "sizes": [],

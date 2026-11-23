@@ -6,6 +6,39 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   clientJs: 'enhancement',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      data: {
+        'data-state': ['idle', 'focused', 'error'],
+        'data-size': ['sm', 'md', 'lg'],
+      },
+      children: ['label', 'field', 'error', 'hint'],
+      emit: 'manual',
+    },
+    parts: {
+      label: { element: 'label', children: ['$text'], when: 'label' },
+      field: { element: 'div', children: ['input', 'steppers'] },
+      input: {
+        element: 'input',
+        role: 'spinbutton',
+        aria: [
+          'aria-valuenow',
+          'aria-valuemin',
+          'aria-valuemax',
+          'aria-invalid',
+          'aria-describedby',
+          'aria-label',
+        ],
+      },
+      steppers: { element: 'div', children: ['stepper'] },
+      // Rendered twice: increment, then decrement.
+      stepper: { element: 'button', aria: ['aria-label'] },
+      error: { element: 'span', role: 'alert', children: ['$text'], when: 'error' },
+      hint: { element: 'span', children: ['$text'], when: '!error && hint' },
+    },
+  },
   states: ['idle', 'focused', 'error'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

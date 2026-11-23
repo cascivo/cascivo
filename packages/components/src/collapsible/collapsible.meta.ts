@@ -6,6 +6,25 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'enhancement',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'details',
+      local: 'root',
+      data: { 'data-state': ['open', 'closed'] },
+      children: ['trigger', 'content'],
+      // Ids and open state come from a signal: not a static tree.
+      emit: 'manual',
+    },
+    parts: {
+      trigger: {
+        element: 'summary',
+        data: { 'data-state': ['open', 'closed'] },
+        aria: ['aria-controls', 'aria-disabled'],
+        children: ['$slot'],
+      },
+      content: { element: 'div', role: 'region', aria: ['aria-labelledby'], children: ['$slot'] },
+    },
+  },
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

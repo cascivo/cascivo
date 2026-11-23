@@ -18,7 +18,7 @@
         "accordion.tsx": "sha256-7a766e5cfd72d7ec01df415f0266907f4bc8e7fdebcdc5890ff32c8874249c09",
         "index.ts": "sha256-4e44786f6a7d08d54dcaad59e3c423ec89a6248852ddaa13e133cdbaa9e83cea",
         "accordion.module.css": "sha256-d559585cd5a3803d10319a19e7d62ccc0a4efc1a3d1ba569af28c9fdbd4f0a4c",
-        "accordion.meta.ts": "sha256-543ad4a8a11baf2827eade61c2cd1ac23bed4137b35f80dfd2ae6da3dd24e3d0"
+        "accordion.meta.ts": "sha256-06cb13f2c8af6b6accdacf81ab7b112bc4daaf143cbc8b32e36d5c3f6d349ac5"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -31,6 +31,48 @@
         "category": "navigation",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-type": ["single", "multiple"]
+            },
+            "children": ["item"],
+            "emit": "manual"
+          },
+          "parts": {
+            "item": {
+              "element": "details",
+              "data": {
+                "data-value": "string",
+                "data-state": ["open", "closed"]
+              },
+              "children": ["trigger", "content"]
+            },
+            "trigger": {
+              "element": "summary",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-controls"],
+              "children": ["heading", "indicator"]
+            },
+            "heading": {
+              "element": "h3",
+              "children": ["$slot"]
+            },
+            "indicator": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "content": {
+              "element": "div",
+              "role": "region",
+              "aria": ["aria-labelledby"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -321,7 +363,7 @@
         "ai-badge.tsx": "sha256-6692ba227f10cae300cb43344ad2a710139a12a0f64a518fdd1216e849c8e01d",
         "index.ts": "sha256-00e0e862eaaee71016e22757a11a5998147b909c8f4974db4ebbaa1d2bcd598a",
         "ai-badge.module.css": "sha256-5f56fd77f9a97da6044916b8c032423084facc17335d574e57c4cb3a37fe0623",
-        "ai-badge.meta.ts": "sha256-5cdfd065900d80d2679588683d59aab5284a6e21a8f2f7aed7ba906f58df2a7f"
+        "ai-badge.meta.ts": "sha256-828d7d2314db1082d30bbafa904abf08965f9c241890f25a1490005ef8d88e52"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -336,6 +378,25 @@
         "category": "display",
         "clientJs": "enhancement",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "local": "root",
+            "children": ["badge", "revert"],
+            "emit": "manual"
+          },
+          "parts": {
+            "badge": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "revert": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "when": "edited && onRevert"
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -586,7 +647,7 @@
         "ai-status.tsx": "sha256-280f512a8b8e425406f531ac3dfaabb555575dccd1fdba82e44119db1c20c2a5",
         "index.ts": "sha256-59aebd45c1673809ee806320581975d8764674d13eababff5b3560f736e27d13",
         "ai-status.module.css": "sha256-72c17e42131067e024e266391245b276dea76dd74b8cab480cc1997bec01489e",
-        "ai-status.meta.ts": "sha256-55e60fdf396906ccbfe4a25c6b9fc527424e38618ef7af6d0d7c8066d84fc2ca"
+        "ai-status.meta.ts": "sha256-50696c30e020c18255b0ae101f52d1b48c699175da9436dd11ac48ce0fc2a600"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -601,6 +662,33 @@
         "category": "feedback",
         "clientJs": "enhancement",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "ai-status",
+            "data": {
+              "data-status": ["thinking", "generating", "complete", "error", "stopped"]
+            },
+            "children": ["glyph", "label", "stop"],
+            "emit": "manual"
+          },
+          "parts": {
+            "glyph": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "label": {
+              "element": "span",
+              "role": "status",
+              "children": ["$slot"]
+            },
+            "stop": {
+              "element": "button",
+              "children": ["$text"],
+              "when": "onStop"
+            }
+          }
+        },
         "states": ["thinking", "generating", "complete", "error", "stopped"],
         "variants": [],
         "sizes": [],
@@ -3271,7 +3359,7 @@
         "chain-of-thought.tsx": "sha256-0a7b170a9f7c3a32d13bf65c37114ec81fadaa436cea61451eaf25029cd0b85e",
         "index.ts": "sha256-e05fbbf54fd0e1a4c07fa461bad7ee2ad0c3f7a02c2f8c7cada4b77577c34c69",
         "chain-of-thought.module.css": "sha256-f8d2039b93f5e33c9cb2fc491452c6a75ce4cb3c4c5d738356751ad043804246",
-        "chain-of-thought.meta.ts": "sha256-89739935a460646a759d474ddc89b221bce32bb92ac7e28fe42e7dd246d264b2"
+        "chain-of-thought.meta.ts": "sha256-9ac7ebab44c1360dace22702d9ceca764c67b5a7e08cdd230caab4bf617de393"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -3286,6 +3374,65 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "ol",
+            "local": "chain",
+            "aria": ["aria-busy"],
+            "children": ["step"],
+            "emit": "manual"
+          },
+          "parts": {
+            "step": {
+              "element": "li",
+              "data": {
+                "data-status": ["pending", "active", "complete", "error"]
+              },
+              "aria": ["aria-current"],
+              "children": ["marker", "body"]
+            },
+            "marker": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "body": {
+              "element": "div",
+              "children": ["disclosure", "heading", "description"]
+            },
+            "disclosure": {
+              "element": "details",
+              "children": ["summary", "description", "detail"],
+              "when": "detail"
+            },
+            "summary": {
+              "element": "summary",
+              "children": ["title", "indicator"]
+            },
+            "indicator": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "heading": {
+              "element": "div",
+              "children": ["title"],
+              "when": "!detail"
+            },
+            "title": {
+              "element": "span",
+              "children": ["$slot"]
+            },
+            "description": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "description"
+            },
+            "detail": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["pending", "active", "complete", "error"],
         "variants": [],
         "sizes": [],
@@ -3599,10 +3746,10 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.meta.ts"
       ],
       "fileHashes": {
-        "checkbox.tsx": "sha256-bc72ae387239b76d7636213c6cdddd091b314fdb19aa3a297266338d1488bd7c",
+        "checkbox.tsx": "sha256-8c74c7d8ac5bdc2dccaea4127a8c723c65d39854446ba4fe16ed5c8e4242b661",
         "index.ts": "sha256-cb76713df13a750d36ce3458f7b9b829986de64e69802681e0e66ea302612b84",
         "checkbox.module.css": "sha256-40acb3223bd3d3f176aba0803625cc7d2df7a461ef339194e8816d26d4c36ec8",
-        "checkbox.meta.ts": "sha256-f779e5a64d138db83e002578cb1515f93e94f426a0f15d6000ea653db84e5d47"
+        "checkbox.meta.ts": "sha256-19f7254440d64238ec7f9baf94b43e52222180463e5fdf7c69a4a350f7ad55cd"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -3620,7 +3767,8 @@
             "element": "label",
             "local": "wrapper",
             "data": {
-              "data-disabled": ["true"]
+              "data-disabled": ["true"],
+              "data-state": ["unchecked", "checked", "indeterminate"]
             },
             "children": ["input", "control", "label"],
             "emit": "manual"
@@ -3795,7 +3943,7 @@
         "checkbox-card.tsx": "sha256-2aeed628d20c78cf97501a013cf22aec078b10fcde7889e67a7a606c0f2a7cff",
         "index.ts": "sha256-bcb69c06be6286f0be6b8192abb0383be9eeb8b44aa5338b5bc22b8756c9a87f",
         "checkbox-card.module.css": "sha256-d6e4344dd68247e0ec41ebd7458459be180fa12e97c1299c1be918679e4045cd",
-        "checkbox-card.meta.ts": "sha256-42657b32108c65cd1eb6e0aa6d23ba44468add9ea0b08ffc1066cf1796f9403b"
+        "checkbox-card.meta.ts": "sha256-2507c7fe8b4af75b6f707f2e20a4f44f7ed66b71729809859bc1286e58303fc6"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -3808,6 +3956,43 @@
         "category": "inputs",
         "clientJs": "enhancement",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "label",
+            "local": "card",
+            "data": {
+              "data-disabled": [""]
+            },
+            "children": ["input", "glyph", "body"],
+            "emit": "manual"
+          },
+          "parts": {
+            "input": {
+              "element": "input"
+            },
+            "glyph": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["check"]
+            },
+            "check": {
+              "element": "svg"
+            },
+            "body": {
+              "element": "span",
+              "children": ["title", "description"]
+            },
+            "title": {
+              "element": "span",
+              "children": ["$slot"]
+            },
+            "description": {
+              "element": "span",
+              "children": ["$slot"],
+              "when": "description"
+            }
+          }
+        },
         "states": ["default", "checked", "disabled"],
         "variants": [],
         "sizes": [],
@@ -4252,7 +4437,7 @@
         "collapsible.tsx": "sha256-2864d6e8532a79077079950e22caedd33ad4123674ff5d99498efd0405aa1008",
         "index.ts": "sha256-a0f206a70adabe1567e129778a34ab5e2272bac9526cb7712e1e4eeb27d4a6c3",
         "collapsible.module.css": "sha256-f007d00fdbdaeb7fb68e214100a8f1173391136a28a60f0b154a689e46af4594",
-        "collapsible.meta.ts": "sha256-84db31bcec619e908687dcf707ce72ad1477b80730cec82ea5634ff125b6263b"
+        "collapsible.meta.ts": "sha256-e4b3c6ea37c9f0bb30f3e064e090f2508c2629188b9908a9034ef6330854cf6f"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -4266,6 +4451,33 @@
         "category": "display",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "details",
+            "local": "root",
+            "data": {
+              "data-state": ["open", "closed"]
+            },
+            "children": ["trigger", "content"],
+            "emit": "manual"
+          },
+          "parts": {
+            "trigger": {
+              "element": "summary",
+              "data": {
+                "data-state": ["open", "closed"]
+              },
+              "aria": ["aria-controls", "aria-disabled"],
+              "children": ["$slot"]
+            },
+            "content": {
+              "element": "div",
+              "role": "region",
+              "aria": ["aria-labelledby"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -5397,7 +5609,7 @@
         "contained-list.tsx": "sha256-4e5b4a2489f192a2991b41a557ffaddc1736fcc1422dfd3b0f5110d46cefe5bd",
         "index.ts": "sha256-135d12a12a06ff79dcda7b7e3971c5e3508296cee2b977e9f3137dce4e598ab9",
         "contained-list.module.css": "sha256-0e5173f57b1ed47368cce8555fff3c435f01ac6c168ea948ab9c1b574efd734f",
-        "contained-list.meta.ts": "sha256-b565a39c67922c042e58f095da9962f11d7db150460c4632112b8dbebe4401b9"
+        "contained-list.meta.ts": "sha256-f0444be23ed356ecd2c616aa11d6c8a0d7fb5e2319fc5fd3fac6cb5be48bf2e7"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -5410,6 +5622,47 @@
         "category": "display",
         "clientJs": "enhancement",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "data": {
+              "data-kind": ["on-page", "disclosed"]
+            },
+            "children": ["header", "list"],
+            "emit": "manual"
+          },
+          "parts": {
+            "header": {
+              "element": "div",
+              "children": ["label", "action"]
+            },
+            "label": {
+              "element": "h3",
+              "children": ["$slot"]
+            },
+            "action": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "action"
+            },
+            "list": {
+              "element": "ul",
+              "children": ["item"]
+            },
+            "item": {
+              "element": "li",
+              "data": {
+                "data-interactive": [""]
+              },
+              "children": ["itemContent"]
+            },
+            "itemContent": {
+              "element": ["div", "a", "button"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": ["on-page", "disclosed"],
         "sizes": [],
@@ -8564,10 +8817,10 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.meta.ts"
       ],
       "fileHashes": {
-        "field.tsx": "sha256-e6f154455f27b055a59d38cc307ec89c098917513e3acbfb8c160d07999d95f7",
+        "field.tsx": "sha256-0454b9dde2cb52992cd2ceff28572281a72f97789ca5baccac713bf26aad51af",
         "index.ts": "sha256-af9db7b6453ad1385895c6cb7a00e21f34729a76014d4be1cbde318800c44ebc",
         "field.module.css": "sha256-4c967f468b4ba0c2f82abf2b6dff2c19f7a886747dc0c1558e7e78530b934c84",
-        "field.meta.ts": "sha256-431c0792ae5bf7e5c78540f21de1f8f03c6e6b955db085d334f8c83381397d51"
+        "field.meta.ts": "sha256-0e8735c974ad57518f294deff5d37479d2e54c971087a53ab27cd80b9a746896"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -8584,7 +8837,8 @@
           "root": {
             "element": "div",
             "data": {
-              "data-disabled": [""]
+              "data-disabled": [""],
+              "data-state": ["default", "disabled", "invalid"]
             },
             "children": ["@label", "$slot", "description", "error"],
             "emit": "manual"
@@ -10015,7 +10269,7 @@
         "image.tsx": "sha256-fa8e18c8f1939214c4f523d8110885f69e2e30c805aaf293ae85f1849cc593b7",
         "index.ts": "sha256-5524db0344c87c802cf92a7149e677bb4985767119ff7e118008f276039ac9ed",
         "image.module.css": "sha256-a70570d6e9476fc1e60930d461c915fa8adc0e82fc57fe343171de0af8da56fa",
-        "image.meta.ts": "sha256-e11589d32a8c9c20fffb6bbb5e4cb7dcd5470d6d059f3da902170dfc1b006c30"
+        "image.meta.ts": "sha256-957af6b9918d10d47b9f8b97208c9ded7d8de5c7967057d551a3515cb0c1c265"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -10028,6 +10282,38 @@
         "category": "display",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "local": "wrapper",
+            "data": {
+              "data-state": ["loading", "loaded", "error"],
+              "data-radius": ["none", "sm", "md", "lg", "full"],
+              "data-zoom": "boolean",
+              "data-blurred": "boolean"
+            },
+            "aria": ["aria-label"],
+            "role": "img",
+            "children": ["placeholder", "fallback", "image"],
+            "emit": "manual"
+          },
+          "parts": {
+            "placeholder": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "when": "state === 'loading'"
+            },
+            "fallback": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "when": "state === 'error' && !fallbackSrc"
+            },
+            "image": {
+              "element": "img",
+              "when": "state !== 'error' || fallbackSrc"
+            }
+          }
+        },
         "states": ["loading", "loaded", "error"],
         "variants": [],
         "sizes": [],
@@ -13486,7 +13772,7 @@
         "native-select.tsx": "sha256-d6eddb83cd8e5cf4af6d6a0dce521d8304b3c8949c9cd026adbc4d4d4167f603",
         "index.ts": "sha256-6af5d7c13fc052ae77c40616cf2a4dda79af16cd78ba63d7cd254c2d24bf8800",
         "native-select.module.css": "sha256-105112173293d8d9c6a9d1e6514aa99e989c72483d3df408d7ae96df3e3647f6",
-        "native-select.meta.ts": "sha256-57ef7be3fccaeccbc35acf494508ceac31a96d83ee5f5557118a3e8704d1349d"
+        "native-select.meta.ts": "sha256-e7bc8b602d943319c3af39d8e38ab881c17c1878437b34c675d42a2a975e157f"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -13500,6 +13786,29 @@
         "category": "inputs",
         "clientJs": "none",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "data": {
+              "data-size": ["sm", "md", "lg"],
+              "data-invalid": [""]
+            },
+            "children": ["select", "chevron"],
+            "emit": "manual"
+          },
+          "parts": {
+            "select": {
+              "element": "select",
+              "aria": ["aria-invalid"],
+              "children": ["$slot"]
+            },
+            "chevron": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            }
+          }
+        },
         "states": ["default", "focus", "disabled", "invalid"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -13810,7 +14119,7 @@
         "notification.tsx": "sha256-96d50c30208d15362532218d153b262964d7c08c21fac82575ae9bac97027e7a",
         "index.ts": "sha256-745a045b5c161dd4f4d53eccc0685b4d7aea58f12317abbed47dee0486e62f74",
         "notification.module.css": "sha256-5c7995e8eb4ea44832527a3850890609daffeaf2b50776e6fb56511a0c49fb13",
-        "notification.meta.ts": "sha256-ec4e769ae63c90ffd9e49f24403fa4267586b5ba9c93d75db2543e51f59ce598"
+        "notification.meta.ts": "sha256-1e70f551d14fe8593be967cd74516cef5b3958615d3e68c9d65e271756b00563"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -13824,6 +14133,47 @@
         "category": "feedback",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-variant": ["info", "success", "warning", "error"]
+            },
+            "children": ["icon", "body", "dismiss"],
+            "emit": "manual"
+          },
+          "parts": {
+            "icon": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "children": ["$slot"]
+            },
+            "body": {
+              "element": "div",
+              "children": ["title", "description", "actions"]
+            },
+            "title": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "description": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "description"
+            },
+            "actions": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "actions"
+            },
+            "dismiss": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"],
+              "when": "dismissible || onDismiss"
+            }
+          }
+        },
         "states": [],
         "variants": ["info", "success", "warning", "error"],
         "sizes": [],
@@ -13985,7 +14335,7 @@
         "number-input.tsx": "sha256-c89a10e18c2f1b6cc5377f45ff5dd2b07dd28d0ba1bb597d885e468163dd62a0",
         "index.ts": "sha256-e1bfb7f0d680c0d3353e29e96ad022f322e67560fcea6e5772d1e88fff732c51",
         "number-input.module.css": "sha256-052b1ea4e35ba484767d3b30b590e742a7069125857dc7c0a3bb2b8ceacbb39a",
-        "number-input.meta.ts": "sha256-6e09f4b114f5b4e5e5a5e200ac5a2f3135f40eee9d55df392bbaa5691c955634"
+        "number-input.meta.ts": "sha256-096b5cd3836387aa741d1cfca984bb7cf09f7e0f576d40f7212f524dfdc6d808"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -14000,6 +14350,60 @@
         "category": "inputs",
         "clientJs": "enhancement",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-state": ["idle", "focused", "error"],
+              "data-size": ["sm", "md", "lg"]
+            },
+            "children": ["label", "field", "error", "hint"],
+            "emit": "manual"
+          },
+          "parts": {
+            "label": {
+              "element": "label",
+              "children": ["$text"],
+              "when": "label"
+            },
+            "field": {
+              "element": "div",
+              "children": ["input", "steppers"]
+            },
+            "input": {
+              "element": "input",
+              "role": "spinbutton",
+              "aria": [
+                "aria-valuenow",
+                "aria-valuemin",
+                "aria-valuemax",
+                "aria-invalid",
+                "aria-describedby",
+                "aria-label"
+              ]
+            },
+            "steppers": {
+              "element": "div",
+              "children": ["stepper"]
+            },
+            "stepper": {
+              "element": "button",
+              "aria": ["aria-label"]
+            },
+            "error": {
+              "element": "span",
+              "role": "alert",
+              "children": ["$text"],
+              "when": "error"
+            },
+            "hint": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "!error && hint"
+            }
+          }
+        },
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -14703,7 +15107,7 @@
         "password-input.tsx": "sha256-60aca33bd03635e762b08cc8eca458151bba9933de22102e768b2e1be9bc920e",
         "index.ts": "sha256-b941920cedfd4a384a2d7ce70125deccb7e287f6ee225c74d8b9b7b84cf38df8",
         "password-input.module.css": "sha256-691e0128f4573fcf6bd44c44775e0834030a6ee36968c58949a120d00f3ecae2",
-        "password-input.meta.ts": "sha256-f5356e1ad120de276941a440c351c78c7de25caaf90f801e60cf8052632712b6"
+        "password-input.meta.ts": "sha256-c7413f45d37b9fc853676add71bc03eeebe13c8f07710554e64a5b664d9528d4"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -14717,6 +15121,52 @@
         "category": "inputs",
         "clientJs": "enhancement",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-size": ["sm", "md", "lg"],
+              "data-revealed": [""]
+            },
+            "children": ["input-row", "strength-meter"],
+            "emit": "manual"
+          },
+          "parts": {
+            "input-row": {
+              "element": "div",
+              "children": ["input", "reveal-btn"]
+            },
+            "input": {
+              "element": "input"
+            },
+            "reveal-btn": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["reveal-icon"]
+            },
+            "reveal-icon": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "strength-meter": {
+              "element": "div",
+              "role": "meter",
+              "data": {
+                "data-strength": ["weak", "fair", "good", "strong"]
+              },
+              "aria": ["aria-label", "aria-valuenow", "aria-valuemin", "aria-valuemax"],
+              "children": ["strength-segment"],
+              "when": "showStrengthMeter"
+            },
+            "strength-segment": {
+              "element": "div",
+              "data": {
+                "data-filled": [""]
+              }
+            }
+          }
+        },
         "states": ["idle", "revealed"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -15603,7 +16053,7 @@
         "prompt-suggestions.tsx": "sha256-d51ab685058a45cdae9c6f658070ccdd90ed3094c2d7d9b130b61f637355e84d",
         "index.ts": "sha256-870275e4199c791aaee6ee38f1bd8b894caa24a88ad12d9a14779b921831f2d3",
         "prompt-suggestions.module.css": "sha256-7685b53f86fca115916cdcdd510a667c7e0ae82e0171f464d873234d4afea04c",
-        "prompt-suggestions.meta.ts": "sha256-e33bf96da53a9c345c72d8264bfe3b16f95549be7fe9e3602c0c098a4c49d30c"
+        "prompt-suggestions.meta.ts": "sha256-ad18cb6eb76eb646afa7cda4707a8c7e8704668137feecfa4369d3d9beb4cd96"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -15618,6 +16068,22 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "suggestions",
+            "role": "group",
+            "aria": ["aria-label"],
+            "children": ["chip"],
+            "emit": "manual"
+          },
+          "parts": {
+            "chip": {
+              "element": "button",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -16326,7 +16792,7 @@
         "radio.tsx": "sha256-c543888383fb470d694be74b7fbd199eae1ac5e774e84ce081b1a0519d943f71",
         "index.ts": "sha256-74ae77781c111fa60b4e604790bf463fec60c4a91b03d48965aa3c054eb91e79",
         "radio.module.css": "sha256-505ca3d7c8e242dcb0f3a7149db2857f09e5dff3d712fb8dcf9badb21ca009ab",
-        "radio.meta.ts": "sha256-ad3961b35ba392e4c0b28346d0bbc525c8c3085362a8b7c88c893bc0fd823a0c"
+        "radio.meta.ts": "sha256-0335ef8a2517d2b45cef356f34e918e26049135484ae7c185d70dd25289a9842"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -16339,6 +16805,40 @@
         "category": "inputs",
         "clientJs": "none",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "label",
+            "local": "wrapper",
+            "data": {
+              "data-disabled": [""]
+            },
+            "children": ["input", "control", "label", "group"],
+            "emit": "manual"
+          },
+          "parts": {
+            "input": {
+              "element": "input",
+              "aria": ["aria-label"]
+            },
+            "control": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "label": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "label"
+            },
+            "group": {
+              "element": "div",
+              "role": "radiogroup",
+              "data": {
+                "data-orientation": ["horizontal", "vertical"]
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["unchecked", "checked"],
         "variants": [],
         "sizes": [],
@@ -16468,7 +16968,7 @@
         "radio-card.tsx": "sha256-cd2f0c9509267d5bac6a9528dea6e8ab188eb67181bdb2dbdb6b0b1c5a8d02b5",
         "index.ts": "sha256-e4dd5ba5cd66d32e10c4578c2972a64decc5ce79f4f78a78d9eefe00248d6eb9",
         "radio-card.module.css": "sha256-6a959571c4a30f1f92c68a3909bfd474e69ad3b4b2b47af28b3dbf1e3e1576c2",
-        "radio-card.meta.ts": "sha256-4e823e23e27daa44e3431aad209660c16bcec62c010da12effc4cf7eaf8d331c"
+        "radio-card.meta.ts": "sha256-f44852574c3e88d138d70641b3fcd86021190317abef2d03a8699686a5ff03d3"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -16481,6 +16981,46 @@
         "category": "inputs",
         "clientJs": "enhancement",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "group",
+            "role": "radiogroup",
+            "aria": ["aria-label"],
+            "children": ["card"],
+            "emit": "manual"
+          },
+          "parts": {
+            "card": {
+              "element": "label",
+              "data": {
+                "data-disabled": [""]
+              },
+              "children": ["input", "glyph", "body"]
+            },
+            "input": {
+              "element": "input"
+            },
+            "glyph": {
+              "element": "span",
+              "aria": ["aria-hidden"],
+              "when": "!hideIndicator"
+            },
+            "body": {
+              "element": "span",
+              "children": ["title", "description"]
+            },
+            "title": {
+              "element": "span",
+              "children": ["$slot"]
+            },
+            "description": {
+              "element": "span",
+              "children": ["$slot"],
+              "when": "description"
+            }
+          }
+        },
         "states": ["default", "checked", "disabled"],
         "variants": [],
         "sizes": [],
@@ -16615,7 +17155,7 @@
         "rating-group.tsx": "sha256-035c428c5752cef55f6d2e65f71ad2cf24102cd3ab9d6d5a96f3c92d54adfa85",
         "index.ts": "sha256-098b2f4d3f0184fffa742b8ff2098a64b1c9e6197cd21a89032858fd3633a04e",
         "rating-group.module.css": "sha256-e62a96251c881c34547e83349a315475b3ea7750aa944d971d0f45f1963b2155",
-        "rating-group.meta.ts": "sha256-25e1dd6613b295c48ba662e5654a52ec5048cf07ba0f1607300884220f5549e1"
+        "rating-group.meta.ts": "sha256-57a83d6854b61e13405792645e1bb4d7571c388b577bd6396614669a05e73217"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -16629,6 +17169,29 @@
         "category": "inputs",
         "clientJs": "required",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "role": "radiogroup",
+            "data": {
+              "data-size": ["sm", "md", "lg"]
+            },
+            "children": ["star"],
+            "emit": "manual"
+          },
+          "parts": {
+            "star": {
+              "element": "button",
+              "role": "radio",
+              "data": {
+                "data-filled": [""],
+                "data-value": "number"
+              },
+              "aria": ["aria-checked", "aria-label"]
+            }
+          }
+        },
         "states": ["idle", "disabled", "readOnly"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -16765,7 +17328,7 @@
         "reasoning.tsx": "sha256-adf49b8ea94588eeca131aadb4315b7325859921c1c79e647e8ece7eb2ba27c7",
         "index.ts": "sha256-b4d468e88b7040257e17f62cc3dbe92edd6f933ae237e63310daabe67da5fd38",
         "reasoning.module.css": "sha256-863db22231d79f5c6815344e3f69fce0c4f89fdb6237aa0b25c0acd4db44e4d1",
-        "reasoning.meta.ts": "sha256-b99886bc725f5dbf267cd541f2c288b44adc5ad59001e30b56902031b70125f6"
+        "reasoning.meta.ts": "sha256-cd5bb0dff7c850aef4a51ba519b2a18ea148824dc2760c091d89d3936c4d297d"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -16780,6 +17343,35 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "details",
+            "data": {
+              "data-streaming": [""]
+            },
+            "children": ["trigger", "content"],
+            "emit": "manual"
+          },
+          "parts": {
+            "trigger": {
+              "element": "summary",
+              "children": ["glyph", "$slot", "indicator"]
+            },
+            "glyph": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "indicator": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "content": {
+              "element": "div",
+              "aria": ["aria-busy"],
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": ["streaming", "settled"],
         "variants": [],
         "sizes": [],
@@ -17525,7 +18117,7 @@
         "search.tsx": "sha256-31e25bbd7476b91a8ad6b42e7db417e6618f0f851a967aab5c0dbb7a1f357d0f",
         "index.ts": "sha256-47249a52c6a441ee459d54591b48acc65feafdc50ecb7e6ab3eb3a05e292b8a7",
         "search.module.css": "sha256-bb8b8f5650d1f3623aed5b21b05f5bc6894a82c8399ed8ab7ce53cd213b7c709",
-        "search.meta.ts": "sha256-8c1db1dbf4c471f1381a802e400735b87f8e2afecadfa76f8938c7b9fc08018d"
+        "search.meta.ts": "sha256-e0ad30cc7c9d8ff539688cfbca0a8190db21092f09ffa55eabc0ce0d29f48071"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -17539,6 +18131,39 @@
         "category": "inputs",
         "clientJs": "enhancement",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "root",
+            "data": {
+              "data-size": ["sm", "md", "lg"],
+              "data-state": ["empty", "filled"]
+            },
+            "children": ["label", "icon", "input", "clear"],
+            "emit": "manual"
+          },
+          "parts": {
+            "label": {
+              "element": "label",
+              "children": ["$text"],
+              "when": "label"
+            },
+            "icon": {
+              "element": "span",
+              "children": ["$slot"]
+            },
+            "input": {
+              "element": "input",
+              "aria": ["aria-labelledby", "aria-label", "aria-describedby", "aria-invalid"]
+            },
+            "clear": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$slot"],
+              "when": "filled"
+            }
+          }
+        },
         "states": ["empty", "filled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -19467,7 +20092,7 @@
         "slider.tsx": "sha256-c49476378ead6c842e27d4ae0078cc8900de23b4f66f7239fe88fb17a38a3e72",
         "index.ts": "sha256-8dc2b339ea4246a3740ab8294c12e2b5405113ee0bae262e794ffb0771157b6f",
         "slider.module.css": "sha256-4bff460e358e21d6595f9e3d4472642bcd9f9ee2826b810c76387c712d5c8632",
-        "slider.meta.ts": "sha256-2b012d1ffcd007fcc1626be3db5a3939dd2f7fd7eb377043184defbce9aebced"
+        "slider.meta.ts": "sha256-4a1f1a6778ef624a28e5abaf1e6a816b6076b4cef0529a707f4c8c87b12d6501"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -19480,6 +20105,28 @@
         "category": "inputs",
         "clientJs": "none",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-disabled": [""]
+            },
+            "children": ["label", "slider"],
+            "emit": "auto"
+          },
+          "parts": {
+            "label": {
+              "element": "label",
+              "children": ["$text"],
+              "when": "label"
+            },
+            "slider": {
+              "element": "input",
+              "aria": ["aria-label"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -19633,7 +20280,7 @@
         "sources.tsx": "sha256-058acf2025f1a1925a6993295e82506a4cb486f0586f15bf66c8f424d18888db",
         "index.ts": "sha256-23f571560f79f390af6ea5bce00096602ed32f74eb627e3d3608127241e724bc",
         "sources.module.css": "sha256-70163937865d10812d1378a9943edfe43159a3330ecd2bc9a593fbbca1eba819",
-        "sources.meta.ts": "sha256-6c3fc483091fbe508fe60ffd2dd446753e12042e38c4897ed84e88628f5f10bd"
+        "sources.meta.ts": "sha256-811fab6ab765b44eccccdf65951fe914ceb78c9f177204bda901a2666dede217"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -19648,6 +20295,44 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "details",
+            "local": "sources",
+            "children": ["summary", "list"],
+            "emit": "manual"
+          },
+          "parts": {
+            "summary": {
+              "element": "summary",
+              "children": ["$text", "indicator"]
+            },
+            "indicator": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "list": {
+              "element": "ol",
+              "children": ["item"]
+            },
+            "item": {
+              "element": "li",
+              "children": ["title", "host", "description"]
+            },
+            "title": {
+              "element": ["a", "span"],
+              "children": ["$text"]
+            },
+            "host": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "description": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -19777,7 +20462,7 @@
         "spinner.tsx": "sha256-b8181467e642cb7dd358502beb02782783eca4a2442921e3b28536e8a612475b",
         "index.ts": "sha256-289926314e31ebc055e6646d2c4f3734b89b35e64f64029a52229f0de0b016e5",
         "spinner.module.css": "sha256-0b30409351e2118f18b66ac857adafd22b18eecd786ac4b201331c28ad94ca72",
-        "spinner.meta.ts": "sha256-ae476fe9280c38b21860e21f8ff0bf94d10c32aa9d75a010464e5af543fe5960"
+        "spinner.meta.ts": "sha256-8047208b77fb3e8ce1443f405868a22e9439b3f40aefa2a167192c0a919409e4"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -19792,6 +20477,17 @@
         "category": "feedback",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "data": {
+              "data-size": ["sm", "md", "lg"]
+            },
+            "role": "status",
+            "aria": ["aria-label"],
+            "emit": "auto"
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -20359,7 +21055,7 @@
         "steps.tsx": "sha256-b28b40428a5bd54f077b33fadc077f7b201a68c4df000651fac0d124bf1a100f",
         "index.ts": "sha256-de99ebe3956fa14cba66f2bdc5fb0b72587f5c5be170769d426f8df1e63a499a",
         "steps.module.css": "sha256-a3830cd6d4b61391207ed2f4d9b9b132742c37cbaaa6a3f8fdbcec1eec0747a0",
-        "steps.meta.ts": "sha256-90cafb10342795b912f0074f5bfd50c0c7931b56c446d6f48b3568c18099fbfa"
+        "steps.meta.ts": "sha256-98cfe0a014b88bc9d57778800ffa7760d3fb05448c5fd89fabedb23497557598"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -20373,6 +21069,35 @@
         "category": "navigation",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "ol",
+            "data": {
+              "data-orientation": ["horizontal", "vertical"]
+            },
+            "aria": ["aria-label"],
+            "children": ["step"],
+            "emit": "manual"
+          },
+          "parts": {
+            "step": {
+              "element": "li",
+              "data": {
+                "data-state": ["pending", "active", "complete", "error"]
+              },
+              "aria": ["aria-current"],
+              "children": ["circle", "label"]
+            },
+            "circle": {
+              "element": "div",
+              "children": ["$text"]
+            },
+            "label": {
+              "element": "span",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": ["pending", "active", "complete", "error"],
         "variants": [],
         "sizes": [],
@@ -20665,7 +21390,7 @@
         "structured-list.tsx": "sha256-5e41094a53b296d0f1026fd0fcf2353001350abb08c4b425f919d2cec6f97680",
         "index.ts": "sha256-f1b4da0f483c2389c17ba7d01c4c2bcd7764ad284bc18b01faeeaf4a907d206b",
         "structured-list.module.css": "sha256-6d70d2d5b53f472098236450775c8847cfe86e4b380f5f40ecee475955cc1d90",
-        "structured-list.meta.ts": "sha256-9388be5c8eb4fbecc99f98d23fc7065b419e01f783cee744e6226f416277f26e"
+        "structured-list.meta.ts": "sha256-87163fe6b3619b144dbb9c9ebe28c1bfdac72b1d05f6712b02fbec109d34533b"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -20678,6 +21403,49 @@
         "category": "display",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "list",
+            "aria": ["aria-label"],
+            "modifiers": {
+              "selectable": "selectable"
+            },
+            "children": ["headerRow", "body"],
+            "emit": "manual"
+          },
+          "parts": {
+            "headerRow": {
+              "element": "div",
+              "children": ["headerCell"],
+              "when": "headers"
+            },
+            "headerCell": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "body": {
+              "element": "div",
+              "children": ["row"]
+            },
+            "row": {
+              "element": "div",
+              "data": {
+                "data-selected": "boolean"
+              },
+              "aria": ["aria-checked", "aria-labelledby"],
+              "children": ["cell"]
+            },
+            "cell": {
+              "element": "div",
+              "children": ["$slot", "indicator"]
+            },
+            "indicator": {
+              "element": "span",
+              "when": "selectable"
+            }
+          }
+        },
         "states": ["default", "selected"],
         "variants": ["static", "selectable"],
         "sizes": [],
@@ -21418,7 +22186,7 @@
         "tag.tsx": "sha256-d5181e4992515c8db248ac404fe4d52c0d1e6a9db8571955e302f0e62bc157bb",
         "index.ts": "sha256-ea279eb14cb03c2a5e50f0ce5ece93f82b2f0a64ec522aebdfd908b10aabfcfe",
         "tag.module.css": "sha256-b675515cee8562e789a8943932f256280fe06abb235bf9cdfa68e0bf3447cb4b",
-        "tag.meta.ts": "sha256-fe9598c20ddd925a27a9d6f5b32d6a0ec0260f73ab19681c3d417aa72babfac4"
+        "tag.meta.ts": "sha256-016dd27cab96d7d3ab38977bba41666f4994ff79bcce7ccf25be9d700d5f1412"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -21433,6 +22201,25 @@
         "category": "display",
         "clientJs": "enhancement",
         "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "span",
+            "data": {
+              "data-variant": ["default", "info", "success", "warning", "error"],
+              "data-size": ["sm", "md"]
+            },
+            "children": ["$slot", "dismiss"],
+            "emit": "auto"
+          },
+          "parts": {
+            "dismiss": {
+              "element": "button",
+              "aria": ["aria-label"],
+              "children": ["$text"],
+              "when": "onDismiss"
+            }
+          }
+        },
         "states": [],
         "variants": ["default", "info", "success", "warning", "error"],
         "sizes": ["sm", "md"],
@@ -22060,7 +22847,7 @@
         "textarea.tsx": "sha256-74f851b2888d4f8691effa629663ef65a5579f74f43c26da7225c6a2b36772b2",
         "index.ts": "sha256-faa6e1544725eaeb285606e523d371b45b46d79cf0ab71ab9d5fe4e09ef244b7",
         "textarea.module.css": "sha256-a9ab00f28d9c14d5024b89fa25dab5a8ca13991ec1fe0a3bd68ce12cf01c8f63",
-        "textarea.meta.ts": "sha256-bab1d7b2eeab2b5ab21f1dd69e4e1d4a84d213eddbfa096d34c7540ada1a9ce0"
+        "textarea.meta.ts": "sha256-3e7f304e9d68aa49d102d44d28e4e54b44cfdc0af6f4fe468271fd14722d80b4"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -22073,6 +22860,42 @@
         "category": "inputs",
         "clientJs": "enhancement",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "wrapper",
+            "data": {
+              "data-state": ["idle", "focused", "error"],
+              "data-resize": ["none", "vertical", "both"],
+              "data-autosize": [""],
+              "data-ai": [""]
+            },
+            "children": ["label", "textarea", "error", "hint"],
+            "emit": "manual"
+          },
+          "parts": {
+            "label": {
+              "element": "label",
+              "children": ["$text"],
+              "when": "label"
+            },
+            "textarea": {
+              "element": "textarea",
+              "aria": ["aria-multiline", "aria-invalid", "aria-describedby", "aria-label"]
+            },
+            "error": {
+              "element": "span",
+              "role": "alert",
+              "children": ["$text"],
+              "when": "error"
+            },
+            "hint": {
+              "element": "span",
+              "children": ["$text"],
+              "when": "!error && hint"
+            }
+          }
+        },
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": [],
@@ -23582,7 +24405,7 @@
         "tool-call.tsx": "sha256-490d479a2c9419420b33b641c7fdd38f48f73afaa98c61d105cbcad8da741c84",
         "index.ts": "sha256-4b4c3203d170de1a944dbf00d2322350afa8eb82b8602add9a8714a61bf0dbb9",
         "tool-call.module.css": "sha256-1bac6c0bd4250babc7188bedfdcb54d0fda393a91f03018807be15e03904f5de",
-        "tool-call.meta.ts": "sha256-244d47f6ecb8f8fd6b132d6a61c2370720187e17d4d1d4a9318a3245905c4bb1"
+        "tool-call.meta.ts": "sha256-c80b96ab75d86db6882b6c2bd8bdb183a4af6bdc072c257d28cc2e34cabbb694"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -23597,6 +24420,73 @@
         "category": "display",
         "clientJs": "none",
         "contractTier": "native",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "data": {
+              "data-status": [
+                "pending",
+                "running",
+                "awaiting-approval",
+                "complete",
+                "error",
+                "denied"
+              ]
+            },
+            "children": ["disclosure", "summary", "actions"],
+            "emit": "manual"
+          },
+          "parts": {
+            "disclosure": {
+              "element": "details",
+              "children": ["summary", "body"]
+            },
+            "summary": {
+              "element": ["summary", "div"],
+              "children": ["glyph", "name", "badge", "indicator"]
+            },
+            "glyph": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "name": {
+              "element": "code",
+              "children": ["$text"]
+            },
+            "badge": {
+              "element": "span",
+              "children": ["$text"]
+            },
+            "indicator": {
+              "element": "span",
+              "aria": ["aria-hidden"]
+            },
+            "body": {
+              "element": "div",
+              "children": ["section"]
+            },
+            "section": {
+              "element": "div",
+              "data": {
+                "data-kind": ["error"]
+              },
+              "children": ["section-label", "code"]
+            },
+            "section-label": {
+              "element": "div",
+              "children": ["$text"]
+            },
+            "code": {
+              "element": "pre",
+              "children": ["$text"]
+            },
+            "actions": {
+              "element": "div",
+              "children": ["$slot"],
+              "when": "actions"
+            }
+          }
+        },
         "states": ["pending", "running", "awaiting-approval", "complete", "error", "denied"],
         "variants": [],
         "sizes": [],

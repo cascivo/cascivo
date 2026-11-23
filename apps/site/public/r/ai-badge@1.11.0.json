@@ -28,6 +28,25 @@
     "category": "display",
     "clientJs": "enhancement",
     "contractTier": "native",
+    "anatomy": {
+      "root": {
+        "element": "span",
+        "local": "root",
+        "children": ["badge", "revert"],
+        "emit": "manual"
+      },
+      "parts": {
+        "badge": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "revert": {
+          "element": "button",
+          "aria": ["aria-label"],
+          "when": "edited && onRevert"
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

@@ -159,7 +159,11 @@ export function Field({
     : children
 
   return (
-    <div className={cn(styles['field'], className)} data-disabled={disabled ? '' : undefined}>
+    <div
+      className={cn(styles['field'], className)}
+      data-disabled={disabled ? '' : undefined}
+      data-state={disabled ? 'disabled' : error ? 'invalid' : 'default'}
+    >
       {label && (
         <Label id={labelId} htmlFor={controlId} required={required} disabled={disabled}>
           {label}

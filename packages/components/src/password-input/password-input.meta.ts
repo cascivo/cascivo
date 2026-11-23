@@ -6,6 +6,31 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   clientJs: 'enhancement',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      data: { 'data-size': ['sm', 'md', 'lg'], 'data-revealed': [''] },
+      children: ['input-row', 'strength-meter'],
+      emit: 'manual',
+    },
+    parts: {
+      'input-row': { element: 'div', children: ['input', 'reveal-btn'] },
+      input: { element: 'input' },
+      'reveal-btn': { element: 'button', aria: ['aria-label'], children: ['reveal-icon'] },
+      'reveal-icon': { element: 'span', aria: ['aria-hidden'] },
+      'strength-meter': {
+        element: 'div',
+        role: 'meter',
+        data: { 'data-strength': ['weak', 'fair', 'good', 'strong'] },
+        aria: ['aria-label', 'aria-valuenow', 'aria-valuemin', 'aria-valuemax'],
+        children: ['strength-segment'],
+        when: 'showStrengthMeter',
+      },
+      // Four of them; `data-filled` is `''` on the first `score`.
+      'strength-segment': { element: 'div', data: { 'data-filled': [''] } },
+    },
+  },
   states: ['idle', 'revealed'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

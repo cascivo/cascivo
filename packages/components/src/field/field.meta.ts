@@ -10,7 +10,7 @@ export const meta: ComponentMeta = {
     root: {
       element: 'div',
       // Presence-only: `''` when disabled, absent otherwise.
-      data: { 'data-disabled': [''] },
+      data: { 'data-disabled': [''], 'data-state': ['default', 'disabled', 'invalid'] },
       children: ['@label', '$slot', 'description', 'error'],
       emit: 'manual',
     },

@@ -6,6 +6,32 @@ export const meta: ComponentMeta = {
   category: 'navigation',
   clientJs: 'enhancement',
   contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      data: { 'data-type': ['single', 'multiple'] },
+      children: ['item'],
+      emit: 'manual',
+    },
+    parts: {
+      // The `<details>` itself; `name` groups it natively when `type` is single.
+      item: {
+        element: 'details',
+        data: { 'data-value': 'string', 'data-state': ['open', 'closed'] },
+        children: ['trigger', 'content'],
+      },
+      // `<summary>` carries the button role and expanded state natively.
+      trigger: {
+        element: 'summary',
+        data: { 'data-state': ['open', 'closed'] },
+        aria: ['aria-controls'],
+        children: ['heading', 'indicator'],
+      },
+      heading: { element: 'h3', children: ['$slot'] },
+      indicator: { element: 'span', aria: ['aria-hidden'] },
+      content: { element: 'div', role: 'region', aria: ['aria-labelledby'], children: ['$slot'] },
+    },
+  },
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

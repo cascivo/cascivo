@@ -7,6 +7,37 @@ export const meta: ComponentMeta = {
   category: 'display',
   clientJs: 'none',
   contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'ol',
+      local: 'chain',
+      aria: ['aria-busy'],
+      children: ['step'],
+      emit: 'manual',
+    },
+    parts: {
+      step: {
+        element: 'li',
+        data: { 'data-status': ['pending', 'active', 'complete', 'error'] },
+        aria: ['aria-current'],
+        children: ['marker', 'body'],
+      },
+      marker: { element: 'span', aria: ['aria-hidden'], children: ['$slot'] },
+      body: { element: 'div', children: ['disclosure', 'heading', 'description'] },
+      // With `detail` the step is a <details>; without it a plain heading + description.
+      disclosure: {
+        element: 'details',
+        children: ['summary', 'description', 'detail'],
+        when: 'detail',
+      },
+      summary: { element: 'summary', children: ['title', 'indicator'] },
+      indicator: { element: 'span', aria: ['aria-hidden'] },
+      heading: { element: 'div', children: ['title'], when: '!detail' },
+      title: { element: 'span', children: ['$slot'] },
+      description: { element: 'div', children: ['$slot'], when: 'description' },
+      detail: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: ['pending', 'active', 'complete', 'error'],
   variants: [],
   sizes: [],
