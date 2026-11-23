@@ -1,0 +1,26 @@
+# Throwaway spike X1 (docs/plans/phase-3-x1-results.md). Own workspace root: normal CI never builds it.
+[workspace]
+
+[package]
+name = "cascivo-workers-spike"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+cascivo-html = { path = "../../../crates/cascivo-html" }
+minijinja = { version = "2", default-features = false, features = ["builtins", "serde", "std_collections"] }
+axum = { version = "0.8", default-features = false }
+tower-service = "0.3"
+worker = { version = "0.9", features = ["http", "axum"] }
+console_error_panic_hook = "0.1"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
