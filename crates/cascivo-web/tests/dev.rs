@@ -1,3 +1,5 @@
+#![cfg(feature = "fs")]
+
 //! Kill criterion 4: a content edit is visible over HTTP with no cargo rebuild. The latency
 //! (< 1 s) is measured by `scripts/bench-dev.sh`, not asserted here: wall-clock gates flake on a
 //! loaded CI machine.

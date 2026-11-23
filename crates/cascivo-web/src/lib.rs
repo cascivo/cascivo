@@ -22,12 +22,16 @@ pub mod bundle;
 pub mod config;
 pub mod content;
 pub mod data;
+#[cfg(feature = "fs")]
 pub mod deploy;
+#[cfg(feature = "fs")]
 pub mod dev;
+pub mod engine;
 pub mod error;
 pub mod head;
 pub mod highlight;
 pub mod i18n;
+#[cfg(feature = "images")]
 pub mod images;
 pub mod islands;
 pub mod markdown;
@@ -35,6 +39,7 @@ pub mod out;
 pub mod routes;
 pub mod rss;
 pub mod site;
+#[cfg(feature = "fs")]
 pub mod starter;
 pub mod theme;
 pub mod vite;
@@ -43,6 +48,7 @@ pub mod web;
 #[cfg(feature = "axum")]
 pub use crate::axum::router;
 pub use config::Config;
+pub use engine::{Bundle, Engine, Flash, ReqCtx};
 pub use error::{Error, Errors, Result};
 pub use out::Output;
 pub use site::Site;
