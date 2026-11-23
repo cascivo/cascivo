@@ -4,6 +4,7 @@
 //! scripts/html-kit/gen-contract.ts. `emit` returns false for every other component.
 
 use super::embed;
+use super::emit_children;
 use super::NodeExt;
 use crate::ast::Node;
 use crate::html::{attr, esc, flag, safe_url};
@@ -13,6 +14,10 @@ use crate::render::Cx;
 pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) -> bool {
     match node.spec.name {
         "button" => button_auto(node, cx, out),
+        "code" => code_auto(node, cx, out),
+        "kbd" => kbd_auto(node, cx, out),
+        "prose" => prose_auto(node, cx, out),
+        "tag" => tag_auto(node, cx, out),
         _ => return false,
     }
     true
@@ -53,4 +58,44 @@ pub(super) fn button_auto(node: &Node, cx: &mut Cx, out: &mut String) {
     out.push_str("</");
     out.push_str(tag);
     out.push('>');
+}
+/// `code` (unit `code`).
+pub(super) fn code_auto(node: &Node, _cx: &mut Cx, out: &mut String) {
+    use crate::contract::code as c;
+    out.push_str("<code");
+    attr(out, "data-size", &node.prop_str("size").unwrap_or_else(|| "md".into()));
+    attr(out, "class", c::ROOT);
+    out.push('>');
+    esc(out, node.text.as_deref().unwrap_or(""));
+    out.push_str("</code>");
+}
+/// `kbd` (unit `kbd`).
+pub(super) fn kbd_auto(node: &Node, _cx: &mut Cx, out: &mut String) {
+    use crate::contract::kbd as c;
+    out.push_str("<kbd");
+    attr(out, "data-size", &node.prop_str("size").unwrap_or_else(|| "md".into()));
+    attr(out, "class", c::ROOT);
+    out.push('>');
+    esc(out, node.text.as_deref().unwrap_or(""));
+    out.push_str("</kbd>");
+}
+/// `prose` (unit `prose`).
+pub(super) fn prose_auto(node: &Node, cx: &mut Cx, out: &mut String) {
+    use crate::contract::prose as c;
+    out.push_str("<div");
+    attr(out, "class", c::ROOT);
+    out.push('>');
+    emit_children(node, cx, out);
+    out.push_str("</div>");
+}
+/// `tag` (unit `tag`).
+pub(super) fn tag_auto(node: &Node, _cx: &mut Cx, out: &mut String) {
+    use crate::contract::tag as c;
+    out.push_str("<span");
+    attr(out, "data-variant", &node.prop_str("variant").unwrap_or_else(|| "default".into()));
+    attr(out, "data-size", &node.prop_str("size").unwrap_or_else(|| "md".into()));
+    attr(out, "class", c::ROOT);
+    out.push('>');
+    esc(out, node.text.as_deref().unwrap_or(""));
+    out.push_str("</span>");
 }

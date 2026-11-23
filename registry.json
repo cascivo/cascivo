@@ -2162,7 +2162,7 @@
         "blockquote.tsx": "sha256-bb95f2d7b170b0777c2ab28a72157060e33b4d1ec61c55de293cd3cb7f8634b9",
         "index.ts": "sha256-3205191e66d8e5bfe52a1abb153bf7c6f208b72e59f802ac098da8f11eb92a58",
         "blockquote.module.css": "sha256-2d67d6719167f6bed6857a2be2ea7041d70b29e0124c7e1d536a16ac9d956bfb",
-        "blockquote.meta.ts": "sha256-7ec7c2005fea0f957d4b969c067c43c3bf78e4681ad2e30bd23de7122879e04c"
+        "blockquote.meta.ts": "sha256-1848645bc3a1f88a83a66c4382f7967ca1d7b4404e2670f3d1125a28eb913a00"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -2179,7 +2179,7 @@
           "root": {
             "element": "blockquote",
             "children": ["$slot", "footer"],
-            "emit": "auto"
+            "emit": "manual"
           },
           "parts": {
             "footer": {
@@ -9846,7 +9846,7 @@
         "empty-state.tsx": "sha256-8f985213d17a36d7abaf3591569854869d4550e15f06479ecc0909aaa3d8cf7b",
         "index.ts": "sha256-1cdebd0969d28d1b4dd84625f654c2bd216975850ebc069048a964350eb62d69",
         "empty-state.module.css": "sha256-a96b87df58c53d5f14db3962fa0c3bd68bff8186b83b31c064206bc4cad2e747",
-        "empty-state.meta.ts": "sha256-63b5617d7aea8111c25f6a08800ed3c8a13cd7ac22ffc94f07939f8e82bd1e15"
+        "empty-state.meta.ts": "sha256-8d3880342c51fb351aa80ec4bf1b2fa99b6f2b4ea50d2f2b1b28fdcadec43943"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -9867,7 +9867,7 @@
               "data-size": ["md", "lg"]
             },
             "children": ["icon", "title", "description", "action"],
-            "emit": "auto"
+            "emit": "manual"
           },
           "parts": {
             "icon": {
@@ -23570,7 +23570,7 @@
         "spinner.tsx": "sha256-b8181467e642cb7dd358502beb02782783eca4a2442921e3b28536e8a612475b",
         "index.ts": "sha256-289926314e31ebc055e6646d2c4f3734b89b35e64f64029a52229f0de0b016e5",
         "spinner.module.css": "sha256-0b30409351e2118f18b66ac857adafd22b18eecd786ac4b201331c28ad94ca72",
-        "spinner.meta.ts": "sha256-8047208b77fb3e8ce1443f405868a22e9439b3f40aefa2a167192c0a919409e4"
+        "spinner.meta.ts": "sha256-6abe2a7b11f692d139701b5671ceada7b7881c1673c12421b771c564bb6b7527"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -23593,7 +23593,7 @@
             },
             "role": "status",
             "aria": ["aria-label"],
-            "emit": "auto"
+            "emit": "manual"
           }
         },
         "states": [],
@@ -26002,7 +26002,7 @@
         "text.tsx": "sha256-efd00d23f509cf7152cd5ce71a5638abd34341a2f8363428016fdbb4752a0ed5",
         "index.ts": "sha256-f95252720c83969d779056af603457df6ee0ebf5aaf9707cede576035ddcf3e4",
         "text.module.css": "sha256-f1cccbe7e621fc0592d3e07553d7ae2bba6c35e694ef74822b1c19b75d61a6ce",
-        "text.meta.ts": "sha256-74ce63b9330dfbe4ff9ba2ec279931f679f3086854d2dc2e3950b3a91628e7ae"
+        "text.meta.ts": "sha256-a8681ae8e57fd51080498e0560cc36a3b7263e577a5edb1102216bb0ec51b04b"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -26024,7 +26024,7 @@
               "data-muted": "boolean"
             },
             "children": ["$slot"],
-            "emit": "auto"
+            "emit": "manual"
           }
         },
         "states": [],

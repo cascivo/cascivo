@@ -834,7 +834,7 @@
             "$slot",
             "footer"
           ],
-          "emit": "auto",
+          "emit": "manual",
           "local": "blockquote",
           "class": "cv-blockquote-blockquote"
         },
@@ -4680,7 +4680,7 @@
             "description",
             "action"
           ],
-          "emit": "auto",
+          "emit": "manual",
           "local": "empty-state",
           "class": "cv-empty-state-empty-state"
         },
@@ -10079,7 +10079,7 @@
           "aria": [
             "aria-label"
           ],
-          "emit": "auto",
+          "emit": "manual",
           "local": "spinner",
           "class": "cv-spinner-spinner"
         },
@@ -10953,7 +10953,7 @@
           "children": [
             "$slot"
           ],
-          "emit": "auto",
+          "emit": "manual",
           "local": "text",
           "class": "cv-text-text"
         },

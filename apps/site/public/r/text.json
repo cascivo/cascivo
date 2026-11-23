@@ -36,7 +36,7 @@
           "data-muted": "boolean"
         },
         "children": ["$slot"],
-        "emit": "auto"
+        "emit": "manual"
       }
     },
     "states": [],

@@ -18,10 +18,66 @@ pub mod accordion {
     pub const INDICATOR: &str = "cv-accordion-indicator";
     pub const ITEM: &str = "cv-accordion-item";
     pub const TRIGGER: &str = "cv-accordion-trigger";
+    /// `data-type` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Type {
+        Single,
+        Multiple,
+    }
+    impl Type {
+        pub const ALL: &[Self] = &[Self::Single, Self::Multiple];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Single => "single",
+                Self::Multiple => "multiple",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ItemState {
+        Open,
+        Closed,
+    }
+    impl ItemState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum TriggerState {
+        Open,
+        Closed,
+    }
+    impl TriggerState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `action-sheet`
 pub mod action_sheet {
+    /// Root part.
+    pub const ROOT: &str = "cv-action-sheet-overlay";
     /// Root alias class.
     pub const ALIAS: &str = "cv-action-sheet";
     pub const CANCEL: &str = "cv-action-sheet-cancel";
@@ -46,6 +102,8 @@ pub mod ai_badge {
 
 /// `ai-disclaimer`
 pub mod ai_disclaimer {
+    /// Root part.
+    pub const ROOT: &str = "cv-ai-disclaimer-disclaimer";
     /// Root alias class.
     pub const ALIAS: &str = "cv-ai-disclaimer";
     pub const DISCLAIMER: &str = "cv-ai-disclaimer-disclaimer";
@@ -62,6 +120,30 @@ pub mod ai_status {
     pub const GLYPH: &str = "cv-ai-status-glyph";
     pub const LABEL: &str = "cv-ai-status-label";
     pub const STOP: &str = "cv-ai-status-stop";
+    /// `data-status` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Status {
+        Thinking,
+        Generating,
+        Complete,
+        Error,
+        Stopped,
+    }
+    impl Status {
+        pub const ALL: &[Self] = &[Self::Thinking, Self::Generating, Self::Complete, Self::Error, Self::Stopped];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Thinking => "thinking",
+                Self::Generating => "generating",
+                Self::Complete => "complete",
+                Self::Error => "error",
+                Self::Stopped => "stopped",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `alert`
@@ -105,6 +187,8 @@ pub mod alert {
 
 /// `alert-dialog`
 pub mod alert_dialog {
+    /// Root part.
+    pub const ROOT: &str = "cv-alert-dialog-dialog";
     /// Root alias class.
     pub const ALIAS: &str = "cv-alert-dialog";
     pub const ACTIONS: &str = "cv-alert-dialog-actions";
@@ -114,10 +198,48 @@ pub mod alert_dialog {
     pub const DESCRIPTION: &str = "cv-alert-dialog-description";
     pub const DIALOG: &str = "cv-alert-dialog-dialog";
     pub const TITLE: &str = "cv-alert-dialog-title";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Open,
+        Closed,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-variant` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Variant {
+        Default,
+        Destructive,
+    }
+    impl Variant {
+        pub const ALL: &[Self] = &[Self::Default, Self::Destructive];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Default => "default",
+                Self::Destructive => "destructive",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `app-shell`
 pub mod app_shell {
+    /// Root part.
+    pub const ROOT: &str = "cv-app-shell-shell";
     /// Root alias class.
     pub const ALIAS: &str = "cv-app-shell";
     pub const BODY: &str = "cv-app-shell-body";
@@ -128,6 +250,92 @@ pub mod app_shell {
     pub const NAV_WRAPPER: &str = "cv-app-shell-navWrapper";
     pub const SCRIM: &str = "cv-app-shell-scrim";
     pub const SHELL: &str = "cv-app-shell-shell";
+    /// `data-open` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Open {
+        True,
+        False,
+    }
+    impl Open {
+        pub const ALL: &[Self] = &[Self::True, Self::False];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::True => "true",
+                Self::False => "false",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-cascivo-appshell-nav` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum NavWrapperCascivoAppshellNav {
+        Empty,
+    }
+    impl NavWrapperCascivoAppshellNav {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-open` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum NavWrapperOpen {
+        True,
+        False,
+    }
+    impl NavWrapperOpen {
+        pub const ALL: &[Self] = &[Self::True, Self::False];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::True => "true",
+                Self::False => "false",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-open` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ScrimOpen {
+        True,
+        False,
+    }
+    impl ScrimOpen {
+        pub const ALL: &[Self] = &[Self::True, Self::False];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::True => "true",
+                Self::False => "false",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-cascivo-appshell-main` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum MainCascivoAppshellMain {
+        Empty,
+    }
+    impl MainCascivoAppshellMain {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `aspect-ratio`
@@ -206,10 +414,48 @@ pub mod avatar {
 
 /// `avatar-group`
 pub mod avatar_group {
+    /// Root part.
+    pub const ROOT: &str = "cv-avatar-group-group";
     /// Root alias class.
     pub const ALIAS: &str = "cv-avatar-group";
     pub const GROUP: &str = "cv-avatar-group-group";
     pub const OVERFLOW: &str = "cv-avatar-group-overflow";
+    /// `data-spacing` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Spacing {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Spacing {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-grid` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Grid {
+        Empty,
+    }
+    impl Grid {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `badge`
@@ -228,9 +474,11 @@ pub mod badge {
         Warning,
         Destructive,
         Outline,
+        Info,
+        Primary,
     }
     impl Variant {
-        pub const ALL: &[Self] = &[Self::Default, Self::Secondary, Self::Success, Self::Warning, Self::Destructive, Self::Outline];
+        pub const ALL: &[Self] = &[Self::Default, Self::Secondary, Self::Success, Self::Warning, Self::Destructive, Self::Outline, Self::Info, Self::Primary];
         pub const fn as_str(self) -> &'static str {
             match self {
                 Self::Default => "default",
@@ -239,6 +487,8 @@ pub mod badge {
                 Self::Warning => "warning",
                 Self::Destructive => "destructive",
                 Self::Outline => "outline",
+                Self::Info => "info",
+                Self::Primary => "primary",
             }
         }
         pub fn parse(s: &str) -> Option<Self> {
@@ -277,6 +527,8 @@ pub mod blockquote {
 
 /// `bottom-sheet`
 pub mod bottom_sheet {
+    /// Root part.
+    pub const ROOT: &str = "cv-bottom-sheet-overlay";
     /// Root alias class.
     pub const ALIAS: &str = "cv-bottom-sheet";
     pub const BODY: &str = "cv-bottom-sheet-body";
@@ -377,6 +629,44 @@ pub mod button_group {
     /// Root alias class.
     pub const ALIAS: &str = "cv-button-group";
     pub const BUTTON_GROUP: &str = "cv-button-group-buttonGroup";
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Orientation {
+        Horizontal,
+        Vertical,
+    }
+    impl Orientation {
+        pub const ALL: &[Self] = &[Self::Horizontal, Self::Vertical];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Horizontal => "horizontal",
+                Self::Vertical => "vertical",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `calendar`
@@ -399,6 +689,26 @@ pub mod calendar {
     pub const TODAY_BUTTON: &str = "cv-calendar-todayButton";
     pub const WEEK_NUMBER: &str = "cv-calendar-weekNumber";
     pub const WEEKDAY: &str = "cv-calendar-weekday";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `card`
@@ -528,6 +838,8 @@ pub mod center {
 
 /// `chain-of-thought`
 pub mod chain_of_thought {
+    /// Root part.
+    pub const ROOT: &str = "cv-chain-of-thought-chain";
     /// Root alias class.
     pub const ALIAS: &str = "cv-chain-of-thought";
     pub const BODY: &str = "cv-chain-of-thought-body";
@@ -541,6 +853,28 @@ pub mod chain_of_thought {
     pub const STEP: &str = "cv-chain-of-thought-step";
     pub const SUMMARY: &str = "cv-chain-of-thought-summary";
     pub const TITLE: &str = "cv-chain-of-thought-title";
+    /// `data-status` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum StepStatus {
+        Pending,
+        Active,
+        Complete,
+        Error,
+    }
+    impl StepStatus {
+        pub const ALL: &[Self] = &[Self::Pending, Self::Active, Self::Complete, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Pending => "pending",
+                Self::Active => "active",
+                Self::Complete => "complete",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `chart-legend`
@@ -554,6 +888,8 @@ pub mod chart_legend {
 
 /// `chat-bubble`
 pub mod chat_bubble {
+    /// Root part.
+    pub const ROOT: &str = "cv-chat-bubble-bubble";
     /// Root alias class.
     pub const ALIAS: &str = "cv-chat-bubble";
     pub const AVATAR: &str = "cv-chat-bubble-avatar";
@@ -563,6 +899,24 @@ pub mod chat_bubble {
     pub const META: &str = "cv-chat-bubble-meta";
     pub const NAME: &str = "cv-chat-bubble-name";
     pub const TIME: &str = "cv-chat-bubble-time";
+    /// `data-side` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Side {
+        Start,
+        End,
+    }
+    impl Side {
+        pub const ALL: &[Self] = &[Self::Start, Self::End];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Start => "start",
+                Self::End => "end",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `checkbox`
@@ -591,10 +945,32 @@ pub mod checkbox {
             Self::ALL.iter().copied().find(|v| v.as_str() == s)
         }
     }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Unchecked,
+        Checked,
+        Indeterminate,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Unchecked, Self::Checked, Self::Indeterminate];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Unchecked => "unchecked",
+                Self::Checked => "checked",
+                Self::Indeterminate => "indeterminate",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `checkbox-card`
 pub mod checkbox_card {
+    /// Root part.
+    pub const ROOT: &str = "cv-checkbox-card-card";
     /// Root alias class.
     pub const ALIAS: &str = "cv-checkbox-card";
     pub const BODY: &str = "cv-checkbox-card-body";
@@ -604,6 +980,22 @@ pub mod checkbox_card {
     pub const GLYPH: &str = "cv-checkbox-card-glyph";
     pub const INPUT: &str = "cv-checkbox-card-input";
     pub const TITLE: &str = "cv-checkbox-card-title";
+    /// `data-disabled` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Disabled {
+        Empty,
+    }
+    impl Disabled {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `code`
@@ -613,6 +1005,24 @@ pub mod code {
     /// Root alias class.
     pub const ALIAS: &str = "cv-code";
     pub const CODE: &str = "cv-code-code";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `code-snippet`
@@ -633,6 +1043,60 @@ pub mod code_snippet {
     pub const LINE_TEXT: &str = "cv-code-snippet-lineText";
     pub const PRE: &str = "cv-code-snippet-pre";
     pub const TITLE: &str = "cv-code-snippet-title";
+    /// `data-variant` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Variant {
+        Inline,
+        Single,
+        Multi,
+    }
+    impl Variant {
+        pub const ALL: &[Self] = &[Self::Inline, Self::Single, Self::Multi];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Inline => "inline",
+                Self::Single => "single",
+                Self::Multi => "multi",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-terminal` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Terminal {
+        Empty,
+    }
+    impl Terminal {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum CopyState {
+        Idle,
+        Copied,
+    }
+    impl CopyState {
+        pub const ALL: &[Self] = &[Self::Idle, Self::Copied];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Idle => "idle",
+                Self::Copied => "copied",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `collapsible`
@@ -643,10 +1107,48 @@ pub mod collapsible {
     pub const ALIAS: &str = "cv-collapsible";
     pub const CONTENT: &str = "cv-collapsible-content";
     pub const TRIGGER: &str = "cv-collapsible-trigger";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Open,
+        Closed,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum TriggerState {
+        Open,
+        Closed,
+    }
+    impl TriggerState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `color-picker`
 pub mod color_picker {
+    /// Root part.
+    pub const ROOT: &str = "cv-color-picker-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-color-picker";
     pub const ALPHA: &str = "cv-color-picker-alpha";
@@ -665,6 +1167,26 @@ pub mod color_picker {
     pub const SR_ONLY: &str = "cv-color-picker-srOnly";
     pub const THUMB: &str = "cv-color-picker-thumb";
     pub const WRAPPER: &str = "cv-color-picker-wrapper";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `columns`
@@ -679,6 +1201,8 @@ pub mod columns {
 
 /// `combobox`
 pub mod combobox {
+    /// Root part.
+    pub const ROOT: &str = "cv-combobox-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-combobox";
     pub const CHECK: &str = "cv-combobox-check";
@@ -703,10 +1227,86 @@ pub mod combobox {
     pub const TRIGGER: &str = "cv-combobox-trigger";
     pub const VALUE: &str = "cv-combobox-value";
     pub const WRAPPER: &str = "cv-combobox-wrapper";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Closed,
+        Open,
+        Error,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Closed, Self::Open, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Closed => "closed",
+                Self::Open => "open",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum PopupState {
+        Open,
+        Closed,
+    }
+    impl PopupState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum OptionState {
+        Active,
+    }
+    impl OptionState {
+        pub const ALL: &[Self] = &[Self::Active];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Active => "active",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `command-menu`
 pub mod command_menu {
+    /// Root part.
+    pub const ROOT: &str = "cv-command-menu-dialog";
     /// Root alias class.
     pub const ALIAS: &str = "cv-command-menu";
     pub const ACTION: &str = "cv-command-menu-action";
@@ -739,6 +1339,22 @@ pub mod command_menu {
     pub const STATUS: &str = "cv-command-menu-status";
     pub const STATUS_DOT: &str = "cv-command-menu-statusDot";
     pub const TEXT: &str = "cv-command-menu-text";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum OptionState {
+        Active,
+    }
+    impl OptionState {
+        pub const ALL: &[Self] = &[Self::Active];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Active => "active",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `comparison`
@@ -752,6 +1368,24 @@ pub mod comparison {
     pub const DIVIDER: &str = "cv-comparison-divider";
     pub const HANDLE: &str = "cv-comparison-handle";
     pub const ITEM: &str = "cv-comparison-item";
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Orientation {
+        Horizontal,
+        Vertical,
+    }
+    impl Orientation {
+        pub const ALL: &[Self] = &[Self::Horizontal, Self::Vertical];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Horizontal => "horizontal",
+                Self::Vertical => "vertical",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `contained-list`
@@ -766,19 +1400,75 @@ pub mod contained_list {
     pub const ITEM_CONTENT: &str = "cv-contained-list-itemContent";
     pub const LABEL: &str = "cv-contained-list-label";
     pub const LIST: &str = "cv-contained-list-list";
+    /// `data-kind` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Kind {
+        OnPage,
+        Disclosed,
+    }
+    impl Kind {
+        pub const ALL: &[Self] = &[Self::OnPage, Self::Disclosed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::OnPage => "on-page",
+                Self::Disclosed => "disclosed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-interactive` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ItemInteractive {
+        Empty,
+    }
+    impl ItemInteractive {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `context-menu`
 pub mod context_menu {
+    /// Root part.
+    pub const ROOT: &str = "cv-context-menu-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-context-menu";
     pub const ITEM: &str = "cv-context-menu-item";
     pub const MENU: &str = "cv-context-menu-menu";
     pub const WRAPPER: &str = "cv-context-menu-wrapper";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum MenuState {
+        Open,
+        Closed,
+    }
+    impl MenuState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `context-meter`
 pub mod context_meter {
+    /// Root part.
+    pub const ROOT: &str = "cv-context-meter-meter";
     /// Root alias class.
     pub const ALIAS: &str = "cv-context-meter";
     pub const FILL: &str = "cv-context-meter-fill";
@@ -786,6 +1476,26 @@ pub mod context_meter {
     pub const METER: &str = "cv-context-meter-meter";
     pub const TRACK: &str = "cv-context-meter-track";
     pub const VALUE: &str = "cv-context-meter-value";
+    /// `data-level` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Level {
+        Normal,
+        High,
+        Full,
+    }
+    impl Level {
+        pub const ALL: &[Self] = &[Self::Normal, Self::High, Self::Full];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Normal => "normal",
+                Self::High => "high",
+                Self::Full => "full",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `copy-button`
@@ -796,6 +1506,42 @@ pub mod copy_button {
     pub const ALIAS: &str = "cv-copy-button";
     pub const COPY_BUTTON: &str = "cv-copy-button-copyButton";
     pub const ICON: &str = "cv-copy-button-icon";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Idle,
+        Copied,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Idle, Self::Copied];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Idle => "idle",
+                Self::Copied => "copied",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `dashboard-layout`
@@ -811,12 +1557,66 @@ pub mod dashboard_layout {
 
 /// `data-list`
 pub mod data_list {
+    /// Root part.
+    pub const ROOT: &str = "cv-data-list-list";
     /// Root alias class.
     pub const ALIAS: &str = "cv-data-list";
     pub const DETAIL: &str = "cv-data-list-detail";
     pub const LIST: &str = "cv-data-list-list";
     pub const ROW: &str = "cv-data-list-row";
     pub const TERM: &str = "cv-data-list-term";
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Orientation {
+        Horizontal,
+        Vertical,
+    }
+    impl Orientation {
+        pub const ALL: &[Self] = &[Self::Horizontal, Self::Vertical];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Horizontal => "horizontal",
+                Self::Vertical => "vertical",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-dividers` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Dividers {
+        Empty,
+    }
+    impl Dividers {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `data-table`
@@ -1251,6 +2051,8 @@ pub mod data_table {
 
 /// `date-picker`
 pub mod date_picker {
+    /// Root part.
+    pub const ROOT: &str = "cv-date-picker-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-date-picker";
     pub const CALENDAR_GLYPH: &str = "cv-date-picker-calendarGlyph";
@@ -1266,10 +2068,72 @@ pub mod date_picker {
     pub const TRIGGER: &str = "cv-date-picker-trigger";
     pub const VALUE: &str = "cv-date-picker-value";
     pub const WRAPPER: &str = "cv-date-picker-wrapper";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Default,
+        Open,
+        Error,
+        Disabled,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Default, Self::Open, Self::Error, Self::Disabled];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Default => "default",
+                Self::Open => "open",
+                Self::Error => "error",
+                Self::Disabled => "disabled",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum PopupState {
+        Open,
+        Closed,
+    }
+    impl PopupState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `date-range-picker`
 pub mod date_range_picker {
+    /// Root part.
+    pub const ROOT: &str = "cv-date-range-picker-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-date-range-picker";
     pub const APPLY_BTN: &str = "cv-date-range-picker-applyBtn";
@@ -1286,6 +2150,44 @@ pub mod date_range_picker {
     pub const TRIGGER: &str = "cv-date-range-picker-trigger";
     pub const VALUE: &str = "cv-date-range-picker-value";
     pub const WRAPPER: &str = "cv-date-range-picker-wrapper";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum PanelState {
+        Open,
+        Closed,
+    }
+    impl PanelState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `dock`
@@ -1298,10 +2200,28 @@ pub mod dock {
     pub const ICON: &str = "cv-dock-icon";
     pub const ITEM: &str = "cv-dock-item";
     pub const LABEL: &str = "cv-dock-label";
+    /// `data-active` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ItemActive {
+        True,
+    }
+    impl ItemActive {
+        pub const ALL: &[Self] = &[Self::True];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::True => "true",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `drawer`
 pub mod drawer {
+    /// Root part.
+    pub const ROOT: &str = "cv-drawer-overlay";
     /// Root alias class.
     pub const ALIAS: &str = "cv-drawer";
     pub const BODY: &str = "cv-drawer-body";
@@ -1313,6 +2233,50 @@ pub mod drawer {
     pub const OVERLAY: &str = "cv-drawer-overlay";
     pub const PANEL: &str = "cv-drawer-panel";
     pub const TITLE: &str = "cv-drawer-title";
+    /// `data-side` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Side {
+        Left,
+        Right,
+        Top,
+        Bottom,
+    }
+    impl Side {
+        pub const ALL: &[Self] = &[Self::Left, Self::Right, Self::Top, Self::Bottom];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Left => "left",
+                Self::Right => "right",
+                Self::Top => "top",
+                Self::Bottom => "bottom",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-side` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum PanelSide {
+        Left,
+        Right,
+        Top,
+        Bottom,
+    }
+    impl PanelSide {
+        pub const ALL: &[Self] = &[Self::Left, Self::Right, Self::Top, Self::Bottom];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Left => "left",
+                Self::Right => "right",
+                Self::Top => "top",
+                Self::Bottom => "bottom",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `dropdown`
@@ -1325,10 +2289,30 @@ pub mod dropdown {
     pub const ITEM: &str = "cv-dropdown-item";
     pub const MENU: &str = "cv-dropdown-menu";
     pub const SEPARATOR: &str = "cv-dropdown-separator";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum MenuState {
+        Open,
+        Closed,
+    }
+    impl MenuState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `editable`
 pub mod editable {
+    /// Root part.
+    pub const ROOT: &str = "cv-editable-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-editable";
     pub const EDIT_ICON: &str = "cv-editable-edit-icon";
@@ -1351,6 +2335,24 @@ pub mod empty_state {
     pub const EMPTY_STATE: &str = "cv-empty-state-empty-state";
     pub const ICON: &str = "cv-empty-state-icon";
     pub const TITLE: &str = "cv-empty-state-title";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `fab`
@@ -1366,6 +2368,24 @@ pub mod fab {
     pub const DIAL_ITEM: &str = "cv-fab-dialItem";
     pub const FAB: &str = "cv-fab-fab";
     pub const ICON: &str = "cv-fab-icon";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum FabState {
+        Open,
+        Closed,
+    }
+    impl FabState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `field`
@@ -1393,10 +2413,32 @@ pub mod field {
             Self::ALL.iter().copied().find(|v| v.as_str() == s)
         }
     }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Default,
+        Disabled,
+        Invalid,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Default, Self::Disabled, Self::Invalid];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Default => "default",
+                Self::Disabled => "disabled",
+                Self::Invalid => "invalid",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `file-uploader`
 pub mod file_uploader {
+    /// Root part.
+    pub const ROOT: &str = "cv-file-uploader-uploader";
     /// Root alias class.
     pub const ALIAS: &str = "cv-file-uploader";
     pub const ERROR_MESSAGE: &str = "cv-file-uploader-error-message";
@@ -1415,6 +2457,24 @@ pub mod file_uploader {
     pub const UPLOADER: &str = "cv-file-uploader-uploader";
     pub const ZONE: &str = "cv-file-uploader-zone";
     pub const ZONE_TEXT: &str = "cv-file-uploader-zoneText";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ZoneState {
+        Idle,
+        Dragover,
+    }
+    impl ZoneState {
+        pub const ALL: &[Self] = &[Self::Idle, Self::Dragover];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Idle => "idle",
+                Self::Dragover => "dragover",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `filter`
@@ -1425,6 +2485,24 @@ pub mod filter {
     pub const ALIAS: &str = "cv-filter";
     pub const FILTER: &str = "cv-filter-filter";
     pub const ITEM: &str = "cv-filter-item";
+    /// `data-variant` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Variant {
+        Pill,
+        Outline,
+    }
+    impl Variant {
+        pub const ALL: &[Self] = &[Self::Pill, Self::Outline];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Pill => "pill",
+                Self::Outline => "outline",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `flex`
@@ -1470,10 +2548,44 @@ pub mod header {
     pub const LIST: &str = "cv-header-list";
     pub const NAV: &str = "cv-header-nav";
     pub const SPACER: &str = "cv-header-spacer";
+    /// `data-sticky` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Sticky {
+        True,
+    }
+    impl Sticky {
+        pub const ALL: &[Self] = &[Self::True];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::True => "true",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum LinkState {
+        Active,
+    }
+    impl LinkState {
+        pub const ALL: &[Self] = &[Self::Active];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Active => "active",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `header-panel`
 pub mod header_panel {
+    /// Root part.
+    pub const ROOT: &str = "cv-header-panel-panel";
     /// Root alias class.
     pub const ALIAS: &str = "cv-header-panel";
     pub const BODY: &str = "cv-header-panel-body";
@@ -1481,6 +2593,24 @@ pub mod header_panel {
     pub const HEADER: &str = "cv-header-panel-header";
     pub const PANEL: &str = "cv-header-panel-panel";
     pub const TITLE: &str = "cv-header-panel-title";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Open,
+        Closed,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `heading`
@@ -1490,14 +2620,58 @@ pub mod heading {
     /// Root alias class.
     pub const ALIAS: &str = "cv-heading";
     pub const HEADING: &str = "cv-heading-heading";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+        Xl,
+        V2xl,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg, Self::Xl, Self::V2xl];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+                Self::Xl => "xl",
+                Self::V2xl => "2xl",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `hover-card`
 pub mod hover_card {
+    /// Root part.
+    pub const ROOT: &str = "cv-hover-card-trigger";
     /// Root alias class.
     pub const ALIAS: &str = "cv-hover-card";
     pub const CONTENT: &str = "cv-hover-card-content";
     pub const TRIGGER: &str = "cv-hover-card-trigger";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ContentState {
+        Open,
+        Closed,
+    }
+    impl ContentState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `icon-button`
@@ -1507,18 +2681,102 @@ pub mod icon_button {
     /// Root alias class.
     pub const ALIAS: &str = "cv-icon-button";
     pub const ICON_BUTTON: &str = "cv-icon-button-iconButton";
+    /// `data-variant` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Variant {
+        Ghost,
+        Outline,
+        Filled,
+    }
+    impl Variant {
+        pub const ALL: &[Self] = &[Self::Ghost, Self::Outline, Self::Filled];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Ghost => "ghost",
+                Self::Outline => "outline",
+                Self::Filled => "filled",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `image`
 pub mod image {
     /// Root part.
-    pub const ROOT: &str = "cv-image-image";
+    pub const ROOT: &str = "cv-image-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-image";
     pub const FALLBACK: &str = "cv-image-fallback";
     pub const IMAGE: &str = "cv-image-image";
     pub const PLACEHOLDER: &str = "cv-image-placeholder";
     pub const WRAPPER: &str = "cv-image-wrapper";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Loading,
+        Loaded,
+        Error,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Loading, Self::Loaded, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Loading => "loading",
+                Self::Loaded => "loaded",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-radius` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Radius {
+        None,
+        Sm,
+        Md,
+        Lg,
+        Full,
+    }
+    impl Radius {
+        pub const ALL: &[Self] = &[Self::None, Self::Sm, Self::Md, Self::Lg, Self::Full];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::None => "none",
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+                Self::Full => "full",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `indicator`
@@ -1529,6 +2787,28 @@ pub mod indicator {
     pub const ALIAS: &str = "cv-indicator";
     pub const INDICATOR: &str = "cv-indicator-indicator";
     pub const OVERLAY: &str = "cv-indicator-overlay";
+    /// `data-placement` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Placement {
+        TopStart,
+        TopEnd,
+        BottomStart,
+        BottomEnd,
+    }
+    impl Placement {
+        pub const ALL: &[Self] = &[Self::TopStart, Self::TopEnd, Self::BottomStart, Self::BottomEnd];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::TopStart => "top-start",
+                Self::TopEnd => "top-end",
+                Self::BottomStart => "bottom-start",
+                Self::BottomEnd => "bottom-end",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `infinite-scroll`
@@ -1543,6 +2823,8 @@ pub mod infinite_scroll {
 
 /// `inline-citation`
 pub mod inline_citation {
+    /// Root part.
+    pub const ROOT: &str = "cv-inline-citation-citation";
     /// Root alias class.
     pub const ALIAS: &str = "cv-inline-citation";
     pub const CARD: &str = "cv-inline-citation-card";
@@ -1564,6 +2846,28 @@ pub mod inline_loading {
     pub const INLINE_LOADING: &str = "cv-inline-loading-inline-loading";
     pub const LABEL: &str = "cv-inline-loading-label";
     pub const SPINNER: &str = "cv-inline-loading-spinner";
+    /// `data-status` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Status {
+        Inactive,
+        Active,
+        Finished,
+        Error,
+    }
+    impl Status {
+        pub const ALL: &[Self] = &[Self::Inactive, Self::Active, Self::Finished, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Inactive => "inactive",
+                Self::Active => "active",
+                Self::Finished => "finished",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `input`
@@ -1646,6 +2950,74 @@ pub mod input_group {
     pub const INLINE_ADDON: &str = "cv-input-group-inline-addon";
     pub const INPUT_GROUP: &str = "cv-input-group-input-group";
     pub const INPUT_WRAP: &str = "cv-input-group-input-wrap";
+    /// `data-has-prefix` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum HasPrefix {
+        Empty,
+    }
+    impl HasPrefix {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-has-suffix` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum HasSuffix {
+        Empty,
+    }
+    impl HasSuffix {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-position` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum AddonPosition {
+        Prefix,
+        Suffix,
+    }
+    impl AddonPosition {
+        pub const ALL: &[Self] = &[Self::Prefix, Self::Suffix];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Prefix => "prefix",
+                Self::Suffix => "suffix",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-align` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum InlineAddonAlign {
+        InlineStart,
+        InlineEnd,
+    }
+    impl InlineAddonAlign {
+        pub const ALL: &[Self] = &[Self::InlineStart, Self::InlineEnd];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::InlineStart => "inline-start",
+                Self::InlineEnd => "inline-end",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `item`
@@ -1660,6 +3032,42 @@ pub mod item {
     pub const ITEM: &str = "cv-item-item";
     pub const MEDIA: &str = "cv-item-media";
     pub const TITLE: &str = "cv-item-title";
+    /// `data-variant` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Variant {
+        Default,
+        Muted,
+    }
+    impl Variant {
+        pub const ALL: &[Self] = &[Self::Default, Self::Muted];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Default => "default",
+                Self::Muted => "muted",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `join`
@@ -1669,6 +3077,24 @@ pub mod join {
     /// Root alias class.
     pub const ALIAS: &str = "cv-join";
     pub const JOIN: &str = "cv-join-join";
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Orientation {
+        Horizontal,
+        Vertical,
+    }
+    impl Orientation {
+        pub const ALL: &[Self] = &[Self::Horizontal, Self::Vertical];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Horizontal => "horizontal",
+                Self::Vertical => "vertical",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `kbd`
@@ -1678,6 +3104,24 @@ pub mod kbd {
     /// Root alias class.
     pub const ALIAS: &str = "cv-kbd";
     pub const KBD: &str = "cv-kbd-kbd";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `kpi`
@@ -1703,6 +3147,22 @@ pub mod label {
     pub const LABEL: &str = "cv-label-label";
     pub const MARKER: &str = "cv-label-marker";
     pub const SR_ONLY: &str = "cv-label-srOnly";
+    /// `data-disabled` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Disabled {
+        Empty,
+    }
+    impl Disabled {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `large-title-header`
@@ -1725,6 +3185,60 @@ pub mod link {
     /// Root alias class.
     pub const ALIAS: &str = "cv-link";
     pub const LINK: &str = "cv-link-link";
+    /// `data-variant` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Variant {
+        Standalone,
+        Inline,
+    }
+    impl Variant {
+        pub const ALL: &[Self] = &[Self::Standalone, Self::Inline];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Standalone => "standalone",
+                Self::Inline => "inline",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-external` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum External {
+        True,
+    }
+    impl External {
+        pub const ALL: &[Self] = &[Self::True];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::True => "true",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `list`
@@ -1735,6 +3249,26 @@ pub mod list {
     pub const ALIAS: &str = "cv-list";
     pub const ITEM: &str = "cv-list-item";
     pub const LIST: &str = "cv-list-list";
+    /// `data-marker` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Marker {
+        Disc,
+        Decimal,
+        None,
+    }
+    impl Marker {
+        pub const ALL: &[Self] = &[Self::Disc, Self::Decimal, Self::None];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Disc => "disc",
+                Self::Decimal => "decimal",
+                Self::None => "none",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `log-viewer`
@@ -1755,16 +3289,58 @@ pub mod log_viewer {
     pub const TIMESTAMP: &str = "cv-log-viewer-timestamp";
     pub const TOGGLE: &str = "cv-log-viewer-toggle";
     pub const TOOLBAR: &str = "cv-log-viewer-toolbar";
+    /// `data-level` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum LineLevel {
+        Info,
+        Warn,
+        Error,
+        Debug,
+    }
+    impl LineLevel {
+        pub const ALL: &[Self] = &[Self::Info, Self::Warn, Self::Error, Self::Debug];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Info => "info",
+                Self::Warn => "warn",
+                Self::Error => "error",
+                Self::Debug => "debug",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `menu`
 pub mod menu {
+    /// Root part.
+    pub const ROOT: &str = "cv-menu-panel";
     /// Root alias class.
     pub const ALIAS: &str = "cv-menu";
     pub const ITEM: &str = "cv-menu-item";
     pub const PANEL: &str = "cv-menu-panel";
     pub const SEPARATOR: &str = "cv-menu-separator";
     pub const TRIGGER: &str = "cv-menu-trigger";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Open,
+        Closed,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `menu-button`
@@ -1776,6 +3352,80 @@ pub mod menu_button {
     pub const ITEM: &str = "cv-menu-button-item";
     pub const MENU: &str = "cv-menu-button-menu";
     pub const TRIGGER: &str = "cv-menu-button-trigger";
+    /// `data-variant` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum TriggerVariant {
+        Primary,
+        Secondary,
+        Ghost,
+    }
+    impl TriggerVariant {
+        pub const ALL: &[Self] = &[Self::Primary, Self::Secondary, Self::Ghost];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Primary => "primary",
+                Self::Secondary => "secondary",
+                Self::Ghost => "ghost",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum TriggerSize {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl TriggerSize {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum MenuState {
+        Open,
+    }
+    impl MenuState {
+        pub const ALL: &[Self] = &[Self::Open];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-align` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum MenuAlign {
+        Start,
+        End,
+    }
+    impl MenuAlign {
+        pub const ALL: &[Self] = &[Self::Start, Self::End];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Start => "start",
+                Self::End => "end",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `menubar`
@@ -1788,10 +3438,30 @@ pub mod menubar {
     pub const MENUBAR: &str = "cv-menubar-menubar";
     pub const PANEL: &str = "cv-menubar-panel";
     pub const TRIGGER: &str = "cv-menubar-trigger";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum TriggerState {
+        Open,
+        Closed,
+    }
+    impl TriggerState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `message-actions`
 pub mod message_actions {
+    /// Root part.
+    pub const ROOT: &str = "cv-message-actions-actions";
     /// Root alias class.
     pub const ALIAS: &str = "cv-message-actions";
     pub const ACTIONS: &str = "cv-message-actions-actions";
@@ -1918,6 +3588,8 @@ pub mod modal {
 
 /// `multi-select`
 pub mod multi_select {
+    /// Root part.
+    pub const ROOT: &str = "cv-multi-select-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-multi-select";
     pub const CHECKBOX: &str = "cv-multi-select-checkbox";
@@ -1947,6 +3619,64 @@ pub mod multi_select {
     pub const TRIGGER: &str = "cv-multi-select-trigger";
     pub const TRIGGER_LABEL: &str = "cv-multi-select-trigger-label";
     pub const WRAPPER: &str = "cv-multi-select-wrapper";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Closed,
+        Open,
+        Error,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Closed, Self::Open, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Closed => "closed",
+                Self::Open => "open",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-display` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum FieldDisplay {
+        Count,
+        Chips,
+    }
+    impl FieldDisplay {
+        pub const ALL: &[Self] = &[Self::Count, Self::Chips];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Count => "count",
+                Self::Chips => "chips",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `native-select`
@@ -1957,10 +3687,48 @@ pub mod native_select {
     pub const ALIAS: &str = "cv-native-select";
     pub const CHEVRON: &str = "cv-native-select-chevron";
     pub const SELECT: &str = "cv-native-select-select";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-invalid` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Invalid {
+        Empty,
+    }
+    impl Invalid {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `navigation-menu`
 pub mod navigation_menu {
+    /// Root part.
+    pub const ROOT: &str = "cv-navigation-menu-nav";
     /// Root alias class.
     pub const ALIAS: &str = "cv-navigation-menu";
     pub const ITEM: &str = "cv-navigation-menu-item";
@@ -1969,6 +3737,44 @@ pub mod navigation_menu {
     pub const NAV: &str = "cv-navigation-menu-nav";
     pub const PANEL: &str = "cv-navigation-menu-panel";
     pub const TRIGGER: &str = "cv-navigation-menu-trigger";
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Orientation {
+        Horizontal,
+        Vertical,
+        Both,
+    }
+    impl Orientation {
+        pub const ALL: &[Self] = &[Self::Horizontal, Self::Vertical, Self::Both];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Horizontal => "horizontal",
+                Self::Vertical => "vertical",
+                Self::Both => "both",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum TriggerState {
+        Open,
+        Closed,
+    }
+    impl TriggerState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `notification`
@@ -1984,10 +3790,34 @@ pub mod notification {
     pub const ICON: &str = "cv-notification-icon";
     pub const NOTIFICATION: &str = "cv-notification-notification";
     pub const TITLE: &str = "cv-notification-title";
+    /// `data-variant` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Variant {
+        Info,
+        Success,
+        Warning,
+        Error,
+    }
+    impl Variant {
+        pub const ALL: &[Self] = &[Self::Info, Self::Success, Self::Warning, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Info => "info",
+                Self::Success => "success",
+                Self::Warning => "warning",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `number-input`
 pub mod number_input {
+    /// Root part.
+    pub const ROOT: &str = "cv-number-input-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-number-input";
     pub const ERROR: &str = "cv-number-input-error";
@@ -1998,10 +3828,52 @@ pub mod number_input {
     pub const STEPPER: &str = "cv-number-input-stepper";
     pub const STEPPERS: &str = "cv-number-input-steppers";
     pub const WRAPPER: &str = "cv-number-input-wrapper";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Idle,
+        Focused,
+        Error,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Idle, Self::Focused, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Idle => "idle",
+                Self::Focused => "focused",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `otp-input`
 pub mod otp_input {
+    /// Root part.
+    pub const ROOT: &str = "cv-otp-input-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-otp-input";
     pub const SLOT: &str = "cv-otp-input-slot";
@@ -2016,6 +3888,24 @@ pub mod overflow_menu {
     pub const ALIAS: &str = "cv-overflow-menu";
     pub const DESTRUCTIVE_FLAG: &str = "cv-overflow-menu-destructive-flag";
     pub const TRIGGER: &str = "cv-overflow-menu-trigger";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum TriggerSize {
+        Sm,
+        Md,
+    }
+    impl TriggerSize {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `page-header`
@@ -2047,6 +3937,8 @@ pub mod pagination {
 
 /// `password-input`
 pub mod password_input {
+    /// Root part.
+    pub const ROOT: &str = "cv-password-input-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-password-input";
     pub const INPUT: &str = "cv-password-input-input";
@@ -2056,14 +3948,108 @@ pub mod password_input {
     pub const STRENGTH_METER: &str = "cv-password-input-strength-meter";
     pub const STRENGTH_SEGMENT: &str = "cv-password-input-strength-segment";
     pub const WRAPPER: &str = "cv-password-input-wrapper";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-revealed` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Revealed {
+        Empty,
+    }
+    impl Revealed {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-strength` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum StrengthMeterStrength {
+        Weak,
+        Fair,
+        Good,
+        Strong,
+    }
+    impl StrengthMeterStrength {
+        pub const ALL: &[Self] = &[Self::Weak, Self::Fair, Self::Good, Self::Strong];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Weak => "weak",
+                Self::Fair => "fair",
+                Self::Good => "good",
+                Self::Strong => "strong",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-filled` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum StrengthSegmentFilled {
+        Empty,
+    }
+    impl StrengthSegmentFilled {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `popover`
 pub mod popover {
+    /// Root part.
+    pub const ROOT: &str = "cv-popover-content";
     /// Root alias class.
     pub const ALIAS: &str = "cv-popover";
     pub const CONTENT: &str = "cv-popover-content";
     pub const TRIGGER: &str = "cv-popover-trigger";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Open,
+        Closed,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `progress`
@@ -2117,10 +4103,30 @@ pub mod progress {
             Self::ALL.iter().copied().find(|v| v.as_str() == s)
         }
     }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Determinate,
+        Indeterminate,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Determinate, Self::Indeterminate];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Determinate => "determinate",
+                Self::Indeterminate => "indeterminate",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `progress-bar`
 pub mod progress_bar {
+    /// Root part.
+    pub const ROOT: &str = "cv-progress-bar-progress";
     /// Root alias class.
     pub const ALIAS: &str = "cv-progress-bar";
     pub const FILL: &str = "cv-progress-bar-fill";
@@ -2129,6 +4135,60 @@ pub mod progress_bar {
     pub const LABEL: &str = "cv-progress-bar-label";
     pub const PROGRESS: &str = "cv-progress-bar-progress";
     pub const TRACK: &str = "cv-progress-bar-track";
+    /// `data-status` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Status {
+        Active,
+        Success,
+        Error,
+    }
+    impl Status {
+        pub const ALL: &[Self] = &[Self::Active, Self::Success, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Active => "active",
+                Self::Success => "success",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Indeterminate,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Indeterminate];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Indeterminate => "indeterminate",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `progress-circle`
@@ -2142,10 +4202,32 @@ pub mod progress_circle {
     pub const SVG: &str = "cv-progress-circle-svg";
     pub const TRACK: &str = "cv-progress-circle-track";
     pub const VALUE: &str = "cv-progress-circle-value";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `progress-indicator`
 pub mod progress_indicator {
+    /// Root part.
+    pub const ROOT: &str = "cv-progress-indicator-indicator";
     /// Root alias class.
     pub const ALIAS: &str = "cv-progress-indicator";
     pub const DESCRIPTION: &str = "cv-progress-indicator-description";
@@ -2154,10 +4236,50 @@ pub mod progress_indicator {
     pub const MARKER: &str = "cv-progress-indicator-marker";
     pub const STEP: &str = "cv-progress-indicator-step";
     pub const TEXT: &str = "cv-progress-indicator-text";
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Orientation {
+        Horizontal,
+        Vertical,
+    }
+    impl Orientation {
+        pub const ALL: &[Self] = &[Self::Horizontal, Self::Vertical];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Horizontal => "horizontal",
+                Self::Vertical => "vertical",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-status` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum StepStatus {
+        Complete,
+        Current,
+        Incomplete,
+    }
+    impl StepStatus {
+        pub const ALL: &[Self] = &[Self::Complete, Self::Current, Self::Incomplete];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Complete => "complete",
+                Self::Current => "current",
+                Self::Incomplete => "incomplete",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `prompt-suggestions`
 pub mod prompt_suggestions {
+    /// Root part.
+    pub const ROOT: &str = "cv-prompt-suggestions-suggestions";
     /// Root alias class.
     pub const ALIAS: &str = "cv-prompt-suggestions";
     pub const CHIP: &str = "cv-prompt-suggestions-chip";
@@ -2203,10 +4325,56 @@ pub mod radial_progress {
     pub const ALIAS: &str = "cv-radial-progress";
     pub const LABEL: &str = "cv-radial-progress-label";
     pub const RADIAL_PROGRESS: &str = "cv-radial-progress-radialProgress";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-variant` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Variant {
+        Primary,
+        Info,
+        Success,
+        Warning,
+        Error,
+    }
+    impl Variant {
+        pub const ALL: &[Self] = &[Self::Primary, Self::Info, Self::Success, Self::Warning, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Primary => "primary",
+                Self::Info => "info",
+                Self::Success => "success",
+                Self::Warning => "warning",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `radio`
 pub mod radio {
+    /// Root part.
+    pub const ROOT: &str = "cv-radio-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-radio";
     pub const CONTROL: &str = "cv-radio-control";
@@ -2214,10 +4382,46 @@ pub mod radio {
     pub const INPUT: &str = "cv-radio-input";
     pub const LABEL: &str = "cv-radio-label";
     pub const WRAPPER: &str = "cv-radio-wrapper";
+    /// `data-disabled` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Disabled {
+        Empty,
+    }
+    impl Disabled {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum GroupOrientation {
+        Horizontal,
+        Vertical,
+    }
+    impl GroupOrientation {
+        pub const ALL: &[Self] = &[Self::Horizontal, Self::Vertical];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Horizontal => "horizontal",
+                Self::Vertical => "vertical",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `radio-card`
 pub mod radio_card {
+    /// Root part.
+    pub const ROOT: &str = "cv-radio-card-group";
     /// Root alias class.
     pub const ALIAS: &str = "cv-radio-card";
     pub const BODY: &str = "cv-radio-card-body";
@@ -2227,14 +4431,68 @@ pub mod radio_card {
     pub const GROUP: &str = "cv-radio-card-group";
     pub const INPUT: &str = "cv-radio-card-input";
     pub const TITLE: &str = "cv-radio-card-title";
+    /// `data-disabled` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum CardDisabled {
+        Empty,
+    }
+    impl CardDisabled {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `rating-group`
 pub mod rating_group {
+    /// Root part.
+    pub const ROOT: &str = "cv-rating-group-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-rating-group";
     pub const STAR: &str = "cv-rating-group-star";
     pub const WRAPPER: &str = "cv-rating-group-wrapper";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-filled` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum StarFilled {
+        Empty,
+    }
+    impl StarFilled {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `reasoning`
@@ -2248,6 +4506,22 @@ pub mod reasoning {
     pub const INDICATOR: &str = "cv-reasoning-indicator";
     pub const REASONING: &str = "cv-reasoning-reasoning";
     pub const TRIGGER: &str = "cv-reasoning-trigger";
+    /// `data-streaming` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Streaming {
+        Empty,
+    }
+    impl Streaming {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `relative-time`
@@ -2283,6 +4557,24 @@ pub mod resizable {
     pub const HANDLE: &str = "cv-resizable-handle";
     pub const PANE: &str = "cv-resizable-pane";
     pub const RESIZABLE: &str = "cv-resizable-resizable";
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Orientation {
+        Horizontal,
+        Vertical,
+    }
+    impl Orientation {
+        pub const ALL: &[Self] = &[Self::Horizontal, Self::Vertical];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Horizontal => "horizontal",
+                Self::Vertical => "vertical",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `scroll-area`
@@ -2291,6 +4583,46 @@ pub mod scroll_area {
     pub const ROOT: &str = "cv-scroll-area-root";
     /// Root alias class.
     pub const ALIAS: &str = "cv-scroll-area";
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Orientation {
+        Vertical,
+        Horizontal,
+        Both,
+    }
+    impl Orientation {
+        pub const ALL: &[Self] = &[Self::Vertical, Self::Horizontal, Self::Both];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Vertical => "vertical",
+                Self::Horizontal => "horizontal",
+                Self::Both => "both",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-edges` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Edges {
+        Shadow,
+        Mask,
+        None,
+    }
+    impl Edges {
+        pub const ALL: &[Self] = &[Self::Shadow, Self::Mask, Self::None];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Shadow => "shadow",
+                Self::Mask => "mask",
+                Self::None => "none",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `search`
@@ -2303,6 +4635,44 @@ pub mod search {
     pub const ICON: &str = "cv-search-icon";
     pub const INPUT: &str = "cv-search-input";
     pub const LABEL: &str = "cv-search-label";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Empty,
+        Filled,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Empty, Self::Filled];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "empty",
+                Self::Filled => "filled",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `section`
@@ -2317,10 +4687,52 @@ pub mod section {
 
 /// `segmented-control`
 pub mod segmented_control {
+    /// Root part.
+    pub const ROOT: &str = "cv-segmented-control-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-segmented-control";
     pub const SEGMENT: &str = "cv-segmented-control-segment";
     pub const WRAPPER: &str = "cv-segmented-control-wrapper";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum SegmentSize {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl SegmentSize {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `select`
@@ -2421,6 +4833,66 @@ pub mod share_menu {
     pub const SERVER_LABEL: &str = "cv-share-menu-serverLabel";
     pub const SERVER_ROW: &str = "cv-share-menu-serverRow";
     pub const TRIGGER: &str = "cv-share-menu-trigger";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum TriggerSize {
+        Sm,
+        Md,
+    }
+    impl TriggerSize {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-network` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ItemNetwork {
+        Bluesky,
+        Mastodon,
+        Threads,
+        Linkedin,
+        X,
+    }
+    impl ItemNetwork {
+        pub const ALL: &[Self] = &[Self::Bluesky, Self::Mastodon, Self::Threads, Self::Linkedin, Self::X];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Bluesky => "bluesky",
+                Self::Mastodon => "mastodon",
+                Self::Threads => "threads",
+                Self::Linkedin => "linkedin",
+                Self::X => "x",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ItemState {
+        Idle,
+        Copied,
+    }
+    impl ItemState {
+        pub const ALL: &[Self] = &[Self::Idle, Self::Copied];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Idle => "idle",
+                Self::Copied => "copied",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `sheet`
@@ -2434,10 +4906,52 @@ pub mod sheet {
     pub const HEADER: &str = "cv-sheet-header";
     pub const SHEET: &str = "cv-sheet-sheet";
     pub const TITLE: &str = "cv-sheet-title";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Open,
+        Closed,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-side` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Side {
+        Start,
+        End,
+        Top,
+        Bottom,
+    }
+    impl Side {
+        pub const ALL: &[Self] = &[Self::Start, Self::End, Self::Top, Self::Bottom];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Start => "start",
+                Self::End => "end",
+                Self::Top => "top",
+                Self::Bottom => "bottom",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `shell-header`
 pub mod shell_header {
+    /// Root part.
+    pub const ROOT: &str = "cv-shell-header-header";
     /// Root alias class.
     pub const ALIAS: &str = "cv-shell-header";
     pub const ACTION: &str = "cv-shell-header-action";
@@ -2460,6 +4974,88 @@ pub mod shell_header {
     pub const NAV_MENU_WRAPPER: &str = "cv-shell-header-navMenuWrapper";
     pub const SKIP_LINK: &str = "cv-shell-header-skipLink";
     pub const SPACER: &str = "cv-shell-header-spacer";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum NavLinkState {
+        Active,
+    }
+    impl NavLinkState {
+        pub const ALL: &[Self] = &[Self::Active];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Active => "active",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum NavMenuTriggerState {
+        Active,
+    }
+    impl NavMenuTriggerState {
+        pub const ALL: &[Self] = &[Self::Active];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Active => "active",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum NavMenuPanelState {
+        Open,
+        Closed,
+    }
+    impl NavMenuPanelState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum NavMenuItemState {
+        Active,
+    }
+    impl NavMenuItemState {
+        pub const ALL: &[Self] = &[Self::Active];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Active => "active",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ActionState {
+        Active,
+    }
+    impl ActionState {
+        pub const ALL: &[Self] = &[Self::Active];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Active => "active",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `shimmer-text`
@@ -2504,6 +5100,96 @@ pub mod side_nav {
     pub const SUBLIST: &str = "cv-side-nav-sublist";
     pub const SUBLIST_INNER: &str = "cv-side-nav-sublistInner";
     pub const TRAILING: &str = "cv-side-nav-trailing";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Expanded,
+        Collapsed,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Expanded, Self::Collapsed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Expanded => "expanded",
+                Self::Collapsed => "collapsed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum LinkState {
+        Active,
+    }
+    impl LinkState {
+        pub const ALL: &[Self] = &[Self::Active];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Active => "active",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-tone` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum LinkTone {
+        Danger,
+        Warning,
+        Success,
+    }
+    impl LinkTone {
+        pub const ALL: &[Self] = &[Self::Danger, Self::Warning, Self::Success];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Danger => "danger",
+                Self::Warning => "warning",
+                Self::Success => "success",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum GroupTriggerState {
+        Open,
+        Closed,
+    }
+    impl GroupTriggerState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum SublistState {
+        Open,
+        Closed,
+    }
+    impl SublistState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `skeleton`
@@ -2514,10 +5200,32 @@ pub mod skeleton {
     pub const ALIAS: &str = "cv-skeleton";
     pub const LINE: &str = "cv-skeleton-line";
     pub const SKELETON: &str = "cv-skeleton-skeleton";
+    /// `data-variant` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Variant {
+        Text,
+        Circle,
+        Rect,
+    }
+    impl Variant {
+        pub const ALL: &[Self] = &[Self::Text, Self::Circle, Self::Rect];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Text => "text",
+                Self::Circle => "circle",
+                Self::Rect => "rect",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `skip-nav`
 pub mod skip_nav {
+    /// Root part.
+    pub const ROOT: &str = "cv-skip-nav-link";
     /// Root alias class.
     pub const ALIAS: &str = "cv-skip-nav";
     pub const LINK: &str = "cv-skip-nav-link";
@@ -2526,12 +5234,28 @@ pub mod skip_nav {
 /// `slider`
 pub mod slider {
     /// Root part.
-    pub const ROOT: &str = "cv-slider-slider";
+    pub const ROOT: &str = "cv-slider-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-slider";
     pub const LABEL: &str = "cv-slider-label";
     pub const SLIDER: &str = "cv-slider-slider";
     pub const WRAPPER: &str = "cv-slider-wrapper";
+    /// `data-disabled` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Disabled {
+        Empty,
+    }
+    impl Disabled {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `sources`
@@ -2566,6 +5290,26 @@ pub mod spinner {
     /// Root alias class.
     pub const ALIAS: &str = "cv-spinner";
     pub const SPINNER: &str = "cv-spinner-spinner";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `stack`
@@ -2657,6 +5401,30 @@ pub mod status {
     pub const ALIAS: &str = "cv-status";
     pub const DOT: &str = "cv-status-dot";
     pub const STATUS: &str = "cv-status-status";
+    /// `data-status` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Status {
+        Success,
+        Warning,
+        Error,
+        Info,
+        Neutral,
+    }
+    impl Status {
+        pub const ALL: &[Self] = &[Self::Success, Self::Warning, Self::Error, Self::Info, Self::Neutral];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Success => "success",
+                Self::Warning => "warning",
+                Self::Error => "error",
+                Self::Info => "info",
+                Self::Neutral => "neutral",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `steps`
@@ -2669,6 +5437,46 @@ pub mod steps {
     pub const LABEL: &str = "cv-steps-label";
     pub const STEP: &str = "cv-steps-step";
     pub const STEPS: &str = "cv-steps-steps";
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Orientation {
+        Horizontal,
+        Vertical,
+    }
+    impl Orientation {
+        pub const ALL: &[Self] = &[Self::Horizontal, Self::Vertical];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Horizontal => "horizontal",
+                Self::Vertical => "vertical",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum StepState {
+        Pending,
+        Active,
+        Complete,
+        Error,
+    }
+    impl StepState {
+        pub const ALL: &[Self] = &[Self::Pending, Self::Active, Self::Complete, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Pending => "pending",
+                Self::Active => "active",
+                Self::Complete => "complete",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `streaming-text`
@@ -2682,6 +5490,8 @@ pub mod streaming_text {
 
 /// `structured-list`
 pub mod structured_list {
+    /// Root part.
+    pub const ROOT: &str = "cv-structured-list-list";
     /// Root alias class.
     pub const ALIAS: &str = "cv-structured-list";
     pub const BODY: &str = "cv-structured-list-body";
@@ -2703,6 +5513,24 @@ pub mod swap {
     pub const OFF: &str = "cv-swap-off";
     pub const ON: &str = "cv-swap-on";
     pub const SWAP: &str = "cv-swap-swap";
+    /// `data-mode` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Mode {
+        Rotate,
+        Flip,
+    }
+    impl Mode {
+        pub const ALL: &[Self] = &[Self::Rotate, Self::Flip];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Rotate => "rotate",
+                Self::Flip => "flip",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `swipe-item`
@@ -2718,6 +5546,26 @@ pub mod swipe_item {
     pub const LEADING: &str = "cv-swipe-item-leading";
     pub const PANEL: &str = "cv-swipe-item-panel";
     pub const TRAILING: &str = "cv-swipe-item-trailing";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Closed,
+        Leading,
+        Trailing,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Closed, Self::Leading, Self::Trailing];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Closed => "closed",
+                Self::Leading => "leading",
+                Self::Trailing => "trailing",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `switcher`
@@ -2730,6 +5578,22 @@ pub mod switcher {
     pub const ICON: &str = "cv-switcher-icon";
     pub const ITEM: &str = "cv-switcher-item";
     pub const SWITCHER: &str = "cv-switcher-switcher";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ItemState {
+        Active,
+    }
+    impl ItemState {
+        pub const ALL: &[Self] = &[Self::Active];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Active => "active",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `tabs`
@@ -2760,6 +5624,24 @@ pub mod tabs {
             Self::ALL.iter().copied().find(|v| v.as_str() == s)
         }
     }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ContentState {
+        Active,
+        Inactive,
+    }
+    impl ContentState {
+        pub const ALL: &[Self] = &[Self::Active, Self::Inactive];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Active => "active",
+                Self::Inactive => "inactive",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `tag`
@@ -2770,16 +5652,76 @@ pub mod tag {
     pub const ALIAS: &str = "cv-tag";
     pub const DISMISS: &str = "cv-tag-dismiss";
     pub const TAG: &str = "cv-tag-tag";
+    /// `data-variant` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Variant {
+        Default,
+        Info,
+        Success,
+        Warning,
+        Error,
+    }
+    impl Variant {
+        pub const ALL: &[Self] = &[Self::Default, Self::Info, Self::Success, Self::Warning, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Default => "default",
+                Self::Info => "info",
+                Self::Success => "success",
+                Self::Warning => "warning",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `tags-input`
 pub mod tags_input {
+    /// Root part.
+    pub const ROOT: &str = "cv-tags-input-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-tags-input";
     pub const DISMISS: &str = "cv-tags-input-dismiss";
     pub const INPUT: &str = "cv-tags-input-input";
     pub const TAG: &str = "cv-tags-input-tag";
     pub const WRAPPER: &str = "cv-tags-input-wrapper";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum TagState {
+        Invalid,
+    }
+    impl TagState {
+        pub const ALL: &[Self] = &[Self::Invalid];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Invalid => "invalid",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `terminal`
@@ -2792,6 +5734,28 @@ pub mod terminal {
     pub const LINE: &str = "cv-terminal-line";
     pub const PREFIX: &str = "cv-terminal-prefix";
     pub const TEXT: &str = "cv-terminal-text";
+    /// `data-type` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum LineType {
+        Command,
+        Output,
+        Error,
+        Comment,
+    }
+    impl LineType {
+        pub const ALL: &[Self] = &[Self::Command, Self::Output, Self::Error, Self::Comment];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Command => "command",
+                Self::Output => "output",
+                Self::Error => "error",
+                Self::Comment => "comment",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `text`
@@ -2801,12 +5765,52 @@ pub mod text {
     /// Root alias class.
     pub const ALIAS: &str = "cv-text";
     pub const TEXT: &str = "cv-text-text";
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-weight` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Weight {
+        Normal,
+        Medium,
+        Semibold,
+    }
+    impl Weight {
+        pub const ALL: &[Self] = &[Self::Normal, Self::Medium, Self::Semibold];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Normal => "normal",
+                Self::Medium => "medium",
+                Self::Semibold => "semibold",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `textarea`
 pub mod textarea {
     /// Root part.
-    pub const ROOT: &str = "cv-textarea-textarea";
+    pub const ROOT: &str = "cv-textarea-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-textarea";
     pub const ERROR: &str = "cv-textarea-error";
@@ -2814,6 +5818,78 @@ pub mod textarea {
     pub const LABEL: &str = "cv-textarea-label";
     pub const TEXTAREA: &str = "cv-textarea-textarea";
     pub const WRAPPER: &str = "cv-textarea-wrapper";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Idle,
+        Focused,
+        Error,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Idle, Self::Focused, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Idle => "idle",
+                Self::Focused => "focused",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-resize` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Resize {
+        None,
+        Vertical,
+        Both,
+    }
+    impl Resize {
+        pub const ALL: &[Self] = &[Self::None, Self::Vertical, Self::Both];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::None => "none",
+                Self::Vertical => "vertical",
+                Self::Both => "both",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-autosize` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Autosize {
+        Empty,
+    }
+    impl Autosize {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-ai` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Ai {
+        Empty,
+    }
+    impl Ai {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `tile`
@@ -2829,6 +5905,8 @@ pub mod tile {
 
 /// `time-picker`
 pub mod time_picker {
+    /// Root part.
+    pub const ROOT: &str = "cv-time-picker-wrapper";
     /// Root alias class.
     pub const ALIAS: &str = "cv-time-picker";
     pub const ERROR: &str = "cv-time-picker-error";
@@ -2836,10 +5914,52 @@ pub mod time_picker {
     pub const INPUT: &str = "cv-time-picker-input";
     pub const LABEL: &str = "cv-time-picker-label";
     pub const WRAPPER: &str = "cv-time-picker-wrapper";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Idle,
+        Focused,
+        Error,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Idle, Self::Focused, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Idle => "idle",
+                Self::Focused => "focused",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `timeline`
 pub mod timeline {
+    /// Root part.
+    pub const ROOT: &str = "cv-timeline-list";
     /// Root alias class.
     pub const ALIAS: &str = "cv-timeline";
     pub const CONTENT: &str = "cv-timeline-content";
@@ -2849,6 +5969,70 @@ pub mod timeline {
     pub const MARKER: &str = "cv-timeline-marker";
     pub const TIME: &str = "cv-timeline-time";
     pub const TITLE: &str = "cv-timeline-title";
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Orientation {
+        Vertical,
+        Horizontal,
+    }
+    impl Orientation {
+        pub const ALL: &[Self] = &[Self::Vertical, Self::Horizontal];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Vertical => "vertical",
+                Self::Horizontal => "horizontal",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-status` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ItemStatus {
+        Complete,
+        Current,
+        Upcoming,
+        Error,
+    }
+    impl ItemStatus {
+        pub const ALL: &[Self] = &[Self::Complete, Self::Current, Self::Upcoming, Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Complete => "complete",
+                Self::Current => "current",
+                Self::Upcoming => "upcoming",
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-tone` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ItemTone {
+        Neutral,
+        Info,
+        Success,
+        Warning,
+        Danger,
+    }
+    impl ItemTone {
+        pub const ALL: &[Self] = &[Self::Neutral, Self::Info, Self::Success, Self::Warning, Self::Danger];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Neutral => "neutral",
+                Self::Info => "info",
+                Self::Success => "success",
+                Self::Warning => "warning",
+                Self::Danger => "danger",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `toast`
@@ -2927,6 +6111,42 @@ pub mod toggle {
     pub const THUMB: &str = "cv-toggle-thumb";
     pub const TOGGLE: &str = "cv-toggle-toggle";
     pub const TRACK: &str = "cv-toggle-track";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum State {
+        Off,
+        On,
+    }
+    impl State {
+        pub const ALL: &[Self] = &[Self::Off, Self::On];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Off => "off",
+                Self::On => "on",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `toggle-group`
@@ -2937,6 +6157,62 @@ pub mod toggle_group {
     pub const ALIAS: &str = "cv-toggle-group";
     pub const ITEM: &str = "cv-toggle-group-item";
     pub const TOGGLE_GROUP: &str = "cv-toggle-group-toggleGroup";
+    /// `data-orientation` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Orientation {
+        Horizontal,
+        Vertical,
+    }
+    impl Orientation {
+        pub const ALL: &[Self] = &[Self::Horizontal, Self::Vertical];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Horizontal => "horizontal",
+                Self::Vertical => "vertical",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-size` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Size {
+        Sm,
+        Md,
+        Lg,
+    }
+    impl Size {
+        pub const ALL: &[Self] = &[Self::Sm, Self::Md, Self::Lg];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Sm => "sm",
+                Self::Md => "md",
+                Self::Lg => "lg",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ItemState {
+        On,
+        Off,
+    }
+    impl ItemState {
+        pub const ALL: &[Self] = &[Self::On, Self::Off];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::On => "on",
+                Self::Off => "off",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `toggletip`
@@ -2947,6 +6223,22 @@ pub mod toggletip {
     pub const ALIAS: &str = "cv-toggletip";
     pub const BUBBLE: &str = "cv-toggletip-bubble";
     pub const TRIGGER: &str = "cv-toggletip-trigger";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum BubbleState {
+        Open,
+    }
+    impl BubbleState {
+        pub const ALL: &[Self] = &[Self::Open];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `tool-call`
@@ -2967,6 +6259,48 @@ pub mod tool_call {
     pub const SECTION_LABEL: &str = "cv-tool-call-section-label";
     pub const SUMMARY: &str = "cv-tool-call-summary";
     pub const TOOL_CALL: &str = "cv-tool-call-tool-call";
+    /// `data-status` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Status {
+        Pending,
+        Running,
+        AwaitingApproval,
+        Complete,
+        Error,
+        Denied,
+    }
+    impl Status {
+        pub const ALL: &[Self] = &[Self::Pending, Self::Running, Self::AwaitingApproval, Self::Complete, Self::Error, Self::Denied];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Pending => "pending",
+                Self::Running => "running",
+                Self::AwaitingApproval => "awaiting-approval",
+                Self::Complete => "complete",
+                Self::Error => "error",
+                Self::Denied => "denied",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-kind` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum SectionKind {
+        Error,
+    }
+    impl SectionKind {
+        pub const ALL: &[Self] = &[Self::Error];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Error => "error",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `tooltip`
@@ -2976,10 +6310,30 @@ pub mod tooltip {
     /// Root alias class.
     pub const ALIAS: &str = "cv-tooltip";
     pub const TOOLTIP: &str = "cv-tooltip-tooltip";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum TooltipState {
+        Visible,
+        Hidden,
+    }
+    impl TooltipState {
+        pub const ALL: &[Self] = &[Self::Visible, Self::Hidden];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Visible => "visible",
+                Self::Hidden => "hidden",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `tree-view`
 pub mod tree_view {
+    /// Root part.
+    pub const ROOT: &str = "cv-tree-view-tree";
     /// Root alias class.
     pub const ALIAS: &str = "cv-tree-view";
     pub const GROUP: &str = "cv-tree-view-group";
@@ -2991,6 +6345,60 @@ pub mod tree_view {
     pub const TREE: &str = "cv-tree-view-tree";
     pub const TWISTY: &str = "cv-tree-view-twisty";
     pub const TWISTY_SPACER: &str = "cv-tree-view-twistySpacer";
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum ItemState {
+        Open,
+        Closed,
+    }
+    impl ItemState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum TwistyState {
+        Open,
+        Closed,
+    }
+    impl TwistyState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-state` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum GroupWrapState {
+        Open,
+        Closed,
+    }
+    impl GroupWrapState {
+        pub const ALL: &[Self] = &[Self::Open, Self::Closed];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Open => "open",
+                Self::Closed => "closed",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `typing-indicator`
@@ -3018,6 +6426,8 @@ pub mod user {
 
 /// `virtual-list`
 pub mod virtual_list {
+    /// Root part.
+    pub const ROOT: &str = "cv-virtual-list-viewport";
     /// Root alias class.
     pub const ALIAS: &str = "cv-virtual-list";
     pub const CANVAS: &str = "cv-virtual-list-canvas";

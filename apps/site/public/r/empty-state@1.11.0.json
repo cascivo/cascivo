@@ -34,7 +34,7 @@
           "data-size": ["md", "lg"]
         },
         "children": ["icon", "title", "description", "action"],
-        "emit": "auto"
+        "emit": "manual"
       },
       "parts": {
         "icon": {
