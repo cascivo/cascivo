@@ -16,30 +16,9 @@ import { currentPath, navigate } from '../../router'
 import { Logo } from '@cascivo/components/brand/logo'
 import { SearchButton } from '../search/SearchButton'
 import { searchOpen } from '../search/state'
+import { PRIMARY_LINKS, RESOURCE_LINKS } from '../nav-data'
 
 const GITHUB_HREF = 'https://github.com/cascivo/cascivo'
-
-type NavLink = { label: string; href: string }
-
-// Slim primary nav (v36): three top-level links. Secondary routes group under a
-// "Resources" menu; every route is also reachable from the footer link map.
-const PRIMARY_LINKS: NavLink[] = [
-  { label: 'Docs', href: '/docs' },
-  { label: 'Examples', href: '/examples' },
-  { label: 'Guides', href: '/guides' },
-]
-
-const RESOURCE_LINKS: NavLink[] = [
-  { label: 'Highlights', href: '/highlights' },
-  { label: 'Charts', href: '/charts' },
-  { label: 'Showcase', href: '/showcase' },
-  { label: 'Create', href: '/create' },
-  { label: 'Blocks', href: '/blocks' },
-  { label: 'Accessibility', href: '/accessibility' },
-  { label: 'Performance', href: '/performance' },
-  { label: 'Modern CSS', href: '/modern-css' },
-  { label: 'AI', href: '/ai' },
-]
 
 function isExternalHref(href: string) {
   return /^https?:\/\//.test(href)

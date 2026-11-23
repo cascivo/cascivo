@@ -1,0 +1,10 @@
+{
+  "src/marketing/islands/signals.tsx": {
+    "file": "assets/signals-abc.js",
+    "isEntry": true,
+    "css": ["assets/signals-abc.css"],
+    "imports": ["_shared-def.js"]
+  },
+  "_shared-def.js": { "file": "assets/shared-def.js", "css": ["assets/shared-def.css"] },
+  "src/marketing/islands/home.css.ts": { "file": "assets/home-123.js", "css": ["assets/home-123.css"] }
+}

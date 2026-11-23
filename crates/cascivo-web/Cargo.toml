@@ -1,12 +1,20 @@
 [package]
 name = "cascivo-web"
-version = "0.0.0"
+version = "0.2.1"
 edition.workspace = true
 rust-version.workspace = true
-description = "Spike: static sites from Markdown, content collections and cascivo-html components"
+description = "Static sites from Markdown and content collections, with cascivo-html components, i18n and RSS"
 license = "MIT"
 repository = "https://github.com/cascivo/cascivo"
-publish = false
+homepage = "https://github.com/cascivo/cascivo/tree/main/crates/cascivo-web"
+documentation = "https://docs.rs/cascivo-web"
+readme = "README.md"
+keywords = ["static-site", "markdown", "i18n", "rss", "cascivo"]
+categories = ["web-programming", "command-line-utilities", "template-engine"]
+exclude = ["tests/"]
+
+[package.metadata.docs.rs]
+all-features = true
 
 [[bin]]
 name = "cascivo-web"
@@ -14,14 +22,17 @@ path = "src/main.rs"
 
 [dependencies]
 axum = { version = "0.8.9", optional = true, default-features = false }
-cascivo-html = { path = "../cascivo-html" }
+cascivo-html = { path = "../cascivo-html", version = "0.3.0" }
 minijinja = { version = "3.1.0", default-features = false, features = [
   "builtins",
   "multi_template",
   "macros",
+  "serde",
 ] }
+image = { version = "0.25.10", default-features = false, features = ["jpeg", "png", "webp"] }
 pulldown-cmark = { version = "0.13.6", default-features = false, features = ["html"] }
 serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
 toml = "1.2.2"
 
 [features]

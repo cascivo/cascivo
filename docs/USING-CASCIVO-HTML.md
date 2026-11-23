@@ -49,6 +49,12 @@ card "Trend"
   boolean prop name is a flag: `button Save primary`.
 - Chart and table data is written inline: `bar Q1:12 Q2:18`, `line 3 5 8`,
   `table Name,Age | Ann,31 | Bob,42` (the first row is the header; props go before the rows).
+  In a cell, write `\,` for a literal comma, `\|` for a bar and `\\` for a backslash:
+  `table City,Note | Paris\, France,a \| b`.
+- `button "Pricing" href=/pricing` renders a link (`<a href>`) styled as a button. A `disabled`
+  or `loading` button stays a `<button>`.
+- `alert` and `notification` have `role="note"`: a static page has nothing to announce. Add
+  `role=status` or `role=alert` to make one a live region.
 - `3x card "x"` repeats a node. A line that starts with `#` is a comment.
 - Aliases: `cols` = `columns`, `row` and `col` = `flex`, `h1` to `h3` = `heading`, `p` = `text`.
 
@@ -96,9 +102,22 @@ svg "<svg viewBox='0 0 8 8'><circle cx='4' cy='4' r='3' fill='currentColor'/></s
 
 ```sh
 cascivo-html guide [component]                 # the agent cheat sheet, or one component
-cascivo-html check [in.cv|-] [--brand f]       # validate only
-cascivo-html render [in.cv|-] [-o out.html] [--brand f] [--assets dir] [--fetch] [--max-asset n]
+cascivo-html check [in.cv|-] [--brand f] [--target t]   # validate only
+cascivo-html render [in.cv|-] [-o out.html] [--brand f] [--target t] [--assets dir] [--fetch] [--max-asset n]
+                   [--no-inline-styles] [--script-src url]
+cascivo-html script                            # every client script, for --script-src
 ```
+
+Output options for `render`:
+
+- `--no-inline-styles` makes the page safe for a Content Security Policy without
+  `style-src 'unsafe-inline'` on attributes: no element gets a `style=""` attribute. Each
+  layout, size or chart value becomes a `data-cv-style="<hash>"` hook with its rule in the page
+  `<style>` block (`@layer cascivo.override`). The `<style>` block itself still needs a hash or
+  nonce, or serve the CSS as a file (cascivo-web does). Limit: `style` attributes and `<style>`
+  elements inside an author-supplied `svg` are kept as written.
+- `--script-src /cascivo.js` references the client scripts (only `table sort` uses one) with
+  `<script src defer>` instead of inlining them. `cascivo-html script > cascivo.js` writes the file.
 
 `-` or no input reads stdin. Without `-o`, the HTML goes to stdout. Exit codes: `0` ok, `1`
 invalid `.cv`, `2` usage or I/O error. Errors are `file:line:col: message` with the expected
@@ -108,6 +127,27 @@ The loop for an agent: read `guide`, write `page.cv`, run `check` until it exits
 `render page.cv -o page.html`. The skill [`cascivo-html`](../skills/cascivo-html/SKILL.md) wraps
 this loop.
 
+## Render for Blitz
+
+[Blitz](https://github.com/DioxusLabs/blitz) is a native HTML/CSS engine with no JavaScript. Pass
+`--target blitz` (library: `Options { target: Target::Blitz, .. }`) to lower the output for it.
+The default, `browser`, changes nothing.
+
+| Blitz gap | What `--target blitz` does |
+|---|---|
+| `@container` never matches | Rewrites it to the same `@media` query on the viewport. Right for page-level layouts; a narrow container in a wide window still follows the window. `scroll-state()` containers are dropped. |
+| `:focus-visible` never matches | Rewrites it to `:focus`. Pointer focus shows the ring too. |
+| SVG ignores CSS `fill`, `stroke`, `transform`, `var()` and `oklch()` | Moves them to presentation attributes with `rgb()` values from the page theme and brand (`meter`, `progress-circle` and every chart). |
+| No `<script>` | Does not emit the table-sort script. `[data-sortable]` stays for a host handler. |
+
+`overflow:auto` needs no change: Blitz treats it as `scroll`. `:has()` needs the engine pref
+`layout.css.has-selector.enabled`; the host sets it.
+
+`cascivo-html check --target blitz page.cv` prints what still degrades as
+`file:line:col: warning: component: message` on stderr. Warnings do not change the exit code.
+The same lint is `cascivo_html::lint(src, Target::Blitz)`. The pieces are public too:
+`lower_css(&css)` and `lower_svg(&html, &css)`.
+
 ## The library
 
 ```rust
@@ -116,11 +156,17 @@ use cascivo_html::{render, Options};
 let html = render("card \"Hi\"\n", &Options::default())?;
 ```
 
-- `render`, `parse`, `check`, and `GUIDE` / `guide_for(name)` for the cheat sheet text.
+- `render`, `parse`, `check`, `lint`, and `GUIDE` / `guide_for(name)` for the cheat sheet text.
 - The library does no file I/O. Give it files through `Options::assets` (a list of
   `(path, bytes)`), `Options::asset_resolver` and `Options::brand_resolver`. The CLI does this for you.
 - `Options::max_asset_bytes` sets the size limit; `Options::embed_urls` sends `http(s)` sources to
   your resolver.
+- `Options::inline_styles = false` is the CSP-safe mode. `render_parts` returns the rules in
+  `Fragment::styles`; merge the maps of all pages and write `style_rules(&styles)` after
+  `stylesheet(theme, &used)`.
+- `Options::script_src = Some(url)` makes `render` reference scripts instead of inlining them.
+  `script(name)`, `script_names()` and `script_bundle(Some(&fragment.scripts))` (or `None` for
+  all) give the source to serve at that URL.
 
 Full API: [docs.rs/cascivo-html](https://docs.rs/cascivo-html).
 

@@ -342,8 +342,11 @@ describe('@cascivo/elements in Chromium', () => {
   it('axe: no WCAG 2.2 AA violations, closed and with each popup open', async () => {
     const { page, close } = await open()
     await page.addScriptTag({ url: '/axe.js' })
+    // Popups fade in and out; axe reads a half-faded item as low contrast, so measure only once
+    // every animation and transition has finished.
     const run = () =>
       page.evaluate(async () => {
+        await Promise.all(document.getAnimations().map((a) => a.finished.catch(() => {})))
         const r = await (window as any).axe.run(document, {
           runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'],
         })

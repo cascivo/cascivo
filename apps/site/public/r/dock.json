@@ -3,7 +3,7 @@
   "name": "dock",
   "type": "component",
   "description": "Fixed bottom navigation bar for mobile app shells with up to 5 items",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dock/dock.tsx"

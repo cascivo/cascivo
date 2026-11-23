@@ -38,7 +38,7 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
     let show_legend = !c.plain && c.legend.unwrap_or(true);
     let labels_on = !c.plain && prop_bool(node, "labels").unwrap_or(false);
 
-    open(out, &c.frame(), show_legend);
+    open(out, cx, &c.frame(), show_legend);
     out.push_str("<g>");
     let mut start = 0.0;
     for (i, v) in values.iter().enumerate() {
@@ -61,6 +61,7 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
             let (lx, ly) = polar_point(cx0, cy0, label_r, mid);
             data_label(
                 out,
+                cx,
                 lx,
                 ly + 4.0,
                 &format!("{}%", pct.round()),

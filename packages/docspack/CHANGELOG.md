@@ -1,5 +1,20 @@
 # @cascivo/docspack
 
+## 0.3.5
+
+### Patch Changes
+
+- 9f0d78d: Bundle the new `using-cascivo-blitz.md` guide (native HTML rendering with cascivo-blitz).
+- 4e0caf8: Regenerate the bundled `using-cascivo-web.md` doc so its header matches registry v1.11.0.
+
+## 0.3.4
+
+### Patch Changes
+
+- b470493: New guide `using-cascivo-html`: render agent-written `.cv` text into one static, branded cascivo
+  HTML file with the Rust crate `cascivo-html` or its CLI. The AI rules and machine-mode guides now
+  point to it for static pages.
+
 ## 0.3.3
 
 ### Patch Changes

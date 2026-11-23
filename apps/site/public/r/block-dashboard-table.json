@@ -3,7 +3,7 @@
   "name": "block/dashboard-table",
   "type": "block",
   "description": "Searchable, sortable, paginated data table with export button.",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-table/dashboard-table.tsx"

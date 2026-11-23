@@ -1,10 +1,12 @@
-name: Rust release (cascivo-html)
+name: Rust release
 
 # Changesets-style release flow for the Rust crates, mirroring release.yml (JS):
 #   * a push to main that touches `.changeset-rust/**` with staged changesets opens/updates the
 #     "Version Rust crates" PR (branch `changeset-release/rust`);
 #   * merging it changes `crates/**/Cargo.toml`, which re-triggers this workflow; it then finds
 #     versions that are not on crates.io and publishes them (trusted publishing, OIDC).
+# A crate at version 0.0.0 is an unreleased placeholder: never published, no binaries, until its
+# first changeset bumps it and the Version PR is merged.
 # One-time setup is in crates/cascivo-html/README.md ("Releasing"). crates.io trusts THIS file
 # name and the `crates-io` environment on the publish job — do not rename either.
 on:
@@ -122,6 +124,8 @@ jobs:
           node-version: 22
       - name: Toolchain
         run: rustup show active-toolchain || rustup toolchain install
+      - name: System libraries
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends pkg-config libfontconfig1-dev
       - uses: actions/cache@v4
         with:
           path: |
@@ -179,9 +183,100 @@ jobs:
           cargo metadata --no-deps --format-version 1 \
             | jq -r '.packages[] | select(.publish == null or (.publish | length) > 0) | "\(.name) \(.version)"' \
             | while read -r crate version; do
+                if [ "$version" = 0.0.0 ]; then echo "$crate is an unreleased 0.0.0 placeholder"; continue; fi
                 if grep -qx "$crate" <<< "$unpublished"; then echo "$crate $version not on crates.io yet"; continue; fi
                 tag="$crate@$version"
                 if gh release view "$tag" > /dev/null 2>&1; then echo "release $tag exists"; continue; fi
                 $CLI changelog-section --crate "$crate" --version "$version" > "$RUNNER_TEMP/notes.md"
                 gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" --notes-file "$RUNNER_TEMP/notes.md"
               done
+
+  # Which released crates ship a binary? Derived from crates.io state (like `releases`), so a
+  # re-run after a partial failure rebuilds only what is missing.
+  binaries-plan:
+    name: Binaries plan
+    needs: releases
+    if: always() && github.ref == 'refs/heads/main' && needs.releases.result == 'success'
+    runs-on: ubuntu-latest
+    outputs:
+      plan: ${{ steps.plan.outputs.plan }}
+      any: ${{ steps.plan.outputs.any }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - id: plan
+        shell: bash
+        run: |
+          plan=$($CLI binaries)
+          echo "$plan"
+          echo "plan=$plan" >> "$GITHUB_OUTPUT"
+          echo "any=$([ "$plan" != '[]' ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+  # Prebuilt binaries attached to the `<crate>@<version>` GitHub release. Matrix over targets;
+  # the crates are looped inside so the plan stays one JSON value. An asset already on the
+  # release is skipped, so re-running is idempotent.
+  binaries:
+    name: Binaries (${{ matrix.target }})
+    needs: [releases, binaries-plan]
+    if: always() && github.ref == 'refs/heads/main' && needs.releases.result == 'success' && needs.binaries-plan.outputs.any == 'true'
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write # upload release assets
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, target: x86_64-unknown-linux-gnu }
+          - { os: ubuntu-24.04-arm, target: aarch64-unknown-linux-gnu }
+          - { os: macos-15-intel, target: x86_64-apple-darwin }
+          - { os: macos-latest, target: aarch64-apple-darwin }
+          - { os: windows-latest, target: x86_64-pc-windows-msvc }
+    env:
+      PLAN: ${{ needs.binaries-plan.outputs.plan }}
+      TARGET: ${{ matrix.target }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        shell: bash
+        run: |
+          rustup show active-toolchain || rustup toolchain install
+          rustup target add "$TARGET"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            target
+          key: cargo-bin-${{ matrix.target }}-${{ hashFiles('Cargo.lock') }}
+      - name: Build, package and upload
+        shell: bash
+        run: |
+          set -euo pipefail
+          while read -r item; do
+            crate=$(jq -r .crate <<< "$item")
+            version=$(jq -r .version <<< "$item")
+            bin=$(jq -r .bin <<< "$item")
+            tag=$(jq -r .tag <<< "$item")
+            name="$bin-$version-$TARGET"
+            if [[ "$TARGET" == *windows* ]]; then archive="$name.zip"; exe="$bin.exe"; else archive="$name.tar.gz"; exe="$bin"; fi
+            if gh release view "$tag" --json assets --jq '.assets[].name' | grep -qx "$archive"; then
+              echo "$archive already on $tag"
+              continue
+            fi
+            cargo build --release --locked -p "$crate" --bin "$bin" --target "$TARGET"
+            out="$RUNNER_TEMP/$name"
+            rm -rf "$out" && mkdir -p "$out"
+            cp "target/$TARGET/release/$exe" "$out/"
+            for f in LICENSE "crates/$crate/LICENSE"; do [ -f "$f" ] && cp "$f" "$out/" && break; done || true
+            if [ "$exe" != "$bin" ]; then
+              (cd "$RUNNER_TEMP" && 7z a -tzip "$archive" "$name" > /dev/null)
+            else
+              tar -czf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP" "$name"
+            fi
+            (cd "$RUNNER_TEMP" && { sha256sum "$archive" 2>/dev/null || shasum -a 256 "$archive"; } > "$archive.sha256")
+            gh release upload "$tag" "$RUNNER_TEMP/$archive" "$RUNNER_TEMP/$archive.sha256" --clobber
+          done < <(jq -c '.[]' <<< "$PLAN")

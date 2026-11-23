@@ -334,7 +334,7 @@ def _breathing(g, p, turned):
     d = p.dot * 0.8 - 40 * p.heavy  # at 0.72 they read as ticks; Black's dot would make them blots
     depth = d * (0.9 + 1.0 * (1 - thin_blend(p)))  # Thin: its small dot made psili and dasia two specks; a longer tail separates the curl from the turned one
     top = d * 0.95 + depth
-    comma_shape(g, d, d * 0.15, top, depth)
+    comma_shape(g, d, d * 0.15, top, depth, head=0.95)
     if turned:
         g.strokes = [st.transformed(lambda q: (d * 0.3 - q[0], top - q[1])) for st in g.strokes]
     g.mark = True

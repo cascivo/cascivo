@@ -11,10 +11,10 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
     match node.spec.name {
         "alert" => alert(node, out),
         "notification" => notification(node, out),
-        "progress-bar" => progress_bar(node, out),
+        "progress-bar" => progress_bar(node, cx, out),
         "progress-circle" => progress_circle(node, out),
-        "meter" => meter(node, out),
-        "skeleton" => skeleton(node, out),
+        "meter" => meter(node, cx, out),
+        "skeleton" => skeleton(node, cx, out),
         "spinner" => spinner(node, out),
         _ => emit_children(node, cx, out),
     }
@@ -61,15 +61,17 @@ fn icon_span(out: &mut String, class: &str, icon: &str) {
     out.push_str("</span>");
 }
 
+/// Static content is present at load, so a live region would only make screen readers
+/// interrupt; `note` unless the author opts into `role=status` or `role=alert`.
+fn live_role(node: &Node) -> String {
+    node.prop_str("role").unwrap_or_else(|| "note".into())
+}
+
 fn alert(node: &Node, out: &mut String) {
     let variant = node.prop_str("variant").unwrap_or_else(|| "default".into());
-    let role = if variant == "warning" || variant == "destructive" {
-        "alert"
-    } else {
-        "status"
-    };
+    let role = live_role(node);
     out.push_str("<div");
-    attr(out, "role", role);
+    attr(out, "role", &role);
     attr(out, "data-variant", &variant);
     attr(out, "class", "cv-alert-alert");
     out.push('>');
@@ -130,13 +132,9 @@ fn variant_icon(out: &mut String, variant: &str) {
 
 fn notification(node: &Node, out: &mut String) {
     let variant = node.prop_str("variant").unwrap_or_else(|| "info".into());
-    let role = if variant == "warning" || variant == "error" {
-        "alert"
-    } else {
-        "status"
-    };
+    let role = live_role(node);
     out.push_str("<div");
-    attr(out, "role", role);
+    attr(out, "role", &role);
     attr(out, "data-variant", &variant);
     // `Presence` marks its child open on the server render.
     attr(out, "data-state", "open");
@@ -182,7 +180,7 @@ fn clamp_percent(value: f64, max: f64) -> (f64, f64) {
     (clamped, percent)
 }
 
-fn progress_bar(node: &Node, out: &mut String) {
+fn progress_bar(node: &Node, cx: &mut Cx, out: &mut String) {
     let value = finite(node.arg_num(0));
     let max = finite(node.prop_num("max")).unwrap_or(100.0);
     let (clamped, percent) = clamp_percent(value.unwrap_or(0.0), max);
@@ -251,9 +249,8 @@ fn progress_bar(node: &Node, out: &mut String) {
     out.push_str("><div");
     attr(out, "class", "cv-progress-bar-fill");
     if value.is_some() {
-        attr(
+        cx.style(
             out,
-            "style",
             &format!("--cascivo-progress-value:{}%", js_num(percent)),
         );
     }
@@ -351,7 +348,7 @@ fn arc_path(cx: f64, cy: f64, outer: f64, inner: f64, start: f64, end: f64) -> S
     )
 }
 
-fn meter(node: &Node, out: &mut String) {
+fn meter(node: &Node, cx: &mut Cx, out: &mut String) {
     let value = finite(node.arg_num(0)).unwrap_or(0.0);
     let min = finite(node.prop_num("min")).unwrap_or(0.0);
     let max = finite(node.prop_num("max")).unwrap_or(100.0);
@@ -443,17 +440,13 @@ fn meter(node: &Node, out: &mut String) {
     attr(out, "height", &h);
     attr(out, "fill", color);
     attr(out, "class", "cv-meter-fill");
-    attr(
-        out,
-        "style",
-        &format!("transform:scaleX({})", js_num(ratio)),
-    );
+    cx.style(out, &format!("transform:scaleX({})", js_num(ratio)));
     out.push_str("></rect></svg>");
     el(out, "div", "cv-meter-label", &label);
     out.push_str("</div>");
 }
 
-fn skeleton(node: &Node, out: &mut String) {
+fn skeleton(node: &Node, cx: &mut Cx, out: &mut String) {
     let variant = node.prop_str("variant").unwrap_or_else(|| "text".into());
     out.push_str("<div");
     attr(out, "aria-hidden", "true");
@@ -471,9 +464,7 @@ fn skeleton(node: &Node, out: &mut String) {
             style.push(format!("{var}:{v}"));
         }
     }
-    if !style.is_empty() {
-        attr(out, "style", &style.join(";"));
-    }
+    cx.style(out, &style.join(";"));
     out.push('>');
     if variant == "text" {
         // Array.from({length}) truncates; the cap keeps a typo from emitting megabytes.

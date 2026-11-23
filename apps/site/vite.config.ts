@@ -26,6 +26,12 @@ import { componentOgImage, componentTitle } from './src/component-head'
 import { POSTS } from './src/blog'
 import { GUIDES_BASE, guideRoute, guidesData, renderGuides } from './guides'
 import type { BlogBlock, BlogPost } from './src/blog/types'
+import {
+  chartCount as webChartCount,
+  componentCount as webComponentCount,
+  themeCount as webThemeCount,
+  webData,
+} from './src/marketing/web-data'
 import { ROUTE_HEAD, canonicalFor, PRERENDER_ROUTES } from './src/marketing/route-head'
 import {
   THEME_LABELS,
@@ -41,34 +47,12 @@ const preactCompat = path.resolve(__dirname, 'node_modules/preact/compat')
 const preactJsxRuntime = path.resolve(__dirname, 'node_modules/preact/jsx-runtime')
 
 /** Single source of truth for the headline counts injected into static HTML. */
-export function componentCount(): number {
-  const registry = JSON.parse(readFileSync(resolve(root, 'registry.json'), 'utf8')) as {
-    components: unknown[]
-  }
-  return registry.components.length
-}
+export const componentCount = (): number => webComponentCount(root)
 
 /** Chart entries in the registry — the "N chart types" figure on the landing page. */
-export function chartCount(): number {
-  const registry = JSON.parse(readFileSync(resolve(root, 'registry.json'), 'utf8')) as {
-    components: { type?: string }[]
-  }
-  return registry.components.filter((c) => c.type === 'chart').length
-}
+export const chartCount = (): number => webChartCount(root)
 
-// `all.css` (light+dark bundle), `base.css` (typography reset), and
-// `tailwind.css` (interop sheet) are not user-facing themes — exclude them so
-// the injected count tracks selectable themes. Keep in sync with NON_THEME_CSS
-// in scripts/readme/generate.ts.
-// `light-dark.css` is a BUNDLE (light + dark), not a selectable theme — the same
-// reason `all.css` is excluded. Counting it would claim 13 themes when 12 ship.
-const NON_THEME_CSS = new Set(['all.css', 'light-dark.css', 'base.css', 'tailwind.css'])
-
-export function themeCount(): number {
-  return readdirSync(resolve(root, 'packages/themes/src')).filter(
-    (f) => f.endsWith('.css') && !NON_THEME_CSS.has(f),
-  ).length
-}
+export const themeCount = (): number => webThemeCount(root)
 
 /**
  * Replace `%CASCIVO_COMPONENT_COUNT%` / `%CASCIVO_THEME_COUNT%` placeholders in
@@ -1037,6 +1021,89 @@ for (const n of BLOCK_NAMES) {
   )
 }
 
+const HOME_CSS_ENTRY = 'src/marketing/islands/home.css.ts'
+
+/**
+ * Make each home entry's manifest `css` list complete, so cascivo-web needs no graph walk.
+ *
+ * Vite lists only an entry's own sheet; the CSS of shared chunks it imports is reachable only
+ * through `imports`, and the CSS modules `home.css.ts` pulls in for static markup land in
+ * the sheet of whichever chunk owns their JS (a side-effect-only module import carries no
+ * graph edge). Entry sheets stay first (layer order: app.css declares the `@layer` statement).
+ * The SPA's own index.html entry is left untouched.
+ */
+function completeIslandManifest(dist: string, cssModules: Map<string, Record<string, string>>) {
+  const manifestPath = resolve(dist, '.vite/manifest.json')
+  if (!existsSync(manifestPath)) return
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as Record<
+    string,
+    { css?: string[]; imports?: string[]; isEntry?: boolean }
+  >
+  const transitiveCss = (key: string, seen = new Set<string>()): string[] => {
+    const chunk = manifest[key]
+    if (!chunk || seen.has(key)) return []
+    seen.add(key)
+    return [...(chunk.css ?? []), ...(chunk.imports ?? []).flatMap((i) => transitiveCss(i, seen))]
+  }
+  const assetsDir = resolve(dist, 'assets')
+  const sheets = readdirSync(assetsDir)
+    .filter((f) => f.endsWith('.css'))
+    .map((f) => ({ file: `assets/${f}`, text: readFileSync(resolve(assetsDir, f), 'utf8') }))
+  for (const [key, chunk] of Object.entries(manifest)) {
+    if (!chunk.isEntry || !key.startsWith('src/marketing/islands/')) continue
+    const css = new Set(transitiveCss(key))
+    if (key === HOME_CSS_ENTRY) {
+      // Only the modules home.css.ts names, found by one of their hashed classes.
+      const src = readFileSync(resolve(root, 'apps/site', key), 'utf8')
+      for (const [mod, classes] of cssModules) {
+        const name = mod.split('/').pop() ?? ''
+        if (!src.includes(`/${name}'`)) continue
+        const hashed = Object.values(classes)[0]
+        const sheet = sheets.find((s) => hashed !== undefined && s.text.includes(`.${hashed}`))
+        if (sheet) css.add(sheet.file)
+      }
+    }
+    chunk.css = [...css]
+  }
+  writeFileSync(manifestPath, JSON.stringify(manifest, null, 2))
+}
+
+/**
+ * Build artifacts for the static home page (cascivo-web): the CSS-module name map and the
+ * derived-data file. Both land in `dist/.vite/` next to Vite's own manifest.json.
+ */
+function webArtifacts(cssModules: Map<string, Record<string, string>>): Plugin {
+  return {
+    name: 'cascade:web-artifacts',
+    apply: 'build',
+    closeBundle() {
+      const dir = resolve(__dirname, 'dist/.vite')
+      mkdirSync(dir, { recursive: true })
+      const sorted = Object.fromEntries([...cssModules].sort(([a], [b]) => a.localeCompare(b)))
+      writeFileSync(resolve(dir, 'css-modules.json'), JSON.stringify(sorted, null, 2))
+      completeIslandManifest(resolve(__dirname, 'dist'), cssModuleMap)
+      writeFileSync(resolve(dir, 'web-data.json'), JSON.stringify(webData(root), null, 2))
+    },
+  }
+}
+
+/**
+ * Collects `{ local: hashed }` per CSS module (repo-relative path) via `css.modules.getJSON`,
+ * so cascivo-web can resolve a component's hashed class names without running Vite.
+ */
+const cssModuleMap = new Map<string, Record<string, string>>()
+function collectCssModule(cssFileName: string, json: Record<string, string>) {
+  cssModuleMap.set(path.relative(root, cssFileName).split(path.sep).join('/'), { ...json })
+}
+
+/**
+ * `CASCIVO_SITE_PASS=home` builds the static home's islands and CSS entries (read by cascivo-web
+ * via dist/.vite/manifest.json) as a second, separate pass. Sharing one Rollup graph with
+ * index.html re-chunked the SPA's CSS so component sheets were linked before the global one,
+ * which registers `cascivo.component` ahead of `cascivo.base` (scripts/checks/site-layer-order).
+ */
+const HOME_PASS = process.env['CASCIVO_SITE_PASS'] === 'home'
+
 export default defineConfig({
   test: {
     // test/*.spec.ts are Playwright specs (their own scripts); unit tests live beside the code.
@@ -1044,16 +1111,23 @@ export default defineConfig({
     // @testing-library/react, which needs jsdom and the React renderer; the Preact alias here breaks them
     // ("React Element from an older version of React"), so they stay out until they get their own config.
     // EvalsPage.test.tsx is the exception: it renders with Preact itself into jsdom, so the alias helps.
-    include: ['src/**/*.test.ts', 'src/marketing/pages/EvalsPage.test.tsx'],
+    include: [
+      'src/**/*.test.ts',
+      'src/marketing/pages/EvalsPage.test.tsx',
+      'src/marketing/pages/cascivo-sans/WeightWaterfall.test.tsx',
+      'src/marketing/poster/HeroLiveFrames.test.tsx',
+    ],
   },
-  plugins: [
-    imagetools(),
-    injectCounts(),
-    guidesData(),
-    prerenderPages(),
-    benchData(),
-    serveExampleDemos(),
-  ],
+  plugins: HOME_PASS
+    ? [imagetools(), injectCounts(), guidesData(), benchData(), webArtifacts(cssModuleMap)]
+    : [
+        imagetools(),
+        injectCounts(),
+        guidesData(),
+        prerenderPages(),
+        benchData(),
+        serveExampleDemos(),
+      ],
   define: {
     __CASCIVO_COMPONENT_COUNT__: componentCount(),
     __CASCIVO_THEME_COUNT__: themeCount(),
@@ -1062,7 +1136,31 @@ export default defineConfig({
   // Emit source maps for the production bundle. The project is public (MIT), so
   // there is nothing to hide, and Lighthouse's "valid source maps" best-practices
   // audit needs them to map the large first-party JS back to source.
-  build: { sourcemap: true },
+  // generateScopedName stays Vite's default so existing hashes do not change.
+  css: { modules: { getJSON: collectCssModule } },
+  build: HOME_PASS
+    ? {
+        sourcemap: true,
+        // Second pass into the same dist/: the SPA pass already wrote it.
+        outDir: 'dist',
+        emptyOutDir: false,
+        // dist/.vite/manifest.json: how cascivo-web finds each island's hashed JS + CSS.
+        manifest: true,
+        rollupOptions: {
+          // Vite app builds drop entry exports; the island loader calls each island's default export.
+          preserveEntrySignatures: 'exports-only',
+          input: {
+            'home-global': resolve(__dirname, 'src/marketing/islands/home-global.css'),
+            'home-css': resolve(__dirname, 'src/marketing/islands/home.css.ts'),
+            'island-header': resolve(__dirname, 'src/marketing/islands/header.tsx'),
+            'island-hero-frames': resolve(__dirname, 'src/marketing/islands/hero-frames.tsx'),
+            'island-signals': resolve(__dirname, 'src/marketing/islands/signals.tsx'),
+            'island-themes': resolve(__dirname, 'src/marketing/islands/themes.tsx'),
+            'island-app-builder': resolve(__dirname, 'src/marketing/islands/app-builder.tsx'),
+          },
+        },
+      }
+    : { sourcemap: true },
   preview: { port: 4180, strictPort: true },
   server: {
     port: 4180,

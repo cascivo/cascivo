@@ -1,0 +1,9 @@
+title = "Multi"
+base_url = "https://multi.example"
+
+[i18n]
+default = "en"
+locales = ["en", "de"]
+
+[[feeds]]
+collection = "posts"

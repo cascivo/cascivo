@@ -1,0 +1,26 @@
+{% macro snippet(code, lang, variant, cls="") %}<div data-variant="{{ variant }}" class="{{ m("code-snippet", "root") }}{% if cls %} {{ cls }}{% endif %}"><pre class="{{ m("code-snippet", "pre") }}">{{ code | highlight(lang) }}</pre><button type="button" aria-label="Copy code" data-state="idle" data-copy="{{ code }}" class="{{ m("code-snippet", "copy") }}"><svg aria-hidden="true" viewBox="0 0 16 16" class="{{ m("code-snippet", "icon") }}"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg></button></div>{% endmacro %}
+{% set steps = [
+  {"title": "Initialize", "code": "npx cascivo init", "lang": "bash", "note": "Detects your package manager and writes the config."},
+  {"title": "Add components", "code": "npx cascivo add button", "lang": "bash", "note": "Copies the source into your repo — it is yours now."},
+  {"title": "Use them", "code": "import '@cascivo/themes/light-dark.css'\nimport { Button } from './components/ui/button'", "lang": "ts", "note": "Import a theme once; each component brings its own CSS. No provider, no wrapper."},
+] %}
+<section class="pg-section" id="quickstart" aria-label="Quick start">
+  <div class="pg-pad pg-head">
+    <h2 class="pg-display pg-display--section">Three steps in</h2>
+    <p class="pg-eyebrow">08 / quick start</p>
+  </div>
+  <ol class="pg-tiles pg-tiles--3 pg-steps">
+    {% for step in steps %}<li class="pg-pad pg-step">
+      <p class="pg-step-head"><span class="pg-step-num" aria-hidden="true">{{ loop.index }}</span><span class="pg-display pg-display--sub">{{ step.title }}</span></p>
+      {{ snippet(step.code, step.lang, "multi", "pg-step-code") }}
+      <p class="pg-note">{{ step.note }}</p>
+    </li>{% endfor %}
+  </ol>
+  <div class="pg-pad pg-surface pg-prebuilt">
+    <div class="pg-prebuilt-copy">
+      <p class="pg-display pg-display--sub">Prefer no copy step?</p>
+      <p class="pg-note"><code>@cascivo/react</code> ships a prebuilt distribution of every component. You don't own the source, but there is no setup — upgrade to owned code via the CLI at any time.</p>
+    </div>
+    {{ snippet("npm add @cascivo/react @cascivo/themes", "bash", "single", "pg-prebuilt-code") }}
+  </div>
+</section>

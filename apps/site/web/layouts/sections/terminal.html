@@ -1,0 +1,24 @@
+{% macro snippet(code, lang, variant, cls="") %}<div data-variant="{{ variant }}" class="{{ m("code-snippet", "root") }}{% if cls %} {{ cls }}{% endif %}"><pre class="{{ m("code-snippet", "pre") }}">{{ code | highlight(lang) }}</pre><button type="button" aria-label="Copy code" data-state="idle" data-copy="{{ code }}" class="{{ m("code-snippet", "copy") }}"><svg aria-hidden="true" viewBox="0 0 16 16" class="{{ m("code-snippet", "icon") }}"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"></rect><path d="M3.5 10.5h-1a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg></button></div>{% endmacro %}
+{% set sample = 'col("gap-1 p-1 border rounded text-accent", [\n    text("Deploy ready").into(),\n    button("Ship it", "ship").into(),\n])' %}
+{% set crates = [
+  {"title": "HTML", "body": "Write .cv text, get one static HTML file: reports, dashboards, landing pages. No React, no build step.", "tag": "cascivo-html", "href": "/docs/guides/using-cascivo-html"},
+  {"title": "Terminal", "body": "The same themes and class strings, painted in the terminal on ratatui. A typo is an error with a suggestion.", "tag": "cascivo-tui", "href": "/docs/guides/using-cascivo-tui"},
+  {"title": "Native", "body": "The same .cv text in a native window on the Blitz engine. No browser; signals and event handlers in Rust. A git dependency until Blitz 0.3 is stable.", "tag": "cascivo-blitz", "href": "/docs/guides/using-cascivo-blitz"},
+  {"title": "Sites", "body": "Markdown, collections, locales and RSS in, a static site out. One Rust binary, no Node build.", "tag": "cascivo-web", "href": "/docs/guides/using-cascivo-web"},
+] %}
+<section class="pg-section" id="terminal" aria-label="Beyond React: HTML, terminal, native and static sites">
+  <div class="pg-pad pg-head">
+    <h2 class="pg-display pg-display--section">Beyond React: HTML, terminal, native, sites</h2>
+    <p class="pg-eyebrow">four Rust crates</p>
+  </div>
+  <div class="pg-tiles pg-tiles--4">
+    {% for c in crates %}<div class="pg-pad pg-diff">
+      <h3 class="pg-display pg-display--tile">{{ c.title }}</h3>
+      <p class="pg-body">{{ c.body }}</p>
+      <a class="pg-diff-tag" href="{{ c.href }}">{{ c.tag }}</a>
+    </div>{% endfor %}
+  </div>
+  <div class="pg-cols">
+    <div class="pg-pad">{{ snippet(sample, "ts", "multi") }}</div>
+  </div>
+</section>

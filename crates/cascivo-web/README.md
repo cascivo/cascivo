@@ -1,53 +1,101 @@
-# cascivo-web (spike)
+# cascivo-web
 
-Static sites from Markdown, content collections and minijinja layouts, with components
-rendered by [`cascivo-html`](../cascivo-html). Phase-0 spike of
-[`docs/plans/rust-html-stack-plan.md`](../../docs/plans/rust-html-stack-plan.md) (W3); not
-published.
+Static sites from Markdown, content collections and templates, with
+[cascivo](https://github.com/cascivo/cascivo) components in your Markdown. Build with one Rust
+binary: no React, no Node build. The same input gives the same files.
+
+## Install
 
 ```sh
-cargo run -p cascivo-web -- build path/to/site --out dist   # write dist/
-cargo run -p cascivo-web -- dev path/to/site --port 4321    # serve + live reload
+cargo install cascivo-web
 ```
 
-## Site layout
+Prebuilt binaries are attached to GitHub releases `cascivo-web@<version>`. For unreleased
+changes, install from a checkout of the repository: `cargo install --path crates/cascivo-web`.
 
-| Path                           | Meaning                                                                                                                                         |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `site.toml`                    | `title`, `base_url` (enables `sitemap.xml`), `lang`, `theme`                                                                                    |
-| `content/<name>/_schema.toml`  | collection schema: `[fields] title = { type = "string", required = true }`; types `string int float bool date array`; unknown fields are errors |
-| `content/<name>/<slug>.md`     | entry: TOML front matter between `+++` lines, Markdown body                                                                                     |
-| `layouts/*.html`               | minijinja templates; Markdown pages pick one with `layout = "name"` (default `default`)                                                         |
-| `pages/**.md`, `pages/**.html` | routes: `index.md` → `/`, `about.md` → `/about/`, `blog/[posts].html` → `/blog/<slug>/` per `posts` entry                                       |
-| `public/**`                    | copied verbatim                                                                                                                                 |
+## Quick start
 
-Templates see `site`, `page` (front matter + `url`; the entry for dynamic routes), `content`
-(rendered HTML) and `collections.<name>` (entries with `slug`, `url`, `content`, front matter).
-`{{ cv('badge "New"') }}` renders `.cv` text inline.
-
-## Components in Markdown
-
-````md
-::alert[Body text]{title="Tip" variant=info}
-
-```cv
-cols 3
-  stat Users 1204
+```sh
+cascivo-web new my-site
+cd my-site
+cascivo-web dev      # http://127.0.0.1:4321/ with live reload
+cascivo-web build    # write dist/ (emptied first; --no-clean keeps old files)
 ```
-````
 
-A `::name[text]{attrs}` line is one component; attributes named like a positional argument
-fill it. A ` ```cv ` fence holds any `.cv` tree. Errors point at the Markdown file and line.
+## Features
 
-## Output
+- File-based routes in `pages/`, including `pages/blog/[posts].html` once per collection entry
+  and `pages/404.html` (or `.md`) → `/404.html`, rendered with its layout, not in the sitemap.
+- `+++` TOML front matter on Markdown and `.html` pages (`page.<key>`); `sitemap = false` and
+  `lastmod = 2026-03-04` on pages and entries control `sitemap.xml`.
+- `public/` is copied as is, including `_headers`, `_redirects` and `.well-known/` (only
+  `.DS_Store`, `.git`, `Thumbs.db`, `desktop.ini`, `._*` are skipped).
+- Content collections: TOML front matter checked against a `_schema.toml`.
+- minijinja layouts with `site`, `page`, `content`, `collections`, `locale`, `alternates`, `t()` and `cv()`.
+- cascivo components in Markdown (`::alert[Text]{variant=info}` and ` ```cv ` fences).
+- One shared `cascivo.css` with the theme and only the component CSS the site uses;
+  `dark_theme` adds a `prefers-color-scheme: dark` theme, `[brand]` overrides the tokens.
+- Strict-CSP output: `[build] inline_styles = false` and `external_scripts = true`;
+  `hash_assets = true` content-hashes `cascivo.css` and the scripts.
+- Locales: `/de/...` routes, translated pages and entries, TOML message bundles, hreflang data.
+- RSS 2.0 feeds, also per locale, and a `sitemap.xml` with `xhtml:link` and `x-default`.
+- Dev server with live reload; errors as `file:line: message`.
+- `cascivo-web deploy` for Cloudflare Workers Static Assets, or Cloudflare Pages with
+  `--pages --project-name <name>` (`wrangler pages deploy dist`); `--dry-run` to preview.
+- Optional `axum` feature: `cascivo_web::router(&site)` serves the rendered site.
+- Images (`img()`: resized WebP, `srcset`, preload), `asset()`, `highlight` for `bash`/`css`/`js`/`ts`, `head()` SEO tags, and optional Vite output (`vite()`, `css_bundle()`, `m()`, islands).
 
-Every page links one shared `/cascivo.css` holding the base, theme and only the component CSS
-the site uses. Paths are checked with `cascivo_html::path::is_safe_relative` and every write is
-confined to the output directory (symlinks are not followed).
+## Links
 
-`dev` re-reads and re-renders on any source change (20 ms poll, no cargo rebuild) and reloads
-open pages over Server-Sent Events. Feature `axum`: `cascivo_web::router(&site)` serves the
-rendered site from an `axum::Router`.
+## Sites with their own build (Vite) and assets
 
-Limits of the spike: images in components need URLs or `data:` URIs; no container directives
-(Markdown inside a component); no i18n, RSS or image pipeline.
+All tables are optional; paths are relative to the site root and may point outside it (read-only).
+
+```toml
+dark_theme = "dark"          # also apply this theme under prefers-color-scheme: dark
+[brand]                      # @brand keys: primary, accent, radius, gap, density, font, mono
+primary = "#4f46e5"
+[build]
+cascivo_css = false          # default true; false: no cascivo.css, no <link> to it
+inline_styles = false        # default true; false: data-cv-style hooks + rules in cascivo.css
+external_scripts = true      # default false; true: scripts in /cascivo*.js, <script src>
+hash_assets = true           # default false; true: /_cw/cascivo.<hash8>.css (and .js)
+trailing_slash = false       # default true (/about/ → about/index.html); false: /about → about.html,
+                             # also for page.url, canonical, sitemap, hreflang and feeds
+[head]
+robots = ""                  # default robots of head() (default "index, follow"); "" omits it
+[deploy]
+target = "pages"             # "workers" (default, `wrangler deploy`) or "pages"
+project = "my-site"          # Pages --project-name
+[assets]
+dir = "assets"               # source folder of asset()
+[images]
+dir = "../public"            # source folder of img() (default "assets")
+[vite]
+manifest = "../dist/.vite/manifest.json"
+css_modules = "../dist/.vite/css-modules.json"   # { "<x.module.css path>": { local: hashed } }
+islands = "src/marketing/islands/{name}.tsx"     # manifest key of an island (this is the default)
+[data]
+web = "../dist/.vite/web-data.json"              # JSON or TOML → template global `data.web`
+```
+
+Template functions (positional or keyword arguments; unknown keywords are errors):
+
+| Call                                                                                                                                                                         | Result                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `head(title, description, canonical, og_title, og_description, og_image, og_image_alt, og_image_width, og_image_height, og_type, robots, twitter_card, jsonld, theme_color)` | title, description, canonical (default `base_url` + page url), robots (default `[head] robots`, `noindex` on `/404.html`; `robots=false` or `''` omits it), `og:*`, `twitter:*`, JSON-LD (`</` escaped); `theme_color` is a string or `{light, dark}`                                                                                                                                                                                                                                    |
+| `asset(path)`                                                                                                                                                                | copies `<assets.dir>/<path>` to `/_cw/<stem>.<hash8>.<ext>` and returns the URL                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `vite(entry)` / `vite_css(entry)`                                                                                                                                            | `/` + the manifest file / list of CSS URLs of the entry and its static imports (dependencies first, deduped)                                                                                                                                                                                                                                                                                                                                                                             |
+| `css_bundle(hrefs, name="bundle")`                                                                                                                                           | one content-hashed `/_cw/<name>.<hash>.css` from Vite CSS files (e.g. `vite_css(…)`), in order, with top-level `@layer a, b;` statements hoisted first; relative `url()` is an error                                                                                                                                                                                                                                                                                                     |
+| `m(module, class)`                                                                                                                                                           | hashed CSS-module class; `module` is the `x.module.css` stem (path-suffix match; ambiguous or missing is an error listing candidates)                                                                                                                                                                                                                                                                                                                                                    |
+| `island(name, client="visible", props=None)`                                                                                                                                 | `data-island data-client data-src data-css [data-props]` attributes; `client` is `visible`, `idle` or `load`                                                                                                                                                                                                                                                                                                                                                                             |
+| `islands_script()`                                                                                                                                                           | the ~800 byte module loader (inline, or `/cascivo-islands.js` with `external_scripts`) that hydrates `[data-island]` with `mod.default(el, props)`; failures leave the fallback markup                                                                                                                                                                                                                                                                                                   |
+| `theme_script(storage_key="cascade-theme", attribute="data-theme", default_light="poster", default_dark="poster-dark", blocking=[…])`                                        | no-flash theme script (versioned storage envelope, OS colour-scheme fallback); a blocking `/cascivo-theme.js` with `external_scripts`                                                                                                                                                                                                                                                                                                                                                    |
+| `img(src, alt, widths=[480, 960, 1440], sizes, class, loading="lazy", format="webp", priority=false)`                                                                        | `<img srcset>`; resized files at `/_cw/img/<stem>-<w>.<hash8>.<ext>`; never upscales; `format="keep"` keeps jpeg/png/webp (at the source width, the file is copied byte for byte). `priority=true` marks the LCP image: `loading="eager"`, `fetchpriority="high"` and a `<link rel="preload" as="image" imagesrcset imagesizes>` placed at the top of `<head>`; `priority="<media query>"` preloads only where the query matches and keeps the `<img>` lazy (a copy CSS hides on phones) |
+| `{{ code \| highlight("js") }}`                                                                                                                                              | the whole highlighted `<code class=…>` element (as `CodeSnippet` renders it) for `bash`, `css`, `js`, `ts`                                                                                                                                                                                                                                                                                                                                                                               |
+| `data.<name>`                                                                                                                                                                | the `[data]` files                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+
+Webp output is lossless (all the `image` crate encodes). Hashes are FNV-1a 64 of the file bytes.
+
+- Full guide: <https://cascivo.com/docs/guides/using-cascivo-web>
+- Repository: <https://github.com/cascivo/cascivo>

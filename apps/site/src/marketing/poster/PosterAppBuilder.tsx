@@ -277,7 +277,7 @@ export function PosterAppBuilder() {
                   href={card.deployUrl}
                   target="_blank"
                   rel="noreferrer"
-                  aria-label={`Deploy ${card.title} to Cloudflare`}
+                  aria-label={`Deploy to Cloudflare: ${card.title}`}
                 >
                   Deploy to Cloudflare
                 </a>
