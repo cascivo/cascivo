@@ -74,6 +74,12 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('skip-nav', { children: 'text' }),
   e('typing-indicator'),
   e('ai-disclaimer', { children: 'text' }),
+  e('scroll-area', { children: 'nodes' }),
+  e('app-shell', { children: 'nodes' }),
+  e('large-title-header', { children: 'nodes', args: [a('title', 'str', true)] }),
+  e('header', { args: [a('links', 'rows')] }),
+  e('dock', { args: [a('items', 'rows', true)] }),
+  e('toc', { args: [a('items', 'rows', true)] }),
   e('separator'),
   e('spacer'),
   // display

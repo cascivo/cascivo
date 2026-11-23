@@ -8,6 +8,7 @@ mod auto_gen;
 pub mod chart;
 mod display;
 mod e1_a;
+mod e1_d;
 mod embed;
 mod feedback;
 mod layout;
@@ -33,6 +34,9 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         }
         "chat-bubble" | "shimmer-text" | "stack" | "aspect-ratio" | "skip-nav"
         | "typing-indicator" | "ai-disclaimer" => e1_a::emit(node, cx, out),
+        "header" | "large-title-header" | "app-shell" | "dock" | "scroll-area" | "toc" => {
+            e1_d::emit(node, cx, out)
+        }
         "alert" | "notification" | "progress-bar" | "progress-circle" | "meter" | "skeleton"
         | "spinner" => feedback::emit(node, cx, out),
         "breadcrumb" | "steps" | "accordion" | "collapsible" | "tabs" | "table" => {

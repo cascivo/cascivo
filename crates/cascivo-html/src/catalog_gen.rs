@@ -46,6 +46,23 @@ pub static CATALOG: &[CompSpec] = &[
         summary: "Highlights a short, important message inline",
     },
     CompSpec {
+        name: "app-shell",
+        component: "app-shell",
+        aliases: &[],
+        args: &[],
+        props: &[
+            PropSpec { name: "header", kind: PropKind::Str, default: None, summary: "Top bar (typically a ShellHeader)" },
+            PropSpec { name: "nav", kind: PropKind::Str, default: None, summary: "Side navigation (typically a SideNav)" },
+            PropSpec { name: "footer", kind: PropKind::Str, default: None, summary: "Optional footer pinned below the content area" },
+            PropSpec { name: "open", kind: PropKind::Bool, default: None, summary: "Controlled nav open/visible state" },
+            PropSpec { name: "defaultOpen", kind: PropKind::Bool, default: None, summary: "Initial open state when uncontrolled" },
+        ],
+        children: Children::Nodes,
+        client_js: ClientJs::Enhancement,
+        css: &["app-shell"],
+        summary: "Sticky-header + full-height side-nav + single-scroll-container layout with an a…",
+    },
+    CompSpec {
         name: "area",
         component: "area-chart",
         aliases: &[],
@@ -376,6 +393,23 @@ pub static CATALOG: &[CompSpec] = &[
         summary: "Key-value pairs rendered as a description list",
     },
     CompSpec {
+        name: "dock",
+        component: "dock",
+        aliases: &[],
+        args: &[
+            ArgSpec { name: "items", kind: ArgKind::Rows, required: true },
+        ],
+        props: &[
+            PropSpec { name: "label", kind: PropKind::Str, default: None, summary: "Alias of ariaLabel — the same invisible accessible name under the other spelling" },
+            PropSpec { name: "ariaLabel", kind: PropKind::Str, default: None, summary: "Accessible label for the dock navigation; defaults to the built-in i18n string" },
+            PropSpec { name: "activeIndex", kind: PropKind::Num, default: None, summary: "Index of the currently active item (0-based)" },
+        ],
+        children: Children::None,
+        client_js: ClientJs::Enhancement,
+        css: &["dock"],
+        summary: "Fixed bottom navigation bar for mobile app shells with up to 5 items",
+    },
+    CompSpec {
         name: "empty-state",
         component: "empty-state",
         aliases: &[],
@@ -454,6 +488,21 @@ pub static CATALOG: &[CompSpec] = &[
         client_js: ClientJs::None,
         css: &["grid"],
         summary: "CSS grid layout primitive with responsive column collapsing",
+    },
+    CompSpec {
+        name: "header",
+        component: "header",
+        aliases: &[],
+        args: &[
+            ArgSpec { name: "links", kind: ArgKind::Rows, required: false },
+        ],
+        props: &[
+            PropSpec { name: "sticky", kind: PropKind::Bool, default: Some("false"), summary: "When true, the header sticks to the top on scroll" },
+        ],
+        children: Children::None,
+        client_js: ClientJs::Enhancement,
+        css: &["header"],
+        summary: "App top bar with brand, primary navigation links, and an actions slot",
     },
     CompSpec {
         name: "heading",
@@ -538,6 +587,22 @@ pub static CATALOG: &[CompSpec] = &[
         client_js: ClientJs::None,
         css: &["kpi"],
         summary: "KPI card showing a primary metric with optional delta indicator, icon, and spar…",
+    },
+    CompSpec {
+        name: "large-title-header",
+        component: "large-title-header",
+        aliases: &[],
+        args: &[
+            ArgSpec { name: "title", kind: ArgKind::Str, required: true },
+        ],
+        props: &[
+            PropSpec { name: "level", kind: PropKind::Enum(&["1", "2", "3"]), default: Some("1"), summary: "Heading level for the title, mapping to h1–h3" },
+            PropSpec { name: "collapseDistance", kind: PropKind::Num, default: Some("48"), summary: "Scroll distance (px) over which the large title collapses into the bar" },
+        ],
+        children: Children::Nodes,
+        client_js: ClientJs::None,
+        css: &["large-title-header"],
+        summary: "Scrolling region whose large title collapses into a compact sticky bar as it sc…",
     },
     CompSpec {
         name: "line",
@@ -764,6 +829,22 @@ pub static CATALOG: &[CompSpec] = &[
         client_js: ClientJs::Enhancement,
         css: &["chart-legend"],
         summary: "Scatter plot with variable point radius, multi-series, and hover tooltip",
+    },
+    CompSpec {
+        name: "scroll-area",
+        component: "scroll-area",
+        aliases: &[],
+        args: &[],
+        props: &[
+            PropSpec { name: "height", kind: PropKind::Str, default: None, summary: "Max block size of the container (any CSS length)" },
+            PropSpec { name: "width", kind: PropKind::Str, default: None, summary: "Max inline size of the container (any CSS length)" },
+            PropSpec { name: "orientation", kind: PropKind::Enum(&["vertical", "horizontal", "both"]), default: Some("vertical"), summary: "Which axes may scroll" },
+            PropSpec { name: "edges", kind: PropKind::Enum(&["shadow", "mask", "none"]), default: Some("shadow"), summary: "Edge affordance: box-shadow, a mask-image fade, or none" },
+        ],
+        children: Children::Nodes,
+        client_js: ClientJs::Enhancement,
+        css: &["scroll-area"],
+        summary: "A scroll container with styled, slim scrollbars and overflow shadows",
     },
     CompSpec {
         name: "section",
@@ -1070,6 +1151,21 @@ pub static CATALOG: &[CompSpec] = &[
         client_js: ClientJs::None,
         css: &["timeline"],
         summary: "Ordered sequence of events with status markers and a connector line",
+    },
+    CompSpec {
+        name: "toc",
+        component: "toc",
+        aliases: &[],
+        args: &[
+            ArgSpec { name: "items", kind: ArgKind::Rows, required: true },
+        ],
+        props: &[
+            PropSpec { name: "activeId", kind: PropKind::Str, default: None, summary: "Controlled active item id; disables built-in scroll-spy when set" },
+        ],
+        children: Children::None,
+        client_js: ClientJs::Enhancement,
+        css: &["toc"],
+        summary: "Table of contents with scroll-spy highlighting of the active section",
     },
     CompSpec {
         name: "typing-indicator",
