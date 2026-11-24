@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block main %}
+<h1>Form</h1>
+<div id="signup">{% block signup %}<cv-form
+    ><form
+      method="post"
+      action="/c/form"
+      hx-post="/c/form"
+      hx-target="closest cv-form"
+      hx-swap="outerHTML"
+    >
+      {{ form.csrf() }} {% for e in form.errors() %}
+      <p role="alert">{{ e }}</p>
+      {% endfor %} {{ form.field("name", label="Name") }} {{ form.field("email", label="Email") }}
+      <button class="cv-button-button" data-variant="primary" data-size="md" type="submit">
+        <span class="cv-button-label">Save</span>
+      </button>
+    </form></cv-form
+  >{% endblock %}</div>
+{% endblock %}

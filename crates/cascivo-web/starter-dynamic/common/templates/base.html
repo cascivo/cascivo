@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="data:," />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}{{ site.title }}{% endblock %}</title>
+    {# cv-form swaps 422 responses itself, so htmx needs no responseHandling override. #}
+    <meta name="htmx-config" content='{"allowEval":false,"includeIndicatorStyles":false}' />
+    {{ theme_script() }}
+    <link rel="stylesheet" href="/assets/island.css" />
+    <script type="module" nonce="{{ request.nonce }}" src="/assets/htmx.js"></script>
+    {{ islands_script() }}
+    <script type="module" nonce="{{ request.nonce }}" src="/assets/elements.js"></script>
+    {% block scripts %}{% endblock %}
+  </head>
+  <body hx-headers='{"X-CSRF-Token":"{{ request.csrf }}"}'>
+    <header>
+      <nav aria-label="Main">
+        {# Button-sized links: WCAG 2.2 target size (24px) in a row. #}
+        <a class="cv-button-button" data-variant="ghost" data-size="sm" href="/"
+          ><span class="cv-button-label">Home</span></a
+        >
+        <a class="cv-button-button" data-variant="ghost" data-size="sm" href="/notes"
+          ><span class="cv-button-label">Notes</span></a
+        >
+        {% if user %}
+        <form method="post" action="/logout">
+          <input type="hidden" name="csrf" value="{{ request.csrf }}" />
+          <span>{{ user.name }}</span>
+          <button class="cv-button-button" data-variant="ghost" data-size="sm" type="submit">
+            <span class="cv-button-label">Sign out</span>
+          </button>
+        </form>
+        {% else %}
+        <a class="cv-button-button" data-variant="ghost" data-size="sm" href="/login"
+          ><span class="cv-button-label">Sign in</span></a
+        >
+        {% endif %}
+      </nav>
+    </header>
+    <main>{% block main %}{% endblock %}</main>
+    <cv-toaster id="cv-toaster" class="cv-toast-viewport" aria-label="Notifications"
+      >{% block toaster %}{% for f in flash %}
+      <div class="cv-toast-toast" role="status" data-variant="{{ f.kind }}" data-state="visible">
+        <div class="cv-toast-body"><div class="cv-toast-title">{{ t(f.message) }}</div></div>
+        <button type="button" class="cv-toast-close" aria-label="Dismiss notification">×</button>
+      </div>
+      {% endfor %}{% endblock %}</cv-toaster
+    >
+  </body>
+</html>

@@ -47,10 +47,14 @@ const html = readFileSync(`${appDir}/index.html`, 'utf8')
 const cssFiles = readdirSync(chunksDir).filter((f) => f.endsWith('.css'))
 const css = cssFiles.map((f) => readFileSync(`${chunksDir}/${f}`, 'utf8')).join('\n')
 
-// Vite's CSS-Modules transform emits `_<name>_<hash>_<line>`, so every class in the HTML
-// that matches this shape came from a cascivo component stylesheet.
+// @cascivo/react renders contract class names (`cv-<unit>-<local>`), so every one in the
+// HTML's class attributes came from a cascivo component stylesheet.
 const rendered = [
-  ...new Set([...html.matchAll(/_[A-Za-z0-9]+_[a-z0-9]{4,6}_\d+/g)].map((m) => m[0])),
+  ...new Set(
+    [...html.matchAll(/\bclass="([^"]*)"/g)]
+      .flatMap((m) => m[1].split(/\s+/))
+      .filter((c) => /^cv-[a-z0-9]+(-[\w-]+)+$/.test(c)),
+  ),
 ]
 assert.ok(
   rendered.length >= 8,

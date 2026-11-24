@@ -34,3 +34,23 @@ describe('Checkbox', () => {
     expect(handler).toHaveBeenCalledOnce()
   })
 })
+
+describe('Checkbox data-state', () => {
+  const root = () => screen.getByRole('checkbox').closest('label')
+  it('tracks uncontrolled toggling', async () => {
+    render(<Checkbox label="A" />)
+    expect(root()).toHaveAttribute('data-state', 'unchecked')
+    await userEvent.click(screen.getByRole('checkbox'))
+    expect(root()).toHaveAttribute('data-state', 'checked')
+  })
+  it('seeds from defaultChecked and shows indeterminate over checked', () => {
+    render(<Checkbox label="A" defaultChecked indeterminate />)
+    expect(root()).toHaveAttribute('data-state', 'indeterminate')
+  })
+  it('follows the controlled prop', () => {
+    const { rerender } = render(<Checkbox label="A" checked onChange={() => {}} />)
+    expect(root()).toHaveAttribute('data-state', 'checked')
+    rerender(<Checkbox label="A" checked={false} onChange={() => {}} />)
+    expect(root()).toHaveAttribute('data-state', 'unchecked')
+  })
+})

@@ -5,6 +5,19 @@ export const meta: ComponentMeta = {
   description: 'Hover-triggered popover with configurable open/close delay',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    // The trigger span is the root; the content popover is its sibling in the DOM.
+    root: { element: 'span', local: 'trigger', children: ['$slot', 'content'] },
+    parts: {
+      content: {
+        element: 'div',
+        role: 'complementary',
+        data: { 'data-state': ['open', 'closed'] },
+        children: ['$slot'],
+      },
+    },
+  },
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

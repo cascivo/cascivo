@@ -7,6 +7,31 @@ export const meta: ComponentMeta = {
   category: 'display',
   // Actions are revealed by a horizontal swipe gesture and are unreachable otherwise.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'root',
+      data: { 'data-state': ['closed', 'leading', 'trailing'] },
+      children: ['panel', 'content'],
+    },
+    parts: {
+      // One panel per side that has actions; `leading`/`trailing` place it.
+      panel: {
+        element: 'div',
+        modifiers: { leading: "side === 'leading'", trailing: "side === 'trailing'" },
+        children: ['action'],
+      },
+      action: {
+        element: 'button',
+        data: { 'data-destructive': 'boolean' },
+        children: ['actionIcon', 'actionLabel'],
+      },
+      actionIcon: { element: 'span', aria: ['aria-hidden'], children: ['$slot'] },
+      actionLabel: { element: 'span', children: ['$text'] },
+      content: { element: 'div', data: { 'data-dragging': 'boolean' }, children: ['$slot'] },
+    },
+  },
   states: ['closed', 'leading', 'trailing'],
   variants: [],
   sizes: [],

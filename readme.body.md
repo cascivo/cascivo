@@ -145,6 +145,10 @@ The cascivo registry model is open — anyone can publish components and host th
 
 [`cascivo-web`](crates/cascivo-web) builds a static site from Markdown, content collections and templates, with cascivo components in the Markdown. Locales, RSS, a sitemap, a live-reload dev server and `deploy` to Cloudflare Workers Static Assets. One Rust binary, no Node build: `cargo install cascivo-web`. Guide: [docs/USING-CASCIVO-WEB.md](docs/USING-CASCIVO-WEB.md).
 
+### Dynamic apps from Rust (`cascivo-server`)
+
+HTML first, htmx for partial updates: [`cascivo-server`](crates/cascivo-server) is an axum layer that renders `cascivo-web` templates per request (a page, or one block as the htmx fragment) with forms, sessions, CSRF, auth, a nonce CSP and SSE. [`cascivo-worker`](crates/cascivo-worker) runs the same app on Cloudflare Workers (KV sessions, D1, R2). Behaviour comes from [`@cascivo/elements`](packages/elements) (light-DOM `cv-tabs`, `cv-dialog`, `cv-toaster`, `cv-form`, plus `/htmx` glue) and, where a widget needs client state, a [`@cascivo/solid`](packages/solid) island, all on the [`@cascivo/css`](packages/css) class contract ([docs/CONTRACT.md](docs/CONTRACT.md)). Scaffold with `cascivo-web new my-app --dynamic --target native|workers|containers`. `pnpm dynamic:check` holds the budget: cascivo JS ≤ 15 KB gz per page (the starter measures 6.2 KB) and ≤ 10 KB per island (4.4 KB). Guide: [docs/USING-CASCIVO-SERVER.md](docs/USING-CASCIVO-SERVER.md); agent skill: [`skills/cascivo-server`](skills/cascivo-server/SKILL.md); example: [`apps/examples/solid-htmx`](apps/examples/solid-htmx).
+
 ### Templates & marketplace
 
 Templates are whole-page compositions — a working page, the components it composes (`registryDependencies`), and its fixtures — that install through the same registry transport and that you own and adapt. The marketplace is a backend-free, GitHub-hosted, community catalog: registries are listed by PR, a CI job bakes a static `marketplace.json`, and a gallery renders it. A template is just a registry item with `type: "template"` — no parallel system.
@@ -161,6 +165,9 @@ cascivo/
 ├── packages/
 │   ├── core/         # @cascivo/core    — micro-FSM + Preact Signals primitives
 │   ├── tokens/       # @cascivo/tokens  — three-level CSS design tokens
+│   ├── css/          # @cascivo/css     — markup contract: unhashed cv-* classes + data-* attributes
+│   ├── elements/     # @cascivo/elements — light-DOM custom elements + htmx glue (no React)
+│   ├── solid/        # @cascivo/solid   — Solid islands for server-rendered markup
 │   ├── themes/       # @cascivo/themes  — {{count.themes}} first-party themes
 │   ├── icons/        # @cascivo/icons   — optional SVG icon set
 │   ├── i18n/         # @cascivo/i18n    — signal-driven locale store + catalogs
@@ -178,7 +185,7 @@ cascivo/
 │   ├── search/       # registry search index
 │   ├── cli/          # cascivo CLI — init / add / list / update / audit
 │   └── mcp/          # @cascivo/mcp     — MCP server over the registry
-├── crates/           # Rust workspace — cascivo-html (.cv text → one static HTML file) + its CLI, cascivo-tui (ratatui toolkit), cascivo-blitz (native Blitz window), cascivo-web (static sites from Markdown)
+├── crates/           # Rust workspace — cascivo-html (.cv text → one static HTML file) + its CLI, cascivo-tui (ratatui toolkit), cascivo-blitz (native Blitz window), cascivo-web (static sites from Markdown + request-time Engine), cascivo-server (axum htmx server) + cascivo-worker (Cloudflare Workers)
 ├── apps/
 │   ├── site/         # cascivo.com — landing + docs, generated from manifests (dogfood)
 │   ├── storybook/    # storybook.cascivo.com — stories from manifests

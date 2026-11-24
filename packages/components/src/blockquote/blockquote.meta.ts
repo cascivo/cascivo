@@ -5,6 +5,17 @@ export const meta: ComponentMeta = {
   description: 'Quoted passage with optional attribution footer',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'blockquote',
+      children: ['$slot', 'footer'],
+      emit: 'manual',
+    },
+    parts: {
+      footer: { element: 'footer', children: ['$text'], when: 'cite' },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

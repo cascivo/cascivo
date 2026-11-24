@@ -498,10 +498,55 @@ capitals' widening (`CAPW_START`, `glyphs.capw`) fails `test_weight_changes_do_n
 The Bold master's capitals `T V W X Y Z` are `BOLD_OWN`, so no lowercase blend reaches them. Untouched: italic gates, Black counters
 (`0 a e 4 6 9`, `Q D O B d`) and `O`/`0` at 11-12 px, which need redrawn outlines, not constants.
 
-
 Round 6, third sitting (redrawn outlines, numeric scorer). Upright 8.67 -> 8.72, italic 7.93 -> 8.09; target 8.9 not met.
+
 - Kept: Black `D B` heavier tops/bottoms (`CAP_ROUND_H` 0.8, `_B` 0.4; D z 3.9 -> <1.2, B 3.1 -> <1; shape 8.53 -> 8.78). Italic `I` (800-900) shorter, thinner slabs; italic `1` flag reaches further left and ends lower, held 2.5 units lower at Black; small sizes 7.4 -> 8.5 (italic woff2 83,896 B, cap 83,900).
 - Reverted: Black `O Q` heavier horizontals (O counter 114k < 130k floor, `test_black_rounds_square_up`); `b d p q` heavier bowls (join_ratio > 0.71 crotch gate). Black `0 a e 4 6 9` left alone (scorer rates them about right). Italic `D B` (bars below baseline, Black Italic `в` self-intersects, byte cap).
 - `0` vs `O` at 11-12 px: already better than the references at every weight; a narrower `0` fails `test_advances_at_regular_match_a855b5e0` and `ZERO_MIN_SHARE`. Needs an owner decision (advances fixture exception, or wider sidebearings).
 - `BOLD_ADV_BLEND`: a Bold-drawn `t` (`T_BOLD_ARM` 0.6) fixes `ft`, but blends 0.1-1.0 all fail `test_weight_changes_do_not_reflow_text`, `test_tight_letters_open_up`, `test_l_tail_reads_and_keeps_its_white` (700 widens past the +-2% rule). Not kept; the 700 wstep kink stays.
 - Not run: the final Sonnet crop check of changed glyphs.
+
+## Round 7: drawn heavy curves (numeric scorer, specimens against Inter)
+
+Owner feedback: at 700-900 the curves looked algorithmic. Upright 8.724 -> 8.724 (held), italic 8.09 unchanged (not touched).
+Specimens ("Signals move fast; the cascade decides." and `nmhru dbpqag escs`, Cascivo over Inter) before and after at 700 / 800 /
+900: `specimens/round7/`.
+
+- Shoulders (n h m, the u turned over; not Һ, whose arch leaves its stem halfway up): the expanded arch's outer edge left the stem
+  0.06 x-heights under its top on a curve as round as the rest (Inter Black 0.26), and the crown stopped 13 units under the stem's
+  top. `glyphs.drawn_shoulder` redraws the near quarter's outer edge as one cubic: out of the stem `SHOULDER_NOTCH` 0.16 x-heights
+  down at `SHOULDER_ANGLE` 61 deg, into a crown `SHOULDER_CROWN` 0.25 further toward the far stem (Inter's crown sits 0.46 of the
+  span from the stem edge; ours sat 0.30) and half an overshoot over the stem's top. Same segment count, blended in by `drawn_h`
+  (the upright's heavy), so Regular is unchanged and Bold takes its share. Under the redrawn edge the stroke no longer thins
+  (`SHOULDER_JOIN` 1, `shoulder_join`; the edge does the thinning), so the counter meets the stem lower and the join keeps weight:
+  Inter's 0.24-0.26 notch over the thinned stroke read 0.26 in `quality.join_ratio` (floor Inter 0.45 - 0.1); now n 0.40, m 0.41.
+  A 0.18 notch scored 8.728 but put m at 0.38.
+- Bowls (b d p q): the same redraw at both joins (`BOWL_KNOBS`), 0.09 x-heights at 60 deg, crown 0.22 away from the stem (it sat
+  0.77 of the way from the round's edge to the stem, Inter 0.58). Inter's own 0.18 pinched our taller counter into a neck at the
+  stem and self-intersected the outline (lint); the bowl keeps its height (no lift).
+- e and c: Black's terminals run further round (`E_RUN` -8 -> -12, `C_RUN` 12 -> 16). -16 on the e was closer to Inter's length
+  but closed the mouth to 37 rows, under `test_black_e_opens`'s 55; -12 reads 56.
+- Tried and dropped: centreline knobs alone (crown lean, a taller or squatter near quarter, handle ratios, an oblique start): the
+  outer edge's exit never went below 0.88 x-heights (the thinned stroke's outer edge only clears the stem once the stroke has
+  turned nearly level). Removed.
+- ŋ and µ share the redrawn joins (n's and u's; `test_eng_and_mu_share_the_arch_of_n_and_u`); æ's e half keeps the old terminal
+  run (`AE_RUN` -8: at -12 its counter tip against the a turned 45 deg, held to 42). Gates: all 146 pass, lint and quality clean.
+- Not done: the r's arm (its own arc) and the s (read as Inter's at these sizes); the italic's heavy arches.
+
+## Round 8: heavy curves in the engine (all families)
+
+Owner feedback: the heavier the weight, the worse the curves (0 5 6 9 $ C s d r at 900), in Sans and the siblings. Fixed in the
+engine, every knob scaled by `p.heavy` (Regular's master is unchanged; Bold takes its share). Upright 8.724 -> 8.733; all 91
+`test_font.py` gates, lint and quality clean; Mono, Serif and Condensed rebuilt, their `test_family.py` pass. Specimens
+("0123456789 $ Csdr nm return columns" at 400/700/900 over Inter, JetBrains Mono, Inter Tight), before and after: `specimens/round8/`.
+
+- Rounds (`geom.Stroke` `fill`, `glyphs.OVAL_FILL` 0.06 of a stem): a closed round's diagonals gain weight (peaking at 45 deg,
+  nothing on the axes), so Black's 0 o O Q and the 6 / 9 bowls have an oval counter inside the squarer outline, not the outline's
+  own rounded slot. 0.25 read as a lens, 0.1 put O and 0 under `test_black_rounds_square_up...`'s counter floors. Upright only: the
+  italic's 6 9 counters and & at 700 sat on their floors. Small rings (% @ °, pen clipped) keep their pen.
+- Terminals (`TERM_THIN` 0.12, `term_taper`): C e s S $ 5 6 9 thin into their face, not ending at a full-stem club.
+  `TERM_RUN` 6 deg: C 5 6 9 run further round. The c is untouched: its Black face sits between `quality`'s minimum lean (6 deg)
+  and `test_display_terminals_cut_flat` (4 deg at 900/48), and either change moved it out. e and S keep their runs (aperture gates).
+- r (`R_KNOB` 0.08, upright): the arm thickens toward its end. 0.15 hung a 17-unit beak under the face (gate 12).
+- Budget: `CascivoSans[opsz,wght].woff2` 77_600 -> 77_800 (77_760).
+- Not done: the 5's stem foot still steps where it meets the bowl's thin start; the n m d joins were round 7's and are unchanged.

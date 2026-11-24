@@ -1,0 +1,96 @@
+## What
+
+Light-DOM custom elements that enhance the server-rendered [`@cascivo/css`](../css/README.md) markup (the
+`cv-<unit>-<part>` classes that `cascivo-html` and `cascivo-server` emit): `<cv-menu>`, `<cv-tabs>`,
+`<cv-form>`, `<cv-combobox>`, `<cv-date-picker>`, `<cv-dialog>` and `<cv-toaster>`. No React. Without JS the
+markup still works; with JS the elements add the keyboard, focus and ARIA behaviour on top of
+`@cascivo/core/pure` signals. Private workspace package (not published yet; the starter links it from a
+checkout). Guide: [USING-CASCIVO-SERVER.md](../../docs/USING-CASCIVO-SERVER.md); markup contract:
+[CONTRACT.md](../../docs/CONTRACT.md).
+
+## Usage
+
+Importing an element module does **not** register it: each module exports `define()`, which is idempotent
+(`customElements.define` only when the tag is unknown). `@cascivo/elements/htmx` is the exception, it wires
+the document when imported.
+
+```ts
+// web/src/elements.ts (the starter's file)
+import '@cascivo/elements/elements.css'
+import { define as menu } from '@cascivo/elements/menu'
+import { define as tabs } from '@cascivo/elements/tabs'
+import '@cascivo/elements/htmx'
+
+for (const define of [menu, tabs]) define()
+```
+
+One entry per element, no barrel, so a page ships only what it uses.
+
+| Export                     | What                                                                                  |
+| -------------------------- | ------------------------------------------------------------------------------------- |
+| `/menu` `/tabs` `/form`    | `define()` for `cv-menu` (fires `cv-select`), `cv-tabs`, `cv-form`                    |
+| `/combobox` `/date-picker` | `define()` for the form-associated `cv-combobox`, `cv-date-picker`                    |
+| `/dialog` `/toaster`       | `define()` for `cv-dialog` (`cv-open`, `cv-close`), `cv-toaster` (`cv-toast-dismiss`) |
+| `/htmx`                    | the glue below; no `define()`                                                         |
+| `/elements.css`            | the component CSS those elements style, in `@layer cascivo.component`                 |
+| `/custom-elements.json`    | Custom Elements Manifest (tags, attributes, events)                                   |
+
+## Markup
+
+The element wraps the markup the server renders; this is the shape `<cv-tabs>` enhances (the server picks the
+selected tab, the element projects it and adds roving focus):
+
+```html
+<cv-tabs id="demo">
+  <div class="cv-tabs-tabs">
+    <div role="tablist" class="cv-tabs-list" aria-label="Sections">
+      <button
+        type="button"
+        role="tab"
+        id="t-a"
+        aria-selected="true"
+        aria-controls="p-a"
+        data-value="a"
+      >
+        A
+      </button>
+      <button
+        type="button"
+        role="tab"
+        id="t-b"
+        aria-selected="false"
+        aria-controls="p-b"
+        data-value="b"
+      >
+        B
+      </button>
+    </div>
+    <div role="tabpanel" id="p-a" aria-labelledby="t-a">A body</div>
+    <div role="tabpanel" id="p-b" aria-labelledby="t-b" hidden>B body</div>
+  </div>
+</cv-tabs>
+```
+
+Arrow, Home and End move focus and activate; `activation="manual"` makes arrows move focus only. The element
+fires `cv-value-change` with `detail.value` (the tab's `data-value`, else its id). Every element's attributes
+and events are listed in `custom-elements.json`.
+
+## htmx glue
+
+`import '@cascivo/elements/htmx'` runs `install()` once per document (no htmx import; it listens to DOM
+events). It does only this:
+
+- After `htmx:afterSettle`, if focus fell to `<body>`, it returns focus to the previously focused id, else the
+  first focusable element in the swap target, else the target, else `<main>`.
+- `cv-dialog-close` (for example from `HX-Trigger`) closes the enclosing `<cv-dialog>`, or every open one.
+- `cv-toast` (`HX-Trigger: {"cv-toast": [{"kind": "...", "message": "..."}]}`) calls `.add()` on the page's
+  `<cv-toaster>`; entries without a string `message` are ignored.
+- When a global `Idiomorph` exists, the focused field keeps its typed value across a morph and a morph does
+  not strip an open `<dialog>`'s `open` attribute.
+
+## Budget
+
+Each element is at most 3 KB gzip and a page's cascivo JS (elements plus glue, htmx counted separately) at
+most 15 KB; see [JavaScript budgets](../../docs/USING-CASCIVO-SERVER.md#javascript-budgets). Messages are
+declared in `src/messages.ts` under the same keys as `@cascivo/i18n`'s `builtin`, so an adopter's
+`defineCatalog` translates them without pulling the whole catalog in.

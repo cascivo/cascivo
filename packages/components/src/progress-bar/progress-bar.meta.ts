@@ -5,7 +5,34 @@ export const meta: ComponentMeta = {
   description: 'Shows determinate or indeterminate progress of a task',
   category: 'feedback',
   clientJs: 'none',
-  states: ['determinate', 'indeterminate'],
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      local: 'progress',
+      element: 'div',
+      data: {
+        'data-status': ['active', 'success', 'error'],
+        'data-size': ['sm', 'md'],
+        'data-state': ['indeterminate'],
+      },
+      children: ['label', 'track', 'helper'],
+      // The label id, percentage and glyph are computed from the props.
+      emit: 'manual',
+    },
+    parts: {
+      label: { element: 'span', children: ['$text', 'glyph'], when: 'label' },
+      glyph: { element: 'span', aria: ['aria-hidden'], children: ['$text'], when: 'status' },
+      track: {
+        element: 'div',
+        role: 'progressbar',
+        aria: ['aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'aria-labelledby'],
+        children: ['fill'],
+      },
+      fill: { element: 'div' },
+      helper: { element: 'span', children: ['$text'], when: 'helperText' },
+    },
+  },
+  states: ['indeterminate'],
   variants: ['active', 'success', 'error'],
   sizes: ['sm', 'md'],
   props: [

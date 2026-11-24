@@ -788,6 +788,7 @@
   color: var(--cascivo-color-text);
 }
 
+.header-font-toggle,
 .header-scheme-toggle,
 .header-theme-cycle {
   display: inline-flex;
@@ -991,6 +992,7 @@
   .pg-link,
   .pg-diff-tag,
   .pg-showcase-host,
+  .header-font-toggle,
   .header-scheme-toggle,
   .header-theme-cycle,
   .header-github-link,
@@ -1328,5 +1330,61 @@
 @media (prefers-reduced-motion: reduce) {
   .pg-live-cursor {
     transition: none;
+  }
+}
+
+/* Header "Aa" typeface picker (native select) + the site-wide family overrides. */
+.header-font-toggle {
+  position: relative;
+  font-weight: 600;
+  font-size: var(--cascivo-text-sm, 0.875rem);
+
+  /* The select covers the glyph, invisible but fully operable; the wrapper draws the focus ring. */
+  & select {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  &:focus-within {
+    outline: 2px solid var(--cascivo-color-focus-ring, currentColor);
+    outline-offset: 2px;
+  }
+
+  &[data-active='true'] > span {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+}
+
+@layer cascivo.theme {
+  :root[data-font='cascivo-sans'] {
+    --cascivo-font-sans:
+      'Cascivo Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+      sans-serif;
+    --cascivo-font-display: var(--cascivo-font-sans);
+  }
+
+  :root[data-font='cascivo-mono'] {
+    --cascivo-font-mono:
+      'Cascivo Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+    --cascivo-font-sans: var(--cascivo-font-mono);
+  }
+
+  :root[data-font='cascivo-serif'] {
+    --cascivo-font-sans: 'Cascivo Serif', ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+    --cascivo-font-display: var(--cascivo-font-sans);
+  }
+
+  :root[data-font='cascivo-condensed'] {
+    --cascivo-font-sans:
+      'Cascivo Condensed', 'Arial Narrow', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --cascivo-font-display: var(--cascivo-font-sans);
   }
 }

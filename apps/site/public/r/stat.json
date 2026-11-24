@@ -26,6 +26,51 @@
     "description": "Displays a key metric with optional delta, trend direction and help text",
     "category": "display",
     "clientJs": "none",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "data": {
+          "data-card": ["true"]
+        },
+        "children": ["label", "value", "delta", "help", "visual"],
+        "emit": "manual"
+      },
+      "parts": {
+        "label": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "value": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "delta": {
+          "element": "span",
+          "data": {
+            "data-trend": ["up", "down", "flat"],
+            "data-sentiment": ["good", "bad", "neutral"]
+          },
+          "children": ["arrow", "$text"],
+          "when": "delta"
+        },
+        "arrow": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$text"]
+        },
+        "help": {
+          "element": "span",
+          "children": ["$text"],
+          "when": "helpText"
+        },
+        "visual": {
+          "element": "span",
+          "children": ["$slot"],
+          "when": "visual"
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

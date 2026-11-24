@@ -12,8 +12,10 @@ use minijinja::{Environment, ErrorKind, State, Value};
 
 use crate::config::Config;
 use crate::error::Error;
+#[cfg(feature = "images")]
+use crate::images;
 use crate::site::{Site, to_value};
-use crate::{assets, bundle, data, head, highlight, images, islands, theme, vite};
+use crate::{assets, bundle, data, head, highlight, islands, theme, vite};
 
 pub(crate) type FnResult = std::result::Result<Value, minijinja::Error>;
 
@@ -128,12 +130,14 @@ pub struct WebState {
     /// Output files made by `asset()` / `img()`, written by `Renderer::run`.
     files: Mutex<BTreeMap<String, Vec<u8>>>,
     pub(crate) vite: vite::Vite,
+    #[cfg(feature = "images")]
     pub(crate) images: Mutex<images::Cache>,
     /// `<link rel=preload>` tags queued by `img(priority=true)` while one page renders.
     preloads: Mutex<Vec<String>>,
 }
 
 impl WebState {
+    #[cfg(feature = "images")]
     pub(crate) fn preload(&self, link: String) {
         let mut p = self.preloads.lock().unwrap_or_else(PoisonError::into_inner);
         if !p.contains(&link) {
@@ -176,16 +180,21 @@ impl WebState {
             .insert(rel, bytes);
     }
 
-    #[cfg(test)]
-    pub(crate) fn for_tests(cfg: Config, vite: vite::Vite) -> Self {
+    pub(crate) fn new(root: PathBuf, cfg: Config, vite: vite::Vite) -> Self {
         Self {
-            root: PathBuf::new(),
+            root,
             cfg,
             files: Mutex::default(),
             vite,
+            #[cfg(feature = "images")]
             images: Mutex::default(),
             preloads: Mutex::default(),
         }
+    }
+
+    #[cfg(test)]
+    pub(crate) fn for_tests(cfg: Config, vite: vite::Vite) -> Self {
+        Self::new(PathBuf::new(), cfg, vite)
     }
 
     pub fn take_files(&self) -> BTreeMap<String, Vec<u8>> {
@@ -217,14 +226,7 @@ pub(crate) fn register(
         errs.push(Error::new("site.toml", None, m));
         vite::Vite::default()
     });
-    let state = Arc::new(WebState {
-        root: site.root.clone(),
-        cfg: site.config.clone(),
-        files: Mutex::default(),
-        vite,
-        images: Mutex::default(),
-        preloads: Mutex::default(),
-    });
+    let state = Arc::new(WebState::new(site.root.clone(), site.config.clone(), vite));
 
     match data::load(&site.root, &site.config.data, to_value) {
         Ok(v) => env.add_global("data", v),
@@ -232,6 +234,52 @@ pub(crate) fn register(
     }
 
     let s = Arc::clone(&state);
+    env.add_function("asset", move |path: String| safe(assets::asset(&s, &path)));
+    let s = Arc::clone(&state);
+    env.add_function("css_bundle", move |rest: Rest<Value>, kw: Kwargs| {
+        let a = Args::parse("css_bundle", &["hrefs", "name"], &rest, Some(kw))?;
+        let hrefs = a
+            .strings("hrefs")?
+            .ok_or_else(|| err("css_bundle(): missing `hrefs`"))?;
+        safe(bundle::bundle(&s, &hrefs, &a.or("name", "bundle")?))
+    });
+    #[cfg(feature = "images")]
+    let s = Arc::clone(&state);
+    #[cfg(feature = "images")]
+    env.add_function("img", move |rest: Rest<Value>, kw: Kwargs| {
+        let a = Args::parse("img", images::PARAMS, &rest, Some(kw))?;
+        safe(images::render(&s, &a))
+    });
+    #[cfg(not(feature = "images"))]
+    env.add_function("img", |_: Rest<Value>, _: Kwargs| -> FnResult {
+        Err(err(
+            "img(): cascivo-web was built without the `images` feature",
+        ))
+    });
+    register_pure(env, &state);
+    state
+}
+
+/// ` nonce="…"` from `request.nonce` (set per request by [`crate::engine::Engine`]), so a strict
+/// `script-src 'nonce-…'` CSP admits the script inline or as a file; empty in the static build.
+fn nonce_attr(st: &State) -> String {
+    let nonce = st
+        .lookup("request")
+        .and_then(|r| r.get_attr("nonce").ok())
+        .and_then(|n| n.as_str().map(str::to_string))
+        .unwrap_or_default();
+    let mut s = String::new();
+    if !nonce.is_empty() {
+        cascivo_html::html::attr(&mut s, "nonce", &nonce);
+    }
+    s
+}
+
+/// The functions that need no file access: `head`, `vite`, `vite_css`, `m`, `island`,
+/// `islands_script`, `theme_script` and the `highlight` filter. Shared by the static build and
+/// [`crate::engine::Engine`].
+pub(crate) fn register_pure(env: &mut Environment<'static>, state: &Arc<WebState>) {
+    let s = Arc::clone(state);
     env.add_function("head", move |st: &State, rest: Rest<Value>, kw: Kwargs| {
         let a = Args::parse("head", head::PARAMS, &rest, Some(kw))?;
         let page_url = st
@@ -241,11 +289,9 @@ pub(crate) fn register(
             .unwrap_or_default();
         safe(head::render(&s.cfg, &page_url, &a))
     });
-    let s = Arc::clone(&state);
-    env.add_function("asset", move |path: String| safe(assets::asset(&s, &path)));
-    let s = Arc::clone(&state);
+    let s = Arc::clone(state);
     env.add_function("vite", move |entry: String| safe(s.vite.url(&entry)));
-    let s = Arc::clone(&state);
+    let s = Arc::clone(state);
     env.add_function("vite_css", move |entry: String| {
         s.vite.css(&entry).map_err(err).map(|v| {
             Value::from(
@@ -255,39 +301,31 @@ pub(crate) fn register(
             )
         })
     });
-    let s = Arc::clone(&state);
-    env.add_function("css_bundle", move |rest: Rest<Value>, kw: Kwargs| {
-        let a = Args::parse("css_bundle", &["hrefs", "name"], &rest, Some(kw))?;
-        let hrefs = a
-            .strings("hrefs")?
-            .ok_or_else(|| err("css_bundle(): missing `hrefs`"))?;
-        safe(bundle::bundle(&s, &hrefs, &a.or("name", "bundle")?))
-    });
-    let s = Arc::clone(&state);
+    let s = Arc::clone(state);
     env.add_function("m", move |module: String, class: String| {
         s.vite.class(&module, &class).map(Value::from).map_err(err)
     });
-    let s = Arc::clone(&state);
+    let s = Arc::clone(state);
     env.add_function("island", move |rest: Rest<Value>, kw: Kwargs| {
         let a = Args::parse("island", islands::PARAMS, &rest, Some(kw))?;
         safe(islands::attrs(&s, &a))
     });
-    let s = Arc::clone(&state);
-    env.add_function("islands_script", move || {
-        safe(s.script("cascivo-islands", islands::LOADER, " type=\"module\""))
+    let s = Arc::clone(state);
+    env.add_function("islands_script", move |st: &State| {
+        let attrs = format!("{} type=\"module\"", nonce_attr(st));
+        safe(s.script("cascivo-islands", islands::LOADER, &attrs))
     });
-    let s = Arc::clone(&state);
+    let s = Arc::clone(state);
     // Stays blocking (no `defer`) even as a file: it must set `data-theme` before first paint.
-    env.add_function("theme_script", move |rest: Rest<Value>, kw: Kwargs| {
-        let a = Args::parse("theme_script", theme::PARAMS, &rest, Some(kw))?;
-        safe(theme::body(&a).and_then(|js| s.script("cascivo-theme", &js, "")))
-    });
-    let s = Arc::clone(&state);
-    env.add_function("img", move |rest: Rest<Value>, kw: Kwargs| {
-        let a = Args::parse("img", images::PARAMS, &rest, Some(kw))?;
-        safe(images::render(&s, &a))
-    });
-    let s = Arc::clone(&state);
+    env.add_function(
+        "theme_script",
+        move |st: &State, rest: Rest<Value>, kw: Kwargs| {
+            let a = Args::parse("theme_script", theme::PARAMS, &rest, Some(kw))?;
+            let attrs = nonce_attr(st);
+            safe(theme::body(&a).and_then(|js| s.script("cascivo-theme", &js, &attrs)))
+        },
+    );
+    let s = Arc::clone(state);
     env.add_filter("highlight", move |code: String, lang: String| {
         safe(highlight::render(
             &code,
@@ -295,7 +333,6 @@ pub(crate) fn register(
             s.vite.class("code-snippet", "code").ok().as_deref(),
         ))
     });
-    state
 }
 
 #[cfg(test)]

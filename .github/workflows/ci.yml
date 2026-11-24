@@ -288,6 +288,20 @@ jobs:
       - name: Elements pilot gate (size, a11y, touch, morph)
         run: pnpm run elements:check
 
+      # Phase 3 workstream T: the dynamic-app conformance harness. Builds and spawns the
+      # solid-htmx example (cascivo-server) and drives form 422, dialog, toast, server island,
+      # SSE and a lazy tabs swap in real Chromium: axe 0 violations in every swapped state,
+      # focus never on <body> (checkpoint γ), page JS ≤ 15 KB gz without htmx (checkpoint δ,
+      # htmx reported). Needs the build above and the Chromium installed earlier in this job;
+      # cargo comes with the runner image. See scripts/checks/dynamic/README.md.
+      - name: Dynamic-app conformance (flows, axe per state, focus, JS budget)
+        run: pnpm run dynamic:check
+
+      # The same harness on a fresh `cascivo-web new --dynamic --target native` (workstream H),
+      # plus its notes CRUD flow (sign-in, 422, htmx delete, PRG edit).
+      - name: Dynamic-app conformance on the starter
+        run: pnpm run dynamic:check:starter
+
       # The bare-page leg: shipped styles.css and NOTHING else, full viewport, several
       # components stacked so hit-testing is meaningful. computed:check mounts one
       # component at a time in a styled 640px box, so it structurally cannot see a
@@ -424,6 +438,10 @@ jobs:
       # were committed on an earlier UTC day. Catch that at the source.
       - name: Regen determinism guard (no wall-clock reads in generators)
         run: pnpm run regen:check
+
+      # Markup contract: contractTier/anatomy validator + contract.json/classes.gen.ts freshness.
+      - name: Markup contract tests
+        run: pnpm run contract:check
 
       # Unit tests for the view/catalog schema generators (scripts/schema/*.test.ts).
       - name: Schema generator tests

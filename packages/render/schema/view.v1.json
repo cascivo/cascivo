@@ -1185,7 +1185,9 @@
                           "success",
                           "warning",
                           "destructive",
-                          "outline"
+                          "outline",
+                          "info",
+                          "primary"
                         ]
                       },
                       {
@@ -12498,6 +12500,16 @@
                     "anyOf": [
                       {
                         "type": "boolean"
+                      },
+                      {
+                        "$ref": "#/$defs/TranslationRef"
+                      }
+                    ]
+                  },
+                  "placeholder": {
+                    "anyOf": [
+                      {
+                        "type": "string"
                       },
                       {
                         "$ref": "#/$defs/TranslationRef"
