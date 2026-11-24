@@ -6,8 +6,12 @@ Which ends get a serif, and on which sides, is decided once per glyph (the first
 reused for every master, so the masters stay point-compatible; only the sizes vary with the weight.
 """
 
+import unicodedata
+
+from fontTools.agl import toUnicode
+
 import family as _hook
-from geom import C, L, orient, seg_point
+from geom import C, L, arc, orient, seg_point
 
 NAME = 'Cascivo Serif'
 PS = 'CascivoSerif'
@@ -25,6 +29,7 @@ def _pw(x, table):
 
 BAR_SHARE = 0.6  # crossbars thin less than hairlines: thin bars open e, A, P, R counters past Source Serif's
 WEDGE = 0.6  # share of the slab a lowercase head serif's tip drops: a wedge, not a flat slab
+ROUND_DOT = 1.12  # a round dot's diameter over Sans's square dot: 1.12^2 x pi/4 keeps its ink (0.985)
 CAP_REACH = 1.2  # capitals carry longer serifs, as in Source Serif (and it moves I's stem off l's at 11 px)
 
 
@@ -67,13 +72,29 @@ def _half(s, p):
     return v * s.ws / 2
 
 
+def _is_dot(s):
+    """The engine draws a dot (period, colon, i's tittle, the foot of ! and ?) as one short vertical stroke as wide as it is
+    tall (Glyph.dot): from the baseline it read as a stem foot and took a slab and brackets."""
+    if s.w is None or len(s.segs) != 1 or s.segs[0][0] != 'L':
+        return False
+    (x0, y0), (x1, y1) = s.segs[0][1], s.segs[0][2]
+    return abs(x0 - x1) < 0.5 and abs(y1 - y0) <= s.w * 1.05 + 1
+
+
+def _serifed(name):
+    """Letters and digits only: a straight quote, | ¦ ¶ or the stem of ! is a vertical stroke on a metric too, and a slab
+    there reads as a misdrawn letter."""
+    u = toUnicode(name.split('.')[0])
+    return len(u) == 1 and unicodedata.category(u)[0] in 'LN'
+
+
 def _ends(g, p):
     """(stroke, end, kind) for every straight vertical open-stroke end lying on a vertical metric."""
     tol = 3.0
     lines = {'base': 0, 'desc': p.desc, 'xh': p.xh, 'cap': p.cap, 'asc': p.asc}
     out = []
     for i, s in enumerate(g.strokes):
-        if s.closed or not s.segs:
+        if s.closed or not s.segs or _is_dot(s):
             continue
         for end, seg in ((0, s.segs[0]), (1, s.segs[-1])):
             if seg[0] != 'L' or (s.taper[end] != 1.0):
@@ -107,6 +128,7 @@ def _blocked(g, p, i, cx, hw, Y, d, side, reach, depth):
 
 
 _PLAN = {}
+_DOTS = {}
 
 
 def _plan(g, p, name):
@@ -157,8 +179,21 @@ def _serif(cx, hw, Y, d, rl, rr, t, bf, wedge=0.0):
     return orient(c, outer=True)
 
 
+def _round_dot(s):
+    (x, y0), (_, y1) = s.segs[0][1], s.segs[0][2]
+    r = s.w / 2 * ROUND_DOT
+    return orient(arc(x, (y0 + y1) / 2, r, r, 90, 450), outer=True)
+
+
 def glyph(g, p, name):
-    if g.mark or g.tab or g.adv_fixed is not None or not g.strokes:
+    # Sans's dots are squares; a serif's are round (Source Serif's), in punctuation, the i j tittles and the accents alike
+    # (decided at the first master, like _PLAN: zero.dot's dot is square at some weights only, and masters must stay compatible)
+    if name not in _DOTS:
+        _DOTS[name] = {i for i, s in enumerate(g.strokes) if _is_dot(s)}
+    dots = [s for i, s in enumerate(g.strokes) if i in _DOTS[name]]
+    g.strokes = [s for i, s in enumerate(g.strokes) if i not in _DOTS[name]]
+    g.raw += [_round_dot(s) for s in dots]
+    if g.mark or g.tab or g.adv_fixed is not None or not g.strokes or not _serifed(name):
         return
     if name not in _PLAN:
         _PLAN[name] = _plan(g, p, name)

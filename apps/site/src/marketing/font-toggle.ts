@@ -1,7 +1,7 @@
 import { effect } from '@cascivo/core'
 import { persistedSignal } from '@cascivo/storage'
 
-export const FONT_CHOICES = ['default', 'sans', 'mono', 'serif', 'condensed'] as const
+export const FONT_CHOICES = ['default', 'cascivo', 'sans', 'mono', 'serif', 'condensed'] as const
 export type FontChoice = (typeof FONT_CHOICES)[number]
 
 export function isFontChoice(value: unknown): value is FontChoice {
@@ -20,6 +20,13 @@ export const siteFont = persistedSignal<FontChoice>('cascivo-font-sans', 'defaul
 })
 
 const loaders: Record<Exclude<FontChoice, 'default'>, () => Promise<unknown>> = {
+  cascivo: () =>
+    Promise.all([
+      import('./pages/cascivo-sans/font.css'),
+      import('./font-faces/mono.css'),
+      import('./font-faces/serif.css'),
+      import('./font-faces/condensed.css'),
+    ]),
   sans: () => import('./pages/cascivo-sans/font.css'),
   mono: () => import('./font-faces/mono.css'),
   serif: () => import('./font-faces/serif.css'),
@@ -43,7 +50,7 @@ if (typeof document !== 'undefined') {
       root.removeAttribute('data-font')
     } else {
       loadFaces(choice)
-      root.setAttribute('data-font', `cascivo-${choice}`)
+      root.setAttribute('data-font', choice === 'cascivo' ? 'cascivo' : `cascivo-${choice}`)
     }
   })
 }

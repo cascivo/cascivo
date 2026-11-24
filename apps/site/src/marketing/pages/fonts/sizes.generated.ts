@@ -2,8 +2,8 @@
 export const FAMILY_SIZES: Record<string, number> = {
   'mono/CascivoMono-Latin[opsz,wght].woff2': 24100,
   'mono/CascivoMono[opsz,wght].ttf': 140092,
-  'serif/CascivoSerif-Latin[opsz,wght].woff2': 34544,
-  'serif/CascivoSerif[opsz,wght].ttf': 286456,
+  'serif/CascivoSerif-Latin[opsz,wght].woff2': 34412,
+  'serif/CascivoSerif[opsz,wght].ttf': 287012,
   'condensed/CascivoCondensed-Latin[opsz,wght].woff2': 31928,
   'condensed/CascivoCondensed[opsz,wght].ttf': 268596,
 }

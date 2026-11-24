@@ -22,6 +22,21 @@ def foot_span(path, name, wght=400):
     return max(xs) - min(xs)
 
 
+def contours(path, name, wght):
+    """On-curve points per contour (composites decomposed), at opsz 14."""
+    gs = TTFont(path).getGlyphSet(location={'wght': wght, 'opsz': 14})
+    pen = DecomposingRecordingPen(gs)
+    gs[name].draw(pen)
+    out, cur = [], []
+    for op, args in pen.value:
+        if op in ('moveTo', 'lineTo', 'curveTo', 'qCurveTo') and args:
+            cur.append(args[-1])
+        if op in ('closePath', 'endPath'):
+            out.append(np.array(cur))
+            cur = []
+    return out
+
+
 def raster(path, ch, wght=400, size=800):
     font = ImageFont.truetype(path, size)
     font.set_variation_by_axes([wght if b'Weight' in a['name'] else 14 for a in font.get_variation_axes()])
@@ -73,6 +88,22 @@ class SerifFamily(unittest.TestCase):
         for wght in (400, 900):
             with self.subTest(wght=wght):
                 self.assertLess(o_contrast(TTF, wght), o_contrast(SANS, wght) - 0.05)
+
+    def test_round_dots_without_serifs(self):
+        # The serif pass took the engine's dot (a short vertical stroke from the baseline) for a stem foot: . : ; ! ? and the ellipsis
+        # carried a slab and brackets. Punctuation keeps Sans's contours, and every dot is one round contour.
+        for name in ('period', 'colon', 'semicolon', 'ellipsis', 'exclam', 'question', 'exclamdown', 'questiondown', 'quotesingle', 'quotedbl', 'bar', 'brokenbar', 'comma', 'quoteright', 'quotedblleft'):
+            with self.subTest(name=name):
+                self.assertEqual(len(contours(TTF, name, 400)), len(contours(SANS, name, 400)))
+        for wght in (100, 400, 700, 900):
+            for name, n in (('period', 1), ('colon', 2), ('ellipsis', 3), ('exclam', 1), ('question', 1), ('dotaccent', 1)):
+                cs = contours(TTF, name, wght)
+                dots = sorted(cs, key=lambda c: c[:, 1].min())[:n] if name != 'dotaccent' else cs
+                for c in dots:
+                    with self.subTest(wght=wght, name=name):
+                        ctr = (c.max(0) + c.min(0)) / 2
+                        r = np.hypot(*(c - ctr).T)
+                        self.assertLess(r.max() / r.min(), 1.03)  # a circle: no slab corner, no bracket
 
     def test_ots_sanitize(self):
         try:
