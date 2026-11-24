@@ -1,4 +1,4 @@
-# Cascivo Mono (v1, round 3)
+# Cascivo Mono (v1, round 4)
 
 Monospaced sibling of Cascivo Sans, built from the Sans engine through the `family.py` hooks (fonts/PLAN-families.md).
 Upright only, axes opsz 8-48 and wght 100-900.
@@ -65,10 +65,30 @@ colour 6.63 -> 6.76, small sizes 9.45 -> 9.71, optical sizes 1.28 -> 0.00. The o
 the x-height's step from opsz 14 to 48 rounds to one more pixel). Without it 8.29 -> 8.35. Adding Fira Code as a third reference:
 7.79 -> 7.74 (8.21 -> 8.27 without opsz). IBM Plex Mono is static (fontsource has no variable cut), used in the specimens only.
 
+Round 4, visual (`src/family.py`; engine untouched, Sans byte-identical). Judged by eye at 13-20 px and 72 px, 100/400/700/900, against
+JetBrains Mono; before/after sheets in `specimens/round-next/`.
+
+- r: no foot serif (with it r read as ɪ/ɾ at Thin and Display); arm R_WIDE 0.4 -> 0.6, and Black's no longer shorter than Regular's.
+- f and t drawn on a wider n counter (F_WIDE 2.2, T_WIDE 1.6): ink 0.5 -> 0.7 of the cell, no more holes either side in `fn`, `let`.
+  t stops at 1.6: wider, its foot curve folds (score.py `kink`).
+- Dots (. , : ; ! ? i j): at least 92 + 0.6 stems (Thin's period 54 -> 106, JetBrains Mono's 146) and round, a rounded square toward
+  Black (`DOT_SQ`): enlarged, Sans's sharp square read as a block. The comma's tail is capped (`COMMA_DEPTH`) so it stays in the line box.
+- 0's dot: an oval (was a sharp bar), 1.3x the bar's box; Black's 0 3% narrower.
+- `!` keeps a gap over its dot (Black's stem ran into it: `!` read as l). `/` and `\` 0.72 of the cell over -150..800 with a lighter
+  pen (were 0.49, steep, read as l at Black).
+- w and W heavier pens (0.97 and 0.99): their colour was 0.85x JetBrains Mono's relative to n.
+- New ≤ ≥ ≠ (U+2264, U+2265, U+2260) on the operators' axis, characters only (still no ligatures).
+- The Latin WOFF2 slice now carries box drawing, blocks, Powerline and ≤ ≥ ≠ (25.9 -> 28.4 KB, budget 45).
+- Tried and dropped: BLACK_LIGHT 0.11 (Black is ~5% darker than JetBrains Mono's, but lighter cost rhythm and shape); lighter m and M
+  pens at Black (no visible gain).
+
+Score vs JetBrains Mono + Geist Mono, round 4: 7.858 -> **7.888**; shape 8.37 -> 8.40, colour 6.76 -> 6.86, small sizes 9.71 -> 9.74,
+rhythm and weight axis unchanged.
+
 v1 score vs JetBrains Mono + Geist Mono: overall 7.78; rhythm 7.25, weight axis 9.04, shape 8.56, colour 6.69,
 small sizes 9.84, optical sizes 1.27 (the refs have no opsz axis, so that row is not meaningful).
 
 Known gaps: Black's O Q A 6 9 0 are still squeezed slightly (~0.9); wide non-Latin glyphs (Cyrillic Ш Ж, Georgian, Hebrew) and
 the flattened composites (Greek capitals with breathings down to ~0.65) are squeezed rather than redrawn; stacked Vietnamese
-capitals reach over the line box (to 1206 at Black; the win metrics hold them); no ≤ ≥ ≠; the Latin WOFF2 slice has no box drawing
-(the full file has); f and t have no mono-specific redraw; no statics, no italic.
+capitals reach over the line box (to 1206 at Black; the win metrics hold them); Black is a little darker than JetBrains Mono's; f's
+crossbar is short on the left; `|` spans the whole line box (by design, it reads tall in code); no ✓ ✗; no statics, no italic.
