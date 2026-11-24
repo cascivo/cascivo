@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block main %}
+<h1>Toast</h1>
+<button
+  type="button"
+  id="toast-go"
+  class="cv-button-button"
+  data-variant="secondary"
+  data-size="md"
+  hx-post="/c/toast"
+  hx-target="#toast-status"
+  hx-swap="innerHTML"
+>
+  <span class="cv-button-label">Save</span>
+</button>
+<cv-menu id="actions">
+  <button
+    type="button"
+    class="cv-menu-trigger"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-label="Actions"
+  >
+    ⋯
+  </button>
+  <div class="cv-menu-panel" role="menu" popover="auto" data-state="closed">
+    <div class="cv-menu-item" role="menuitem" data-value="edit">Edit</div>
+    <div class="cv-menu-item" role="menuitem" data-value="delete">Delete</div>
+  </div>
+</cv-menu>
+<p id="toast-status">{% block status %}{{ "Saved" if saved else "Idle" }}{% endblock %}</p>
+{% endblock %}

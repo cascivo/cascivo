@@ -1,3 +1,5 @@
+#![cfg(feature = "fs")]
+
 use std::path::{Path, PathBuf};
 
 use cascivo_web::Site;

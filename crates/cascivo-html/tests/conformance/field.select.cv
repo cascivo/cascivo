@@ -1,0 +1,2 @@
+field "Plan" hint="Billed monthly" id=plan
+  select free,Free | pro,Pro

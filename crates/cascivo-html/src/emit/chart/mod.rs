@@ -13,6 +13,7 @@ mod spark;
 use std::fmt::Write as _;
 
 use crate::ast::{Node, Value};
+use crate::contract::{chart_legend, empty_state};
 use crate::render::Cx;
 use scale::{fmt_num, label_num, sane};
 
@@ -211,18 +212,24 @@ pub(crate) fn close(out: &mut String) {
 
 pub(crate) fn empty(out: &mut String, cx: &mut Cx) {
     cx.used.insert("empty-state");
-    out.push_str(
-        "<div data-size=\"md\" class=\"cv-empty-state-empty-state\"><h3 class=\"cv-empty-state-title\">No data</h3></div>",
-    );
+    out.push_str("<div data-size=\"md\" class=\"");
+    out.push_str(empty_state::ROOT);
+    out.push_str("\"><h3 class=\"");
+    out.push_str(empty_state::TITLE);
+    out.push_str("\">No data</h3></div>");
 }
 
 pub(crate) fn legend(out: &mut String, cx: &mut Cx, items: &[(String, String)]) {
     cx.used.insert("chart-legend");
-    out.push_str(
-        "<div class=\"cv-chart-legend-legend\" role=\"group\" aria-label=\"Chart legend\">",
-    );
+    out.push_str("<div class=\"");
+    out.push_str(chart_legend::LEGEND);
+    out.push_str("\" role=\"group\" aria-label=\"Chart legend\">");
     for (name, c) in items {
-        out.push_str("<span class=\"cv-chart-legend-item\"><span class=\"cv-chart-legend-swatch\"");
+        out.push_str("<span class=\"");
+        out.push_str(chart_legend::ITEM);
+        out.push_str("\"><span class=\"");
+        out.push_str(chart_legend::SWATCH);
+        out.push('"');
         cx.style(out, &format!("background:{c}"));
         let _ = write!(out, " aria-hidden=\"true\"></span>{}</span>", esc(name));
     }

@@ -26,6 +26,39 @@
     "description": "Switch between related panels of content",
     "category": "navigation",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "children": ["list", "content"]
+      },
+      "parts": {
+        "list": {
+          "element": "div",
+          "role": "tablist",
+          "children": ["trigger"]
+        },
+        "trigger": {
+          "element": ["button", "a"],
+          "role": "tab",
+          "data": {
+            "data-state": ["active", "inactive"],
+            "data-value": "string"
+          },
+          "aria": ["aria-selected", "aria-controls", "aria-disabled"],
+          "children": ["$slot"]
+        },
+        "content": {
+          "element": "div",
+          "role": "tabpanel",
+          "data": {
+            "data-state": ["active", "inactive"]
+          },
+          "aria": ["aria-labelledby"],
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": ["active", "inactive"],
     "variants": [],
     "sizes": [],

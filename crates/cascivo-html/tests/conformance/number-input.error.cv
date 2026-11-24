@@ -1,0 +1,1 @@
+number-input "Age" defaultValue=10 max=10 error="Too high" size=lg

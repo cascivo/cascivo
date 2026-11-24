@@ -6,6 +6,25 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   // The pills are JS-only buttons — with JS off nothing can be filtered.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'filter',
+      role: 'group',
+      data: { 'data-variant': ['pill', 'outline'] },
+      aria: ['aria-label'],
+      children: ['item'],
+    },
+    parts: {
+      item: {
+        element: 'button',
+        data: { 'data-selected': 'boolean' },
+        aria: ['aria-pressed'],
+        children: ['$text'],
+      },
+    },
+  },
   states: ['default', 'selected', 'hover', 'focus'],
   variants: ['pill', 'outline'],
   sizes: [],

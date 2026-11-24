@@ -55,3 +55,10 @@ describe('Avatar', () => {
     expect(screen.getByRole('img', { name: 'Ada Lovelace' })).toHaveAttribute('src', '/ada.jpg')
   })
 })
+
+describe('Avatar markup contract', () => {
+  it('exposes no data-state (machine states are internal)', () => {
+    const { container } = render(<Avatar src="/a.jpg" alt="A" fallback="A" />)
+    expect(container.firstElementChild).not.toHaveAttribute('data-state')
+  })
+})

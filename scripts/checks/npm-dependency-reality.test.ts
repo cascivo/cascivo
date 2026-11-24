@@ -144,11 +144,12 @@ test('no shipped artefact names an unpublishable package as an import specifier'
     for (const entry of await readdir(dir, { withFileTypes: true })) {
       const full = join(dir, entry.name)
       if (entry.isDirectory()) {
-        // `docs/internal/**` is history, not guidance: adopter reports QUOTE the bad
+        // `docs/internal/**` and `docs/plans/**` are history, not guidance: adopter reports QUOTE the bad
         // specifier (that is the report), and dated planning docs record what was true
         // then. Rewriting either to satisfy a guard would destroy the record. Only
         // adopter-facing surfaces are in scope.
-        if (full.endsWith(join('docs', 'internal'))) continue
+        if (full.endsWith(join('docs', 'internal')) || full.endsWith(join('docs', 'plans')))
+          continue
         await walk(full)
         continue
       }

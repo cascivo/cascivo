@@ -7,6 +7,26 @@ export const meta: ComponentMeta = {
   // Mutually exclusive selection through JS-only buttons — nothing can be selected without
   // JS.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      role: 'group',
+      data: { 'data-size': ['sm', 'md', 'lg'], 'data-disabled': 'boolean' },
+      aria: ['aria-label'],
+      children: ['segment'],
+    },
+    parts: {
+      segment: {
+        element: 'button',
+        role: 'radio',
+        data: { 'data-selected': 'boolean', 'data-size': ['sm', 'md', 'lg'] },
+        aria: ['aria-checked'],
+        children: ['$text'],
+      },
+    },
+  },
   states: ['idle', 'selected', 'disabled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

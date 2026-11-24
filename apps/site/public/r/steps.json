@@ -26,6 +26,36 @@
     "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
     "category": "navigation",
     "clientJs": "enhancement",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "ol",
+        "data": {
+          "data-orientation": ["horizontal", "vertical"]
+        },
+        "aria": ["aria-label"],
+        "children": ["step"],
+        "emit": "manual"
+      },
+      "parts": {
+        "step": {
+          "element": "li",
+          "data": {
+            "data-state": ["pending", "active", "complete", "error"]
+          },
+          "aria": ["aria-current"],
+          "children": ["circle", "label"]
+        },
+        "circle": {
+          "element": "div",
+          "children": ["$text"]
+        },
+        "label": {
+          "element": "span",
+          "children": ["$text"]
+        }
+      }
+    },
     "states": ["pending", "active", "complete", "error"],
     "variants": [],
     "sizes": [],

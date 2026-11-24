@@ -1,0 +1,6 @@
+{% extends "base.html" %} {% block main %}
+<h1>Live feed</h1>
+<div id="feed" hx-ext="sse" sse-connect="/c/sse/stream" sse-swap="tick" hx-swap="innerHTML">
+  <p>Waiting for the first event</p>
+</div>
+{% endblock %}

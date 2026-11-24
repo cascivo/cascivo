@@ -3,6 +3,10 @@
 
 use super::{NodeExt, emit_children};
 use crate::ast::Node;
+use crate::contract::{
+    auto_grid, center, columns, dashboard_layout, flex, grid, page_header, section, separator,
+    spacer,
+};
 use crate::html::{attr, css_len, esc, flag, num};
 use crate::render::Cx;
 
@@ -35,7 +39,7 @@ fn flex(node: &Node, cx: &mut Cx, out: &mut String) {
     // A size/basis/truncate prop makes this node a FlexItem (the child-sizing wrapper).
     if node.prop_set("size") || node.prop_set("basis") || node.prop_set("truncate") {
         out.push_str("<div");
-        attr(out, "class", "cv-flex-flex-item");
+        attr(out, "class", flex::FLEX_ITEM);
         attr(out, "data-size", &node.prop_str("size").unwrap_or_default());
         if node.prop_bool("truncate") {
             flag(out, "data-truncate");
@@ -68,7 +72,7 @@ fn flex(node: &Node, cx: &mut Cx, out: &mut String) {
         style.push_str(&v);
     }
     out.push_str("<div");
-    attr(out, "class", "cv-flex-flex");
+    attr(out, "class", flex::ROOT);
     attr(
         out,
         "data-direction",
@@ -102,10 +106,10 @@ fn grid(node: &Node, cx: &mut Cx, out: &mut String) {
     }
     // The outer element is the query container; the inner one hosts the column rules.
     out.push_str("<div");
-    attr(out, "class", "cv-grid-grid-container");
+    attr(out, "class", grid::GRID_CONTAINER);
     cx.style(out, &style);
     out.push_str("><div");
-    attr(out, "class", "cv-grid-grid");
+    attr(out, "class", grid::ROOT);
     if node.prop_bool("alignRows") {
         flag(out, "data-align-rows");
     }
@@ -122,10 +126,10 @@ fn columns(node: &Node, cx: &mut Cx, out: &mut String) {
         space(&gap_of(node, "gap", "4"))
     );
     out.push_str("<div");
-    attr(out, "class", "cv-columns-columns-container");
+    attr(out, "class", columns::COLUMNS_CONTAINER);
     cx.style(out, &style);
     out.push_str("><div");
-    attr(out, "class", "cv-columns-columns");
+    attr(out, "class", columns::ROOT);
     out.push('>');
     emit_children(node, cx, out);
     out.push_str("</div></div>");
@@ -138,7 +142,7 @@ fn auto_grid(node: &Node, cx: &mut Cx, out: &mut String) {
         .unwrap_or_else(|| "16rem".into());
     let style = format!("--_min:{min};--_gap:{}", space(&gap_of(node, "gap", "4")));
     out.push_str("<div");
-    attr(out, "class", "cv-auto-grid-auto-grid");
+    attr(out, "class", auto_grid::ROOT);
     cx.style(out, &style);
     out.push('>');
     emit_children(node, cx, out);
@@ -151,7 +155,7 @@ fn center(node: &Node, cx: &mut Cx, out: &mut String) {
         .and_then(|v| css_len(&v))
         .unwrap_or_else(|| "48rem".into());
     out.push_str("<div");
-    attr(out, "class", "cv-center-center");
+    attr(out, "class", center::ROOT);
     cx.style(out, &format!("--_center-max:{max}"));
     out.push('>');
     emit_children(node, cx, out);
@@ -163,13 +167,13 @@ fn section(node: &Node, cx: &mut Cx, out: &mut String) {
     // which is what `<Section aria-label>` renders.
     let style = format!("--_max:72rem;--_gap:{}", space(&gap_of(node, "gap", "8")));
     out.push_str("<section");
-    attr(out, "class", "cv-section-section");
+    attr(out, "class", section::ROOT);
     if let Some(t) = node.arg_str(0) {
         attr(out, "aria-label", &t);
     }
     cx.style(out, &style);
     out.push_str("><div");
-    attr(out, "class", "cv-section-inner");
+    attr(out, "class", section::INNER);
     out.push('>');
     emit_children(node, cx, out);
     out.push_str("</div></section>");
@@ -185,15 +189,15 @@ fn text_div(out: &mut String, class: &str, text: &str) {
 
 fn page_header(node: &Node, cx: &mut Cx, out: &mut String) {
     out.push_str("<header");
-    attr(out, "class", "cv-page-header-header");
+    attr(out, "class", page_header::HEADER);
     out.push('>');
     if let Some(b) = node.prop_str("breadcrumb").filter(|s| !s.is_empty()) {
-        text_div(out, "cv-page-header-breadcrumb", &b);
+        text_div(out, page_header::BREADCRUMB, &b);
     }
     out.push_str("<div");
-    attr(out, "class", "cv-page-header-row");
+    attr(out, "class", page_header::ROW);
     out.push_str("><h1");
-    attr(out, "class", "cv-page-header-title");
+    attr(out, "class", page_header::TITLE);
     out.push('>');
     esc(out, &node.arg_str(0).unwrap_or_default());
     out.push_str("</h1>");
@@ -201,7 +205,7 @@ fn page_header(node: &Node, cx: &mut Cx, out: &mut String) {
     let actions = node.prop_str("actions").filter(|s| !s.is_empty());
     if actions.is_some() || !node.children.is_empty() {
         out.push_str("<div");
-        attr(out, "class", "cv-page-header-actions");
+        attr(out, "class", page_header::ACTIONS);
         out.push('>');
         if let Some(a) = &actions {
             esc(out, a);
@@ -212,7 +216,7 @@ fn page_header(node: &Node, cx: &mut Cx, out: &mut String) {
     out.push_str("</div>");
     if let Some(d) = node.arg_str(1).filter(|s| !s.is_empty()) {
         out.push_str("<p");
-        attr(out, "class", "cv-page-header-description");
+        attr(out, "class", page_header::DESCRIPTION);
         out.push('>');
         esc(out, &d);
         out.push_str("</p>");
@@ -222,15 +226,15 @@ fn page_header(node: &Node, cx: &mut Cx, out: &mut String) {
 
 fn dashboard_layout(node: &Node, cx: &mut Cx, out: &mut String) {
     out.push_str("<div");
-    attr(out, "class", "cv-dashboard-layout-layout");
+    attr(out, "class", dashboard_layout::LAYOUT);
     out.push('>');
     if let Some(s) = node.prop_str("stats").filter(|s| !s.is_empty()) {
-        text_div(out, "cv-dashboard-layout-stats", &s);
+        text_div(out, dashboard_layout::STATS, &s);
     }
     out.push_str("<div");
-    attr(out, "class", "cv-dashboard-layout-body");
+    attr(out, "class", dashboard_layout::BODY);
     out.push_str("><div");
-    attr(out, "class", "cv-dashboard-layout-main");
+    attr(out, "class", dashboard_layout::MAIN);
     out.push('>');
     // Children are the main slot, after any `main` text.
     if let Some(m) = node.prop_str("main") {
@@ -239,7 +243,7 @@ fn dashboard_layout(node: &Node, cx: &mut Cx, out: &mut String) {
     emit_children(node, cx, out);
     out.push_str("</div>");
     if let Some(a) = node.prop_str("aside").filter(|s| !s.is_empty()) {
-        text_div(out, "cv-dashboard-layout-aside", &a);
+        text_div(out, dashboard_layout::ASIDE, &a);
     }
     out.push_str("</div></div>");
 }
@@ -252,7 +256,7 @@ fn separator(node: &Node, out: &mut String) {
     if orientation == "horizontal" && !decorative {
         out.push_str("<hr");
         attr(out, "data-orientation", "horizontal");
-        attr(out, "class", "cv-separator-separator");
+        attr(out, "class", separator::ROOT);
         out.push('>');
         return;
     }
@@ -262,14 +266,14 @@ fn separator(node: &Node, out: &mut String) {
         attr(out, "aria-orientation", &orientation);
     }
     attr(out, "data-orientation", &orientation);
-    attr(out, "class", "cv-separator-separator");
+    attr(out, "class", separator::ROOT);
     out.push_str("></div>");
 }
 
 fn spacer(node: &Node, cx: &mut Cx, out: &mut String) {
     out.push_str("<div");
     attr(out, "role", "none");
-    attr(out, "class", "cv-spacer-spacer");
+    attr(out, "class", spacer::ROOT);
     cx.style(
         out,
         &format!("--_spacer-size:{}", space(&gap_of(node, "size", "4"))),

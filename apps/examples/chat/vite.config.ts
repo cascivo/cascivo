@@ -2,6 +2,7 @@ import { resolve } from 'node:path'
 import { Readable } from 'node:stream'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite-plus'
+import { cascivoRepoScopedName } from '../../../scripts/contract/scoped-name.ts'
 import type { Plugin } from 'vite-plus'
 // Imported from source so this config works before @cascivo/app is built (a fresh clone).
 import { cascivoRoutes } from '../../../packages/app/src/vite.ts'
@@ -63,6 +64,8 @@ export default defineConfig({
     port: 4191,
     strictPort: true,
   },
+  // Contract class names (cv-<unit>-<local>) for the aliased component source, like @cascivo/react.
+  css: { modules: { generateScopedName: cascivoRepoScopedName } },
   resolve: {
     alias: {
       // Preact compat. The subpaths come first: a string alias replaces by prefix, so a bare
