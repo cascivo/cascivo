@@ -5,6 +5,24 @@ export const meta: ComponentMeta = {
   description: 'Generic content row primitive with media, content, and action regions',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      // `asChild` puts the root classes on the caller's element.
+      element: ['div', 'a'],
+      data: { 'data-variant': ['default', 'muted'], 'data-size': ['sm', 'md'] },
+      children: ['$slot', 'media', 'content', 'actions'],
+      // The sub-parts are separate components composed inside the item.
+      emit: 'manual',
+    },
+    parts: {
+      media: { element: 'div', children: ['$slot'] },
+      content: { element: 'div', children: ['$slot', 'title', 'description'] },
+      title: { element: 'div', children: ['$slot'] },
+      description: { element: 'p', children: ['$slot'] },
+      actions: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: ['default', 'muted'],
   sizes: ['sm', 'md'],

@@ -54,3 +54,4 @@ pw.local.config.ts
 packages/email-preview/vendor/
 
 target/
+__pycache__/

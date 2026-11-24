@@ -5,6 +5,22 @@ export const meta: ComponentMeta = {
   description: 'Square, icon-only button with a required accessible label',
   category: 'inputs',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      local: 'iconButton',
+      // `asChild` puts the root classes on the caller's element.
+      element: ['button', 'a'],
+      data: {
+        'data-variant': ['ghost', 'outline', 'filled'],
+        'data-size': ['sm', 'md', 'lg'],
+      },
+      aria: ['aria-label'],
+      children: ['$slot'],
+      // `aria-label` is `label ?? ariaLabel` and the content is `children ?? icon`.
+      emit: 'manual',
+    },
+  },
   states: ['idle'],
   variants: ['ghost', 'outline', 'filled'],
   sizes: ['sm', 'md', 'lg'],

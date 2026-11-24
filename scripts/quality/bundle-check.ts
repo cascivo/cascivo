@@ -77,6 +77,8 @@ const BUDGETS: Record<string, number> = {
   '@cascivo/ai': 6, // measured 1.3
   '@cascivo/storage': 5, // measured 0.4
   '@cascivo/data': 3, // measured 1.0
+  // The typed `classes` map (every unit's contract classes); `./vite` is a separate entry.
+  '@cascivo/css': 9,
   // The router entry (index.js) plus its shared path chunk. `api` and `vite` are separate
   // entries an app only pays for if it imports them.
   '@cascivo/app': 5,
@@ -137,6 +139,8 @@ const CSS_BUDGETS: Record<string, number> = {
   '@cascivo/tokens': 9,
   '@cascivo/platform': 8,
   '@cascivo/icons': 4, // glyphs.css — the optional icon-font sheet. Measured 1.3 KB gzip.
+  // cascivo.css, every component sheet without tokens/themes. Measured 39.7 KB gzip.
+  '@cascivo/css': 44,
 }
 
 /** Published packages that ship no JS entry, with why. Anything else must be measured. */
@@ -203,11 +207,25 @@ function jsEntry(pkg: PackageJson): string | null {
  * `exports` for the same reason `jsEntry` is: a renamed sheet moves the measurement with it
  * instead of silently un-measuring the package.
  */
-function cssEntries(pkg: PackageJson): string[] {
+function cssEntries(pkg: PackageJson, dir: string): string[] {
   const out = new Set<string>()
   const visit = (value: unknown): void => {
     if (typeof value === 'string') {
-      if (value.endsWith('.css')) out.add(value)
+      if (!value.endsWith('.css')) return
+      const star = value.indexOf('*')
+      if (star < 0) {
+        out.add(value)
+        return
+      }
+      // A subpath pattern (`./dist/*.css`): every built file it can resolve to.
+      const head = value.slice(0, star)
+      const tail = value.slice(star + 1)
+      const base = head.slice(0, head.lastIndexOf('/') + 1)
+      const prefix = head.slice(base.length)
+      if (!existsSync(join(dir, base))) return
+      for (const f of readdirSync(join(dir, base)).sort())
+        if (f.startsWith(prefix) && f.endsWith(tail) && f.length > prefix.length + tail.length)
+          out.add(base + f)
       return
     }
     if (typeof value === 'object' && value !== null) {
@@ -327,7 +345,7 @@ for (const { dir, pkg } of readPackages()) {
 
 for (const { dir, pkg } of readPackages()) {
   const name = pkg.name!
-  const sheets = cssEntries(pkg)
+  const sheets = cssEntries(pkg, dir)
   const budget = CSS_BUDGETS[name]
 
   if (sheets.length === 0) {

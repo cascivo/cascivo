@@ -26,6 +26,18 @@
     "description": "Visual or semantic divider between content",
     "category": "display",
     "clientJs": "none",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": ["hr", "div"],
+        "data": {
+          "data-orientation": ["horizontal", "vertical"]
+        },
+        "aria": ["aria-orientation"],
+        "role": "separator",
+        "emit": "manual"
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

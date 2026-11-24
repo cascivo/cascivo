@@ -74,7 +74,6 @@ const BEHIND = [
   'No production use yet.',
   'The variable fonts are unhinted (the static TTFs are hinted), which matters on Windows at small sizes.',
   'Kerning is measured by machine, not tuned pair by pair.',
-  'A sans only: no Mono, Serif or Condensed.',
   'Optical size 48 still needs work.',
   'Georgian, Armenian and Hebrew are drafts.',
 ]

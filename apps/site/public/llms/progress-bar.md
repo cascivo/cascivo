@@ -33,7 +33,6 @@ import { ProgressBar } from '@cascivo/react'
 
 ## States
 
-- `determinate`
 - `indeterminate`
 
 ## Props

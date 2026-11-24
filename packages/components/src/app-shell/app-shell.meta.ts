@@ -7,6 +7,41 @@ export const meta: ComponentMeta = {
   category: 'layout',
   // Header, nav and content all render; JS drives the collapse toggle and scroll sync.
   clientJs: 'enhancement',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'shell',
+      data: { 'data-open': ['true', 'false'] },
+      children: ['header', 'body', 'footer'],
+      // The burger is wired into the header element and open state is a signal, so markup is not static.
+      emit: 'manual',
+    },
+    parts: {
+      header: { element: 'div', children: ['$slot'] },
+      body: { element: 'div', children: ['navWrapper', 'scrim', 'main'] },
+      navWrapper: {
+        element: 'div',
+        data: { 'data-cascivo-appshell-nav': [''], 'data-open': ['true', 'false'] },
+        children: ['navInner'],
+        when: 'nav',
+      },
+      navInner: { element: 'div', children: ['$slot'] },
+      scrim: {
+        element: 'div',
+        data: { 'data-open': ['true', 'false'] },
+        aria: ['aria-hidden'],
+        when: 'nav',
+      },
+      main: {
+        element: 'main',
+        // `data-padding` is a space-scale step ('1'..'12') or 'none'.
+        data: { 'data-cascivo-appshell-main': [''], 'data-padding': 'string' },
+        children: ['$slot'],
+      },
+      footer: { element: 'div', children: ['$slot'], when: 'footer' },
+    },
+  },
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

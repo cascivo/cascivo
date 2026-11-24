@@ -18,6 +18,40 @@ function Trigger({ duration }: { duration?: number }) {
   )
 }
 
+describe('Toast icon', () => {
+  function Tone({ variant }: { variant?: 'success' | 'default' }) {
+    const { toast } = useToast()
+    return (
+      <button type="button" onClick={() => toast({ title: 'T', ...(variant ? { variant } : {}) })}>
+        Go
+      </button>
+    )
+  }
+
+  it('renders an aria-hidden icon for a toned toast', async () => {
+    const { container } = render(
+      <ToastProvider>
+        <Tone variant="success" />
+      </ToastProvider>,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Go' }))
+    await screen.findByText('T')
+    const icon = container.ownerDocument.querySelector('[class*="icon"]')
+    expect(icon).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('renders no icon for the default tone', async () => {
+    render(
+      <ToastProvider>
+        <Tone />
+      </ToastProvider>,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Go' }))
+    await screen.findByText('T')
+    expect(document.querySelector('[class*="icon"]')).toBeNull()
+  })
+})
+
 describe('Toast', () => {
   it('shows a toast when triggered', async () => {
     render(

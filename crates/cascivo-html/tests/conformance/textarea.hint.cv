@@ -1,0 +1,1 @@
+textarea "Notes" hint="Markdown ok" value="a<b" disabled required

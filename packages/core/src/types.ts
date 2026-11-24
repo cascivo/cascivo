@@ -115,6 +115,65 @@ export interface AgentMeta {
   confirm?: boolean
 }
 
+/**
+ * Which Phase-1 markup-contract gates apply to a component.
+ *
+ * - `'static'` — the server-rendered markup is complete (JS, if any, is incidental): it gets
+ *   anatomy, a contract, a Rust emitter and parity cases.
+ * - `'native'` — interaction comes from the platform (`<details>`, native controls, radio
+ *   cards): same gates as `'static'`, the behaviour stays native.
+ * - `'behaviour'` — needs client JS (menus, overlays, pickers): anatomy and contract only.
+ */
+export type ContractTier = 'static' | 'native' | 'behaviour'
+
+/**
+ * Allowed values of one `data-*` attribute on an anatomy part: an enum of literals, or the
+ * primitive type of a free value.
+ */
+export type AnatomyDataValues = string[] | 'string' | 'number' | 'boolean'
+
+/** One element of a component's markup contract. */
+export interface AnatomyPart {
+  /** Tag name; an array when the part is polymorphic (`['a', 'button']`). */
+  element: string | string[]
+  /**
+   * CSS-module local class name. Defaults to the part key; for `root`, to the unit (directory)
+   * name. The contract class is `cv-<unit>-<local>`.
+   */
+  local?: string
+  /** `data-*` attributes the part may carry (full names: `'data-variant'`) and their values. */
+  data?: Record<string, AnatomyDataValues>
+  /** `aria-*` attributes the part may carry (full names: `'aria-selected'`). */
+  aria?: string[]
+  role?: string
+  /**
+   * Ordered child part keys; `'$slot'` for caller content, `'$text'` for a text prop,
+   * `'@<unit>'` for another component rendered inside (`'@spinner'`).
+   */
+  children?: string[]
+  /**
+   * Modifier classes on this same element: CSS-module local → the prop expression that adds it
+   * (`{ scrollerVirtualized: 'virtualized' }`).
+   */
+  modifiers?: Record<string, string>
+  /** The prop expression this part depends on, e.g. `'icon'` or `'loading'`. */
+  when?: string
+  /** `'auto'` lets the Rust generator write the emitter (static/native tiers only). */
+  emit?: 'auto' | 'manual'
+  /** The class this part was renamed to; the old name stays an alias for one major. */
+  deprecated?: string
+}
+
+/**
+ * The stable, unhashed markup contract of a component: `cv-<unit>-<local>` classes for parts,
+ * `data-*` attributes for state and variant. `contract.json` is generated from it.
+ */
+export interface Anatomy {
+  root: AnatomyPart
+  /** Non-root parts, keyed by name (normally the CSS-module local name). */
+  parts?: Record<string, AnatomyPart>
+}
+
 export interface ComponentMeta {
   name: string
   description: string
@@ -149,6 +208,16 @@ export interface ComponentMeta {
    * hidden" from "content is unreachable".
    */
   clientJs?: 'none' | 'enhancement' | 'required'
+  /**
+   * Which markup-contract gates apply (`docs/plans/phase-1-contract-plan.md` §1). Required on
+   * every component manifest (`scripts/contract/generate.test.ts`).
+   */
+  contractTier?: ContractTier
+  /**
+   * The markup contract: root and parts, their elements, `data-*`/`aria-*` attributes and
+   * nesting. Validated against the CSS module by `scripts/contract/anatomy.ts`.
+   */
+  anatomy?: Anatomy
   states: string[]
   variants: string[]
   sizes: string[]

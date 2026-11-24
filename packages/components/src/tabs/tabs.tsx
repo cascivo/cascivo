@@ -210,6 +210,7 @@ function TabsContentInner({
       role="tabpanel"
       id={`${store.baseId}-content-${value}`}
       aria-labelledby={`${store.baseId}-trigger-${value}`}
+      data-state="active"
       tabIndex={0}
       className={cn(styles['content'], className)}
       {...props}

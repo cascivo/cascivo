@@ -7,6 +7,52 @@ export const meta: ComponentMeta = {
   // All slides are in the server HTML and the track is a CSS scroll-snap container, so it
   // scrolls natively; JS adds the arrows and dots.
   clientJs: 'enhancement',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'section',
+      aria: ['aria-roledescription', 'aria-label'],
+      children: ['viewport', 'controls'],
+    },
+    parts: {
+      viewport: { element: 'div', children: ['nav', 'track'] },
+      // Rendered twice: before the track (`prev`) and after it (`next`).
+      nav: {
+        element: 'button',
+        aria: ['aria-label', 'aria-controls'],
+        modifiers: { prev: 'previous button', next: 'next button' },
+        children: ['chevron'],
+      },
+      chevron: {
+        element: 'span',
+        aria: ['aria-hidden'],
+        modifiers: { chevronPrev: 'previous button', chevronNext: 'next button' },
+      },
+      track: { element: 'div', aria: ['aria-live'], children: ['slide'] },
+      // Inactive slides are `inert`.
+      slide: {
+        element: 'div',
+        role: 'group',
+        aria: ['aria-roledescription', 'aria-label'],
+        children: ['$slot'],
+      },
+      controls: { element: 'div', children: ['playPause', 'dots'] },
+      playPause: {
+        element: 'button',
+        when: 'autoplay',
+        aria: ['aria-label'],
+        children: ['pauseGlyph', 'playGlyph'],
+      },
+      pauseGlyph: { element: 'span', aria: ['aria-hidden'] },
+      playGlyph: { element: 'span', aria: ['aria-hidden'] },
+      dots: { element: 'div', role: 'group', aria: ['aria-label'], children: ['dot'] },
+      dot: {
+        element: 'button',
+        data: { 'data-active': 'string' },
+        aria: ['aria-label', 'aria-current'],
+      },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],
