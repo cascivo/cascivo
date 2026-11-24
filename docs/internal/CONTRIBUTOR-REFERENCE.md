@@ -73,8 +73,11 @@ This runs: `pnpm regen` → `vp check --fix` → both host-lint gates (`lint:hos
 in `.github/workflows/rust.yml` and must pass locally before you commit Rust changes:
 `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test --workspace`
 (parser, emitters, byte-compared `examples/*.html` snapshots, determinism, CLI). The generated
-sources (`catalog_gen.rs`, `css_gen.rs`, `guide_gen.rs`, `assets/`) come from
-`pnpm html-kit:generate` (inside `pnpm regen`); `pnpm html-kit:check` is in `ready`. `GUIDE` is capped
+sources (`catalog_gen.rs`, `css_gen.rs`, `guide_gen.rs`, `contract_gen.rs`, `emit/auto_gen.rs`,
+`assets/`) come from `pnpm html-kit:generate` (inside `pnpm regen`); `pnpm html-kit:check` is in
+`ready`. Emitters take classes from `crate::contract::<unit>::*` consts, never `"cv-…"` literals
+(gate G4, `tests/contract.rs`); anatomy with `emit: 'auto'` gets a generated emitter, under the
+conventions at the top of `scripts/html-kit/gen-contract.ts`. `GUIDE` is capped
 at 6,000 chars by `tests/guide.rs`. After an intended emitter change, refresh snapshots with
 `UPDATE_SNAPSHOTS=1 cargo test --test examples`.
 

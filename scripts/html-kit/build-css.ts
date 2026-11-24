@@ -1,11 +1,13 @@
 /**
  * Compiles cascivo CSS modules into plain CSS with fixed class names (`cv-<unit>-<local>`)
- * for the cascivo-html Rust crate. Deterministic: sorted inputs, no timestamps.
+ * for the cascivo-html Rust crate. Deterministic: sorted inputs, no timestamps. The module compile
+ * itself is `scripts/contract/css.ts`, shared with the contract generator.
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 import { transform } from 'lightningcss'
+import { compileModule } from '../contract/css.ts'
 import { CV_SPEC, packagesRoot, unitDirs } from './cv-spec.ts'
 
 export const repoRoot = fileURLToPath(new URL('../../', import.meta.url))
@@ -25,23 +27,9 @@ export function moduleFiles(unit: string): string[] {
 }
 
 export function buildCss(unit: string): string {
-  const parts: string[] = []
-  for (const file of moduleFiles(unit)) {
-    const { code } = transform({
-      filename: file,
-      code: readFileSync(file),
-      minify: true,
-      // Keep keyframe / grid / custom-ident names global: motion.css owns the keyframes.
-      cssModules: {
-        pattern: `cv-${unit}-[local]`,
-        animation: false,
-        grid: false,
-        customIdents: false,
-      },
-    })
-    parts.push(code.toString())
-  }
-  return parts.join('\n')
+  return moduleFiles(unit)
+    .map((file) => compileModule(file, unit).code)
+    .join('\n')
 }
 
 const read = (p: string) => readFileSync(p, 'utf8')

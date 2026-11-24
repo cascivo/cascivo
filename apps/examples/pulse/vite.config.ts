@@ -1,6 +1,7 @@
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite-plus'
+import { cascivoRepoScopedName } from '../../../scripts/contract/scoped-name.ts'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../../..')
@@ -14,6 +15,8 @@ export default defineConfig({
   // when assembled under `/demos/pulse/` in the landing (v22). The app has no
   // internal client routing, so relative asset URLs are always correct.
   base: './',
+  // Contract class names (cv-<unit>-<local>) for the aliased component source, like @cascivo/react.
+  css: { modules: { generateScopedName: cascivoRepoScopedName } },
   resolve: {
     alias: {
       // Source aliases so Rolldown doesn't need pre-built dist files

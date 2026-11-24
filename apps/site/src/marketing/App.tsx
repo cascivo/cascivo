@@ -89,6 +89,16 @@ const ModernCssPage = lazy(() =>
 const CascivoSansPage = lazy(() =>
   import('./pages/CascivoSansPage').then((m) => ({ default: m.CascivoSansPage })),
 )
+const FontsPage = lazy(() => import('./pages/FontsPage').then((m) => ({ default: m.FontsPage })))
+const CascivoMonoPage = lazy(() =>
+  import('./pages/fonts/FamilyPage').then((m) => ({ default: m.CascivoMonoPage })),
+)
+const CascivoSerifPage = lazy(() =>
+  import('./pages/fonts/FamilyPage').then((m) => ({ default: m.CascivoSerifPage })),
+)
+const CascivoCondensedPage = lazy(() =>
+  import('./pages/fonts/FamilyPage').then((m) => ({ default: m.CascivoCondensedPage })),
+)
 const CascivoSansSpecimenPage = lazy(() =>
   import('./pages/CascivoSansSpecimenPage').then((m) => ({ default: m.CascivoSansSpecimenPage })),
 )
@@ -279,6 +289,19 @@ const ROUTES: Record<string, Route> = {
   '/cascivo-sans': {
     Page: CascivoSansPage,
     title: ROUTE_HEAD['/cascivo-sans']?.title ?? 'cascivo',
+  },
+  '/fonts': { Page: FontsPage, title: ROUTE_HEAD['/fonts']?.title ?? 'cascivo' },
+  '/cascivo-mono': {
+    Page: CascivoMonoPage,
+    title: ROUTE_HEAD['/cascivo-mono']?.title ?? 'cascivo',
+  },
+  '/cascivo-serif': {
+    Page: CascivoSerifPage,
+    title: ROUTE_HEAD['/cascivo-serif']?.title ?? 'cascivo',
+  },
+  '/cascivo-condensed': {
+    Page: CascivoCondensedPage,
+    title: ROUTE_HEAD['/cascivo-condensed']?.title ?? 'cascivo',
   },
   '/cascivo-sans/specimen': {
     Page: CascivoSansSpecimenPage,

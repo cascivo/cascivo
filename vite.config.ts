@@ -15,6 +15,7 @@ export default defineConfig({
       'docs/**',
       'starters/**',
       'packages/cli/recipes/**',
+      'crates/cascivo-web/starter-dynamic/**',
       'crates/cascivo-html/assets/**',
       'crates/cascivo-html/tests/conformance/*.html',
       'crates/cascivo-html/examples/*.html',
@@ -28,10 +29,13 @@ export default defineConfig({
     // formatting them would make the generator and the formatter fight.
     // packages/cli/recipes/ must stay byte-identical to what `cascivo create` has always written.
     // comparison.generated.ts is JSON.stringify output (fonts:site:sync), also never reformatted.
+    // packages/css contract files are compared byte-for-byte by scripts/contract/generate.test.ts.
     ignorePatterns: [
       'docs/**',
       '**/routes.gen.ts',
       '**/comparison.generated.ts',
+      'packages/css/contract.json',
+      'packages/css/src/classes.gen.ts',
       'starters/**',
       'packages/cli/recipes/**',
       'crates/cascivo-html/assets/**',
@@ -41,6 +45,10 @@ export default defineConfig({
       // cascivo-web sites: minijinja templates and `+++` TOML front matter, not HTML/Markdown
       // the formatter understands (it split a `cv('…')` string literal across lines).
       'crates/cascivo-web/tests/fixtures/**',
+      // Starter templates: a block must open right after its element's tag (checkpoint β).
+      'crates/cascivo-web/starter-dynamic/**/templates/**',
+      // `{ __CASCIVO_SERVER__, … }` placeholders are not TOML until `new` fills them.
+      'crates/cascivo-web/starter-dynamic/**/Cargo.toml',
       'apps/bench/static-compare/rust/**',
       'apps/site/web/**',
     ],

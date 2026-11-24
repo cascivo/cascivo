@@ -7,6 +7,25 @@ export const meta: ComponentMeta = {
   // The reveal is the component: without the draggable divider you see one layer and cannot
   // reach the other.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      data: { 'data-orientation': ['horizontal', 'vertical'], 'data-dragging': 'string' },
+      children: ['item', 'before', 'divider'],
+    },
+    parts: {
+      // The "after" content; `before` is clipped over it.
+      item: { element: 'div', children: ['$slot'] },
+      before: { element: 'div', aria: ['aria-hidden'], children: ['$slot'] },
+      divider: { element: 'div', children: ['handle'] },
+      handle: {
+        element: 'div',
+        role: 'slider',
+        aria: ['aria-label', 'aria-orientation', 'aria-valuemin', 'aria-valuemax', 'aria-valuenow'],
+      },
+    },
+  },
   states: ['default'],
   variants: [],
   sizes: [],

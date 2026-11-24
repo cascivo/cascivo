@@ -5,6 +5,27 @@ export const meta: ComponentMeta = {
   description: 'Horizontal application menu bar with keyboard-navigable dropdown menus',
   category: 'navigation',
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'menubar',
+      role: 'menubar',
+      aria: ['aria-label'],
+      children: ['trigger'],
+    },
+    parts: {
+      trigger: {
+        element: 'button',
+        role: 'menuitem',
+        data: { 'data-state': ['open', 'closed'] },
+        aria: ['aria-haspopup', 'aria-expanded', 'aria-controls'],
+        children: ['$text', 'panel'],
+      },
+      panel: { element: 'div', role: 'menu', aria: ['aria-label'], children: ['item'] },
+      item: { element: 'div', role: 'menuitem', aria: ['aria-disabled'], children: ['$slot'] },
+    },
+  },
   states: ['closed', 'open'],
   variants: [],
   sizes: [],

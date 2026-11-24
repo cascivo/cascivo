@@ -23,7 +23,12 @@ import assert from 'node:assert/strict'
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, it } from 'node:test'
-import { packageDirs, packageExports, resolvePackageExportNames } from './lib/package-exports.ts'
+import {
+  hasExport,
+  packageDirs,
+  packageExports,
+  resolvePackageExportNames,
+} from './lib/package-exports.ts'
 
 const REPO_ROOT = join(import.meta.dirname, '../..')
 const DOCS_DIR = join(REPO_ROOT, 'docs')
@@ -151,6 +156,14 @@ describe('docs-imports — every @cascivo import in the guides resolves', () => 
     assert.deepEqual(bad, [], `Docs import unknown @cascivo packages:\n  ${bad.join('\n  ')}`)
   })
 
+  it('subpath patterns match like Node: one `*`, non-empty', () => {
+    const exp = { '.': './i.js', './*.css': './dist/*.css' }
+    assert.ok(hasExport(exp, './button.css'))
+    assert.ok(hasExport(exp, '.'))
+    assert.ok(!hasExport(exp, './.css'))
+    assert.ok(!hasExport(exp, './vite'))
+  })
+
   it('every subpath import is in the package exports map', () => {
     const bad: string[] = []
     for (const im of imports) {
@@ -159,7 +172,7 @@ describe('docs-imports — every @cascivo import in the guides resolves', () => 
       if (!subpath || !dirs.has(pkg)) continue
       if (ALLOWLIST[im.spec] || ALLOWLIST[`${im.file}::${im.spec}`]) continue
       const exp = packageExports(pkg)
-      if (exp && exp[subpath] === undefined) {
+      if (exp && !hasExport(exp, subpath)) {
         bad.push(`${rel(im.file)}: '${im.spec}' → ${subpath} not in ${pkg} exports`)
       }
     }

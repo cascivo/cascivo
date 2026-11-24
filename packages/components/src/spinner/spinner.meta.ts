@@ -8,6 +8,16 @@ export const meta: ComponentMeta = {
   // default label when the i18n locale or catalog changes, which is why the source
   // calls useSignals() and carries 'use client'. Nothing is unreachable with JS off.
   clientJs: 'enhancement',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'span',
+      data: { 'data-size': ['sm', 'md', 'lg'] },
+      role: 'status',
+      aria: ['aria-label'],
+      emit: 'manual',
+    },
+  },
   states: [],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

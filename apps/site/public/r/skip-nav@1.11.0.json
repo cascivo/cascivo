@@ -27,6 +27,15 @@
     "description": "Skip link that jumps keyboard users past the navigation to the main content",
     "category": "navigation",
     "clientJs": "enhancement",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "a",
+        "local": "link",
+        "children": ["$text"],
+        "emit": "manual"
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

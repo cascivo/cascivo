@@ -1,0 +1,4 @@
+{% extends "base.html" %}
+{% block main %}<h1>{{ t("title") }}</h1>
+<ul id="todos">{% block items %}{% for t in todos %}<li>{{ t }}</li>{% endfor %}{% endblock %}</ul>
+{% endblock %}

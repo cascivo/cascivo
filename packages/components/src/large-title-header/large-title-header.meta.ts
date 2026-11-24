@@ -6,6 +6,23 @@ export const meta: ComponentMeta = {
     'Scrolling region whose large title collapses into a compact sticky bar as it scrolls',
   category: 'navigation',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      local: 'root',
+      element: 'div',
+      children: ['bar', 'largeTitle', '$slot'],
+      // The heading tag follows `level` and the collapse distance is a computed custom property.
+      emit: 'manual',
+    },
+    parts: {
+      bar: { element: 'div', children: ['slot', 'compactTitle', 'slot'] },
+      // Used twice in the bar: leading content, then the actions slot with `slotEnd`.
+      slot: { element: 'div', children: ['$slot'], modifiers: { slotEnd: 'actions' } },
+      compactTitle: { element: 'span', aria: ['aria-hidden'], children: ['$text'] },
+      largeTitle: { element: ['h1', 'h2', 'h3'], children: ['$text'] },
+    },
+  },
   states: ['expanded', 'collapsed'],
   variants: [],
   sizes: [],

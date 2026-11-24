@@ -40,6 +40,7 @@ import {
   themeDescription,
   themeTitle,
 } from './src/theme-head'
+import { cascivoRepoScopedName } from '../../scripts/contract/scoped-name.ts'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = path.resolve(__dirname, '../..')
@@ -1116,6 +1117,8 @@ export default defineConfig({
       'src/marketing/pages/EvalsPage.test.tsx',
       'src/marketing/pages/cascivo-sans/WeightWaterfall.test.tsx',
       'src/marketing/poster/HeroLiveFrames.test.tsx',
+      'src/marketing/pages/fonts/FamilyPage.test.tsx',
+      'src/marketing/sections/FontToggle.test.tsx',
     ],
   },
   plugins: HOME_PASS
@@ -1136,8 +1139,9 @@ export default defineConfig({
   // Emit source maps for the production bundle. The project is public (MIT), so
   // there is nothing to hide, and Lighthouse's "valid source maps" best-practices
   // audit needs them to map the large first-party JS back to source.
-  // generateScopedName stays Vite's default so existing hashes do not change.
-  css: { modules: { getJSON: collectCssModule } },
+  // Component modules get their contract classes (cv-<unit>-<local>), like @cascivo/react;
+  // the site's own modules stay hashed.
+  css: { modules: { getJSON: collectCssModule, generateScopedName: cascivoRepoScopedName } },
   build: HOME_PASS
     ? {
         sourcemap: true,
@@ -1179,6 +1183,9 @@ export default defineConfig({
       // prefix, so without this '@cascivo/core/pure' resolves to 'index.ts/pure'.
       '@cascivo/core/pure': resolve(root, 'packages/core/src/pure.ts'),
       '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
+      // Subpath first, for the same prefix-replacement reason as '@cascivo/core/pure'.
+      '@cascivo/css/vite': resolve(root, 'packages/css/src/vite.ts'),
+      '@cascivo/css': resolve(root, 'packages/css/src/index.ts'),
       '@cascivo/storage': resolve(root, 'packages/storage/src/index.ts'),
       '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
       '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),

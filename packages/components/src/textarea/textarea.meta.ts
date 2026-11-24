@@ -5,6 +5,31 @@ export const meta: ComponentMeta = {
   description: 'Multi-line text input with optional label, hint, and error state',
   category: 'inputs',
   clientJs: 'enhancement',
+  contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      data: {
+        'data-state': ['idle', 'focused', 'error'],
+        'data-resize': ['none', 'vertical', 'both'],
+        // Presence-only: `''` when set, absent otherwise.
+        'data-autosize': [''],
+        'data-ai': [''],
+      },
+      children: ['label', 'textarea', 'error', 'hint'],
+      emit: 'manual',
+    },
+    parts: {
+      label: { element: 'label', children: ['$text'], when: 'label' },
+      textarea: {
+        element: 'textarea',
+        aria: ['aria-multiline', 'aria-invalid', 'aria-describedby', 'aria-label'],
+      },
+      error: { element: 'span', role: 'alert', children: ['$text'], when: 'error' },
+      hint: { element: 'span', children: ['$text'], when: '!error && hint' },
+    },
+  },
   states: ['idle', 'focused', 'error'],
   variants: [],
   sizes: [],
@@ -50,6 +75,12 @@ export const meta: ComponentMeta = {
       type: 'boolean',
       required: false,
       default: 'false',
+    },
+    {
+      name: 'placeholder',
+      description: 'Placeholder text shown when the field is empty.',
+      type: 'string',
+      required: false,
     },
     {
       name: 'disabled',

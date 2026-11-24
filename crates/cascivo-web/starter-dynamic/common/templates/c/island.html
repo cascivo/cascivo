@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block main %}
+<h1>Server island</h1>
+{# With a signed placeholder (`stats`) the body loads after the page; with the props at hand
+it renders inline, and the island route answers with exactly this block. #}
+<section id="island-host">
+  {% if stats %}{{ stats }}{% else %}
+  <div id="stats_body">{% block stats_body %}<section id="stats"><p>{{ visits }} visits</p></section>{% endblock %}</div>
+  {% endif %}
+</section>
+{% endblock %}

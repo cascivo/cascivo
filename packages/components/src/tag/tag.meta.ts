@@ -6,6 +6,21 @@ export const meta: ComponentMeta = {
   category: 'display',
   // The chip and its label render; only the optional dismiss button needs JS.
   clientJs: 'enhancement',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'span',
+      data: {
+        'data-variant': ['default', 'info', 'success', 'warning', 'error'],
+        'data-size': ['sm', 'md'],
+      },
+      children: ['$slot', 'dismiss'],
+      emit: 'auto',
+    },
+    parts: {
+      dismiss: { element: 'button', aria: ['aria-label'], children: ['$text'], when: 'onDismiss' },
+    },
+  },
   states: [],
   variants: ['default', 'info', 'success', 'warning', 'error'],
   sizes: ['sm', 'md'],

@@ -7,6 +7,30 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   // Backed by a native radio input, so selection works and submits without JS.
   clientJs: 'enhancement',
+  contractTier: 'native',
+  anatomy: {
+    // The group; `RadioCard` is the `card` part.
+    root: {
+      element: 'div',
+      local: 'group',
+      role: 'radiogroup',
+      aria: ['aria-label'],
+      children: ['card'],
+      emit: 'manual',
+    },
+    parts: {
+      card: {
+        element: 'label',
+        data: { 'data-disabled': [''] },
+        children: ['input', 'glyph', 'body'],
+      },
+      input: { element: 'input' },
+      glyph: { element: 'span', aria: ['aria-hidden'], when: '!hideIndicator' },
+      body: { element: 'span', children: ['title', 'description'] },
+      title: { element: 'span', children: ['$slot'] },
+      description: { element: 'span', children: ['$slot'], when: 'description' },
+    },
+  },
   states: ['default', 'checked', 'disabled'],
   variants: [],
   sizes: [],
