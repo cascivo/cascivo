@@ -9,14 +9,14 @@ One engine, no copies. `fonts/cascivo-sans/src/family.py` is a hook module; with
 sha256 of every file in `fonts/cascivo-sans/fonts/`). With `CASCIVO_FAMILY=<name>` it loads
 `fonts/cascivo-<name>/src/family.py`, which may define:
 
-| Hook | Called | Use |
-| --- | --- | --- |
-| `NAME`, `PS`, `VERSION`, `ITALIC` | build.py import | names; `ITALIC=False` in v1 (upright only) |
-| `tune(p)` | end of `params.P.__init__` | width factor, contrast, counters, sidebearings, x-height |
-| `glyph(g, p, name)` | after each drawing, before spacing | add serif strokes, set `g.sb`, `g.adv_fixed` |
-| `master(o)` | after a master is drawn and composed | e.g. centre every glyph in one advance (mono) |
-| `fea(text)` | before feature compile | drop or rewrite kerning |
-| `@family.override('a')` | at load | redraw a glyph (slab i, l, r; serif a, g) |
+| Hook                              | Called                               | Use                                                      |
+| --------------------------------- | ------------------------------------ | -------------------------------------------------------- |
+| `NAME`, `PS`, `VERSION`, `ITALIC` | build.py import                      | names; `ITALIC=False` in v1 (upright only)               |
+| `tune(p)`                         | end of `params.P.__init__`           | width factor, contrast, counters, sidebearings, x-height |
+| `glyph(g, p, name)`               | after each drawing, before spacing   | add serif strokes, set `g.sb`, `g.adv_fixed`             |
+| `master(o)`                       | after a master is drawn and composed | e.g. centre every glyph in one advance (mono)            |
+| `fea(text)`                       | before feature compile               | drop or rewrite kerning                                  |
+| `@family.override('a')`           | at load                              | redraw a glyph (slab i, l, r; serif a, g)                |
 
 Build: `cd fonts/cascivo-sans && CASCIVO_FAMILY=mono python3 -I src/build.py`. Output goes to
 `fonts/cascivo-<name>/fonts/`: `Cascivo<Name>[opsz,wght].ttf`, `.woff2`, `-Latin[opsz,wght].woff2`

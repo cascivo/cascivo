@@ -4,6 +4,7 @@ Monospaced sibling of Cascivo Sans, built from the Sans engine through the `fami
 Upright only, axes opsz 8-48 and wght 100-900.
 
 What v1 does (`src/family.py`):
+
 - `tune`: counters narrowed (cn x0.92, cH/cHd x0.76) so typical letters fit the cell.
 - `glyph`: slabs on i (dotless i), j, l (redrawn as a straight stem), r.
 - `master`: every spacing glyph gets a 600 advance at every master; ink centred; ink wider than 530 is

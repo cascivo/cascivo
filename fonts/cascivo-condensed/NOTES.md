@@ -21,6 +21,7 @@ Before the r / 1 fixes: 7.02 (small sizes 0.0).
 Mean a-zA-Z advance vs Sans: 0.85 at 100, 0.89 at 400, 0.93 at 900.
 
 Known gaps:
+
 - Black condenses least (0.93x): stems keep Sans's weight, so the white shrinks but the ink does not. A v2 should
   thin Black's stems a little or narrow its counters further (watch e/a closing).
 - 400 sits at 0.89, near the top of the 0.80-0.90 plan band; a WIDTH of about 0.78 would centre it.
