@@ -142,7 +142,7 @@
 
 .pg-eyebrow {
   margin: 0;
-  font-family: var(--cascivo-font-mono);
+  font-family: var(--cascivo-font-eyebrow, var(--cascivo-font-mono));
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -511,7 +511,7 @@
 
 /* Eyebrows are mono caps everywhere. */
 .guides-eyebrow {
-  font-family: var(--cascivo-font-mono);
+  font-family: var(--cascivo-font-eyebrow, var(--cascivo-font-mono));
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -960,7 +960,7 @@
  */
 
 .doc-eyebrow {
-  font-family: var(--cascivo-font-mono);
+  font-family: var(--cascivo-font-eyebrow, var(--cascivo-font-mono));
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -1387,4 +1387,53 @@
       'Cascivo Condensed', 'Arial Narrow', ui-sans-serif, system-ui, -apple-system, sans-serif;
     --cascivo-font-display: var(--cascivo-font-sans);
   }
+
+  /* Cascivo Fonts: all four families by role. Display is a light serif (400, caps need air, so
+     tracking is opened where the other faces tighten it), body is Sans, code and captions stay
+     Mono, eyebrows are Condensed. */
+  :root[data-font='cascivo'] {
+    --cascivo-font-display: 'Cascivo Serif', ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+    --cascivo-font-sans:
+      'Cascivo Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+      sans-serif;
+    --cascivo-font-mono:
+      'Cascivo Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+    --cascivo-font-eyebrow:
+      'Cascivo Condensed', 'Arial Narrow', ui-sans-serif, system-ui, sans-serif;
+    --cx-display-weight: 400;
+    --cx-display-tracking: 0.01em;
+    --cx-display-leading: 1.05;
+    --cx-eyebrow-size: 0.75rem;
+    --cx-eyebrow-weight: 500;
+    --cx-eyebrow-tracking: 0.2em;
+  }
+}
+
+/* Unlayered, like the display rules it overrides (unlayered beats every layer); the extra `html`
+   outranks poster-sections.css's two-class selectors (.pg-stat > :last-child). */
+html:root[data-font='cascivo']
+  :where(
+    .pg-display,
+    .pg-stat-value,
+    .cta-band h2,
+    .guides-section h3,
+    .proof-hero h1,
+    .blog-post-header h1,
+    .blog-post h2,
+    .doc-head h1,
+    .pg-builder-stats dd,
+    .pg-stat > :last-child,
+    .pg-figure-value,
+    .pg-theme-card-title,
+    .pg-step-num
+  ) {
+  font-weight: var(--cx-display-weight);
+  letter-spacing: var(--cx-display-tracking);
+  line-height: var(--cx-display-leading);
+}
+
+html:root[data-font='cascivo'] :where(.pg-eyebrow, .guides-eyebrow, .doc-eyebrow) {
+  font-size: var(--cx-eyebrow-size);
+  font-weight: var(--cx-eyebrow-weight);
+  letter-spacing: var(--cx-eyebrow-tracking);
 }
