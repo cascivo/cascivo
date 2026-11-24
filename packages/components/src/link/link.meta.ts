@@ -5,6 +5,21 @@ export const meta: ComponentMeta = {
   description: 'Styled anchor for navigation, standalone or inline within prose',
   category: 'navigation',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      // `asChild` puts the link classes on the caller's element (a router link).
+      element: 'a',
+      data: {
+        'data-variant': ['standalone', 'inline'],
+        'data-size': ['sm', 'md', 'lg'],
+        'data-external': ['true'],
+      },
+      children: ['$slot'],
+      // `external` also adds `target` / `rel`, and `data-external` is a computed flag.
+      emit: 'manual',
+    },
+  },
   states: [],
   variants: ['standalone', 'inline'],
   sizes: ['sm', 'md', 'lg'],

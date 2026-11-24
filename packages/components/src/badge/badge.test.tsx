@@ -23,3 +23,10 @@ describe('Badge', () => {
     expect(screen.getByText('Default')).toHaveAttribute('data-size', 'md')
   })
 })
+
+describe('Badge contract variants', () => {
+  it.each(['info', 'primary'] as const)('keeps %s as data-variant', (variant) => {
+    render(<Badge variant={variant}>x</Badge>)
+    expect(screen.getByText('x')).toHaveAttribute('data-variant', variant)
+  })
+})

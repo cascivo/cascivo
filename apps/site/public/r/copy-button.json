@@ -26,6 +26,25 @@
     "description": "Icon button that copies a value to the clipboard with copied feedback",
     "category": "inputs",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "button",
+        "local": "copyButton",
+        "data": {
+          "data-state": ["idle", "copied"],
+          "data-size": ["sm", "md"]
+        },
+        "aria": ["aria-label"],
+        "children": ["icon"]
+      },
+      "parts": {
+        "icon": {
+          "element": "svg",
+          "aria": ["aria-hidden"]
+        }
+      }
+    },
     "states": ["idle", "copied"],
     "variants": [],
     "sizes": ["sm", "md"],

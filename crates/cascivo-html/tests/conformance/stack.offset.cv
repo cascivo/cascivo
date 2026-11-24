@@ -1,0 +1,4 @@
+stack offset=8
+  text "A"
+  text "B"
+  text "C"

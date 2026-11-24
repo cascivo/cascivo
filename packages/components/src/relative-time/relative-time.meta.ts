@@ -6,6 +6,16 @@ export const meta: ComponentMeta = {
   category: 'display',
   // The formatted phrase is server-rendered; JS only re-ticks it as the clock moves.
   clientJs: 'enhancement',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      local: 'relativeTime',
+      element: 'time',
+      children: ['$text'],
+      // The phrase is formatted from the clock and the locale.
+      emit: 'manual',
+    },
+  },
   states: ['default'],
   variants: [],
   sizes: [],

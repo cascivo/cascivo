@@ -27,6 +27,39 @@
     "description": "A numbered citation marker inside AI-generated text that links to its source and previews it in a hover card",
     "category": "display",
     "clientJs": "none",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "local": "citation",
+        "element": "sup",
+        "children": ["marker", "card"],
+        "emit": "manual"
+      },
+      "parts": {
+        "marker": {
+          "element": ["a", "span"],
+          "children": ["$text", "@visually-hidden"]
+        },
+        "card": {
+          "element": "span",
+          "children": ["title", "host", "description"]
+        },
+        "title": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "host": {
+          "element": "span",
+          "children": ["$text"],
+          "when": "source.url"
+        },
+        "description": {
+          "element": "span",
+          "children": ["$text"],
+          "when": "source.description"
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

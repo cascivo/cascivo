@@ -27,6 +27,160 @@
     "description": "Cmd+K command palette with fuzzy search over grouped commands",
     "category": "overlay",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "dialog",
+        "local": "dialog",
+        "aria": ["aria-label"],
+        "children": ["panel"]
+      },
+      "parts": {
+        "panel": {
+          "element": "div",
+          "children": ["search", "scopes", "list", "footer"]
+        },
+        "search": {
+          "element": "div",
+          "children": ["searchIcon", "scopeChip", "input"]
+        },
+        "searchIcon": {
+          "element": "svg",
+          "aria": ["aria-hidden"]
+        },
+        "scopeChip": {
+          "element": "span",
+          "children": ["$text", "scopeClear"]
+        },
+        "scopeClear": {
+          "element": "button",
+          "aria": ["aria-label"]
+        },
+        "input": {
+          "element": "input",
+          "role": "combobox",
+          "aria": [
+            "aria-expanded",
+            "aria-controls",
+            "aria-activedescendant",
+            "aria-autocomplete",
+            "aria-label"
+          ]
+        },
+        "scopes": {
+          "element": "div",
+          "children": ["scopesLabel", "scopePill"]
+        },
+        "scopesLabel": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "scopePill": {
+          "element": "button",
+          "data": {
+            "data-active": "string"
+          },
+          "children": ["scopePrefix", "$text"]
+        },
+        "scopePrefix": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "list": {
+          "element": "div",
+          "children": ["group", "empty"]
+        },
+        "group": {
+          "element": "div",
+          "role": "group",
+          "aria": ["aria-label"],
+          "children": ["heading", "option"]
+        },
+        "heading": {
+          "element": "div",
+          "aria": ["aria-hidden"],
+          "children": ["$text", "count"]
+        },
+        "count": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "option": {
+          "element": "div",
+          "role": "option",
+          "data": {
+            "data-state": ["active"],
+            "data-disabled": "string"
+          },
+          "aria": ["aria-selected", "aria-disabled"],
+          "children": ["icon", "text", "status", "actions", "shortcut"]
+        },
+        "icon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$slot"]
+        },
+        "text": {
+          "element": "span",
+          "children": ["label", "description"]
+        },
+        "label": {
+          "element": "span",
+          "children": ["match", "$text"]
+        },
+        "match": {
+          "element": "mark",
+          "children": ["$text"]
+        },
+        "description": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "status": {
+          "element": "span",
+          "data": {
+            "data-tone": "string"
+          },
+          "children": ["statusDot", "$text"]
+        },
+        "statusDot": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        },
+        "actions": {
+          "element": "span",
+          "children": ["action"]
+        },
+        "action": {
+          "element": "span",
+          "children": ["$text", "actionKeys"]
+        },
+        "actionKeys": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["@kbd"]
+        },
+        "shortcut": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["@kbd"]
+        },
+        "empty": {
+          "element": "div",
+          "role": "status",
+          "children": ["@spinner", "$text"]
+        },
+        "footer": {
+          "element": "div",
+          "aria": ["aria-hidden"],
+          "children": ["hint"]
+        },
+        "hint": {
+          "element": "span",
+          "children": ["@kbd", "$text"]
+        }
+      }
+    },
     "states": ["closed", "open"],
     "variants": [],
     "sizes": [],

@@ -505,3 +505,80 @@ Round 6, third sitting (redrawn outlines, numeric scorer). Upright 8.67 -> 8.72,
 - `0` vs `O` at 11-12 px: already better than the references at every weight; a narrower `0` fails `test_advances_at_regular_match_a855b5e0` and `ZERO_MIN_SHARE`. Needs an owner decision (advances fixture exception, or wider sidebearings).
 - `BOLD_ADV_BLEND`: a Bold-drawn `t` (`T_BOLD_ARM` 0.6) fixes `ft`, but blends 0.1-1.0 all fail `test_weight_changes_do_not_reflow_text`, `test_tight_letters_open_up`, `test_l_tail_reads_and_keeps_its_white` (700 widens past the +-2% rule). Not kept; the 700 wstep kink stays.
 - Not run: the final Sonnet crop check of changed glyphs.
+
+## Round 7: drawn heavy curves (numeric scorer, specimens against Inter)
+
+Owner feedback: at 700-900 the curves looked algorithmic. Upright 8.724 -> 8.724 (held), italic 8.09 unchanged (not touched).
+Specimens ("Signals move fast; the cascade decides." and `nmhru dbpqag escs`, Cascivo over Inter) before and after at 700 / 800 /
+900: `specimens/round7/`.
+
+- Shoulders (n h m, the u turned over; not Һ, whose arch leaves its stem halfway up): the expanded arch's outer edge left the stem
+  0.06 x-heights under its top on a curve as round as the rest (Inter Black 0.26), and the crown stopped 13 units under the stem's
+  top. `glyphs.drawn_shoulder` redraws the near quarter's outer edge as one cubic: out of the stem `SHOULDER_NOTCH` 0.16 x-heights
+  down at `SHOULDER_ANGLE` 61 deg, into a crown `SHOULDER_CROWN` 0.25 further toward the far stem (Inter's crown sits 0.46 of the
+  span from the stem edge; ours sat 0.30) and half an overshoot over the stem's top. Same segment count, blended in by `drawn_h`
+  (the upright's heavy), so Regular is unchanged and Bold takes its share. Under the redrawn edge the stroke no longer thins
+  (`SHOULDER_JOIN` 1, `shoulder_join`; the edge does the thinning), so the counter meets the stem lower and the join keeps weight:
+  Inter's 0.24-0.26 notch over the thinned stroke read 0.26 in `quality.join_ratio` (floor Inter 0.45 - 0.1); now n 0.40, m 0.41.
+  A 0.18 notch scored 8.728 but put m at 0.38.
+- Bowls (b d p q): the same redraw at both joins (`BOWL_KNOBS`), 0.09 x-heights at 60 deg, crown 0.22 away from the stem (it sat
+  0.77 of the way from the round's edge to the stem, Inter 0.58). Inter's own 0.18 pinched our taller counter into a neck at the
+  stem and self-intersected the outline (lint); the bowl keeps its height (no lift).
+- e and c: Black's terminals run further round (`E_RUN` -8 -> -12, `C_RUN` 12 -> 16). -16 on the e was closer to Inter's length
+  but closed the mouth to 37 rows, under `test_black_e_opens`'s 55; -12 reads 56.
+- Tried and dropped: centreline knobs alone (crown lean, a taller or squatter near quarter, handle ratios, an oblique start): the
+  outer edge's exit never went below 0.88 x-heights (the thinned stroke's outer edge only clears the stem once the stroke has
+  turned nearly level). Removed.
+- ŋ and µ share the redrawn joins (n's and u's; `test_eng_and_mu_share_the_arch_of_n_and_u`); æ's e half keeps the old terminal
+  run (`AE_RUN` -8: at -12 its counter tip against the a turned 45 deg, held to 42). Gates: all 146 pass, lint and quality clean.
+- Not done: the r's arm (its own arc) and the s (read as Inter's at these sizes); the italic's heavy arches.
+
+## Round 8: heavy curves in the engine (all families)
+
+Owner feedback: the heavier the weight, the worse the curves (0 5 6 9 $ C s d r at 900), in Sans and the siblings. Fixed in the
+engine, every knob scaled by `p.heavy` (Regular's master is unchanged; Bold takes its share). Upright 8.724 -> 8.733; all 91
+`test_font.py` gates, lint and quality clean; Mono, Serif and Condensed rebuilt, their `test_family.py` pass. Specimens
+("0123456789 $ Csdr nm return columns" at 400/700/900 over Inter, JetBrains Mono, Inter Tight), before and after: `specimens/round8/`.
+
+- Rounds (`geom.Stroke` `fill`, `glyphs.OVAL_FILL` 0.06 of a stem): a closed round's diagonals gain weight (peaking at 45 deg,
+  nothing on the axes), so Black's 0 o O Q and the 6 / 9 bowls have an oval counter inside the squarer outline, not the outline's
+  own rounded slot. 0.25 read as a lens, 0.1 put O and 0 under `test_black_rounds_square_up...`'s counter floors. Upright only: the
+  italic's 6 9 counters and & at 700 sat on their floors. Small rings (% @ °, pen clipped) keep their pen.
+- Terminals (`TERM_THIN` 0.12, `term_taper`): C e s S $ 5 6 9 thin into their face, not ending at a full-stem club.
+  `TERM_RUN` 6 deg: C 5 6 9 run further round. The c is untouched: its Black face sits between `quality`'s minimum lean (6 deg)
+  and `test_display_terminals_cut_flat` (4 deg at 900/48), and either change moved it out. e and S keep their runs (aperture gates).
+- r (`R_KNOB` 0.08, upright): the arm thickens toward its end. 0.15 hung a 17-unit beak under the face (gate 12).
+- Budget: `CascivoSans[opsz,wght].woff2` 77_600 -> 77_800 (77_760).
+- Not done: the 5's stem foot still steps where it meets the bowl's thin start; the n m d joins were round 7's and are unchanged.
+
+## Round 9: heavy figures and the full stop between them
+
+Owner feedback: at 800-900 display sizes the figures look strange; the landing hero ("78.6 KB", "1.9x", Black at ~56 px) has the
+full stop crowding its digits and clumsy 6 9 7 1 x. Measured at 900 (units per 1000 of the cap height, `uharfbuzz`): the 6 and 9
+hooks were drawn on an ellipse 1.17x the figure width and ran past the bowl, so the proportional 6 9 were 1037 wide (the other
+figures 942) and the tabular ones overflowed their advance (side bearings -8 / -13): the dot in "78.6" and "1.9x" sat on them.
+The x stood 10 off its neighbours (Geist 63). Fixed, every knob scaled by `p.heavy` (Regular unchanged):
+
+- 6 / 9 (`SIX_HOOK` (0.15, 16) -> (0.08, 12)): the hook's ellipse 1.10x, ending 4 deg higher. Tabular side bearings now 25 / 20,
+  proportional advance 971. Narrower still (1.03-1.05x) turned the terminal into a raised nib; a flatter cut (`SIX_HOOK[2]` 5-8)
+  left a step under the face; narrowing the whole figure (tried as a knob, removed) nicked the counter where the stem meets the bowl.
+- Full stop and comma (`PERIOD_OPEN` 0.25 of the sidebearing unit a side at Black): the dot keeps 68 off each figure (52; Inter 42
+  but its dot is round and lighter). Colon and semicolon are built from them and follow.
+- x (`X_WIDER` 35 -> 50, `X_SB_HEAVY` 0.2 -> 0.05): Black's x is 5% wider with 18-20 a side (10), so 9x no longer touches.
+- Scores: upright 8.73 -> 8.74, italic 8.09 -> 8.10. Specimens ("78.6 KB 1.9x 0123456789 $4.20 12:30" at 400 / 700 / 900, Black
+  tabular too, over Inter and Geist): `specimens/round9/`.
+- Not done: Inter's 8 upper counter is rounder; the period stays square.
+
+## Round 10: punctuation and Black capitals by eye
+
+Specimens ("Own your stylesheet.", "78.6 KB 1.9× 0", pangrams, punctuation, paragraphs at 100 / 400 / 700 / 900, upright and
+italic, over Inter) before and after: `specimens/round-next/`. Measured against Inter at opsz 14 (units per 1000 of the cap height):
+
+- × (`_multiply` r 0.36 -> 0.41 of the operator width): 562 wide at Regular against Inter's 631, now 630; Black 795 (Inter 769).
+- Black ? (`Q_MARK_HEAVY_W` 0.14 -> 0.06): 860 wide -> 789 (Inter 713), the hook a round cap, not a flat one with a beak.
+- Black Q tail (`Q_HEAVY_WS` 0.25): a full stem. Entering the counter as Inter's does (tried: start 0.04 w left, 30 up) reads
+  better but fails `quality.py`'s Q counter gate (0.967 of its hull, floor 0.9955) and lint: not kept.
+- Black J (`J_RUN` 20 -> 12): the hook ends 8 deg further round, its butt end no longer a spike.
+- Scores: upright 8.74, italic 8.10 (held). All gates pass; Mono, Serif and Condensed rebuilt, their `test_family.py` pass.
+- Not done: the thicker Black Q tail reaches 197 under the baseline (176; Inter 74), the `test_q_tail...` floor is 151; Black e terminal overhangs the bowl a little (aperture gates); heavy b d p q O counters stay lighter than Inter's (the
+  round-6 attempt broke gates); the 600 -> 700 width step on diagonal capitals (`wstep`) and the I/1 ambiguity at 12 px Black.

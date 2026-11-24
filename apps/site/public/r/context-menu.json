@@ -26,6 +26,30 @@
     "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
     "category": "overlay",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "wrapper",
+        "children": ["$slot", "menu"]
+      },
+      "parts": {
+        "menu": {
+          "element": "div",
+          "role": "menu",
+          "data": {
+            "data-state": ["open", "closed"]
+          },
+          "children": ["item"]
+        },
+        "item": {
+          "element": "div",
+          "role": "menuitem",
+          "aria": ["aria-disabled"],
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": ["open", "closed"],
     "variants": [],
     "sizes": [],

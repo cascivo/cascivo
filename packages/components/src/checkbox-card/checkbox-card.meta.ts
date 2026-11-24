@@ -7,6 +7,24 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   // Backed by a native checkbox, so selection works and submits without JS.
   clientJs: 'enhancement',
+  contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'label',
+      local: 'card',
+      data: { 'data-disabled': [''] },
+      children: ['input', 'glyph', 'body'],
+      emit: 'manual',
+    },
+    parts: {
+      input: { element: 'input' },
+      glyph: { element: 'span', aria: ['aria-hidden'], children: ['check'] },
+      check: { element: 'svg' },
+      body: { element: 'span', children: ['title', 'description'] },
+      title: { element: 'span', children: ['$slot'] },
+      description: { element: 'span', children: ['$slot'], when: 'description' },
+    },
+  },
   states: ['default', 'checked', 'disabled'],
   variants: [],
   sizes: [],

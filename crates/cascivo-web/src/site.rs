@@ -2,13 +2,17 @@
 //! Loading and rendering are plain data transforms, so `dev` can redo both on every edit.
 
 use std::collections::BTreeMap;
-use std::path::{Path, PathBuf};
+#[cfg(feature = "fs")]
+use std::path::Path;
+use std::path::PathBuf;
 use std::sync::{Arc, Mutex, PoisonError};
 
 use minijinja::{Environment, Value};
 
 use crate::config::Config;
-use crate::content::{self, Collection, Entry, page_meta_error, split_front_matter};
+#[cfg(feature = "fs")]
+use crate::content;
+use crate::content::{Collection, Entry, page_meta_error, split_front_matter};
 use crate::error::{Error, Errors, Result};
 use crate::i18n::{self, View};
 use crate::markdown::{self, Rendered};
@@ -31,8 +35,10 @@ pub struct Site {
     pub messages: i18n::Messages,
 }
 
+#[cfg(feature = "fs")]
 type Lister = fn(&Path) -> std::io::Result<Vec<String>>;
 
+#[cfg(feature = "fs")]
 fn read_tree(root: &Path, dir: &str, list: Lister) -> Result<BTreeMap<String, Vec<u8>>> {
     let base = root.join(dir);
     let io = |e: std::io::Error| Errors::one(dir, None, e.to_string());
@@ -43,6 +49,7 @@ fn read_tree(root: &Path, dir: &str, list: Lister) -> Result<BTreeMap<String, Ve
     Ok(out)
 }
 
+#[cfg(feature = "fs")]
 fn utf8(dir: &str, m: BTreeMap<String, Vec<u8>>) -> Result<BTreeMap<String, String>> {
     m.into_iter()
         .map(|(k, v)| {
@@ -54,6 +61,7 @@ fn utf8(dir: &str, m: BTreeMap<String, Vec<u8>>) -> Result<BTreeMap<String, Stri
 }
 
 impl Site {
+    #[cfg(feature = "fs")]
     pub fn load(root: &Path) -> Result<Self> {
         let cfg_src = std::fs::read_to_string(root.join("site.toml"))
             .map_err(|e| Errors::one("site.toml", None, e.to_string()))?;
@@ -237,7 +245,7 @@ struct Renderer<'a> {
     fronts: BTreeMap<String, toml::Table>,
 }
 
-fn tpl_err(file: &str, e: &minijinja::Error) -> Error {
+pub(crate) fn tpl_err(file: &str, e: &minijinja::Error) -> Error {
     let mut msg = e.kind().to_string();
     if let Some(d) = e.detail() {
         msg = format!("{msg}: {d}");
@@ -558,7 +566,7 @@ fn finish(
     Ok(out)
 }
 
-fn config_value(c: &Config) -> Value {
+pub(crate) fn config_value(c: &Config) -> Value {
     Value::from(BTreeMap::from([
         ("title", Value::from(c.title.as_str())),
         ("base_url", Value::from(c.base_url.as_str())),

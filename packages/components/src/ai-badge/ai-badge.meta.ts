@@ -8,6 +8,21 @@ export const meta: ComponentMeta = {
   // The marker is static markup and reads with JS off. The explanation (Toggletip, its own
   // client boundary) and the revert button need JS.
   clientJs: 'enhancement',
+  contractTier: 'native',
+  anatomy: {
+    root: {
+      // A Toggletip wrapper, used only when `children` explains the mark.
+      element: 'span',
+      local: 'root',
+      children: ['badge', 'revert'],
+      emit: 'manual',
+    },
+    parts: {
+      badge: { element: 'span', children: ['$text'] },
+      // The edited state: an IconButton replaces the mark.
+      revert: { element: 'button', aria: ['aria-label'], when: 'edited && onRevert' },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

@@ -614,6 +614,19 @@ nothing and returns `undefined` when WebMCP is absent.
   `{ ok, error?: { step, message }, changes }`.
 - Arguments are untrusted: parsed once, capped at 64 steps, and `DEFAULT_A2UI_LIMITS` apply.
 
+## Markup contract (non-React and htmx apps)
+
+For plain HTML, htmx, Solid or Rust templates, use `@cascivo/css` instead of React components:
+`import '@cascivo/css/cascivo.css'` and `import { classes as c } from '@cascivo/css'`.
+
+- Root class `cv-<unit>-<unit>` (or the alias `cv-<unit>`), parts `cv-<unit>-<part>`; read names
+  from `c.<unit>.<part>`, never type a class by hand. Unknown parts are type errors.
+- Variants, sizes and states are `data-variant`, `data-size`, `data-state`, never extra classes.
+  Allowed values: `@cascivo/css/contract.json` → `units.<unit>.anatomy`.
+- Do not invent classes or restyle `cv-*` selectors; override with tokens or in a later layer.
+- Example (axum + htmx fragment + Solid island): `apps/examples/solid-htmx`. Full guide:
+  [CONTRACT.md](/docs/contract.md).
+
 ## Static HTML instead of React
 
 If the output is one static file (report, dashboard, landing page) and no React app is needed,
@@ -635,6 +648,8 @@ see [USING-CASCIVO-TUI.md](/docs/using-cascivo-tui.md).
   existing Tailwind v4 setup.
 - [TOKENS.md](/docs/tokens.md) — the full token catalog.
 - [MACHINE-MODE.md](/docs/machine-mode.md) — a rendered UI as a Markdown document.
+- [CONTRACT.md](/docs/contract.md) — the `@cascivo/css` class and `data-*` contract for non-React apps.
 - [USING-CASCIVO-HTML.md](/docs/using-cascivo-html.md) — one static HTML file from `.cv` text.
 - [USING-CASCIVO-WEB.md](/docs/using-cascivo-web.md) — a static site (Markdown, collections, i18n, RSS) in Rust.
+- [USING-CASCIVO-SERVER.md](/docs/using-cascivo-server.md) — a dynamic htmx app (axum, forms, sessions) in Rust.
 - [USING-CASCIVO-TUI.md](/docs/using-cascivo-tui.md) — a terminal UI in Rust with cascivo themes.
