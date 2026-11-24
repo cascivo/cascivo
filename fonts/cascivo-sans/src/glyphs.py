@@ -139,13 +139,16 @@ def _I_ss02(g, p):  # plain I: opt-in, it is identical to l in most grotesques
     g.ht = 'c'
 
 
+I_SLAB_IT = (0.0, 0.1)
+
+
 @glyph('I', 0x49)
 def _I(g, p):  # serifed by default, so I, l and 1 never read alike in text
     # Black's slabs are shorter and thinner than the stroke: at the full bar, 0.72 of a stem each side, the I was a slab serif's
     # beside H and J. Still a serif on both sides at every size, so it is never the l.
     # Round 4: Black's slabs shorter again (0.11 -> 0.2 of a stem off each) and thinner (0.16 -> 0.26 off the bar): at 107 a side and
     # 115 thick, heavier than H's bar (107), they still read slab-serif beside H and J, and set HI and IJ 0.71x and 0.63x the HH gap
-    e = p.cH * 0.30 + p.V * (0.2 - 0.2 * p.heavy)
+    e = p.cH * (0.30 - (I_SLAB_IT[0] * max(0.0, (400 - p.wght) / 300) + I_SLAB_IT[1] * p.heavy if p.italic else 0)) + p.V * (0.2 - 0.2 * p.heavy)
     w = p.V + 2 * e
     h = p.H * (1 - 0.26 * p.heavy)
     g.vstem(e, 0, p.cap)
@@ -1788,14 +1791,17 @@ def _osf(fn):
 
 
 ONE_FLUSH = 1.0
+ONE_FLAG_IT = (50, 0.15)  # italic: units further left, share of the cap lower
+ONE_STEM_IT = 0.0
 
 
 @glyph('one', 0x31)
 def _one(g, p):
     w = fw(p)
-    xs = w * 0.55
+    it = 1.0 if p.italic else 0.0
+    xs = w * (0.55 + ONE_STEM_IT * it)
     g.vstem(xs - p.V / 2, 0, p.cap)
-    end = (w * 0.12 + 6 + 20 * p.heavy, p.cap * 0.74)  # Black's flag reached 10% further left than Inter's (12 -> 20 once it started at the top)
+    end = (w * 0.12 + 6 + 20 * p.heavy - ONE_FLAG_IT[0] * it * p.heavy, p.cap * (0.74 - ONE_FLAG_IT[1] * it * p.heavy))  # Black's flag reached 10% further left than Inter's (12 -> 20 once it started at the top)
     start = (xs, p.cap - p.H * (0.4 + 0.5 * p.heavy))  # Black's flag starts lower: its square start poked a spur above the stem top (2 units upright, 5 italic)
     # Black's flag moves up (ONE_FLUSH of the way) until its upper corner sits on the stem's top left corner, as Inter's does: from
     # 123 under the top the stem stood 60 units proud of the flag, a notch over a separate block
@@ -1803,7 +1809,7 @@ def _one(g, p):
     for _ in range(4):
         t = norm((flush[0] - end[0], flush[1] - end[1]))
         half = pen_thickness(t, p.V, p.H) * 0.82 / 2
-        flush = (xs - p.V / 2 + 3 + t[1] * half, p.cap - 3 - t[0] * half)
+        flush = (xs - p.V / 2 + 3 + t[1] * half, p.cap - 3 - 2.5 * it * p.heavy - t[0] * half)  # the italic's lower flag end tilts the cap: its corner rose 2 units over the stem
     start = (lerp(start[0], flush[0], ONE_FLUSH * p.heavy), lerp(start[1], flush[1], ONE_FLUSH * p.heavy))
     g.line(start, end, ws=0.82, caps=('b', 'b'))
     g.tab = True
