@@ -1427,6 +1427,8 @@ html:root[data-font='cascivo']
     .pg-theme-card-title,
     .pg-step-num
   ) {
+  /* The serif reads as sentence case; caps belong to the Condensed eyebrows below. */
+  text-transform: none;
   font-weight: var(--cx-display-weight);
   letter-spacing: var(--cx-display-tracking);
   line-height: var(--cx-display-leading);

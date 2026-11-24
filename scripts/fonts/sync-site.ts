@@ -14,6 +14,7 @@ import {
   statSync,
   writeFileSync,
 } from 'node:fs'
+import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 import { FAMILIES } from '../../apps/site/src/marketing/pages/fonts/families.ts'
 import { FONT_FILES } from '../../apps/site/src/marketing/pages/cascivo-sans/data.ts'
@@ -23,6 +24,19 @@ const TARGET = join(ROOT, 'apps/site/public/fonts/cascivo-sans')
 const SIZES = join(ROOT, 'apps/site/src/marketing/pages/cascivo-sans/sizes.generated.ts')
 const COMPARISON_JSON = join(ROOT, 'fonts/cascivo-sans/comparison.json')
 const COMPARISON = join(ROOT, 'apps/site/src/marketing/pages/cascivo-sans/comparison.generated.ts')
+
+/** The stylesheets whose @font-face rules load the site's copies. */
+export const FONT_FACE_CSS = [
+  'apps/site/src/marketing/pages/cascivo-sans/font.css',
+  ...FAMILIES.map((f) => `apps/site/src/marketing/font-faces/${f.id}.css`),
+]
+export const FONT_URL = /url\('(\/fonts\/[^'?]+\.woff2)(?:\?v=[0-9a-f]*)?'\)/g
+/** First 10 hex digits of the served file's sha256: changes whenever the bytes do. */
+export const fontVersion = (url: string): string =>
+  createHash('sha256')
+    .update(readFileSync(join(ROOT, 'apps/site/public', url)))
+    .digest('hex')
+    .slice(0, 10)
 
 mkdirSync(TARGET, { recursive: true })
 const wanted = new Set(FONT_FILES.map((f) => f.name))
@@ -83,4 +97,18 @@ writeFileSync(
     '',
   ].join('\n'),
 )
+
+// The web files keep one URL across rebuilds and /fonts/* is cached for a day (public/_headers), so
+// a visitor who loaded an older build kept it: round 3's round Serif dots still showed round 2's
+// slab-footed period. Each @font-face url() carries the served file's content hash as `?v=`.
+for (const css of FONT_FACE_CSS) {
+  const path = join(ROOT, css)
+  const before = readFileSync(path, 'utf8')
+  const after = before.replace(
+    FONT_URL,
+    (_, file: string) => `url('${file}?v=${fontVersion(file)}')`,
+  )
+  if (after !== before) writeFileSync(path, after)
+}
+
 console.log(`fonts:site:sync — ${FONT_FILES.length} files → ${TARGET}`)

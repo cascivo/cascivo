@@ -7,6 +7,7 @@
  * Also covers the type tester's pure helpers, since apps/site has no unit-test runner in CI.
  */
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, it } from 'node:test'
@@ -107,6 +108,29 @@ describe('site copy of the family fonts', () => {
       assert.ok(familySnippet(family).includes(`url('${web?.name}')`))
     }
   })
+})
+
+describe('@font-face cache busting', () => {
+  // /fonts/* is cached for a day under one URL: without a content hash in the url(), a visitor who
+  // loaded round 2's Serif kept its slab-footed period after round 3 shipped round dots.
+  const sheets = [
+    'apps/site/src/marketing/pages/cascivo-sans/font.css',
+    ...FAMILIES.map((f) => `apps/site/src/marketing/font-faces/${f.id}.css`),
+  ]
+  for (const sheet of sheets) {
+    it(`${sheet} versions every url() with the served file's hash`, () => {
+      const css = readFileSync(join(ROOT, sheet), 'utf8')
+      const urls = [...css.matchAll(/url\('(\/fonts\/[^'?]+)(\?v=[0-9a-f]*)?'\)/g)]
+      assert.ok(urls.length > 0, `${sheet} has no /fonts/ url()`)
+      for (const [, file = '', query] of urls) {
+        const hash = createHash('sha256')
+          .update(readFileSync(join(ROOT, 'apps/site/public', file)))
+          .digest('hex')
+          .slice(0, 10)
+        assert.equal(query, `?v=${hash}`, `${file} is not versioned with its content — ${FIX}`)
+      }
+    })
+  }
 })
 
 describe('comparison data', () => {
