@@ -113,6 +113,30 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
       'An open-source variable sans for interfaces. Weight 100–900, optical size 8–48, Latin, Cyrillic and Greek, free under the OFL. Try it and download it.',
     ogTitle: 'Cascivo Sans — cascivo',
   },
+  '/fonts': {
+    title: 'Cascivo fonts — cascivo',
+    description:
+      'Four open variable fonts from one engine: Cascivo Sans, Mono, Serif and Condensed. Preview each, try it, download it, or set the whole site in it.',
+    ogTitle: 'Cascivo fonts — cascivo',
+  },
+  '/cascivo-mono': {
+    title: 'Cascivo Mono — cascivo',
+    description:
+      'A monospaced variable font for code and data. Weight 100–900, optical size 8–48. Try it and download it.',
+    ogTitle: 'Cascivo Mono — cascivo',
+  },
+  '/cascivo-serif': {
+    title: 'Cascivo Serif — cascivo',
+    description:
+      'A slab-bracket serif variable font for reading and headings. Weight 100–900, optical size 8–48. Try it and download it.',
+    ogTitle: 'Cascivo Serif — cascivo',
+  },
+  '/cascivo-condensed': {
+    title: 'Cascivo Condensed — cascivo',
+    description:
+      'A condensed sans variable font for dense tables and labels. Weight 100–900, optical size 8–48. Try it and download it.',
+    ogTitle: 'Cascivo Condensed — cascivo',
+  },
   '/cascivo-sans/specimen': {
     title: 'Cascivo Sans specimen — cascivo',
     description:
@@ -206,6 +230,10 @@ export const PRERENDER_ROUTES = [
   'modern-css',
   'cascivo-sans',
   'cascivo-sans/specimen',
+  'fonts',
+  'cascivo-mono',
+  'cascivo-serif',
+  'cascivo-condensed',
   'highlights',
   'examples',
   'showcase',

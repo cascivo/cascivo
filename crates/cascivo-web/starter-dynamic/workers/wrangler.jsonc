@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "__NAME__",
+  "main": "build/index.js",
+  "compatibility_date": "2026-11-01",
+  // `worker-build` compiles the crate to wasm + a JS shim in build/.
+  "build": { "command": "cargo install -q worker-build && worker-build --release" },
+  // web/dist is served at the edge first: /assets/*.js|css never reach the Worker.
+  "assets": { "directory": "./web/dist" },
+}

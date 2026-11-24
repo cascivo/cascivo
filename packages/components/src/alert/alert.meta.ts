@@ -6,6 +6,30 @@ export const meta: ComponentMeta = {
   category: 'display',
   // The message renders in full; only the optional dismiss button needs JS.
   clientJs: 'enhancement',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      // `role` is `alert` or `status` depending on the variant, so it is not pinned here.
+      data: { 'data-variant': ['default', 'info', 'success', 'warning', 'destructive'] },
+      children: ['icon', 'body', 'dismiss'],
+      // Dismissal state is a signal and the parts are conditional: not a static tree.
+      emit: 'manual',
+    },
+    parts: {
+      icon: { element: 'span', aria: ['aria-hidden'], children: ['$slot'], when: 'icon' },
+      body: { element: 'div', children: ['title', 'content', 'action'] },
+      title: { element: 'div', children: ['$text'], when: 'title' },
+      content: { element: 'div', children: ['$slot'], when: 'children' },
+      action: { element: 'button', children: ['$text'], when: 'action' },
+      dismiss: {
+        element: 'button',
+        aria: ['aria-label'],
+        children: ['$text'],
+        when: 'dismissible',
+      },
+    },
+  },
   states: [],
   variants: ['default', 'info', 'success', 'warning', 'destructive'],
   sizes: [],

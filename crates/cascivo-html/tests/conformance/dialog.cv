@@ -1,0 +1,3 @@
+dialog "Delete item" id=del description="This cannot be undone."
+  text "Are you sure?"
+dialog-trigger del "Delete"

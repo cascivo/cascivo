@@ -5,6 +5,15 @@ export const meta: ComponentMeta = {
   description: 'Inline code span for identifiers, commands, and short snippets',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'code',
+      data: { 'data-size': ['sm', 'md'] },
+      children: ['$slot'],
+      emit: 'auto',
+    },
+  },
   states: [],
   variants: [],
   sizes: ['sm', 'md'],

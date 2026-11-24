@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% block title %}Edit note · {{ site.title }}{% endblock %} {% block
+main %}
+<h1>Edit note</h1>
+<div id="note_form">{% block note_form %}<cv-form
+    ><form
+      method="post"
+      action="/notes/{{ id }}"
+      hx-post="/notes/{{ id }}"
+      hx-target="closest cv-form"
+      hx-swap="outerHTML"
+    >
+      {{ form.csrf() }} {% for e in form.errors() %}
+      <p role="alert">{{ e }}</p>
+      {% endfor %} {{ form.field("title", label="Title") }} {{ form.field("body", label="Body",
+      kind="textarea", rows=3) }}
+      <button class="cv-button-button" data-variant="primary" data-size="md" type="submit">
+        <span class="cv-button-label">Save</span>
+      </button>
+      <a href="/notes">Cancel</a>
+    </form></cv-form
+  >{% endblock %}</div>
+{% endblock %}

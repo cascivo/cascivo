@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="data:," />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>cascivo solid + htmx</title>
+    <meta name="htmx-config" content='{"allowEval":false,"includeIndicatorStyles":false}' />
+    {{ theme_script() }}
+    <link rel="stylesheet" href="/assets/island.css" />
+    <script type="module" nonce="{{ request.nonce }}" src="/assets/htmx.js"></script>
+    {{ islands_script() }}
+    <script type="module" nonce="{{ request.nonce }}" src="/assets/elements.js"></script>
+    {% block scripts %}{% endblock %}
+  </head>
+  <body hx-headers='{"X-CSRF-Token":"{{ request.csrf }}"}'>
+    <main>{% block main %}{% endblock %}</main>
+    <cv-toaster id="cv-toaster" class="cv-toast-viewport" aria-label="Notifications"
+      >{% block toaster %}{% for f in flash %}
+      <div class="cv-toast-toast" role="status" data-variant="{{ f.kind }}" data-state="visible">
+        <div class="cv-toast-body"><div class="cv-toast-title">{{ t(f.message) }}</div></div>
+        <button type="button" class="cv-toast-close" aria-label="Dismiss notification">×</button>
+      </div>
+      {% endfor %}{% endblock %}</cv-toaster
+    >
+  </body>
+</html>

@@ -4,6 +4,7 @@ import { defineConfig } from 'vite-plus'
 import { dedupeDirectives, insertAfterDirectives } from '../../scripts/lib/directives.ts'
 import { layerOrderStatement, prependLayerOrder } from '../../scripts/build/layer-order.ts'
 import { MINIFY } from '../../scripts/build/minify.ts'
+import { cascivoRepoScopedName } from '../../scripts/contract/scoped-name.ts'
 
 // The canonical @layer order statement (single source of truth: packages/tokens/src/layers.css,
 // read by scripts/build/layer-order.ts). Prepended to the aggregate styles.css AND to every
@@ -208,6 +209,9 @@ function cssImportEdges() {
 
 export default defineConfig({
   plugins: [cssImportEdges()],
+  // Unhashed contract classes (cv-<unit>-<local>), the names @cascivo/css ships, so React markup
+  // and plain-HTML markup share one vocabulary. Hashed names were never API.
+  css: { modules: { generateScopedName: cascivoRepoScopedName } },
   build: {
     cssCodeSplit: true,
     lib: {

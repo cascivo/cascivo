@@ -8,6 +8,11 @@ export const meta: ComponentMeta = {
   // default label when the i18n locale or catalog changes, which is why the source
   // calls useSignals() and carries 'use client'. Nothing is unreachable with JS off.
   clientJs: 'enhancement',
+  contractTier: 'static',
+  anatomy: {
+    // The trail's `<ol>`/`<li>`/link elements are unclassed; only the `<nav>` is a part.
+    root: { element: 'nav', aria: ['aria-label'], emit: 'manual' },
+  },
   states: [],
   variants: [],
   sizes: [],

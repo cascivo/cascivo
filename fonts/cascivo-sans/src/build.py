@@ -31,6 +31,7 @@ from fontTools.varLib import instancer  # noqa: E402
 import ttfautohint  # noqa: E402
 
 import glyphs as GL  # noqa: E402
+import family  # noqa: E402
 import cyrillic  # noqa: E402  (also registers the Cyrillic drawings)
 import greek  # noqa: E402  (also registers the Greek drawings)
 GEORGIAN = os.environ.get('CASCIVO_GEORGIAN') == '1'  # a draft, not yet shipped (RESEARCH.md section 27)
@@ -49,10 +50,11 @@ from kern import kern_fea  # noqa: E402
 from fontTools.varLib.models import VariationModel  # noqa: E402
 from params import BOLD_SQUEEZE, BOLD_SQUEEZE_CAP, MID_WGHT, ITALIC_ANGLE, ITALIC_MASTERS, MASTERS, WGHT_MAP, P  # noqa: E402
 
-FAMILY = 'Cascivo Sans'
-PS = 'CascivoSans'
-VERSION = '0.6.1'
-DIST = os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
+family.load()  # sibling families override drawings once glyphs.py is loaded; a no-op for Sans
+FAMILY = family.get('NAME', 'Cascivo Sans')
+PS = family.get('PS', 'CascivoSans')
+VERSION = family.get('VERSION', '0.6.1')
+DIST = os.path.join(family.ROOT, 'fonts') if family.ACTIVE else os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
 MAX_ERR = 1.5  # cu2qu tolerance in font units: 1.5/1000 em is sub-pixel below ~700px
 BOLD_IUP_TOLERANCE = 0.5  # the Bold master's own deltas (its counters narrowed, counter_squeeze), see exact_optimize
 IUP_TOLERANCE = 2.0  # gvar deltas the rasterizer can re-infer within 2 units are dropped (section 25)
@@ -121,6 +123,7 @@ def draw_master(p):
         cps, fn = GL.GLYPHS[name]
         g = GL.G(p)
         fn(g, p)
+        family.glyph(g, p, name)
         if not p.italic and name in BOLD_OPEN_SB:  # Bold only: the h (1 - h) term is nothing at Regular and Black
             g.sb = tuple(sb + BOLD_OPEN_SB[name] * p.heavy * (1 - p.heavy) for sb in g.sb)
         cs = []
@@ -179,6 +182,7 @@ def draw_master(p):
         a.update({k: (v[0] + dx, v[1]) for k, v in g.anchors.items() if k.startswith('mk_')})  # traced scripts' marks
         o.anchors[name] = a
     add_composites(o)
+    family.master(o)
     return o
 
 
@@ -1015,7 +1019,7 @@ def build_master_font(o, glyf, order):
         fea += '\n' + armenian.kern_fea(o)
     if HEBREW:
         fea += '\n' + hebrew.kern_fea(o) + '\n' + hebrew.mark_fea(o)
-    addOpenTypeFeaturesFromString(fb.font, fea)
+    addOpenTypeFeaturesFromString(fb.font, family.fea(fea))
     # smart dropout control: keeps thin strokes from vanishing in unhinted rasterization
     prep = newTable('prep')
     prep.program = ttProgram.Program()
@@ -1330,5 +1334,26 @@ def save_all(upright, italic):
         print(f'{os.path.getsize(os.path.join(DIST, fn)):>8}  {fn}')
 
 
+def save_family(upright, italic=None):
+    """A sibling family's v1 outputs: the variable TTF, its WOFF2 and the Latin WOFF2 (no statics yet)."""
+    for fn in os.listdir(DIST):
+        if fn.endswith(('.ttf', '.woff2')):
+            os.remove(os.path.join(DIST, fn))
+    for vf, stem in ((upright, PS), (italic, f'{PS}-Italic')):
+        if vf is None:
+            continue
+        vf['OS/2'].usWinAscent, vf['OS/2'].usWinDescent = _win_extent(vf)
+        path = os.path.join(DIST, f'{stem}[opsz,wght].ttf')
+        vf.flavor = None
+        vf.save(path)
+        _save_woff2(TTFont(path), f'{stem}[opsz,wght].woff2')
+        _save_woff2(_subset_latin(TTFont(path)), f'{stem}-Latin[opsz,wght].woff2')
+    for fn in sorted(os.listdir(DIST)):
+        print(f'{os.path.getsize(os.path.join(DIST, fn)):>8}  {fn}')
+
+
 if __name__ == '__main__':
-    save_all(build(), build(italic=True))
+    if family.ACTIVE:
+        save_family(build(), build(italic=True) if family.get('ITALIC', False) else None)
+    else:
+        save_all(build(), build(italic=True))

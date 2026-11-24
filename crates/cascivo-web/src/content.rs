@@ -2,6 +2,7 @@
 //! `+++`-fenced TOML front matter, validated against the schema.
 
 use std::collections::BTreeMap;
+#[cfg(feature = "fs")]
 use std::path::Path;
 
 use serde::Deserialize;
@@ -222,10 +223,12 @@ pub fn parse_entry(schema: &Schema, file: &str, slug: &str, src: &str) -> Result
     })
 }
 
+#[cfg(feature = "fs")]
 fn read(path: &Path, rel: &str) -> Result<String> {
     std::fs::read_to_string(path).map_err(|e| Errors::one(rel, None, e.to_string()))
 }
 
+#[cfg(feature = "fs")]
 /// Every `*.md` entry directly inside `dir`; `rel` is its site-relative path for diagnostics.
 fn load_entries(dir: &Path, rel: &str, schema: &Schema, errs: &mut Vec<Error>) -> Vec<Entry> {
     let mut files: Vec<_> = std::fs::read_dir(dir)
@@ -256,6 +259,7 @@ fn load_entries(dir: &Path, rel: &str, schema: &Schema, errs: &mut Vec<Error>) -
     entries
 }
 
+#[cfg(feature = "fs")]
 /// Loads every collection under `root/content`. A missing `content/` is no collections.
 pub fn load(root: &Path) -> Result<BTreeMap<String, Collection>> {
     let dir = root.join("content");
