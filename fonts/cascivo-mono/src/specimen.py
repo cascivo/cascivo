@@ -16,10 +16,13 @@ def face(size, wght=400, path=VF):
 
 
 rows = [
-    (face(18), 'Cascivo Mono v1: one 600-unit cell, opsz 14'),
+    (face(18), 'Cascivo Mono v1 round 2: one 600-unit cell, opsz 14, Regular and Black'),
     (face(40), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
     (face(40), 'abcdefghijklmnopqrstuvwxyz'),
-    (face(40), '0123456789 il1I|!; mmwwMMWW'),
+    (face(40), '0123456789 il1I|!; mmwwMMWW 0OØ'),
+    (face(40, 900), '0123456789 il1I|!; mmwwMMWW 0OØ'),
+    (face(40, 900), 'abcdefghijklmnopqrstuvwxyz'),
+    (face(40, 900), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
     (face(40), 'const x = fn(a, b) => a != b;'),
     (face(40, 100), 'Thin 100  {[(<minimum>)]} @#$%&*'),
     (face(40, 400), 'Regular 400  if (n > 0) return n;'),

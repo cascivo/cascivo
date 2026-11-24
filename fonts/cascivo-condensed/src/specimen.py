@@ -18,9 +18,9 @@ def font(size, wght):
 im = Image.new('RGB', (1600, 1500), 'white')
 d = ImageDraw.Draw(im)
 y = 30
-d.text((40, y), 'Cascivo Condensed v1', font=font(28, 400), fill=(120, 120, 120))
+d.text((40, y), 'Cascivo Condensed v2: Regular and Black', font=font(28, 400), fill=(120, 120, 120))
 y += 60
-for w in (100, 400, 900):
+for w in (400, 900):
     d.text((40, y), f'{w}', font=font(20, 400), fill=(160, 160, 160))
     y += 30
     for i, line in enumerate(LINES):
@@ -28,4 +28,8 @@ for w in (100, 400, 900):
         d.text((40, y), line, font=font(size, w), fill='black')
         y += size + 22
     y += 20
-im.crop((0, 0, 1600, y)).save(os.path.join(HERE, '..', 'specimen.png'))
+# Black at text sizes: the bowl joins (family.BLACK_JOIN) must leave d b p q a e g 6 8 9 & open
+for size in (12, 14, 16):
+    d.text((40, y), f'900 / {size} px  dsC$9 abegpq 68& Hamburgefontsiv 1234567890', font=font(size, 900), fill='black')
+    y += size + 14
+im.crop((0, 0, 1600, y + 20)).save(os.path.join(HERE, '..', 'specimen.png'))

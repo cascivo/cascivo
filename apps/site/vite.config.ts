@@ -1117,6 +1117,7 @@ export default defineConfig({
       'src/marketing/pages/EvalsPage.test.tsx',
       'src/marketing/pages/cascivo-sans/WeightWaterfall.test.tsx',
       'src/marketing/poster/HeroLiveFrames.test.tsx',
+      'src/marketing/sections/FontToggle.test.tsx',
     ],
   },
   plugins: HOME_PASS

@@ -1,4 +1,4 @@
-"""Gates for Cascivo Condensed v1 (fonts/PLAN-families.md). Run: python3 -I -m unittest discover -s fonts/cascivo-condensed/src"""
+"""Gates for Cascivo Condensed v2 (fonts/PLAN-families.md). Run: python3 -I -m unittest discover -s fonts/cascivo-condensed/src"""
 
 import io
 import os
@@ -58,12 +58,20 @@ class CondensedTest(unittest.TestCase):
 
     def test_condensed_width(self):
         r = mean_advance(TTF, 400) / mean_advance(SANS, 400)
-        self.assertGreaterEqual(r, 0.78)
-        self.assertLessEqual(r, 0.90)
+        # v2 targets 0.78-0.82 of Sans (Roboto Condensed sits at 0.84, Inter Tight at 0.94)
+        self.assertGreaterEqual(r, 0.76)
+        self.assertLessEqual(r, 0.84)
+
+    def test_condensed_width_holds_across_weights(self):
+        # v1 condensed Black least (0.93x): its stems kept Sans's weight. v2 thins them, so every weight sits near Regular's ratio
+        for w in (100, 900):
+            r = mean_advance(TTF, w) / mean_advance(SANS, w)
+            self.assertGreaterEqual(r, 0.76, w)
+            self.assertLessEqual(r, 0.84, w)
 
     def test_counters_stay_open_at_black(self):
         for opsz in (14, 48):
-            for ch in 'oeaBdg':
+            for ch in 'oeaBdgbpq&6890':  # the bowl joins thinned at Black (family.BLACK_JOIN) must not fill a counter in
                 self.assertTrue(has_counter(ch, 900, opsz), f'{ch} closed at 900 / opsz {opsz}')
 
     def test_ots_sanitize(self):

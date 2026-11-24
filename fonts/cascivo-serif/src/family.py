@@ -23,11 +23,16 @@ def _pw(x, table):
     return table[0][1] if x < table[0][0] else table[-1][1]
 
 
+BAR_SHARE = 0.6  # crossbars thin less than hairlines: thin bars open e, A, P, R counters past Source Serif's
+WEDGE = 0.6  # share of the slab a lowercase head serif's tip drops: a wedge, not a flat slab
+CAP_REACH = 1.2  # capitals carry longer serifs, as in Source Serif (and it moves I's stem off l's at 11 px)
+
+
 def tune(p):
     # contrast: hairlines thin faster than stems as the weight rises (Sans keeps 0.96 -> 0.72 of V)
-    f = _pw(p.V, [(24, 0.84), (84, 0.70), (194, 0.60)])
+    f = _pw(p.V, [(24, 0.84), (84, 0.62), (194, 0.48)])
     p.H *= f
-    p.bar *= f
+    p.bar *= f ** BAR_SHARE
     # a little more white beside the serif tips
     p.S *= 1.04
     p.Sc *= 1.04
@@ -37,6 +42,7 @@ def tune(p):
 def _l(g, p):  # plain stem: the serifs make it an l, the Sans tail would fight the foot serif
     g.vstem(0, 0, p.asc)
     g.ht = 'a'
+    g.sb = (0.8, 1.0)  # the stem sits left of I's (score's I/l test at 11-12 px)
 
 
 @_hook.override('I')
@@ -46,9 +52,12 @@ def _I(g, p):
 
 
 def _sizes(p):
-    reach = _pw(p.V, [(20, 30), (84, 48), (194, 58)])  # Black's n counter is 145: two inner serifs leave it 29
-    t = max(12.0, p.H * 0.8)
-    return reach, t, reach * 0.8
+    """(outer reach, inner reach, slab, bracket height factor). Outer serifs set the advance, so their reach keeps the
+    v1 slope change at Regular (0.19 / stem unit; a sharper bend shows as an advance kink at 400, score's wstep row).
+    Inner serifs share a counter (Black's n counter is 145): capped so two leave it about 30."""
+    outer = _pw(p.V, [(20, 43), (84, 62), (194, 74)])
+    inner = min(outer, _pw(p.V, [(20, 43), (84, 62), (194, 57)]))
+    return outer, inner, max(12.0, p.H * 0.95), 0.9
 
 
 def _half(s, p):
@@ -101,10 +110,12 @@ _PLAN = {}
 
 
 def _plan(g, p, name):
-    reach, t, B = _sizes(p)
+    reach, _, t, bf = _sizes(p)
+    B = reach * bf
     plan = []
     is_cap = name[:1].isupper()
     xmin = min((q[0] for s in g.strokes for seg in s.segs for q in seg[1:]), default=0)
+    xmax = max((q[0] for s in g.strokes for seg in s.segs for q in seg[1:]), default=0)
     for i, end, kind in _ends(g, p):
         s = g.strokes[i]
         seg = s.segs[0] if end == 0 else s.segs[-1]
@@ -118,27 +129,29 @@ def _plan(g, p, name):
             if not is_cap and kind == 'xh' and cx - hw > xmin + 1:
                 continue  # an x-height top inside the letter (q, d, u's right stem) joins a bowl
             if not _blocked(g, p, i, cx, hw, b[1], d, side, reach, t + B):
-                sides.append(side)
+                outer = cx - hw <= xmin + 1 if side < 0 else cx + hw >= xmax - 1
+                sides.append((side, outer))
         if sides:
             plan.append((i, end, kind, tuple(sides)))
     return plan
 
 
-def _serif(cx, hw, Y, d, sides, reach, t, B):
-    left, right = -1 in sides, 1 in sides
+def _serif(cx, hw, Y, d, rl, rr, t, bf, wedge=0.0):
+    """Slab plus bracket on one stem end; rl / rr: reach left / right (0: no serif on that side). The bracket is a
+    concave fillet from the stem (bf x reach above the slab) to 0.6 x reach out along the slab top."""
     P = lambda x, y: (x, Y + d * y)  # noqa: E731
-    xl = cx - hw - (reach if left else 0)
-    xr = cx + hw + (reach if right else 0)
-    c = [L(P(xl, 0), P(xr, 0))]
-    if right:
-        xs = cx + hw + reach * 0.55
-        c += [L(P(xr, 0), P(xr, t)), L(P(xr, t), P(xs, t)), C(P(xs, t), P(cx + hw + reach * 0.22, t), P(cx + hw, t + B * 0.4), P(cx + hw, t + B))]
+    xl, xr = cx - hw - rl, cx + hw + rr
+    B = max(rl, rr) * bf  # one bracket height for both sides: the contour's points stay the same in every master
+    c = [L(P(xl, wedge), P(xr, 0))]  # wedge: the left tip drops below the stem top (a lowercase head serif)
+    if rr:
+        xs = cx + hw + rr * 0.6
+        c += [L(P(xr, 0), P(xr, t)), L(P(xr, t), P(xs, t)), C(P(xs, t), P(cx + hw + rr * 0.2, t), P(cx + hw, t + B * 0.35), P(cx + hw, t + B))]
     else:
         c += [L(P(xr, 0), P(xr, t + B))]
     c += [L(P(cx + hw, t + B), P(cx - hw, t + B))]
-    if left:
-        xs = cx - hw - reach * 0.55
-        c += [C(P(cx - hw, t + B), P(cx - hw, t + B * 0.4), P(cx - hw - reach * 0.22, t), P(xs, t)), L(P(xs, t), P(xl, t)), L(P(xl, t), P(xl, 0))]
+    if rl:
+        xs = cx - hw - rl * 0.6
+        c += [C(P(cx - hw, t + B), P(cx - hw, t + B * 0.35), P(cx - hw - rl * 0.2, t), P(xs, t)), L(P(xs, t), P(xl, t)), L(P(xl, t), P(xl, wedge))]
     else:
         c += [L(P(xl, t + B), P(xl, 0))]
     return orient(c, outer=True)
@@ -149,9 +162,20 @@ def glyph(g, p, name):
         return
     if name not in _PLAN:
         _PLAN[name] = _plan(g, p, name)
-    reach, t, B = _sizes(p)
+    outer, inner, t, bf = _sizes(p)
+    k = CAP_REACH if name[:1].isupper() else 1.0
+    tuck = set()
     for i, end, kind, sides in _PLAN[name]:
         s = g.strokes[i]
         seg = s.segs[0] if end == 0 else s.segs[-1]
         b = seg[1] if end == 0 else seg[2]
-        g.raw.append(_serif(b[0], _half(s, p), b[1], 1 if kind in ('base', 'desc') else -1, sides, reach, t, B))
+        r = {side: k * (outer if out else inner) for side, out in sides}
+        tuck.update(side for side, out in sides if out)
+        d = 1 if kind in ('base', 'desc') else -1
+        wedge = t * WEDGE if d < 0 and k == 1.0 and -1 in r else 0.0
+        g.raw.append(_serif(b[0], _half(s, p), b[1], d, r.get(-1, 0), r.get(1, 0), t, bf, wedge))
+    if tuck and not name[:1].isupper():
+        # An outer serif widens the ink, so the stem would sit a reach further from its neighbour: heavy lowercase set
+        # loose (nn 1.29 gap/counter at 900, Source Serif 1.14). Part of the reach is taken back from the sidebearing.
+        d = _pw(p.V, [(20, 0), (84, 10), (194, 24)]) / p.S
+        g.sb = (g.sb[0] - d * (-1 in tuck), g.sb[1] - d * (1 in tuck))
