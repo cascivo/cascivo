@@ -1,11 +1,14 @@
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite-plus'
+import { cascivoRepoScopedName } from '../../../scripts/contract/scoped-name.ts'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../../..')
 
 export default defineConfig({
+  // Contract class names (cv-<unit>-<local>) for the aliased component source, like @cascivo/react.
+  css: { modules: { generateScopedName: cascivoRepoScopedName } },
   resolve: {
     alias: {
       // Must precede the bare '@cascivo/core' entry: a string alias replaces by

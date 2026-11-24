@@ -14,6 +14,7 @@ Claude Code skills for working with the cascivo design system.
 | `cascivo-email`               | `skills/cascivo-email/SKILL.md`               | Build a transactional email — table-based primitives, themed tokens, byte budget                             |
 | `cascivo-html`                | `skills/cascivo-html/SKILL.md`                | `.cv` text → one static, branded HTML file with the `cascivo-html` CLI (Rust), no React or build step        |
 | `cascivo-web`                 | `skills/cascivo-web/SKILL.md`                 | Static site (Markdown, collections, i18n, RSS) with the `cascivo-web` CLI (Rust), deploy to Cloudflare       |
+| `cascivo-server`              | `skills/cascivo-server/SKILL.md`              | Dynamic htmx app in Rust (`cascivo-server`): fragments, forms, sessions, CSRF, auth, Workers/Containers, SSE |
 | `cascivo-tui`                 | `skills/cascivo-tui/SKILL.md`                 | Terminal UI in Rust with the `cascivo-tui` crate — class strings, widgets, themes, headless `TestApp` checks |
 | `cascivo-migrate-from-shadcn` | `skills/cascivo-migrate-from-shadcn/SKILL.md` | Move a shadcn/ui app to cascivo one file at a time, each file proven with `audit --ai`                       |
 | `cascivo-share-preview`       | `skills/cascivo-share-preview/SKILL.md`       | Put an app on a public URL with no Cloudflare account — temporary account + claim link, or Cloudflare Drop   |

@@ -6,6 +6,26 @@ export const meta: ComponentMeta = {
     'The action row under an AI reply — copy, good / bad feedback as toggle buttons, and regenerate',
   category: 'inputs',
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'actions',
+      role: 'group',
+      aria: ['aria-label'],
+      children: ['rate'],
+    },
+    parts: {
+      rate: {
+        element: 'button',
+        data: { 'data-active': 'boolean' },
+        aria: ['aria-pressed', 'aria-label'],
+        children: ['down'],
+      },
+      // The thumb icon; `down` flips it for the negative-rating button.
+      down: { element: 'svg' },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

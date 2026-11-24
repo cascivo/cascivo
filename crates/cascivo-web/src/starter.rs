@@ -48,7 +48,7 @@ pub fn files(name: &str) -> Vec<(&'static str, String)> {
 }
 
 /// Lowercases and reduces to `[a-z0-9-]`; falls back to `site`.
-fn slug(raw: &str) -> String {
+pub(crate) fn slug(raw: &str) -> String {
     let mut out = String::new();
     for c in raw.chars().flat_map(char::to_lowercase) {
         if c.is_ascii_alphanumeric() {
