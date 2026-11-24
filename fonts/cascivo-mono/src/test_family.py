@@ -166,6 +166,50 @@ class MonoFont(unittest.TestCase):
         for loc in ({'wght': 400, 'opsz': 14}, {'wght': 700, 'opsz': 14}):
             self.assertGreater(self.width(loc, 'r'), 0.7 * self.width(loc, 'n'), 'r arm reaches across the cell')
 
+    def ink_run(self, loc, ch, y=None, x=None):
+        """Units of ink along a horizontal (y=...) or vertical (x=...) line through the glyph, sampled every 4."""
+        from fontTools.pens.pointInsidePen import PointInsidePen
+
+        gs = self.font.getGlyphSet(location=loc)
+        g = gs[self.font.getBestCmap()[ord(ch)]]
+        pts = [(t, y) for t in range(0, CELL, 4)] if y is not None else [(x, t) for t in range(DESC, ASC, 4)]
+        inside = []
+        for pt in pts:
+            pen = PointInsidePen(gs, pt)
+            g.draw(pen)
+            inside.append(pen.getResult())
+        return inside
+
+    def test_relations_on_the_math_axis(self):
+        for loc in LOCATIONS:
+            eq = self.mid(loc, '=')
+            for ch in '≤≥≠':
+                self.assertLess(abs(self.mid(loc, ch) - eq), 15, f'{ch} {loc}')
+
+    def test_code_letters_fill_the_cell(self):
+        for loc in LOCATIONS:
+            # r has no foot serif (it read as a small-cap I): along the baseline it is one stem, n two
+            self.assertLess(sum(self.ink_run(loc, 'r', y=20)), 0.6 * sum(self.ink_run(loc, 'n', y=20)), f'r foot {loc}')
+            self.assertGreater(self.width(loc, 'f'), 0.6 * CELL, f'f {loc}')
+            self.assertGreater(self.width(loc, 't'), 0.55 * CELL, f't {loc}')
+            self.assertGreater(self.width(loc, '/'), 0.65 * CELL, f'/ {loc}')
+
+    def test_dots_round_and_clear(self):
+        for loc in LOCATIONS:
+            b = self.bounds(loc, '.')
+            d = b[2] - b[0]
+            # a corner of the dot's box is white: round at Thin, a rounded square at Black, never Sans's sharp square
+            self.assertFalse(self.ink_run(loc, '.', y=b[1] + d * 0.05)[int((b[0] + d * 0.05) // 4)], f'. corner {loc}')
+            # ! keeps white between its stem and its dot (Black's touched)
+            col = self.ink_run(loc, '!', x=CELL // 2)
+            dot_top = col.index(True) + col[col.index(True):].index(False)
+            gap = col[dot_top:].index(True)
+            self.assertGreater(gap * 4, 40, f'! gap {loc}')
+
+    def test_latin_slice_has_the_terminal_set(self):
+        cmap = TTFont(os.path.join(FONTS, 'CascivoMono-Latin[opsz,wght].woff2')).getBestCmap()
+        self.assertFalse((BOX | {0x2260, 0x2264, 0x2265}) - set(cmap))
+
     def test_no_ligatures_or_contextual_alternates(self):
         # terminals shape runs of text: a ligature or a contextual swap can change a glyph the user typed
         if 'GSUB' in self.font:
