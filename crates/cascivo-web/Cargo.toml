@@ -19,6 +19,7 @@ all-features = true
 [[bin]]
 name = "cascivo-web"
 path = "src/main.rs"
+required-features = ["cli"]
 
 [dependencies]
 axum = { version = "0.8.9", optional = true, default-features = false }
@@ -29,13 +30,23 @@ minijinja = { version = "3.1.0", default-features = false, features = [
   "macros",
   "serde",
 ] }
-image = { version = "0.25.10", default-features = false, features = ["jpeg", "png", "webp"] }
+image = { version = "0.25.10", default-features = false, features = [
+  "jpeg",
+  "png",
+  "webp",
+], optional = true }
 pulldown-cmark = { version = "0.13.6", default-features = false, features = ["html"] }
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.154"
 toml = "1.2.2"
 
 [features]
+# `default-features = false` is the request-time `Engine` alone: no binary, no `image`, no
+# directory walk, and it compiles for `wasm32-unknown-unknown`.
+default = ["cli", "images", "fs"]
+cli = ["fs"]
+images = ["dep:image"]
+fs = []
 axum = ["dep:axum"]
 
 [dev-dependencies]

@@ -37,21 +37,53 @@ export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
  * `react >= 18` peer floor honest, since ref-as-prop does not work there.
  */
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
-  { label, indeterminate = false, ariaLabel, className, id, disabled, ...props },
+  {
+    label,
+    indeterminate = false,
+    ariaLabel,
+    className,
+    id,
+    disabled,
+    checked,
+    defaultChecked,
+    onChange,
+    ...props
+  },
   ref,
 ) {
   const inputRef = useRef<HTMLInputElement>(null)
   const isIndeterminate = useEffectPropSignal(indeterminate)
 
+  const labelRef = useRef<HTMLLabelElement>(null)
+  // `data-state` mirrors the native input. Written to the DOM (not React state) so a toggle
+  // costs no re-render; the render value below only seeds it.
+  const syncState = (el?: HTMLInputElement | null) => {
+    const input = el ?? inputRef.current
+    if (input && labelRef.current)
+      labelRef.current.dataset['state'] = input.indeterminate
+        ? 'indeterminate'
+        : input.checked
+          ? 'checked'
+          : 'unchecked'
+  }
+
   useSignalEffect(() => {
     if (inputRef.current) inputRef.current.indeterminate = isIndeterminate.value
+    syncState()
   })
 
   const checkboxId =
     id ?? (label ? `cascade-checkbox-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined)
 
   return (
-    <label className={cn(styles['wrapper'], className)} data-disabled={disabled || undefined}>
+    <label
+      ref={labelRef}
+      className={cn(styles['wrapper'], className)}
+      data-disabled={disabled || undefined}
+      data-state={
+        indeterminate ? 'indeterminate' : (checked ?? defaultChecked) ? 'checked' : 'unchecked'
+      }
+    >
       {/* Checkbox drives `indeterminate` through its own inputRef, so the forwarded ref is
           COMPOSED with it rather than replacing it — a plain `ref={ref}` would silently
           break the indeterminate state. */}
@@ -61,6 +93,12 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
         type="checkbox"
         className={styles['input']}
         disabled={disabled}
+        checked={checked}
+        defaultChecked={defaultChecked}
+        onChange={(e) => {
+          syncState(e.currentTarget)
+          onChange?.(e)
+        }}
         {...props}
         aria-label={props['aria-label'] ?? ariaLabel}
       />

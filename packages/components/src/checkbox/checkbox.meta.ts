@@ -5,6 +5,26 @@ export const meta: ComponentMeta = {
   description: 'Binary toggle for forms, with indeterminate support',
   category: 'inputs',
   clientJs: 'enhancement',
+  contractTier: 'native',
+  anatomy: {
+    root: {
+      // The `<label>` wraps the input, so the whole row is the click target.
+      element: 'label',
+      local: 'wrapper',
+      // Presence-only: `'true'` when disabled, absent otherwise.
+      data: {
+        'data-disabled': ['true'],
+        'data-state': ['unchecked', 'checked', 'indeterminate'],
+      },
+      children: ['input', 'control', 'label'],
+      emit: 'manual',
+    },
+    parts: {
+      input: { element: 'input', aria: ['aria-label'] },
+      control: { element: 'span', aria: ['aria-hidden'] },
+      label: { element: 'span', children: ['$text'], when: 'label' },
+    },
+  },
   states: ['unchecked', 'checked', 'indeterminate'],
   variants: [],
   sizes: [],

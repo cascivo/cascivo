@@ -7,6 +7,24 @@ export const meta: ComponentMeta = {
   // The content is gated behind the open signal, so it is absent from the server HTML
   // entirely.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'span', local: 'root', children: ['trigger', 'bubble'] },
+    parts: {
+      trigger: {
+        element: 'button',
+        aria: ['aria-expanded', 'aria-controls', 'aria-label'],
+        children: ['$slot'],
+      },
+      // Rendered only while open.
+      bubble: {
+        element: 'div',
+        role: 'status',
+        data: { 'data-state': ['open'], 'data-placement': 'string' },
+        children: ['$slot'],
+      },
+    },
+  },
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

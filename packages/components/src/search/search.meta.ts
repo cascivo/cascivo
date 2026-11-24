@@ -5,6 +5,30 @@ export const meta: ComponentMeta = {
   description: 'Search input with debounced search callback and clear button',
   category: 'inputs',
   clientJs: 'enhancement',
+  contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'root',
+      data: {
+        'data-size': ['sm', 'md', 'lg'],
+        'data-state': ['empty', 'filled'],
+      },
+      children: ['label', 'icon', 'input', 'clear'],
+      // `data-state` is computed from the live value.
+      emit: 'manual',
+    },
+    parts: {
+      label: { element: 'label', children: ['$text'], when: 'label' },
+      icon: { element: 'span', children: ['$slot'] },
+      input: {
+        element: 'input',
+        aria: ['aria-labelledby', 'aria-label', 'aria-describedby', 'aria-invalid'],
+      },
+      // Only while the field has text.
+      clear: { element: 'button', aria: ['aria-label'], children: ['$slot'], when: 'filled' },
+    },
+  },
   states: ['empty', 'filled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

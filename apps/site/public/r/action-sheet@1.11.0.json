@@ -26,6 +26,51 @@
     "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
     "category": "overlay",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "overlay",
+        "children": ["sheet"]
+      },
+      "parts": {
+        "sheet": {
+          "element": "div",
+          "role": "menu",
+          "aria": ["aria-label", "aria-labelledby", "aria-describedby"],
+          "children": ["group"]
+        },
+        "group": {
+          "element": "div",
+          "children": ["heading", "item"]
+        },
+        "heading": {
+          "element": "div",
+          "role": "presentation",
+          "children": ["title", "description"]
+        },
+        "title": {
+          "element": "p",
+          "children": ["$slot"]
+        },
+        "description": {
+          "element": "p",
+          "children": ["$slot"]
+        },
+        "item": {
+          "element": "button",
+          "role": "menuitem",
+          "data": {
+            "data-destructive": "string"
+          },
+          "aria": ["aria-disabled"],
+          "modifiers": {
+            "cancel": "cancel button"
+          },
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": ["open", "closed"],
     "variants": [],
     "sizes": [],

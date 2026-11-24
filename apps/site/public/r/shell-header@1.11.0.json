@@ -27,6 +27,118 @@
     "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
     "category": "navigation",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "header",
+        "local": "header",
+        "role": "banner",
+        "children": ["skipLink", "menuButton", "brand", "nav", "center", "spacer", "actions", "end"]
+      },
+      "parts": {
+        "skipLink": {
+          "element": "a",
+          "children": ["$text"]
+        },
+        "menuButton": {
+          "element": "button",
+          "aria": ["aria-label", "aria-expanded"],
+          "children": ["$slot"]
+        },
+        "brand": {
+          "element": ["a", "div"],
+          "aria": ["aria-label"],
+          "children": ["brandPrefix", "brandName", "$slot"]
+        },
+        "brandPrefix": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "brandName": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "nav": {
+          "element": "nav",
+          "aria": ["aria-label"],
+          "children": ["navList"]
+        },
+        "navList": {
+          "element": "ul",
+          "children": ["navLink", "navMenuWrapper"]
+        },
+        "navLink": {
+          "element": "a",
+          "data": {
+            "data-state": ["active"]
+          },
+          "aria": ["aria-current"],
+          "children": ["$text"]
+        },
+        "navMenuWrapper": {
+          "element": "li",
+          "children": ["navMenuTrigger", "navMenuPanel"]
+        },
+        "navMenuTrigger": {
+          "element": "button",
+          "data": {
+            "data-state": ["active"]
+          },
+          "aria": ["aria-haspopup", "aria-expanded"],
+          "children": ["$text", "chevron"]
+        },
+        "chevron": {
+          "element": "svg",
+          "aria": ["aria-hidden"]
+        },
+        "navMenuPanel": {
+          "element": "div",
+          "role": "menu",
+          "data": {
+            "data-state": ["open", "closed"]
+          },
+          "aria": ["aria-label"],
+          "children": ["navMenuItem"]
+        },
+        "navMenuItem": {
+          "element": "a",
+          "role": "menuitem",
+          "data": {
+            "data-state": ["active"]
+          },
+          "aria": ["aria-current"],
+          "children": ["$text"]
+        },
+        "center": {
+          "element": "div",
+          "children": ["$slot"]
+        },
+        "spacer": {
+          "element": "div"
+        },
+        "actions": {
+          "element": "div",
+          "children": ["action"]
+        },
+        "action": {
+          "element": "button",
+          "data": {
+            "data-state": ["active"]
+          },
+          "aria": ["aria-label", "aria-pressed"],
+          "children": ["actionIcon"]
+        },
+        "actionIcon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$slot"]
+        },
+        "end": {
+          "element": "div",
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": ["default"],
     "variants": [],
     "sizes": [],

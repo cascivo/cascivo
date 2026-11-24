@@ -5,6 +5,35 @@ export const meta: ComponentMeta = {
   description: 'Container for grouping related content',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'div',
+      data: {
+        'data-cascivo-card': [''],
+        'data-variant': ['default', 'outlined', 'elevated'],
+        'data-padding': ['none', 'sm', 'md', 'lg'],
+        'data-ai': ['', 'generating'],
+      },
+      children: ['$slot', 'header', 'title', 'content', 'footer'],
+      // `data-ai` is computed from a boolean-or-string prop.
+      emit: 'manual',
+    },
+    parts: {
+      // CardHeader, CardTitle, CardContent and CardFooter are separate components composed
+      // inside the card, so they are listed as its children.
+      header: {
+        element: 'div',
+        modifiers: { headerRow: 'actions' },
+        children: ['$slot', 'headerMain', 'headerActions'],
+      },
+      headerMain: { element: 'div', children: ['$slot'], when: 'actions' },
+      headerActions: { element: 'div', children: ['$slot'], when: 'actions' },
+      title: { element: 'h3', children: ['$slot'] },
+      content: { element: 'div', children: ['$slot'] },
+      footer: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: ['default', 'outlined', 'elevated'],
   sizes: [],

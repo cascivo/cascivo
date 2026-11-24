@@ -5,6 +5,14 @@ export const meta: ComponentMeta = {
   description: 'Loads the next page when the end of a list scrolls into view',
   category: 'feedback',
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'div', local: 'root', children: ['status', 'button'] },
+    parts: {
+      status: { element: 'span', role: 'status', when: 'loading', children: ['@spinner', '$text'] },
+      button: { element: 'button', children: ['$text'] },
+    },
+  },
   states: ['idle', 'loading', 'disabled'],
   variants: [],
   sizes: [],

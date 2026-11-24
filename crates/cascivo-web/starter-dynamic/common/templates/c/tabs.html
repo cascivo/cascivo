@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block main %}
+<h1>Tabs</h1>
+<cv-tabs id="plan">
+  <div class="cv-tabs-tabs">
+    <div class="cv-tabs-list" role="tablist" aria-label="Plan">
+      <button
+        type="button"
+        class="cv-tabs-trigger"
+        role="tab"
+        id="plan-trigger-overview"
+        aria-selected="true"
+        aria-controls="plan-content-overview"
+        tabindex="0"
+        data-state="active"
+        data-value="overview"
+      >
+        Overview
+      </button>
+      <button
+        type="button"
+        class="cv-tabs-trigger"
+        role="tab"
+        id="plan-trigger-details"
+        aria-selected="false"
+        aria-controls="plan-content-details"
+        tabindex="-1"
+        data-state="inactive"
+        data-value="details"
+        hx-get="/c/tabs/details"
+        hx-trigger="focus once"
+        hx-target="#details"
+        hx-swap="innerHTML"
+      >
+        Details
+      </button>
+      <button
+        type="button"
+        class="cv-tabs-trigger"
+        role="tab"
+        id="plan-trigger-history"
+        aria-selected="false"
+        aria-controls="plan-content-history"
+        tabindex="-1"
+        data-state="inactive"
+        data-value="history"
+        hx-get="/c/tabs/history"
+        hx-trigger="focus once"
+        hx-target="#history"
+        hx-swap="innerHTML"
+      >
+        History
+      </button>
+    </div>
+    <div
+      class="cv-tabs-content"
+      role="tabpanel"
+      id="plan-content-overview"
+      aria-labelledby="plan-trigger-overview"
+      tabindex="0"
+      data-state="active"
+    >
+      Overview panel
+    </div>
+    <div
+      class="cv-tabs-content"
+      role="tabpanel"
+      id="plan-content-details"
+      aria-labelledby="plan-trigger-details"
+      tabindex="0"
+      data-state="inactive"
+      hidden
+    >
+      <div id="details">{% block details %}{% if panel == "details" %}<p>details loaded from the server</p>{% else %}Loading{% endif %}{% endblock %}</div>
+    </div>
+    <div
+      class="cv-tabs-content"
+      role="tabpanel"
+      id="plan-content-history"
+      aria-labelledby="plan-trigger-history"
+      tabindex="0"
+      data-state="inactive"
+      hidden
+    >
+      <div id="history">{% block history %}{% if panel == "history" %}<p>history loaded from the server</p>{% else %}Loading{% endif %}{% endblock %}</div>
+    </div>
+  </div>
+</cv-tabs>
+{% endblock %}
