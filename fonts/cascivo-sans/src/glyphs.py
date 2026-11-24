@@ -1905,6 +1905,12 @@ def _osf(fn):
 
 
 ONE_FLUSH = 1.0
+
+
+def pnum_left(p, name):
+    """Family hook (a sibling's family.py may replace it): units added to a proportional figure's left sidebearing. Sans: none."""
+    return 0.0
+
 ONE_FLAG_IT = (50, 0.15)  # italic: units further left, share of the cap lower
 ONE_STEM_IT = 0.0
 
@@ -2147,6 +2153,9 @@ def comma_swing(p):
     # Units the comma's tail sweeps left beyond its own taper: Inter's quotes are 0.9-1.0x as wide as the comma-shaped ones were
     # at Regular and 2x at Thin, where the hairline head is 29 wide and the old tail added 17.
     return lerp(42.0, 14.0, thin_blend(p)) + 14.0 * p.heavy
+
+
+QUOTE_GAP_HEAVY = 0.08  # double quotes' mark pitch grows by this share of a mark by Black (build.py); a family may change it
 
 
 def comma_depth(p):

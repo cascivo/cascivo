@@ -74,6 +74,22 @@ class CondensedTest(unittest.TestCase):
             for ch in 'oeaBdgbpq&6890':  # the bowl joins thinned at Black (family.BLACK_JOIN) must not fill a counter in
                 self.assertTrue(has_counter(ch, 900, opsz), f'{ch} closed at 900 / opsz {opsz}')
 
+    def test_proportional_one_stays_inside_its_advance(self):
+        # v2 shifted the 1's outline into the default (proportional) 1's right sidebearing: -7 units at 400, -44 at 900 (12 and 1l collided)
+        from fontTools.pens.boundsPen import BoundsPen
+
+        for w in (100, 400, 700, 900):
+            f = instancer.instantiateVariableFont(TTFont(TTF), {'wght': w, 'opsz': 14})
+            g = f.getBestCmap()[ord('1')]
+            pen = BoundsPen(f.getGlyphSet())
+            f.getGlyphSet()[g].draw(pen)
+            self.assertGreater(f['hmtx'][g][0] - pen.bounds[2], 20, w)
+
+    def test_dashes_condensed(self):
+        cmap, hmtx = self.font.getBestCmap(), self.font['hmtx']
+        self.assertLess(hmtx[cmap[0x2014]][0], 800)  # Sans's em dash is 1000
+        self.assertLess(hmtx[cmap[0x2013]][0], hmtx[cmap[0x2014]][0] * 0.65)
+
     def test_ots_sanitize(self):
         try:
             import ots

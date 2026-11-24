@@ -361,7 +361,7 @@ def add_composites(o):
     comp('quotesinglbase', [('comma', 0, 0, 1)], cadv, 0x201A)
     # the marks stand apart by their own width again at Thin (Inter's double quote is 2.9 marks wide there, 2.2 at Regular and Black: gaps of 1.9, 1.24 and 1.18 marks)
     cb = o.bounds['comma']
-    gap = max(d + S * 0.55, (cb[2] - cb[0]) * (1.75 - 0.55 * GL.thin_blend(p) + 0.08 * p.heavy))  # Black: 1.28 marks, its wedges stood 35 units apart and read as one block
+    gap = max(d + S * 0.55, (cb[2] - cb[0]) * (1.75 - 0.55 * GL.thin_blend(p) + GL.QUOTE_GAP_HEAVY * p.heavy))  # Black: 1.28 marks, its wedges stood 35 units apart and read as one block
     comp('quotedblright', [('comma', 0, p.cap - d, 1), ('comma', gap, p.cap - d, 1)], cadv + gap, 0x201D)
     comp('quotedblleft', [('comma', cadv, lq, -1), ('comma', cadv + gap, lq, -1)], cadv + gap, 0x201C)
     comp('quotedblbase', [('comma', 0, 0, 1), ('comma', gap, 0, 1)], cadv + gap, 0x201E)
@@ -417,7 +417,8 @@ def add_composites(o):
         b = o.bounds[f]
         tight = {'one': 0.9}.get(f, 0.62) + FIG_OPEN * p.heavy
         l = p.Sfig * tight
-        comp(f + '.pnum', [(f, l - b[0], 0, 1)], l + (b[2] - b[0]) + p.Sfig * tight)
+        pl = GL.pnum_left(p, f)
+        comp(f + '.pnum', [(f, l + pl - b[0], 0, 1)], l + pl + (b[2] - b[0]) + p.Sfig * tight)
         sw = o.adv[f] * k * 0.92
         lx = (sw - o.adv[f] * k) / 2
         comp(f + '.sups', [(f, lx, sup_y, k)], sw)
