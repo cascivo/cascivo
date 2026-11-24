@@ -3,6 +3,7 @@ import { FONT_CHOICES, isFontChoice, siteFont, type FontChoice } from '../font-t
 
 const LABELS: Record<FontChoice, string> = {
   default: 'Default',
+  cascivo: 'Cascivo Fonts',
   sans: 'Cascivo Sans',
   mono: 'Cascivo Mono',
   serif: 'Cascivo Serif',

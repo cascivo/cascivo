@@ -43,6 +43,7 @@ describe('FontToggle', () => {
     expect(select.value).toBe('default')
     expect([...select.options].map((o) => o.value)).toEqual([
       'default',
+      'cascivo',
       'sans',
       'mono',
       'serif',
@@ -61,6 +62,14 @@ describe('FontToggle', () => {
       expect(localStorage.getItem('cascivo-font-sans')).toContain(name)
     },
   )
+
+  it('Cascivo Fonts sets data-font="cascivo" and persists', async () => {
+    const select = mount()
+    pick(select, 'cascivo')
+    await Promise.resolve()
+    expect(document.documentElement.getAttribute('data-font')).toBe('cascivo')
+    expect(localStorage.getItem('cascivo-font-sans')).toContain('cascivo')
+  })
 
   it('returning to default removes data-font', async () => {
     const select = mount()

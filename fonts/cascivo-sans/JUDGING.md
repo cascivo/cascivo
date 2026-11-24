@@ -550,3 +550,21 @@ engine, every knob scaled by `p.heavy` (Regular's master is unchanged; Bold take
 - r (`R_KNOB` 0.08, upright): the arm thickens toward its end. 0.15 hung a 17-unit beak under the face (gate 12).
 - Budget: `CascivoSans[opsz,wght].woff2` 77_600 -> 77_800 (77_760).
 - Not done: the 5's stem foot still steps where it meets the bowl's thin start; the n m d joins were round 7's and are unchanged.
+
+## Round 9: heavy figures and the full stop between them
+
+Owner feedback: at 800-900 display sizes the figures look strange; the landing hero ("78.6 KB", "1.9x", Black at ~56 px) has the
+full stop crowding its digits and clumsy 6 9 7 1 x. Measured at 900 (units per 1000 of the cap height, `uharfbuzz`): the 6 and 9
+hooks were drawn on an ellipse 1.17x the figure width and ran past the bowl, so the proportional 6 9 were 1037 wide (the other
+figures 942) and the tabular ones overflowed their advance (side bearings -8 / -13): the dot in "78.6" and "1.9x" sat on them.
+The x stood 10 off its neighbours (Geist 63). Fixed, every knob scaled by `p.heavy` (Regular unchanged):
+
+- 6 / 9 (`SIX_HOOK` (0.15, 16) -> (0.08, 12)): the hook's ellipse 1.10x, ending 4 deg higher. Tabular side bearings now 25 / 20,
+  proportional advance 971. Narrower still (1.03-1.05x) turned the terminal into a raised nib; a flatter cut (`SIX_HOOK[2]` 5-8)
+  left a step under the face; narrowing the whole figure (tried as a knob, removed) nicked the counter where the stem meets the bowl.
+- Full stop and comma (`PERIOD_OPEN` 0.25 of the sidebearing unit a side at Black): the dot keeps 68 off each figure (52; Inter 42
+  but its dot is round and lighter). Colon and semicolon are built from them and follow.
+- x (`X_WIDER` 35 -> 50, `X_SB_HEAVY` 0.2 -> 0.05): Black's x is 5% wider with 18-20 a side (10), so 9x no longer touches.
+- Scores: upright 8.73 -> 8.74, italic 8.09 -> 8.10. Specimens ("78.6 KB 1.9x 0123456789 $4.20 12:30" at 400 / 700 / 900, Black
+  tabular too, over Inter and Geist): `specimens/round9/`.
+- Not done: Inter's 8 upper counter is rounder; the period stays square.
