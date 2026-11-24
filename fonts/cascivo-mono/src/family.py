@@ -7,6 +7,8 @@ build_glyf, a few build.py functions are wrapped on the first master() call (see
 """
 
 import copy
+import importlib.util
+import os
 import re
 import sys
 
@@ -28,6 +30,8 @@ BLACK_LIGHT = 0.08
 CAP_HEAVY = 0.16  # the capitals' extra counter narrowing at Black (H 611 -> about 530 of ink)
 FIG_HEAVY = 45  # units Black's figure width gives up (0 ink 598 -> about 520)
 _frozen = {}
+# Terminal legibility at 12-14 px: JetBrains Mono's x-height is 550, Geist Mono's 530, Sans's 528. Units added to every master's.
+XH_UP = 22
 
 
 def _freeze(p):
@@ -52,6 +56,7 @@ def tune(p):
     p.cH *= 0.76 * (1 - CAP_HEAVY * h)
     p.cHd *= 0.76 * (1 - CAP_HEAVY * h)
     p.fig_adv -= FIG_HEAVY * h
+    p.xh += XH_UP
 
 
 def _slabs(g, p, name):
@@ -68,8 +73,9 @@ def _slabs(g, p, name):
         g.hbar(-e * 0.85, V / 2, p.asc - h, h)
         g.anchors.pop('top_x', None)
     elif name == 'r':
+        # foot only: with Sans's short arm the top serif made r read as a small-cap I in `drwxr-xr-x` (Plex Mono's r has the same
+        # trouble; JetBrains Mono's has neither serif)
         g.hbar(-e * 0.8, V + e * 0.8, 0, h)
-        g.hbar(-e * (0.7 - 0.2 * p.heavy), V / 2, p.xh - h, h)  # Black's top serif shorter: beside the arm it read as a second slab
     elif name == 'dotlessj':
         x = g.anchors.get('top_x', V * 0.5 + 70)
         g.hbar(x - V / 2 - e * 0.85, x, p.xh - h, h)
@@ -123,8 +129,8 @@ def _m(g, p):
     _drawn_with(g, q, draw)
 
 
-def _lighter(name, k, wider=0.0):
-    """Redraw Sans's `name` with a pen k (at Black; 1 at Regular) of the stem, its n-width `wider` (share, at Black) wider."""
+def _lighter(name, k, wider=0.0, base=0.0):
+    """Redraw Sans's `name` with a pen k (at Black; 1 at Regular) of the stem, its n counter `base` (Regular) to `wider` (Black) wider."""
     import glyphs as GL
 
     orig = GL.GLYPHS[name][1]
@@ -132,15 +138,17 @@ def _lighter(name, k, wider=0.0):
     @_hooks.override(name)
     def draw(g, p):
         q = _pen(p, 1 - (1 - k) * p.heavy)
-        q.cn = p.cn * (1 + wider * p.heavy)
+        q.cn = p.cn * (1 + base + (wider - base) * p.heavy)
         _drawn_with(g, q, lambda: orig(g, q))
         g.stem_v = q.V
 
 
-# Black's 5 6 9 closed their counters in the cell and the r's arm was a stub between two slabs: a lighter pen, a longer arm
+# Black's 5 6 9 closed their counters in the cell and the r's arm was a stub: a lighter pen, and at every weight a longer arm (R_WIDE
+# of the n's counter more; Sans's narrow r left a wide white beside it in the cell)
+R_WIDE = 0.4
 for _n in ('five', 'six', 'nine'):
     _lighter(_n, 0.94)
-_lighter('r', 0.94, wider=0.45)
+_lighter('r', 0.94, wider=0.45, base=R_WIDE)
 
 
 def _vee(g, q, w, top, apex, ws):
@@ -200,6 +208,83 @@ def _zero(g, p):
     g.line((w / 2 - dw / 2, cy), (w / 2 + dw / 2, cy), w=dh)  # drawn across: run along its height, Black's thick dot came out hollow
     g.tab = True
     g.ht = 'c'
+
+
+# ------------------------------------------------------------------------------------------------
+# terminal punctuation: the cell's math axis, and the rules that tile across cells
+
+ASC, DESC = 1000, -300  # the line box (build.py's hhea and typo metrics): a terminal's cell at line-height 1
+
+
+def _axis(p):
+    return p.cap * 0.42  # glyphs._mathy's: + - = < > x and the minus centre here
+
+
+def _dash(w):
+    def draw(g, p):
+        t = p.H * 1.1
+        g.hbar(0, w(p), _axis(p) - t / 2, h=t)  # on the operators' axis, not at mid x-height: in code - is a minus
+    return draw
+
+
+# hyphen 0.49 of the cell (JetBrains Mono's 0.53, Plex's 0.48), en dash 0.70, em dash the whole cell (FULL_X): three distinct lengths
+_hooks.override('hyphen')(_dash(lambda p: 270 + p.V * 0.3))
+_hooks.override('endash')(_dash(lambda p: 420))
+_hooks.override('emdash')(_dash(lambda p: 520))
+
+
+@_hooks.override('bar')
+def _bar(g, p):
+    g.line((p.V * 0.45, DESC), (p.V * 0.45, ASC), w=p.V * 0.9)  # the whole line box: stacked | join into one rule
+
+
+@_hooks.override('brokenbar')
+def _brokenbar(g, p):
+    x, gap = p.V * 0.45, 70 + p.V * 0.3
+    g.line((x, DESC), (x, (ASC + DESC) / 2 - gap), w=p.V * 0.9)
+    g.line((x, (ASC + DESC) / 2 + gap), (x, ASC), w=p.V * 0.9)
+
+
+@_hooks.override('asterisk')
+def _asterisk(g, p):
+    import math
+
+    # Sans's star sits at the cap height (530 here); JetBrains Mono's, Plex Mono's and Fira Code's centre 320-360, beside the math
+    # axis, where `a * b` reads as an operator. Larger too: 0.34 em of ink was 0.65x theirs.
+    r = 200 + 26 * p.heavy
+    cy = _axis(p) + 50
+    for ang in (90, 18, -54, -126, 162):
+        a = math.radians(ang)
+        g.line((r, cy), (r + r * math.cos(a), cy + r * math.sin(a)), w=p.V * (0.82 - 0.18 * p.heavy), caps=('b', 'b'))
+
+
+FULL_X = ('underscore', 'emdash')  # stretched to the cell's edges after centring: ___ and —— join
+
+
+def _load_box():
+    spec = importlib.util.spec_from_file_location('cascivo_mono_box', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'box.py'))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+BOX = {f'uni{cp:04X}': cs for cp, cs in _load_box().glyphs().items()}
+
+
+def _register_box():
+    import glyphs as GL
+
+    for name, cs in BOX.items():
+        cp = int(name[3:], 16)
+
+        def draw(g, p, cs=cs):
+            g.raw += cs
+            g.tab = True
+
+        GL.glyph(name, cp)(draw)
+
+
+_register_box()
 
 
 def fea(text):
@@ -320,7 +405,7 @@ def _patch():
             m.comps[n] = [(g, lerp(ox, bx), lerp(oy, by), lerp(a, ba_)) for (g, ox, oy, a), (_, bx, by, ba_) in zip(parts, black.comps[n])]
         m.squeeze = {}
         before = {n: [c for c in cs] for n, cs in m.contours.items()}
-        mono(m, scale=False, keep=own)
+        mono(m, scale=False, keep=own | set(BOX))
         # build_glyf ignores Bold's own contours (outside BOLD_OWN): carry the centring as o.shift
         sh = {}
         for n, cs in m.contours.items():
@@ -346,8 +431,77 @@ def _patch():
         return f
 
     B.build_master_font = build_master_font
+    orig_glyf = B.build_glyf
+
+    def build_glyf(outs, order):
+        _flatten(outs)
+        return orig_glyf(outs, order)
+
+    B.build_glyf = build_glyf
 
 
 def master(o):
     _patch()
-    mono(o)
+    mono(o, keep=BOX)
+    cell(o)
+    _OVER.update(n for n in o.comps if _overflows(o, n))
+
+
+# Composites whose ink leaves the cell (Ð Ø ¼ Œ ” ǆ, Vietnamese stacked accents, Greek capitals with breathings): mono() can only move
+# a composite's parts, not narrow them. Every master's overflowing set is collected, and before build_glyf the union is drawn out
+# as outlines in every master (the masters stay compatible) and squeezed into the cell like any wide glyph.
+_OVER = set()
+
+
+def _comp_bounds(o, n, B):
+    if n not in o.comps:
+        return o.bounds.get(n)
+    bs = []
+    for g, ox, oy, a in o.comps[n]:
+        b = _comp_bounds(o, g, B)
+        if b:
+            bs.append((ox + a * b[0], oy + a * b[1], ox + a * b[2], oy + a * b[3]))
+    return (min(b[0] for b in bs), min(b[1] for b in bs), max(b[2] for b in bs), max(b[3] for b in bs)) if bs else None
+
+
+def _overflows(o, n):
+    b = _comp_bounds(o, n, sys.modules['__main__'])
+    # half a margin of slack: the corners no master sits on (900 at opsz 8) add the weight and size deltas and reach further out
+    return o.adv.get(n, 0) != 0 and b is not None and (b[0] < MARGIN / 2 or b[2] > W - MARGIN / 2)
+
+
+def _outlines(o, n, B):
+    if n not in o.comps:
+        return o.contours.get(n, [])
+    out = []
+    for g, ox, oy, a in o.comps[n]:
+        out += [B.transform_contour(c, lambda q, ox=ox, oy=oy, a=a: (ox + a * q[0], oy + a * q[1])) for c in _outlines(o, g, B)]
+    return out
+
+
+def _flatten(outs):
+    B = sys.modules['__main__']
+    names = sorted(n for n in _OVER if all(n in o.comps for o in outs))
+    for o in outs:
+        cs = {n: _outlines(o, n, B) for n in names}
+        for n in names:
+            del o.comps[n]
+            b = _bounds(B, cs[n])
+            s = min(1.0, MAXW / (b[2] - b[0]))
+            off = W / 2 - s * (b[0] + b[2]) / 2
+            o.contours[n] = [B.transform_contour(c, lambda q, s=s, off=off: (s * q[0] + off, q[1])) for c in cs[n]]
+            o.bounds[n] = (s * b[0] + off, b[1], s * b[2] + off, b[3])
+
+
+def cell(o):
+    """After centring: the box glyphs back on their own coordinates, the rules stretched to the cell's edges."""
+    B = sys.modules['__main__']
+    for n, cs in BOX.items():
+        o.contours[n] = list(cs)
+        o.bounds[n] = _bounds(B, cs)
+        o.adv[n] = W
+    for n in FULL_X:
+        b = o.bounds[n]
+        s, off = W / (b[2] - b[0]), -W * b[0] / (b[2] - b[0])
+        o.contours[n] = [B.transform_contour(c, lambda q, s=s, off=off: (s * q[0] + off, q[1])) for c in o.contours[n]]
+        o.bounds[n] = (0, b[1], W, b[3])
