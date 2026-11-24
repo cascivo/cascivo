@@ -1751,7 +1751,8 @@ def _w(g, p):
 
 
 # Black's x and z were 0.87x and 0.84x of its n (Inter's 0.94x, 0.91x): the diagonal trim (params.DIAG_TRIM) pinched them beside n and o
-X_WIDER, Z_WIDER = 35, 30
+X_WIDER, Z_WIDER = 50, 30
+X_SB_HEAVY = 0.05
 
 
 @glyph('x', 0x78)
@@ -1763,7 +1764,7 @@ def _x(g, p):
     # about 12% tighter beside round and straight letters
     # 0.2 left it 14 units wide at Regular where Inter's is 32; Black's was already as tight as Inter's (11)
     # (Thin's opened white is not added: its x was 35 against Inter's 29, and the diagonals already breathe)
-    sb = (0.4 - 0.2 * p.heavy + (X_SB_IT * p.heavy if p.italic else 0)) / p.opened
+    sb = (0.4 - X_SB_HEAVY * p.heavy + (X_SB_IT * p.heavy if p.italic else 0)) / p.opened
     g.sb = (sb, sb)
 
 
@@ -2046,6 +2047,9 @@ def _six(g, p):
     g.ht = 'c'
 
 
+SIX_HOOK = (0.08, 12, FLAT_TILT)
+
+
 def _six_strokes(g, p, w):
     V = p.V
     # a taller bowl and, at Regular, a hook running further round: the 6 and 9 carried 0.88x
@@ -2054,9 +2058,9 @@ def _six_strokes(g, p, w):
     # 72° on the narrow one, it tapered to a point
     top = p.cap * 0.63
     g.oval(0, -p.ov, w, top, H=bowl_pen(p)[1], drawn=True)
-    cx, cy, rx, ry = g.box(0, -p.ov, w * (1.02 + 0.15 * p.heavy), p.cap + p.ov)
+    cx, cy, rx, ry = g.box(0, -p.ov, w * (1.02 + SIX_HOOK[0] * p.heavy), p.cap + p.ov)
     cyb = (-p.ov + top) / 2
-    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 44 - (16 + TERM_RUN) * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='t', tilt=FLAT_TILT, taper=(1, term_taper(p)))  # heavy terminals run round to 28°, where the stroke is steep and a square cut is a clean face: ending higher (58°) left a blade with a notch in its inner edge
+    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 44 - (SIX_HOOK[1] + TERM_RUN) * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='t', tilt=SIX_HOOK[2], taper=(1, term_taper(p)))  # heavy terminals run round to 28°, where the stroke is steep and a square cut is a clean face: ending higher (58°) left a blade with a notch in its inner edge
     del V
 
 
@@ -2119,6 +2123,7 @@ def _nbsp(g, p):
 # Regular, fading out toward Thin and Black (period_dot). A square dot reads heavier than Inter's round one of the same area, and
 # at 300 to 600 a full-size one was the darkest mark in a line of text. The sidebearings take the difference: the advance holds.
 PERIOD_TRIM = 0.08
+PERIOD_OPEN = 0.25
 
 
 def period_dot(p):
@@ -2129,7 +2134,7 @@ def period_dot(p):
 def _period(g, p):
     d = period_dot(p)
     g.dot(d / 2, 0, d)
-    sb = 0.9 + (p.dot - d) / 2 / p.S
+    sb = 0.9 + PERIOD_OPEN * p.heavy + (p.dot - d) / 2 / p.S
     g.sb = (sb, sb)
 
 
@@ -2188,7 +2193,7 @@ def comma_shape(g, d, x, top, depth, swing=0.0, head=COMMA_HEAD):
 def _comma(g, p):
     d = p.dot
     comma_shape(g, d, d / 2, d, d * comma_depth(p), comma_swing(p))
-    g.sb = (0.9, 0.9)
+    g.sb = (0.9 + PERIOD_OPEN * p.heavy, 0.9 + PERIOD_OPEN * p.heavy)
 
 
 def _straight_quote(p):
