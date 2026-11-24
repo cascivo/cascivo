@@ -105,6 +105,48 @@ class SerifFamily(unittest.TestCase):
                         r = np.hypot(*(c - ctr).T)
                         self.assertLess(r.max() / r.min(), 1.03)  # a circle: no slab corner, no bracket
 
+    def test_served_dots_are_circles(self):
+        # The landing page's display face is the site's Latin web file, at opsz 48 for the hero. Its period, colon, i tittle and
+        # the dots of ! ? must be circles at every weight and optical size: bbox square, every sampled outline point (curves
+        # included, not just on-curve points) at one radius from the centre.
+        from fontTools.pens.basePen import BasePen
+
+        class Sample(BasePen):
+            def __init__(self, gs):
+                super().__init__(gs)
+                self.out = []
+
+            def _moveTo(self, p):
+                self.out.append([p])
+
+            def _lineTo(self, p):
+                self.out[-1].append(p)
+
+            def _qCurveToOne(self, p1, p2):
+                p0 = self.out[-1][-1]
+                for k in range(1, 9):
+                    t = k / 8
+                    self.out[-1].append(tuple((1 - t) ** 2 * a + 2 * (1 - t) * t * b + t * t * c for a, b, c in zip(p0, p1, p2)))
+
+        web = os.path.join(HERE, '..', '..', '..', 'apps', 'site', 'public', 'fonts', 'cascivo-serif', 'CascivoSerif-Latin[opsz,wght].woff2')
+        f = TTFont(web)
+        cmap = f.getBestCmap()
+        for opsz in (8, 14, 48):
+            for wght in (100, 400, 700, 900):
+                gs = f.getGlyphSet(location={'wght': wght, 'opsz': opsz})
+                for ch, n in (('.', 1), (':', 2), ('i', 1), ('!', 1), ('?', 1)):
+                    pen = Sample(gs)
+                    gs[cmap[ord(ch)]].draw(pen)
+                    cs = sorted((np.array(c) for c in pen.out), key=lambda c: c[:, 1].min())
+                    dots = cs[-n:] if ch == 'i' else cs[:n]
+                    for c in dots:
+                        with self.subTest(ch=ch, wght=wght, opsz=opsz):
+                            # 3%, or 2 units: Thin's dot is ~60 units wide and the masters' deltas round to whole units
+                            w, h = c.max(0) - c.min(0)
+                            self.assertLessEqual(abs(w - h), max(0.03 * h, 2.0))
+                            r = np.hypot(*(c - (c.max(0) + c.min(0)) / 2).T)
+                            self.assertLessEqual(r.max() - r.min(), max(0.03 * r.mean(), 2.0))
+
     def test_ots_sanitize(self):
         try:
             import ots

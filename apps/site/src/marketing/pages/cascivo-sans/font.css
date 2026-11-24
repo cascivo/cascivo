@@ -1,7 +1,7 @@
 /* /cascivo-sans — imported only by CascivoSansPage, so no other route downloads the font. */
 @font-face {
   font-family: 'Cascivo Sans';
-  src: url('/fonts/cascivo-sans/CascivoSans-Latin[opsz,wght].woff2') format('woff2');
+  src: url('/fonts/cascivo-sans/CascivoSans-Latin[opsz,wght].woff2?v=4f9549979e') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -9,7 +9,8 @@
 
 @font-face {
   font-family: 'Cascivo Sans';
-  src: url('/fonts/cascivo-sans/CascivoSans-Italic-Latin[opsz,wght].woff2') format('woff2');
+  src: url('/fonts/cascivo-sans/CascivoSans-Italic-Latin[opsz,wght].woff2?v=c982aa0ef5')
+    format('woff2');
   font-weight: 100 900;
   font-style: italic;
   font-display: swap;
@@ -18,7 +19,7 @@
 /* Comparison faces: same-origin, OFL, fetched only once the compare switch paints a glyph. */
 @font-face {
   font-family: 'Compare Inter';
-  src: url('/fonts/compare/inter-latin-wght-normal.woff2') format('woff2');
+  src: url('/fonts/compare/inter-latin-wght-normal.woff2?v=3100e775e8') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -27,7 +28,7 @@
 /* Comparison faces: same-origin, OFL, fetched only once the compare switch paints a glyph. */
 @font-face {
   font-family: 'Compare Geist';
-  src: url('/fonts/compare/geist-latin-wght-normal.woff2') format('woff2');
+  src: url('/fonts/compare/geist-latin-wght-normal.woff2?v=19f9c92546') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -36,7 +37,7 @@
 /* Comparison faces: same-origin, OFL, fetched only once the compare switch paints a glyph. */
 @font-face {
   font-family: 'Compare IBM Plex Sans';
-  src: url('/fonts/compare/ibm-plex-sans-latin-wght-normal.woff2') format('woff2');
+  src: url('/fonts/compare/ibm-plex-sans-latin-wght-normal.woff2?v=e2291e842c') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
