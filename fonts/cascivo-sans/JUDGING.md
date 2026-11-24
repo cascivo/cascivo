@@ -505,3 +505,30 @@ Round 6, third sitting (redrawn outlines, numeric scorer). Upright 8.67 -> 8.72,
 - `0` vs `O` at 11-12 px: already better than the references at every weight; a narrower `0` fails `test_advances_at_regular_match_a855b5e0` and `ZERO_MIN_SHARE`. Needs an owner decision (advances fixture exception, or wider sidebearings).
 - `BOLD_ADV_BLEND`: a Bold-drawn `t` (`T_BOLD_ARM` 0.6) fixes `ft`, but blends 0.1-1.0 all fail `test_weight_changes_do_not_reflow_text`, `test_tight_letters_open_up`, `test_l_tail_reads_and_keeps_its_white` (700 widens past the +-2% rule). Not kept; the 700 wstep kink stays.
 - Not run: the final Sonnet crop check of changed glyphs.
+
+## Round 7: drawn heavy curves (numeric scorer, specimens against Inter)
+
+Owner feedback: at 700-900 the curves looked algorithmic. Upright 8.724 -> 8.724 (held), italic 8.09 unchanged (not touched).
+Specimens ("Signals move fast; the cascade decides." and `nmhru dbpqag escs`, Cascivo over Inter) before and after at 700 / 800 /
+900: `specimens/round7/`.
+
+- Shoulders (n h m, the u turned over; not Һ, whose arch leaves its stem halfway up): the expanded arch's outer edge left the stem
+  0.06 x-heights under its top on a curve as round as the rest (Inter Black 0.26), and the crown stopped 13 units under the stem's
+  top. `glyphs.drawn_shoulder` redraws the near quarter's outer edge as one cubic: out of the stem `SHOULDER_NOTCH` 0.16 x-heights
+  down at `SHOULDER_ANGLE` 61 deg, into a crown `SHOULDER_CROWN` 0.25 further toward the far stem (Inter's crown sits 0.46 of the
+  span from the stem edge; ours sat 0.30) and half an overshoot over the stem's top. Same segment count, blended in by `drawn_h`
+  (the upright's heavy), so Regular is unchanged and Bold takes its share. Under the redrawn edge the stroke no longer thins
+  (`SHOULDER_JOIN` 1, `shoulder_join`; the edge does the thinning), so the counter meets the stem lower and the join keeps weight:
+  Inter's 0.24-0.26 notch over the thinned stroke read 0.26 in `quality.join_ratio` (floor Inter 0.45 - 0.1); now n 0.40, m 0.41.
+  A 0.18 notch scored 8.728 but put m at 0.38.
+- Bowls (b d p q): the same redraw at both joins (`BOWL_KNOBS`), 0.09 x-heights at 60 deg, crown 0.22 away from the stem (it sat
+  0.77 of the way from the round's edge to the stem, Inter 0.58). Inter's own 0.18 pinched our taller counter into a neck at the
+  stem and self-intersected the outline (lint); the bowl keeps its height (no lift).
+- e and c: Black's terminals run further round (`E_RUN` -8 -> -12, `C_RUN` 12 -> 16). -16 on the e was closer to Inter's length
+  but closed the mouth to 37 rows, under `test_black_e_opens`'s 55; -12 reads 56.
+- Tried and dropped: centreline knobs alone (crown lean, a taller or squatter near quarter, handle ratios, an oblique start): the
+  outer edge's exit never went below 0.88 x-heights (the thinned stroke's outer edge only clears the stem once the stroke has
+  turned nearly level). Removed.
+- ŋ and µ share the redrawn joins (n's and u's; `test_eng_and_mu_share_the_arch_of_n_and_u`); æ's e half keeps the old terminal
+  run (`AE_RUN` -8: at -12 its counter tip against the a turned 45 deg, held to 42). Gates: all 146 pass, lint and quality clean.
+- Not done: the r's arm (its own arc) and the s (read as Inter's at these sizes); the italic's heavy arches.
