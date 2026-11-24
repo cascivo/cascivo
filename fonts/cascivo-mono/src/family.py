@@ -6,8 +6,11 @@ and, because the Bold master's outlines are re-derived from Regular's and Black'
 build_glyf, a few build.py functions are wrapped on the first master() call (see _patch).
 """
 
+import copy
 import re
 import sys
+
+import family as _hooks  # fonts/cascivo-sans/src/family.py: the override decorator
 
 NAME = 'Cascivo Mono'
 PS = 'CascivoMono'
@@ -18,17 +21,43 @@ MARGIN = 35  # ink wider than W - 2 MARGIN is squeezed horizontally to fit (m, w
 MAXW = W - 2 * MARGIN
 
 
+# Black's stem in a 600 cell: Sans's 190 left Black's capitals, figures and m w at 530-940 units of ink, squeezed into the cell,
+# so their verticals thinned and the 5 6 9 counters closed. Mono's Black draws BLACK_LIGHT lighter (stem 175; 0.06-0.10 swept
+# against JetBrains Mono and Geist Mono, 0.08 scored best) and keeps every Black-only shape decision (p.heavy frozen at Sans's).
+BLACK_LIGHT = 0.08
+CAP_HEAVY = 0.16  # the capitals' extra counter narrowing at Black (H 611 -> about 530 of ink)
+FIG_HEAVY = 45  # units Black's figure width gives up (0 ink 598 -> about 520)
+_frozen = {}
+
+
+def _freeze(p):
+    """p.heavy as Sans computes it, held while V moves (a property on params.P, so the instance gets a subclass)."""
+    cls = type(p)
+    if cls not in _frozen:
+        _frozen[cls] = type(cls.__name__, (cls,), {'heavy': property(lambda s: s._heavy)})
+    h = p.heavy
+    p.__class__ = _frozen[cls]
+    p._heavy = h
+    return h
+
+
 def tune(p):
+    h = _freeze(p)
+    f = 1 - BLACK_LIGHT * h
+    p.V *= f
+    p.H *= f
+    p.bar *= f
     # narrower counters so the typical letter fits a 600 cell (Sans n 578, H 748, O 775 at Regular)
     p.cn *= 0.92
-    p.cH *= 0.76
-    p.cHd *= 0.76
+    p.cH *= 0.76 * (1 - CAP_HEAVY * h)
+    p.cHd *= 0.76 * (1 - CAP_HEAVY * h)
+    p.fig_adv -= FIG_HEAVY * h
 
 
 def _slabs(g, p, name):
     h = p.H * (1 - 0.26 * p.heavy)
-    e = max(70.0, (420 - p.V) / 2)  # serif reach a side of the stem: the foot is ~420 units at every weight
-    V = p.V
+    V = getattr(g, 'stem_v', p.V)  # the r draws its own lighter stem (_lighter)
+    e = max(70.0, (420 - V) / 2)  # serif reach a side of the stem: the foot is ~420 units at every weight
     if name == 'dotlessi':
         g.hbar(-e, V + e, 0, h)
         g.hbar(-e * 0.85, V / 2, p.xh - h, h)
@@ -40,7 +69,7 @@ def _slabs(g, p, name):
         g.anchors.pop('top_x', None)
     elif name == 'r':
         g.hbar(-e * 0.8, V + e * 0.8, 0, h)
-        g.hbar(-e * 0.7, V / 2, p.xh - h, h)
+        g.hbar(-e * (0.7 - 0.2 * p.heavy), V / 2, p.xh - h, h)  # Black's top serif shorter: beside the arm it read as a second slab
     elif name == 'dotlessj':
         x = g.anchors.get('top_x', V * 0.5 + 70)
         g.hbar(x - V / 2 - e * 0.85, x, p.xh - h, h)
@@ -48,6 +77,129 @@ def _slabs(g, p, name):
 
 def glyph(g, p, name):
     _slabs(g, p, name)
+
+
+# ------------------------------------------------------------------------------------------------
+# redrawn for the cell: m w M W fit in their own strokes (lighter pen, lower middle apex) instead of being squeezed
+
+
+def _pen(p, k):
+    """A copy of p whose stem and contrast pen are k of p's (p.heavy unchanged): glyphs that carry more strokes than the cell holds."""
+    q = copy.copy(p)
+    q.V, q.H, q.bar = p.V * k, p.H * k, p.bar * k
+    return q
+
+
+def _drawn_with(g, q, draw):
+    """Draw with q's metrics and pen: every stroke without its own pen or width gets q's."""
+    old, n0 = g.p, len(g.strokes)
+    g.p = q
+    try:
+        draw()
+    finally:
+        g.p = old
+    for st in g.strokes[n0:]:
+        if st.pen is None and st.w is None:
+            st.pen = (q.V, q.H)
+
+
+INK_LC, INK_CAP = 520, 530  # m w and M W ink width, every weight
+
+
+@_hooks.override('m')
+def _m(g, p):
+    import glyphs as GL
+
+    # three stems in 600 units: a lighter pen (JetBrains Mono's m stems are about 0.8 of its n's), the counters what is left
+    q = _pen(p, 0.86 - 0.06 * p.heavy)
+    c = (INK_LC + 20 * p.heavy - 3 * q.V) / 2  # Black's m takes 20 more units of the cell: its counters were slots
+    top = p.xh + p.ov * 0.4
+
+    def draw():
+        g.vstem(0, 0, p.xh)
+        GL.shoulder(g, 0, c + q.V, top, ry_k=1.12)
+        GL.shoulder(g, c + q.V, 2 * c + 2 * q.V, top, ry_k=1.12)
+
+    _drawn_with(g, q, draw)
+
+
+def _lighter(name, k, wider=0.0):
+    """Redraw Sans's `name` with a pen k (at Black; 1 at Regular) of the stem, its n-width `wider` (share, at Black) wider."""
+    import glyphs as GL
+
+    orig = GL.GLYPHS[name][1]
+
+    @_hooks.override(name)
+    def draw(g, p):
+        q = _pen(p, 1 - (1 - k) * p.heavy)
+        q.cn = p.cn * (1 + wider * p.heavy)
+        _drawn_with(g, q, lambda: orig(g, q))
+        g.stem_v = q.V
+
+
+# Black's 5 6 9 closed their counters in the cell and the r's arm was a stub between two slabs: a lighter pen, a longer arm
+for _n in ('five', 'six', 'nine'):
+    _lighter(_n, 0.94)
+_lighter('r', 0.94, wider=0.45)
+
+
+def _vee(g, q, w, top, apex, ws):
+    """w and W: four diagonals, outer feet at w/4 and 3w/4, the middle apex at `apex` (under `top`, so the two inner strokes end
+    clear of the outer ones and the counters stay open)."""
+    import glyphs as GL
+
+    def draw():
+        wj = 1 - (1 - GL.W_JOIN) * q.heavy
+        g.diag(0, top, w * 0.25, 0, 'l', 'c', ws=ws, taper=(1, wj))
+        g.diag(w / 2, apex, w * 0.25, 0, 'c', 'c', ws=ws, taper=(1, wj))
+        g.diag(w / 2, apex, w * 0.75, 0, 'c', 'c', ws=ws, taper=(1, wj))
+        g.diag(w, top, w * 0.75, 0, 'r', 'c', ws=ws, taper=(1, wj))
+
+    _drawn_with(g, q, draw)
+
+
+@_hooks.override('w')
+def _w(g, p):
+    _vee(g, _pen(p, 0.9 - 0.04 * p.heavy), INK_LC, p.xh, p.xh * (0.74 - 0.04 * p.heavy), 0.86)
+
+
+@_hooks.override('W')
+def _W(g, p):
+    _vee(g, _pen(p, 0.92 - 0.04 * p.heavy), INK_CAP, p.cap, p.cap * (0.66 - 0.04 * p.heavy), 0.9)
+    g.ht = 'c'
+
+
+@_hooks.override('M')
+def _M(g, p):
+    q = _pen(p, 1.0 - 0.12 * p.heavy)
+    w = INK_CAP
+    yv = p.cap * (0.3 + 0.04 * p.heavy)  # the vertex stands off the baseline, so the diagonals stay steep and the counters open
+
+    def draw():
+        g.vstem(0, 0, p.cap).vstem(w - q.V, 0, p.cap)
+        g.diag(0, p.cap, w / 2, yv, 'l', 'c', ws=0.9)
+        g.diag(w, p.cap, w / 2, yv, 'r', 'c', ws=0.9)
+
+    _drawn_with(g, q, draw)
+    g.ht = 'c'
+
+
+@_hooks.override('zero')
+def _zero(g, p):
+    """Dotted zero (JetBrains Mono's): the slash met the ring at Black and read as O, and the slashed Ø is a letter of its own."""
+    import glyphs as GL
+
+    w = GL.fw(p) * (1.01 + 0.03 * p.heavy)
+    g.oval(0, -p.ov, w, p.cap + p.ov, k=p.k + GL.CAP_O_SQUARE * p.heavy)
+    cw = w - 2 * p.V
+    # JetBrains Mono's: about a stem wide and half again as tall; at Black no more than 0.4 of the counter, or the white
+    # around it closes at text sizes and the 0 reads as a blot
+    dw = min(0.4 * cw, max(70.0, p.V * 1.15))  # 70: Thin's dot still reads at 12 px (its period is 53)
+    dh = dw * 1.6
+    cy = p.cap / 2
+    g.line((w / 2 - dw / 2, cy), (w / 2 + dw / 2, cy), w=dh)  # drawn across: run along its height, Black's thick dot came out hollow
+    g.tab = True
+    g.ht = 'c'
 
 
 def fea(text):
@@ -199,5 +351,3 @@ def _patch():
 def master(o):
     _patch()
     mono(o)
-    if 'zero.slash' in o.adv:  # code wants 0 and O apart: the slashed zero is the default (Sans's `zero` feature glyph)
-        o.cmap[0x30] = 'zero.slash'
