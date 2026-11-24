@@ -17,6 +17,8 @@ const snapshots = new Set(readdirSync(dir).filter((f) => f.endsWith('.html')))
 
 // Tabs differ structurally by design (CSS-only radio tabs); covered by the parity allowlist.
 const STRUCTURAL = new Set(['tabs'])
+// Server-fragment markup for elements (cv-dialog opener, cv-toaster rows): no React counterpart.
+const RUST_ONLY = new Set(['dialog.html', 'dialog.open.html', 'toast.html', 'toaster.html'])
 
 describe('cascivo-html conformance (Rust output vs React SSR)', () => {
   for (const [path, mod] of Object.entries(cases)) {
@@ -35,6 +37,6 @@ describe('cascivo-html conformance (Rust output vs React SSR)', () => {
     const have = new Set(
       Object.keys(cases).map((p) => p.replace(/^.*\//, '').replace(/\.case\.tsx$/, '.html')),
     )
-    expect([...snapshots].filter((s) => !have.has(s))).toEqual([])
+    expect([...snapshots].filter((s) => !have.has(s) && !RUST_ONLY.has(s))).toEqual([])
   })
 })

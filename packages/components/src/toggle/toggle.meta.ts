@@ -5,6 +5,22 @@ export const meta: ComponentMeta = {
   description: 'On/off switch built as an accessible button',
   category: 'inputs',
   clientJs: 'enhancement',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'button',
+      local: 'toggle',
+      role: 'switch',
+      data: { 'data-state': ['off', 'on'], 'data-size': ['sm', 'md'] },
+      aria: ['aria-checked', 'aria-label'],
+      children: ['track', 'label'],
+    },
+    parts: {
+      track: { element: 'span', aria: ['aria-hidden'], children: ['thumb'] },
+      thumb: { element: 'span' },
+      label: { element: 'span', children: ['$text'] },
+    },
+  },
   states: ['off', 'on'],
   variants: [],
   sizes: ['sm', 'md'],

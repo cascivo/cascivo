@@ -1,0 +1,39 @@
+[package]
+name = "cascivo-worker"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+description = "Cloudflare Workers adapter for cascivo-server: serve(), KV sessions, D1/R2/Env extractors"
+license = "MIT"
+repository = "https://github.com/cascivo/cascivo"
+homepage = "https://github.com/cascivo/cascivo/tree/main/crates/cascivo-worker"
+readme = "README.md"
+keywords = ["cloudflare", "workers", "htmx", "axum", "cascivo"]
+categories = ["web-programming::http-server", "wasm"]
+# Unreleased until the Phase 3 "tool vs product" decision, like cascivo-server.
+publish = false
+exclude = ["tests/"]
+
+[dependencies]
+axum = { version = "0.8.9", default-features = false }
+cascivo-server = { path = "../cascivo-server", default-features = false, features = ["workers"] }
+getrandom = "0.4.3"
+serde_json = "1.0.154"
+tower-service = "0.3.3"
+worker = { version = "0.9.0", features = ["http", "axum"] }
+
+[features]
+default = ["d1", "r2", "kv"]
+d1 = ["worker/d1"]
+r2 = []
+kv = []
+
+[dev-dependencies]
+cascivo-web = { path = "../cascivo-web", default-features = false }
+tokio = { version = "1.54.1", features = ["macros", "rt"] }
+tower = { version = "0.5.3", features = ["util"] }
+
+# Exercises `KvStore`, which only exists with the `kv` feature (CI also lints `--no-default-features`).
+[[test]]
+name = "sessions"
+required-features = ["kv"]

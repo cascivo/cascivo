@@ -7,6 +7,13 @@ import styles from './toast.module.css'
 
 export type ToastVariant = 'default' | 'success' | 'warning' | 'destructive'
 
+// Decorative glyph per tone; the default tone has none.
+const ICONS: Partial<Record<ToastVariant, string>> = {
+  success: '✓',
+  warning: '▲',
+  destructive: '✕',
+}
+
 export interface ToastOptions {
   title: string
   description?: string
@@ -99,6 +106,8 @@ function ToastItem({ toast, onDismiss }: { toast: ToastRecord; onDismiss: () => 
     return undefined
   })
 
+  const icon = ICONS[toast.variant ?? 'default']
+
   return (
     <div
       role={assertive ? 'alert' : 'status'}
@@ -107,6 +116,11 @@ function ToastItem({ toast, onDismiss }: { toast: ToastRecord; onDismiss: () => 
       data-state={state.value}
       className={styles['toast']}
     >
+      {icon && (
+        <span className={styles['icon']} aria-hidden="true">
+          {icon}
+        </span>
+      )}
       <div className={styles['body']}>
         <div className={styles['title']}>{toast.title}</div>
         {toast.description && <div className={styles['description']}>{toast.description}</div>}

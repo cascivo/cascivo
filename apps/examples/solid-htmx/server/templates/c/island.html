@@ -1,0 +1,6 @@
+{% extends "base.html" %} {% block main %}
+<h1>Server island</h1>
+<section id="island-host">{{ stats }}</section>
+{% endblock %} {% block stats_body %}
+<section id="stats"><p>{{ visits }} visits</p></section>
+{% endblock %}

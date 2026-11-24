@@ -6,6 +6,20 @@ export const meta: ComponentMeta = {
     'Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply',
   category: 'feedback',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'span',
+      role: 'status',
+      aria: ['aria-label'],
+      children: ['dot', 'dot', 'dot'],
+      // The accessible name comes from i18n.
+      emit: 'manual',
+    },
+    parts: {
+      dot: { element: 'span', aria: ['aria-hidden'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

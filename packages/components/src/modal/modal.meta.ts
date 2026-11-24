@@ -5,6 +5,35 @@ export const meta: ComponentMeta = {
   description: 'Accessible dialog overlay using native <dialog> element',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'dialog',
+      local: 'dialog',
+      data: {
+        'data-size': ['sm', 'md', 'lg'],
+        'data-draggable': ['true'],
+        // Empty string when `ai` is truthy, 'generating' while it streams.
+        'data-ai': ['', 'generating'],
+      },
+      aria: ['aria-labelledby', 'aria-describedby'],
+      children: ['panel'],
+    },
+    parts: {
+      panel: { element: 'div', children: ['header', 'description', 'body', 'footer'] },
+      header: { element: 'div', children: ['title', 'close'], when: 'title || onClose' },
+      title: { element: 'h2', children: ['$text'], when: 'title' },
+      close: { element: 'button', aria: ['aria-label'], children: ['$text'], when: 'onClose' },
+      description: { element: 'p', children: ['$text'], when: 'description' },
+      body: { element: 'div', data: { 'data-cascivo-modal-body': [''] }, children: ['$slot'] },
+      footer: {
+        element: 'div',
+        data: { 'data-cascivo-modal-footer': [''] },
+        children: ['$slot'],
+        when: 'footer',
+      },
+    },
+  },
   states: ['closed', 'open'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

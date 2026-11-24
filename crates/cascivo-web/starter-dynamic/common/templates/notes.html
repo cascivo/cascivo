@@ -1,0 +1,58 @@
+{% extends "base.html" %} {% block title %}Notes · {{ site.title }}{% endblock %} {% block main
+%}
+<h1>Notes</h1>
+<section aria-labelledby="new-title">
+  <h2 id="new-title">New note</h2>
+  <div id="note_form">{% block note_form %}<cv-form
+      ><form method="post" action="/notes" hx-post="/notes" hx-target="closest cv-form" hx-swap="outerHTML">
+        {{ form.csrf() }} {% for e in form.errors() %}
+        <p role="alert">{{ e }}</p>
+        {% endfor %} {{ form.field("title", label="Title") }} {{ form.field("body", label="Body",
+        kind="textarea", rows=3) }}
+        <button class="cv-button-button" data-variant="primary" data-size="md" type="submit">
+          <span class="cv-button-label">Add note</span>
+        </button>
+      </form></cv-form
+    >{% endblock %}</div>
+</section>
+<section aria-labelledby="list-title">
+  <h2 id="list-title">Your notes</h2>
+  <div id="notes">{% block notes %}{% if notes %}
+    <ul>
+      {% for n in notes %}
+      <li id="note-{{ n.id }}">
+        <strong>{{ n.title }}</strong> {% if n.body %}<p>{{ n.body }}</p>{% endif %}
+        <a
+          class="cv-button-button"
+          data-variant="ghost"
+          data-size="sm"
+          href="/notes/{{ n.id }}/edit"
+          id="note-{{ n.id }}-edit"
+          ><span class="cv-button-label">Edit {{ n.title }}</span></a
+        >
+        <form
+          method="post"
+          action="/notes/{{ n.id }}/delete"
+          hx-post="/notes/{{ n.id }}/delete"
+          hx-target="#notes"
+          hx-swap="innerHTML"
+        >
+          <input type="hidden" name="csrf" value="{{ request.csrf }}" />
+          <button
+            type="submit"
+            class="cv-button-button"
+            data-variant="secondary"
+            data-size="sm"
+            id="note-{{ n.id }}-delete"
+          >
+            <span class="cv-button-label">Delete {{ n.title }}</span>
+          </button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No notes yet.</p>
+    {% endif %}{% endblock %}</div>
+</section>
+{% endblock %}

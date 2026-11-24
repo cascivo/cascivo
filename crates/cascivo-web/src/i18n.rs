@@ -19,14 +19,19 @@
 //! runtime plural selection, and TOML is already the site's config format (no new dependency).
 
 use std::collections::BTreeMap;
+#[cfg(feature = "fs")]
 use std::path::Path;
 
 use minijinja::value::{Kwargs, Value};
 use serde::{Deserialize, Serialize};
 
 use crate::content::{Collection, Entry, valid_slug};
-use crate::error::{Error, Errors, Result};
-use crate::routes::{Kind, list_files};
+use crate::error::Error;
+#[cfg(feature = "fs")]
+use crate::error::{Errors, Result};
+use crate::routes::Kind;
+#[cfg(feature = "fs")]
+use crate::routes::list_files;
 use crate::site::Site;
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
@@ -45,6 +50,7 @@ fn yes() -> bool {
 /// Flattened message bundles: locale → `nav.home` → text.
 pub type Messages = BTreeMap<String, BTreeMap<String, String>>;
 
+#[cfg(feature = "fs")]
 fn flatten(
     prefix: &str,
     t: &toml::Table,
@@ -67,6 +73,7 @@ fn flatten(
     }
 }
 
+#[cfg(feature = "fs")]
 /// Reads `i18n/<locale>.toml`. A missing `i18n/` is no messages.
 pub fn load_messages(root: &Path) -> Result<Messages> {
     let dir = root.join("i18n");
@@ -510,6 +517,7 @@ mod tests {
         assert_eq!(e, "no message `only` in i18n/de.toml");
     }
 
+    #[cfg(feature = "fs")]
     #[test]
     fn flatten_nested_tables_and_reject_non_strings() {
         let t: toml::Table = toml::from_str("a = \"1\"\n[nav]\nhome = \"Home\"\nn = 3").unwrap();

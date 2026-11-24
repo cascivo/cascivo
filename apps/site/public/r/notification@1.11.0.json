@@ -26,6 +26,48 @@
     "description": "Inline, actionable notification banner that surfaces a titled message with an optional recovery action",
     "category": "feedback",
     "clientJs": "enhancement",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "data": {
+          "data-variant": ["info", "success", "warning", "error"]
+        },
+        "children": ["icon", "body", "dismiss"],
+        "emit": "manual"
+      },
+      "parts": {
+        "icon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$slot"]
+        },
+        "body": {
+          "element": "div",
+          "children": ["title", "description", "actions"]
+        },
+        "title": {
+          "element": "div",
+          "children": ["$slot"]
+        },
+        "description": {
+          "element": "div",
+          "children": ["$slot"],
+          "when": "description"
+        },
+        "actions": {
+          "element": "div",
+          "children": ["$slot"],
+          "when": "actions"
+        },
+        "dismiss": {
+          "element": "button",
+          "aria": ["aria-label"],
+          "children": ["$text"],
+          "when": "dismissible || onDismiss"
+        }
+      }
+    },
     "states": [],
     "variants": ["info", "success", "warning", "error"],
     "sizes": [],

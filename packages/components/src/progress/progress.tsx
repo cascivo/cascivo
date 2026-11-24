@@ -51,6 +51,7 @@ export function Progress({
       className={[styles['progress'], className].filter(Boolean).join(' ')}
       data-variant={variant}
       data-size={size}
+      data-state={value === undefined ? 'indeterminate' : 'determinate'}
       value={value}
       max={value !== undefined ? 100 : undefined}
       {...aria}

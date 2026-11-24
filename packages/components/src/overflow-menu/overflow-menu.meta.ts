@@ -6,6 +6,15 @@ export const meta: ComponentMeta = {
   category: 'overlay',
   // Menu items are in the HTML but hidden and inert — every action is a JS-only button.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'div', local: 'root', children: ['trigger', 'destructive-flag'] },
+    parts: {
+      trigger: { element: 'button', data: { 'data-size': ['sm', 'md'] }, aria: ['aria-label'] },
+      // Marker inside a destructive item's icon slot, targeted by CSS via :has().
+      'destructive-flag': { element: 'span', aria: ['aria-hidden'] },
+    },
+  },
   states: ['closed', 'open'],
   variants: [],
   sizes: ['sm', 'md'],
