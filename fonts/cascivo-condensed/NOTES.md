@@ -14,10 +14,10 @@ Refs at 400: Roboto Condensed 0.84, Inter Tight 0.94 of Sans; at 900 RC 0.78.
 
 Score (`score.run`, refs Inter Tight + Roboto Condensed, variable woff2 from @fontsource-variable 5.2.6):
 
-| | overall | rhythm | weight axis | shape | colour | small sizes | optical sizes |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| v1 | 8.08 | 9.16 | 8.20 | 8.88 | 8.71 | 7.15 | 1.17 |
-| v2 | **8.15** | 8.97 | 8.26 | 8.75 | 8.73 | 7.97 | 1.19 |
+|     | overall  | rhythm | weight axis | shape | colour | small sizes | optical sizes |
+| --- | -------- | ------ | ----------- | ----- | ------ | ----------- | ------------- |
+| v1  | 8.08     | 9.16   | 8.20        | 8.88  | 8.71   | 7.15        | 1.17          |
+| v2  | **8.15** | 8.97   | 8.26        | 8.75  | 8.73   | 7.97        | 1.19          |
 
 (v1's 8.06 in round 1 was against a slightly different download of the refs; 8.08 is v1 re-measured with these.)
 
