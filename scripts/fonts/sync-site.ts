@@ -29,6 +29,16 @@ for (const name of readdirSync(TARGET)) {
   if (!wanted.has(name)) rmSync(join(TARGET, name))
 }
 
+// Families the header "Aa" picker can set the whole site in: one upright Latin web file each.
+export const PICKER_FAMILIES = ['mono', 'serif', 'condensed'] as const
+for (const family of PICKER_FAMILIES) {
+  const name = `Cascivo${family[0]?.toUpperCase()}${family.slice(1)}-Latin[opsz,wght].woff2`
+  const dir = join(ROOT, 'apps/site/public/fonts', `cascivo-${family}`)
+  mkdirSync(dir, { recursive: true })
+  for (const stale of readdirSync(dir)) if (stale !== name) rmSync(join(dir, stale))
+  copyFileSync(join(ROOT, 'fonts', `cascivo-${family}`, 'fonts', name), join(dir, name))
+}
+
 const lines: string[] = []
 for (const f of FONT_FILES) {
   const src = join(ROOT, f.source)

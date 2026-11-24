@@ -53,6 +53,20 @@ describe('site copy of Cascivo Sans', () => {
   })
 })
 
+describe('site copy of the picker families', () => {
+  for (const family of ['mono', 'serif', 'condensed']) {
+    it(`cascivo-${family} is the only file served and matches its build`, () => {
+      const name = `Cascivo${family[0]?.toUpperCase()}${family.slice(1)}-Latin[opsz,wght].woff2`
+      const dir = join(ROOT, 'apps/site/public/fonts', `cascivo-${family}`)
+      assert.deepEqual(existsSync(dir) ? readdirSync(dir) : [], [name], FIX)
+      const same = readFileSync(join(dir, name)).equals(
+        readFileSync(join(ROOT, 'fonts', `cascivo-${family}`, 'fonts', name)),
+      )
+      assert.ok(same, `${name} differs from its build — ${FIX}`)
+    })
+  }
+})
+
 describe('comparison data', () => {
   it('comparison.generated.ts equals fonts/cascivo-sans/comparison.json', async () => {
     const { COMPARISON } =
