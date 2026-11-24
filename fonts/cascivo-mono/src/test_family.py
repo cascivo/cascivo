@@ -1,7 +1,8 @@
-"""Cascivo Mono v1 gates: python3 -I -m unittest discover -s fonts/cascivo-mono/src"""
+"""Cascivo Mono gates: python3 -I -m unittest discover -s fonts/cascivo-mono/src"""
 import os
 import unittest
 
+from fontTools.pens.boundsPen import BoundsPen
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
 
@@ -11,6 +12,10 @@ TTF = os.path.join(FONTS, 'CascivoMono[opsz,wght].ttf')
 SANS = os.path.join(ROOT, '..', 'cascivo-sans', 'fonts', 'CascivoSans[opsz,wght].ttf')
 LATIN = set(range(0x20, 0x7F)) | set(range(0xA0, 0x100))
 CELL = 600
+ASC, DESC = 1000, -300  # the line box: a terminal's cell at line-height 1
+BOX = set(range(0x2500, 0x25A0)) | set(range(0xE0B0, 0xE0B4))
+# every master and the corners between them (900 at opsz 8 adds both deltas), plus Bold, a terminal's other workhorse
+LOCATIONS = [{'wght': w, 'opsz': z} for w in (100, 400, 700, 900) for z in (8, 14, 48)]
 
 
 class MonoFont(unittest.TestCase):
@@ -29,7 +34,7 @@ class MonoFont(unittest.TestCase):
 
     def test_one_advance_at_every_weight(self):
         marks = None
-        for w in (100, 400, 900):
+        for w in (100, 400, 700, 900):
             for z in (8, 14, 48):
                 inst = instantiateVariableFont(TTFont(TTF), {'wght': w, 'opsz': z})
                 adv = {n: a for n, (a, _) in inst['hmtx'].metrics.items()}
@@ -48,6 +53,117 @@ class MonoFont(unittest.TestCase):
         if 'GPOS' in self.font:
             tags = {r.FeatureTag for r in self.font['GPOS'].table.FeatureList.FeatureRecord}
             self.assertNotIn('kern', tags)
+
+    def bounds(self, loc, ch):
+        gs = self.font.getGlyphSet(location=loc)
+        bp = BoundsPen(gs)
+        gs[self.font.getBestCmap()[ord(ch) if isinstance(ch, str) else ch]].draw(bp)
+        return bp.bounds
+
+    def test_terminal_line_metrics(self):
+        hhea, os2 = self.font['hhea'], self.font['OS/2']
+        self.assertEqual((hhea.ascent, hhea.descent, hhea.lineGap), (ASC, DESC, 0))
+        self.assertEqual((os2.sTypoAscender, os2.sTypoDescender, os2.sTypoLineGap), (ASC, DESC, 0))
+        self.assertTrue(os2.fsSelection & 1 << 7, 'USE_TYPO_METRICS')
+        hi = lo = 0
+        for loc in LOCATIONS:
+            gs = self.font.getGlyphSet(location=loc)
+            for n in self.font.getGlyphOrder():
+                bp = BoundsPen(gs)
+                gs[n].draw(bp)
+                if bp.bounds:
+                    hi, lo = max(hi, bp.bounds[3]), min(lo, bp.bounds[1])
+        # Windows clips to the win metrics: they hold every glyph, the box glyphs' overshoot and stacked accents included
+        self.assertGreaterEqual(os2.usWinAscent, hi)
+        self.assertGreaterEqual(os2.usWinDescent, -lo)
+
+    def test_text_glyphs_inside_the_line_box(self):
+        # the hhea line box holds ASCII, Latin-1 and the cell glyphs' cell (only the box lines' overshoot leaves it)
+        for loc in LOCATIONS:
+            for cp in sorted((LATIN | {0x2013, 0x2014, 0x2212}) & set(self.font.getBestCmap())):
+                b = self.bounds(loc, cp)
+                if b:
+                    self.assertGreaterEqual(b[1], DESC, f'{chr(cp)} {loc}')
+                    self.assertLessEqual(b[3], ASC, f'{chr(cp)} {loc}')
+
+    def test_every_glyph_inside_its_cell(self):
+        cmap = self.font.getBestCmap()
+        adv = self.font['hmtx'].metrics
+        for loc in LOCATIONS:
+            gs = self.font.getGlyphSet(location=loc)
+            for cp, n in cmap.items():
+                if cp in BOX or adv[n][0] == 0:
+                    continue
+                bp = BoundsPen(gs)
+                gs[n].draw(bp)
+                if bp.bounds:
+                    self.assertGreaterEqual(bp.bounds[0], 0, f'{n} U+{cp:04X} {loc}')
+                    self.assertLessEqual(bp.bounds[2], CELL, f'{n} U+{cp:04X} {loc}')
+
+    def test_box_drawing_spans_the_cell(self):
+        reach = {'─': 'LR', '━': 'LR', '│': 'UD', '┃': 'UD', '┌': 'RD', '┐': 'LD', '└': 'RU', '┘': 'LU', '├': 'RUD', '┤': 'LUD',
+                 '┬': 'LRD', '┴': 'LRU', '┼': 'LRUD', '═': 'LR', '║': 'UD', '╔': 'RD', '╝': 'LU', '╬': 'LRUD', '╭': 'RD', '╮': 'LD',
+                 '╯': 'LU', '╰': 'RU'}
+        for loc in LOCATIONS:
+            for ch, arms in reach.items():
+                x0, y0, x1, y1 = self.bounds(loc, ch)
+                for d, ok in (('L', x0 <= 0), ('R', x1 >= CELL), ('U', y1 >= ASC), ('D', y0 <= DESC)):
+                    if d in arms:
+                        self.assertTrue(ok, f'{ch} {d} {loc}: {(x0, y0, x1, y1)}')
+                # an arm that is not there stays off that edge
+                for d, off in (('L', x0 > 0), ('R', x1 < CELL), ('U', y1 < ASC), ('D', y0 > DESC)):
+                    if d not in arms:
+                        self.assertTrue(off, f'{ch} {d} {loc}')
+            # horizontal lines on one centre, so ─┼─ and ═╬═ meet
+            ys = {ch: sum(self.bounds(loc, ch)[1::2]) / 2 for ch in '─━┄═'}
+            self.assertEqual(len({round(v) for v in ys.values()}), 1, ys)
+
+    def test_blocks_fill_the_cell(self):
+        for loc in ({'wght': 400, 'opsz': 14}, {'wght': 700, 'opsz': 14}):
+            self.assertEqual(self.bounds(loc, '█'), (0, DESC, CELL, ASC))
+            upper, lower = self.bounds(loc, '▀'), self.bounds(loc, '▄')
+            self.assertEqual((upper[3], lower[1]), (ASC, DESC))
+            self.assertEqual(upper[1], lower[3], 'half blocks meet')
+            for ch in '░▒▓▌▐▖▗▘▝':
+                x0, y0, x1, y1 = self.bounds(loc, ch)
+                self.assertTrue(0 <= x0 and x1 <= CELL and DESC <= y0 and y1 <= ASC, ch)
+
+    def test_operators_share_the_math_axis(self):
+        for loc in LOCATIONS:
+            mid = {ch: (lambda b: (b[1] + b[3]) / 2)(self.bounds(loc, ch)) for ch in '-=+<>×÷−~–'}
+            self.assertLess(max(mid.values()) - min(mid.values()), 4, f'{loc} {mid}')
+            a = (lambda b: (b[1] + b[3]) / 2)(self.bounds(loc, '*'))
+            self.assertLess(abs(a - mid['=']), 120, f'* centre {a} far off the operators\' axis {loc}')
+
+    def test_rules_reach_the_cell_edges(self):
+        for loc in LOCATIONS:
+            b = self.bounds(loc, '|')
+            self.assertEqual((b[1], b[3]), (DESC, ASC), loc)
+            for ch in '_—':
+                b = self.bounds(loc, ch)
+                self.assertEqual((b[0], b[2]), (0, CELL), f'{ch} {loc}')
+            widths = [(lambda b: b[2] - b[0])(self.bounds(loc, ch)) for ch in '-–—']
+            self.assertTrue(widths[0] + 60 < widths[1] < widths[2] - 60, f'- – — lengths {widths} {loc}')
+
+    def test_ambiguous_pairs_differ(self):
+        from fontTools.pens.recordingPen import DecomposingRecordingPen
+
+        def contours(ch):
+            gs = self.font.getGlyphSet()
+            pen = DecomposingRecordingPen(gs)
+            gs[self.font.getBestCmap()[ord(ch)]].draw(pen)
+            return sum(1 for op, _ in pen.value if op == 'closePath')
+
+        self.assertGreater(contours('0'), contours('O'), 'dotted zero')
+        for loc in ({'wght': 400, 'opsz': 14}, {'wght': 700, 'opsz': 14}):
+            r = self.bounds(loc, 'r')
+            self.assertGreater(r[2] - r[0], 0.7 * (lambda b: b[2] - b[0])(self.bounds(loc, 'n')), 'r arm reaches across the cell')
+
+    def test_no_ligatures_or_contextual_alternates(self):
+        # terminals shape runs of text: a ligature or a contextual swap can change a glyph the user typed
+        if 'GSUB' in self.font:
+            tags = {r.FeatureTag for r in self.font['GSUB'].table.FeatureList.FeatureRecord}
+            self.assertFalse(tags & {'liga', 'dlig', 'calt', 'clig', 'rlig'}, tags)
 
     def test_ots(self):
         try:
