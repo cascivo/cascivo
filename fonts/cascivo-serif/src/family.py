@@ -66,9 +66,11 @@ def _sizes(p):
     """(outer reach, inner reach, slab, bracket height factor). Outer serifs set the advance, so their reach keeps the
     v1 slope change at Regular (0.19 / stem unit; a sharper bend shows as an advance kink at 400, score's wstep row).
     Inner serifs share a counter (Black's n counter is 145): capped so two leave it about 30."""
+    # Round 4: Thin's slab floor 12 -> 16 (its arm wedges 14): on a 24-unit stem the old serifs faded and Thin read as a sans. The
+    # reach stays: a longer one at Thin moved the advances' bend off Regular (wstep row at 400)
     outer = _pw(p.V, [(20, 43), (84, 62), (194, 74)])
     inner = min(outer, _pw(p.V, [(20, 43), (84, 62), (194, 57)]))
-    return outer, inner, max(12.0, p.H * SLAB), BRACKET
+    return outer, inner, max(16.0, p.H * SLAB), BRACKET
 
 
 def _half(s, p):
@@ -384,6 +386,22 @@ def _round_dot(s):
     return orient(arc(x, (y0 + y1) / 2, r, r, 90, 450), outer=True)
 
 
+THIN_DIAG = (1.15, 0.45)  # a / stroke's width: the larger of 1.15 hairlines and 0.45 stems (Source Serif's V: ~0.45 of the \\ stroke)
+
+
+def _thin_slashes(g, p):
+    """Serif contrast on diagonals: a / stroke (rising to the right) is thin, a \\ stroke thick. The angle pen drew both alike, so
+    Black's X carried 1.11-1.24x E's ink density (Source Serif 0.91) and set beside Z it read a weight heavier. Z and z keep their
+    thick / diagonal, as every serif Z does."""
+    w = max(p.H * THIN_DIAG[0], p.V * THIN_DIAG[1])
+    for s in g.strokes:
+        if s.closed or s.w is not None or not s.segs or s.segs[0][0] != 'L':
+            continue
+        (x0, y0), (x1, y1) = s.segs[0][1], s.segs[0][2]
+        if abs(x1 - x0) > 0.5 and abs(y1 - y0) > 40 and (x1 - x0) * (y1 - y0) > 0:
+            s.w = w
+
+
 def _comma_heads(g, p):
     """Sans's comma (and every curly quote, built from it: glyphs.comma_shape) has a square head; a serif's is round, the period's
     dot with the tail leaving its foot. The head stroke starts at the dot's centre so its square corners stay inside the disc."""
@@ -402,7 +420,14 @@ def _comma_heads(g, p):
         g.raw.append(orient(arc(cx, cy, r, r, 90, 450), outer=True))
 
 
+SPACE = [(100, -37), (400, -13), (900, 42)]  # units on the Sans word space: its space over n's advance stood 0.44 / 0.39 / 0.26 at Thin /
+# Regular / Black (Source Serif 0.39 / 0.37 / 0.32): Thin's words drifted apart, Black's headline words ran together
+
+
 def glyph(g, p, name):
+    if name in ('space', 'nbspace') and g.adv_fixed is not None:
+        g.adv_fixed = round(g.adv_fixed + _pw(p.wght, SPACE))
+        return
     # Sans's dots are squares; a serif's are round (Source Serif's), in punctuation, the i j tittles and the accents alike
     # (decided at the first master, like _PLAN: zero.dot's dot is square at some weights only, and masters must stay compatible)
     if name not in _DOTS:
@@ -413,6 +438,8 @@ def glyph(g, p, name):
     _comma_heads(g, p)
     if g.mark or g.tab or g.adv_fixed is not None or not g.strokes or not _serifed(name):
         return
+    if name.split('.')[0] not in ('Z', 'z') and unicodedata.category(toUnicode(name.split('.')[0]))[0] == 'L':
+        _thin_slashes(g, p)
     if name not in _PLAN:
         _PLAN[name] = _plan(g, p, name)
         letter = unicodedata.category(toUnicode(name.split('.')[0]))[0] == 'L'
@@ -442,7 +469,7 @@ def glyph(g, p, name):
         s = g.strokes[i]
         xe, ye = s.segs[0][1 + end]
         Ym = ye - d * h / 2
-        g.raw.append(_spur(xe, sx, Ym, d, ye + d * h / 2, outer * k * SPUR_LEN, p.V * SPUR_TIP, p.V * SPUR_TIP + outer * SPUR_BASE))
+        g.raw.append(_spur(xe, sx, Ym, d, ye + d * h / 2, outer * k * SPUR_LEN, max(14.0, p.V * SPUR_TIP), max(14.0, p.V * SPUR_TIP) + outer * SPUR_BASE))
         # the spur fills the white beside the arm (EH set 0.66 of Source Serif's 0.85 gap at Bold): that side stands off further
         sb = list(g.sb)
         sb[sx > 0] += SPUR_SB * (p.V * SPUR_TIP + outer * SPUR_BASE) / p.S / len(_DPLAN[name][1])

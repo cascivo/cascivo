@@ -22,8 +22,11 @@ Round 4 (display round, specimens in `specimens/round-next/`): at 400 a headline
 - Round comma head (`_comma_heads`): the period's disc with the tail leaving its foot; every curly quote follows (built from the comma). `test_round_dots_without_serifs` counts the heads and checks they are circles.
 - Heavier serifs for text sizes: slab 1.12 H, bracket 1.1 reach (`SLAB`, `BRACKET`; were 0.95, 0.9).
 - Overshoot grows past Regular (`tune`: 11.5 / 13.4 / 16.5 units), as Source Serif's.
+- Review pass: diagonal contrast (`_thin_slashes`): a / stroke is thin (max of 1.15 H and 0.45 V), a \\ stroke thick, Z z excepted. Black's X carried 1.11-1.24x E's ink density (Source Serif 0.91), so a Z beside it looked light; the Z itself matches Source Serif (0.98 of E). Gates: `test_ink_grows_with_weight` (every letter and figure gains ink at each wght step, none lags the alphabet's 400 -> 900 growth by over 20%) and `test_z_diagonal_is_thick`.
+- Thin floor: slab at least 16 units, arm wedges 14 (were 12 / ~10). A longer Thin reach was tried and dropped: it moved the advances' bend off Regular (wstep row).
+- Word space (`SPACE`): -37 / -13 / +42 units at Thin / Regular / Black, so space over n is 0.39 / 0.37 / 0.32 (Source Serif's; Sans's 0.44 / 0.39 / 0.26).
 
-Score (same ref as below): 5.675 -> 5.683. rhythm 8.11 -> 7.86 (serifs fill the white the spacing row measures), weight axis 0.90 -> 0.99, shape 6.35 -> 6.52, colour 6.77 -> 6.85, small sizes 7.19 -> 7.17, optical sizes 1.28 -> 1.23. woff2 87_904 / Latin 37_136 (budgets 120_000 / 50_000).
+Score (same ref as below): 5.675 -> 5.691. rhythm 8.11 -> 7.86 (serifs fill the white the spacing row measures), weight axis 0.90 -> 0.88, shape 6.35 -> 6.50, colour 6.77 -> 7.03, small sizes 7.19 -> 7.17, optical sizes 1.28 -> 1.23. woff2 87_928 (budgets 120_000 / 50_000).
 
 Build: `cd fonts/cascivo-sans && CASCIVO_FAMILY=serif python3 -I src/build.py` (~1 min) -> `fonts/CascivoSerif[opsz,wght].ttf`, `.woff2`, `-Latin[opsz,wght].woff2`.
 Test: `python3 -I -m unittest discover -s fonts/cascivo-serif/src` (coverage, serifs vs Sans, o contrast vs Sans, OTS, woff2 budget).

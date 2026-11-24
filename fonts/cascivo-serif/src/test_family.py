@@ -156,6 +156,45 @@ class SerifFamily(unittest.TestCase):
                             r = np.hypot(*(c - (c.max(0) + c.min(0)) / 2).T)
                             self.assertLessEqual(r.max() - r.min(), max(0.03 * r.mean(), 2.0))
 
+    def test_ink_grows_with_weight(self):
+        # Round 4 review: Black's Z read a weight lighter than its neighbours (its diagonal drawn near a hairline). Every letter and
+        # figure gains ink at each step of wght, and no glyph falls behind the alphabet's growth from Regular to Black by much.
+        chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        ink = {ch: [int(raster(TTF, ch, w, 120).sum()) for w in range(100, 1000, 100)] for ch in chars}
+        for ch, row in ink.items():
+            with self.subTest(ch=ch):
+                self.assertTrue(all(b > a for a, b in zip(row, row[1:])), row)
+        growth = {ch: row[-1] / row[3] for ch, row in ink.items()}
+        median = float(np.median(list(growth.values())))
+        for ch, g in growth.items():
+            with self.subTest(ch=ch, growth=round(g, 2)):
+                self.assertGreater(g, median * 0.8)
+
+    def test_z_diagonal_is_thick(self):
+        # A serif Z's diagonal is its thick stroke (Source Serif's): measured square to the stroke it is at least 0.75 of H's stem
+        # at every weight. The engine's angle pen drew it near a hairline (0.5 of the stem at Black).
+        def diag(wght):
+            a = raster(TTF, 'Z', wght)
+            ys = np.nonzero(a.any(1))[0]
+            mid, h = (ys.min() + ys.max()) // 2, ys.max() - ys.min()
+            runs = []
+            for y in (mid - h // 8, mid + h // 8):
+                xs = np.flatnonzero(a[y])
+                runs.append((xs.min(), xs.max()))
+            (l0, r0), (l1, r1) = runs
+            dx, dy = ((l1 + r1) - (l0 + r0)) / 2, h / 4
+            return (r0 - l0 + 1) * dy / np.hypot(dx, dy)
+
+        def stem(wght):
+            a = raster(TTF, 'H', wght)
+            ys = np.nonzero(a.any(1))[0]
+            xs = np.flatnonzero(a[(ys.min() + ys.max()) // 2 - (ys.max() - ys.min()) // 4])
+            return int(np.argmax(np.diff(xs) > 1)) + 1
+
+        for wght in (400, 700, 900):
+            with self.subTest(wght=wght):
+                self.assertGreater(diag(wght), stem(wght) * 0.75)
+
     def test_ots_sanitize(self):
         try:
             import ots
