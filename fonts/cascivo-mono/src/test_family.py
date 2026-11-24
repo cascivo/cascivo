@@ -60,6 +60,14 @@ class MonoFont(unittest.TestCase):
         gs[self.font.getBestCmap()[ord(ch) if isinstance(ch, str) else ch]].draw(bp)
         return bp.bounds
 
+    def mid(self, loc, ch):
+        b = self.bounds(loc, ch)
+        return (b[1] + b[3]) / 2
+
+    def width(self, loc, ch):
+        b = self.bounds(loc, ch)
+        return b[2] - b[0]
+
     def test_terminal_line_metrics(self):
         hhea, os2 = self.font['hhea'], self.font['OS/2']
         self.assertEqual((hhea.ascent, hhea.descent, hhea.lineGap), (ASC, DESC, 0))
@@ -130,9 +138,9 @@ class MonoFont(unittest.TestCase):
 
     def test_operators_share_the_math_axis(self):
         for loc in LOCATIONS:
-            mid = {ch: (lambda b: (b[1] + b[3]) / 2)(self.bounds(loc, ch)) for ch in '-=+<>×÷−~–'}
+            mid = {ch: self.mid(loc, ch) for ch in '-=+<>×÷−~–'}
             self.assertLess(max(mid.values()) - min(mid.values()), 4, f'{loc} {mid}')
-            a = (lambda b: (b[1] + b[3]) / 2)(self.bounds(loc, '*'))
+            a = self.mid(loc, '*')
             self.assertLess(abs(a - mid['=']), 120, f'* centre {a} far off the operators\' axis {loc}')
 
     def test_rules_reach_the_cell_edges(self):
@@ -142,7 +150,7 @@ class MonoFont(unittest.TestCase):
             for ch in '_—':
                 b = self.bounds(loc, ch)
                 self.assertEqual((b[0], b[2]), (0, CELL), f'{ch} {loc}')
-            widths = [(lambda b: b[2] - b[0])(self.bounds(loc, ch)) for ch in '-–—']
+            widths = [self.width(loc, ch) for ch in '-–—']
             self.assertTrue(widths[0] + 60 < widths[1] < widths[2] - 60, f'- – — lengths {widths} {loc}')
 
     def test_ambiguous_pairs_differ(self):
@@ -156,8 +164,7 @@ class MonoFont(unittest.TestCase):
 
         self.assertGreater(contours('0'), contours('O'), 'dotted zero')
         for loc in ({'wght': 400, 'opsz': 14}, {'wght': 700, 'opsz': 14}):
-            r = self.bounds(loc, 'r')
-            self.assertGreater(r[2] - r[0], 0.7 * (lambda b: b[2] - b[0])(self.bounds(loc, 'n')), 'r arm reaches across the cell')
+            self.assertGreater(self.width(loc, 'r'), 0.7 * self.width(loc, 'n'), 'r arm reaches across the cell')
 
     def test_no_ligatures_or_contextual_alternates(self):
         # terminals shape runs of text: a ligature or a contextual swap can change a glyph the user typed

@@ -274,11 +274,11 @@ BOX = {f'uni{cp:04X}': cs for cp, cs in _load_box().glyphs().items()}
 def _register_box():
     import glyphs as GL
 
-    for name in BOX:
+    for name, cs in BOX.items():
         cp = int(name[3:], 16)
 
-        def draw(g, p, name=name):
-            g.raw += BOX[name]
+        def draw(g, p, cs=cs):
+            g.raw += cs
             g.tab = True
 
         GL.glyph(name, cp)(draw)
@@ -503,5 +503,5 @@ def cell(o):
     for n in FULL_X:
         b = o.bounds[n]
         s, off = W / (b[2] - b[0]), -W * b[0] / (b[2] - b[0])
-        o.contours[n] = [B.transform_contour(c, lambda q: (s * q[0] + off, q[1])) for c in o.contours[n]]
+        o.contours[n] = [B.transform_contour(c, lambda q, s=s, off=off: (s * q[0] + off, q[1])) for c in o.contours[n]]
         o.bounds[n] = (0, b[1], W, b[3])
