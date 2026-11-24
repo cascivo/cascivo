@@ -61,6 +61,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/fonts</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/cascivo-mono</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/cascivo-serif</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/cascivo-condensed</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/highlights</loc>
     <priority>0.8</priority>
   </url>

@@ -13,6 +13,7 @@ ROWS = [
     (400, 60, 'abcdefghijklmnopqrstuvwxyz'),
     (400, 60, '0123456789 &?!(.,;:)'),
     (400, 40, 'Sphinx of black quartz, judge my vow. Hamburgefonstiv'),
+    (900, 40, 'Sphinx of black quartz, judge my vow. Hamburgefonstiv'),
     (100, 54, 'Thin 100 Hamburgefonstiv HNOnoa'),
     (400, 54, 'Regular 400 Hamburgefonstiv HNOnoa'),
     (900, 54, 'Black 900 Hamburgefonstiv HNOnoa'),

@@ -1333,15 +1333,34 @@
   }
 }
 
-/* Header "Aa" switch: pressed state + the site-wide Cascivo Sans override. */
+/* Header "Aa" typeface picker (native select) + the site-wide family overrides. */
 .header-font-toggle {
+  position: relative;
   font-weight: 600;
   font-size: var(--cascivo-text-sm, 0.875rem);
-}
 
-.header-font-toggle[aria-pressed='true'] {
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
+  /* The select covers the glyph, invisible but fully operable; the wrapper draws the focus ring. */
+  & select {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  &:focus-within {
+    outline: 2px solid var(--cascivo-color-focus-ring, currentColor);
+    outline-offset: 2px;
+  }
+
+  &[data-active='true'] > span {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
 }
 
 @layer cascivo.theme {
@@ -1349,6 +1368,23 @@
     --cascivo-font-sans:
       'Cascivo Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
       sans-serif;
+    --cascivo-font-display: var(--cascivo-font-sans);
+  }
+
+  :root[data-font='cascivo-mono'] {
+    --cascivo-font-mono:
+      'Cascivo Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+    --cascivo-font-sans: var(--cascivo-font-mono);
+  }
+
+  :root[data-font='cascivo-serif'] {
+    --cascivo-font-sans: 'Cascivo Serif', ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+    --cascivo-font-display: var(--cascivo-font-sans);
+  }
+
+  :root[data-font='cascivo-condensed'] {
+    --cascivo-font-sans:
+      'Cascivo Condensed', 'Arial Narrow', ui-sans-serif, system-ui, -apple-system, sans-serif;
     --cascivo-font-display: var(--cascivo-font-sans);
   }
 }

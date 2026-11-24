@@ -26,6 +26,21 @@ def glyph(name, *cps):
     return deco
 
 
+# Round 8: heavy curves (JUDGING.md). Every one scales with p.heavy, so Regular is unchanged and Bold takes its share.
+# OVAL_FILL: stems a closed round's diagonals gain (geom.Stroke fill). Black's 0, o, O and the 6 / 9 bowls had counters that were their
+#   squared outline shrunk, a slot with tight corners; Inter's is an oval inside a squarer outline.
+# TERM_THIN: share a curved terminal thins by at its face (C e s S $ 5 6 9; the c's faces sit between two gates): ending at full stem, Black's ends read as clubs cut short.
+# TERM_RUN: degrees those terminals (not c's, e's or the S's, held by their aperture and Display-face gates) run further round at Black, on top of each glyph's own.
+# R_KNOB: share the r's arm thickens by at its end: a hairline end left Black's arm a flag; Inter's ends in a weighted drop. More
+#   hangs a beak under the face (test_black_strokes_end_clean). Upright only, as OVAL_FILL: the italic's 6 9 counters and its rf
+#   clearance sit on their gates' floors.
+OVAL_FILL, TERM_THIN, TERM_RUN, R_KNOB = 0.06, 0.12, 6, 0.08
+
+
+def term_taper(p):
+    return 1 - TERM_THIN * p.heavy
+
+
 class G:
     def __init__(self, p):
         self.p = p
@@ -71,7 +86,10 @@ class G:
         H = self.p.H if H is None else H
         # a small ring (%, &, @) drawn with a heavy pen closes up: keep the pen under a third of
         # the ring's size so a counter always survives (letters like o are never this small)
+        clipped = V > (x1 - x0) * 0.33 or H > (y1 - y0) * 0.33
         V, H = min(V, (x1 - x0) * 0.33), min(H, (y1 - y0) * 0.33)
+        if not clipped and not self.p.italic:  # a small ring (%, @, °) keeps its pen: filled, its counter would close
+            kw.setdefault('fill', OVAL_FILL * self.p.heavy * self.p.V)
         cx, cy, rx, ry = self.box(x0, y0, x1, y1, V, H)
         segs = self.arc(cx, cy, rx, ry, 90, 450, k)
         if kw.pop('drawn', False):
@@ -393,7 +411,7 @@ def _C(g, p):
     # later, when it still carried 0.85-0.93x the ink of Inter, Geist and Helvetica
     # The italic's Black ends as the c's: its last quarter squarer and on a near-flat face, so the lower end is blunt, not a wedge
     sq, run = (C_SQUARE_IT, CAP_C_RUN_IT) if p.italic else (0.0, 0.0)
-    g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap, 270) + g.arc(cx, cy, rx, ry, 270, 338 - p.ap + run * p.heavy, p.k + sq * p.heavy), caps=('b', 'b'), cut='t' if p.italic else 'h', tilt=CAP_C_TILT_IT)
+    g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap - TERM_RUN * p.heavy, 270) + g.arc(cx, cy, rx, ry, 270, 338 - p.ap + (run + TERM_RUN) * p.heavy, p.k + sq * p.heavy), caps=('b', 'b'), taper=(term_taper(p),) * 2, cut='t' if p.italic else 'h', tilt=CAP_C_TILT_IT)
     g.ht = 'c'
     g.sb = (0.62, 0.45)
 
@@ -585,11 +603,11 @@ def _S(g, p, w, top, ov, pen=None, term=32, spine=0.1, run=0, run_up=None, close
     # heavy terminals are cut square and tipped only as far as keeps the face near flat (cut='t'): the old
     # half-way turn pivoted on the outer edge and stretched the inner one into a tongue
     cut = 't'
-    g.stroke(up, caps=('b', 'b'), pen=pen, cut=cut, tilt=tilt)
+    g.stroke(up, caps=('b', 'b'), pen=pen, cut=cut, tilt=tilt, taper=(term_taper(p), 1))
     # Heavier, the spine carries more: at 1.15 H a Black spine was 60% of a stem and the s read
     # as a lightning bolt beside Geist's and Inter's near-full-weight spines.
     g.stroke([spine_seg], pen=(PV, PH * (1.15 + spine * heavy)))
-    g.stroke(lo, caps=('b', 'b'), pen=pen, cut=cut, tilt=tilt)
+    g.stroke(lo, caps=('b', 'b'), pen=pen, cut=cut, tilt=tilt, taper=(1, term_taper(p)))
 
 
 def _s_extra(p):
@@ -920,7 +938,7 @@ def _r(g, p):
     cy = p.xh + p.ov * 0.4 - p.H / 2 - ry
     rx *= 1 + R_GROW * p.heavy
     taper = arch_join(p) if p.italic else lerp(arch_join(p), R_JOIN, p.heavy)
-    g.stroke(g.arc(a + rx, cy, rx, ry, 180 - JOIN_RUN, 62 - p.ap * 0.5 + R_END * p.heavy), taper=(taper, 1), caps=('b', 'b'), reach=(min(join_reach(p), R_REACH), None))
+    g.stroke(g.arc(a + rx, cy, rx, ry, 180 - JOIN_RUN, 62 - p.ap * 0.5 + R_END * p.heavy), taper=(taper, 1 + (0 if p.italic else R_KNOB) * p.heavy), caps=('b', 'b'), reach=(min(join_reach(p), R_REACH), None))
     g.sb = (1, 0.35 + (0.25 if p.italic else 0) * p.heavy)  # ra, re, ro sat 10% tighter than in the references
 
 
@@ -1273,7 +1291,7 @@ def _e_body(g, p, x0, w, bar_k=None, run=None):
     # the start is a join hidden in the bar, cut flat along the bar's underside, not a terminal
     tail = g.arc(cx, cy, rx, ry, 270, E_END - (E_RUN_IT if p.italic else E_RUN if run is None else run) * p.heavy - p.ap, p.k + (E_SQUARE_IT if p.italic else E_SQUARE) * p.heavy)
     tail[-1] = _steepen(tail[-1], (E_STEEP_IT if p.italic else 0.0) * p.heavy)
-    g.stroke(first + g.arc(cx, cy, rx, ry, 90, 270) + tail, caps=('h', 'b'), cut='t', tilt=E_TILT, turn=p.face)
+    g.stroke(first + g.arc(cx, cy, rx, ry, 90, 270) + tail, caps=('h', 'b'), cut='t', tilt=E_TILT, turn=p.face, taper=(1, term_taper(p)))
     # ends on the bowl's centreline, so the bowl stroke covers it; in the italic the stroke's end
     # is cut on a slant, so the bar stops short of it
     # A heavy bar drops below the middle, where the bowl's outer edge has already turned in: its lower right corner stopped at
@@ -2015,7 +2033,7 @@ def _five(g, p):
     g.line((xsm + 10, p.cap - H / 2 + pen_thickness((1.0, 0.0), V, H, p.slant) / 2 * p.heavy), (xsm, ps[1] - 0.25 * V * (1 - p.heavy) - FIVE_FOOT * inner * p.heavy), caps=('h', 'h'))
     # Black's bowl starts a third of a stem right of the stem's centre: from the centre its thin start left a small hook
     # below the stem's foot, from there it leaves a clean step under it (Inter's)
-    g.stroke(g.arc(cx, cy, rx, ry, a0, -150 + p.ap - FIVE_TAIL * p.heavy), taper=(0.6 + FIVE_START * p.heavy, 1), caps=('h', 'b'), cut='h')
+    g.stroke(g.arc(cx, cy, rx, ry, a0, -150 + p.ap - (FIVE_TAIL + TERM_RUN) * p.heavy), taper=(0.6 + FIVE_START * p.heavy, term_taper(p)), caps=('h', 'b'), cut='h')
     g.tab = True
     g.ht = 'c'
 
@@ -2038,7 +2056,7 @@ def _six_strokes(g, p, w):
     g.oval(0, -p.ov, w, top, H=bowl_pen(p)[1], drawn=True)
     cx, cy, rx, ry = g.box(0, -p.ov, w * (1.02 + 0.15 * p.heavy), p.cap + p.ov)
     cyb = (-p.ov + top) / 2
-    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 44 - 16 * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='t', tilt=FLAT_TILT)  # heavy terminals run round to 28°, where the stroke is steep and a square cut is a clean face: ending higher (58°) left a blade with a notch in its inner edge
+    g.stroke([L((cx - rx, cyb), (cx - rx, cy))] + g.arc(cx, cy, rx, ry, 180, 44 - (16 + TERM_RUN) * p.heavy + p.ap * 0.5), caps=('b', 'b'), cut='t', tilt=FLAT_TILT, taper=(1, term_taper(p)))  # heavy terminals run round to 28°, where the stroke is steep and a square cut is a clean face: ending higher (58°) left a blade with a notch in its inner edge
     del V
 
 
