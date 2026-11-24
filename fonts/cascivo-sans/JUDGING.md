@@ -59,6 +59,37 @@ that a reader notices. Score each criterion at the worst place on its sheets, no
 | 10  | Optical sizes (4)              | `opsz`: a monotone, smooth change from 8 to 48; 48 is tight but not touching                                                                   | `test_font.py` (opsz stems)                                                                                                                                                   |
 | 11  | Character without gimmick (3)  | All sheets: does it look like one family, quiet, with a clear identity (`l` tail, serifed `I`)? Does any feature call attention to itself?     | None                                                                                                                                                                          |
 
+## Numeric scorer and tuner
+
+`src/score.py` is a fast stand-in for the blind judge (about 7 s, no model calls). It compares the
+built font with Inter, Geist and Plex (the `/tmp/refs` files above) at wght 100 to 900:
+
+```sh
+python3 -I src/score.py [--italic] [--json] [--refs /tmp/refs]   # one summary line + the 10 worst rows
+python3 -I src/tune.py --param HEAVY_TIGHTEN --range 0.45:0.60 --steps 5   # prints best value and delta
+```
+
+Metrics: ink-density CV (colour), counter/ink area per glyph, HT-style gap/counter ratio over 24
+pairs (rhythm), 2nd difference of advances and stems over the weights, pixel IoU of `O/0 I/l/1 rn/m
+cl/d` at 11 and 12 px, opsz 14 to 32 spacing and x-height delta against Inter (Inter's opsz stops
+at 32), kinks at smooth on-curve points, overshoot. Each value is a z-score against the references'
+mean and spread (spread floored); |z| inside 0.5 is free; an item is 10 minus 2 times the excess
+(30% mean, 70% 90th percentile). `I G l` (the identity glyphs) are left out. Items map to rubric
+rows 1, 2, 3, 6, 7 and 10; 4, 5, 8, 9 and 11 are not scored numerically.
+
+`tune.py` sweeps named constants (`NAME` or `NAME.KEY` in `params.py`, `glyphs.py`, `build.py`),
+builds the upright font only, scores every grid point in parallel (about 45 s), then runs the
+gates (`test_font.py` plus the full woff2 budget) on the best point, next best on a failure
+(about 9 min). `--no-gates` skips them. It writes nothing; copy the printed value into the source,
+then run the full gates above. Tests: `python3 -I src/test_score.py`.
+
+Calibration, from the fonts committed at each commit (0.6.1 `5e450f8d`, round 4 `a27d7610`, round
+5 `59f5fcf4`): the scorer ranks R5 > R4 > 0.6.1 as the blind judge does (6.84 / 6.69 / 5.09).
+Upright 8.14 / 8.11 / 7.53, upright and italic mean 8.04 / 8.01 / 7.60; Pearson r = 0.999 (upright)
+and 1.00 (mean), on three points. The range is compressed (0.6 against 1.75 points) and R5 over R4 is a +0.03 step,
+inside the noise: trust the sign of a change, not its size. Optical sizes stay at 2.8 in all three
+(x-height delta 14 to 32 is -5 units against Inter's -30), which is defect 8, not a scorer error.
+
 ## Must not regress
 
 The advantages and their gates. All of them must pass in each round (`.github/workflows/fonts.yml`):
@@ -439,3 +470,38 @@ Known limits (the reviewer's ranked list, with what blocks each):
 6. Black closing quote a wedge pair; `7,` and italic `f)` loose. The italic `f)` needs a `WHITE_BAND_SHAPE` entry (owner decision).
 7. `O0` at 11-12 px at 300-400 (the zero barely narrower), 300 pale at 11 px.
 8. Optical sizes: most of the width change is between 8 and 14; 14 to 48 changes little.
+
+## Round 6 result (numeric scorer, no blind judge)
+
+`score.py` upright 8.14 -> 8.67 (rhythm 7.8 -> 8.2, weight axis 7.9 -> 8.1, shape 8.5, colour 9.0, small sizes 9.5 -> 9.4, optical
+sizes 2.8 -> 10.0); italic 7.93 unchanged. The target 8.9 was not met.
+
+- `DISPLAY_XH` 10 -> 60 (`tune.py`: score rises to 60, then flat): opsz 32 is 26 units under opsz 14 (Inter 30). Display spacing
+  (`DISPLAY_SPACING`) does not move the score; it stays 0.88.
+- `CAP_SB_BOLD` 0.1, upright only: Bold capital sidebearings +10% (+0.09). Retuning `HEAVY_TIGHTEN_ITALIC` 0.067 and `BOLD_TIGHTEN_ITALIC` 0.18 gave italic +0.10 but failed six italic gates (n gap 0.54 < 0.56 at 700, brackets, figures, `rf`, `Vo`, capital sidebearings 1.45): reverted.
+- Dot accent, `i` and `j` dot: the full stop's size (105; the gate in `test_dot_floor_is_a_params_constant`).
+- Gate decisions (owner): 600 width cap +2.5%, 900 +12% (line from 700 +4%), 700 rhythm ceiling 0.63, i-dot 105. Resolved here:
+  `COUNTER_MAX['a']` 1.3 -> 1.4; italic `f)` shares the upright's `WHITE_BAND_SHAPE`; the `quality.py` tip gate is unchanged (no
+  drawn change this round needed a sharper `a` notch). Italic Light at opsz 48 pinned at 61.7 (62.3), a result of the lower x-height.
+- Byte caps (woff2): full 77,600; Latin[opsz,wght] 32,500; Latin[wght] 25,800; Regular 25,200; italic full 83,900; italic Latin
+  [opsz,wght] 35,800.
+
+Remaining flaws: the wstep kink at 700 (diagonal capitals and `m w g`: advances flat 400-700, +48 per step to 900; the Bold master's
+advance, not a constant, sets it), Black `Q D O B d` counters 1.3-1.5x Inter's by area, the `I/1` ambiguity at 800-900 (identity
+glyphs), italic small sizes 7.4 and italic shape 7.2. Black `0 a e 4 6 9` outlines were not redrawn (an outline job for the Opus
+tier); `O` against `0` at 11-12 px is unchanged.
+
+Round 6, second sitting (no font change; score still upright 8.67, italic 7.93). Two knobs for the wstep kink were tried with
+`tune.py` and removed: a blend of the Bold lowercase advance toward the Regular-Black line (`BOLD_ADV_BLEND`) fails
+`test_heavy_f_leaves_no_hole` (`ft` at 700) from 0.2, so `f` and `t` need their own Bold drawing first; an earlier start of the
+capitals' widening (`CAPW_START`, `glyphs.capw`) fails `test_weight_changes_do_not_reflow_text` from about 530 (the 600 width cap).
+The Bold master's capitals `T V W X Y Z` are `BOLD_OWN`, so no lowercase blend reaches them. Untouched: italic gates, Black counters
+(`0 a e 4 6 9`, `Q D O B d`) and `O`/`0` at 11-12 px, which need redrawn outlines, not constants.
+
+Round 6, third sitting (redrawn outlines, numeric scorer). Upright 8.67 -> 8.72, italic 7.93 -> 8.09; target 8.9 not met.
+
+- Kept: Black `D B` heavier tops/bottoms (`CAP_ROUND_H` 0.8, `_B` 0.4; D z 3.9 -> <1.2, B 3.1 -> <1; shape 8.53 -> 8.78). Italic `I` (800-900) shorter, thinner slabs; italic `1` flag reaches further left and ends lower, held 2.5 units lower at Black; small sizes 7.4 -> 8.5 (italic woff2 83,896 B, cap 83,900).
+- Reverted: Black `O Q` heavier horizontals (O counter 114k < 130k floor, `test_black_rounds_square_up`); `b d p q` heavier bowls (join_ratio > 0.71 crotch gate). Black `0 a e 4 6 9` left alone (scorer rates them about right). Italic `D B` (bars below baseline, Black Italic `в` self-intersects, byte cap).
+- `0` vs `O` at 11-12 px: already better than the references at every weight; a narrower `0` fails `test_advances_at_regular_match_a855b5e0` and `ZERO_MIN_SHARE`. Needs an owner decision (advances fixture exception, or wider sidebearings).
+- `BOLD_ADV_BLEND`: a Bold-drawn `t` (`T_BOLD_ARM` 0.6) fixes `ft`, but blends 0.1-1.0 all fail `test_weight_changes_do_not_reflow_text`, `test_tight_letters_open_up`, `test_l_tail_reads_and_keeps_its_white` (700 widens past the +-2% rule). Not kept; the 700 wstep kink stays.
+- Not run: the final Sonnet crop check of changed glyphs.

@@ -95,6 +95,9 @@ CH_BLACK_ITALIC = 305
 #   not guarded, and they carried the widest ink growth beside the s and e. 90 -> 45 (round 4): at 90 Black's v sat 0.89x its n
 #   and x z 0.80x (Inter's 0.97x, 0.94x, 0.91x).
 DIAG_TRIM = 45
+DISPLAY_XH = 60  # x-height units Display (opsz 48) loses; Inter's opsz 32 is 30 below its 14 (the score's optical-size row)
+DISPLAY_SPACING = 0.88
+CAP_SB_BOLD = 0.1  # share the capitals' sidebearing gains at Bold (700): its H O E pairs read 0.44-0.48 gap/counter against Inter's 0.58-0.62
 THIN_OPEN = 0.30  # share of the stem sidebearing Thin opens by, see P.__init__; 0.30 is held by the italic mixed-case line at Thin (-2.7% at 0.23), which the reflow test covers
 # The upright's (round 5): at 0.30 Thin's n sidebearing was 93 units at opsz 14 and 89 at Display sizes (Inter 97 and, at its opsz 32, 65), and
 # nnn, HHH and a text line at 100 set looser than Inter's on the proof sheets. 0.235 puts n's at 89 (quality.py's floor is 0.9 x Inter's 97)
@@ -119,7 +122,7 @@ class P:
         elif opsz == 48:  # display: tighter, slightly narrower, crisper contrast, closed apertures
             V -= 3
             contrast -= 0.05
-            xh -= 10
+            xh -= DISPLAY_XH
             spacing, counter, k, aperture = 0.92, 0.97, 0.60, -5.0  # 0.92 (round 3; it was 0.88, and Black at opsz 32 to 48 set ns, st, rg, ef a few units apart). The earlier floor still holds: Display's tightening and Black's (HEAVY_TIGHTEN) add up at 900/48, and any tighter leaves the round pairs (OO oo ss SS) under their 12-unit floor and the italic GO overlapping
         self.V = V
         # Round 5, upright 3: degrees the Display master turns the c, e (and æ) and g terminals' faces toward flat (geom.Stroke turn). Inter's
@@ -158,7 +161,7 @@ class P:
         self.Sfig = self.S  # figures and math signs keep their ink: their advance is fixed, so a tighter S would widen them
         tighten = lambda bold, black: 1 - (_pw(wght, [(400, 0.0), (MID_WGHT, bold), (900, black)]) if wght >= 400 and not loose else 0.0)  # noqa: E731
         self.S *= tighten(*((BOLD_TIGHTEN_ITALIC, HEAVY_TIGHTEN_ITALIC) if italic else (BOLD_TIGHTEN, HEAVY_TIGHTEN)))
-        self.Sc = self.S * 1.3  # capitals carry more space: their counters are bigger
+        self.Sc = self.S * 1.3 * (1 + (0.0 if italic else CAP_SB_BOLD) * max(0.0, 1 - abs(V0 - BOLD_STEM) / 60))  # capitals carry more space: their counters are bigger
         self.cw = counter
         # n is 0.82 x-heights wide at Regular (Geist 0.79, Inter 0.80). It was 0.88 with tighter
         # spacing, which set the same line length but read as wide, close-set letters.

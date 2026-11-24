@@ -139,13 +139,16 @@ def _I_ss02(g, p):  # plain I: opt-in, it is identical to l in most grotesques
     g.ht = 'c'
 
 
+I_SLAB_IT = (0.0, 0.1)
+
+
 @glyph('I', 0x49)
 def _I(g, p):  # serifed by default, so I, l and 1 never read alike in text
     # Black's slabs are shorter and thinner than the stroke: at the full bar, 0.72 of a stem each side, the I was a slab serif's
     # beside H and J. Still a serif on both sides at every size, so it is never the l.
     # Round 4: Black's slabs shorter again (0.11 -> 0.2 of a stem off each) and thinner (0.16 -> 0.26 off the bar): at 107 a side and
     # 115 thick, heavier than H's bar (107), they still read slab-serif beside H and J, and set HI and IJ 0.71x and 0.63x the HH gap
-    e = p.cH * 0.30 + p.V * (0.2 - 0.2 * p.heavy)
+    e = p.cH * (0.30 - (I_SLAB_IT[0] * max(0.0, (400 - p.wght) / 300) + I_SLAB_IT[1] * p.heavy if p.italic else 0)) + p.V * (0.2 - 0.2 * p.heavy)
     w = p.V + 2 * e
     h = p.H * (1 - 0.26 * p.heavy)
     g.vstem(e, 0, p.cap)
@@ -199,8 +202,11 @@ def _F(g, p):
 CAPW_BLACK = {'T': (0.072, 0.118), 'V': (0.067, 0.066), 'W': (0.110, 0.113), 'X': (0.102, 0.017), 'Y': (0.114, 0.113), 'Z': (0.080, 0.115)}
 
 
+CAPW_START = MID_WGHT  # where the six capitals begin to widen: Bold's own coordinate leaves 400-700 flat, an earlier start bends the line at 700 less (JUDGING.md round 6)
+
+
 def capw(p):
-    return max(0.0, (p.wght - MID_WGHT) / (900 - MID_WGHT))
+    return max(0.0, (p.wght - CAPW_START) / (900 - CAPW_START))
 
 
 @glyph('T', 0x54)
@@ -340,6 +346,17 @@ def _K(g, p):
 O_BLACK, C_BLACK, G_BLACK, M_BLACK = 0.045, 0.033, 0.068, 0.055
 CAP_O_SQUARE = 0.1
 BOWL_NARROW = {'B': 0.06, 'P': 0.09, 'R': 0.05, 'D': 0.04}
+# Round 7: the bowled capitals' horizontals at Black. Drawn with the lowercase's contrast (0.72), their tops and bottoms were 27 px
+# at 200 px against Inter's 31-35, so D and B carried 1.3-1.4x Inter's counter over their ink. CAP_ROUND_H is the share of the
+# stem-minus-horizontal difference those strokes take back at Black; Regular is unchanged. B's two bowls share the height, so it
+# takes less (CAP_ROUND_H_B): at D's share its counters fell under Inter's. The italic keeps its pen: heavier, its B's bars stood a
+# unit under the baseline, the small в folded and the D's points put the italic woff2 over its budget. O and Q keep theirs (the O's
+# counter floor in test_font holds its white).
+CAP_ROUND_H, CAP_ROUND_H_B = 0.8, 0.4
+
+
+def cap_round_H(p, share=None):
+    return p.H + (p.V - p.H) * (CAP_ROUND_H if share is None else share) * p.heavy
 
 
 @glyph('O', 0x4F)
@@ -405,24 +422,24 @@ def _G(g, p):
 @glyph('D', 0x44)
 def _D(g, p):
     w = p.Hw * (1.06 - (0.04 + BOWL_NARROW['D']) * p.heavy)  # as b
-    V, H = p.V, p.H
+    V, H = p.V, cap_round_H(p, 0.0 if p.italic else None)
     xr = w - V / 2
     ry = (p.cap - H) / 2
     rx = min(ry * 1.02, (xr - V / 2) * 0.62)
     cx, cy = xr - rx, p.cap / 2
-    g.stroke([L((V / 2, p.cap - H / 2), (cx, p.cap - H / 2))] + g.arc(cx, cy, rx, ry, 90, -90) + [L((cx, H / 2), (V / 2, H / 2))], pen=flat_pen(p))
+    g.stroke([L((V / 2, p.cap - H / 2), (cx, p.cap - H / 2))] + g.arc(cx, cy, rx, ry, 90, -90) + [L((cx, H / 2), (V / 2, H / 2))], pen=flat_pen(p, H))
     g.vstem(0, 0, p.cap)
     g.ht = 'c'
     g.sb = (1, 0.62)
 
 
-def _bowl_right(g, x0, xr, ytop, ybot, ratio=1.0):
+def _bowl_right(g, x0, xr, ytop, ybot, ratio=1.0, H=None):
     """A P/B/R bowl: bars from the stem centre at ytop/ybot (centerlines), round on the right."""
     ry = (ytop - ybot) / 2
     rx = min(ry * ratio, (xr - x0) * 0.75)
     cx = xr - rx
     cy = (ytop + ybot) / 2
-    g.stroke([L((x0, ytop), (cx, ytop))] + g.arc(cx, cy, rx, ry, 90, -90) + [L((cx, ybot), (x0, ybot))], pen=flat_pen(g.p))
+    g.stroke([L((x0, ytop), (cx, ytop))] + g.arc(cx, cy, rx, ry, 90, -90) + [L((cx, ybot), (x0, ybot))], pen=flat_pen(g.p, H))
     return cx
 
 
@@ -453,11 +470,11 @@ def _R(g, p):
 @glyph('B', 0x42)
 def _B(g, p):
     w = p.Hw * (0.97 - BOWL_NARROW['B'] * p.heavy)
-    V, H = p.V, p.H
+    V, H = p.V, cap_round_H(p, 0.0 if p.italic else CAP_ROUND_H_B)
     g.vstem(0, 0, p.cap)
     ym = p.cap * 0.535
-    _bowl_right(g, V / 2, w - V / 2 - w * 0.05, p.cap - H / 2, ym, 1.08)
-    _bowl_right(g, V / 2, w - V / 2, ym, H / 2, 1.08)
+    _bowl_right(g, V / 2, w - V / 2 - w * 0.05, p.cap - H / 2, ym, 1.08, H)
+    _bowl_right(g, V / 2, w - V / 2, ym, H / 2, 1.08, H)
     g.ht = 'c'
     g.sb = (1, 0.6)
 
@@ -1564,15 +1581,16 @@ def _kra(g, p):
 V_WIDER, W_WIDER, V_LIGHTER = 34, 35, 0.10  # W_WIDER 70 -> 35 (round 4): with DIAG_TRIM halved, Black's w ran 1.46x its n (Inter's 1.35x)
 
 
-def flat_pen(p):
+def flat_pen(p, H=None):
     """Round 4, cycle 3: the pen of a stroke whose horizontal edges stand on the baseline or the cap height (E F L T Z z 7 bars,
     B D P R bowls). The italic's pen leans with the slant, so it draws a horizontal 5.5 units thicker than H at Black: those bars
     stood 3 units under the baseline and over the cap height, a step against the stem's square end at every corner (E's four,
     L's, B's). Black's pen draws them H thick; Regular is unchanged."""
+    H = p.H if H is None else H
     if not p.italic:
-        return (p.V, p.H)
+        return (p.V, H)
     c = pen_thickness((1.0, 0.0), 1.0, 0.0, p.slant)  # the share of V in a horizontal's thickness
-    return (p.V, lerp(p.H, (p.H - p.V * c) / (1 - c), p.heavy))
+    return (p.V, lerp(H, (H - p.V * c) / (1 - c), p.heavy))
 
 
 def exact_shift(g, dx, dy, ws):
@@ -1773,14 +1791,17 @@ def _osf(fn):
 
 
 ONE_FLUSH = 1.0
+ONE_FLAG_IT = (50, 0.15)  # italic: units further left, share of the cap lower
+ONE_STEM_IT = 0.0
 
 
 @glyph('one', 0x31)
 def _one(g, p):
     w = fw(p)
-    xs = w * 0.55
+    it = 1.0 if p.italic else 0.0
+    xs = w * (0.55 + ONE_STEM_IT * it)
     g.vstem(xs - p.V / 2, 0, p.cap)
-    end = (w * 0.12 + 6 + 20 * p.heavy, p.cap * 0.74)  # Black's flag reached 10% further left than Inter's (12 -> 20 once it started at the top)
+    end = (w * 0.12 + 6 + 20 * p.heavy - ONE_FLAG_IT[0] * it * p.heavy, p.cap * (0.74 - ONE_FLAG_IT[1] * it * p.heavy))  # Black's flag reached 10% further left than Inter's (12 -> 20 once it started at the top)
     start = (xs, p.cap - p.H * (0.4 + 0.5 * p.heavy))  # Black's flag starts lower: its square start poked a spur above the stem top (2 units upright, 5 italic)
     # Black's flag moves up (ONE_FLUSH of the way) until its upper corner sits on the stem's top left corner, as Inter's does: from
     # 123 under the top the stem stood 60 units proud of the flag, a notch over a separate block
@@ -1788,7 +1809,7 @@ def _one(g, p):
     for _ in range(4):
         t = norm((flush[0] - end[0], flush[1] - end[1]))
         half = pen_thickness(t, p.V, p.H) * 0.82 / 2
-        flush = (xs - p.V / 2 + 3 + t[1] * half, p.cap - 3 - t[0] * half)
+        flush = (xs - p.V / 2 + 3 + t[1] * half, p.cap - 3 - 2.5 * it * p.heavy - t[0] * half)  # the italic's lower flag end tilts the cap: its corner rose 2 units over the stem
     start = (lerp(start[0], flush[0], ONE_FLUSH * p.heavy), lerp(start[1], flush[1], ONE_FLUSH * p.heavy))
     g.line(start, end, ws=0.82, caps=('b', 'b'))
     g.tab = True
@@ -3100,7 +3121,7 @@ def m_dieresis(g, p, s):
 
 
 def m_dot(g, p, s):
-    g.dot(0, lift_dots(p))
+    g.dot(0, lift_dots(p), period_dot(p))  # round 6: the full stop's size, as the i dot
 
 
 def m_macron(g, p, s):

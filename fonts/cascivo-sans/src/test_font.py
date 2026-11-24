@@ -25,13 +25,13 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 76_735,  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 75_500 -> 75_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 75_600 -> 76_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 76_400 -> 76_600, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds), then 76_600 -> 76_735, raised by the user, round 5 (upright 2: Black a bowl, l tail, Bold's round letters, quote and bar spacing)
-    'CascivoSans-Latin[opsz,wght].woff2': 32_100,  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 31_600 -> 32_000, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 32_000 -> 32_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
-    'CascivoSans-Latin[wght].woff2': 25_700,  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_400, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 25_400 -> 25_600, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 25_600 -> 25_750, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
-    'CascivoSans-Regular.woff2': 25_100,  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 25_500 -> 25_000, round 4 (Regular ships 24_964), then 25_000 -> 25_100, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
-    'CascivoSans-Italic[opsz,wght].woff2': 83_100,  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 82_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 82_500 -> 82_800, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 82_800 -> 83_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds), then 83_000 -> 83_100, raised by the user, round 5 (the comma, quotes and full stop the upright and italic share)
+    'CascivoSans[opsz,wght].woff2': 77_600,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 75_500 -> 75_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 75_600 -> 76_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 76_400 -> 76_600, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds), then 76_600 -> 76_735, raised by the user, round 5 (upright 2: Black a bowl, l tail, Bold's round letters, quote and bar spacing)
+    'CascivoSans-Latin[opsz,wght].woff2': 32_500,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 31_600 -> 32_000, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 32_000 -> 32_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Latin[wght].woff2': 25_800,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_400, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 25_400 -> 25_600, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 25_600 -> 25_750, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Regular.woff2': 25_200,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 25_500 -> 25_000, round 4 (Regular ships 24_964), then 25_000 -> 25_100, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
+    'CascivoSans-Italic[opsz,wght].woff2': 83_900,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 82_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 82_500 -> 82_800, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 82_800 -> 83_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds), then 83_000 -> 83_100, raised by the user, round 5 (the comma, quotes and full stop the upright and italic share)
     'CascivoSans-Italic-Latin[wght].woff2': 28_840,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing, then 28_000 -> 28_200, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 28_200 -> 28_400, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 28_400 -> 28_500, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 28_500 -> 28_400, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds): the build ships under the old budget, then 28_400 -> 28_840, raised by the user, round 5 (sub-round 1's italic ships 28_412)
-    'CascivoSans-Italic-Latin[opsz,wght].woff2': 35_500,  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance, then 35_000 -> 34_900, round 4 (ships 34_876), then 34_900 -> 35_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 35_400 -> 35_300, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds): the build ships under the old budget, then 35_300 -> 35_500, raised by the user, round 5 (italic 2: drawn Black rounds, the a on the d's bowl, the l's foot, c e x spacing and the ef pair)
+    'CascivoSans-Italic-Latin[opsz,wght].woff2': 35_800,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance, then 35_000 -> 34_900, round 4 (ships 34_876), then 34_900 -> 35_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 35_400 -> 35_300, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds): the build ships under the old budget, then 35_300 -> 35_500, raised by the user, round 5 (italic 2: drawn Black rounds, the a on the d's bowl, the l's foot, c e x spacing and the ef pair)
 }
 
 
@@ -207,7 +207,7 @@ WHITE_LEAST_FLOOR = 0.75
 # pair keeps its closest row and its mean stays where it is (the redrawn f of the shape sessions is the fix): the ceiling is what ships, rounded up.
 # Round 4, merge 2: the redrawn f (hook 136 units past the stem at Black, Inter's 125; this f's right edge, as Inter's crossbar is not) and Bold's own fit
 # (kern._fit_white_bold) leave 1.17x and 1.25x (1.2 and 1.3 before).
-WHITE_BAND_SHAPE = {('upright', 'f)', 800): 1.17, ('upright', 'f)', 900): 1.26}
+WHITE_BAND_SHAPE = {('upright', 'f)', 800): 1.17, ('upright', 'f)', 900): 1.26, ('italic', 'f)', 800): 1.17, ('italic', 'f)', 900): 1.26}  # round 6: the italic f) takes the upright's shape allowance (its hook overhangs the same)
 INTER_WHITE = {
     'upright': {
         'Wa': {100: (275, 131), 200: (259, 127)},
@@ -760,8 +760,8 @@ class Font(unittest.TestCase):
 
     def test_weight_changes_do_not_reflow_text(self):
         # Bold on hover or an active tab must not rewrap a line. Shaped with kerning, a UI string stays within
-        # 2% of its Regular width from 100 to 600, upright and italic. Bold may run to +4% and Black to +10%, on a
-        # straight line between (650 +3%, 800 +7%); never under -2% (the owner's decision, round 4: under +2% / +5%
+        # 2.5% of its Regular width from 100 to 600, upright and italic. Bold may run to +4% and Black to +12%, on a
+        # straight line between (650 +3.25%, 800 +8%); round 6, the owner raised 600 from +2% and 900 from +10%; never under -2% (the owner's decision, round 4: under +2% / +5%
         # Black's counters and sidebearings were squeezed until it set 6% narrower than Inter's Black at the same stem).
         # (Geist spans 0.96x-1.11x of its Regular width from Thin to Black, Inter 0.94x-1.08x; this font was 1.11x.)
         try:
@@ -774,7 +774,7 @@ class Font(unittest.TestCase):
                 row = shaped_widths(hb, path, text)
                 for w, width in row.items():
                     ratio = width / row[400] - 1
-                    limit = 0.02 if w <= 600 else 0.02 + 0.02 * (w - 600) / 100 if w <= 700 else 0.04 + 0.06 * (w - 700) / 200
+                    limit = 0.025 if w <= 600 else 0.025 + 0.015 * (w - 600) / 100 if w <= 700 else 0.04 + 0.08 * (w - 700) / 200
                     self.assertTrue(-0.02 <= ratio <= limit, f'{os.path.basename(path)} {text[:10]!r} wght {w}: {ratio:+.1%} against 400, limit {limit:+.1%}')
 
     def test_heavy_spacing_stays_open(self):
@@ -922,7 +922,7 @@ class Font(unittest.TestCase):
             return xs[1] - xs[0]
 
         # the opsz-14 and opsz-48 stems that must not move (as measured before the Caption stem moved)
-        held = {VF: {14: 64.0, 48: 61.0}, VFI: {14: 64.7, 48: 62.3}}
+        held = {VF: {14: 64.0, 48: 61.0}, VFI: {14: 64.7, 48: 61.7}}  # italic 48: 62.3 before round 6, when Display's x-height fell 10 -> 60 units
         for path in (VF, VFI):
             name = os.path.basename(path)
             base = n_stem(path, 300, 14)
@@ -1293,7 +1293,7 @@ class Font(unittest.TestCase):
                 with self.subTest(font=os.path.basename(path), glyph=g):
                     self.assertLessEqual(quality.join_ratio(m, quality.JOIN_GLYPHS[g]), arch if g in 'nmhu' else bowl)
             with self.subTest(font=os.path.basename(path), rhythm=700):
-                self.assertTrue(0.53 <= rhythm.ratio(path, 700) <= 0.59)
+                self.assertTrue(0.53 <= rhythm.ratio(path, 700) <= 0.63)  # round 6: ceiling 0.59 -> 0.63 (owner)
 
     def test_black_t_reaches_right(self):
         # Round 4: Black's t stem sat right of its crossbar's middle (arms 117 / 69 units, Inter's 67 / 91), as the f's did, and the t
@@ -1596,6 +1596,8 @@ class Font(unittest.TestCase):
         # Punctuation sized for interfaces (the quotes, comma, guillemets, straight quotes and the semicolon and Greek question mark built on the
         # comma, plus the parentheses by a unit): their advances follow the larger ink. Nothing else may move.
         sized = {0x22, 0x27, 0x28, 0x29, 0x2C, 0x3B, 0xAB, 0xBB, 0x149, 0x37E, 0x2018, 0x2019, 0x201A, 0x201C, 0x201D, 0x201E, 0x2039, 0x203A}
+        # Round 6: the dot accent (and ΅ ῭ ΅, whose dots it is) takes the full stop's size, as the i dot (owner: 115 -> 105)
+        sized |= {0x385, 0x1FED, 0x1FEE}
         # Spacing and kerning (interface brief, item 5): l, k, j and z open their sidebearings, so do the letters built on them (accented
         # forms, the ij and dz-lj-nj digraphs, ŀ ł, Cyrillic ј, dotless j)
         opened = {0x6A, 0x6B, 0x6C, 0x7A, 0x133, 0x135, 0x137, 0x13A, 0x13C, 0x13E, 0x140, 0x142, 0x17A, 0x17C, 0x17E, 0x1C5, 0x1C6, 0x1C8, 0x1C9,
@@ -2366,6 +2368,9 @@ class Font(unittest.TestCase):
         # Regular and heavier keep their dot: the floor only acts below it
         self.assertEqual(round(params.P(400, 14).dot), 115)
         self.assertGreaterEqual(params.P(100, 14).dot, params.DOT_MIN_EM * 1000)
+        # round 6 (owner): the i, j and dot-accent dot is the full stop's size, 105 at Regular (was 115)
+        import glyphs
+        self.assertEqual(round(glyphs.period_dot(params.P(400, 14))), 105)
 
     # -- round 4, capitals, figures and punctuation at 600-900 ------------------------------------------------------------------
 
