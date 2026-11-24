@@ -92,9 +92,18 @@ class SerifFamily(unittest.TestCase):
     def test_round_dots_without_serifs(self):
         # The serif pass took the engine's dot (a short vertical stroke from the baseline) for a stem foot: . : ; ! ? and the ellipsis
         # carried a slab and brackets. Punctuation keeps Sans's contours, and every dot is one round contour.
+        # Round 4: a comma (and every curly quote, built from it) adds one round head per comma, the period's dot.
+        heads = {'semicolon': 1, 'comma': 1, 'quoteright': 1, 'quotedblleft': 2}
         for name in ('period', 'colon', 'semicolon', 'ellipsis', 'exclam', 'question', 'exclamdown', 'questiondown', 'quotesingle', 'quotedbl', 'bar', 'brokenbar', 'comma', 'quoteright', 'quotedblleft'):
             with self.subTest(name=name):
-                self.assertEqual(len(contours(TTF, name, 400)), len(contours(SANS, name, 400)))
+                self.assertEqual(len(contours(TTF, name, 400)), len(contours(SANS, name, 400)) + heads.get(name, 0))
+        for wght in (100, 400, 900):
+            for name in ('comma', 'quoteright'):
+                head = max(contours(TTF, name, wght), key=lambda c: c[:, 1].max())  # the head is the top of a comma
+                ctr = (head.max(0) + head.min(0)) / 2
+                r = np.hypot(*(head - ctr).T)
+                with self.subTest(wght=wght, name=name, part='head'):
+                    self.assertLess(r.max() / r.min(), 1.03)
         for wght in (100, 400, 700, 900):
             for name, n in (('period', 1), ('colon', 2), ('ellipsis', 3), ('exclam', 1), ('question', 1), ('dotaccent', 1)):
                 cs = contours(TTF, name, wght)
