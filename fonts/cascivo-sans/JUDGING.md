@@ -532,3 +532,21 @@ Specimens ("Signals move fast; the cascade decides." and `nmhru dbpqag escs`, Ca
 - ŋ and µ share the redrawn joins (n's and u's; `test_eng_and_mu_share_the_arch_of_n_and_u`); æ's e half keeps the old terminal
   run (`AE_RUN` -8: at -12 its counter tip against the a turned 45 deg, held to 42). Gates: all 146 pass, lint and quality clean.
 - Not done: the r's arm (its own arc) and the s (read as Inter's at these sizes); the italic's heavy arches.
+
+## Round 8: heavy curves in the engine (all families)
+
+Owner feedback: the heavier the weight, the worse the curves (0 5 6 9 $ C s d r at 900), in Sans and the siblings. Fixed in the
+engine, every knob scaled by `p.heavy` (Regular's master is unchanged; Bold takes its share). Upright 8.724 -> 8.733; all 91
+`test_font.py` gates, lint and quality clean; Mono, Serif and Condensed rebuilt, their `test_family.py` pass. Specimens
+("0123456789 $ Csdr nm return columns" at 400/700/900 over Inter, JetBrains Mono, Inter Tight), before and after: `specimens/round8/`.
+
+- Rounds (`geom.Stroke` `fill`, `glyphs.OVAL_FILL` 0.06 of a stem): a closed round's diagonals gain weight (peaking at 45 deg,
+  nothing on the axes), so Black's 0 o O Q and the 6 / 9 bowls have an oval counter inside the squarer outline, not the outline's
+  own rounded slot. 0.25 read as a lens, 0.1 put O and 0 under `test_black_rounds_square_up...`'s counter floors. Upright only: the
+  italic's 6 9 counters and & at 700 sat on their floors. Small rings (% @ °, pen clipped) keep their pen.
+- Terminals (`TERM_THIN` 0.12, `term_taper`): C e s S $ 5 6 9 thin into their face, not ending at a full-stem club.
+  `TERM_RUN` 6 deg: C 5 6 9 run further round. The c is untouched: its Black face sits between `quality`'s minimum lean (6 deg)
+  and `test_display_terminals_cut_flat` (4 deg at 900/48), and either change moved it out. e and S keep their runs (aperture gates).
+- r (`R_KNOB` 0.08, upright): the arm thickens toward its end. 0.15 hung a 17-unit beak under the face (gate 12).
+- Budget: `CascivoSans[opsz,wght].woff2` 77_600 -> 77_800 (77_760).
+- Not done: the 5's stem foot still steps where it meets the bowl's thin start; the n m d joins were round 7's and are unchanged.
