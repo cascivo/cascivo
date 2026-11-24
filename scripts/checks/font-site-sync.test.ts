@@ -21,7 +21,8 @@ import {
   formatKb,
   testerStyle,
 } from '../../apps/site/src/marketing/pages/cascivo-sans/data.ts'
-import { ROUTE_HEAD } from '../../apps/site/src/marketing/route-head.ts'
+import { FAMILIES, familySnippet } from '../../apps/site/src/marketing/pages/fonts/families.ts'
+import { PRERENDER_ROUTES, ROUTE_HEAD } from '../../apps/site/src/marketing/route-head.ts'
 
 const ROOT = join(import.meta.dirname, '../..')
 const PUBLIC = join(ROOT, 'apps/site/public/fonts/cascivo-sans')
@@ -53,18 +54,59 @@ describe('site copy of Cascivo Sans', () => {
   })
 })
 
-describe('site copy of the picker families', () => {
-  for (const family of ['mono', 'serif', 'condensed']) {
-    it(`cascivo-${family} is the only file served and matches its build`, () => {
-      const name = `Cascivo${family[0]?.toUpperCase()}${family.slice(1)}-Latin[opsz,wght].woff2`
-      const dir = join(ROOT, 'apps/site/public/fonts', `cascivo-${family}`)
-      assert.deepEqual(existsSync(dir) ? readdirSync(dir) : [], [name], FIX)
-      const same = readFileSync(join(dir, name)).equals(
-        readFileSync(join(ROOT, 'fonts', `cascivo-${family}`, 'fonts', name)),
+describe('site copy of the family fonts', () => {
+  for (const family of FAMILIES) {
+    it(`cascivo-${family.id} serves exactly its files, byte-identical to the build`, () => {
+      const dir = join(ROOT, 'apps/site/public/fonts', `cascivo-${family.id}`)
+      assert.deepEqual(
+        existsSync(dir) ? readdirSync(dir).sort() : [],
+        family.files.map((f) => f.name).sort(),
+        FIX,
       )
-      assert.ok(same, `${name} differs from its build — ${FIX}`)
+      for (const f of family.files) {
+        const same = readFileSync(join(dir, f.name)).equals(readFileSync(join(ROOT, f.source)))
+        assert.ok(same, `${f.name} differs from ${f.source} — ${FIX}`)
+      }
+    })
+
+    it(`cascivo-${family.id} sizes are current and the header picker's face is a web file`, async () => {
+      const { FAMILY_SIZES } =
+        await import('../../apps/site/src/marketing/pages/fonts/sizes.generated.ts')
+      for (const f of family.files) {
+        assert.equal(
+          FAMILY_SIZES[`${family.id}/${f.name}`],
+          readFileSync(join(ROOT, f.source)).length,
+        )
+      }
+      const css = readFileSync(
+        join(ROOT, `apps/site/src/marketing/font-faces/${family.id}.css`),
+        'utf8',
+      )
+      const web = family.files.find((f) => f.kind === 'web')
+      assert.ok(
+        web && css.includes(`/fonts/cascivo-${family.id}/${web.name}`),
+        'picker face drifted',
+      )
     })
   }
+
+  it('every family page is routed, prerendered and has a head', () => {
+    for (const route of ['/fonts', ...FAMILIES.map((f) => f.route)]) {
+      assert.ok(ROUTE_HEAD[route], `no ROUTE_HEAD for ${route}`)
+      assert.ok(PRERENDER_ROUTES.includes(route.slice(1)), `${route} is not prerendered`)
+      assert.ok(
+        (ROUTE_HEAD[route]?.description ?? '').length <= 160,
+        `${route} description too long`,
+      )
+    }
+  })
+
+  it('familySnippet points relative url()s at the web file', () => {
+    for (const family of FAMILIES) {
+      const web = family.files.find((f) => f.kind === 'web')
+      assert.ok(familySnippet(family).includes(`url('${web?.name}')`))
+    }
+  })
 })
 
 describe('comparison data', () => {

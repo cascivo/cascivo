@@ -1335,16 +1335,32 @@
 
 /* Header "Aa" typeface picker (native select) + the site-wide family overrides. */
 .header-font-toggle {
-  /* Wider than the icon buttons: a select shows its label. Still 44px tall on coarse pointers. */
-  inline-size: auto;
-  max-inline-size: 6.5rem;
-  padding-inline: var(--cascivo-space-2, 0.5rem);
+  position: relative;
   font-weight: 600;
   font-size: var(--cascivo-text-sm, 0.875rem);
-  font-family: inherit;
-  color: inherit;
-  background: transparent;
-  cursor: pointer;
+
+  /* The select covers the glyph, invisible but fully operable; the wrapper draws the focus ring. */
+  & select {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  &:focus-within {
+    outline: 2px solid var(--cascivo-color-focus-ring, currentColor);
+    outline-offset: 2px;
+  }
+
+  &[data-active='true'] > span {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
 }
 
 @layer cascivo.theme {
