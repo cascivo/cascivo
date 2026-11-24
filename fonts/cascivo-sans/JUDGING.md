@@ -506,7 +506,6 @@ Round 6, third sitting (redrawn outlines, numeric scorer). Upright 8.67 -> 8.72,
 - `BOLD_ADV_BLEND`: a Bold-drawn `t` (`T_BOLD_ARM` 0.6) fixes `ft`, but blends 0.1-1.0 all fail `test_weight_changes_do_not_reflow_text`, `test_tight_letters_open_up`, `test_l_tail_reads_and_keeps_its_white` (700 widens past the +-2% rule). Not kept; the 700 wstep kink stays.
 - Not run: the final Sonnet crop check of changed glyphs.
 
-
 ## Round 7: drawn heavy curves (numeric scorer, specimens against Inter)
 
 Owner feedback: at 700-900 the curves looked algorithmic. Upright 8.724 -> 8.724 (held), italic 8.09 unchanged (not touched).
@@ -533,4 +532,3 @@ Specimens ("Signals move fast; the cascade decides." and `nmhru dbpqag escs`, Ca
 - ŋ and µ share the redrawn joins (n's and u's; `test_eng_and_mu_share_the_arch_of_n_and_u`); æ's e half keeps the old terminal
   run (`AE_RUN` -8: at -12 its counter tip against the a turned 45 deg, held to 42). Gates: all 146 pass, lint and quality clean.
 - Not done: the r's arm (its own arc) and the s (read as Inter's at these sizes); the italic's heavy arches.
-
