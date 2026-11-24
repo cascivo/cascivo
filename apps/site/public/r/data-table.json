@@ -51,6 +51,272 @@
     "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
     "category": "display",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "root",
+        "data": {
+          "data-density": ["compact", "normal", "relaxed"],
+          "data-resized": ["true"],
+          "data-zebra": ["true"],
+          "data-sticky-header": ["true"],
+          "data-paginated": ["true"],
+          "data-fixed-layout": ["true"]
+        },
+        "children": ["srOnly", "toolbar", "batchBar", "scroller", "footer"]
+      },
+      "parts": {
+        "srOnly": {
+          "element": "span",
+          "aria": ["aria-live"],
+          "children": ["$text"]
+        },
+        "toolbar": {
+          "element": "div",
+          "children": ["heading", "toolbarActions"]
+        },
+        "heading": {
+          "element": "div",
+          "children": ["title", "description"],
+          "when": "title !== undefined || description !== undefined"
+        },
+        "title": {
+          "element": "div",
+          "children": ["$text"],
+          "when": "title !== undefined"
+        },
+        "description": {
+          "element": "div",
+          "children": ["$text"],
+          "when": "description !== undefined"
+        },
+        "toolbarActions": {
+          "element": "div",
+          "children": ["search", "@button", "$slot", "@popover", "menu"]
+        },
+        "search": {
+          "element": "input",
+          "aria": ["aria-label"],
+          "when": "searchable"
+        },
+        "menu": {
+          "element": "div",
+          "children": ["@checkbox"]
+        },
+        "batchBar": {
+          "element": "div",
+          "children": ["batchCount", "batchActions"],
+          "when": "batchActions && selection"
+        },
+        "batchCount": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "batchActions": {
+          "element": "div",
+          "children": ["@button"]
+        },
+        "scroller": {
+          "element": "div",
+          "modifiers": {
+            "scrollerVirtualized": "virtualized"
+          },
+          "children": ["table"]
+        },
+        "table": {
+          "element": "table",
+          "role": "grid",
+          "aria": [
+            "aria-labelledby",
+            "aria-label",
+            "aria-describedby",
+            "aria-busy",
+            "aria-rowcount"
+          ],
+          "children": [
+            "controlCol",
+            "groupHeader",
+            "headerCell",
+            "filterRow",
+            "row",
+            "emptyCell",
+            "groupRow",
+            "expansionRow",
+            "totals"
+          ]
+        },
+        "controlCol": {
+          "element": "col"
+        },
+        "groupHeader": {
+          "element": "th",
+          "children": ["$text"],
+          "when": "columnGroups"
+        },
+        "headerCell": {
+          "element": "th",
+          "data": {
+            "data-align": ["start", "end"],
+            "data-sized": ["true"],
+            "data-pinned": ["start", "end"],
+            "data-pinned-edge": ["true"],
+            "data-cell": "string"
+          },
+          "aria": ["aria-sort"],
+          "children": ["headerInner", "resizeHandle"]
+        },
+        "headerInner": {
+          "element": "span",
+          "children": ["sortButton", "$text", "@overflow-menu"]
+        },
+        "sortButton": {
+          "element": "button",
+          "data": {
+            "data-state": ["ascending", "descending", "none"]
+          },
+          "children": ["$text", "sortIndex"],
+          "when": "col.sortable"
+        },
+        "sortIndex": {
+          "element": "sup",
+          "aria": ["aria-hidden"],
+          "children": ["$text"]
+        },
+        "resizeHandle": {
+          "element": "span",
+          "role": "separator",
+          "data": {
+            "data-state": ["resizing"]
+          },
+          "aria": ["aria-orientation", "aria-label", "aria-valuenow"],
+          "when": "resizable"
+        },
+        "filterRow": {
+          "element": "tr",
+          "children": ["filterInput", "rangeInputs", "@popover"],
+          "when": "hasFilterRow"
+        },
+        "filterInput": {
+          "element": "input",
+          "aria": ["aria-label"]
+        },
+        "rangeInputs": {
+          "element": "div",
+          "children": ["filterInput"]
+        },
+        "row": {
+          "element": "tr",
+          "data": {
+            "data-parity": ["even", "odd"],
+            "data-pinned-row": ["top", "bottom"],
+            "data-state": ["selected"]
+          },
+          "aria": ["aria-rowindex"],
+          "children": ["controlCell", "$slot", "shimmer"]
+        },
+        "controlCell": {
+          "element": ["td", "th"],
+          "data": {
+            "data-pinned": ["start", "end"],
+            "data-pinned-edge": ["true"],
+            "data-cell": "string"
+          },
+          "children": ["expandButton", "@checkbox", "@overflow-menu", "srOnly"]
+        },
+        "expandButton": {
+          "element": "button",
+          "data": {
+            "data-state": ["open", "closed"]
+          },
+          "aria": ["aria-expanded", "aria-label"],
+          "children": ["chevron"],
+          "when": "renderExpandedRow"
+        },
+        "chevron": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        },
+        "shimmer": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "when": "loading"
+        },
+        "emptyCell": {
+          "element": "td",
+          "children": ["$slot"]
+        },
+        "groupRow": {
+          "element": "tr",
+          "data": {
+            "data-depth": "number",
+            "data-state": ["open", "closed"]
+          },
+          "aria": ["aria-rowindex"],
+          "children": ["controlCell", "groupToggle"],
+          "when": "groupBy"
+        },
+        "groupToggle": {
+          "element": "button",
+          "data": {
+            "data-state": ["open", "closed"]
+          },
+          "aria": ["aria-expanded"],
+          "children": ["chevron", "$text", "groupCount"]
+        },
+        "groupCount": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "expansionRow": {
+          "element": "tr",
+          "data": {
+            "data-state": ["open", "closed"]
+          },
+          "children": ["expansionGrid"],
+          "when": "renderExpandedRow"
+        },
+        "expansionGrid": {
+          "element": "div",
+          "data": {
+            "data-state": ["open", "closed"]
+          },
+          "children": ["expansionInner"]
+        },
+        "expansionInner": {
+          "element": "div",
+          "children": ["$slot"]
+        },
+        "totals": {
+          "element": "tfoot",
+          "children": ["controlCell", "srOnly", "$slot"],
+          "when": "totals"
+        },
+        "footer": {
+          "element": "div",
+          "children": ["pageSize", "range", "pageButtons"],
+          "when": "pagination"
+        },
+        "pageSize": {
+          "element": "label",
+          "children": ["$text"],
+          "when": "pagination.pageSizeOptions"
+        },
+        "range": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "pageButtons": {
+          "element": "div",
+          "children": ["pageButton"]
+        },
+        "pageButton": {
+          "element": "button",
+          "aria": ["aria-label"],
+          "children": ["$text"]
+        }
+      }
+    },
     "states": ["default", "loading", "empty"],
     "variants": [],
     "sizes": ["compact", "normal", "relaxed"],

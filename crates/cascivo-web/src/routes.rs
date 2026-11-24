@@ -2,9 +2,11 @@
 //! `blog/index.html` → `/blog/`, `blog/[posts].html` → `/blog/<slug>/` per `posts` entry,
 //! `404.md`/`404.html` → `/404.html` (`de/404.html` → `/de/404.html`).
 
+#[cfg(feature = "fs")]
 use std::path::Path;
 
 use crate::content::valid_slug;
+#[cfg(feature = "fs")]
 use crate::error::{Error, Errors, Result};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -101,6 +103,7 @@ pub fn out_path(internal: &str, trailing_slash: bool) -> String {
     }
 }
 
+#[cfg(feature = "fs")]
 /// Which names a walk skips.
 #[derive(Clone, Copy)]
 enum Skip {
@@ -110,8 +113,10 @@ enum Skip {
     Junk,
 }
 
+#[cfg(feature = "fs")]
 const JUNK: &[&str] = &[".DS_Store", ".git", "Thumbs.db", "desktop.ini"];
 
+#[cfg(feature = "fs")]
 fn walk(dir: &Path, rel: &str, skip: Skip, out: &mut Vec<String>) -> std::io::Result<()> {
     let mut items: Vec<_> = std::fs::read_dir(dir)?.flatten().collect();
     items.sort_by_key(std::fs::DirEntry::file_name);
@@ -140,16 +145,19 @@ fn walk(dir: &Path, rel: &str, skip: Skip, out: &mut Vec<String>) -> std::io::Re
     Ok(())
 }
 
+#[cfg(feature = "fs")]
 /// Every file below `dir` (sorted, `/`-separated); dot- and underscore-files skipped.
 pub fn list_files(dir: &Path) -> std::io::Result<Vec<String>> {
     list(dir, Skip::Private)
 }
 
+#[cfg(feature = "fs")]
 /// Every file below `dir` except OS/VCS clutter (`.DS_Store`, `.git`, `Thumbs.db`, `._*`).
 pub fn list_public(dir: &Path) -> std::io::Result<Vec<String>> {
     list(dir, Skip::Junk)
 }
 
+#[cfg(feature = "fs")]
 fn list(dir: &Path, skip: Skip) -> std::io::Result<Vec<String>> {
     let mut out = Vec::new();
     if dir.is_dir() {
@@ -158,6 +166,7 @@ fn list(dir: &Path, skip: Skip) -> std::io::Result<Vec<String>> {
     Ok(out)
 }
 
+#[cfg(feature = "fs")]
 /// Every route under `root/pages`; duplicates (`about.md` + `about/index.md`) are errors.
 pub fn scan(root: &Path) -> Result<Vec<Route>> {
     let files =
@@ -218,6 +227,7 @@ mod tests {
         assert_eq!(out_path("/de/404.html", true), "de/404.html");
     }
 
+    #[cfg(feature = "fs")]
     #[test]
     fn public_listing_keeps_dot_and_underscore_files() {
         let dir = std::env::temp_dir().join(format!("cvweb-public-{}", std::process::id()));
@@ -263,6 +273,7 @@ mod tests {
         }
     }
 
+    #[cfg(feature = "fs")]
     #[test]
     fn duplicate_routes_are_errors() {
         let dir = std::env::temp_dir().join(format!("cvweb-routes-{}", std::process::id()));

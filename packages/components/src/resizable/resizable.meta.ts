@@ -7,6 +7,24 @@ export const meta: ComponentMeta = {
   category: 'layout',
   // Reallocating space by drag or keyboard is the component.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      data: { 'data-orientation': ['horizontal', 'vertical'] },
+      children: ['pane', 'handle'],
+    },
+    parts: {
+      pane: { element: 'div', children: ['$slot'] },
+      handle: {
+        element: 'div',
+        role: 'separator',
+        aria: ['aria-orientation', 'aria-label', 'aria-valuenow', 'aria-valuemin', 'aria-valuemax'],
+        children: ['grip'],
+      },
+      grip: { element: 'span', aria: ['aria-hidden'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

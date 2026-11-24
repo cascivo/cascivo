@@ -20,6 +20,11 @@ pub mod blitz;
 pub mod brand;
 pub mod catalog;
 mod catalog_gen;
+/// Markup contract consts (`cv-<unit>-<local>` classes, `data-*` values), generated from
+/// `packages/css/contract.json`.
+#[path = "contract_gen.rs"]
+#[rustfmt::skip]
+pub mod contract;
 mod css_gen;
 pub mod diag;
 pub mod emit;

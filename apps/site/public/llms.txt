@@ -2,7 +2,7 @@
 
 _registry v1.11.0 · generated 2026-11-21 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
 
-_Describes: @cascivo/ai@1.11.0 · @cascivo/app@1.11.0 · @cascivo/astro@1.11.0 · @cascivo/charts@1.11.0 · @cascivo/core@1.11.0 · @cascivo/data@0.1.1 · @cascivo/docs@0.2.19 · @cascivo/docspack@0.3.5 · @cascivo/editor@1.11.0 · @cascivo/email@0.6.1 · @cascivo/email-preview@4.0.0 · @cascivo/eslint-config@0.4.2 · @cascivo/eslint-plugin@0.3.0 · @cascivo/flow@1.11.0 · @cascivo/i18n@1.11.0 · @cascivo/icons@1.1.1 · @cascivo/mcp@0.10.2 · @cascivo/platform@0.0.6 · @cascivo/react@1.11.0 · @cascivo/registry@0.3.0 · @cascivo/render@1.11.0 · @cascivo/storage@1.11.0 · @cascivo/text@1.11.0 · @cascivo/themes@1.0.3 · @cascivo/tokens@1.3.1 · @cascivo/vite-plugin@0.1.11 · cascivo@1.8.2 · create-cascivo@0.1.1. If your installed versions are lower, a documented behaviour may not have shipped yet._
+_Describes: @cascivo/ai@1.11.0 · @cascivo/app@1.11.0 · @cascivo/astro@1.11.0 · @cascivo/charts@1.11.0 · @cascivo/core@1.11.0 · @cascivo/css@0.0.0 · @cascivo/data@0.1.1 · @cascivo/docs@0.2.19 · @cascivo/docspack@0.3.5 · @cascivo/editor@1.11.0 · @cascivo/email@0.6.1 · @cascivo/email-preview@4.0.0 · @cascivo/eslint-config@0.4.2 · @cascivo/eslint-plugin@0.3.0 · @cascivo/flow@1.11.0 · @cascivo/i18n@1.11.0 · @cascivo/icons@1.1.1 · @cascivo/mcp@0.10.2 · @cascivo/platform@0.0.6 · @cascivo/react@1.11.0 · @cascivo/registry@0.3.0 · @cascivo/render@1.11.0 · @cascivo/storage@1.11.0 · @cascivo/text@1.11.0 · @cascivo/themes@1.0.3 · @cascivo/tokens@1.3.1 · @cascivo/vite-plugin@0.1.11 · cascivo@1.8.2 · create-cascivo@0.1.1. If your installed versions are lower, a documented behaviour may not have shipped yet._
 
 cascivo is a React design system you can consume two ways: copy-paste the source
 (`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
@@ -337,8 +337,10 @@ All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md
 - Sign-in, connected accounts and social posting (OAuth, Bluesky, Mastodon, LinkedIn, Threads, Buffer, ShareMenu): https://cascivo.com/docs/recipe-social.md
 - Every @cascivo/email component, with props and examples: https://cascivo.com/docs/email-primitives.md
 - Email client support matrix (what the conformance lint enforces): https://cascivo.com/docs/email-client-support.md
+- Markup contract for HTML, htmx, Solid and Rust apps (@cascivo/css: cv-* classes + data-* attributes, typed class map, example): https://cascivo.com/docs/contract.md
 - Static HTML from .cv text (cascivo-html Rust crate + CLI, no React): https://cascivo.com/docs/using-cascivo-html.md
 - Static sites from Markdown, collections, i18n and RSS (cascivo-web Rust CLI, no React): https://cascivo.com/docs/using-cascivo-web.md
+- Dynamic server-rendered apps (cascivo-server axum + htmx, forms, sessions, Workers/Containers, Solid islands): https://cascivo.com/docs/using-cascivo-server.md
 - Terminal UIs in Rust (cascivo-tui ratatui toolkit, class strings + themes): https://cascivo.com/docs/using-cascivo-tui.md
 - Native windows from .cv text (cascivo-blitz Rust crate on the Blitz engine, no browser): https://cascivo.com/docs/using-cascivo-blitz.md
 - Compatibility & support matrix: https://cascivo.com/docs/compatibility.md

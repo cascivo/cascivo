@@ -62,6 +62,10 @@ The format has 51 elements: layout, display, feedback, navigation and seven SVG 
 `line`, `area`, `pie`, `scatter`, `spark`, `gauge`). Do not guess names or props. Run
 `cascivo-html guide` for the list and `cascivo-html guide <name>` for every prop of one component.
 
+## Dialogs and toasts
+
+`dialog "Title" id=del description="..."` renders a native `<dialog>` inside `<cv-dialog>`; `dialog-trigger del "Delete"` is the button that opens it (`size=sm|md|lg`, `open` to start open). `toaster` is the notification region (`id="cv-toaster"`) a server appends toasts to; `toast "Saved" success` is one row (`info|success|warning|danger`, `title=`). Both ship a small inline script (`cv-dialog.js`, `cv-toaster.js`); without it a dialog stays closed unless `open`, and toasts stay on the page.
+
 ## Brand a page
 
 `@brand` sets the look in one line. Every key is optional.

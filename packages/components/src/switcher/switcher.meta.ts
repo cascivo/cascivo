@@ -9,6 +9,28 @@ export const meta: ComponentMeta = {
   // default label when the i18n locale or catalog changes, which is why the source
   // calls useSignals() and carries 'use client'. Nothing is unreachable with JS off.
   clientJs: 'enhancement',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'ul',
+      aria: ['aria-label'],
+      children: ['item', 'divider'],
+      // Entries are rendered in a loop through the app's link component.
+      emit: 'manual',
+    },
+    parts: {
+      // The link component, so any anchor-like element.
+      item: {
+        element: 'a',
+        data: { 'data-state': ['active'] },
+        aria: ['aria-current'],
+        children: ['icon', '$text'],
+      },
+      icon: { element: 'span', aria: ['aria-hidden'], children: ['$slot'], when: 'icon' },
+      // Wrapped in a plain `<li>` so the list keeps only listitem children.
+      divider: { element: 'span', role: 'separator', aria: ['aria-orientation'] },
+    },
+  },
   states: ['default'],
   variants: [],
   sizes: [],

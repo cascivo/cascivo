@@ -56,6 +56,12 @@
       cursor: not-allowed;
     }
 
+    /* Coarse-pointer touch targets: raise to 44px, desktop density unchanged */
+    @media (pointer: coarse) {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+      min-inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+
     &[data-state='active'] {
       color: var(--cascivo-color-text);
 
@@ -73,6 +79,20 @@
       outline: none;
       box-shadow: var(--cascivo-focus-ring);
       border-radius: var(--cascivo-radius-control);
+    }
+  }
+
+  /*
+   * Without JS (`cv-tabs` not defined) nothing can switch tabs: hide the tablist and stack every
+   * panel so the content stays readable. A defined element drops the rule by itself.
+   */
+  cv-tabs:not(:defined) {
+    .list {
+      display: none;
+    }
+
+    .content[hidden] {
+      display: block;
     }
   }
 }

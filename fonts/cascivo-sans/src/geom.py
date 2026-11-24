@@ -186,9 +186,13 @@ class Stroke:
     reach: per end, how many segments the taper ramps across (None: the end segment's first 1/1.6, `_ease`). Black's
            arches and bowls thin across both quarters next to the stem, as a drawn heavy arch does (glyphs.join_reach).
     turn: degrees a 'b' end's cut turns further toward a flat face, at any weight (the Display master's terminals, P.face).
+    fill: units a curve gains where it runs diagonally (peaking at 45 deg, nothing on the axes): a heavy round's diagonals carry
+          more than the pen gives them, so its counter is an oval inside a squarer outline, not the outline's own rounded slot
+          (round 8; glyphs.OVAL_FILL).
     """
 
-    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0, cut='v', tilt=None, reach=(None, None), turn=0.0):
+    def __init__(self, segs, caps=('b', 'b'), taper=(1.0, 1.0), w=None, ws=1.0, closed=False, pen=None, slant=0.0, cut='v', tilt=None, reach=(None, None), turn=0.0, fill=0.0):
+        self.fill = fill
         self.turn = turn
         self.reach = reach
         self.segs = segs
@@ -204,7 +208,7 @@ class Stroke:
 
     def transformed(self, f, slant=None):
         segs = [(s[0],) + tuple(f(p) for p in s[1:]) for s in self.segs]
-        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen, self.slant if slant is None else slant, self.cut, self.tilt, self.reach, self.turn)
+        return Stroke(segs, self.caps, self.taper, self.w, self.ws, self.closed, self.pen, self.slant if slant is None else slant, self.cut, self.tilt, self.reach, self.turn, self.fill)
 
 
 def pen_thickness(tangent, V, H, slant=0.0):
@@ -222,6 +226,8 @@ def _thick(stroke, i, t, tan, V, H):
     else:
         pv, ph = stroke.pen if stroke.pen else (V, H)
         w = pen_thickness(tan, pv, ph, stroke.slant) * stroke.ws
+        if stroke.fill and stroke.segs[i][0] == 'C':
+            w += stroke.fill * (2 * tan[0] * tan[1]) ** 2
     n = len(stroke.segs)
     r0, r1 = stroke.reach
     if r0 is not None and stroke.taper[0] != 1.0:

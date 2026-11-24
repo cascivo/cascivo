@@ -5,6 +5,29 @@ export const meta: ComponentMeta = {
   description: 'A button that opens an anchored action menu of one-shot commands',
   category: 'navigation',
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'div', local: 'root', children: ['trigger', 'menu'] },
+    parts: {
+      trigger: {
+        element: 'button',
+        data: {
+          'data-variant': ['primary', 'secondary', 'ghost'],
+          'data-size': ['sm', 'md', 'lg'],
+        },
+        aria: ['aria-haspopup', 'aria-expanded', 'aria-controls', 'aria-label'],
+        children: ['$slot'],
+      },
+      menu: {
+        element: 'div',
+        role: 'menu',
+        data: { 'data-state': ['open'], 'data-align': ['start', 'end'] },
+        when: 'open',
+        children: ['item'],
+      },
+      item: { element: 'div', role: 'menuitem', aria: ['aria-disabled'], children: ['$slot'] },
+    },
+  },
   states: ['open', 'closed'],
   variants: ['primary', 'secondary', 'ghost'],
   sizes: ['sm', 'md', 'lg'],

@@ -6,6 +6,23 @@ export const meta: ComponentMeta = {
     'Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings',
   category: 'navigation',
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'panel',
+      role: 'region',
+      data: { 'data-state': ['open', 'closed'] },
+      aria: ['aria-label'],
+      children: ['header', 'body'],
+    },
+    parts: {
+      header: { element: 'div', children: ['title', 'close'] },
+      title: { element: 'span', children: ['$text'] },
+      close: { element: 'button', aria: ['aria-label'] },
+      body: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: ['open', 'closed'],
   variants: [],
   sizes: [],
