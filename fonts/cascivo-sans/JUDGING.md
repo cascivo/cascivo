@@ -498,3 +498,10 @@ capitals' widening (`CAPW_START`, `glyphs.capw`) fails `test_weight_changes_do_n
 The Bold master's capitals `T V W X Y Z` are `BOLD_OWN`, so no lowercase blend reaches them. Untouched: italic gates, Black counters
 (`0 a e 4 6 9`, `Q D O B d`) and `O`/`0` at 11-12 px, which need redrawn outlines, not constants.
 
+
+Round 6, third sitting (redrawn outlines, numeric scorer). Upright 8.67 -> 8.72, italic 7.93 -> 8.09; target 8.9 not met.
+- Kept: Black `D B` heavier tops/bottoms (`CAP_ROUND_H` 0.8, `_B` 0.4; D z 3.9 -> <1.2, B 3.1 -> <1; shape 8.53 -> 8.78). Italic `I` (800-900) shorter, thinner slabs; italic `1` flag reaches further left and ends lower, held 2.5 units lower at Black; small sizes 7.4 -> 8.5 (italic woff2 83,896 B, cap 83,900).
+- Reverted: Black `O Q` heavier horizontals (O counter 114k < 130k floor, `test_black_rounds_square_up`); `b d p q` heavier bowls (join_ratio > 0.71 crotch gate). Black `0 a e 4 6 9` left alone (scorer rates them about right). Italic `D B` (bars below baseline, Black Italic `в` self-intersects, byte cap).
+- `0` vs `O` at 11-12 px: already better than the references at every weight; a narrower `0` fails `test_advances_at_regular_match_a855b5e0` and `ZERO_MIN_SHARE`. Needs an owner decision (advances fixture exception, or wider sidebearings).
+- `BOLD_ADV_BLEND`: a Bold-drawn `t` (`T_BOLD_ARM` 0.6) fixes `ft`, but blends 0.1-1.0 all fail `test_weight_changes_do_not_reflow_text`, `test_tight_letters_open_up`, `test_l_tail_reads_and_keeps_its_white` (700 widens past the +-2% rule). Not kept; the 700 wstep kink stays.
+- Not run: the final Sonnet crop check of changed glyphs.
