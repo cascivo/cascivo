@@ -387,6 +387,7 @@ def _O(g, p):
 
 
 Q_TAIL = 30
+Q_HEAVY_WS = 0.25  # round 10: Black's tail was a 0.9-stem stick off the bowl; a full stem reads as Inter's wedge (it may not enter the counter: quality.py)
 CAP_C_RUN_IT = 0
 CAP_C_TILT_IT = 12  # the c's own went to 8 in round 5, italic 3 (C_TILT_IT); the C keeps the face its gates were drawn for
 
@@ -397,7 +398,7 @@ def _Q(g, p):
     g.oval(0, -p.ov, w, p.cap + p.ov, k=p.k + CAP_O_SQUARE * p.heavy, drawn=True)
     # the tail ends Q_TAIL lower than it did, at every weight (its right edge and the advance stay): it stopped 27 under the baseline
     # at Regular and 32 at Black, a stub beside Inter's 56 and 70
-    g.diag(w * 0.6, p.cap * 0.2 - 60 * p.heavy, w + p.V * 0.2 + 30 * p.heavy, -p.ov - 40 + 0.32 * p.V - 40 * p.heavy - Q_TAIL, 'c', 'r', ws=0.9, caps=('b', 'b'))  # a square end: the flat cut left a sliver at its lower corner; Black's starts lower and ends longer, in the ring's wall: its square start poked a spur into the counter
+    g.diag(w * 0.6, p.cap * 0.2 - 60 * p.heavy, w + p.V * 0.2 + 30 * p.heavy, -p.ov - 40 + 0.32 * p.V - 40 * p.heavy - Q_TAIL, 'c', 'r', ws=0.9 + Q_HEAVY_WS * p.heavy, caps=('b', 'b'))  # a square end: the flat cut left a sliver at its lower corner; Black's starts lower and ends longer, in the ring's wall: its square start poked a spur into the counter
     g.ht = 'c'
     g.sb = (0.62, 0.5)
 
@@ -511,6 +512,10 @@ def _U(g, p):
     g.sb = (1, 1)
 
 
+# Round 10: Black's hook stopped 20 deg short, its butt end a spike pointing up and left; 12 ends it near level, as Inter's
+J_RUN = 12
+
+
 @glyph('J', 0x4A)
 def _J(g, p):
     w = p.Hd * 0.8
@@ -522,7 +527,7 @@ def _J(g, p):
     cy = -p.ov + H / 2 + ry
     # Regular's hook runs 12° further round (it stopped short, 0.87x the references' ink); Black's
     # is unchanged
-    g.stroke([L((xr, p.cap), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, max(-179.0, -178 + 20 * p.heavy + p.ap)), caps=('b', 'b'))  # short of -180°: same segments in every master
+    g.stroke([L((xr, p.cap), (xr, cy))] + g.arc(xr - rx, cy, rx, ry, 0, max(-179.0, -178 + J_RUN * p.heavy + p.ap)), caps=('b', 'b'))  # short of -180°: same segments in every master
     g.ht = 'c'
     g.sb = (0.4 + J_HOOK * p.heavy, 0.9)  # J_HOOK: Black's hook reached under the I's slab, IJ 0.51x the HH gap upright (Inter's 0.70x)
 
@@ -2229,9 +2234,13 @@ def _exclam(g, p):
     g.ht = 'c'
 
 
+# Round 10: the heavy hook ran 17% wider than Inter's Black ? (0.14), a flat wide cap with a beak; 0.06 keeps its counter open
+Q_MARK_HEAVY_W = 0.06
+
+
 @glyph('question', 0x3F)
 def _question(g, p):
-    w = p.Hw * (0.78 + 0.14 * p.heavy)  # the heavy hook needs width to keep its counter
+    w = p.Hw * (0.78 + Q_MARK_HEAVY_W * p.heavy)  # the heavy hook needs width to keep its counter
     V, H = p.V, p.H
     d = p.dot
     xm = w * 0.47
@@ -2323,7 +2332,7 @@ def _equal(g, p):
 @glyph('multiply', 0xD7)
 def _multiply(g, p):
     w, cy, t = _mathy(p)
-    r = w * 0.36
+    r = w * 0.41  # round 10: 0.36 set a cross 0.89x Inter's at Regular, small beside the + in "1.9x"
     c = w / 2
     g.line((c - r, cy - r), (c + r, cy + r), w=t, caps=('b', 'b'))
     g.line((c - r, cy + r), (c + r, cy - r), w=t, caps=('b', 'b'))
