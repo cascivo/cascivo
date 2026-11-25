@@ -112,7 +112,7 @@ Round 9, visual (`src/family.py`; engine untouched, Sans byte-identical). Judged
 JetBrains Mono's statics; sheets `specimens/round9/` (`python3 -I src/specimen_round9.py <tag> <jetbrains dir> [--ink]`, `--ink` prints
 each glyph's ink over JetBrains Mono's, rasterized at 150 px). Remaining weaknesses after round 8: Thin grey (ink 0.45x theirs on
 every glyph), `|` over the whole line box (read as the text cursor in `x |= y`, 190 units over the capitals), `*` 0.72x at 400,
-` 1.26/1.36x at 700/900, `~` 0.7x, 1 0.64-0.73x, r t j 0.72-0.80x, no italic.
+`1.26/1.36x at 700/900,`~` 0.7x, 1 0.64-0.73x, r t j 0.72-0.80x, no italic.
 
 - Thin: THIN_UP 0.15 -> 0.5, now on the horizontals and bars as well as the stem (stem alone would invert the contrast). Stem 28 -> 36,
   hyphen 40 thick; ink 0.45 -> 0.55-0.79x JetBrains Mono Thin's (l 0.51 -> 0.74, `-` 0.31 -> 0.56). Fades out by Regular as before.

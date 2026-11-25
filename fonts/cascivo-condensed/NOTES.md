@@ -18,12 +18,12 @@ straight double quote wide at Black, display Black crowded, I/1 and O/0 at 11 px
 This round takes the first two and the hyphen, the punctuation that never condensed. At opsz 14, advance over Sans's
 (letters 0.79):
 
-|         | 400 before | 400 after | 900 before | 900 after |
-| ------- | ---------- | --------- | ---------- | --------- |
-| ( )     | 0.91       | 0.80      | 0.85       | 0.77      |
-| [ ]     | 0.91       | 0.83      | 0.85       | 0.79      |
-| "       | 0.90       | 0.83      | 0.89       | 0.81      |
-| hyphen  | 0.95       | 0.83      | 0.95       | 0.81      |
+|        | 400 before | 400 after | 900 before | 900 after |
+| ------ | ---------- | --------- | ---------- | --------- |
+| ( )    | 0.91       | 0.80      | 0.85       | 0.77      |
+| [ ]    | 0.91       | 0.83      | 0.85       | 0.79      |
+| "      | 0.90       | 0.83      | 0.89       | 0.81      |
+| hyphen | 0.95       | 0.83      | 0.95       | 0.81      |
 
 - Parentheses: the bow (Sans 123 units deep) at 0.75 (`PAREN_BOW`), the centreline scaled about the arc's ends, so the stroke
   keeps its weight. Ink at Regular 170 units (n 458): still a curve, not a bracket.
