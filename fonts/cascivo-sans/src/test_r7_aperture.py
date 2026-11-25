@@ -58,6 +58,7 @@ REGULAR = {('c', False): 403, ('e', False): 199, ('a', False): 229, ('C', False)
 
 
 class Aperture(unittest.TestCase):
+    @unittest.skipUnless(os.path.exists(INTER) and os.path.exists(INTER_IT), 'the Inter references (INTER_REF, INTER_ITALIC_REF) are not here')
     def test_black_mouths_open_like_inter(self):
         for ch, side, italic in OPENED:
             own = mouth(VFI if italic else VF, ch, 900, side, italic)

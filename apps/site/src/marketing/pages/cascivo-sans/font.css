@@ -1,7 +1,7 @@
 /* /cascivo-sans — imported only by CascivoSansPage, so no other route downloads the font. */
 @font-face {
   font-family: 'Cascivo Sans';
-  src: url('/fonts/cascivo-sans/CascivoSans-Latin[opsz,wght].woff2?v=78c3c1b63d') format('woff2');
+  src: url('/fonts/cascivo-sans/CascivoSans-Latin[opsz,wght].woff2?v=2b14627aad') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -9,7 +9,7 @@
 
 @font-face {
   font-family: 'Cascivo Sans';
-  src: url('/fonts/cascivo-sans/CascivoSans-Italic-Latin[opsz,wght].woff2?v=863b9ef683')
+  src: url('/fonts/cascivo-sans/CascivoSans-Italic-Latin[opsz,wght].woff2?v=bb2bc51c4a')
     format('woff2');
   font-weight: 100 900;
   font-style: italic;
