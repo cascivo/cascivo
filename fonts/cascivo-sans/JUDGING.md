@@ -639,5 +639,11 @@ the mid-round state about 7.0 and ranked the Black mouths first; they were then 
   (ten scaled figure owners, `¡ ¿ ‘ ģ ª º ™ © ®`: irreducible while Font Bakery forbids scaled components). Tried and rejected:
   `hinting_range_max` 30 (-245 B, rasters change at 36 px and up), dropping the mark-clear calls (-1.6 KB, the i dot lands on the stem
   again), `hint_composites` / `adjust_subglyphs` (+15-20 KB). No glyph program is a no-op.
+- Not merged (failed 4+ tests of the full suite, unidentified when the round stopped): a spacing retune that scored upright 8.43 ->
+  8.71 and italic 8.20 -> 8.45 (`CN_BLACK` 145 -> 135 lowercase only, `BOLD_TIGHTEN` 0.125 -> 0.08, `CAP_SB_BOLD` 0.1 -> 0.075,
+  `CH_BLACK` 300 -> 270 (italic 305 -> 260), `HEAVY_TIGHTEN_ITALIC` 0.09 -> 0.12, `CAP_SB_BOLD_ITALIC` 0.1, `BOLD_OPEN_SB` 0.3 -> 0.2
+  for `n h m u o b d p q 0`, Thin figures narrower, Black `1` flag 30 left and 0.14 cap lower). It eased the 700 bend for `n o m` (16
+  -> 12, 27 -> 23) and `I/1` at 12 px Black (0.43 -> 0.33 overlap) but left `T V W X Y Z` bending 21-36 units and made `rn`/`m` at
+  11 px 800 an offender. Start the next round from it.
 - Left: the 700 `wstep` kink (upright weight axis 7.3, italic 7.4), `I/1` at 12 px Black, italic shape 7.2, the Black `ll`/`l` tail and
   `k x y v w` crotches the review flagged, upright `tt` at 900/48 (12 units, a crossbar ligature; Inter overlaps too).
