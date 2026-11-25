@@ -51,5 +51,41 @@
       "codepoints_upright": 212,
       "note": "measured from @fontsource-variable/ibm-plex-sans@5.3.0, a Latin slice of the variable release (weight axis only; the full family also has a width axis)."
     }
-  ]
+  ],
+  "distribution": {
+    "measured": "2026-11-25",
+    "note": "Total download or install footprint, as each project ships it. Unpacked bytes (1 KB = 1024 bytes). GitHub release asset sizes could not be read from this build environment, so the figures for others are npm unpacked sizes from the official packages.",
+    "cascivo": {
+      "source": "sum of every file under fonts/cascivo-*/fonts on main (Sans, Serif, Mono, Condensed; TTF + WOFF2); no npm package yet",
+      "families": 4,
+      "files": 25,
+      "bytes": 3157408,
+      "per_family": {
+        "cascivo-sans": 1586256,
+        "cascivo-serif": 884628,
+        "cascivo-mono": 311600,
+        "cascivo-condensed": 374924
+      }
+    },
+    "others": [
+      {
+        "name": "IBM Plex",
+        "package": "@ibm/plex@6.4.1",
+        "source": "npm unpacked size; the full family with every script and all CJK, as Carbon users install it",
+        "bytes": 186600620
+      },
+      {
+        "name": "Inter",
+        "package": "inter-ui@4.1.1",
+        "source": "npm unpacked size",
+        "bytes": 6212491
+      },
+      {
+        "name": "Geist",
+        "package": "geist@1.9.2",
+        "source": "npm unpacked size (Sans, Mono and Pixel; includes the Next.js helper code)",
+        "bytes": 8296475
+      }
+    ]
+  }
 }
