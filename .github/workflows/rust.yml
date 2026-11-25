@@ -8,6 +8,7 @@ on:
     paths:
       - 'crates/**'
       - 'apps/examples/solid-htmx/**'
+      - 'apps/examples/track-lite-htmx/**'
       - 'Cargo.toml'
       - 'Cargo.lock'
       - 'rust-toolchain*'
@@ -45,6 +46,8 @@ jobs:
       # solid-htmx example server (workspace member, so also in the line above): page, htmx fragment
       # route and island assets. Named so a failure points at the example, not the crates.
       - run: cargo test -p solid-htmx-server --locked
+      # track-lite-htmx (the htmx twin of the React track-lite): CRUD, 422, CSRF, SSE fan-out.
+      - run: cargo test -p track-lite-htmx-server --locked
       # cascivo-web's axum adapter is feature-gated; its integration test needs the feature on.
       - run: cargo test -p cascivo-web --features axum --locked
       # cascivo-blitz without its default `window` feature: the headless build embedders use.

@@ -144,6 +144,7 @@
     "rtl:check": "node --experimental-strip-types --test scripts/checks/rtl.test.ts",
     "elements:check": "node --experimental-strip-types --test scripts/checks/elements.test.ts",
     "dynamic:check": "node --experimental-strip-types --test scripts/checks/dynamic/dynamic.test.ts",
+    "compare:react-vs-htmx": "node --experimental-strip-types scripts/compare/react-vs-htmx.ts",
     "dynamic:check:starter": "DYNAMIC_TARGET=starter node --experimental-strip-types --test scripts/checks/dynamic/dynamic.test.ts",
     "computed:check": "node --experimental-strip-types --test scripts/checks/computed-style.test.ts",
     "no-js:check": "node --experimental-strip-types --test scripts/checks/no-js-disclosure.test.ts",

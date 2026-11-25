@@ -1,0 +1,61 @@
+/* App layout shared verbatim with track-lite/src/app.css: same classes, same look. */
+@layer cascivo.example {
+  .tl-app {
+    max-inline-size: 64rem;
+    margin-inline: auto;
+    padding: var(--cascivo-space-4);
+    font-family: var(--cascivo-font-sans, system-ui, sans-serif);
+    color: var(--cascivo-color-foreground);
+  }
+
+  .tl-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cascivo-space-3);
+    margin-block-end: var(--cascivo-space-4);
+  }
+
+  .tl-title {
+    font-size: var(--cascivo-text-xl);
+    margin-inline-end: auto;
+  }
+
+  .tl-count {
+    margin-block-end: var(--cascivo-space-2);
+  }
+
+  .tl-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--cascivo-space-2);
+  }
+
+  .tl-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    padding: var(--cascivo-space-2) var(--cascivo-space-3);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-md);
+  }
+
+  .tl-issue-title {
+    flex: 1 1 12rem;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .tl-assignee,
+  .tl-empty {
+    color: var(--cascivo-color-foreground-muted);
+    font-size: var(--cascivo-text-sm);
+  }
+
+  .tl-form {
+    display: grid;
+    gap: var(--cascivo-space-3);
+  }
+}

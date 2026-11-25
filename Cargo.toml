@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/*", "apps/examples/solid-htmx/server"]
+members = ["crates/*", "apps/examples/solid-htmx/server", "apps/examples/track-lite-htmx/server"]
 resolver = "3"
 
 [workspace.package]

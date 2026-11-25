@@ -4966,6 +4966,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "track-lite-htmx-server"
+version = "0.0.0"
+dependencies = [
+ "axum",
+ "cascivo-server",
+ "cascivo-web",
+ "futures-util",
+ "minijinja",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tower",
+]
+
+[[package]]
 name = "ttf-parser"
 version = "0.25.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
