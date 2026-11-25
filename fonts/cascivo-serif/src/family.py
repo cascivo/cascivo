@@ -95,7 +95,8 @@ def tune(p):
     p.cn *= _pw(v0, LC_K)
     p.fig_adv = round(p.fig_adv * FIG_K)
     if p.italic:
-        p.cn *= ITALIC_CN
+        p.cn *= _pw(v0, ITALIC_CN)
+        p.V *= _pw(v0, ITALIC_STEM_K)
     # Round overshoot keeps growing past Regular, as Source Serif's (o 12 / 12 / 15, O 15 / 16 / 19 units at 200 / 400 / 800);
     # Sans holds 13.4 from Regular up, so Bold's rounds and the serifed x stood level at the x-height
     p.ov = _pw(v0, [(24, 11.5), (84, 13.4), (194, 16.5)])
@@ -177,7 +178,18 @@ NARROW = {'B': 0.86, 'P': 0.84, 'U': 0.9, 'N': 0.9, 'S': 0.88, 'D': 0.93, 'E': 0
 # f 358-387, near flat), so the advance jumped at 300 -> 400 (wstep). Thin wider, Regular's t a little narrower.
 NARROW_W = {'t': [(22, 1.3), (92, 0.84), (190, 0.97)], 'f': [(22, 1.25), (92, 1.0), (190, 1.0)]}
 ITALIC_FOOT = 0.8  # italic lowercase exit flick's reach over the upright serif's
-ITALIC_CN = 0.93  # italic n counter on Sans italic's (round 7: the serifed italic set 1.1x Source Serif 4 Italic at 400)
+# Round 9: italic lowercase head serifs on the upright's reach. Full slabs crowded the x-height at Bold and Black (un 73 units apart at
+# 900, opsz 48; Source Serif 4 Italic 114, whose heads are short entry wedges). The stems give up only part of it (head_back in glyph).
+ITALIC_HEAD = 0.7
+HEAD_BACK = 0.5  # share of the shortened reach the left sidebearing takes back: all of it (un 94 at 900) cost small sizes 7.71 -> 7.31
+# italic n counter on Sans italic's (round 7: 0.93, the serifed italic set 1.1x Source Serif 4 Italic at 400). Round 9: a sentence
+# still set 1.09x / 1.06x Source Serif 4 Italic's at 300 / 400 (n counter 269 / 219 against 231 / 198); Bold and Black, lighter
+# with ITALIC_STEM_K and ITALIC_HEAD, open a little (n counter 130 / 116 against 142 / 120)
+ITALIC_CN = [(24, 0.84), (84, 0.88), (146, 1.03), (194, 0.99)]
+# Round 9: italic stems on the upright's. Source Serif 4 Italic's n stem is 49 / 84 / 156 / 184 at 300 / 400 / 700 / 900, ours stood
+# 55 / 93 / 171 / 193 (the upright's): at text sizes the italic read a grade darker than the roman beside it, the reverse of a book
+# serif, whose italic is lighter and narrower
+ITALIC_STEM_K = [(24, 0.9), (84, 0.91), (146, 0.92), (194, 0.96)]
 FIG_K = 0.93  # tabular figure advance on Sans's (round 7: figures set 1.09-1.12x Source Serif 4's)
 FIGS = {'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'}
 
@@ -682,23 +694,33 @@ def glyph(g, p, name):
         sb[sx > 0] += SPUR_SB * (p.V * SPUR_TIP + outer * SPUR_BASE) / p.S / len(_DPLAN[key][1])
         g.sb = tuple(sb)
     tuck = set()
+    head_back = 0.0
     for i, end, kind, sides in _PLAN[key]:
         s = g.strokes[i]
         seg = s.segs[0] if end == 0 else s.segs[-1]
         b = seg[1] if end == 0 else seg[2]
-        r = {side: k * (outer if out else inner) for side, out in sides}
+        trim = _pw(p.V, HEAVY_TRIM) if k == 1.0 and not p.italic else 0.0
+        r = {side: k * (outer - trim if out else inner) for side, out in sides}
         if p.italic and k == 1.0 and kind == 'base' and r:
             # Round 7: an italic lowercase foot is an exit flick to the right, not a slab (Source Serif 4 Italic): the left half
             # goes and the right shortens. Both sides stay in the contour (zero reach), so the masters stay compatible.
             r = {1: max(r.values()) * ITALIC_FOOT}
         tuck.update(side for side, out in sides if out)
         d = 1 if kind in ('base', 'desc') else -1
+        if p.italic and k == 1.0 and d < 0:
+            if any(side < 0 and out for side, out in sides):
+                head_back = max(head_back, r[-1] * (1 - ITALIC_HEAD) * HEAD_BACK)
+            r = {side: v * ITALIC_HEAD for side, v in r.items()}
         wedge = t * WEDGE if d < 0 and k == 1.0 and -1 in r else 0.0
         g.raw.append(_serif(b[0], _half(s, p), b[1], d, r.get(-1, 0), r.get(1, 0), t, bf, wedge))
+    if head_back:
+        # the engine spaces the ink's extremes: a shorter outer head would pull the stem toward its neighbour by what it gave up,
+        # so the sidebearing takes it back and only the x-height white grows
+        g.sb = (g.sb[0] + head_back / p.S, g.sb[1])
     if tuck and not name[:1].isupper():
         # An outer serif widens the ink, so the stem would sit a reach further from its neighbour: heavy lowercase set
         # loose (nn 1.29 gap/counter at 900, Source Serif 1.14). Part of the reach is taken back from the sidebearing.
-        d = _pw(p.V, TUCK) / p.S
+        d = (_pw(p.V, TUCK) - (0.0 if p.italic else TRIM_BACK * _pw(p.V, HEAVY_TRIM))) / p.S
         g.sb = (g.sb[0] - d * (-1 in tuck), g.sb[1] - d * (1 in tuck))
     base = name.split('.')[0]
     if base in U_LSB:
@@ -712,6 +734,13 @@ def glyph(g, p, name):
 # Source Serif 1.01), so the tuck gains a Bold point (151: Bold's stem); u set looser still (nu 1.34 at 700, 1.36 at 900, Source
 # Serif 1.06 / 1.07; italic 1.15 at 400 against 0.98): its left side, which carries the head serif, comes in further.
 TUCK = [(20, 0), (84, 10), (151, 30), (194, 24)]
+# Round 9: with the tuck, Bold and Black's neighbouring foot serifs all but touched (nn foot-to-foot 29 / 22 units at 700 / 900, opsz
+# 48; Source Serif 4 54 / 47): the stems sat at Source Serif's distance, the slabs reached further. The upright lowercase outer reach
+# gives up HEAVY_TRIM units a side and the tuck TRIM_BACK of it: a pair's feet part by the trim and its stems close by it (nn feet
+# 30 -> 44 at 900, opsz 14). Giving all of it back (stems held, feet +2x a 10 / 12 trim) cost the rhythm row 9.03 -> 8.86, which
+# averages white over the whole x-height band, so the shorter feet alone read as looser letters.
+HEAVY_TRIM = [(20, 0), (92, 0), (151, 14), (194, 16)]
+TRIM_BACK = 0.5
 U_LSB = {'u': ([(20, 0), (92, 0), (151, 16), (194, 22)], [(20, 0), (92, 22), (151, 30), (194, 36)])}  # (upright, italic), units
 # Heavy round capitals set tight (OO 0.61 at 900, Source Serif 0.94; DO 0.66 / 0.94): Black's capital sidebearings (CAP_SB_K 0.8)
 # suit H's straight sides, not a round's, which give back white at its extremes. The italic's light rounds set loose instead

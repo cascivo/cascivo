@@ -7,6 +7,41 @@ Test: `python3 -I -m unittest discover -s fonts/cascivo-condensed/src` (loads, L
 of Sans at 100, 400 and 900, o e a B d g b p q & 6 8 9 0 counters open at 900 / opsz 14 and 48, OTS, woff2 budget).
 Specimen (Regular and Black, plus Black at 12/14/16 px): `python3 -I fonts/cascivo-condensed/src/specimen.py` -> `specimen.png`.
 
+## Round 9 (punctuation widths)
+
+Sheets: `specimens/round9/` (`src/specimen_round9.py`): headlines at 48 and 96 px, UI labels at 12 and 16 px, tables and figures
+(tnum) at 12, 16 and 48 px, each in 300, 400, 700 and 900. No Roboto, Barlow or Plex Sans Condensed on disk, so no refs. No italic:
+Condensed builds upright only (`ITALIC = False`), so the italic sheets are deferred (see below).
+
+Remaining weaknesses read off the round 8 notes and the before sheets: Black brackets and parentheses at Sans's width, the
+straight double quote wide at Black, display Black crowded, I/1 and O/0 at 11 px, Black 1's wide left sidebearing ("$1").
+This round takes the first two and the hyphen, the punctuation that never condensed. At opsz 14, advance over Sans's
+(letters 0.79):
+
+|        | 400 before | 400 after | 900 before | 900 after |
+| ------ | ---------- | --------- | ---------- | --------- |
+| ( )    | 0.91       | 0.80      | 0.85       | 0.77      |
+| [ ]    | 0.91       | 0.83      | 0.85       | 0.79      |
+| "      | 0.90       | 0.83      | 0.89       | 0.81      |
+| hyphen | 0.95       | 0.83      | 0.95       | 0.81      |
+
+- Parentheses: the bow (Sans 123 units deep) at 0.75 (`PAREN_BOW`), the centreline scaled about the arc's ends, so the stroke
+  keeps its weight. Ink at Regular 170 units (n 458): still a curve, not a bracket.
+- Brackets: the arms at 0.85 from the stem's centre (`BRACKET_ARM`); the stem is untouched.
+- Straight double quote: mark pitch at 0.82 (`QUOTEDBL_GAP`). The single quote and the curly quotes (round 3) are unchanged.
+- Hyphen: bar at 0.84 of Sans's (`HYPHEN_W`), as the en dash. "2026-11-25" stops reading as long bars between narrow figures.
+- All four are `override`s in `src/family.py`; the engine is not edited, so Sans, Serif and Mono build as before.
+
+WOFF2: full 73,704 -> **73,504** bytes, Latin 31,060 -> **31,104** (+44, brotli noise on changed outlines; total -156).
+
+Before/after: `(Mobile) [Beta] "Quoted"` at 48-96 px sets as tight as the words around it at every weight; 12 px "Email (required)
+Name [optional]" loses the hole inside the brackets; table rows "[n/a]" and dates tighten. Letters and figures unchanged.
+
+Checked and left: braces (0.88-0.93 of Sans) are rare in UI text; left for a later round. `$` and `#` already sit at 0.79-0.82.
+
+Needs a decision: a Condensed italic (`ITALIC = True` is an engine switch, but it adds a second set of files (roughly
+doubling the woff2 bytes), and every gate would need an italic pass).
+
 ## Round 8 (rhythm, rounds, figures; bytes)
 
 Sheets: `specimens/round8/` (`src/specimen_round8.py`): UI labels (headline, buttons, tabs, tracked eyebrow, table header) at

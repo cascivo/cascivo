@@ -30,8 +30,10 @@ BLACK_LIGHT = 0.08
 # Round 6: Black still read a step darker than JetBrains Mono ExtraBold (a e g s 8 @ & filled at 14 px, the 800-900 step the
 # ramp's largest): a further BLACK_EXTRA lighter, on the stem only, so the horizontals and joins keep their opening
 BLACK_EXTRA = 0.07
-# Thin's 100 stem was a hairline at 12-14 px, greyer than JetBrains Mono Thin: THIN_UP heavier at Thin, fading out by Regular
-THIN_UP = 0.15
+# Thin's 100 stem was a hairline at 12-14 px, greyer than JetBrains Mono Thin: THIN_UP heavier at Thin, fading out by Regular.
+# Round 9: 0.15 -> 0.5, and on the horizontals too: Thin's ink was 0.45x JetBrains Mono Thin's (| 21 units, theirs 50), grey at
+# 12-14 px; on the stem alone the horizontals would go lighter than the verticals
+THIN_UP = 0.5
 CAP_HEAVY = 0.16  # the capitals' extra counter narrowing at Black (H 611 -> about 530 of ink)
 FIG_HEAVY = 45  # units Black's figure width gives up (0 ink 598 -> about 520)
 _frozen = {}
@@ -57,9 +59,10 @@ def _freeze(p):
 def tune(p):
     h = _freeze(p)
     f = 1 - BLACK_LIGHT * h
-    p.V *= f * (1 - BLACK_EXTRA * h) * (1 + THIN_UP * max(0.0, (400 - p.wght) / 300))
-    p.H *= f
-    p.bar *= f
+    thin = 1 + THIN_UP * max(0.0, (400 - p.wght) / 300)
+    p.V *= f * (1 - BLACK_EXTRA * h) * thin
+    p.H *= f * thin
+    p.bar *= f * thin
     # narrower counters so the typical letter fits a 600 cell (Sans n 578, H 748, O 775 at Regular)
     p.cn *= 0.92
     p.cH *= 0.76 * (1 - CAP_HEAVY * h)
@@ -365,18 +368,25 @@ _hooks.override('emdash')(_dash(lambda p: 520))
 
 
 BAR_K = 0.74  # round 6: at 0.9 of the stem, over the whole line box, | outweighed every letter beside it (`|n|`, `il1I|`)
+# Round 9: | spanned the whole line box (-300..1000) so stacked bars joined; in code it read as the text cursor (`x |= y`, `a || b`)
+# and stood 190 units over the capitals. Now the delimiters' span (( ) [ ] { } reach -173..807), JetBrains Mono's -110..830 a
+# little further. Joined rules are U+2502 │'s job, which keeps the line box.
+BAR_Y0, BAR_Y1 = -190, 850
 
 
 @_hooks.override('bar')
 def _bar(g, p):
-    g.line((p.V * 0.45, DESC), (p.V * 0.45, ASC), w=p.V * BAR_K)  # the whole line box: stacked | join into one rule
+    g.line((p.V * 0.45, BAR_Y0), (p.V * 0.45, BAR_Y1), w=p.V * BAR_K)
 
 
 @_hooks.override('brokenbar')
 def _brokenbar(g, p):
-    x, gap = p.V * 0.45, 70 + p.V * 0.3
-    g.line((x, DESC), (x, (ASC + DESC) / 2 - gap), w=p.V * BAR_K)
-    g.line((x, (ASC + DESC) / 2 + gap), (x, ASC), w=p.V * 0.9)
+    x, gap, ym = p.V * 0.45, 70 + p.V * 0.3, (BAR_Y0 + BAR_Y1) / 2
+    g.line((x, BAR_Y0), (x, ym - gap), w=p.V * BAR_K)
+    g.line((x, ym + gap), (x, BAR_Y1), w=p.V * BAR_K)
+
+
+STAR_R, STAR_PEN = 250, 0.92
 
 
 @_hooks.override('asterisk')
@@ -385,11 +395,13 @@ def _asterisk(g, p):
 
     # Sans's star sits at the cap height (530 here); JetBrains Mono's, Plex Mono's and Fira Code's centre 320-360, beside the math
     # axis, where `a * b` reads as an operator. Larger too: 0.34 em of ink was 0.65x theirs.
-    r = 228 + 26 * p.heavy  # round 7: 200 -> 228, the star was 0.76x JetBrains Mono's (402 of ink, theirs 530)
+    # round 7: 200 -> 228, the star was 0.76x JetBrains Mono's (402 of ink, theirs 530). Round 9: 250 and a heavier pen at
+    # 100-700 (ink 0.72x theirs at 400, `a * b` read as a speck at 12 px); Black's size and pen unchanged
+    r = STAR_R + (254 - STAR_R) * p.heavy
     cy = _axis(p) + 50
     for ang in (90, 18, -54, -126, 162):
         a = math.radians(ang)
-        g.line((r, cy), (r + r * math.cos(a), cy + r * math.sin(a)), w=p.V * (0.82 - 0.18 * p.heavy), caps=('b', 'b'))
+        g.line((r, cy), (r + r * math.cos(a), cy + r * math.sin(a)), w=p.V * (STAR_PEN - (STAR_PEN - 0.64) * p.heavy), caps=('b', 'b'))
 
 
 FULL_X = ('underscore', 'emdash')  # stretched to the cell's edges after centring: ___ and —— join
@@ -675,6 +687,9 @@ DELIMS = {'bracketleft': (1, BRACKET_ARM), 'bracketright': (-1, BRACKET_ARM), 'b
           'braceright': (0, BRACE_REACH), 'parenleft': ('bend', -PAREN_BEND), 'parenright': ('bend', PAREN_BEND)}
 # Round 7: ~ ^ were flat and small beside the letters (~ 530 x 160 of ink, JetBrains Mono's 470 x 205; ^ 397 x 284, theirs 440 x 390)
 OPS_SCALE = {'asciitilde': (0.9, 1.28), 'asciicircum': (1.1, 1.3)}
+# Round 9: the spacing ` at Bold and Black was 1.26x / 1.36x JetBrains Mono's ink, the darkest mark on a line of template literals
+# (`${x}`): GRAVE_HEAVY smaller at Black (stroke and length together), none at Regular
+GRAVE_HEAVY = 0.1
 
 
 def _points(c):
@@ -761,6 +776,16 @@ def _outlines(o, n, B):
 
 def _flatten(outs):
     B = sys.modules['__main__']
+    for o in outs:
+        # the spacing ` is a composite of gravecomb (shared with à è ...): drawn out here, where the glyph order already holds it
+        if 'grave' in o.comps:
+            cs = _outlines(o, 'grave', B)
+            del o.comps['grave']
+            k = 1 - GRAVE_HEAVY * o.p.heavy
+            x0, y0, x1, y1 = _bounds(B, cs)
+            cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+            o.contours['grave'] = [B.transform_contour(c, lambda q: (cx + (q[0] - cx) * k, cy + (q[1] - cy) * k)) for c in cs]
+            o.bounds['grave'] = _bounds(B, o.contours['grave'])
     names = sorted(n for n in _OVER if all(n in o.comps for o in outs))
     for o in outs:
         cs = {n: _outlines(o, n, B) for n in names}

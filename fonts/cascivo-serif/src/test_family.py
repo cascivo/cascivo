@@ -339,9 +339,40 @@ class SerifFamily(unittest.TestCase):
             b = BoundsPen(gs)
             g.draw(b)
             return b.bounds[0], g.width - b.bounds[2]
-        self.assertLess(sum(sb('n', 700)), 40)  # round 7: 50
+        # Round 9: the white beside n's stems at half its height, not its sidebearings: the heavy feet were shortened
+        # (test_heavy_feet_apart), so the outline's extremes moved out while the stems moved in
+        a = raster(TTF, 'n', 700, 1000)
+        ys = np.flatnonzero(a.any(1))
+        xs = np.flatnonzero(a[(ys.min() + ys.max()) // 2])
+        self.assertLess(adv(TTF, 'n', 700) - (np.ptp(xs) + 1), 185)  # round 7: ~194, round 8: 180, round 9: 169
         self.assertLess(sb('u', 700)[0], sb('n', 700)[0] - 8)
         self.assertGreater(sum(sb('O', 900)), sum(sb('H', 900)))
+
+    # Round 9 (NOTES.md): heavy feet apart, a lighter and narrower italic.
+    @staticmethod
+    def _feet_gap(path, ch, wght, opsz):
+        """Advance minus the ink span of the foot band (points under 25 units): the white between two neighbours' slabs."""
+        f = TTFont(path)
+        gs = f.getGlyphSet(location={'wght': wght, 'opsz': opsz})
+        g = gs[f.getBestCmap()[ord(ch)]]
+        pen = DecomposingRecordingPen(gs)
+        g.draw(pen)
+        xs = [x for _, args in pen.value for x, y in args if y < 25]
+        return g.width - (max(xs) - min(xs))
+
+    def test_heavy_feet_apart(self):
+        # nn's foot serifs all but touched at Bold and Black (21 units at 900, opsz 48; 30 at opsz 14; Source Serif 4 ~47)
+        for wght, opsz, least in ((700, 14, 44), (900, 14, 40), (900, 48, 32)):
+            with self.subTest(wght=wght, opsz=opsz):
+                self.assertGreater(self._feet_gap(TTF, 'n', wght, opsz), least)
+
+    def test_italic_lighter_and_narrower(self):
+        # the italic carried the upright's stems (93 at 400; Source Serif 4 Italic 84) and set 1.06-1.09x Source Serif 4
+        # Italic at 300-400 (n 641 at 400 beside the upright's 674)
+        for wght in (300, 400, 700):
+            with self.subTest(wght=wght):
+                self.assertLess(stem(TTF_IT, wght), stem(TTF, wght) - 3)
+                self.assertLess(adv(TTF_IT, 'n', wght) / adv(TTF, 'n', wght), 0.93)
 
     def test_ots_sanitize(self):
         try:

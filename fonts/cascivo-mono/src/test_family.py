@@ -146,7 +146,8 @@ class MonoFont(unittest.TestCase):
     def test_rules_reach_the_cell_edges(self):
         for loc in LOCATIONS:
             b = self.bounds(loc, '|')
-            self.assertEqual((b[1], b[3]), (DESC, ASC), loc)
+            # round 9: the delimiters' span, not the line box (over the whole box | read as the text cursor in `x |= y`)
+            self.assertTrue(b[1] <= -180 and 840 <= b[3] <= ASC - 100, f'| {b} {loc}')
             for ch in '_—':
                 b = self.bounds(loc, ch)
                 self.assertEqual((b[0], b[2]), (0, CELL), f'{ch} {loc}')
@@ -252,10 +253,13 @@ class MonoFont(unittest.TestCase):
     def test_black_and_thin_stems(self):
         # Black's stem was 175 (a e g s 8 @ & filled at 14 px, darker than JetBrains Mono ExtraBold); Thin's 24 a grey hairline
         self.assertLessEqual(self.stem({'wght': 900, 'opsz': 14}), 168)
-        self.assertGreaterEqual(self.stem({'wght': 100, 'opsz': 14}), 26)
+        # round 9: Thin's ink was 0.45x JetBrains Mono Thin's at 26 units; on the horizontals too, so contrast keeps its sign
+        self.assertGreaterEqual(self.stem({'wght': 100, 'opsz': 14}), 34)
+        loc = {'wght': 100, 'opsz': 14}
+        self.assertGreaterEqual(sum(self.ink_run(loc, '-', x=CELL // 2)) * 4, 32)  # the hyphen: a horizontal
 
     def test_bar_lighter_than_the_stem(self):
-        # | runs the whole line box; at 0.9 of the stem it outweighed the letters beside it
+        # | runs past the capitals and descenders; at 0.9 of the stem it outweighed the letters beside it
         for w in (400, 900):
             loc = {'wght': w, 'opsz': 14}
             self.assertLess(self.width(loc, '|'), self.stem(loc) * 0.8, w)
@@ -362,6 +366,17 @@ class MonoFont(unittest.TestCase):
             ttf = TTFont(TTF) if fn.startswith('CascivoMono[') else None
             if ttf:
                 self.assertEqual(f['hmtx'].metrics, ttf['hmtx'].metrics)
+
+
+    # ---- round 9 regressions ----
+
+    def test_star_and_grave_weight(self):
+        # * was 455 wide at 400 (0.72x JetBrains Mono's ink): a speck in `a * b` at 12 px
+        self.assertGreaterEqual(self.width({'wght': 400, 'opsz': 14}, '*'), 490)
+        # ` at Black was 1.36x JetBrains Mono's ink, the darkest mark in a template literal: under 1.5x Regular's width, and shorter
+        g4, g9 = (self.bounds({'wght': w, 'opsz': 14}, '`') for w in (400, 900))
+        self.assertLess(g9[2] - g9[0], (g4[2] - g4[0]) * 1.5)
+        self.assertLess(g9[3] - g9[1], g4[3] - g4[1])
 
 
 if __name__ == '__main__':

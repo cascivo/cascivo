@@ -601,6 +601,7 @@ def _lerp_contours(a, b, t):
 FIG_OPEN = 0.3
 BOLD_UNSQUEEZED = {'a'}  # its bowl, narrowed, met the stem in a counter tip 5 degrees sharper than quality.py's base at 750 (28 against 23)
 BOLD_ADV_BLEND = 0.0  # share of the way a lowercase letter's Bold advance moves from its natural spacing toward the Regular-Black line; 0 leaves the wstep kink at 700
+BOLD_ADV_BLEND_LETTERS = {'m': 0.5, 'w': 0.5, 'g': 0.5}  # round 9: per-letter BOLD_ADV_BLEND (Sans only)
 BOLD_OWN = {'minus', 'T', 'V', 'W', 'X', 'Y', 'Z'}  # the minus is 0.456 em at 700 and the plus's bar at Black; the straight line would put Bold at 0.52 em, as long as the en dash. T V W X Y Z: Black's widening starts past Regular (glyphs.capw, CAPW_START), so Bold is off Regular-Black's line
 
 
@@ -682,7 +683,7 @@ def mid_master(reg, black, nat):
         else:
             x0, x1 = x0 + f(x0), x1 + f(x1)
             adv = x1 + (nat.adv[name] - nb[2]) - (x0 - nb[0])
-            adv += BOLD_ADV_BLEND * (lerp_adv - adv)
+            adv += (BOLD_ADV_BLEND_LETTERS.get(name, BOLD_ADV_BLEND) if not family.ACTIVE else BOLD_ADV_BLEND) * (lerp_adv - adv)
             dx = round((adv - lerp_adv) / 2)  # a whole unit: a half one moves a counter tip (the ae's at 750) by a degree or two
         shift[name] = dx
         o.shift[name] = dx

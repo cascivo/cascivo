@@ -1,5 +1,13 @@
 # Cascivo Mono changelog
 
+## Round 9 (visual)
+
+- Thin 50% heavier at the Thin master, horizontals included (stem 28 -> 36): it was 0.45x JetBrains Mono Thin's ink, grey at 12-14 px.
+- `|` and `¦` span -190..850 like the brackets, not the whole line box: in code the full-height bar read as the text cursor.
+  Joined vertical rules are U+2502 │.
+- `*` larger and heavier at 100-700 (455 -> 500 wide at Regular); `` ` `` 10% smaller at Black (was 1.36x JetBrains Mono's ink).
+- WOFF2 70 456 -> 70 360 B, Latin slice 27 292 -> 27 344 B. Sheets: `specimens/round9/` (`src/specimen_round9.py`).
+
 ## Round 8 (visual + bytes)
 
 - `{ }` at Bold and Black: lighter pen (0.7 of the stem at Black); the curls had filled into a solid lobe, `{}` 1.4x JetBrains
