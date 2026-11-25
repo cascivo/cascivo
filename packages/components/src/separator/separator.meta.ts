@@ -5,6 +5,18 @@ export const meta: ComponentMeta = {
   description: 'Visual or semantic divider between content',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      // A horizontal, non-decorative rule is a native `<hr>`; every other case is a `<div>`.
+      element: ['hr', 'div'],
+      data: { 'data-orientation': ['horizontal', 'vertical'] },
+      aria: ['aria-orientation'],
+      role: 'separator',
+      // The element, role and aria-orientation all branch on the props.
+      emit: 'manual',
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

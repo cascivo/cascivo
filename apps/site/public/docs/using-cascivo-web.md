@@ -414,8 +414,8 @@ A broken build prints the errors in the terminal and in the browser; fix the fil
 ## Commands
 
 ```text
-cascivo-web new <dir>
-cascivo-web build [site] [--out <dir>] [--no-clean]
+cascivo-web new <dir> [--dynamic [--target native|workers|containers] [--checkout <dir>]]
+cascivo-web build [site] [--out <dir>] [--no-clean] [--bundle] [--bundle-out <file>]
 cascivo-web dev [site] [--port <n>]
 cascivo-web deploy [site] [--out <dir>] [--no-clean] [--pages] [--project-name <name>] [--dry-run] [-- <wrangler args>]
 ```
@@ -446,6 +446,32 @@ output.write(std::path::Path::new("dist"))?;
 
 With the `axum` feature, `cascivo_web::router(&site)?` returns an `axum::Router` that serves the
 rendered site from memory. Mount it with `merge` or `nest`.
+
+### Request-time rendering (`Engine`)
+
+`Engine` renders a template, or one `{% block %}` of it (the htmx fragment), per request. Its
+templates are `layouts/*` and `templates/**` (named by the path below `templates/`); every
+template is HTML-escaped. Each render also sees `request` (`path`, `locale`, `csrf`, `nonce`),
+`user`, `flash`, `data`, `site`, `locale` and `t()` in the request locale. `asset()`,
+`css_bundle()` and `img()` are not available: link a built stylesheet instead.
+
+```rust
+use cascivo_web::{Engine, ReqCtx};
+let engine = Engine::load(std::path::Path::new("my-app"))?;   // dev: reads the folder
+engine.watch(std::time::Duration::from_millis(100));           // dev: reload on edit
+// release / Workers: `cascivo-web build --bundle` writes <site>/app.bundle (not in dist/)
+// let engine = Engine::from_bundle(include_bytes!("../app.bundle"))?;
+let req = ReqCtx { path: "/todos", locale: "en", ..ReqCtx::default() };
+let ctx = minijinja::context! { todos => vec!["milk"] };
+let page = engine.render("todos/list.html", &ctx, &req)?;
+let items = engine.render_block("todos/list.html", "items", &ctx, &req)?;
+```
+
+The fragment is the same subtree of the page, never a second template. An unknown locale,
+template or block is an error; name them in code, never from request input.
+
+`default-features = false` builds only the engine (no binary, no `image`, no directory walk) and
+compiles for `wasm32-unknown-unknown`. Features: `cli`, `images`, `fs` (default) and `axum`.
 
 ## Limits
 

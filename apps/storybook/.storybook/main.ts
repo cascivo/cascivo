@@ -1,6 +1,7 @@
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { StorybookConfig } from '@storybook/react-vite'
+import { cascivoRepoScopedName } from '../../../scripts/contract/scoped-name.ts'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = resolve(__dirname, '../../..')
@@ -15,6 +16,11 @@ const config: StorybookConfig = {
   features: { componentsManifest: true },
   viteFinal: (cfg) => ({
     ...cfg,
+    // Contract classes (cv-<unit>-<local>) for component modules, like @cascivo/react.
+    css: {
+      ...cfg.css,
+      modules: { ...cfg.css?.modules, generateScopedName: cascivoRepoScopedName },
+    },
     resolve: {
       ...cfg.resolve,
       alias: {
@@ -28,6 +34,9 @@ const config: StorybookConfig = {
         // prefix, so without this '@cascivo/core/pure' resolves to 'index.ts/pure'.
         '@cascivo/core/pure': resolve(root, 'packages/core/src/pure.ts'),
         '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
+        // Subpath first, for the same prefix-replacement reason as '@cascivo/core/pure'.
+        '@cascivo/css/vite': resolve(root, 'packages/css/src/vite.ts'),
+        '@cascivo/css': resolve(root, 'packages/css/src/index.ts'),
         '@cascivo/storage': resolve(root, 'packages/storage/src/index.ts'),
         '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
         '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),

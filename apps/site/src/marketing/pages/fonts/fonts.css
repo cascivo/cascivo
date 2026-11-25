@@ -1,0 +1,42 @@
+/* /fonts and the three family pages. Faces are the same ones the header "Aa" picker loads. */
+.cs-page {
+  & .cs-family-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--cascivo-space-4);
+  }
+
+  & .cs-family-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-3);
+    padding: var(--cascivo-space-5);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-lg);
+    min-inline-size: 0;
+
+    & h2,
+    & h3 {
+      margin: 0;
+      font-size: var(--cascivo-text-xl);
+    }
+
+    & p {
+      margin: 0;
+      color: var(--cascivo-color-text-subtle);
+    }
+  }
+
+  & .cs-family-sample {
+    font-size: clamp(1.75rem, 8cqi, 2.5rem);
+    line-height: 1.15;
+    color: var(--cascivo-color-text);
+    overflow-wrap: anywhere;
+  }
+
+  @container (min-width: 40rem) {
+    & .cs-family-cards {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}

@@ -60,7 +60,7 @@ export const FOOTER_COLUMNS: { label: string; links: NavLink[] }[] = [
       { label: 'Blocks', href: '/blocks' },
       { label: 'AI layer', href: '/ai' },
       { label: 'Modern CSS', href: '/modern-css' },
-      { label: 'Cascivo Sans', href: '/cascivo-sans' },
+      { label: 'Fonts', href: '/fonts' },
       { label: 'FAQ', href: '/docs/faq' },
       { label: 'Changelog', href: '/docs/changelog' },
     ],

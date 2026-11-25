@@ -6,9 +6,10 @@ after Inter and IBM Plex: an ɑ-shaped α, a β with two bowls on a descending s
 and ς, and the round υ ψ ω.
 """
 
+import family
 from cyrillic import _mirror, _Ze
 from geom import L, expand
-from glyphs import _bowl_right, comma_shape, glyph, m_tilde, on_line, shoulder, thin_blend
+from glyphs import _bowl_lc, _bowl_right, comma_shape, glyph, m_tilde, on_line, shoulder, thin_blend
 
 
 def _iota_stroke(g, p, x, top):
@@ -112,11 +113,15 @@ def _Omega(g, p):
 
 @glyph('uni03B1', 0x3B1)
 def _alpha(g, p):
-    """α: the ɑ of q's bowl and a stem the height of the bowl."""
+    """α: q's bowl (its joins, thinning and heavy-weight drawn edge) on a stem the height of the bowl."""
     w = p.nw * (1.1 - 0.05 * p.heavy)
-    cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
-    g.stroke(g.arc(cx, cy, rx, ry, 28, 332), taper=(0.55, 0.55))
-    g.vstem(w - p.V, 0, p.xh)
+    if family.ACTIVE:  # the sibling families keep their v1 arc (round 7 redrew Sans only)
+        cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
+        g.stroke(g.arc(cx, cy, rx, ry, 28, 332), taper=(0.55, 0.55))
+        g.vstem(w - p.V, 0, p.xh)
+    else:
+        g.vstem(w - p.V, 0, p.xh)
+        _bowl_lc(g, p, w, False)
     g.sb = (0.62, 0.3)
 
 

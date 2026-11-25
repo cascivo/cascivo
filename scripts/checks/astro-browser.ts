@@ -35,8 +35,8 @@ const WAIT = { timeout: 15_000 }
 /** A dark theme in the envelope `persistedSignal` writes. */
 const STORED_DARK = JSON.stringify({ v: 1, value: 'dark' })
 
-/** CSS-module class names as `@cascivo/react` ships them: `_name_hash_line`. */
-const MODULE_CLASS = /\b(_[a-zA-Z][\w-]*_[a-z0-9]{5,}_\d+)\b/g
+/** CSS-module class names as `@cascivo/react` ships them: the contract's `cv-<unit>-<local>`. */
+const MODULE_CLASS = /(?<![\w-])(cv-[a-z0-9]+(?:-[\w]+)+)(?![\w-])/g
 
 /** The names of the canonical `@layer` statement, read from its single source of truth. */
 function canonicalLayers(): string[] {

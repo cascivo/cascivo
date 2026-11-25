@@ -7,6 +7,14 @@ export const meta: ComponentMeta = {
   category: 'display',
   // The text is revealed by a requestAnimationFrame loop; server HTML starts empty.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'span', local: 'root', children: ['$text', 'cursor'] },
+    parts: {
+      // Shown only while the displayed text lags the full text.
+      cursor: { element: 'span', aria: ['aria-hidden'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

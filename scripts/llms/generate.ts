@@ -1278,8 +1278,14 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     `- Email client support matrix (what the conformance lint enforces): ${SITE}/docs/email-client-support.md`,
   )
   lines.push(
+    `- Markup contract for HTML, htmx, Solid and Rust apps (@cascivo/css: cv-* classes + data-* attributes, typed class map, example): ${SITE}/docs/contract.md`,
+  )
+  lines.push(
     `- Static HTML from .cv text (cascivo-html Rust crate + CLI, no React): ${SITE}/docs/using-cascivo-html.md`,
     `- Static sites from Markdown, collections, i18n and RSS (cascivo-web Rust CLI, no React): ${SITE}/docs/using-cascivo-web.md`,
+  )
+  lines.push(
+    `- Dynamic server-rendered apps (cascivo-server axum + htmx, forms, sessions, Workers/Containers, Solid islands): ${SITE}/docs/using-cascivo-server.md`,
   )
   lines.push(
     `- Terminal UIs in Rust (cascivo-tui ratatui toolkit, class strings + themes): ${SITE}/docs/using-cascivo-tui.md`,

@@ -4,6 +4,9 @@
 
 use super::{NodeExt, emit_children};
 use crate::ast::Node;
+use crate::contract::{
+    alert, meter, notification, progress_bar, progress_circle, skeleton, spinner,
+};
 use crate::html::{attr, css_len, esc, flag};
 use crate::render::Cx;
 
@@ -22,7 +25,7 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
 
 /// A number the way JS stringifies it (shortest round-trip, so values computed with the same
 /// IEEE operations as the React component print identically). Non-finite becomes `0`.
-fn js_num(n: f64) -> String {
+pub(super) fn js_num(n: f64) -> String {
     if !n.is_finite() || n == 0.0 {
         return "0".to_string();
     }
@@ -73,19 +76,19 @@ fn alert(node: &Node, out: &mut String) {
     out.push_str("<div");
     attr(out, "role", &role);
     attr(out, "data-variant", &variant);
-    attr(out, "class", "cv-alert-alert");
+    attr(out, "class", alert::ROOT);
     out.push('>');
     if let Some(icon) = non_empty(node.prop_str("icon")) {
-        icon_span(out, "cv-alert-icon", &icon);
+        icon_span(out, alert::ICON, &icon);
     }
     out.push_str("<div");
-    attr(out, "class", "cv-alert-body");
+    attr(out, "class", alert::BODY);
     out.push('>');
     if let Some(t) = non_empty(node.arg_str(0)) {
-        el(out, "div", "cv-alert-title", &t);
+        el(out, "div", alert::TITLE, &t);
     }
     if let Some(t) = node.text.as_deref().filter(|t| !t.is_empty()) {
-        el(out, "div", "cv-alert-content", t);
+        el(out, "div", alert::CONTENT, t);
     }
     out.push_str("</div>");
     out.push_str("</div>");
@@ -138,9 +141,9 @@ fn notification(node: &Node, out: &mut String) {
     attr(out, "data-variant", &variant);
     // `Presence` marks its child open on the server render.
     attr(out, "data-state", "open");
-    attr(out, "class", "cv-notification-notification");
+    attr(out, "class", notification::ROOT);
     out.push_str("><span");
-    attr(out, "class", "cv-notification-icon");
+    attr(out, "class", notification::ICON);
     attr(out, "aria-hidden", "true");
     out.push('>');
     match non_empty(node.prop_str("icon")) {
@@ -148,22 +151,22 @@ fn notification(node: &Node, out: &mut String) {
         None => variant_icon(out, &variant),
     }
     out.push_str("</span><div");
-    attr(out, "class", "cv-notification-body");
+    attr(out, "class", notification::BODY);
     out.push('>');
     el(
         out,
         "div",
-        "cv-notification-title",
+        notification::TITLE,
         &node.arg_str(0).unwrap_or_default(),
     );
     // Trailing body text stands in for `description` when the prop is not set.
     let description = non_empty(node.prop_str("description"))
         .or_else(|| node.text.clone().filter(|t| !t.is_empty()));
     if let Some(d) = description {
-        el(out, "div", "cv-notification-description", &d);
+        el(out, "div", notification::DESCRIPTION, &d);
     }
     if let Some(a) = non_empty(node.prop_str("actions")) {
-        el(out, "div", "cv-notification-actions", &a);
+        el(out, "div", notification::ACTIONS, &a);
     }
     out.push_str("</div>");
     out.push_str("</div>");
@@ -212,12 +215,12 @@ fn progress_bar(node: &Node, cx: &mut Cx, out: &mut String) {
     if value.is_none() {
         attr(out, "data-state", "indeterminate");
     }
-    attr(out, "class", "cv-progress-bar-progress");
+    attr(out, "class", progress_bar::PROGRESS);
     out.push('>');
     if let (Some(l), Some(id)) = (&label, &label_id) {
         out.push_str("<span");
         attr(out, "id", id);
-        attr(out, "class", "cv-progress-bar-label");
+        attr(out, "class", progress_bar::LABEL);
         out.push('>');
         esc(out, l);
         let glyph = match status.as_str() {
@@ -227,7 +230,7 @@ fn progress_bar(node: &Node, cx: &mut Cx, out: &mut String) {
         };
         if let Some(g) = glyph {
             out.push_str("<span");
-            attr(out, "class", "cv-progress-bar-glyph");
+            attr(out, "class", progress_bar::GLYPH);
             attr(out, "aria-hidden", "true");
             out.push('>');
             out.push_str(g);
@@ -245,9 +248,9 @@ fn progress_bar(node: &Node, cx: &mut Cx, out: &mut String) {
     if let Some(id) = &label_id {
         attr(out, "aria-labelledby", id);
     }
-    attr(out, "class", "cv-progress-bar-track");
+    attr(out, "class", progress_bar::TRACK);
     out.push_str("><div");
-    attr(out, "class", "cv-progress-bar-fill");
+    attr(out, "class", progress_bar::FILL);
     if value.is_some() {
         cx.style(
             out,
@@ -256,7 +259,7 @@ fn progress_bar(node: &Node, cx: &mut Cx, out: &mut String) {
     }
     out.push_str("></div></div>");
     if let Some(h) = non_empty(node.prop_str("helperText")) {
-        el(out, "span", "cv-progress-bar-helper", &h);
+        el(out, "span", progress_bar::HELPER, &h);
     }
     out.push_str("</div>");
 }
@@ -280,13 +283,13 @@ fn progress_circle(node: &Node, out: &mut String) {
         "data-size",
         &node.prop_str("size").unwrap_or_else(|| "md".into()),
     );
-    attr(out, "class", "cv-progress-circle-progressCircle");
+    attr(out, "class", progress_circle::ROOT);
     out.push_str("><svg");
     attr(out, "viewBox", "0 0 48 48");
     attr(out, "aria-hidden", "true");
-    attr(out, "class", "cv-progress-circle-svg");
+    attr(out, "class", progress_circle::SVG);
     out.push_str("><circle");
-    attr(out, "class", "cv-progress-circle-track");
+    attr(out, "class", progress_circle::TRACK);
     for (k, v) in [
         ("cx", "24"),
         ("cy", "24"),
@@ -297,7 +300,7 @@ fn progress_circle(node: &Node, out: &mut String) {
         attr(out, k, v);
     }
     out.push_str("></circle><circle");
-    attr(out, "class", "cv-progress-circle-fill");
+    attr(out, "class", progress_circle::FILL);
     for (k, v) in [
         ("cx", "24"),
         ("cy", "24"),
@@ -313,7 +316,7 @@ fn progress_circle(node: &Node, out: &mut String) {
     out.push_str("></circle></svg>");
     if node.prop_bool("showValue") {
         out.push_str("<span");
-        attr(out, "class", "cv-progress-circle-value");
+        attr(out, "class", progress_circle::VALUE);
         out.push('>');
         out.push_str(&js_num(percent.round()));
         out.push_str("%</span>");
@@ -366,7 +369,7 @@ fn meter(node: &Node, cx: &mut Cx, out: &mut String) {
     let gauge = node.prop_str("variant").as_deref() == Some("gauge");
 
     out.push_str("<div");
-    attr(out, "class", "cv-meter-meter");
+    attr(out, "class", meter::ROOT);
     attr(out, "aria-label", &label);
     attr(out, "role", "meter");
     attr(out, "aria-valuenow", &js_num(value));
@@ -381,7 +384,7 @@ fn meter(node: &Node, cx: &mut Cx, out: &mut String) {
         let inner = outer * 0.65;
         let start = std::f64::consts::PI;
         let end = 2.0 * std::f64::consts::PI;
-        attr(out, "class", "cv-meter-svg");
+        attr(out, "class", meter::SVG);
         attr(out, "width", &js_num(width));
         attr(out, "height", &js_num(svg_h));
         attr(
@@ -392,7 +395,7 @@ fn meter(node: &Node, cx: &mut Cx, out: &mut String) {
         attr(out, "aria-hidden", "true");
         out.push_str("><path");
         attr(out, "d", &arc_path(cx, cy, outer, inner, start, end));
-        attr(out, "class", "cv-meter-track");
+        attr(out, "class", meter::TRACK);
         out.push_str("></path>");
         if ratio > 0.0 {
             out.push_str("<path");
@@ -412,7 +415,7 @@ fn meter(node: &Node, cx: &mut Cx, out: &mut String) {
             out.push_str("></path>");
         }
         out.push_str("</svg><div");
-        attr(out, "class", "cv-meter-gaugeLabel");
+        attr(out, "class", meter::GAUGE_LABEL);
         out.push('>');
         esc(out, &format!("{label}: {}", js_num(value)));
         out.push_str("</div></div>");
@@ -420,7 +423,7 @@ fn meter(node: &Node, cx: &mut Cx, out: &mut String) {
     }
     let bar_h = height.unwrap_or(12.0);
     let (w, h) = (js_num(width), js_num(bar_h));
-    attr(out, "class", "cv-meter-svg cv-meter-bar");
+    attr(out, "class", &format!("{} {}", meter::SVG, meter::BAR));
     attr(out, "width", &w);
     attr(out, "height", &h);
     attr(out, "viewBox", &format!("0 0 {w} {h}"));
@@ -431,7 +434,7 @@ fn meter(node: &Node, cx: &mut Cx, out: &mut String) {
     }
     attr(out, "width", &w);
     attr(out, "height", &h);
-    attr(out, "class", "cv-meter-track");
+    attr(out, "class", meter::TRACK);
     out.push_str("></rect><rect");
     for (k, v) in [("x", "0"), ("y", "0")] {
         attr(out, k, v);
@@ -439,10 +442,10 @@ fn meter(node: &Node, cx: &mut Cx, out: &mut String) {
     attr(out, "width", &w);
     attr(out, "height", &h);
     attr(out, "fill", color);
-    attr(out, "class", "cv-meter-fill");
+    attr(out, "class", meter::FILL);
     cx.style(out, &format!("transform:scaleX({})", js_num(ratio)));
     out.push_str("></rect></svg>");
-    el(out, "div", "cv-meter-label", &label);
+    el(out, "div", meter::LABEL, &label);
     out.push_str("</div>");
 }
 
@@ -454,7 +457,7 @@ fn skeleton(node: &Node, cx: &mut Cx, out: &mut String) {
     if node.prop_bool("ai") {
         flag(out, "data-ai");
     }
-    attr(out, "class", "cv-skeleton-skeleton");
+    attr(out, "class", skeleton::ROOT);
     let mut style = Vec::new();
     for (prop, var) in [
         ("width", "--cascivo-skeleton-width"),
@@ -473,7 +476,7 @@ fn skeleton(node: &Node, cx: &mut Cx, out: &mut String) {
             .clamp(0.0, 1000.0) as usize;
         for _ in 0..lines {
             out.push_str("<span");
-            attr(out, "class", "cv-skeleton-line");
+            attr(out, "class", skeleton::LINE);
             out.push_str("></span>");
         }
     }
@@ -492,6 +495,6 @@ fn spinner(node: &Node, out: &mut String) {
         "data-size",
         &node.prop_str("size").unwrap_or_else(|| "md".into()),
     );
-    attr(out, "class", "cv-spinner-spinner");
+    attr(out, "class", spinner::ROOT);
     out.push_str("></span>");
 }

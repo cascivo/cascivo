@@ -23,6 +23,15 @@ export const calendar = defineMessages('cascade.calendar', {
   nextMonth: 'Next month',
 })
 
+export const toast = defineMessages('cascade.toast', {
+  dismiss: 'Dismiss notification',
+  region: 'Notifications',
+})
+
+export const modal = defineMessages('cascade.modal', {
+  close: 'Close modal',
+})
+
 /** Element-only: the custom elements report their own validity (ElementInternals). */
 export const elements = defineMessages('cascade.elements', {
   valueMissing: 'Please fill out this field.',

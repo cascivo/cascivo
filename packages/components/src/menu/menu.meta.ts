@@ -5,6 +5,26 @@ export const meta: ComponentMeta = {
   description: 'Dropdown menu with keyboard navigation, built on usePopover',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    // Root is the popover panel; the trigger button is its sibling in the DOM.
+    root: {
+      element: 'div',
+      local: 'panel',
+      role: 'menu',
+      data: { 'data-state': ['open', 'closed'] },
+      children: ['trigger', 'item', 'separator'],
+    },
+    parts: {
+      trigger: {
+        element: 'button',
+        aria: ['aria-haspopup', 'aria-expanded', 'aria-label'],
+        children: ['$slot'],
+      },
+      item: { element: 'div', role: 'menuitem', aria: ['aria-disabled'], children: ['$slot'] },
+      separator: { element: 'div', role: 'separator' },
+    },
+  },
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

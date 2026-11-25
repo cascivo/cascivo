@@ -1,0 +1,4 @@
+title = "Todos"
+[i18n]
+default = "en"
+locales = ["en", "de"]
