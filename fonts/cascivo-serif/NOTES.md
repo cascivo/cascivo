@@ -32,6 +32,15 @@ Build: `cd fonts/cascivo-sans && CASCIVO_FAMILY=serif python3 -I src/build.py` (
 Test: `python3 -I -m unittest discover -s fonts/cascivo-serif/src` (coverage, serifs vs Sans, o contrast vs Sans, OTS, woff2 budget).
 Specimen: `python3 -I fonts/cascivo-serif/src/specimen.py [IBMPlexSerif-Regular.ttf]`.
 
+Round 6 (specimens in `specimens/round6/`, `before.png` / `after.png`, Source Serif 4 in grey under each line; `src/specimen_full.py`):
+
+- Capital C (user report: "looks strange"): the Sans C ran on until its stroke fell near vertical, was cut flat and the serif pass hung a thin barb under the face to 0.48-0.54 of the cap height: a claw curling into the counter. Now (`_vbeak`, `VBEAK*`) the top arm of C G c stops 16 degrees earlier, cut vertical, and drops a bracketed beak whose outer side is vertical, its tip at 0.62-0.66 of the height (Source Serif's ~0.66); C's lower end gets a short upward spur (Merriweather's). The wedge closes through the stroke, not along its face (no seam), and stops short of the inner side's extreme (c's narrow counter at Black cut a hole). Gates: `test_c_beak_vertical`, `test_no_winding_holes`.
+- Widths (`SB_K`, `CAP_SB_K`, `CAP_H_K`, `CAP_ROUND_K`, `LC_K` in `tune`): against Source Serif 4 the caps set 1.08x (Regular) to 1.17x (Black), text 1.03x / 1.065x. Now caps 1.04x / 1.10x, text 1.02x (400), 1.00x (700), 1.04x (900). Black resists: the Bold master is interpolated, and more narrowing at Black moved little and cost the weight-axis row.
+- Double-storey g (`_g2`, `G2`): small upper bowl, ear at the x-height, hairline link, wide lower loop. Gate: `test_g_double_storey`.
+- Figures: tabular glyphs skipped the serif pass, so 0-9 read as Sans; now they take it (1 and 4 get feet). Gate: `test_figures_serifed`.
+- Score vs Source Serif 4 (same ref): 5.699 -> 5.992. rhythm 7.86 -> 8.69, weight axis 0.88 -> 1.52, shape 6.54 -> 6.81, colour 7.03 -> 6.92, small sizes 7.17 -> 6.88 (I/1 at 11 px, 800-900: the 1's new foot), optical sizes 1.23 -> 1.22.
+- Critique (subagent, vs Source Serif 4) items left: contrast at text sizes reads lower than Source Serif's; 2 3 5 7 9 terminals still Sans; e's terminal and a's bowl kept (judged close enough at 400); no italic yet.
+
 Score vs Source Serif 4 (score.run, ref fontsource `@fontsource-variable/source-serif-4` 5.3.1 `source-serif-4-latin-wght-normal.woff2`):
 
 - round 2: overall 5.68 (v1 5.61 recorded, 5.65 re-measured on the same build). rhythm 6.92 -> 8.13, weight axis 0.88 -> 0.85, shape 6.84 -> 6.28, colour 6.80 -> 6.73, small sizes 8.04 -> 7.40, optical sizes 1.30 -> 1.28.

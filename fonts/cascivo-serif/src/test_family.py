@@ -214,7 +214,7 @@ class SerifFamily(unittest.TestCase):
         # Serif, beak and spur contours overlap the strokes; one wound the wrong way, or crossing itself, cuts a white sliver into
         # the ink (round 6's first c beak at Black). Every white region of these letters must reach the edge, or be a counter.
         from scipy import ndimage
-        counters = {'C': 0, 'c': 0, 'G': 0, 'S': 0, 's': 0, 'a': 1, 'e': 1, 'g': 1, 'r': 0, 'f': 0, 'j': 0, 'y': 0, 'E': 0, 'T': 0, 'Z': 0}
+        counters = {'C': 0, 'c': 0, 'G': 0, 'S': 0, 's': 0, 'a': 1, 'e': 1, 'g': 2, 'r': 0, 'f': 0, 'j': 0, 'y': 0, 'E': 0, 'T': 0, 'Z': 0}
         for ch, n in counters.items():
             for wght in (100, 400, 700, 900):
                 white = ~raster(TTF, ch, wght, size=400)
@@ -223,6 +223,25 @@ class SerifFamily(unittest.TestCase):
                 # under 300 px (0.05% of the 800 px square): Thin a's bowl meets its stem in a pinpoint pocket, engine-drawn
                 with self.subTest(ch=ch, wght=wght):
                     self.assertEqual(int((sizes >= 300).sum()) - 1, n)
+
+    def test_figures_serifed(self):
+        # Round 6: tabular figures skipped the serif pass (g.tab), so 1 and 4 stood on bare Sans stems beside serifed text.
+        for name in ('one', 'four'):
+            for wght in (100, 400, 900):
+                with self.subTest(name=name, wght=wght):
+                    self.assertGreater(foot_span(TTF, name, wght), foot_span(SANS, name, wght) * 1.5)
+
+    def test_g_double_storey(self):
+        # Round 6: the Sans's single-storey g was the loudest sans tell in running text. A serif g: one counter above the baseline
+        # (the bowl), one below it (the loop), at every weight.
+        from scipy import ndimage
+        for wght in (100, 400, 700, 900):
+            white = ~raster(TTF, 'g', wght, size=400)
+            lab, n = ndimage.label(white)
+            base = 400 // 4 + int(round(400 * TTFont(TTF)['hhea'].ascent / 1000))  # PIL draws the ascent at the text origin's top
+            holes = [np.nonzero(lab == i)[0].mean() for i in range(2, n + 1) if (lab == i).sum() >= 300]
+            with self.subTest(wght=wght):
+                self.assertEqual(sorted(y < base for y in holes), [False, True])
 
     def test_ots_sanitize(self):
         try:

@@ -37,14 +37,26 @@ SLAB, BRACKET = 1.12, 1.1  # round 4: slab over the hairline and bracket height 
 CAP_REACH = 1.2  # capitals carry longer serifs, as in Source Serif (and it moves I's stem off l's at 11 px)
 
 
+SB_K = [(24, 1.01), (84, 1.0), (194, 0.95)]  # sidebearing factor on Sans's
+CAP_SB_K = 0.95  # capitals' sidebearings, on top of SB_K
+CAP_H_K = [(24, 0.96), (84, 0.94), (194, 0.83)]  # straight capitals' counter (H E N B ...)
+CAP_ROUND_K = [(24, 0.97), (84, 0.96), (194, 0.91)]  # round and diagonal capitals' (O C G S A V ...)
+LC_K = [(24, 0.99), (84, 0.98), (194, 0.93)]  # n's counter, which the lowercase follows
+
+
 def tune(p):
     # contrast: hairlines thin faster than stems as the weight rises (Sans keeps 0.96 -> 0.72 of V)
     f = _pw(p.V, [(24, 0.84), (84, 0.62), (194, 0.48)])
     p.H *= f
     p.bar *= f ** BAR_SHARE
-    # a little more white beside the serif tips
-    p.S *= 1.04
-    p.Sc *= 1.04
+    # a little more white beside the serif tips (round 6: less at Black, whose lowercase set 1.06x Source Serif 4's)
+    p.S *= _pw(p.V, SB_K)
+    p.Sc *= _pw(p.V, SB_K) * CAP_SB_K
+    # Round 6: Sans widths under serifs set wide against Source Serif 4: capitals 1.08x (Regular) to 1.17x (Black), rounds
+    # 1.07-1.11x, lowercase 1.02-1.06x. Counters narrow, most at Black where the slabs add the most width.
+    p.cH *= _pw(p.V, CAP_H_K)
+    p.cHd *= _pw(p.V, CAP_ROUND_K)
+    p.cn *= _pw(p.V, LC_K)
     # Round overshoot keeps growing past Regular, as Source Serif's (o 12 / 12 / 15, O 15 / 16 / 19 units at 200 / 400 / 800);
     # Sans holds 13.4 from Regular up, so Bold's rounds and the serifed x stood level at the x-height
     p.ov = _pw(p.V, [(24, 11.5), (84, 13.4), (194, 16.5)])
@@ -106,6 +118,31 @@ def _side_pts(side, end, n=24):
     """Points along an open side, starting at the given end (0: the stroke's start, 1: its end)."""
     segs = side if end == 0 else [(sg[0],) + tuple(reversed(sg[1:])) for sg in reversed(side)]
     return [seg_point(sg, i / n) for sg in segs for i in range(n)]
+
+
+# Round 6: a double-storey g. The Sans's single-storey g with a slab under its stem was the loudest sans tell in running text (critique,
+# "agree", "legible"). Source Serif's: a small upper bowl, an ear flagged out to the right at the x-height, a short link, and a wide
+# lower loop below the baseline whose top is a hairline near the baseline.
+G2 = dict(bowl=(0.04, 0.74, 0.34), loop=(0.0, 0.94, 0.1), ear=(0.6, 1.0), link=0.3)  # x shares of w, y shares of the x-height
+
+
+FIGS = {'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'}
+
+
+@_hook.override('g')
+def _g2(g, p):
+    w = p.nw * 1.0
+    V, H = p.V, p.H
+    bx0, bx1, by0 = G2['bowl']
+    lx0, lx1, ly1 = G2['loop']
+    g.oval(bx0 * w, by0 * p.xh, bx1 * w, p.xh + p.ov, V=V * 0.92)
+    g.oval(lx0 * w, p.desc - p.ov, lx1 * w, ly1 * p.xh + H, V=V * 0.85)
+    # the link: from the bowl's foot down and left onto the loop's top, a hairline swelling a little
+    lk = G2['link'] * w
+    g.stroke([C((lk + V * 0.4, by0 * p.xh + H * 0.5), (lk - V * 0.1, by0 * p.xh - H), (lk - V * 0.2, ly1 * p.xh + H * 2.2), (lk - V * 0.6, ly1 * p.xh + H * 0.5))], w=H * 1.5, caps=('b', 'b'))
+    ex0, ex1 = G2['ear']
+    g.hbar(ex0 * w, ex1 * w, p.xh - H * 1.25, h=H * 1.25)
+    g.sb = (0.62, 0.45)
 
 
 def _vbeak(g, p, s, end, tip_y, wt, run, rise=None):
@@ -518,7 +555,9 @@ def glyph(g, p, name):
     g.strokes = [s for i, s in enumerate(g.strokes) if i not in _DOTS[name]]
     g.raw += [_round_dot(s) for s in dots]
     _comma_heads(g, p)
-    if g.mark or g.tab or g.adv_fixed is not None or not g.strokes or not _serifed(name):
+    # Round 6: tabular figures (g.tab) take serifs too: skipped, 0-9 read as the Sans's beside serifed text (critique). Their
+    # advance is fixed, so the serifs sit inside it.
+    if g.mark or (g.tab and not name.split('.')[0] in FIGS) or g.adv_fixed is not None or not g.strokes or not _serifed(name):
         return
     if name.split('.')[0] not in ('Z', 'z') and unicodedata.category(toUnicode(name.split('.')[0]))[0] == 'L':
         _thin_slashes(g, p)
