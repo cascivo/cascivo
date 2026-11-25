@@ -77,6 +77,10 @@ async fn page_has_island_mount_assets_and_strict_csp() {
     assert_eq!(status, StatusCode::OK);
     assert!(body.contains(r#"id="save-bar""#) && body.contains("/assets/island.js"));
     assert!(body.contains("cv-card-card") && body.contains("2 notes"));
+    // htmx's injected indicator <style> has no nonce: it must stay off under a strict CSP.
+    assert!(body.contains(r#""includeIndicatorStyles":false"#));
+    // Tokens come from the shipped theme (`light`/`dark`), not the poster pair.
+    assert!(!body.contains("poster"));
     assert_contract(&body);
     let csp = headers[header::CONTENT_SECURITY_POLICY].to_str().unwrap();
     let nonce = csp

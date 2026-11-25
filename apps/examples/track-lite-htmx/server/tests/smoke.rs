@@ -81,6 +81,10 @@ async fn page_lists_the_seed_with_dialog_island_and_strict_csp() {
     assert!(body.contains("6 issues") && body.contains("Fix login redirect loop"));
     assert!(body.contains(r#"<cv-dialog id="new-issue">"#));
     assert!(body.contains(r#"data-island="live""#) && body.contains(r#"sse-connect="/events""#));
+    // htmx's injected indicator <style> has no nonce: it must stay off under a strict CSP.
+    assert!(body.contains(r#""includeIndicatorStyles":false"#));
+    // Tokens come from the shipped theme (`light`/`dark`), not the poster pair.
+    assert!(!body.contains("poster"));
     assert_contract(&body);
     let csp = headers[header::CONTENT_SECURITY_POLICY].to_str().unwrap();
     let nonce = csp
@@ -168,6 +172,11 @@ async fn a_post_without_the_csrf_token_is_refused() {
 
 /// Opens `/events`, runs `act`, and waits for the `changed` event every open page reacts to.
 async fn expect_changed(app: &axum::Router, act: impl AsyncFnOnce()) {
+    assert!(changed_data(app, act).await.is_some());
+}
+
+/// Like `expect_changed`, returning the event's `data:` (the origin client id).
+async fn changed_data(app: &axum::Router, act: impl AsyncFnOnce()) -> Option<String> {
     let (cookie, _) = session(app).await;
     let req = Request::get("/events")
         .header(header::COOKIE, cookie)
@@ -179,14 +188,18 @@ async fn expect_changed(app: &axum::Router, act: impl AsyncFnOnce()) {
     act().await;
     let got = tokio::time::timeout(Duration::from_secs(5), async {
         while let Some(chunk) = stream.next().await {
-            if String::from_utf8_lossy(&chunk.unwrap()).contains("event: changed") {
-                return true;
+            let c = String::from_utf8_lossy(&chunk.unwrap()).into_owned();
+            if let Some(i) = c.find("event: changed") {
+                return c[i..]
+                    .lines()
+                    .find_map(|l| l.strip_prefix("data:"))
+                    .map(|d| d.trim().to_owned());
             }
         }
-        false
+        None
     })
     .await;
-    assert_eq!(got, Ok(true));
+    got.ok().flatten()
 }
 
 #[tokio::test]
@@ -199,6 +212,25 @@ async fn a_mutation_notifies_every_open_page() {
         );
     })
     .await;
+}
+
+#[tokio::test]
+async fn the_event_carries_the_mutating_clients_id() {
+    let (app, _) = router();
+    let data = changed_data(&app, async || {
+        let (cookie, token) = session(&app).await;
+        let req = Request::post("/issues/1/advance")
+            .header("hx-request", "true")
+            .header("sec-fetch-site", "same-origin")
+            .header(header::COOKIE, cookie)
+            .header("x-csrf-token", token)
+            .header("x-client-id", "tab-42")
+            .body(Body::empty())
+            .unwrap();
+        assert_eq!(send(&app, req).await.0, StatusCode::OK);
+    })
+    .await;
+    assert_eq!(data.as_deref(), Some("tab-42"));
 }
 
 #[tokio::test]

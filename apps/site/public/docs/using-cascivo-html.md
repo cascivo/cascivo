@@ -82,6 +82,8 @@ A few units render their first paint only; there is no live behaviour on a stati
 
 `dialog "Title" id=del description="..."` renders a native `<dialog>` inside `<cv-dialog>`; `dialog-trigger del "Delete"` is the button that opens it (`size=sm|md|lg`, `open` to start open). `toaster` is the notification region (`id="cv-toaster"`) a server appends toasts to; `toast "Saved" success` is one row (`info|success|warning|danger`, `title=`). Both ship a small inline script (`cv-dialog.js`, `cv-toaster.js`); without it a dialog stays closed unless `open`, and toasts stay on the page.
 
+**`.cv` and `@cascivo/elements`.** `.cv` output is one self-contained file with its own inline scripts, so it never emits the `@cascivo/elements` tags, and the elements are not interchangeable with those scripts. Today only `table` (inline `table-sort`, no `<cv-data-table>` wrapper: no select-all, no `cv-sort` event) overlaps. `drawer`, `command-menu`, `tooltip`, `multi-select`, `tags-input` and the theme switcher (`cv-theme`) have no `.cv` component, and `dialog`/`tabs`/`toaster` use `cv-*` tags that match the elements' markup. For those, use `cascivo-server` templates (or write the markup by hand) with `@cascivo/elements`; see `docs/USING-CASCIVO-SERVER.md`.
+
 ## Brand a page
 
 `@brand` sets the look in one line. Every key is optional.

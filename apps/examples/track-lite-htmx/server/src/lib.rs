@@ -8,7 +8,7 @@ use std::time::Duration;
 
 use axum::Router;
 use axum::extract::{Path, State};
-use axum::http::{HeaderValue, StatusCode, header};
+use axum::http::{HeaderMap, HeaderValue, StatusCode, header};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
 use cascivo_server::{
@@ -89,9 +89,13 @@ impl Tracker {
         f(&mut self.store.lock().unwrap_or_else(PoisonError::into_inner))
     }
 
-    fn changed(&self) {
+    /// `origin` is the mutating tab's `X-Client-Id` ("-" for none); that tab already has the
+    /// fresh list in its response, so its client drops the event (`src/htmx.ts`).
+    fn changed(&self, origin: &str) {
         // No subscriber is not an error; "issues" is on the allowlist.
-        let _ = self.hub.publish("issues", Fragment::new("changed", "1"));
+        let _ = self
+            .hub
+            .publish("issues", Fragment::new("changed", origin.to_owned()));
     }
 
     /// The simulated teammate: every `every`, advance the next issue in turn (the React app's
@@ -110,7 +114,7 @@ impl Tracker {
                         }
                     }
                 });
-                t.changed();
+                t.changed("-");
             }
         });
     }
@@ -213,7 +217,12 @@ fn list(t: &Tracker) -> View {
     page(t, empty_form()).fragment("issues")
 }
 
-async fn create(State(t): State<Tracker>, hx: Hx, Form(f): Form<IssueInput>) -> Response {
+async fn create(
+    State(t): State<Tracker>,
+    hx: Hx,
+    headers: HeaderMap,
+    Form(f): Form<IssueInput>,
+) -> Response {
     match f {
         Submission::Valid(i) => {
             t.with(|s| {
@@ -227,7 +236,7 @@ async fn create(State(t): State<Tracker>, hx: Hx, Form(f): Form<IssueInput>) -> 
                     assignee: i.assignee.and_then(|a| USERS.iter().position(|u| *u == a)),
                 });
             });
-            t.changed();
+            t.changed(&origin(&headers));
             if !hx.is_partial() {
                 return see_other(&hx, &LocalPath::parse_or_root(None));
             }
@@ -248,16 +257,29 @@ async fn create(State(t): State<Tracker>, hx: Hx, Form(f): Form<IssueInput>) -> 
 
 /// Applies `f` (false: no such issue), tells every page, answers with the list fragment
 /// (htmx) or a redirect home (no JavaScript).
+fn origin(h: &HeaderMap) -> String {
+    h.get("x-client-id")
+        .and_then(|v| v.to_str().ok())
+        .filter(|v| {
+            !v.is_empty()
+                && v.len() <= 64
+                && v.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-')
+        })
+        .unwrap_or("-")
+        .to_owned()
+}
+
 fn mutate(
     t: &Tracker,
     hx: &Hx,
+    origin: &str,
     toast: Option<&'static str>,
     f: impl FnOnce(&mut Vec<Issue>) -> bool,
 ) -> Response {
     if !t.with(|s| f(&mut s.issues)) {
         return StatusCode::NOT_FOUND.into_response();
     }
-    t.changed();
+    t.changed(origin);
     if !hx.is_partial() {
         return see_other(hx, &LocalPath::parse_or_root(None));
     }
@@ -267,8 +289,13 @@ fn mutate(
     }
 }
 
-async fn advance(State(t): State<Tracker>, hx: Hx, Path(id): Path<u32>) -> Response {
-    mutate(&t, &hx, None, |v| {
+async fn advance(
+    State(t): State<Tracker>,
+    hx: Hx,
+    headers: HeaderMap,
+    Path(id): Path<u32>,
+) -> Response {
+    mutate(&t, &hx, &origin(&headers), None, |v| {
         v.iter_mut().find(|i| i.id == id).is_some_and(|i| {
             i.status = (i.status + 1) % STATUSES.len();
             true
@@ -276,8 +303,13 @@ async fn advance(State(t): State<Tracker>, hx: Hx, Path(id): Path<u32>) -> Respo
     })
 }
 
-async fn delete(State(t): State<Tracker>, hx: Hx, Path(id): Path<u32>) -> Response {
-    mutate(&t, &hx, Some("issue.deleted"), |v| {
+async fn delete(
+    State(t): State<Tracker>,
+    hx: Hx,
+    headers: HeaderMap,
+    Path(id): Path<u32>,
+) -> Response {
+    mutate(&t, &hx, &origin(&headers), Some("issue.deleted"), |v| {
         let before = v.len();
         v.retain(|i| i.id != id);
         v.len() < before

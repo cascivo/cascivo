@@ -41,46 +41,46 @@ off. Then it drives each app in headless Chromium with the CPU throttled 4x (`RU
 `CPU_THROTTLE`, `--json <file>`, `SKIP_BUILD=1`). The script computes gzip -9 sizes from the
 response bodies, so the server's compression does not change the numbers.
 
-Measured on 2026-11-25: 4-core Xeon container, Chromium headless, localhost, median of 7 runs.
+Measured on 2026-11-25: 4-core Xeon container, Chromium headless, localhost, 4x CPU throttle, median of 5 runs.
 
 | Metric | React (track-lite) | htmx + Solid (track-lite-htmx) |
 | ------ | ------------------ | ------------------------------ |
-| JS (raw / gzip) | 226.9 KB / 71.5 KB | 89.6 KB / 28.4 KB |
-| JS files (gzip KB) | one bundle 71.5 | htmx + sse 18.3, elements 6.2, Solid island 3.9 |
-| CSS (raw / gzip) | 95.6 KB / 11.6 KB | 131.4 KB / 14.9 KB |
-| HTML (raw / gzip) | 0.4 KB / 0.3 KB | 14.5 KB / 2.8 KB |
+| JS (raw / gzip) | 226.9 KB / 71.5 KB | 89.8 KB / 28.5 KB |
+| JS files (gzip KB) | one bundle 71.5 | htmx + sse 18.4, elements 6.2, Solid island 3.9 |
+| CSS (raw / gzip) | 95.6 KB / 11.6 KB | 174.5 KB / 20.8 KB |
+| HTML (raw / gzip) | 0.4 KB / 0.3 KB | 16.7 KB / 2.9 KB |
 | Requests on load | 3 | 6 (page, CSS, 3 scripts, SSE) |
-| FCP | 184 ms | 136 ms |
-| LCP | 184 ms | 144 ms |
-| Ready (first click that opens the dialog) | 306 ms | 266 ms |
-| One "Advance" click on the wire | 0 requests | 2 requests, 15.6 KB raw / 1.7 KB gzip |
-| App LOC (non-blank; htmx includes Rust + templates) | 338 | 605 |
-| Test LOC | 43 | 207 |
-| Dependencies (direct / installed closure) | npm 7 / 18 | npm 7 / 21, cargo 8 / 79 |
+| FCP | 276 ms | 248 ms |
+| LCP | 276 ms | 248 ms |
+| Ready (first click that opens the dialog) | 427 ms | 419 ms |
+| One "Advance" click on the wire | 0 requests | 1 request, 9.7 KB raw / 0.9 KB gzip |
+| App LOC (non-blank; htmx includes Rust + templates) | 348 | 707 |
+| Test LOC | 43 | 237 |
+| Dependencies (direct / installed closure) | npm 7 / 18 | npm 7 / 21, cargo 8 / 83 |
 
 Timings move by about ±20 ms between runs on this machine. Byte counts do not change.
 
 ## What the numbers say
 
-- **The htmx page ships 2.5x less JavaScript** (28.4 KB gzip against 71.5 KB). Of those 28.4 KB,
-  18.3 KB is htmx and its SSE extension. cascivo's own code is the elements (6.2 KB) and the
+- **The htmx page ships 2.5x less JavaScript** (28.5 KB gzip against 71.5 KB). Of those 28.5 KB,
+  18.4 KB is htmx and its SSE extension. cascivo's own code is the elements (6.2 KB) and the
   island with the Solid runtime (3.9 KB). Both are inside the budgets in
   [USING-CASCIVO-SERVER.md](USING-CASCIVO-SERVER.md) (15 KB per page, 10 KB per island).
-- **First paint is earlier on htmx** (about 50 ms at 4x throttle). The list is in the HTML, so the
+- **First paint is earlier on htmx** (about 30 ms at 4x throttle). The list is in the HTML, so the
   browser paints it before any script runs. The React page paints only after it parses and runs
   its bundle.
-- **"Ready" is close** (266 ms against 306 ms). Both stacks must run their script before the
+- **"Ready" is close** (419 ms against 427 ms). Both stacks must run their script before the
   dialog button works: the `cv-dialog` element on one side, hydration of the React tree on the
   other. htmx parses less code, but it loads more files. This app is small, so the React bundle
   is not much slower to run.
-- **CSS is a little larger on htmx** (14.9 KB against 11.6 KB gzip). The island imports the contract
+- **CSS is larger on htmx** (20.8 KB against 11.6 KB gzip). The island imports the contract
   units the server renders, plus `elements.css`. The React build takes only the component CSS
   modules that it imports.
 - **Every interaction costs a round trip on htmx.** One Advance is a POST that returns the list
-  fragment (about 7.8 KB raw, under 1 KB gzip). Then the tab also refetches the list, because the
-  SSE `changed` event reaches the tab that made the change too. React changes a signal and sends
+  fragment (about 9.7 KB raw, under 1 KB gzip). The tab that made the change ignores its own SSE
+  `changed` event (it carries the tab's `X-Client-Id`), so there is no second fetch. React changes a signal and sends
   nothing. On a slow network, React feels instant and htmx waits for the round trip.
-- **LOC is higher on htmx because it does more.** The 605 lines include a real server with
+- **LOC is higher on htmx because it does more.** The 707 lines include a real server with
   sessions, CSRF, server-side validation of each select value, SSE fan-out and no-JS fallbacks
   for Advance and Delete. The React app has none of these. A React app with a backend would also
   need an API, fetch code and a server, and those are not counted here.
@@ -120,14 +120,10 @@ Timings move by about ±20 ms between runs on this machine. Byte counts do not c
 
 ### Known rough edges found while building it
 
-- The tab that made a change refetches the list once more when its own SSE `changed` event
-  arrives (the second request in the "Advance" row). To fix this, tag the events with a per-tab
-  id and filter them in the stream. The app does not do this, to keep it small.
-- `theme_script()` defaults to the `poster` themes. A page that loads the standard
-  `@cascivo/themes` bundles must pass `default_light="light", default_dark="dark"`, or every
-  `--cascivo-color-*` token is unresolved. `apps/examples/solid-htmx` has the same default.
-- With a strict CSP (`style-src 'self'`), Chromium reports one blocked inline style on the htmx
-  page. This does not change the rendering or the behaviour.
+- Fixed since the first measurement: `theme_script()` now defaults to the config's `theme` and
+  `dark_theme` (`dark`), not the `poster` pair; the page sets `includeIndicatorStyles:false` in
+  `htmx-config` so htmx's un-nonced indicator `<style>` no longer breaks a strict CSP; and each
+  tab sends `X-Client-Id`, which the server echoes in the SSE event so the tab drops its own.
 - A `*`-margin reset (in the React starter `index.html`) removes the native centring of
   `<dialog>`. The React twin does not use the reset.
 
