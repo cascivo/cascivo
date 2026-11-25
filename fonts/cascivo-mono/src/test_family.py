@@ -229,5 +229,43 @@ class MonoFont(unittest.TestCase):
         self.assertLess(os.path.getsize(os.path.join(FONTS, 'CascivoMono-Latin[opsz,wght].woff2')), 45_000)
 
 
+    # ---- round 6 regressions ----
+
+    def stem(self, loc):
+        """The l's stem in units: the ink across it at mid x-height, clear of its slabs."""
+        return sum(self.ink_run(loc, 'l', y=300)) * 4
+
+    def test_check_and_ballot_marks(self):
+        # test runners and CLI status lines print ✓ ✗; they were tofu
+        cmap = self.font.getBestCmap()
+        self.assertTrue({0x2713, 0x2717} <= set(cmap))
+        self.assertTrue({0x2713, 0x2717} <= set(TTFont(os.path.join(FONTS, 'CascivoMono-Latin[opsz,wght].woff2')).getBestCmap()))
+        for loc in LOCATIONS:
+            x = self.bounds(loc, 'X')
+            for cp in (0x2713, 0x2717):
+                b = self.bounds(loc, cp)
+                self.assertTrue(0 < b[0] and b[2] < CELL and b[1] >= -5, f'{hex(cp)} {loc} {b}')
+            # ✗ stays clear of the capital X: shorter, so `fail ✗` does not read `fail X`
+            self.assertLess(self.bounds(loc, 0x2717)[3], x[3] * 0.9, loc)
+            self.assertGreater(self.bounds(loc, 0x2713)[3], x[3] * 0.95, loc)
+
+    def test_black_and_thin_stems(self):
+        # Black's stem was 175 (a e g s 8 @ & filled at 14 px, darker than JetBrains Mono ExtraBold); Thin's 24 a grey hairline
+        self.assertLessEqual(self.stem({'wght': 900, 'opsz': 14}), 168)
+        self.assertGreaterEqual(self.stem({'wght': 100, 'opsz': 14}), 26)
+
+    def test_bar_lighter_than_the_stem(self):
+        # | runs the whole line box; at 0.9 of the stem it outweighed the letters beside it
+        for w in (400, 900):
+            loc = {'wght': w, 'opsz': 14}
+            self.assertLess(self.width(loc, '|'), self.stem(loc) * 0.8, w)
+
+    def test_punctuation_dots_floor(self):
+        # . , : read small at 400-700 against JetBrains Mono's (its Regular period 146)
+        self.assertGreaterEqual(self.width({'wght': 400, 'opsz': 14}, '.'), 138)
+        self.assertGreaterEqual(self.width({'wght': 100, 'opsz': 14}, '.'), 118)
+        self.assertLessEqual(self.width({'wght': 900, 'opsz': 14}, '.'), 200)  # Black's i j dots were big already
+
+
 if __name__ == '__main__':
     unittest.main()

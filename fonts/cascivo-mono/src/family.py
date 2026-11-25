@@ -27,6 +27,11 @@ MAXW = W - 2 * MARGIN
 # so their verticals thinned and the 5 6 9 counters closed. Mono's Black draws BLACK_LIGHT lighter (stem 175; 0.06-0.10 swept
 # against JetBrains Mono and Geist Mono, 0.08 scored best) and keeps every Black-only shape decision (p.heavy frozen at Sans's).
 BLACK_LIGHT = 0.08
+# Round 6: Black still read a step darker than JetBrains Mono ExtraBold (a e g s 8 @ & filled at 14 px, the 800-900 step the
+# ramp's largest): a further BLACK_EXTRA lighter, on the stem only, so the horizontals and joins keep their opening
+BLACK_EXTRA = 0.07
+# Thin's 100 stem was a hairline at 12-14 px, greyer than JetBrains Mono Thin: THIN_UP heavier at Thin, fading out by Regular
+THIN_UP = 0.15
 CAP_HEAVY = 0.16  # the capitals' extra counter narrowing at Black (H 611 -> about 530 of ink)
 FIG_HEAVY = 45  # units Black's figure width gives up (0 ink 598 -> about 520)
 _frozen = {}
@@ -34,7 +39,7 @@ _frozen = {}
 XH_UP = 22
 # Dots (. , : ; ! ? i j): at least DOT_MIN + DOT_K stems; round at Thin, squarer (DOT_SQ more handle) toward Black, as JetBrains
 # Mono's. Sans's square dot, enlarged for the cell, read as a block beside Thin's hairlines.
-DOT_MIN, DOT_K, DOT_SQ = 92, 0.6, 0.2
+DOT_MIN, DOT_K, DOT_SQ = 110, 0.52, 0.2  # round 6: more floor, less stem: . , : read small at 400-700, Black's i j dots big
 COMMA_DEPTH = 230  # units the comma's tail may hang under its head
 
 
@@ -52,7 +57,7 @@ def _freeze(p):
 def tune(p):
     h = _freeze(p)
     f = 1 - BLACK_LIGHT * h
-    p.V *= f
+    p.V *= f * (1 - BLACK_EXTRA * h) * (1 + THIN_UP * max(0.0, (400 - p.wght) / 300))
     p.H *= f
     p.bar *= f
     # narrower counters so the typical letter fits a 600 cell (Sans n 578, H 748, O 775 at Regular)
@@ -312,15 +317,18 @@ _hooks.override('endash')(_dash(lambda p: 420))
 _hooks.override('emdash')(_dash(lambda p: 520))
 
 
+BAR_K = 0.74  # round 6: at 0.9 of the stem, over the whole line box, | outweighed every letter beside it (`|n|`, `il1I|`)
+
+
 @_hooks.override('bar')
 def _bar(g, p):
-    g.line((p.V * 0.45, DESC), (p.V * 0.45, ASC), w=p.V * 0.9)  # the whole line box: stacked | join into one rule
+    g.line((p.V * 0.45, DESC), (p.V * 0.45, ASC), w=p.V * BAR_K)  # the whole line box: stacked | join into one rule
 
 
 @_hooks.override('brokenbar')
 def _brokenbar(g, p):
     x, gap = p.V * 0.45, 70 + p.V * 0.3
-    g.line((x, DESC), (x, (ASC + DESC) / 2 - gap), w=p.V * 0.9)
+    g.line((x, DESC), (x, (ASC + DESC) / 2 - gap), w=p.V * BAR_K)
     g.line((x, (ASC + DESC) / 2 + gap), (x, ASC), w=p.V * 0.9)
 
 
@@ -396,6 +404,35 @@ def _math_ops():
 
 
 _math_ops()
+
+CHECK_W = 500  # ✓ ✗ ink width (JetBrains Mono's ✓ about 0.8 of the cell)
+BALLOT_H = 600  # ✗'s height: above the x-height (570), under the cap height (730)
+
+
+def _marks():
+    """✓ U+2713 and ✗ U+2717: test runners, linters and CLI status lines print them; they were tofu."""
+    import glyphs as GL
+
+    def check(g, p):
+        top, w = p.cap * 1.02, CHECK_W
+        xv = w * 0.36  # the vertex: a short left arm, a long right one
+        g.diag(0, p.cap * 0.52, xv, 0, 'l', 'c', ws=0.9)
+        g.diag(w, top, xv, 0, 'r', 'c', ws=0.9)
+        g.ht = 'c'
+
+    def ballot(g, p):
+        # tilted and smaller than the capital, between the x-height and the cap height (JetBrains Mono's sits there too): a
+        # cap-height cross read as X in `// fail ✗`
+        w, top = CHECK_W * 0.8, BALLOT_H
+        g.diag(w * 0.06, top * 0.96, w, 0, 'l', 'r', ws=0.9)
+        g.diag(w, top * 1.04, 0, top * 0.04, 'r', 'l', ws=0.9)
+        g.ht = 'c'
+
+    GL.glyph('uni2713', 0x2713)(check)
+    GL.glyph('uni2717', 0x2717)(ballot)
+
+
+_marks()
 
 
 def fea(text):
@@ -485,7 +522,7 @@ def mono(o, scale=True, keep=()):
 _patched = False
 
 
-LATIN_TERMINAL = ',U+2260,U+2264-2265,U+2500-259F,U+E0B0-E0B3'
+LATIN_TERMINAL = ',U+2260,U+2713,U+2717,U+2264-2265,U+2500-259F,U+E0B0-E0B3'
 
 
 def _patch():
