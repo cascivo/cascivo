@@ -140,6 +140,7 @@
     "release:build": "pnpm build:release && pnpm pack:check",
     "release": "pnpm release:build && changeset publish",
     "release:bootstrap": "node scripts/release/bootstrap.mjs",
+    "release:trust": "node scripts/release/trust.mjs",
     "tsdoc:generate": "node --experimental-strip-types scripts/tsdoc/generate.ts",
     "rtl:check": "node --experimental-strip-types --test scripts/checks/rtl.test.ts",
     "elements:check": "node --experimental-strip-types --test scripts/checks/elements.test.ts",

@@ -128,9 +128,17 @@ for every package — npm lets the command-line flag override that, but not an
 `NPM_CONFIG_PROVENANCE` env var. Only the missing names ship; stranded versions of existing
 packages stay the workflow's job, where they get provenance.
 
-Then attach the trusted publisher (`npmjs.com/package/<name>` → Settings → Trusted
-Publisher; org `cascivo`, repo `cascivo`, workflow `release.yml`, no environment) and
-re-run the Release workflow via **workflow_dispatch** on `main`. The provenance badge
+Then attach the trusted publisher (org `cascivo`, repo `cascivo`, workflow `release.yml`, no
+environment):
+
+```sh
+pnpm release:trust                 # every published name; or name packages; --dry-run to preview
+```
+
+`release:trust` runs `npm trust github` (pinned `npm@12`; npm 10 has no `trust`) for each name
+that exists on npm and does not already trust this repo's `release.yml`, so it is safe to
+re-run. npm may prompt for a 2FA code. The manual path is `npmjs.com/package/<name>` →
+Settings → Trusted Publisher. Then re-run the Release workflow via **workflow_dispatch** on `main`. The provenance badge
 appears from the next CI publish onward.
 
 ## Steady-state release flow
