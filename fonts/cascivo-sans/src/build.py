@@ -1366,8 +1366,9 @@ BROTLI_TRIES = ({}, {'lgblock': 16}, {'lgblock': 18}, {'lgwin': 18}, {'lgwin': 2
 def _save_woff2(font, fn):
     from fontTools.ttLib import woff2
     font.flavor = 'woff2'
+    family.woff2(font)  # a no-op for Sans
     compress = woff2.brotli.compress
-    if not family.ACTIVE:  # the sibling families keep the stream they have
+    if not family.ACTIVE or family.get('BROTLI_TRIES', False):  # the sibling families keep the stream they have unless they opt in
         woff2.brotli.compress = lambda data, **kw: min((compress(data, **{**kw, **t}) for t in BROTLI_TRIES), key=len)
     try:
         font.save(os.path.join(DIST, fn))

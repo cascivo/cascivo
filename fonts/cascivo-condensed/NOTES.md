@@ -7,6 +7,33 @@ Test: `python3 -I -m unittest discover -s fonts/cascivo-condensed/src` (loads, L
 of Sans at 100, 400 and 900, o e a B d g b p q & 6 8 9 0 counters open at 900 / opsz 14 and 48, OTS, woff2 budget).
 Specimen (Regular and Black, plus Black at 12/14/16 px): `python3 -I fonts/cascivo-condensed/src/specimen.py` -> `specimen.png`.
 
+## Round 8 (rhythm, rounds, figures; bytes)
+
+Sheets: `specimens/round8/` (`src/specimen_round8.py`): UI labels (headline, buttons, tabs, tracked eyebrow, table header) at
+12, 16 and 48 px in 400, 700 and 900; figures (proportional, tabular, prices, dates, 0/O, 1l1I, 3568 9696); rhythm
+(nnnonono, nOnCnGnQ, HHOHHCHHGHHQ ooccee aass). No Roboto or Barlow Condensed on disk this round, so no refs.
+
+- t: +0.4 S on the left at Black (by `p.heavy`, `T_LEFT`). Black t sat 11 units from its left neighbour's ink (n 35), and
+  st, ct, rt touched at 12-16 px Bold and Black ("Get started", "Activity"). Now 21 at 900 / opsz 14, 23 at 700.
+- c and e: +0.2 S on the right at Black (`CE_OPEN`): 14 and 16 units against o's 30, so cc, ce, ee clumped at 12-14 px. Now 19 and 21.
+- Tabular 3: drawn at 0.97 of Sans's width (`THREE_W`, an `override('three')` that narrows `fw`): at Black display it inked
+  475 units in a 493 cell (2: 445, 0: 459), 9 units from each edge. Now 461, the 0's width, 16 from the edge. Its bowls stay open.
+- Bytes, same outlines: the WOFF2s transform hmtx too (left sidebearings rebuilt from xMin by the decoder) and take Sans's
+  brotli tries. New engine hooks, no-ops for Sans: `family.woff2(font)` and `BROTLI_TRIES`.
+
+WOFF2: full 75,700 -> **74,772** bytes, Latin 31,764 -> **31,496** (the design changes alone: 75,372 / 31,684).
+
+Before/after: Black 12-16 px words with t (started, Activity, Hits) and runs of c/e no longer close up; 48 px headlines
+and nnnonono rhythm unchanged by eye; Black table figures 3 and 0 now share a width. Regular is unchanged (all three fixes
+fade in with weight).
+
+Checked and left: Black i's sidebearings (21 against n's 35) are measured to its dot, which is wider than the thinned stem;
+stem to stem it sits 34 units off, as n. o's sidebearings at Black are 25/30, as in Sans (engine). Tabular 6 and 9 at Black
+display are 6 units off centre (18/12), as the engine centres control boxes.
+
+Tried and dropped: `T_LEFT` 0.3 (+8 units; st still touched at 14 px Black). fontTools GPOS compaction (levels 1-9):
++300 to +2,600 bytes under brotli.
+
 ## v2.1 (round 3: by eye, against Roboto and Barlow Condensed)
 
 Specimens: `specimens/round-next/` (before/after: labels tracked 0.2em, display, text, digits, zoom, 11 px caps).

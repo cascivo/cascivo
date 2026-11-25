@@ -298,6 +298,51 @@ class SerifFamily(unittest.TestCase):
         self.assertLess(os.path.getsize(os.path.join(FONTS, 'CascivoSerif-Italic[opsz,wght].woff2')), 120_000)
         self.assertLess(os.path.getsize(os.path.join(FONTS, 'CascivoSerif-Italic-Latin[opsz,wght].woff2')), 50_000)
 
+    # Round 8 (NOTES.md): figure terminals, the italic's own serif plan, weight spacing.
+    @staticmethod
+    def _round(c):
+        r = np.hypot(*(c - (c.max(0) + c.min(0)) / 2).T)
+        return r.max() / r.min() < 1.06
+
+    def test_figure_terminals_balled(self):
+        # 2 3 5 6 9 ended on the Sans's flat cuts; each curved end now carries a ball (a separate round contour)
+        for name, n in (('two', 1), ('three', 2), ('five', 1), ('six', 1), ('nine', 1)):
+            for wght in (100, 400, 700, 900):
+                with self.subTest(name=name, wght=wght):
+                    self.assertGreaterEqual(sum(self._round(c) for c in contours(TTF, name, wght)), n)
+
+    def test_seven_bar_spur(self):
+        for wght in (100, 400, 900):
+            with self.subTest(wght=wght):
+                self.assertEqual(len(contours(TTF, 'seven', wght)), len(contours(SANS, 'seven', wght)) + 1)
+
+    def test_italic_plans_its_own_strokes(self):
+        # The serif plan was cached by glyph name; the italic, built after the upright in one process, reused the upright's
+        # stroke indices, and the italic f carried the upright's stem foot (a slab, its flat bottom 140 units wide at 400) on its
+        # descender tip. Below the baseline it is all curves now (the tail and its ball): no contour bottoms out on a flat.
+        for wght in (100, 400, 900):
+            for c in contours(TTF_IT, 'f', wght):
+                y0 = c[:, 1].min()
+                if y0 < -50:
+                    with self.subTest(wght=wght):
+                        self.assertLess(np.ptp(c[c[:, 1] < y0 + 1.5][:, 0]), 30)
+
+    def test_heavy_spacing(self):
+        # Bold's lowercase set loose (nn 1.18 gap over counter, Source Serif 4 1.01) and u looser still; Black's rounds tight
+        # (O's sidebearing 27 beside H's 43; Source Serif 4: 37 beside 28)
+        from fontTools.pens.boundsPen import BoundsPen
+
+        def sb(ch, wght):
+            f = TTFont(TTF)
+            gs = f.getGlyphSet(location={'wght': wght, 'opsz': 14})
+            g = gs[f.getBestCmap()[ord(ch)]]
+            b = BoundsPen(gs)
+            g.draw(b)
+            return b.bounds[0], g.width - b.bounds[2]
+        self.assertLess(sum(sb('n', 700)), 40)  # round 7: 50
+        self.assertLess(sb('u', 700)[0], sb('n', 700)[0] - 8)
+        self.assertGreater(sum(sb('O', 900)), sum(sb('H', 900)))
+
     def test_ots_sanitize(self):
         try:
             import ots

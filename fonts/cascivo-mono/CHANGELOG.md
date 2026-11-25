@@ -1,5 +1,15 @@
 # Cascivo Mono changelog
 
+## Round 8 (visual + bytes)
+
+- `{ }` at Bold and Black: lighter pen (0.7 of the stem at Black); the curls had filled into a solid lobe, `{}` 1.4x JetBrains
+  Mono's ink, now 0.8x and open.
+- I 380 units wide (was 245-313); 1's flag 1.35x longer (265 -> 329 wide); j's hook 1.6x wider, its tail under its top slab.
+- `/` `\` heavier pen (0.66 -> 0.8); `#` redrawn full cap height, 18% lighter at Black (was 1.2x JetBrains Mono's ink).
+- WOFF2 hmtx transform + Brotli tries (lossless): WOFF2 73 380 -> 72 212 B, Latin slice 28 176 -> 27 832 B.
+- Before/after sheets vs JetBrains Mono (code 12/16/48 px at 400/700/900, punctuation, disambiguation, cell grid):
+  `specimens/round8/` (`src/specimen_round8.py`).
+
 ## Round 7 (visual)
 
 - ( ) [ ] { } fill the cell: braces 0.66 of it (were 0.45), brackets and parens about 0.4 (were 0.31-0.35), and all six reach
