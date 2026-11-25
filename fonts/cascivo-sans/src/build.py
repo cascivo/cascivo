@@ -597,7 +597,7 @@ def _lerp_contours(a, b, t):
 FIG_OPEN = 0.3
 BOLD_UNSQUEEZED = {'a'}  # its bowl, narrowed, met the stem in a counter tip 5 degrees sharper than quality.py's base at 750 (28 against 23)
 BOLD_ADV_BLEND = 0.0  # share of the way a lowercase letter's Bold advance moves from its natural spacing toward the Regular-Black line; 0 leaves the wstep kink at 700
-BOLD_OWN = {'minus', 'T', 'V', 'W', 'X', 'Y', 'Z'}  # the minus is 0.456 em at 700 and the plus's bar at Black; the straight line would put Bold at 0.52 em, as long as the en dash. T V W X Y Z: Black's widening starts at Bold (glyphs.capw), not at Regular
+BOLD_OWN = {'minus', 'T', 'V', 'W', 'X', 'Y', 'Z'}  # the minus is 0.456 em at 700 and the plus's bar at Black; the straight line would put Bold at 0.52 em, as long as the en dash. T V W X Y Z: Black's widening starts past Regular (glyphs.capw, CAPW_START), so Bold is off Regular-Black's line
 
 
 def counter_squeeze(cs, p, share):

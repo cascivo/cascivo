@@ -17,6 +17,8 @@ from geom import L, lerp, Stroke, _smooth, arc, contour_bounds, expand, norm, or
 # Round 7 (G_DROP, Q_LIGHT, A_BOWL_UP, S_CAP8, SIX_CAP8, FIVE_LEAN) is Sans only: R7 is False for the sibling families (family.ACTIVE),
 # whose outlines stay as they were.
 R7 = not family.ACTIVE
+# Round 8 (CAPW_START, CAPW_THIN, ...) likewise: the sibling families keep their round-7 outlines.
+R8 = not family.ACTIVE
 
 GLYPHS = {}  # name -> (codepoints, fn)
 ORDER = []
@@ -220,16 +222,29 @@ def _F(g, p):
 
 # CAPW_BLACK: the share of Hd the capitals T V W X Y Z gain at Black, (upright, italic). Their ink width over H's stood 0.84-0.90x
 # Inter's (T 0.852 of H's width beside Inter's 0.963, W 1.405 beside 1.580); they are widened to 0.95x at 900. The italic's X was
-# 0.94x already, hence its small step. The widening starts at Bold (capw: 0 up to 692, 1 at 900) and the six letters are drawn for Bold
+# 0.94x already, hence its small step. The widening starts at Bold (capw: 0 up to 692, 1 at 900; round 8: CAPW_START) and the six letters are drawn for Bold
 # (build.BOLD_OWN): interpolated from Regular, it came in at 0.58 of the way, which put 600 at +2.6% (limit 2%) on all-caps words.
 CAPW_BLACK = {'T': (0.072, 0.118), 'V': (0.067, 0.066), 'W': (0.110, 0.113), 'X': (0.102, 0.017), 'Y': (0.114, 0.113), 'Z': (0.080, 0.115)}
 
 
-CAPW_START = MID_WGHT  # where the six capitals begin to widen: Bold's own coordinate leaves 400-700 flat, an earlier start bends the line at 700 less (JUDGING.md round 6)
+# CAPW_START (upright, italic): where the six capitals begin to widen. At Bold's own coordinate (round 7) 400-700 stayed flat and all of
+# Black's widening came in 700-900, a bend of 21-36 units in the advance at 700 (score.py wstep; Inter, Geist and Plex 0-4). Round 8 starts
+# it earlier, so Bold carries part of it: upright as early as the 600 width cap on 'OVERVIEW ACTIVITY SETTINGS' allows (+2.41% of +2.5%,
+# test_weight_changes_do_not_reflow_text); the italic's all-caps line had 1.6% of room at 600, so its widening runs from 450. Bends at 700:
+# upright 12-21, italic 4-6.
+CAPW_START = (615, 450) if R8 else (MID_WGHT, MID_WGHT)
+# CAPW_THIN (upright, italic): share of Black's widening the six give up at Thin, on a straight line from Regular. Bold's share moves part
+# of the bend to 400 (Thin to Regular stays flat); Inter's, Geist's and Plex's T V W X Y Z set 3-9% narrower at Thin than at Regular, ours
+# 1-2%. Thin's kerning floors (test_key_pairs_kern_like_inter: AY, Ya at 0.8x Inter's; italic Vc already at 0.78x) hold it to 0.2 upright
+# and none in the italic: a narrower Thin Y or V fits less kerning.
+CAPW_THIN = (0.2, 0.0) if R8 else (0.0, 0.0)
 
 
 def capw(p):
-    return max(0.0, (p.wght - CAPW_START) / (900 - CAPW_START))
+    if p.wght < 400:
+        return -CAPW_THIN[p.italic] * (400 - p.wght) / 300
+    start = CAPW_START[p.italic]
+    return max(0.0, (p.wght - start) / (900 - start))
 
 
 @glyph('T', 0x54)
@@ -397,6 +412,10 @@ Q_TAIL = 30
 # still starts where it did, so it reaches no further into the counter.
 Q_LIGHT = (40, 10, 0.1) if R7 else (0, 0, 0.0)
 Q_HEAVY_WS = 0.25  # round 10: Black's tail was a 0.9-stem stick off the bowl; a full stem reads as Inter's wedge (it may not enter the counter: quality.py)
+# Q_CROSS_IT: at Black, the italic tail's start moves into the counter, (share of the width left, share of the cap up), as Inter Italic's
+# crosses its bowl (round 8). Held in the ring's wall, the italic Black Q kept a counter 0.38 of its ink (Inter Italic 0.25, score.py counter,
+# the italic's worst shape row): a stub on an O. The upright's tail stays out of its counter (quality.py's Q counter gate).
+Q_CROSS_IT = (0.16, 0.25) if R8 else (0.0, 0.0)
 CAP_C_RUN_IT = 0
 # Round 7 (apertures): degrees (upright, italic) Black's C terminals end short of TERM_RUN. Its mouth was 164 units upright and
 # 146 italic against Inter Black's 198 (0.85x and 0.76x per cap height): ours is 7% wider than Inter's, so the same run closed
@@ -415,7 +434,8 @@ def _Q(g, p):
     # the tail ends Q_TAIL lower than it did, at every weight (its right edge and the advance stay): it stopped 27 under the baseline
     # at Regular and 32 at Black, a stub beside Inter's 56 and 70
     lt = 1 - p.heavy  # Q_LIGHT: Thin and Regular only, Black's wedge is held by the counter gate
-    g.diag(w * 0.6, p.cap * 0.2 - 60 * p.heavy, w + p.V * 0.2 + 30 * p.heavy - Q_LIGHT[0] * lt, -p.ov - 40 + 0.32 * p.V - 40 * p.heavy - Q_TAIL - Q_LIGHT[1] * lt, 'c', 'r', ws=0.9 + Q_HEAVY_WS * p.heavy + Q_LIGHT[2] * lt, caps=('b', 'b'))  # a square end: the flat cut left a sliver at its lower corner; Black's starts lower and ends longer, in the ring's wall: its square start poked a spur into the counter
+    cross = Q_CROSS_IT if p.italic else (0.0, 0.0)
+    g.diag(w * (0.6 - cross[0] * p.heavy), p.cap * (0.2 + cross[1] * p.heavy) - 60 * p.heavy, w + p.V * 0.2 + 30 * p.heavy - Q_LIGHT[0] * lt, -p.ov - 40 + 0.32 * p.V - 40 * p.heavy - Q_TAIL - Q_LIGHT[1] * lt, 'c', 'r', ws=0.9 + Q_HEAVY_WS * p.heavy + Q_LIGHT[2] * lt, caps=('b', 'b'))  # a square end: the flat cut left a sliver at its lower corner; Black's starts lower and ends longer, in the ring's wall: its square start poked a spur into the counter
     g.ht = 'c'
     g.sb = (0.62, 0.5)
 
@@ -1013,6 +1033,13 @@ L_TOE, L_FLAT, L_RSB_IT = 40, 0.0, 0.62
 # round as it was long it read as a ( at 700-900 and crowded the next letter (klm, ll). After it now the nn gap (0.80 -> 1.0).
 # Bold's own L_BOLD_OPEN (the h (1 - h) term is nothing at Regular and Black): on the line between them 700 kept 0.79 (now 0.84).
 L_FLAT_UP, L_RSB, L_BOLD_OPEN = 0.27, 0.6, 1.0
+# Round 8: the tail still ran into the next letter at small sizes (hello, skills, calm at 16-22 px): the white after it in ln / lm sat
+# 0.83, 0.87 and 0.94x the nn gap at 700, 800 and 900 upright, 0.81, 0.90, 1.00 italic, where Inter's plain l keeps 1.0x. The white after
+# the toe opens (L_RSB at Black, L_BOLD_OPEN and the italic's own L_BOLD_OPEN_IT at Bold): 0.92-1.0x at 700-900 in both; the tail's reach
+# and shape are unchanged.
+L_BOLD_OPEN_IT = 0.0
+if R8:
+    L_RSB, L_BOLD_OPEN, L_BOLD_OPEN_IT = 0.72, 2.3, 1.6
 # Round 5 (2): L_FLAT_UP and L_BOLD_OPEN above, L_LONG, L_TOE_THIN and L_LIFT below. Black's tail ran 30 units past a 190-unit stem
 # on a toe 109 tall, its inner edge a 30 x 108 tick into the toe: a stubby hook with a pinched step. It reaches 13 units further, its
 # turn 0.78 as tall as it is long (it was 1.3x, L_FLAT_UP -0.25 -> 0.27), on a toe a tenth lighter than the bar (0.2 before), and its
@@ -1079,7 +1106,7 @@ def _l(g, p):  # tailed by default
 
         g.strokes[-1].post = even_inner
     g.ht = 'a'
-    g.sb = (1, 0.28 + (0.08 + L_RSB_IT * p.heavy if p.italic else L_RSB * p.heavy + L_BOLD_OPEN * p.heavy * (1 - p.heavy)))
+    g.sb = (1, 0.28 + (0.08 + L_RSB_IT * p.heavy + L_BOLD_OPEN_IT * p.heavy * (1 - p.heavy) if p.italic else L_RSB * p.heavy + L_BOLD_OPEN * p.heavy * (1 - p.heavy)))
 
 
 @glyph('dotlessj', 0x237)
