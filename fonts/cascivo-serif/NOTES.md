@@ -1,7 +1,7 @@
 # Cascivo Serif v1
 
 Serif sibling of Cascivo Sans, built by the Sans engine through the family hooks (fonts/PLAN-families.md).
-Upright only, axes wght 100-900 and opsz 8-48, same cmap as Sans, engine kerning kept.
+Upright and (round 7) italic, axes wght 100-900 and opsz 8-48, same cmap as Sans, engine kerning kept.
 
 What `src/family.py` does:
 
@@ -12,7 +12,7 @@ What `src/family.py` does:
 - Serifs go on letters and digits only (Unicode category L or N): a straight quote, `| ¦` or the stem of `!` is a vertical stroke on a metric too.
 - Dots: the engine draws a dot as a short vertical stroke as wide as it is tall (`Glyph.dot`); from the baseline the serif pass took it for a stem foot, so `. : ; … ! ?` carried slabs and brackets (round 3 fix). Dot strokes are skipped by the serif pass and redrawn as round contours, 1.12x the Sans square's width (same ink), in punctuation, the i/j tittles and the dot accents. Gate: `test_round_dots_without_serifs`.
 - Overrides: `l` and `I` become plain stems (the serifs replace the Sans tail and slab); `l`'s left sidebearing 0.8 S so its stem sits off I's at 11-12 px.
-- No engine edits, no monkeypatching.
+- No engine edits, no monkeypatching (round 7: one read-only hook, `WGHT_MAP`).
 
 Round 4 (display round, specimens in `specimens/round-next/`): at 400 a headline read as a sans with stem feet. Added, all in `family.py`:
 
@@ -40,6 +40,19 @@ Round 6 (specimens in `specimens/round6/`, `before.png` / `after.png`, Source Se
 - Figures: tabular glyphs skipped the serif pass, so 0-9 read as Sans; now they take it (1 and 4 get feet). Gate: `test_figures_serifed`.
 - Score vs Source Serif 4 (same ref): 5.699 -> 5.992. rhythm 7.86 -> 8.69, weight axis 0.88 -> 1.52, shape 6.54 -> 6.81, colour 7.03 -> 6.92, small sizes 7.17 -> 6.88 (I/1 at 11 px, 800-900: the 1's new foot), optical sizes 1.23 -> 1.22.
 - Critique (subagent, vs Source Serif 4) items left: contrast at text sizes reads lower than Source Serif's; 2 3 5 7 9 terminals still Sans; e's terminal and a's bowl kept (judged close enough at 400); no italic yet.
+
+Round 7 (specimens in `specimens/round7/`, `before.png` / `after.png`; italic rows at the end of `after.png`, Source Serif 4 Italic in grey):
+
+- Measured first. Against Source Serif 4 at 400 the n stem was 85 (92), Bold's 145 (168), 200's 46 (31); x-height 528 (~495); P B S U N 1.13-1.17x wide. The critique's "contrast too low" did not hold: o's top was 45 units (Source Serif 50) and P B R 6 8 bowls 1.5x its counter over ink, so hairlines got heavier, not thinner.
+- Weight spacing (`NAMED_STEMS`, `WGHT_MAP`): the family's own avar map puts the named weights on Source Serif 4's n stems (31 / 53.5 / 92 / 110 / 128 / 168 / 183 at 200-800). Engine hook: `build.py` and `kern.py` read `family.get('WGHT_MAP', WGHT_MAP)`, a no-op for Sans, Mono and Condensed. Gate: `test_named_weight_stems`.
+- Stems and hairlines (`STEM_K`, `HAIR_K`): Regular stem x1.09, Thin x0.92, Black unchanged (Black above 190 breaks u's master compatibility in the engine's drawn shoulder); hairlines 0.68 / 0.56 of Sans's at Regular / Black (were 0.62 / 0.48).
+- x-height (`XH_K` 0.95): 528 -> 502. Gate: `test_x_height`.
+- Widths: `NARROW` (skeleton factors, stroke weights kept) for B P U N S D E F H M R C K J; `NARROW_W` for t (wider at Thin, narrower at Regular: the new map left a 300 -> 400 jump); Thin sidebearings x1.12 (`SB_K`); Black capital sidebearings x0.8 (`CAP_SB_K`, HH gap over counter 1.22 -> Source Serif's 0.92); figures x0.93 (`FIG_K`). Gates: `test_narrow_capitals`, `test_light_weights_hold_width`, `test_figures_narrower`.
+- `I` sidebearings 0.8 (it set 1.11x Source Serif's).
+- Italic (`ITALIC = True`): the engine's italic skeleton with the serif pass, sheared. Lowercase feet become a one-sided exit flick (`ITALIC_FOOT`, the left reach 0 so masters stay compatible); italic counters x0.93 (`ITALIC_CN`). Gate: `test_italic` (angle, cmap, flick, OTS, woff2 budgets). Score vs Source Serif 4 Italic (`score.run(italic=True)`, ref `source-serif-4-latin-wght-italic.woff2`): 6.46.
+- Score vs Source Serif 4 (same ref): 5.992 -> 6.985. rhythm 8.69 -> 8.26, weight axis 1.52 -> 5.01, shape 6.81 -> 8.32, colour 6.92 -> 8.39, small sizes 6.88 -> 6.03, optical sizes 1.22 -> 1.29.
+- Costs and caveats: small sizes is I/1 and I/l pixel overlap at 11-12 px; the stems sit within 20 units of Source Serif's, so the rest is pixel phase (a shorter 1 foot moved it 0.83 -> 0.80 and was dropped). Optical sizes compares against a reference with no opsz axis: any Display x-height change costs. Weight axis and wstep still carry single-reference noise (Source Serif's own stem steps run 25-35 units).
+- Left: 2 3 5 7 9 terminals still Sans; italic a / e / f still the Sans italic's; italic sets ~1.05x Source Serif Italic; Black g heavy at 72 px.
 
 Score vs Source Serif 4 (score.run, ref fontsource `@fontsource-variable/source-serif-4` 5.3.1 `source-serif-4-latin-wght-normal.woff2`):
 
