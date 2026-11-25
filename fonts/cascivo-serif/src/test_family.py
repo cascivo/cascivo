@@ -195,6 +195,35 @@ class SerifFamily(unittest.TestCase):
             with self.subTest(wght=wght):
                 self.assertGreater(diag(wght), stem(wght) * 0.75)
 
+    def test_c_beak_vertical(self):
+        # Round 6: the C's top ran on until its stroke fell near vertical, was cut flat and carried a thin barb hanging to 0.48-0.54 of
+        # the cap height: a claw curling into the counter. A serif C (Source Serif 4, Merriweather) drops a beak with a vertical
+        # outer side from a stroke still running out to the right, its tip near 0.66 of the height. Here: on C c G, at every
+        # weight, a vertical outline edge in the upper half at least 0.15 of the height long, its foot at 0.58-0.72 of it.
+        for ch in 'CcG':
+            for wght in (100, 400, 700, 900):
+                cs = contours(TTF, ch, wght)
+                h = max(c[:, 1].max() for c in cs)
+                best = max(((abs(a[1] - b[1]) / h, min(a[1], b[1]) / h) for c in cs for a, b in zip(c, np.roll(c, -1, 0))
+                            if abs(a[0] - b[0]) < 1 and min(a[1], b[1]) > 0.45 * h), default=(0, 0))
+                with self.subTest(ch=ch, wght=wght, edge=round(best[0], 3), foot=round(best[1], 3)):
+                    self.assertGreater(best[0], 0.15)
+                    self.assertTrue(0.58 < best[1] < 0.72)
+
+    def test_no_winding_holes(self):
+        # Serif, beak and spur contours overlap the strokes; one wound the wrong way, or crossing itself, cuts a white sliver into
+        # the ink (round 6's first c beak at Black). Every white region of these letters must reach the edge, or be a counter.
+        from scipy import ndimage
+        counters = {'C': 0, 'c': 0, 'G': 0, 'S': 0, 's': 0, 'a': 1, 'e': 1, 'g': 1, 'r': 0, 'f': 0, 'j': 0, 'y': 0, 'E': 0, 'T': 0, 'Z': 0}
+        for ch, n in counters.items():
+            for wght in (100, 400, 700, 900):
+                white = ~raster(TTF, ch, wght, size=400)
+                lab, count = ndimage.label(white)
+                sizes = np.bincount(lab.ravel())[1:]
+                # under 300 px (0.05% of the 800 px square): Thin a's bowl meets its stem in a pinpoint pocket, engine-drawn
+                with self.subTest(ch=ch, wght=wght):
+                    self.assertEqual(int((sizes >= 300).sum()) - 1, n)
+
     def test_ots_sanitize(self):
         try:
             import ots

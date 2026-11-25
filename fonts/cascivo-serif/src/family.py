@@ -12,6 +12,7 @@ from fontTools.agl import toUnicode
 
 import family as _hook
 from geom import C, L, _open_sides, arc, orient, seg_point
+import glyphs as _G
 from glyphs import term_taper
 
 NAME = 'Cascivo Serif'
@@ -60,6 +61,87 @@ def _l(g, p):  # plain stem: the serifs make it an l, the Sans tail would fight 
 def _I(g, p):
     g.vstem(0, 0, p.cap)
     g.ht = 'c'
+
+
+# Round 6: C G c top terminals. The Sans C ran on to where its stroke falls near vertical and was cut flat ('h'); the serif pass hung a
+# thin barb under that flat face, so the top read as a claw curling into the counter. Source Serif's (and Merriweather's) C stops
+# while the stroke still runs out to the right and drops a heavy beak with a vertical outer face. Here: the arm stops VBEAK_OPEN
+# degrees earlier, and _vbeak hangs a bracketed wedge from the end face, its outer side vertical, its tip at VBEAK_TIP of the height.
+VBEAK = {'C': 0.64, 'G': 0.66, 'c': 0.62}  # the beak tip's height, as a share of cap height (C G) or x-height (c)
+VBEAK_OPEN = 16  # degrees the top arm stops short of the Sans terminal
+VBEAK_TIP = 0.5  # the beak tip's width over the stem
+VBEAK_FOOT = 0.3  # C's lower end: a short upward spur (Merriweather's, Source Serif's hint of one), its rise over the top beak's drop
+
+
+@_hook.override('C')
+def _C(g, p):
+    w = p.Hd * (1.12 + (0.07 + _G.C_BLACK) * p.heavy)
+    cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
+    a0 = 22 + p.ap - _G.TERM_RUN * p.heavy + VBEAK_OPEN
+    g.stroke(g.arc(cx, cy, rx, ry, a0, 270) + g.arc(cx, cy, rx, ry, 270, 338 - p.ap + _G.TERM_RUN * p.heavy, p.k), caps=('b', 'b'), cut='v')
+    g.ht = 'c'
+    g.sb = (0.62, 0.45)
+
+
+@_hook.override('G')
+def _Gcap(g, p):
+    w = p.Hd * (1.12 + _G.G_BLACK * p.heavy)
+    cx, cy, rx, ry = g.box(0, -p.ov, w, p.cap + p.ov)
+    k = p.k + _G.G_SPUR * p.heavy
+    g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap + VBEAK_OPEN, 270) + g.arc(cx, cy, rx, ry, 270, 360, k=k), caps=('b', 'h'), cut='v')
+    g.hbar(cx + rx * 0.08, cx + rx, cy - p.H, w=p.H)
+    g.ht = 'c'
+    g.sb = (0.62, 0.8)
+
+
+@_hook.override('c')
+def _clow(g, p):
+    w = p.nw * (1.04 - 0.02 * p.heavy)
+    cx, cy, rx, ry = g.box(0, -p.ov, w, p.xh + p.ov)
+    g.stroke(g.arc(cx, cy, rx, ry, 30 + p.ap - _G.C_RUN * p.heavy + VBEAK_OPEN, 330 - p.ap + _G.C_RUN * p.heavy), caps=('b', 'b'), cut='t', tilt=_G.C_TILT, turn=p.face)
+    g.sb = (0.62, 0.42)
+
+
+def _side_pts(side, end, n=24):
+    """Points along an open side, starting at the given end (0: the stroke's start, 1: its end)."""
+    segs = side if end == 0 else [(sg[0],) + tuple(reversed(sg[1:])) for sg in reversed(side)]
+    return [seg_point(sg, i / n) for sg in segs for i in range(n)]
+
+
+def _vbeak(g, p, s, end, tip_y, wt, run, rise=None):
+    """A beak on a curved terminal: from the end face's outer corner a vertical outer side runs to tip_y, a tip wt wide, then a
+    concave bracket back into the stroke's inner side, which it meets run units in from the face (x). The outer side being
+    vertical is what makes it a beak, not a barb: the engine's face is square to the stroke at light weights and a long
+    diagonal at Black, and the wedge covers the corner between that face and the vertical."""
+    left, right = _open_sides(s, p.V, p.H)
+    f1, f2 = (left[0][1], right[0][1]) if end == 0 else (left[-1][-1], right[-1][-1])
+    xs = [q[0] for o in g.strokes for sg in o.segs for q in sg[1:]]
+    ys = [q[1] for o in g.strokes for sg in o.segs for q in sg[1:]]
+    mx, my = (min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2
+    d2 = lambda q: (q[0] - mx) ** 2 + (q[1] - my) ** 2
+    (o, i, inn_side) = (f1, f2, right) if d2(f1) > d2(f2) else (f2, f1, left)
+    xo, yo = max(f1[0], f2[0]), o[1]
+    if rise is not None:  # a spur standing rise units off the outer corner instead of reaching a set height
+        tip_y = yo + rise
+    dy = 1 if tip_y > yo else -1
+    tip_y = dy * max(dy * tip_y, dy * i[1] + 0.3 * wt)  # the tip clears the face's inner corner: else that corner pokes out
+    tx = min(xo - wt, i[0] - 0.1 * wt)  # the bracket starts left of the inner corner, so the corner stays inside the beak
+    pts = _side_pts(inn_side, end)
+    # J: run units in from the face, but short of the inner side's extreme (c's narrow counter: past it the bracket crossed
+    # the closing edge and the wedge's winding cut a hole)
+    peak = next((n - 4 for n in range(1, len(pts)) if dy * (pts[n][1] - pts[n - 1][1]) > 0), len(pts) - 1)
+    k = min(peak, next((n for n, q in enumerate(pts) if q[0] <= tx - run + wt), len(pts) - 1))
+    j, jb = pts[k], pts[max(k - 1, 0)]
+    tn = ((jb[0] - j[0]) ** 2 + (jb[1] - j[1]) ** 2) ** 0.5 or 1.0
+    span = ((j[0] - tx) ** 2 + (j[1] - tip_y) ** 2) ** 0.5
+    c2 = (j[0] + (jb[0] - j[0]) / tn * span * 0.4, j[1] + (jb[1] - j[1]) / tn * span * 0.4)  # leaves the inner side along it: no kink
+    seg = s.segs[0] if end == 0 else s.segs[-1]
+    _, (ux, uy) = _tangent(seg, end)
+    m = ((f1[0] + f2[0]) / 2 - ux * p.H * 0.6, (f1[1] + f2[1]) / 2 - uy * p.H * 0.6)  # closes through the stroke, not along its face
+    c = [L((xo, yo), (xo, tip_y)), L((xo, tip_y), (tx, tip_y)),
+         C((tx, tip_y), (tx, tip_y - dy * 0.5 * abs(j[1] - tip_y)), c2, j),
+         L(j, m), L(m, (xo, yo))]
+    return orient(c, outer=True)
 
 
 def _sizes(p):
@@ -233,7 +315,7 @@ def _squeeze(g, f, xc):
 
 # Round 4: curved terminals. Sans ends C G S c s on a near-horizontal cut and a r f on a plain stroke end; Source Serif barbs the
 # first (a vertical serif along the outer side) and balls the second.
-BEAK_TOP = {'C', 'G', 'S', 'c', 's', 'uni0421', 'uni0441', 'uni0404', 'uni0454'}
+BEAK_TOP = {'S', 's', 'uni0421', 'uni0441', 'uni0404', 'uni0454'}
 BEAK_FOOT = {'S', 's'}
 BALL = {'a', 'r', 'f', 'uni0430'}
 BALL_TAIL = {'dotlessj', 'y', 'uni0443'}  # descender tails, balled as Source Serif's j and y
@@ -454,6 +536,11 @@ def glyph(g, p, name):
         _squeeze(g, 1 - give / (max(xs) - min(xs) + p.V), (min(xs) + max(xs)) / 2)
     for kind, i, end in _TPLAN[name]:
         g.raw.append(_terminal(g, p, kind, g.strokes[i], end, outer * k))
+    if name in VBEAK:
+        h = p.cap if name.isupper() else p.xh
+        g.raw.append(_vbeak(g, p, g.strokes[0], 0, VBEAK[name] * h, p.V * VBEAK_TIP, p.V * VBEAK_TIP + outer * k * BRACKET))
+        if name == 'C':  # the lower end: a short spur standing up, as Merriweather's (Source Serif's a hint of one)
+            g.raw.append(_vbeak(g, p, g.strokes[0], 1, 0, p.V * VBEAK_TIP * 0.7, p.V * 0.35 + outer * k * 0.6, rise=VBEAK_FOOT * (h * (1 - VBEAK[name]))))
     for i, end, kind, side in _DPLAN[name][0]:
         s = g.strokes[i]
         seg = s.segs[0] if end == 0 else s.segs[-1]
