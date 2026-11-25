@@ -26,6 +26,38 @@
     "description": "Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space",
     "category": "layout",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "data": {
+          "data-orientation": ["horizontal", "vertical"]
+        },
+        "children": ["pane", "handle"]
+      },
+      "parts": {
+        "pane": {
+          "element": "div",
+          "children": ["$slot"]
+        },
+        "handle": {
+          "element": "div",
+          "role": "separator",
+          "aria": [
+            "aria-orientation",
+            "aria-label",
+            "aria-valuenow",
+            "aria-valuemin",
+            "aria-valuemax"
+          ],
+          "children": ["grip"]
+        },
+        "grip": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

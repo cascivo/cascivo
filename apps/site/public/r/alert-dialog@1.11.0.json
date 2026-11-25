@@ -26,6 +26,46 @@
     "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
     "category": "overlay",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "dialog",
+        "role": "alertdialog",
+        "data": {
+          "data-state": ["open", "closed"],
+          "data-variant": ["default", "destructive"]
+        },
+        "aria": ["aria-modal", "aria-labelledby", "aria-describedby"],
+        "children": ["content"]
+      },
+      "parts": {
+        "content": {
+          "element": "div",
+          "children": ["title", "description", "actions"]
+        },
+        "title": {
+          "element": "p",
+          "children": ["$text"]
+        },
+        "description": {
+          "element": "p",
+          "children": ["$text"]
+        },
+        "actions": {
+          "element": "div",
+          "children": ["cancel", "confirm"]
+        },
+        "cancel": {
+          "element": "button",
+          "children": ["$text"]
+        },
+        "confirm": {
+          "element": "button",
+          "children": ["$text"]
+        }
+      }
+    },
     "states": ["open", "closed"],
     "variants": ["default", "destructive"],
     "sizes": [],

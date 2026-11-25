@@ -7,6 +7,21 @@ export const meta: ComponentMeta = {
   // The component is a toggle: with JS off the button renders but cannot swap, so the
   // 'off' child is all you ever see. Interactivity is the feature, not a polish layer.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'button',
+      local: 'swap',
+      role: 'switch',
+      data: { 'data-checked': 'boolean', 'data-mode': ['rotate', 'flip'] },
+      aria: ['aria-checked', 'aria-label'],
+      children: ['on', 'off'],
+    },
+    parts: {
+      on: { element: 'span', aria: ['aria-hidden'], children: ['$slot'] },
+      off: { element: 'span', aria: ['aria-hidden'], children: ['$slot'] },
+    },
+  },
   states: ['unchecked', 'checked'],
   variants: ['rotate', 'flip'],
   sizes: [],

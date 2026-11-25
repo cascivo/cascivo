@@ -6,6 +6,22 @@ export const meta: ComponentMeta = {
     'Collapsible panel for a model’s reasoning — opens and shimmers "Thinking…" while it streams, then settles to "Thought for N seconds"',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'details',
+      // Presence-only: `''` while `streaming`, absent otherwise.
+      data: { 'data-streaming': [''] },
+      children: ['trigger', 'content'],
+      emit: 'manual',
+    },
+    parts: {
+      trigger: { element: 'summary', children: ['glyph', '$slot', 'indicator'] },
+      glyph: { element: 'span', aria: ['aria-hidden'] },
+      indicator: { element: 'span', aria: ['aria-hidden'] },
+      content: { element: 'div', aria: ['aria-busy'], children: ['$slot'] },
+    },
+  },
   states: ['streaming', 'settled'],
   variants: [],
   sizes: [],

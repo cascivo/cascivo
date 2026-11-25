@@ -168,6 +168,10 @@ The cascivo registry model is open — anyone can publish components and host th
 
 [`cascivo-web`](crates/cascivo-web) builds a static site from Markdown, content collections and templates, with cascivo components in the Markdown. Locales, RSS, a sitemap, a live-reload dev server and `deploy` to Cloudflare Workers Static Assets. One Rust binary, no Node build: `cargo install cascivo-web`. Guide: [docs/USING-CASCIVO-WEB.md](docs/USING-CASCIVO-WEB.md).
 
+### Dynamic apps from Rust (`cascivo-server`)
+
+HTML first, htmx for partial updates: [`cascivo-server`](crates/cascivo-server) is an axum layer that renders `cascivo-web` templates per request (a page, or one block as the htmx fragment) with forms, sessions, CSRF, auth, a nonce CSP and SSE. [`cascivo-worker`](crates/cascivo-worker) runs the same app on Cloudflare Workers (KV sessions, D1, R2). Behaviour comes from [`@cascivo/elements`](packages/elements) (light-DOM `cv-tabs`, `cv-dialog`, `cv-toaster`, `cv-form`, plus `/htmx` glue) and, where a widget needs client state, a [`@cascivo/solid`](packages/solid) island, all on the [`@cascivo/css`](packages/css) class contract ([docs/CONTRACT.md](docs/CONTRACT.md)). Scaffold with `cascivo-web new my-app --dynamic --target native|workers|containers`. `pnpm dynamic:check` holds the budget: cascivo JS ≤ 15 KB gz per page (the starter measures 6.2 KB) and ≤ 10 KB per island (4.4 KB). Guide: [docs/USING-CASCIVO-SERVER.md](docs/USING-CASCIVO-SERVER.md); agent skill: [`skills/cascivo-server`](skills/cascivo-server/SKILL.md); example: [`apps/examples/solid-htmx`](apps/examples/solid-htmx).
+
 ### Templates & marketplace
 
 Templates are whole-page compositions — a working page, the components it composes (`registryDependencies`), and its fixtures — that install through the same registry transport and that you own and adapt. The marketplace is a backend-free, GitHub-hosted, community catalog: registries are listed by PR, a CI job bakes a static `marketplace.json`, and a gallery renders it. A template is just a registry item with `type: "template"` — no parallel system.
@@ -184,6 +188,9 @@ cascivo/
 ├── packages/
 │   ├── core/         # @cascivo/core    — micro-FSM + Preact Signals primitives
 │   ├── tokens/       # @cascivo/tokens  — three-level CSS design tokens
+│   ├── css/          # @cascivo/css     — markup contract: unhashed cv-* classes + data-* attributes
+│   ├── elements/     # @cascivo/elements — light-DOM custom elements + htmx glue (no React)
+│   ├── solid/        # @cascivo/solid   — Solid islands for server-rendered markup
 │   ├── themes/       # @cascivo/themes  — 12 first-party themes
 │   ├── icons/        # @cascivo/icons   — optional SVG icon set
 │   ├── i18n/         # @cascivo/i18n    — signal-driven locale store + catalogs
@@ -201,7 +208,7 @@ cascivo/
 │   ├── search/       # registry search index
 │   ├── cli/          # cascivo CLI — init / add / list / update / audit
 │   └── mcp/          # @cascivo/mcp     — MCP server over the registry
-├── crates/           # Rust workspace — cascivo-html (.cv text → one static HTML file) + its CLI, cascivo-tui (ratatui toolkit), cascivo-blitz (native Blitz window), cascivo-web (static sites from Markdown)
+├── crates/           # Rust workspace — cascivo-html (.cv text → one static HTML file) + its CLI, cascivo-tui (ratatui toolkit), cascivo-blitz (native Blitz window), cascivo-web (static sites from Markdown + request-time Engine), cascivo-server (axum htmx server) + cascivo-worker (Cloudflare Workers)
 ├── apps/
 │   ├── site/         # cascivo.com — landing + docs, generated from manifests (dogfood)
 │   ├── storybook/    # storybook.cascivo.com — stories from manifests
@@ -323,6 +330,7 @@ Published packages install from npm. Components themselves are copy-pasted into 
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`@cascivo/ai`](packages/ai)                       | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fai?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/ai)                       | AI-native components for cascivo — StreamingText, AiLabel, Terminal, AiChat                                                                                                                                          |
 | [`@cascivo/astro`](packages/astro)                 | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fastro?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/astro)                 | Astro integration — cascivo's CSS layer order, theme stylesheet and a view-transition-safe no-flash theme script on every page                                                                                       |
+| [`@cascivo/css`](packages/css)                     | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fcss?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/css)                     | cascivo's stable markup contract as plain CSS: unhashed cv-* classes and data-* attributes for HTML, htmx, Solid or any framework, plus the typed class map and a Vite scoped-name helper                            |
 | [`@cascivo/docs`](packages/docs)                   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fdocs?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/docs)                   | The complete cascivo documentation as an npm package — read it offline with `npx @cascivo/docs`, no website needed. Components: @cascivo/react                                                                       |
 | [`@cascivo/docspack`](packages/docspack)           | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fdocspack?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/docspack)           | cascivo's documentation as a docspack package — `docspack sync` once, then `docspack ask` answers offline from the version you installed                                                                             |
 | [`@cascivo/email`](packages/email)                 | [![npm](https://img.shields.io/npm/v/%40cascivo%2Femail?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/email)                 | Render cascivo-themed transactional email — table-based, inline-styled HTML, no client JS, zero runtime dependencies. Conformance-linted against the Can I email matrix. Docs offline: npx @cascivo/docs             |
@@ -339,15 +347,16 @@ Published packages install from npm. Components themselves are copy-pasted into 
 
 Not published to npm. `components` and `layouts` are the source of truth the CLI copies from; the rest power the docs, AI, and search surfaces.
 
-| Package                                      | Description                                                                                                                                               |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`@cascivo/components`](packages/components) | Registry source — copy-paste component TSX + CSS + manifests (not published)                                                                              |
-| [`@cascivo/elements`](packages/elements)     | Light-DOM custom elements (cv-menu, cv-combobox, cv-date-picker) that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure |
-| [`@cascivo/layouts`](packages/layouts)       | Registry source — copy-paste app shells and page layouts (not published)                                                                                  |
-| [`@cascivo/search`](packages/search)         | Experimental — registry search index for the cascivo ecosystem (API unstable)                                                                             |
-| [`@cascivo/theme-kit`](packages/theme-kit)   | Shared theme-config codec + CSS generator for the /create theme builder and the cascivo CLI                                                               |
-| [`@cascivo/video`](packages/video)           | Experimental — Remotion video studio for cascivo (animated explainers and launch films)                                                                   |
-| [`@cascivo/workbench`](packages/workbench)   | Experimental — browse copied components: every manifest example, in every theme and width                                                                 |
+| Package                                      | Description                                                                                                                                                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`@cascivo/components`](packages/components) | Registry source — copy-paste component TSX + CSS + manifests (not published)                                                                                                                                         |
+| [`@cascivo/elements`](packages/elements)     | Light-DOM custom elements (cv-menu, cv-tabs, cv-combobox, cv-date-picker, cv-dialog, cv-toaster, cv-form) and the htmx glue that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure |
+| [`@cascivo/layouts`](packages/layouts)       | Registry source — copy-paste app shells and page layouts (not published)                                                                                                                                             |
+| [`@cascivo/search`](packages/search)         | Experimental — registry search index for the cascivo ecosystem (API unstable)                                                                                                                                        |
+| [`@cascivo/solid`](packages/solid)           | Solid islands for cascivo-web/cascivo-server markup: defineIsland (mount + htmx-safe dispose), cv-* JSX typings from the Custom Elements Manifest, and a Vite preset                                                 |
+| [`@cascivo/theme-kit`](packages/theme-kit)   | Shared theme-config codec + CSS generator for the /create theme builder and the cascivo CLI                                                                                                                          |
+| [`@cascivo/video`](packages/video)           | Experimental — Remotion video studio for cascivo (animated explainers and launch films)                                                                                                                              |
+| [`@cascivo/workbench`](packages/workbench)   | Experimental — browse copied components: every manifest example, in every theme and width                                                                                                                            |
 
 ### Apps
 
@@ -374,6 +383,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 | [`@cascivo/example-react-vite`](apps/examples/react-vite)         | Vite + React example app using cascivo                                                                                     |
 | [`@cascivo/example-react-vite-ssr`](apps/examples/react-vite-ssr) | Vite SSR (TanStack Start / Remix / workerd) example — server-renders cascivo through the built dist                        |
 | [`@cascivo/registry-starter`](apps/examples/registry-starter)     | Starter template for publishing a third-party cascivo component registry                                                   |
+| [`@cascivo/example-solid-htmx`](apps/examples/solid-htmx)         | axum + htmx + one Solid island on the @cascivo/css markup contract                                                         |
 | [`@cascivo/example-stage`](apps/examples/stage)                   | Example app — live Q&A and polls for talks, on Cloudflare Durable Objects, built with @cascivo/app and Preact              |
 | [`@cascivo/template-starter`](apps/examples/template-starter)     | Starter template for publishing a cascivo template to the marketplace                                                      |
 | [`@cascivo/example-track`](apps/examples/track)                   | Example app — a Linear-style keyboard-first issue tracker built with cascivo                                               |

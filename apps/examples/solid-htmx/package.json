@@ -1,0 +1,26 @@
+{
+  "name": "@cascivo/example-solid-htmx",
+  "version": "0.0.1",
+  "private": true,
+  "description": "axum + htmx + one Solid island on the @cascivo/css markup contract",
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@cascivo/css": "workspace:*",
+    "@cascivo/elements": "workspace:*",
+    "@cascivo/solid": "workspace:*",
+    "@cascivo/themes": "workspace:*",
+    "htmx-ext-sse": "^2.2.4",
+    "htmx.org": "^2.0.8",
+    "solid-js": "^1.9.0"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite-plugin-solid": "^2.11.0",
+    "vite-plus": "catalog:"
+  }
+}

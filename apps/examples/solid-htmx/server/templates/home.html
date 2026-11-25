@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block scripts %}
+<script type="module" nonce="{{ request.nonce }}" src="/assets/island.js"></script>
+{% endblock %} {% block main %}
+<h1>Notes</h1>
+<div
+  id="save-bar"
+  data-island="save-bar"
+  data-client="load"
+  data-src="/assets/island.js"
+  data-css="/assets/island.css"
+>
+  <span class="cv-badge-badge" data-variant="secondary">Draft</span>
+</div>
+<div class="cv-card-card" data-cascivo-card data-variant="outlined" data-padding="md">
+  <div class="cv-card-header"><h2 class="cv-card-title">Server fragment</h2></div>
+  <div class="cv-card-content">
+    <div id="count">
+      {% block count %}<span class="cv-badge-badge" data-variant="info">{{ count }} notes</span>{%
+      endblock %}
+    </div>
+    <button
+      class="cv-button-button"
+      data-variant="secondary"
+      hx-post="/notes"
+      hx-target="#count"
+      hx-swap="innerHTML"
+    >
+      <span class="cv-button-label">Add note</span>
+    </button>
+  </div>
+</div>
+{% endblock %}

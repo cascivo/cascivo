@@ -6,6 +6,33 @@ export const meta: ComponentMeta = {
   category: 'display',
   // All rows render; JS only adds the optional roving-focus selection.
   clientJs: 'enhancement',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      // `radiogroup` when `selectable`, otherwise `table`.
+      element: 'div',
+      local: 'list',
+      aria: ['aria-label'],
+      modifiers: { selectable: 'selectable' },
+      children: ['headerRow', 'body'],
+      // Rows and cells are looped over `items`: not a static tree.
+      emit: 'manual',
+    },
+    parts: {
+      headerRow: { element: 'div', children: ['headerCell'], when: 'headers' },
+      headerCell: { element: 'div', children: ['$slot'] },
+      body: { element: 'div', children: ['row'] },
+      // `role="radio"` (with `aria-checked`) when selectable, `role="row"` otherwise.
+      row: {
+        element: 'div',
+        data: { 'data-selected': 'boolean' },
+        aria: ['aria-checked', 'aria-labelledby'],
+        children: ['cell'],
+      },
+      cell: { element: 'div', children: ['$slot', 'indicator'] },
+      indicator: { element: 'span', when: 'selectable' },
+    },
+  },
   states: ['default', 'selected'],
   variants: ['static', 'selectable'],
   sizes: [],

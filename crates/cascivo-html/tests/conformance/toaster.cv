@@ -1,0 +1,5 @@
+toaster
+  toast "Saved" success
+  toast "Disk almost full" warning title="Storage"
+  toast "Failed" danger
+  toast "FYI <b>"

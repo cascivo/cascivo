@@ -7,6 +7,49 @@ export const meta: ComponentMeta = {
   // The full month grid server-renders (6.9 KB, 32 buttons) but every day is a JS-only
   // button, so no date can be picked.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      data: { 'data-size': ['sm', 'md', 'lg'] },
+      children: ['header', 'grid', 'footer', 'srOnly'],
+    },
+    parts: {
+      header: { element: 'div', children: ['navButton', 'navSpacer', 'monthLabel'] },
+      // Prev/next buttons; `navSpacer` replaces them when `hideNav`.
+      navButton: { element: 'button', aria: ['aria-label'], children: ['$text'] },
+      navSpacer: { element: 'span' },
+      monthLabel: { element: 'span', children: ['$text'] },
+      grid: {
+        element: 'table',
+        role: 'grid',
+        aria: ['aria-label'],
+        children: ['weekday', 'weekNumber', 'empty', 'cell'],
+      },
+      weekday: { element: 'th', children: ['srOnly', '$text'] },
+      weekNumber: { element: 'th', children: ['$text'] },
+      empty: { element: 'td', role: 'gridcell' },
+      cell: { element: 'td', role: 'presentation', children: ['day'] },
+      day: {
+        element: 'button',
+        role: 'gridcell',
+        data: {
+          'data-day': 'string',
+          'data-selected': 'string',
+          'data-today': 'string',
+          'data-in-range': 'string',
+          'data-range-start': 'string',
+          'data-range-end': 'string',
+        },
+        aria: ['aria-label', 'aria-selected', 'aria-current', 'aria-disabled'],
+        children: ['$text'],
+      },
+      footer: { element: 'div', when: 'showToday', children: ['todayButton'] },
+      todayButton: { element: 'button', children: ['$text'] },
+      // Visually hidden: the week-number column header and the month-change live region.
+      srOnly: { element: 'span', aria: ['aria-live'], children: ['$text'] },
+    },
+  },
   states: ['default', 'selected', 'today', 'disabled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

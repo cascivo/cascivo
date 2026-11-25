@@ -27,6 +27,52 @@
     "description": "Transient notification surfaced via the useToast hook",
     "category": "overlay",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "viewport",
+        "role": "region",
+        "aria": ["aria-label"],
+        "children": ["toast"]
+      },
+      "parts": {
+        "toast": {
+          "element": "div",
+          "role": "status",
+          "data": {
+            "data-variant": ["default", "success", "warning", "destructive"],
+            "data-state": ["visible", "dismissing", "gone"]
+          },
+          "aria": ["aria-live"],
+          "children": ["icon", "body", "close"]
+        },
+        "icon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$text"],
+          "when": "variant !== 'default'"
+        },
+        "body": {
+          "element": "div",
+          "children": ["title", "description"]
+        },
+        "title": {
+          "element": "div",
+          "children": ["$text"]
+        },
+        "description": {
+          "element": "div",
+          "children": ["$text"],
+          "when": "description"
+        },
+        "close": {
+          "element": "button",
+          "aria": ["aria-label"],
+          "children": ["$text"]
+        }
+      }
+    },
     "states": ["visible", "dismissing", "gone"],
     "variants": ["default", "success", "warning", "destructive"],
     "sizes": [],

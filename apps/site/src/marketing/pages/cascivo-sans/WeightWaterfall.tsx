@@ -13,20 +13,23 @@ export const COMPARE_FONTS: readonly { name: string; family: string }[] = [
   { name: 'IBM Plex Sans', family: "'Compare IBM Plex Sans'" },
 ]
 
-export function WeightWaterfall() {
+/** `compare={false}` drops the Inter/Geist/Plex switch (only Cascivo Sans is measured against them). */
+export function WeightWaterfall({ compare: canCompare = true }: { compare?: boolean } = {}) {
   useSignals()
   const compare = useSignal(false)
   const baseId = useId()
 
   return (
     <>
-      <Toggle
-        label="Compare with Inter, Geist, IBM Plex Sans"
-        checked={compare.value}
-        onValueChange={(checked) => {
-          compare.value = checked
-        }}
-      />
+      {canCompare ? (
+        <Toggle
+          label="Compare with Inter, Geist, IBM Plex Sans"
+          checked={compare.value}
+          onValueChange={(checked) => {
+            compare.value = checked
+          }}
+        />
+      ) : null}
       <ul className="cs-waterfall" id={`${baseId}-list`}>
         {WEIGHT_STOPS.map((stop) => (
           <li key={stop.value}>
