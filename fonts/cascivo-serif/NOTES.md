@@ -84,6 +84,35 @@ in grey under each line):
   between the named 600 and 700, whose design coordinates are uneven, 585 / 788); Black 6 and 9 show a hairline notch in the
   counter at opsz 48 (round 7 fonts too; engine).
 
+Round 9 (specimens in `specimens/round9/`: `before.png` / `after.png`, 300 / 400 / 700 / 900 upright and italic at 12 / 16 / 48 /
+96 px, Source Serif 4 in grey and IBM Plex Serif (400 / 700 only, static) in blue under each line; `display-*.png`: Black upright
+and the italic at 170 px beside Source Serif 4. `specimens/round9/specimen.py`, `SERIF_FONTS=dir` renders another build):
+
+- Heavy feet (`HEAVY_TRIM`, `TRIM_BACK`): round 8's `TUCK` set Bold and Black's stems at Source Serif's distance but kept the
+  slabs' reach, so neighbouring foot serifs all but touched (nn foot to foot 22 / 29 units at 900 / 700, opsz 48; Source Serif
+  47 / 54; at 96 px Rn, nm, mb ran together). The upright lowercase outer reach gives up 14 / 16 units at Bold / Black and the
+  tuck half of it: feet 30 -> 44 (900, opsz 14), 21 -> 35 (opsz 48). Giving the tuck all of it back (stems held) cost the rhythm
+  row 9.03 -> 8.86; half holds it. Gate: `test_heavy_feet_apart`; `test_heavy_spacing` now measures the white beside n's stems
+  at half height, not the outline's sidebearings, which the shorter feet widen on purpose.
+- Italic weight (`ITALIC_STEM_K`): the italic carried the upright's stems (n 93 / 171 at 400 / 700; Source Serif 4 Italic 84 /
+  156), so at text sizes it read a grade darker than its roman. Now 85 / 162, x0.90-0.96 of the upright's.
+- Italic width (`ITALIC_CN`, now weight-keyed 0.84 / 0.88 / 1.03 / 0.99 at Thin / Regular / Bold / Black): a sentence set
+  1.09x / 1.06x Source Serif 4 Italic's at 300 / 400; now 1.03x / 1.01x, Bold and Black 0.99x / 1.00x.
+- Italic heads (`ITALIC_HEAD` 0.7, `HEAD_BACK` 0.5): lowercase head serifs were the upright's full slabs and crowded the
+  x-height at Bold and Black (un, in 73 units apart at 900, opsz 48; Source Serif 4 Italic 114, short entry wedges). The
+  engine spaces the ink's extremes, so a shorter head alone pulled the stem in by what it gave up; the left sidebearing takes
+  half back (un 73 -> 84; all of it, 94, cost small sizes 7.71 -> 7.31). Gate: `test_italic_lighter_and_narrower`.
+- Score vs Source Serif 4 (same ref; round 8 fonts re-measured 7.129, the engine's round 8 changed them since NOTES' 7.111):
+  7.129 -> 7.158. rhythm 9.03 -> 9.03, weight axis 4.83 -> 4.89, shape 8.33 -> 8.32, colour 8.36 -> 8.36, small sizes 6.09 ->
+  6.23, optical sizes 1.29 -> 1.29.
+- Italic vs Source Serif 4 Italic: 6.549 -> 6.624. rhythm 8.59 -> 8.35, weight axis 3.79 -> 3.58, shape 6.73 -> 6.44, colour
+  6.54 -> 7.10, small sizes 6.54 -> 7.40. Rhythm and shape fall with the lighter stems (n's counter over ink, P R B bowls).
+- WOFF2: upright 88_672 -> 88_444, Latin 37_844 -> 37_756; italic 96_276 -> 96_344 (+68), Latin 41_380 -> 41_360.
+- Left: italic a / e are still the sheared Sans italic's shapes (not redrawn this round); the italic sets its letters further
+  apart than Source Serif 4 Italic at 48 px with narrower counters (its feet are exit flicks only, so the white between
+  letters reads open); Rn at Black (R's foot and leg serifs, 24 units at opsz 48 against 41; capitals not trimmed); small
+  sizes is still I/l and I/1 at 11-12 px, 200-400; wstep at 600 on X Y V W A.
+
 Score vs Source Serif 4 (score.run, ref fontsource `@fontsource-variable/source-serif-4` 5.3.1 `source-serif-4-latin-wght-normal.woff2`):
 
 - round 2: overall 5.68 (v1 5.61 recorded, 5.65 re-measured on the same build). rhythm 6.92 -> 8.13, weight axis 0.88 -> 0.85, shape 6.84 -> 6.28, colour 6.80 -> 6.73, small sizes 8.04 -> 7.40, optical sizes 1.30 -> 1.28.
