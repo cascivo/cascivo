@@ -17,11 +17,17 @@ export const UNITS = [
   'toast',
   'button',
   'input',
+  'data-table',
+  'drawer',
+  'command-menu',
+  'tooltip',
+  'multi-select',
+  'tags-input',
 ] as const
 
 // Hosts are plain containers; the component CSS styles the markup inside them.
 const HOSTS =
-  '@layer cascivo.component{cv-menu{display:inline-block}cv-tabs{display:block}cv-form{display:block}cv-combobox,cv-date-picker{display:block}cv-dialog{display:contents}cv-toaster{display:contents}}'
+  '@layer cascivo.component{cv-menu{display:inline-block}cv-tabs{display:block}cv-form{display:block}cv-combobox,cv-date-picker{display:block}cv-dialog{display:contents}cv-toaster{display:contents}cv-data-table{display:block}cv-drawer{display:contents}cv-command-menu{display:contents}cv-tooltip{display:inline-block}cv-theme{display:inline-block}cv-multi-select,cv-tags-input{display:block}}'
 
 export function elementsCss(): string {
   return [HOSTS, ...UNITS.map(buildCss)].join('\n')

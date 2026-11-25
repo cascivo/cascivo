@@ -5,6 +5,7 @@ import { customElementsManifest, ELEMENTS } from './manifest.ts'
 
 const source = (m: string) => readFileSync(join(import.meta.dirname, `${m}.ts`), 'utf8')
 const base = source('base')
+const chips = source('chips')
 
 describe.each(ELEMENTS)('$tag', (entry) => {
   it('define() registers the documented class, idempotently', async () => {
@@ -20,7 +21,9 @@ describe.each(ELEMENTS)('$tag', (entry) => {
   })
 
   it('documents every attribute and custom event the element reads or fires', () => {
-    const code = source(entry.module) + (entry.formAssociated ? base : '')
+    const code =
+      source(entry.module) +
+      (entry.formAssociated ? (/CvChips/.test(source(entry.module)) ? chips : base) : '')
     const read = new Set(
       [...code.matchAll(/this\.(?:getAttribute|hasAttribute)\('([\w-]+)'\)/g)].map((m) => m[1]),
     )
