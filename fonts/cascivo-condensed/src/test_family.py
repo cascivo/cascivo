@@ -204,6 +204,22 @@ class CondensedTest(unittest.TestCase):
         self.assertEqual(dict(w['hmtx'].metrics), dict(self.font['hmtx'].metrics))
         self.assertEqual(w['gvar'].compile(w), self.font['gvar'].compile(self.font))
 
+    def test_punctuation_condensed_with_the_letters(self):
+        # round 9: ( [ " - kept 0.85-0.95 of Sans's advance (letters 0.79), so "(Mobile)", "[Beta]", "Draft" and 2026-11-25 set loose.
+        # Each now at most 0.85, and the parenthesis keeps a bow (ink at least 0.35 of n's advance) so it does not read as a bracket.
+        for w in (400, 700, 900):
+            c = instancer.instantiateVariableFont(TTFont(TTF), {'wght': w, 'opsz': 14})
+            s = instancer.instantiateVariableFont(TTFont(SANS), {'wght': w, 'opsz': 14})
+            for ch in '()[]"-':
+                ratio = c['hmtx'][c.getBestCmap()[ord(ch)]][0] / s['hmtx'][s.getBestCmap()[ord(ch)]][0]
+                self.assertLessEqual(ratio, 0.85, (ch, w))
+            n = c['hmtx']['n'][0]
+            for ch in '()':
+                x0, _, x1, _ = self.bounds_in(c, ch)
+                self.assertGreaterEqual(x1 - x0, 0.35 * n, (ch, w))
+            x0, _, x1, _ = self.bounds_in(c, '-')
+            self.assertGreaterEqual(x1 - x0, 0.5 * n, w)
+
     @staticmethod
     def bounds_in(f, ch):
         from fontTools.pens.boundsPen import BoundsPen
