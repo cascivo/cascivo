@@ -10,6 +10,8 @@ A family module may define (all optional):
   glyph(g, p, name)       after a glyph is drawn, before spacing: add strokes, set g.sb / g.adv_fixed
   master(o)               after a master is drawn and composed: e.g. force one advance (mono)
   fea(text) -> text       filter the feature source (e.g. drop kerning)
+  woff2(font)             before a WOFF2 is saved: e.g. set font.flavorData (WOFF2's hmtx transform)
+  BROTLI_TRIES = False    True: compress the WOFF2s the several ways Sans does (build.BROTLI_TRIES) and keep the smallest
 and override drawings with the `override(name)` decorator below.
 """
 
@@ -58,6 +60,12 @@ def master(o):
 def fea(text):
     f = get('fea')
     return f(text) if f else text
+
+
+def woff2(font):
+    f = get('woff2')
+    if f:
+        f(font)
 
 
 def override(name):

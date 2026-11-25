@@ -56,6 +56,7 @@ def tune(p):
 DOT_UP = 1.08  # round 6: . , : ; i j dots, Sans's size, read small and light against the narrower letters at 100-400
 
 
+import family as _hooks  # noqa: E402  the engine's hook module (fonts/cascivo-sans/src/family.py)
 import glyphs as _GL  # noqa: E402  the engine has loaded glyphs.py before this module (family.load)
 
 # Black's bowl and arch joins (glyphs.BLACK_JOIN, Sans 0.45): narrower counters put the d b p q a g 9 6 joins closer to the
@@ -68,15 +69,19 @@ _GL.QUOTE_GAP_HEAVY = QUOTE_GAP_HEAVY = -0.22
 T_OPEN = 0.2  # round 6: extra right sidebearing on t (in S units): its crossbar met the next letter at 12 px Black ("t able", "ts")
 R_OPEN = 0.25  # extra right sidebearing on r (in S units): condensed rn otherwise reads as m at 11-12 px
 C_OPEN = 0.35  # extra right sidebearing on c at Thin (in S units, fading out by Regular): close-set hairline cl read as d at 11 px
+T_LEFT = 0.4  # round 8: extra left sidebearing on t at Black (in S units, by p.heavy): its crossbar's left arm sat 11 units off the stem's left edge, and st, ct, rt touched at 12-16 px Bold and Black ("Get started", "Activity")
+CE_OPEN = 0.2  # round 8: extra right sidebearing on c and e at Black (in S units, by p.heavy): c 14 and e 16 units against o's 30, so "cc", "ce", "ee" clumped at 12-14 px Black
 
 
 def glyph(g, p, name):
     if name == 'r':
         g.sb = (g.sb[0], g.sb[1] + R_OPEN)
     elif name == 't':
-        g.sb = (g.sb[0], g.sb[1] + T_OPEN)
+        g.sb = (g.sb[0] + T_LEFT * p.heavy, g.sb[1] + T_OPEN)
     elif name == 'c':
-        g.sb = (g.sb[0], g.sb[1] + C_OPEN * max(0.0, (400 - p.wght) / 300))
+        g.sb = (g.sb[0], g.sb[1] + C_OPEN * max(0.0, (400 - p.wght) / 300) + CE_OPEN * p.heavy)
+    elif name == 'e':
+        g.sb = (g.sb[0], g.sb[1] + CE_OPEN * p.heavy)
     elif name in ('space', 'nbspace'):
         g.adv_fixed += round(SPACE_BLACK_ADD * p.heavy)
 
@@ -93,6 +98,20 @@ def _pnum_left(p, name):
 
 
 _GL.pnum_left = _pnum_left
+
+THREE_W = 0.97  # round 8: the 3's width (Sans draws it 1.06-1.08 of the figure width, or its bowls pinch) at this share: in the condensed
+# tabular advance Black's 3 inked 475 units against the 2's 445, 9 units from the cell edge at display sizes, and "33" in a table ran together
+_three = _GL.GLYPHS['three'][1]
+
+
+@_hooks.override('three')
+def _three_narrow(g, p):
+    import copy
+
+    pc = copy.copy(p)
+    pc.fig_adv = p.fig_adv - _GL.fw(p) * (1 - THREE_W)  # fw(pc) = THREE_W x fw(p): only the drawing narrows, the advance stays p's
+    _three(g, pc)
+
 
 MIDDOT = 0.8  # periodcentered drawn at this share of the full stop's dot, about its centre: between tracked caps ("01 · WHAT") it was a blob at Bold and Black
 DASH = {'endash': 0.84, 'emdash': 0.72}  # Sans's 500 and 1000 unit dashes: the em dash set as a double-width bar between condensed letters (RC 660)
@@ -120,3 +139,14 @@ def master(o):
     cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
     o.contours['periodcentered'] = [transform_contour(c, lambda q: (cx + (q[0] - cx) * MIDDOT, cy + (q[1] - cy) * MIDDOT)) for c in o.contours['periodcentered']]
     o.bounds['periodcentered'] = (cx + (x0 - cx) * MIDDOT, cy + (y0 - cy) * MIDDOT, cx + (x1 - cx) * MIDDOT, cy + (y1 - cy) * MIDDOT)
+
+
+# Round 8 bytes, the same outlines: WOFF2 may also transform hmtx (its left sidebearings dropped where they equal the glyph's
+# xMin, as here for every glyph; the decoder rebuilds them), and the compressor is tried the ways Sans's is (build.BROTLI_TRIES).
+BROTLI_TRIES = True
+
+
+def woff2(font):
+    from fontTools.ttLib.woff2 import WOFF2FlavorData
+
+    font.flavorData = WOFF2FlavorData(transformedTables={'glyf', 'loca', 'hmtx'})
