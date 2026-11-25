@@ -398,6 +398,13 @@ Q_TAIL = 30
 Q_LIGHT = (40, 10, 0.1) if R7 else (0, 0, 0.0)
 Q_HEAVY_WS = 0.25  # round 10: Black's tail was a 0.9-stem stick off the bowl; a full stem reads as Inter's wedge (it may not enter the counter: quality.py)
 CAP_C_RUN_IT = 0
+# Round 7 (apertures): degrees (upright, italic) Black's C terminals end short of TERM_RUN. Its mouth was 164 units upright and
+# 146 italic against Inter Black's 198 (0.85x and 0.76x per cap height): ours is 7% wider than Inter's, so the same run closed
+# more of the opening. G keeps its run: its mouth (terminal to bar) reads 1.4x Inter's.
+CAP_C_OPEN = (3, 5) if R7 else (0, 0)
+# Opened, the C lost ink it already lacked (0.88x the references' colour at 900, score.py); its terminals, thinned by TERM_THIN to
+# 164 units, were already lighter than Inter Black's 199, so they keep their full stem (184) and the C its colour.
+CAP_C_THIN = 0.0 if R7 else TERM_THIN
 CAP_C_TILT_IT = 12  # the c's own went to 8 in round 5, italic 3 (C_TILT_IT); the C keeps the face its gates were drawn for
 
 
@@ -422,7 +429,7 @@ def _C(g, p):
     # later, when it still carried 0.85-0.93x the ink of Inter, Geist and Helvetica
     # The italic's Black ends as the c's: its last quarter squarer and on a near-flat face, so the lower end is blunt, not a wedge
     sq, run = (C_SQUARE_IT, CAP_C_RUN_IT) if p.italic else (0.0, 0.0)
-    g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap - TERM_RUN * p.heavy, 270) + g.arc(cx, cy, rx, ry, 270, 338 - p.ap + (run + TERM_RUN) * p.heavy, p.k + sq * p.heavy), caps=('b', 'b'), taper=(term_taper(p),) * 2, cut='t' if p.italic else 'h', tilt=CAP_C_TILT_IT)
+    g.stroke(g.arc(cx, cy, rx, ry, 22 + p.ap - (TERM_RUN - CAP_C_OPEN[p.italic]) * p.heavy, 270) + g.arc(cx, cy, rx, ry, 270, 338 - p.ap + (run + TERM_RUN - CAP_C_OPEN[p.italic]) * p.heavy, p.k + sq * p.heavy), caps=('b', 'b'), taper=(1 - CAP_C_THIN * p.heavy,) * 2, cut='t' if p.italic else 'h', tilt=CAP_C_TILT_IT)
     g.ht = 'c'
     g.sb = (0.62, 0.45)
 
@@ -750,6 +757,10 @@ A_TIP = 5  # units: see _a_bowl
 # The bottom's handle into the notch is A_CHIN of the run (0.8 left a chin where it turned).
 A_TOP_SLOPE, A_CROWN, A_IN_SLOPE, A_TOP_THIN, A_FLOOR_K, A_CHIN = 0.0, 0.7, 0.11, 0.15, 0.55, 0.6
 A_TUCK = (0.6, 0.3)  # (Regular, Black) the italic a's last quarter: see _a
+# Round 7 (apertures): x-heights Black's top arc is shorter, so its end sits higher over the bowl (whose top test_r7_latin holds).
+# The mouth between them was 30 units, 0.70x Inter Black's per x-height (46; ends 0.64 / 0.59 x-heights up, Inter's 0.68 / 0.61).
+# Running the arc less far round (A_ARC_END) alone reached 0.9x at 0 degrees and blunted the terminal.
+A_ARC_LIFT = 0.045 if R7 else 0.0
 A_ARC_END = 13  # the a's arc runs less far round than the g's tail: ending higher keeps its mouth open once the end moved inward
 
 
@@ -1221,6 +1232,10 @@ def _o(g, p):
 
 
 C_RUN, C_RUN_IT, C_TILT = 16, (0, 0), 12
+# Round 7 (apertures): Black's c gives back C_OPEN of C_RUN at both ends. At 16 its mouth (the least white between the two
+# terminals) was 69 units, 0.78x Inter Black's per x-height (92); the ends sat 0.02 x-heights nearer the middle than Inter's.
+# 3.5 opens it to Inter's and keeps the lower end further round than the 12 it ran before round 7.
+C_OPEN = 3.5 if R7 else 0
 C_TILT_IT = 8
 # Round 5, italic 2: the italic's Black c, e and x sat closest of any lowercase to their neighbours (closest ink against Inter Italic's at
 # 900: ee ec ea 0.62-0.64x, ex 0.65x, ck 0.76x, where nn is 0.84x): "ck", "ex" nearly touched. Their right (x: both) sidebearings open by
@@ -1268,7 +1283,7 @@ def _c(g, p):
 
 def _c_stroke(g, p, cx, cy, rx, ry):
     """The c's round and its two terminals (c and ¢)."""
-    ru, rl = C_RUN_IT if p.italic else (C_RUN, C_RUN)
+    ru, rl = C_RUN_IT if p.italic else (C_RUN - C_OPEN,) * 2
     arc = g.arc(cx, cy, rx, ry, 30 + p.ap - ru * p.heavy, 330 - p.ap + rl * p.heavy)
     if not p.italic:
         return g.stroke(arc, caps=('b', 'b'), cut='t', tilt=C_TILT, turn=p.face)
@@ -1286,6 +1301,10 @@ def _c_stroke(g, p, cx, cy, rx, ry):
 # Round 7: E_RUN -8 -> -12, C_RUN 12 -> 16: Black's e and c terminals run further round, closer to Inter Black's, whose lower terminal
 # reaches nearly the bowl's full width (owner: ours ended too early). -12 is as far as test_black_e_opens allows (mouth 79 -> 56 rows, floor 55).
 E_END, E_RUN, E_RUN_IT, E_TILT, E_SQUARE, E_WIDE = 322, -12, -9, 12, 0.14, 0.0
+# Round 7 (apertures): Black's mouth (least white, terminal to bar) was 47 units, 0.92x Inter Black's per x-height (53): one degree
+# back reaches it (52).
+if R7:
+    E_RUN = -11
 AE_RUN = -8
 # Black's bar is this much thinner than the other crossbars and drops this share of a bar below the middle: its eye read 0.78x Inter's
 # (as a share of the x-height squared) while o a g read 1.0-1.2x, so the e was the dark spot of a Black word
@@ -1485,7 +1504,7 @@ def _a(g, p):
     # The arc is no taller at Black (at +18% its end dropped onto the bowl's shoulder and the mouth narrowed to
     # 19 units, Inter's 40): it starts further right (A_ARC_IN) and runs A_ARC_END further round, so the end
     # meets the cut square; forcing a flat face on a stroke still falling at 49 degrees left a pointed wedge
-    ryt = p.xh * 0.26
+    ryt = p.xh * (0.26 - A_ARC_LIFT * p.heavy)
     cyt = p.xh + p.ov * 0.5 - H / 2 - ryt
     g.stroke([L((xs, 0), (xs, cyt))] + g.arc(cxt, cyt, rxt, ryt, 0, 154 - p.ap + A_ARC_END * p.heavy), caps=('b', 'b'), cut='t')
     _a_bowl(g, p, xs, 0.94)
