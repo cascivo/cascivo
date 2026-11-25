@@ -7,6 +7,27 @@ export const meta: ComponentMeta = {
   category: 'navigation',
   // A static progress indicator; every step and its state render on the server.
   clientJs: 'enhancement',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'ol',
+      data: { 'data-orientation': ['horizontal', 'vertical'] },
+      aria: ['aria-label'],
+      children: ['step'],
+      // One `step` per item, with a computed state: not a static tree.
+      emit: 'manual',
+    },
+    parts: {
+      step: {
+        element: 'li',
+        data: { 'data-state': ['pending', 'active', 'complete', 'error'] },
+        aria: ['aria-current'],
+        children: ['circle', 'label'],
+      },
+      circle: { element: 'div', children: ['$text'] },
+      label: { element: 'span', children: ['$text'] },
+    },
+  },
   states: ['pending', 'active', 'complete', 'error'],
   variants: [],
   sizes: [],

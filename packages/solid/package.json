@@ -1,0 +1,40 @@
+{
+  "name": "@cascivo/solid",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Solid islands for cascivo-web/cascivo-server markup: defineIsland (mount + htmx-safe dispose), cv-* JSX typings from the Custom Elements Manifest, and a Vite preset",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./vite": "./src/vite.ts",
+    "./elements": "./src/cv-elements.ts"
+  },
+  "scripts": {
+    "generate": "node --experimental-strip-types scripts/generate.ts",
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@cascivo/css": "workspace:*"
+  },
+  "devDependencies": {
+    "@cascivo/elements": "workspace:*",
+    "@types/node": "catalog:",
+    "jsdom": "catalog:",
+    "solid-js": "^1.9.0",
+    "typescript": "catalog:",
+    "vite-plugin-solid": "^2.11.0",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "solid-js": ">=1.9.0",
+    "vite-plugin-solid": ">=2.11.0"
+  },
+  "peerDependenciesMeta": {
+    "vite-plugin-solid": {
+      "optional": true
+    }
+  }
+}

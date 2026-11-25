@@ -31,3 +31,7 @@ merging to `main` never publishes it. Its first changeset (minor gives `0.1.0`) 
 normal Version PR, and merging that PR is the release decision. Only the crates.io name has to
 exist for trusted publishing, so the very first publish of a brand-new crate is manual (see
 `docs/RELEASING.md`).
+
+`cascivo-server` (Phase 3, dynamic apps) has `publish = false`, like `cascivo-blitz`: the release
+tool skips it (no dependent bump, no publish) and a changeset naming it is an error. It is released
+by removing that line once the owner decides to publish it.

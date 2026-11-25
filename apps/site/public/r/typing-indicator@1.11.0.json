@@ -26,6 +26,22 @@
     "description": "Three bouncing dots that hold a chat message slot while an assistant (or a person) is composing a reply",
     "category": "feedback",
     "clientJs": "none",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "span",
+        "role": "status",
+        "aria": ["aria-label"],
+        "children": ["dot", "dot", "dot"],
+        "emit": "manual"
+      },
+      "parts": {
+        "dot": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

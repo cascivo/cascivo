@@ -6,8 +6,8 @@
  * **Machine mode is the accessibility tree, serialized.** Every decision here reads the same
  * thing a screen reader reads — semantic elements, ARIA roles and states, accessible names —
  * and nothing else. That is not a stylistic preference, it is the only signal available:
- * cascivo ships CSS Modules, so class names are build-time hashes (`_badge_1r5fv_83`) that
- * mean nothing to a reader and change on every build. The accessible layer is the one part
+ * class names are styling hooks (`cv-badge-badge` from `@cascivo/react`, a build-time hash
+ * in an adopter's own copy) that mean nothing to a reader. The accessible layer is the one part
  * of a component's output that is already specified, already tested (`apg:check`,
  * `rtl:check`, the `enhancement-renders` sweep) and already stable API.
  *

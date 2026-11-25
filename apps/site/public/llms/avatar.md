@@ -28,12 +28,6 @@ import { Avatar } from '@cascivo/react'
 - `lg`
 - `xl`
 
-## States
-
-- `loading`
-- `loaded`
-- `error`
-
 ## Props
 
 | Prop       | Type                                   | Required | Default | Description                                                                       |

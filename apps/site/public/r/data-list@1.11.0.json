@@ -26,6 +26,34 @@
     "description": "Key-value pairs rendered as a description list",
     "category": "display",
     "clientJs": "none",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "dl",
+        "local": "list",
+        "data": {
+          "data-orientation": ["horizontal", "vertical"],
+          "data-size": ["sm", "md"],
+          "data-dividers": [""]
+        },
+        "children": ["row", "$slot"],
+        "emit": "manual"
+      },
+      "parts": {
+        "row": {
+          "element": "div",
+          "children": ["term", "detail"]
+        },
+        "term": {
+          "element": "dt",
+          "children": ["$slot"]
+        },
+        "detail": {
+          "element": "dd",
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": [],
     "variants": ["horizontal", "vertical"],
     "sizes": ["sm", "md"],

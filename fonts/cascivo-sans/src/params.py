@@ -9,6 +9,8 @@ adds their deltas, which keeps a two-axis family to five masters instead of a 3Ã
 
 import math
 
+import family
+
 DEFAULT = dict(wght=400, opsz=14)
 # Black's stem: 36% of the x-height, as Geist's and Inter's Black. At 178 (34%) Black was
 # visibly lighter than both.
@@ -187,6 +189,7 @@ class P:
         self.mt = V * 0.86 + 6  # accent stroke
         self.fig_adv = round(580 + 0.55 * (V - 90) + (spacing - 1) * 60 + 1.3 * self.S * (1 - 1 / opened))  # tabular figure advance; Thin's opened white is added outside the figures' ink, which the math signs share
         self.slant = math.tan(math.radians(ITALIC_ANGLE)) if italic else 0.0
+        family.tune(self)  # sibling families (family.py); a no-op for Sans
 
     @property
     def heavy(self):

@@ -12,7 +12,8 @@ const CONTROLS: readonly { axis: AxisName; label: string; unit: string }[] = [
   { axis: 'size', label: 'Size', unit: 'px' },
 ]
 
-export function TypeTester() {
+/** `italic={false}` hides the italic switch for upright-only families. */
+export function TypeTester({ italic: hasItalic = true }: { italic?: boolean } = {}) {
   useSignals()
   const values = {
     wght: useSignal<number>(AXES.wght.initial),
@@ -48,13 +49,15 @@ export function TypeTester() {
             </div>
           )
         })}
-        <Toggle
-          label="Italic"
-          checked={italic.value}
-          onValueChange={(checked) => {
-            italic.value = checked
-          }}
-        />
+        {hasItalic ? (
+          <Toggle
+            label="Italic"
+            checked={italic.value}
+            onValueChange={(checked) => {
+              italic.value = checked
+            }}
+          />
+        ) : null}
       </div>
       <span id={sampleLabelId} className="cs-tester-label">
         Sample text — editable

@@ -26,6 +26,15 @@
     "description": "Displays a date as a localized phrase relative to now, auto-updating",
     "category": "display",
     "clientJs": "enhancement",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "local": "relativeTime",
+        "element": "time",
+        "children": ["$text"],
+        "emit": "manual"
+      }
+    },
     "states": ["default"],
     "variants": [],
     "sizes": [],

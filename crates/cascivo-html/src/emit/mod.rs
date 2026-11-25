@@ -3,11 +3,23 @@
 use crate::ast::{Node, Value};
 use crate::render::Cx;
 
+#[rustfmt::skip]
+mod auto_gen;
 pub mod chart;
 mod display;
+mod e1_a;
+mod e1_b;
+mod e1_c;
+mod e1_d;
+mod embed;
 mod feedback;
+mod form;
+mod form_ai;
+mod form_pick;
+mod form_text;
 mod layout;
 mod nav;
+mod overlay;
 
 pub use chart::emit_chart;
 
@@ -16,19 +28,40 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
     for unit in node.spec.css {
         cx.used.insert(unit);
     }
+    if auto_gen::emit(node, cx, out) {
+        return;
+    }
     match node.spec.name {
         "flex" | "grid" | "columns" | "auto-grid" | "center" | "section" | "page-header"
         | "dashboard-layout" | "separator" | "spacer" => layout::emit(node, cx, out),
         "heading" | "text" | "prose" | "card" | "stat" | "kpi" | "badge" | "tag" | "avatar"
         | "avatar-group" | "image" | "svg" | "list" | "data-list" | "structured-list"
-        | "timeline" | "empty-state" | "blockquote" | "code" | "kbd" | "link" | "button" => {
+        | "timeline" | "empty-state" | "blockquote" | "code" | "kbd" | "link" => {
             display::emit(node, cx, out);
         }
+        "chat-bubble" | "shimmer-text" | "stack" | "aspect-ratio" | "skip-nav"
+        | "typing-indicator" | "ai-disclaimer" => e1_a::emit(node, cx, out),
+        "header" | "large-title-header" | "app-shell" | "dock" | "scroll-area" | "toc" => {
+            e1_d::emit(node, cx, out)
+        }
+        "label" | "status" | "user" | "item" | "inline-loading" => e1_b::emit(node, cx, out),
         "alert" | "notification" | "progress-bar" | "progress-circle" | "meter" | "skeleton"
         | "spinner" => feedback::emit(node, cx, out),
+        "icon-button" | "context-meter" | "progress" | "progress-indicator" | "radial-progress"
+        | "switcher" => e1_c::emit(node, cx, out),
         "breadcrumb" | "steps" | "accordion" | "collapsible" | "tabs" | "table" => {
             nav::emit(node, cx, out);
         }
+        "dialog" | "dialog-trigger" | "toaster" | "toast" => overlay::emit(node, cx, out),
+        "field" | "input" | "textarea" | "select" | "checkbox" => form::emit(node, cx, out),
+        "checkbox-card" | "radio" | "radio-card" | "rating-group" | "slider" | "native-select" => {
+            form_pick::emit(node, cx, out);
+        }
+        "number-input" | "password-input" | "search" | "contained-list" => {
+            form_text::emit(node, cx, out);
+        }
+        "ai-badge" | "ai-status" | "chain-of-thought" | "reasoning" | "sources" | "tool-call"
+        | "prompt-suggestions" => form_ai::emit(node, cx, out),
         "bar" | "line" | "area" | "pie" | "scatter" | "spark" | "gauge" => {
             emit_chart(node, cx, out);
         }

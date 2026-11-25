@@ -145,3 +145,27 @@ describe('Field supporting text — `hint` alias', () => {
     warn.mockRestore()
   })
 })
+
+describe('Field data-state', () => {
+  const root = (c: HTMLElement) => c.firstElementChild
+  it('is default, invalid or disabled', () => {
+    const a = render(
+      <Field label="N">
+        <input />
+      </Field>,
+    )
+    expect(root(a.container)).toHaveAttribute('data-state', 'default')
+    const b = render(
+      <Field label="N" error="bad">
+        <input />
+      </Field>,
+    )
+    expect(root(b.container)).toHaveAttribute('data-state', 'invalid')
+    const c = render(
+      <Field label="N" disabled error="bad">
+        <input />
+      </Field>,
+    )
+    expect(root(c.container)).toHaveAttribute('data-state', 'disabled')
+  })
+})

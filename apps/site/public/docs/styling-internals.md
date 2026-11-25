@@ -6,9 +6,11 @@
 
 # Styling a component's internals
 
-cascivo components ship CSS Modules, so their inner elements carry **hashed** class names
-(`_navWrapper_1r5fv_83`). Those hashes change on every build — they are not a selector you
-can target.
+cascivo components ship CSS Modules. In a copy you own (`cascivo add`) your bundler hashes
+the class names (`_navWrapper_1r5fv_83`), and those hashes change on every build — they are
+not a selector you can target. `@cascivo/react` builds with the unhashed contract names
+(`cv-<unit>-<local>`, see [Markup contract classes](#markup-contract-classes)), but only the
+classes listed in `@cascivo/css/contract.json` are versioned.
 
 That leaves a real gap. Some things genuinely need reaching from the outside: pinning a
 sidebar's width, giving a dialog body different rhythm, colouring one bar in a chart. Before
@@ -107,8 +109,35 @@ import type { CascivoStyleHook } from '@cascivo/tokens/style-contract'
 const hook: CascivoStyleHook = 'data-cascivo-modal-body' // a typo here is a compile error
 ```
 
+## Markup contract classes
+
+`@cascivo/css` publishes every component's CSS with fixed class names: `cv-<unit>-<local>` per
+part (`cv-button-label`) plus a `cv-<unit>` alias on the root (`cv-button`), with variant and
+state as `data-*` attributes. It is how plain HTML, htmx and non-React frameworks use cascivo:
+
+```ts
+import '@cascivo/themes/light.css' // tokens + a theme first
+import '@cascivo/css/cascivo.css' // every component; or one unit: '@cascivo/css/button.css'
+import { classes as c } from '@cascivo/css' // typed: c.button.label, c.button.alias
+```
+
+`contract.json` is the semver surface (unit → parts, classes, `data-*` values, `aria-*`,
+roles): removing or renaming any of them is a major release. `@cascivo/react` already renders
+these names. For your own copies, opt in from your Vite config so they emit them too:
+
+```ts
+import { cascivoScopedName } from '@cascivo/css/vite'
+
+export default defineConfig({ css: { modules: { generateScopedName: cascivoScopedName } } })
+```
+
+The helper maps `<unit>/<file>.module.css` (the layout `cascivo add` writes) to the contract
+and hashes every other module; a local you rename falls back to a hash, so it visibly leaves
+the contract. `createCascivoScopedName({ unit, locals })` takes a custom directory layout.
+
 ## What is _not_ a contract
 
-Everything else about a component's internals: the hashed class names, the element nesting,
+Everything else about a component's internals: hashed class names, class names not in
+`contract.json`, the element nesting,
 the tag names, and any `data-testid` (those exist for cascivo's own tests and can change
 freely). Selectors built on those will break, quietly, on a patch release.
