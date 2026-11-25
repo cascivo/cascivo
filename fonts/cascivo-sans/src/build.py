@@ -1100,6 +1100,8 @@ def build(italic=False):
     for o, glyf in zip(outs, glyfs):
         s = SourceDescriptor()
         s.font = build_master_font(o, glyf, order)
+        if not family.ACTIVE:  # hinted below: Font Bakery's transformed_components (each master alike, so they stay compatible)
+            _flatten_transformed(s.font)
         s.location = {'Weight': o.loc['wght'], 'Optical size': o.loc['opsz']}
         s.name = o.name
         ds.addSource(s)
@@ -1371,15 +1373,16 @@ def _win_extent(vf):
 
 
 def _flatten_transformed(font):
-    """Hinted fonts must not carry scaled or rotated components (TM, turned commas): draw those
-    glyphs out as plain outlines."""
+    """Hinted fonts must not carry scaled, rotated or flipped components (TM, turned commas, superiors):
+    a hint program runs on the component untransformed. Draw those glyphs out as plain outlines (a flipped
+    component's contours reversed back to clockwise); plain-offset components stay."""
     from fontTools.pens.recordingPen import DecomposingRecordingPen
     from fontTools.pens.ttGlyphPen import TTGlyphPen
     glyf, gs = font['glyf'], font.getGlyphSet()
     for name in font.getGlyphOrder():
         g = glyf[name]
         if g.isComposite() and any(getattr(c, 'transform', None) is not None and [list(r) for r in c.transform] != [[1, 0], [0, 1]] for c in g.components):
-            rec = DecomposingRecordingPen(gs)
+            rec = DecomposingRecordingPen(gs, reverseFlipped=True)
             gs[name].draw(rec)
             pen = TTGlyphPen(None)
             rec.replay(pen)

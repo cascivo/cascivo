@@ -2006,6 +2006,19 @@ class Font(unittest.TestCase):
                 for c in g.components:
                     self.assertFalse(glyf[c.glyphName].isComposite(), f'{name} nests {c.glyphName}')
 
+    def test_hinted_fonts_have_no_transformed_components(self):
+        # A hint program runs on a component untransformed, so Font Bakery's transformed_components fails a
+        # hinted font with a scaled, rotated or flipped one (the superiors, the turned commas): the build draws
+        # those out (_flatten_transformed) and keeps only plain-offset components
+        for fn in sorted(f for f in os.listdir(DIST) if f.endswith('.ttf')):
+            font = TTFont(os.path.join(DIST, fn))
+            if 'fpgm' not in font:
+                continue
+            glyf = font['glyf']
+            bad = [name for name in font.getGlyphOrder() if glyf[name].isComposite()
+                   and any(hasattr(c, 'transform') and [list(r) for r in c.transform] != [[1, 0], [0, 1]] for c in glyf[name].components)]
+            self.assertEqual(bad, [], f'{fn} has transformed components')
+
     def test_size_budgets(self):
         for fn, limit in BUDGETS.items():
             size = os.path.getsize(os.path.join(DIST, fn))
