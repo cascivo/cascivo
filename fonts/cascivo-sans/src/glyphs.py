@@ -3359,11 +3359,17 @@ def m_ogonek(g, p, s):
     g.stroke([L((0, 10), (0, -40))] + g.arc(r, -40, r, r * 1.05, 180, 270) + [L((r, -40 - r * 1.05), (r * 1.5, -40 - r * 1.05))], w=t)
 
 
+# COMMA_BELOW_LN: the shortest comma below (units, head and tail). Its length followed the dot, and Thin's dot is a floor (params.DOT_FLOOR),
+#   so Thin's ș ț comma hung 83 units (to -141) where Regular's hangs 178 and Inter's Thin 183 (to -241, as at every weight): a speck under the
+#   s (JUDGING 11). Round 6: 150, to -208 at Thin; Regular's (177) and the heavier ones are longer and unchanged.
+COMMA_BELOW_LN = 150
+
+
 def m_commabelow(g, p, s):
     # Against Inter, Geist and Plex it hung 1.2x as deep and 0.02-0.04 too close at every weight,
     # and the heavy ones were too narrow (their head stays wide, their tail gets short)
     d = p.dot * (0.9 - (0.2 if p.italic else 0.1) * p.heavy)
-    ln = min(d * 1.75, 120 + d * 0.55) - 40 * p.heavy
+    ln = max(min(d * 1.75, 120 + d * 0.55), COMMA_BELOW_LN) - 40 * p.heavy
     comma_shape(g, d, 0, -58, ln - d)  # the same comma as , and the quotes
 
 
