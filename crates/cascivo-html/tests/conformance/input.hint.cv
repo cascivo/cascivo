@@ -1,0 +1,1 @@
+input "Email" hint="We never share it" type=email name=email required

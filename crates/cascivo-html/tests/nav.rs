@@ -1,5 +1,4 @@
-//! Structure tests for the nav group where React cannot match by design (radio tabs, the sort
-//! script) plus hostile-input and edge-shape checks across breadcrumb, steps, collapsible,
+//! Structure tests for the nav group where React cannot match by design (the sort script) plus hostile-input and edge-shape checks across breadcrumb, steps, collapsible,
 //! accordion, tabs and table.
 
 use cascivo_html::{Options, render, render_fragment};
@@ -17,64 +16,118 @@ const TABS: &str = "tabs\n  section \"Overview\"\n    text \"First\"\n  section 
 #[test]
 fn tabs_structure_and_ids() {
     let h = frag(TABS);
-    assert_eq!(count(&h, "<input type=\"radio\""), 3);
-    assert_eq!(count(&h, "<label class=\"cv-tabs-trigger\""), 3);
-    assert_eq!(count(&h, "class=\"cv-tabs-content\""), 3);
-    assert_eq!(count(&h, " checked"), 1);
-    assert!(h.contains("id=\"cv-1-0\" checked>"));
-    // one radio group, input/label/panel ids all line up
-    assert_eq!(count(&h, "name=\"cv-1\""), 3);
-    for i in 0..3 {
-        assert!(h.contains(&format!("id=\"cv-1-{i}\"")));
-        assert!(h.contains(&format!("for=\"cv-1-{i}\"")));
-        assert!(h.contains(&format!("id=\"cv-1-{i}-label\"")));
-        assert!(h.contains(&format!(
-            "id=\"cv-1-{i}-panel\" aria-labelledby=\"cv-1-{i}-label\""
-        )));
+    assert!(h.starts_with(
+        "<cv-tabs><div class=\"cv-tabs-tabs\"><div class=\"cv-tabs-list\" role=\"tablist\">"
+    ));
+    assert!(h.ends_with("</div></cv-tabs>"));
+    assert_eq!(count(&h, "role=\"tab\""), 3);
+    assert_eq!(count(&h, "role=\"tabpanel\""), 3);
+    assert_eq!(count(&h, " aria-selected=\"true\""), 1);
+    // tab and panel ids line up, by value (the label slug, numbered when untitled)
+    for v in ["overview", "details", "tab-3"] {
+        assert!(h.contains(&format!("id=\"cv-1-trigger-{v}\"")), "{v}");
+        assert!(
+            h.contains(&format!("aria-controls=\"cv-1-content-{v}\"")),
+            "{v}"
+        );
+        assert!(h.contains(&format!("id=\"cv-1-content-{v}\"")), "{v}");
+        assert!(
+            h.contains(&format!("aria-labelledby=\"cv-1-trigger-{v}\"")),
+            "{v}"
+        );
+        assert!(h.contains(&format!("data-value=\"{v}\"")), "{v}");
     }
-    assert!(h.contains(">Overview</label>") && h.contains(">Tab 3</label>"));
+    assert!(h.contains(">Overview</button>") && h.contains(">Tab 3</button>"));
+    // roving tabindex: only the selected tab is in the tab order
+    assert_eq!(
+        count(&h, "tabindex=\"0\""),
+        1 + 3,
+        "selected tab + three panels"
+    );
+    assert_eq!(count(&h, "tabindex=\"-1\""), 2);
+    // inactive panels are hidden; the active one is not
+    assert_eq!(count(&h, " hidden>"), 2);
     // sections are unwrapped (no duplicate heading); a card is emitted whole
     assert!(!h.contains("cv-section"));
     assert!(h.contains("cv-card"));
-    // panels follow their own input+label so CSS sibling selectors work
-    assert!(h.contains("Overview</label><div class=\"cv-tabs-content\""));
+    assert!(!h.contains("type=\"radio\""));
 }
 
 #[test]
 fn tabs_value_selects_by_label_or_position() {
-    let h = frag(&TABS.replacen("tabs", "tabs defaultValue=Details", 1));
-    assert!(h.contains("id=\"cv-1-1\" checked>"));
-    let h = frag(&TABS.replacen("tabs", "tabs value=3", 1));
-    assert!(h.contains("id=\"cv-1-2\" checked>"));
-    let h = frag(&TABS.replacen("tabs", "tabs value=nope", 1));
-    assert!(h.contains("id=\"cv-1-0\" checked>"));
+    let sel = |h: &str, v: &str| {
+        h.contains(&format!(
+            "aria-selected=\"true\" aria-controls=\"cv-1-content-{v}\""
+        ))
+    };
+    assert!(sel(
+        &frag(&TABS.replacen("tabs", "tabs defaultValue=Details", 1)),
+        "details"
+    ));
+    assert!(sel(
+        &frag(&TABS.replacen("tabs", "tabs value=3", 1)),
+        "tab-3"
+    ));
+    assert!(sel(
+        &frag(&TABS.replacen("tabs", "tabs value=nope", 1)),
+        "overview"
+    ));
 }
 
 #[test]
 fn tabs_untitled_children_get_numbered_labels() {
-    let h = frag("tabs\n  text \"a\"\n  text \"b\"\n");
-    assert!(h.contains(">Tab 1</label>") && h.contains(">Tab 2</label>"));
+    let h = frag(
+        "tabs
+  text \"a\"\n  text \"b\"\n",
+    );
+    assert!(h.contains(">Tab 1</button>") && h.contains(">Tab 2</button>"));
+}
+
+#[test]
+fn tabs_values_are_unique_and_attribute_safe() {
+    let h = frag(
+        "tabs\n  section \"Same\"\n    text \"a\"\n  section \"Same\"\n    text \"b\"\n  section \"概要\"\n    text \"c\"\n  section \"A \\\" b\"\n    text \"d\"\n",
+    );
+    for v in ["same", "same-2", "3", "a-b"] {
+        assert!(h.contains(&format!("data-value=\"{v}\"")), "{v}: {h}");
+    }
 }
 
 #[test]
 fn tabs_two_groups_do_not_share_ids() {
     let h = frag(&format!("{TABS}{TABS}"));
-    assert!(h.contains("name=\"cv-1\"") && h.contains("name=\"cv-2\""));
+    assert!(
+        h.contains("id=\"cv-1-trigger-overview\"") && h.contains("id=\"cv-2-trigger-overview\"")
+    );
 }
 
 #[test]
 fn tabs_hostile_label_is_escaped() {
     let h = frag("tabs\n  section \"<script>alert(1)</script>\"\n    text \"x\"\n");
     assert!(!h.contains("<script>"));
-    assert!(h.contains("&lt;script&gt;alert(1)&lt;/script&gt;</label>"));
+    assert!(h.contains("&lt;script&gt;alert(1)&lt;/script&gt;</button>"));
 }
 
 #[test]
-fn tabs_css_inlined_only_when_used() {
+fn tabs_script_loads_only_when_used() {
     let on = render(TABS, &Options::default()).unwrap();
-    assert!(on.contains(".cv-tabs-input:checked"));
+    assert!(on.contains("<script>") && on.contains("cv-tabs"));
+    assert!(
+        on.contains("cv-tabs:not(:defined)"),
+        "no-JS fallback rule is inlined"
+    );
+    assert!(!on.contains(".cv-tabs-input"));
     let off = render("card \"x\"", &Options::default()).unwrap();
-    assert!(!off.contains(".cv-tabs-input"));
+    assert!(!off.contains("<script>") && !off.contains("cv-tabs:not"));
+    let ext = render(
+        TABS,
+        &Options {
+            script_src: Some("/cascivo.js".into()),
+            ..Options::default()
+        },
+    )
+    .unwrap();
+    assert!(ext.contains("<script src=\"/cascivo.js\" defer></script>"));
 }
 
 #[test]

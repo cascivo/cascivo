@@ -5,6 +5,25 @@ export const meta: ComponentMeta = {
   description: 'Renders only the rows inside the viewport, so list length costs no extra DOM',
   category: 'display',
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'viewport',
+      role: 'list',
+      aria: ['aria-label'],
+      children: ['canvas'],
+    },
+    parts: {
+      canvas: { element: 'div', children: ['row'] },
+      row: {
+        element: 'div',
+        role: 'listitem',
+        aria: ['aria-setsize', 'aria-posinset'],
+        children: ['$slot'],
+      },
+    },
+  },
   states: ['default'],
   variants: [],
   sizes: [],

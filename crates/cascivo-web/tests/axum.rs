@@ -1,4 +1,4 @@
-#![cfg(feature = "axum")]
+#![cfg(all(feature = "fs", feature = "axum"))]
 
 use std::path::Path;
 

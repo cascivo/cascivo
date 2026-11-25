@@ -1,0 +1,1 @@
+@layer cascivo.component{.cv-aspect-ratio-root{inline-size:100%;aspect-ratio:var(--cascivo-aspect-ratio,1);position:relative}.cv-aspect-ratio-inner{block-size:100%;inline-size:100%;position:absolute;inset:0;&>*{object-fit:cover;block-size:100%;inline-size:100%}}}

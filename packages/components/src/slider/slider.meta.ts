@@ -5,6 +5,20 @@ export const meta: ComponentMeta = {
   description: 'Range input for selecting a value within bounds',
   category: 'inputs',
   clientJs: 'none',
+  contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      data: { 'data-disabled': [''] },
+      children: ['label', 'slider'],
+      emit: 'manual',
+    },
+    parts: {
+      label: { element: 'label', children: ['$text'], when: 'label' },
+      slider: { element: 'input', aria: ['aria-label'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

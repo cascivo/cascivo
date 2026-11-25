@@ -5,6 +5,33 @@ export const meta: ComponentMeta = {
   description: 'Ordered sequence of events with status markers and a connector line',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'ol',
+      local: 'list',
+      data: { 'data-orientation': ['vertical', 'horizontal'] },
+      children: ['item'],
+      // One `item` per entry, with status and tone looked up at render time.
+      emit: 'manual',
+    },
+    parts: {
+      item: {
+        element: 'li',
+        data: {
+          'data-status': ['complete', 'current', 'upcoming', 'error'],
+          'data-tone': ['neutral', 'info', 'success', 'warning', 'danger'],
+        },
+        aria: ['aria-current'],
+        children: ['marker', 'content'],
+      },
+      marker: { element: 'span', aria: ['aria-hidden'], children: ['$slot'] },
+      content: { element: 'div', children: ['title', 'time', 'description'] },
+      title: { element: 'div', children: ['$slot'] },
+      time: { element: 'time', children: ['$text'], when: 'time' },
+      description: { element: 'div', children: ['$slot'], when: 'description' },
+    },
+  },
   states: ['complete', 'current', 'upcoming'],
   variants: ['vertical', 'horizontal'],
   sizes: [],

@@ -14,6 +14,7 @@ const signalsCore = fileURLToPath(import.meta.resolve('@preact/signals-core'))
 const alias = [
   { find: /^@preact\/signals-(react|core)$/, replacement: signalsCore },
   { find: /^@cascivo\/core\/pure$/, replacement: src('../core/src/pure.ts') },
+  { find: /^@cascivo\/css$/, replacement: src('../css/src/index.ts') },
   { find: /^@cascivo\/i18n$/, replacement: src('../i18n/src/index.ts') },
 ]
 
@@ -25,8 +26,13 @@ export default defineConfig({
       // runtime (signals-core, i18n, base) into a common chunk. `elements:check` measures it.
       entry: {
         menu: './src/menu.ts',
+        tabs: './src/tabs.ts',
+        form: './src/form.ts',
         combobox: './src/combobox.ts',
         'date-picker': './src/date-picker.ts',
+        dialog: './src/dialog.ts',
+        toaster: './src/toaster.ts',
+        htmx: './src/htmx.ts',
       },
       formats: ['es'],
     },

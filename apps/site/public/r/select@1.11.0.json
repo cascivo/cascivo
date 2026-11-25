@@ -26,6 +26,49 @@
     "description": "Native select menu styled to match the design system",
     "category": "inputs",
     "clientJs": "enhancement",
+    "contractTier": "native",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "wrapper",
+        "data": {
+          "data-state": ["idle", "focused", "error"],
+          "data-size": ["sm", "md", "lg"]
+        },
+        "children": ["label", "field", "error", "hint"],
+        "emit": "manual"
+      },
+      "parts": {
+        "label": {
+          "element": "label",
+          "children": ["$text"],
+          "when": "label"
+        },
+        "field": {
+          "element": "div",
+          "children": ["select", "chevron"]
+        },
+        "select": {
+          "element": "select",
+          "aria": ["aria-invalid", "aria-describedby", "aria-label"]
+        },
+        "chevron": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        },
+        "error": {
+          "element": "span",
+          "role": "alert",
+          "children": ["$text"],
+          "when": "error"
+        },
+        "hint": {
+          "element": "span",
+          "children": ["$text"],
+          "when": "!error && hint"
+        }
+      }
+    },
     "states": ["idle", "focused", "error"],
     "variants": [],
     "sizes": ["sm", "md", "lg"],

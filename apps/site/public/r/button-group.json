@@ -26,6 +26,20 @@
     "description": "Visually joins a set of related buttons into a single segmented control",
     "category": "inputs",
     "clientJs": "enhancement",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "buttonGroup",
+        "role": "group",
+        "data": {
+          "data-orientation": ["horizontal", "vertical"],
+          "data-size": ["sm", "md", "lg"]
+        },
+        "children": ["$slot"],
+        "emit": "auto"
+      }
+    },
     "states": ["idle"],
     "variants": [],
     "sizes": ["sm", "md", "lg"],

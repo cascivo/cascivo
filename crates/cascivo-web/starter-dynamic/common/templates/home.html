@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block scripts %}
+<script type="module" nonce="{{ request.nonce }}" src="/assets/island.js"></script>
+{% endblock %} {% block main %}
+<h1>{{ site.title }}</h1>
+<p>
+  Server-rendered HTML from <code>cascivo-server</code>, htmx for swaps, custom elements for
+  behaviour and one Solid island.
+</p>
+<div
+  id="save-bar"
+  data-island="save-bar"
+  data-client="load"
+  data-src="/assets/island.js"
+  data-css="/assets/island.css"
+>
+  <span class="cv-badge-badge" data-variant="secondary">Draft</span>
+</div>
+<h2>Demos</h2>
+<ul>
+  <li><a href="/notes">Notes</a>: create, edit and delete, behind a sign-in</li>
+  <li><a href="/c/form">Form</a> with client and server validation</li>
+  <li><a href="/c/dialog">Dialog</a> closed by the server</li>
+  <li><a href="/c/toast">Toast</a> and menu</li>
+  <li><a href="/c/island">Server island</a> loaded after the page</li>
+  <li><a href="/c/sse">Live feed</a> over server-sent events</li>
+  <li><a href="/c/tabs">Tabs</a> with lazy panels</li>
+</ul>
+{% endblock %}

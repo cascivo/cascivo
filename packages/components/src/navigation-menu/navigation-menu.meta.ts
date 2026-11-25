@@ -7,6 +7,28 @@ export const meta: ComponentMeta = {
   // Top-level items are real anchors so the site stays navigable; only the flyout panels need
   // JS.
   clientJs: 'enhancement',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'nav',
+      local: 'nav',
+      data: { 'data-orientation': ['horizontal', 'vertical', 'both'] },
+      aria: ['aria-label'],
+      children: ['list'],
+    },
+    parts: {
+      list: { element: 'ul', role: 'list', children: ['item'] },
+      item: { element: 'li', children: ['link', 'trigger'] },
+      link: { element: 'a', children: ['$text'] },
+      trigger: {
+        element: 'button',
+        data: { 'data-state': ['open', 'closed'] },
+        aria: ['aria-expanded', 'aria-controls'],
+        children: ['$text', 'panel'],
+      },
+      panel: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: ['closed', 'open'],
   variants: [],
   sizes: [],
