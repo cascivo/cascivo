@@ -338,7 +338,7 @@ def _asterisk(g, p):
 
     # Sans's star sits at the cap height (530 here); JetBrains Mono's, Plex Mono's and Fira Code's centre 320-360, beside the math
     # axis, where `a * b` reads as an operator. Larger too: 0.34 em of ink was 0.65x theirs.
-    r = 200 + 26 * p.heavy
+    r = 228 + 26 * p.heavy  # round 7: 200 -> 228, the star was 0.76x JetBrains Mono's (402 of ink, theirs 530)
     cy = _axis(p) + 50
     for ang in (90, 18, -54, -126, 162):
         a = math.radians(ang)
@@ -598,8 +598,56 @@ def _patch():
     B.build_glyf = build_glyf
 
 
+# Round 7: Sans's proportional ( ) [ ] { } sat in the 600 cell at 0.31-0.45 of it (JetBrains Mono's 0.41-0.72): `{}` and `()`
+# read as slivers in code. Widened without thickening a stem: brackets and braces lengthen only the points outside their stems
+# (arms, hooks, the brace's cusp), parens bend (the middle moves out, the tips stay). All six also reach higher, toward JetBrains
+# Mono's -120..840: ink here from -161..751 to about -173..807.
+BRACKET_ARM = 55  # units added to [ ] arms
+BRACE_REACH = 62  # units added to { } hooks and cusp, each side
+PAREN_BEND = 40  # units the ( ) middle moves out
+DELIM_TALL = 1.075  # vertical stretch about the baseline
+# side of the ink box whose points move: -1 left, +1 right; 0 = both (brace), 'bend' = paren, sign = which way the middle goes
+DELIMS = {'bracketleft': (1, BRACKET_ARM), 'bracketright': (-1, BRACKET_ARM), 'braceleft': (0, BRACE_REACH),
+          'braceright': (0, BRACE_REACH), 'parenleft': ('bend', -PAREN_BEND), 'parenright': ('bend', PAREN_BEND)}
+# Round 7: ~ ^ were flat and small beside the letters (~ 530 x 160 of ink, JetBrains Mono's 470 x 205; ^ 397 x 284, theirs 440 x 390)
+OPS_SCALE = {'asciitilde': (0.9, 1.28), 'asciicircum': (1.1, 1.3)}
+
+
+def _delims(o):
+    B = sys.modules['__main__']
+    for n, (side, d) in DELIMS.items():
+        cs = o.contours.get(n)
+        if not cs:
+            continue
+        x0, y0, x1, y1 = _bounds(B, cs)
+        w, ym, hh = x1 - x0, (y0 + y1) / 2, (y1 - y0) / 2
+
+        def f(q, side=side, d=d, x0=x0, w=w, ym=ym, hh=hh):
+            x, y = q[0], q[1]
+            if side == 'bend':
+                x += d * (1 - ((y - ym) / hh) ** 2)
+            else:
+                t = (x - x0) / w
+                if t > 0.7 and side >= 0:
+                    x += d
+                elif t < 0.3 and side <= 0:
+                    x -= d
+            return (x, y * DELIM_TALL)  # about the baseline: the reach goes mostly up, where theirs does
+        o.contours[n] = [B.transform_contour(c, f) for c in cs]
+        o.bounds[n] = _bounds(B, o.contours[n])
+    for n, (sx, sy) in OPS_SCALE.items():
+        cs = o.contours.get(n)
+        if not cs:
+            continue
+        x0, y0, x1, y1 = _bounds(B, cs)
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        o.contours[n] = [B.transform_contour(c, lambda q, cx=cx, cy=cy, sx=sx, sy=sy: (cx + (q[0] - cx) * sx, cy + (q[1] - cy) * sy)) for c in cs]
+        o.bounds[n] = _bounds(B, o.contours[n])
+
+
 def master(o):
     _patch()
+    _delims(o)
     mono(o, keep=BOX)
     cell(o)
     _OVER.update(n for n in o.comps if _overflows(o, n))

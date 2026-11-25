@@ -1,5 +1,13 @@
 # Cascivo Condensed changelog
 
+## Round 7 (visual)
+
+- The proportional 1 sits closer to its neighbours: left sidebearing 78 units (was 106, Roboto Condensed 79). "01 ·" eyebrows and
+  "1,513" lose the hole after 0 and the comma.
+- Comma and semicolon tails 20% shorter (-139 under the baseline, was -173): no blob at 48 px.
+- Before/after specimens vs Roboto Condensed and Barlow Condensed (headlines 48-96 px, 12 px tracked eyebrows, figures, weights):
+  `specimens/round7/` (`src/specimen_round7.py`).
+
 ## Round 6 (visual)
 
 - Black stems lighter (0.87 of Sans, was 0.92) and Black spacing looser: 72 px headlines no longer touch (rt, ly, nd).

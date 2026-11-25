@@ -138,6 +138,21 @@ class CondensedTest(unittest.TestCase):
         p = bounds('.')
         self.assertGreaterEqual(p[2] - p[0], 110)
 
+    def test_proportional_one_sits_close(self):
+        # round 7: the 1's left sidebearing (106 units at 400) left a hole after 0 in "01 ·" eyebrows and "1,513" (Roboto Condensed 79)
+        for w in (400, 700, 900):
+            f, cmap, bounds = self.instance(w)
+            self.assertLessEqual(bounds('1')[0], 85, w)
+            self.assertGreaterEqual(bounds('1')[0], 60, w)  # still clear of l and I at 11 px
+
+    def test_comma_tail_short(self):
+        # round 7: the comma hung 173 units under the baseline (Roboto Condensed 142) and read as a blob at 48 px
+        for w in (400, 900):
+            _, _, bounds = self.instance(w)
+            for ch in ',;':
+                self.assertGreaterEqual(bounds(ch)[1], -150, (ch, w))
+                self.assertLessEqual(bounds(ch)[1], -100, (ch, w))  # still a comma, not a dot
+
 
 if __name__ == '__main__':
     unittest.main()
