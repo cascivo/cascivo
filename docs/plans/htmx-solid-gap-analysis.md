@@ -104,3 +104,46 @@ Done: the 6 remaining static units now have Rust emitters and parity cases (`ind
 dist CSS); `flex`, `grid`, `columns`, `center`, `section`, `page-header`, `spacer`, `auto-grid` have parity
 cases. Still allowlisted (need named-slot grammar): `dashboard-layout`, `masonry`, `settings-layout`,
 `auth-layout`. Deferred: F5 charts (18 types), sections, flow, editor (no `cv-*` contract yet).
+
+## Status: package D and overall (2026-11-25)
+
+Package D: F3, F14 (minimal) and Q4/Q6 done; F2 is **ready, not flipped**: `private: true` stays on
+`@cascivo/elements` and `@cascivo/solid` (publishing is the maintainer's decision). Q9 and Q11 skipped.
+Both packages now build to `dist/` with flattened types and export maps, are packed by `pack:check`, installed by
+`isolated:check`, and budgeted by `audit:bundle` / `elements:check`. Statuses are from the merged commits; a
+gap marked open has no code for it.
+
+To publish: set `"private": false` in `packages/{elements,solid}/package.json`, add a changeset for both
+(minor, `0.1.0` lockstep per `docs/RELEASING.md`), drop both names from `PUBLISH_READY` in
+`scripts/checks/pack-lint.mjs` and `scripts/quality/bundle-check.ts`, run `pnpm regen` (api-surface and
+package tables pick them up), then `pnpm ready`, `pnpm isolated:check`, `pnpm pack:check`.
+
+| Gap | Status | Note |
+| --- | ------ | ---- |
+| F1 | partial | 14 elements (menu, tabs, form, combobox, date-picker, dialog, toaster, data-table, drawer, command-menu, theme, tooltip, multi-select, tags-input); file-uploader, tree-view, pagination/filter patterns open |
+| F2 | ready, not flipped | see "To publish" above |
+| F3 | done | `docs/USING-HTMX-SOLID.md` in llms.txt, MCP guides and the docs site; elements/solid are npm packages, so no `cascivo add` item and no scaffold (the cargo starter stays the scaffold) |
+| F4 | done | typed wrappers, `createForm`/`createI18n`/`createTheme`/`fromSignal` |
+| F5 | open | 18 chart types |
+| F6 | partial | 13 layouts in the contract; sections, flow, editor, 4 slot-grammar layouts open |
+| F7 | partial | radio/checkbox groups, multipart uploads; field arrays, async validators open |
+| F8 | partial | `aria_current` helper; nested layout / partial-vs-full docs open |
+| F9 | partial | `Accept-Language` negotiation; `t()` in templates docs open |
+| F10 | done | `cv-theme` element |
+| F11 | open | shared roving/dismiss primitives not exported for islands |
+| F12 | open | no Solid SSR |
+| F13 | done | `@cascivo/solid/testing`, real-htmx lifecycle test |
+| F14 | partial | guides linked from docs/README.md and ROADMAP.md, in the docs site guides; site pages and Storybook for elements open |
+| F15-F17 | open | |
+| F18 | open | manual first crates.io publish, `binaries` job |
+| Q1 | done | `htmx-lifecycle.test.tsx` |
+| Q2 | done | tests for menu, combobox, date-picker |
+| Q3 | open | |
+| Q4 | done | `elements:check` budgets every element; `audit:bundle` budgets `@cascivo/solid` (4 KB) and `elements.css` (12 KB); readiness test fails when a new element lacks a budget case |
+| Q5 | open | |
+| Q6 | done | `pack:check` and `isolated:check` cover css, elements, solid |
+| Q7 | open | |
+| Q8 | open | |
+| Q9 | skipped | |
+| Q10 | done | include errors carry the cause |
+| Q11 | skipped | |

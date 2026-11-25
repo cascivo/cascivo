@@ -46,6 +46,10 @@ const ATTW_IGNORE_RESOLUTIONKIND = new Set(['node10'])
 // extension, since a subpath like `./layers` maps to a `.css` file.
 const NON_JS_TARGET = /\.(css|json)$/
 
+// Private today, but packed and linted like a published package so flipping `private` is the
+// only step left (F2). Delete an entry once its package is public: the `private` check covers it.
+const PUBLISH_READY = new Set(['@cascivo/elements', '@cascivo/solid'])
+
 function publishedPackages() {
   const out = []
   for (const dir of readdirSync(PACKAGES)) {
@@ -56,7 +60,7 @@ function publishedPackages() {
     } catch {
       continue
     }
-    if (pkg.private === true || !pkg.exports) continue
+    if ((pkg.private === true && !PUBLISH_READY.has(pkg.name)) || !pkg.exports) continue
     out.push({ name: pkg.name ?? `@cascivo/${dir}`, dir: join(PACKAGES, dir), pkg })
   }
   return out

@@ -39,6 +39,8 @@ export const GUIDES: { src: string; slug: string; route?: string }[] = [
   { src: 'USING-CASCIVO-HTML.md', slug: 'using-cascivo-html' },
   { src: 'USING-CASCIVO-WEB.md', slug: 'using-cascivo-web' },
   { src: 'USING-CASCIVO-SERVER.md', slug: 'using-cascivo-server' },
+  { src: 'USING-HTMX-SOLID.md', slug: 'using-htmx-solid' },
+  { src: 'COMPARE-REACT-VS-HTMX-SOLID.md', slug: 'compare-react-vs-htmx-solid' },
   { src: 'USING-CASCIVO-TUI.md', slug: 'using-cascivo-tui' },
   { src: 'USING-CASCIVO-BLITZ.md', slug: 'using-cascivo-blitz' },
   { src: 'STYLING-INTERNALS.md', slug: 'styling-internals' },

@@ -90,6 +90,7 @@ const BUDGETS: Record<string, number> = {
   // Raised 16 → 30 for the A2UI v0.9 entry (store, surface, two catalogs): measured 27.3 across
   // 7 chunks, of which the entry itself is ~14 KB (the planned 24 / 8 KB did not hold).
   '@cascivo/render': 30,
+  '@cascivo/solid': 4, // measured 2.2: components + helpers, Solid itself stays external
   '@cascivo/vite-plugin': 5, // measured 0.6
   '@cascivo/astro': 5, // measured 0.5 — runs in Astro's config process, never in a browser
   '@cascivo/eslint-config': 5, // measured 2.0 — plain config data, but still worth a ceiling
@@ -109,6 +110,9 @@ const BUDGETS: Record<string, number> = {
   // regression worth catching. Measured 25.0 KB.
   cascivo: 45,
 }
+
+/** Private today, measured like a published package so the budget exists before `private` flips. */
+const PUBLISH_READY = new Set(['@cascivo/elements', '@cascivo/solid'])
 
 /**
  * Gzipped-KB ceilings for the LARGEST single stylesheet a package exports — the sheet an
@@ -141,6 +145,8 @@ const CSS_BUDGETS: Record<string, number> = {
   '@cascivo/icons': 4, // glyphs.css — the optional icon-font sheet. Measured 1.3 KB gzip.
   // cascivo.css, every component sheet without tokens/themes. Measured 39.7 KB gzip.
   '@cascivo/css': 44,
+  // Every element's component CSS in one sheet; measured 10.1 KB gzip.
+  '@cascivo/elements': 12,
 }
 
 /** Published packages that ship no JS entry, with why. Anything else must be measured. */
@@ -154,6 +160,9 @@ const NO_JS_BUDGET: Record<string, string> = {
   'create-cascivo':
     'bin-only — the `npm create cascivo` launcher. Three lines that call `cascivo create`, ' +
     'whose size the `cascivo` budget already measures; nothing here lands in an app bundle.',
+  '@cascivo/elements':
+    'one entry per element, no barrel: `pnpm elements:check` enforces ≤ 3 KB gzip per element ' +
+    'and ≤ 15 KB per page, which is the measurement an adopter pays',
   '@cascivo/email-preview':
     'bin-only — a dev server reached through `npx`, never imported. Its JS is the CLI and ' +
     'the UI Vite serves at dev time, neither of which lands in an adopter bundle, so a ' +
@@ -173,7 +182,7 @@ function readPackages(): Array<{ dir: string; pkg: PackageJson }> {
     const file = join(PACKAGES, entry, 'package.json')
     if (!existsSync(file)) continue
     const pkg = JSON.parse(readFileSync(file, 'utf8')) as PackageJson
-    if (pkg.name === undefined || pkg.private === true) continue
+    if (pkg.name === undefined || (pkg.private === true && !PUBLISH_READY.has(pkg.name))) continue
     out.push({ dir: join(PACKAGES, entry), pkg })
   }
   return out

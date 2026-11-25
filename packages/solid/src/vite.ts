@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import type { Plugin } from 'vite-plus'
+import type { Plugin } from 'vite'
 import { classes } from '@cascivo/css'
 import solid from 'vite-plugin-solid'
 import { inlineClasses } from './inline-classes.ts'

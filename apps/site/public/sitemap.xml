@@ -1881,6 +1881,14 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/guides/using-htmx-solid</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/guides/compare-react-vs-htmx-solid</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/guides/using-cascivo-tui</loc>
     <priority>0.6</priority>
   </url>
