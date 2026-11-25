@@ -1,3 +1,5 @@
+#![cfg(feature = "cli")]
+
 use std::path::PathBuf;
 use std::process::{Command, Output};
 
@@ -110,4 +112,32 @@ fn deploy_pages_needs_no_wrangler_config() {
         "{out}"
     );
     let _ = std::fs::remove_dir_all(&t);
+}
+
+#[test]
+fn build_bundle_writes_an_engine_bundle_outside_dist() {
+    let t = tmp("bundle");
+    let site = t.join("s");
+    assert!(bin(&["new", s(&site)]).status.success());
+    std::fs::create_dir_all(site.join("templates")).unwrap();
+    std::fs::write(site.join("templates/hi.html"), "<p>{{ site.title }}</p>").unwrap();
+    let o = bin(&["build", s(&site), "--bundle"]);
+    assert!(o.status.success(), "{}", String::from_utf8_lossy(&o.stderr));
+    assert!(site.join("dist/index.html").is_file());
+    let bytes = std::fs::read(site.join("app.bundle")).unwrap();
+    let e = cascivo_web::Engine::from_bundle(&bytes).unwrap();
+    let html = e
+        .render(
+            "hi.html",
+            &minijinja::Value::UNDEFINED,
+            &cascivo_web::ReqCtx::default(),
+        )
+        .unwrap();
+    assert!(html.starts_with("<p>") && html.ends_with("</p>"), "{html}");
+
+    let out = t.join("x.bundle");
+    let o = bin(&["build", s(&site), "--bundle-out", s(&out)]);
+    assert!(o.status.success(), "{}", String::from_utf8_lossy(&o.stderr));
+    assert_eq!(std::fs::read(&out).unwrap(), bytes);
+    std::fs::remove_dir_all(&t).unwrap();
 }

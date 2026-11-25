@@ -25,13 +25,13 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # The full-charset files grew with Vietnamese, Welsh and the Croatian digraphs (365 -> 479
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
-    'CascivoSans[opsz,wght].woff2': 77_600,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 75_500 -> 75_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 75_600 -> 76_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 76_400 -> 76_600, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds), then 76_600 -> 76_735, raised by the user, round 5 (upright 2: Black a bowl, l tail, Bold's round letters, quote and bar spacing)
-    'CascivoSans-Latin[opsz,wght].woff2': 32_500,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 31_600 -> 32_000, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 32_000 -> 32_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
-    'CascivoSans-Latin[wght].woff2': 25_800,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_400, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 25_400 -> 25_600, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 25_600 -> 25_750, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
-    'CascivoSans-Regular.woff2': 25_200,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 25_500 -> 25_000, round 4 (Regular ships 24_964), then 25_000 -> 25_100, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
-    'CascivoSans-Italic[opsz,wght].woff2': 83_900,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 82_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 82_500 -> 82_800, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 82_800 -> 83_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds), then 83_000 -> 83_100, raised by the user, round 5 (the comma, quotes and full stop the upright and italic share)
-    'CascivoSans-Italic-Latin[wght].woff2': 28_840,  # raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing, then 28_000 -> 28_200, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 28_200 -> 28_400, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 28_400 -> 28_500, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 28_500 -> 28_400, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds): the build ships under the old budget, then 28_400 -> 28_840, raised by the user, round 5 (sub-round 1's italic ships 28_412)
-    'CascivoSans-Italic-Latin[opsz,wght].woff2': 35_800,  # round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance, then 35_000 -> 34_900, round 4 (ships 34_876), then 34_900 -> 35_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 35_400 -> 35_300, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds): the build ships under the old budget, then 35_300 -> 35_500, raised by the user, round 5 (italic 2: drawn Black rounds, the a on the d's bowl, the l's foot, c e x spacing and the ef pair)
+    'CascivoSans[opsz,wght].woff2': 93_900,  # round 6 Font Bakery transformed_components: 87_500 -> 93_900 (hinted VFs draw out scaled, rotated and flipped components; ships 91_964, +2% headroom); round 6 hinting: 77_800 -> 87_500 (ttfautohint programs + cvar; ships 87_412); round 8: 77_600 -> 77_800 for the heavy curves (oval fill, terminal tapers, r arm); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 75_500 -> 75_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 75_600 -> 76_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 76_400 -> 76_600, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds), then 76_600 -> 76_735, raised by the user, round 5 (upright 2: Black a bowl, l tail, Bold's round letters, quote and bar spacing)
+    'CascivoSans-Latin[opsz,wght].woff2': 43_200,  # round 6 Font Bakery transformed_components: 38_400 -> 43_200 (hinted VFs draw out scaled, rotated and flipped components; ships 42_280, +2% headroom); round 6 kerning: 38_200 -> 38_400 (hand override table over hinting; ships 38_356); round 6 hinting: 32_600 -> 38_200 (ttfautohint programs + cvar; ships 38_156); round 8: 32_500 -> 32_600 for the heavy-weight curve redraws (oval counters, tapered terminals, r arm; ships 32_504); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 31_600 -> 32_000, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 32_000 -> 32_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Latin[wght].woff2': 35_400,  # round 6 Font Bakery transformed_components: 31_600 -> 35_400 (hinted VFs draw out scaled, rotated and flipped components; ships 34_692, +2% headroom); round 6 hinting: 25_900 -> 31_600 (ttfautohint programs + cvar; ships 31_556); round 8: 25_800 -> 25_900 for the heavy-weight curve redraws (ships 25_896); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_400, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 25_400 -> 25_600, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 25_600 -> 25_750, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Regular.woff2': 37_100,  # round 6 Font Bakery transformed_components: 35_000 -> 37_100 (hinted VFs draw out scaled, rotated and flipped components; ships 36_304, +2% headroom); round 6 hinting: 25_200 -> 35_000 (ttfautohint programs + cvar; ships 34_952); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 25_500 -> 25_000, round 4 (Regular ships 24_964), then 25_000 -> 25_100, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
+    'CascivoSans-Italic[opsz,wght].woff2': 101_200,  # round 6 Font Bakery transformed_components: 94_700 -> 101_200 (hinted VFs draw out scaled, rotated and flipped components; ships 99_140, +2% headroom); round 6 hinting: 84_200 -> 94_700 (ttfautohint programs + cvar; ships 94_644); round 9: 83_900 -> 84_200 for the heavy figures (6 9 hooks, wider spaced . , and x: 84_076, +300 B over round 8's 83_776); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 82_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 82_500 -> 82_800, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 82_800 -> 83_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds), then 83_000 -> 83_100, raised by the user, round 5 (the comma, quotes and full stop the upright and italic share)
+    'CascivoSans-Italic-Latin[wght].woff2': 38_600,  # round 6 Font Bakery transformed_components: 34_400 -> 38_600 (hinted VFs draw out scaled, rotated and flipped components; ships 37_840, +2% headroom); round 6 hinting: 28_840 -> 34_400 (ttfautohint programs + cvar; ships 34_292); raised by the user for the interface brief: 26_000 -> 26_500 (width across weights), then for the Bold spacing master and the capital counter curve, then 27_500 -> 28_000 for its punctuation and spacing, then 28_000 -> 28_200, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 28_200 -> 28_400, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 28_400 -> 28_500, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 28_500 -> 28_400, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds): the build ships under the old budget, then 28_400 -> 28_840, raised by the user, round 5 (sub-round 1's italic ships 28_412)
+    'CascivoSans-Italic-Latin[opsz,wght].woff2': 46_800,  # round 6 Font Bakery transformed_components: 41_600 -> 46_800 (hinted VFs draw out scaled, rotated and flipped components; ships 45_820, +2% headroom); round 6 hinting: 35_800 -> 41_600 (ttfautohint programs + cvar; ships 41_524); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the interface brief's punctuation and spacing, then for the Black diagonal capitals' clearance, then 35_000 -> 34_900, round 4 (ships 34_876), then 34_900 -> 35_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 35_400 -> 35_300, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds): the build ships under the old budget, then 35_300 -> 35_500, raised by the user, round 5 (italic 2: drawn Black rounds, the a on the d's bowl, the l's foot, c e x spacing and the ef pair)
 }
 
 
@@ -183,6 +183,8 @@ KERNING_SHORT_FLOOR = 0.25  # of Inter's, for the pairs in KERNING_SHORT: the we
 # Thin white is wide and the measure closes only what the eye reads as a hole. The Wa and V entries are Thin only.
 # Where 0.25x is too high the pair keeps what it ships, less a unit: italic Thin AW kerns 3 (Inter 57), the weakest pair of all.
 KERNING_SHORT_UNITS = {('italic', 'AW', 100): 2}
+# (round 6: kern_overrides.py tunes the Thin W and V pairs by hand; test_thin_w_and_v_kern_near_inter holds them at 0.65x Inter's. The entries
+# below stay as the floor for the pairs and weights that table leaves to the measure.)
 KERNING_SHORT = (
     # (round 3: Thin's V beside c e o q g œ reaches 0.8x and left this list, upright and italic: kern.THIN_REACH)
     {('upright', pair, 100) for pair in ('Wc', 'We', 'Wo', 'Wœ', 'AW', 'WA')}
@@ -467,11 +469,11 @@ def _shaper(hb, path):
     return _SHAPERS[path]
 
 
-def pair_kerning(hb, path, pair, wght):
-    """What the font's kerning adds to the advance of a two-letter string at (wght, opsz 14), in 1000 units per em (negative closes)."""
+def pair_kerning(hb, path, pair, wght, opsz=14):
+    """What the font's kerning adds to the advance of a two-letter string at (wght, opsz), in 1000 units per em (negative closes)."""
     face, f = _shaper(hb, path)
     font = hb.Font(face)
-    font.set_variations({'wght': wght, 'opsz': 14})
+    font.set_variations({'wght': wght, 'opsz': opsz})
 
     def advance(kern):
         buf = hb.Buffer()
@@ -2004,6 +2006,19 @@ class Font(unittest.TestCase):
                 for c in g.components:
                     self.assertFalse(glyf[c.glyphName].isComposite(), f'{name} nests {c.glyphName}')
 
+    def test_hinted_fonts_have_no_transformed_components(self):
+        # A hint program runs on a component untransformed, so Font Bakery's transformed_components fails a
+        # hinted font with a scaled, rotated or flipped one (the superiors, the turned commas): the build draws
+        # those out (_flatten_transformed) and keeps only plain-offset components
+        for fn in sorted(f for f in os.listdir(DIST) if f.endswith('.ttf')):
+            font = TTFont(os.path.join(DIST, fn))
+            if 'fpgm' not in font:
+                continue
+            glyf = font['glyf']
+            bad = [name for name in font.getGlyphOrder() if glyf[name].isComposite()
+                   and any(hasattr(c, 'transform') and [list(r) for r in c.transform] != [[1, 0], [0, 1]] for c in glyf[name].components)]
+            self.assertEqual(bad, [], f'{fn} has transformed components')
+
     def test_size_budgets(self):
         for fn, limit in BUDGETS.items():
             size = os.path.getsize(os.path.join(DIST, fn))
@@ -2276,6 +2291,93 @@ class Font(unittest.TestCase):
                         self.assertGreaterEqual(got_mean / mean, WHITE_BAND[0], f'{pair} has {got_mean:.0f} of white at {wght}, Inter {mean}')
                         self.assertLessEqual(got_mean / mean, WHITE_BAND_SHAPE.get((kind, pair, wght), WHITE_BAND[1]), f'{pair} has {got_mean:.0f} of white at {wght}, Inter {mean}')
                         self.assertGreaterEqual(got_least, WHITE_LEAST_FLOOR * least, f'{pair} comes to {got_least:.0f} at {wght}, Inter {least}')  # Inter's ff at 700: 0
+
+    def test_hand_kerning_ships_as_tuned(self):
+        # Round 6: kern_overrides.py is a reviewed table over the measured kerning. Each value it sets ships exactly at its master (Thin,
+        # Regular, Black at opsz 14), and a Display opening adds its units at opsz 48 over opsz 14 (read at Regular and Black), upright and
+        # italic. Nothing later in kern.py (STRONG_FIX, DIAGONAL_FIX, the own-shape corners) may move a tuned pair.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        import kern_overrides
+
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for pair, by in kern_overrides.OVERRIDES[kind].items():
+                for wght, value in zip(kern_overrides.MASTER_WGHT, by[:3]):
+                    if value is not None:
+                        with self.subTest(kind=kind, pair=pair, wght=wght):
+                            self.assertEqual(pair_kerning(hb, path, pair, wght), value)
+                for wght in (400, 900):
+                    with self.subTest(kind=kind, pair=pair, wght=wght, opsz=48):
+                        display = by[3] if len(by) > 3 else 0
+                        self.assertEqual(pair_kerning(hb, path, pair, wght, 48) - pair_kerning(hb, path, pair, wght), display)
+
+    def test_hand_kerning_table_names_real_pairs(self):
+        # Every entry is two characters both fonts map, with three master values (Thin, Regular, Black) and at most a Display opening, and
+        # at least one non-zero value (a master or the Display opening): test_hand_kerning_ships_as_tuned then proves the pair reached the kerning classes (a name kern.py
+        # does not draw would ship nothing). The shipped files keep no glyph names (post 3), so the names are not compared here.
+        import kern_overrides
+
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            cmap = TTFont(path).getBestCmap()
+            for pair, by in kern_overrides.OVERRIDES[kind].items():
+                with self.subTest(kind=kind, pair=pair):
+                    self.assertEqual(len(pair), 2)
+                    self.assertIn(len(by), (3, 4))
+                    self.assertTrue(any(v for v in by))
+                    for ch in pair:
+                        self.assertIn(ord(ch), cmap)
+
+    def test_hand_kerning_keeps_clear(self):
+        # A tuned pair never closes into a collision: its closest white keeps 0.3x the HH pair's at the same location (Thin, Regular, Black
+        # at opsz 14, Black at opsz 48, where Black's and Display's tightening add up). The tightest ship at 0.34-0.36x (italic Black ra rd).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        import kern_overrides
+
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for pair in kern_overrides.OVERRIDES[kind]:
+                for wght, opsz in ((100, 14), (400, 14), (900, 14), (900, 48)):
+                    with self.subTest(kind=kind, pair=pair, wght=wght, opsz=opsz):
+                        (gap,), hh = shaped_gaps(hb, path, pair, wght, opsz)
+                        self.assertGreaterEqual(gap, 0.3 * hh, f'{pair} keeps {gap:.0f} units at {wght}/{opsz} (HH {hh:.0f})')
+
+    def test_thin_w_and_v_kern_near_inter(self):
+        # JUDGING 9: Thin's W and V beside a round letter and beside A kerned 0.05-0.67x Inter's (italic AW 3 against 57, upright We -27
+        # against -51), as the outline measure reads a hairline diagonal's white as spacing. kern_overrides.py tunes them by hand as far as
+        # Thin's and ExtraLight's white allow (test_fitted_pairs_hold_inter_white): every pair reaches 0.65x Inter's now (the least, italic
+        # VA, 0.66x; KERNING_SHORT_FLOOR's 0.25 stays for the other weights).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        pairs = ('Wa', 'We', 'Wo', 'Wc', 'Wœ', 'Va', 'Ve', 'Vo', 'Vc', 'AW', 'WA', 'AV', 'VA')
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for pair in pairs:
+                inter = INTER_KERNING[kind][pair][100]
+                with self.subTest(kind=kind, pair=pair):
+                    got = -pair_kerning(hb, path, pair, 100)
+                    self.assertGreaterEqual(got, 0.65 * inter, f'{pair} kerns {got} at Thin, Inter {inter}')
+
+    def test_display_black_keeps_its_white(self):
+        # JUDGING 8: at 900 / opsz 48 (Black's tightening and Display's add up, at a corner no master draws) the r's arm met the round letter
+        # after it: rg 12 units upright and ra rd rq -3 to -1 in the italic, in "0123Rag Hamburgefonstiv". Every neighbour in these strings keeps
+        # 30 units of white: 0.75x Inter Black's tightest at its largest optical size (opsz 32: OO 39, 0123Rag 41, rg 40-43).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        strings = ('0123Rag', 'ns', 'st', 'rg', 'ef', 'OO', 'ra', 'ro', 'rd', 'rq', 'rs', 'fo', 'fd', 'fs')
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for text in strings:
+                with self.subTest(kind=kind, text=text):
+                    gaps, _ = shaped_gaps(hb, path, text, 900, 48)
+                    self.assertGreaterEqual(min(gaps), 30, f'{text} keeps {[round(g) for g in gaps]} at 900/48')
 
     def test_black_proportional_one_sets_like_the_other_figures(self):
         # Round 4: Black's proportional 0 then 1 left 1.35x the HH gap upright and 1.46x italic (Inter's 0.89x), where 11, 10 and 12 sat at 0.9-1.0x. The pair
@@ -2550,6 +2652,133 @@ class Font(unittest.TestCase):
         self.assertEqual(data['codepoints'], build.LATIN)
         self.assertEqual(compare.measure_cascivo(), data['fonts'][0], 'run src/compare.py --cascivo-only')
 
+
+class Hinting(unittest.TestCase):
+    """The variable fonts carry TrueType hinting (build._autohint_vf). FreeType's interpreter, at text sizes and
+    across the design space, shows what it buys over the bare outlines, which is how Windows draws an unhinted font."""
+
+    CORNERS = [(w, o) for w in (100, 400, 700, 900) for o in (8, 14, 48)]
+
+    @classmethod
+    def setUpClass(cls):
+        try:
+            import hinting
+        except ImportError:
+            raise unittest.SkipTest('pip install freetype-py')
+        if not (os.path.exists(VF) and os.path.exists(VFI)):
+            raise unittest.SkipTest('run src/build.py first')
+        cls.h = hinting
+        # the full variable fonts and the Latin slices a site serves
+        cls.files = {fn: hinting.font_bytes(os.path.join(DIST, fn)) for fn in (
+            'CascivoSans[opsz,wght].ttf', 'CascivoSans-Italic[opsz,wght].ttf', 'CascivoSans-Latin[opsz,wght].woff2', 'CascivoSans-Italic-Latin[opsz,wght].woff2')}
+
+    def test_every_shipped_font_is_hinted(self):
+        for fn in sorted(os.listdir(DIST)):
+            f = TTFont(os.path.join(DIST, fn))
+            for tag in ('fpgm', 'prep', 'cvt ', 'gasp'):
+                self.assertIn(tag, f, f'{fn} has no {tag}')
+            if 'fvar' in f:
+                self.assertIn('cvar', f, f'{fn}: the blue zones must follow the instance')
+            glyf = f['glyf']
+            self.assertGreater(sum(1 for n in f.getGlyphOrder() if getattr(glyf[n], 'program', None) and glyf[n].program.getBytecode()), len(f.getGlyphOrder()) // 2, fn)
+            # instructions must not move advances: no hdmx or LTSH caching them, no head flag saying they may
+            self.assertFalse({'hdmx', 'LTSH'} & set(f.keys()), fn)
+            self.assertFalse(f['head'].flags & (1 << 4), fn)
+
+    def test_round_letters_and_flat_letters_share_rows(self):
+        """At 9-16 px the overshoots of o and O land on the x-height, cap-height and baseline rows of x n H, and
+        the H's ends sit on pixel boundaries, at every corner, upright and italic, in every interpreter mode.
+        Unhinted, the overshoots add a grey row (in grey no baseline lines up at all) and the edges fall mid-pixel."""
+        n = len(self.CORNERS) * len(self.h.SIZES)
+        for fn, data in self.files.items():
+            for mode in self.h.MODES:
+                score = {}
+                for hinted in (False, True):
+                    rows = [self.h.alignment(data, w, o, ppem, hinted, mode) for w, o in self.CORNERS for ppem in self.h.SIZES]
+                    score[hinted] = [sum(r[i] for r in rows) for i in range(3)] + [min(r[3] for r in rows), sum(r[3] for r in rows) / n]
+                with self.subTest(fn=fn, mode=mode[0]):
+                    self.assertEqual(score[True][:3], [n, n, n], 'x-height, cap-height and baseline rows')
+                    if mode[2] != self.h.freetype.FT_LOAD_TARGET_MONO:  # black-and-white has no partial rows to measure
+                        self.assertGreaterEqual(score[True][3], 0.9, 'H edge crispness')
+                        self.assertLess(score[False][2], n // 2, 'the measure must tell unhinted grey apart')
+                        self.assertGreater(score[True][4] - score[False][4], 0.3, 'H edge crispness gain')
+
+    def test_every_corner_hints_as_its_own_static_autohint(self):
+        """The variable font's hinting at each corner of the design space draws the x-height, cap-height and
+        baseline rows a static ttfautohint run on that corner's own outlines draws: the cvar carries each master's
+        zones (with Regular's alone, Display's x-height snapped a row or two high)."""
+        import io
+        import ttfautohint
+        from fontTools.varLib import instancer
+        import build
+        for fn in ('CascivoSans-Latin[opsz,wght].woff2', 'CascivoSans-Italic-Latin[opsz,wght].woff2'):
+            data = self.files[fn]
+            for w, o in ((100, 14), (900, 14), (400, 8), (400, 48), (100, 8), (900, 48)):
+                f = instancer.instantiateVariableFont(TTFont(io.BytesIO(data)), {'wght': w, 'opsz': o})
+                for tag in ('fpgm', 'prep', 'cvt ', 'gasp'):
+                    del f[tag]
+                for name in f.getGlyphOrder():
+                    f['glyf'][name].program = build.ttProgram.Program()
+                    f['glyf'][name].program.fromBytecode(b'')
+                buf = io.BytesIO()
+                f.save(buf)
+                static = ttfautohint.ttfautohint(in_buffer=buf.getvalue(), **build.HINT_OPTS)
+                for mode in self.h.MODES:
+                    for ppem in range(9, 25):
+                        vf = self.h.Raster(data, w, o, ppem, True, mode)
+                        st = self.h.Raster(static, None, None, ppem, True, mode)
+                        for ch in 'xnoHO':
+                            a, b = vf.glyph(ch), st.glyph(ch)
+                            self.assertEqual(self.h.edges(a[2], a[1]), self.h.edges(b[2], b[1]), f'{fn} wght {w} opsz {o} {ppem}px {mode[0]} {ch}')
+
+    def test_i_and_j_dots_stay_clear_of_their_stems(self):
+        """ttfautohint hints the dot (a component) apart from the stem; build._keep_marks_clear keeps a blank row
+        between them. Without it the hinted dot sat on the stem in 11 of 32 Latin weight-size cases (i read as l).
+        The italic in black-and-white is left out: smart dropout control (SCANTYPE 4, which the unhinted fonts' prep
+        set too) fills a stub pixel off the slanted stem's end into the gap, hinted or not."""
+        statics = [(fn, self.h.font_bytes(os.path.join(DIST, fn)), [(None, None)]) for fn in ('CascivoSans-Regular.ttf', 'CascivoSans-Bold.ttf', 'CascivoSans-Italic.ttf', 'CascivoSans-BoldItalic.ttf')]
+        for fn, data, locs in [(fn, data, self.CORNERS) for fn, data in self.files.items()] + statics:
+            for w, o in locs:
+                for ppem in range(9, 25):
+                    for mode in self.h.MODES:
+                        if 'Italic' in fn and mode[2] == self.h.freetype.FT_LOAD_TARGET_MONO:
+                            continue
+                        r = self.h.Raster(data, w, o, ppem, True, mode)
+                        for ch in 'ij':
+                            rows = r.glyph(ch)[2]
+                            self.assertTrue(any(max(row) <= 0.02 for row in rows), f'{fn} wght {w} opsz {o} {ppem}px {mode[0]} {ch}')
+
+    def test_thin_stems_hold_in_black_and_white(self):
+        """Thin in GDI's black-and-white mode: every stem of H n m l i draws, one run per stem, no row missing."""
+        for fn, data in self.files.items():
+            for ppem in self.h.SIZES:
+                r = self.h.Raster(data, 100, 14, ppem, True, self.h.MODES[2])
+                for ch, stems in (('H', 2), ('n', 2), ('m', 3), ('l', 1), ('i', 1)):
+                    _, _, rows, _, _ = r.glyph(ch)
+                    ink = [i for i, row in enumerate(rows) if any(row)]
+                    probe = rows[ink[0] + (ink[-1] - ink[0]) * (2 if ch in 'il' else 3) // 4]
+                    runs = sum(1 for i, v in enumerate(probe) if v and not (i and probe[i - 1]))
+                    self.assertEqual(runs, stems, f'{fn} {ppem}px {ch}')
+                    if ch != 'i':  # the i's dot stands apart
+                        self.assertEqual(ink, list(range(ink[0], ink[-1] + 1)), f'{fn} {ppem}px {ch} loses a row')
+
+    def test_hinting_keeps_advances_and_glyph_heights(self):
+        """Hinted text sets at the unhinted advances (FreeType's rounding) and no glyph grows or shrinks by more
+        than the grey fringe rows hinting removes (the i's top by two: its dot may rise a row to clear the stem)."""
+        import math
+        for fn, data in self.files.items():
+            for w in (100, 400, 700, 900):
+                for ppem in self.h.SIZES:
+                    for mode in self.h.MODES:
+                        bare = self.h.Raster(data, w, 14, ppem, False, mode)
+                        hint = self.h.Raster(data, w, 14, ppem, True, mode)
+                        for ch in sorted(set(self.h.SAMPLE) - {' '}):
+                            _, ut, ur, ua, _ = bare.glyph(ch)
+                            _, ht, hr, ha, _ = hint.glyph(ch)
+                            where = f'{fn} wght {w} {ppem}px {mode[0]} {ch!r}'
+                            self.assertEqual(ha, math.floor(ua + 0.5), where)
+                            self.assertLessEqual(abs(len(hr) - len(ur)), 2, where)
+                            self.assertLessEqual(abs(ht - ut), 2 if ch == 'i' else 1, where)
 
 if __name__ == '__main__':
     unittest.main()

@@ -5,6 +5,22 @@ export const meta: ComponentMeta = {
   description: 'Contextual label shown on hover or focus',
   category: 'overlay',
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'span', local: 'root', children: ['$slot', 'tooltip'] },
+    parts: {
+      tooltip: {
+        element: 'span',
+        role: 'tooltip',
+        data: {
+          'data-state': ['visible', 'hidden'],
+          'data-placement': 'string',
+          'data-anchor': 'string',
+        },
+        children: ['$slot'],
+      },
+    },
+  },
   states: ['hidden', 'visible'],
   variants: [],
   sizes: [],

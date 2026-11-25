@@ -26,6 +26,23 @@
     "description": "A scroll container with styled, slim scrollbars and overflow shadows",
     "category": "layout",
     "clientJs": "enhancement",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "root",
+        "data": {
+          "data-orientation": ["vertical", "horizontal", "both"],
+          "data-edges": ["shadow", "mask", "none"],
+          "data-scroll-top": "boolean",
+          "data-scroll-bottom": "boolean",
+          "data-scroll-start": "boolean",
+          "data-scroll-end": "boolean"
+        },
+        "children": ["$slot"],
+        "emit": "manual"
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

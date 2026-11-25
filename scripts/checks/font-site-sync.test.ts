@@ -7,6 +7,7 @@
  * Also covers the type tester's pure helpers, since apps/site has no unit-test runner in CI.
  */
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, it } from 'node:test'
@@ -21,7 +22,8 @@ import {
   formatKb,
   testerStyle,
 } from '../../apps/site/src/marketing/pages/cascivo-sans/data.ts'
-import { ROUTE_HEAD } from '../../apps/site/src/marketing/route-head.ts'
+import { FAMILIES, familySnippet } from '../../apps/site/src/marketing/pages/fonts/families.ts'
+import { PRERENDER_ROUTES, ROUTE_HEAD } from '../../apps/site/src/marketing/route-head.ts'
 
 const ROOT = join(import.meta.dirname, '../..')
 const PUBLIC = join(ROOT, 'apps/site/public/fonts/cascivo-sans')
@@ -51,6 +53,84 @@ describe('site copy of Cascivo Sans', () => {
       assert.equal(FONT_SIZES[f.name], bytes, `${f.name} size is stale — ${FIX}`)
     }
   })
+})
+
+describe('site copy of the family fonts', () => {
+  for (const family of FAMILIES) {
+    it(`cascivo-${family.id} serves exactly its files, byte-identical to the build`, () => {
+      const dir = join(ROOT, 'apps/site/public/fonts', `cascivo-${family.id}`)
+      assert.deepEqual(
+        existsSync(dir) ? readdirSync(dir).sort() : [],
+        family.files.map((f) => f.name).sort(),
+        FIX,
+      )
+      for (const f of family.files) {
+        const same = readFileSync(join(dir, f.name)).equals(readFileSync(join(ROOT, f.source)))
+        assert.ok(same, `${f.name} differs from ${f.source} — ${FIX}`)
+      }
+    })
+
+    it(`cascivo-${family.id} sizes are current and the header picker's face is a web file`, async () => {
+      const { FAMILY_SIZES } =
+        await import('../../apps/site/src/marketing/pages/fonts/sizes.generated.ts')
+      for (const f of family.files) {
+        assert.equal(
+          FAMILY_SIZES[`${family.id}/${f.name}`],
+          readFileSync(join(ROOT, f.source)).length,
+        )
+      }
+      const css = readFileSync(
+        join(ROOT, `apps/site/src/marketing/font-faces/${family.id}.css`),
+        'utf8',
+      )
+      const web = family.files.find((f) => f.kind === 'web')
+      assert.ok(
+        web && css.includes(`/fonts/cascivo-${family.id}/${web.name}`),
+        'picker face drifted',
+      )
+    })
+  }
+
+  it('every family page is routed, prerendered and has a head', () => {
+    for (const route of ['/fonts', ...FAMILIES.map((f) => f.route)]) {
+      assert.ok(ROUTE_HEAD[route], `no ROUTE_HEAD for ${route}`)
+      assert.ok(PRERENDER_ROUTES.includes(route.slice(1)), `${route} is not prerendered`)
+      assert.ok(
+        (ROUTE_HEAD[route]?.description ?? '').length <= 160,
+        `${route} description too long`,
+      )
+    }
+  })
+
+  it('familySnippet points relative url()s at the web file', () => {
+    for (const family of FAMILIES) {
+      const web = family.files.find((f) => f.kind === 'web')
+      assert.ok(familySnippet(family).includes(`url('${web?.name}')`))
+    }
+  })
+})
+
+describe('@font-face cache busting', () => {
+  // /fonts/* is cached for a day under one URL: without a content hash in the url(), a visitor who
+  // loaded round 2's Serif kept its slab-footed period after round 3 shipped round dots.
+  const sheets = [
+    'apps/site/src/marketing/pages/cascivo-sans/font.css',
+    ...FAMILIES.map((f) => `apps/site/src/marketing/font-faces/${f.id}.css`),
+  ]
+  for (const sheet of sheets) {
+    it(`${sheet} versions every url() with the served file's hash`, () => {
+      const css = readFileSync(join(ROOT, sheet), 'utf8')
+      const urls = [...css.matchAll(/url\('(\/fonts\/[^'?]+)(\?v=[0-9a-f]*)?'\)/g)]
+      assert.ok(urls.length > 0, `${sheet} has no /fonts/ url()`)
+      for (const [, file = '', query] of urls) {
+        const hash = createHash('sha256')
+          .update(readFileSync(join(ROOT, 'apps/site/public', file)))
+          .digest('hex')
+          .slice(0, 10)
+        assert.equal(query, `?v=${hash}`, `${file} is not versioned with its content — ${FIX}`)
+      }
+    })
+  }
 })
 
 describe('comparison data', () => {

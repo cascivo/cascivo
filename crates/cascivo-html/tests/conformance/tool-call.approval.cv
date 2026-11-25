@@ -1,0 +1,1 @@
+tool-call delete_file awaiting-approval input=a.txt actions=Review

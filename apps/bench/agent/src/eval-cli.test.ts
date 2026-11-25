@@ -39,28 +39,40 @@ beforeAll(() => {
 })
 afterAll(() => rmSync(root, { recursive: true, force: true }))
 
-describe('plain node', () => {
-  it('loads a real task EVAL the way evaluate.ts does', () => {
-    const evalPath = join(PKG, 'tasks', 'admin-console', 'EVAL.ts')
-    const ran = node([
-      '--input-type=module',
-      '-e',
-      `const m = await import(${JSON.stringify(new URL(`file://${evalPath}`).href)}); console.log(typeof m.default)`,
-    ])
-    expect(ran.stderr).not.toMatch(/Error/)
-    expect(ran.stdout.trim()).toBe('function')
-    expect(ran.status).toBe(0)
-  })
+// Each test spawns a fresh node that strips and loads TypeScript modules; on a busy CI runner
+// that alone can pass vitest's 5 s default, so these get a budget sized for a cold child process.
+const SPAWN_TIMEOUT = 30_000
 
-  it('loads the evaluate and generate modules', () => {
-    const ran = node([
-      '--input-type=module',
-      '-e',
-      `await import('./src/eval/evaluate.ts'); await import('./src/eval/generate.ts'); console.log('ok')`,
-    ])
-    expect(ran.stderr).not.toMatch(/Error/)
-    expect(ran.stdout.trim()).toBe('ok')
-  })
+describe('plain node', () => {
+  it(
+    'loads a real task EVAL the way evaluate.ts does',
+    () => {
+      const evalPath = join(PKG, 'tasks', 'admin-console', 'EVAL.ts')
+      const ran = node([
+        '--input-type=module',
+        '-e',
+        `const m = await import(${JSON.stringify(new URL(`file://${evalPath}`).href)}); console.log(typeof m.default)`,
+      ])
+      expect(ran.stderr).not.toMatch(/Error/)
+      expect(ran.stdout.trim()).toBe('function')
+      expect(ran.status).toBe(0)
+    },
+    SPAWN_TIMEOUT,
+  )
+
+  it(
+    'loads the evaluate and generate modules',
+    () => {
+      const ran = node([
+        '--input-type=module',
+        '-e',
+        `await import('./src/eval/evaluate.ts'); await import('./src/eval/generate.ts'); console.log('ok')`,
+      ])
+      expect(ran.stderr).not.toMatch(/Error/)
+      expect(ran.stdout.trim()).toBe('ok')
+    },
+    SPAWN_TIMEOUT,
+  )
 })
 
 // The workflow is not run by any test; these pin the lines the final review's fixes depend on.

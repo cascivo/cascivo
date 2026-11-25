@@ -5,7 +5,7 @@
 //! | Behaviour | Markup it acts on |
 //! | --------- | ----------------- |
 //! | table sort | `table[data-sortable] th[aria-sort]`: click sorts, sets `aria-sort` and `data-parity` |
-//! | tabs | radio tabs (`.cv-tabs-input`): Arrow/Home/End keys; ARIA tabs (`[role=tab]`, `aria-controls`) |
+//! | tabs | ARIA tabs (`[role=tab]`, `aria-controls`): click, Arrow/Home/End keys |
 //! | details | `details[name]` closes its group; `data-state` and `aria-expanded` follow `open` |
 //! | dialog | `<dialog>`; `[data-dialog-open=id]`, `[data-dialog-close]`; Escape closes; Tab stays inside |
 //! | select | `<select>` becomes a combobox button and listbox; the `<select>` keeps the value |
@@ -346,21 +346,6 @@ fn tabs_key(dom: &mut Dom, chain: &[NodeId], key: &Key, state: &mut EventState) 
             state.prevent_default();
             select_tab(dom, tabs[next]);
             dom.focus(tabs[next]);
-        }
-    } else if dom.has_class(target, "cv-tabs-input") {
-        let name = dom.attr(target, "name");
-        let radios: Vec<NodeId> = dom
-            .query_all("input.cv-tabs-input")
-            .into_iter()
-            .filter(|r| dom.attr(*r, "name") == name && !dom.has_attr(*r, "disabled"))
-            .collect();
-        let Some(cur) = radios.iter().position(|r| *r == target) else {
-            return;
-        };
-        if let (Some(next), Some(name)) = (step(key, radios.len(), cur), name) {
-            state.prevent_default();
-            dom.base().toggle_radio(name, radios[next]);
-            dom.focus(radios[next]);
         }
     }
 }

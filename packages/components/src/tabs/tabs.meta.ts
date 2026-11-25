@@ -6,6 +6,30 @@ export const meta: ComponentMeta = {
   category: 'navigation',
   // Only the active panel renders; switching is JS-only, so the other panels are unreachable.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'div', children: ['list', 'content'] },
+    parts: {
+      list: { element: 'div', role: 'tablist', children: ['trigger'] },
+      // `asChild` slots a router link in place of the button; `data-value` is the tab id.
+      trigger: {
+        element: ['button', 'a'],
+        role: 'tab',
+        data: { 'data-state': ['active', 'inactive'], 'data-value': 'string' },
+        aria: ['aria-selected', 'aria-controls', 'aria-disabled'],
+        children: ['$slot'],
+      },
+      // Only the active panel is rendered.
+      content: {
+        element: 'div',
+        role: 'tabpanel',
+        // React renders only the active panel; cascivo-html and `cv-tabs` also keep hidden ones.
+        data: { 'data-state': ['active', 'inactive'] },
+        aria: ['aria-labelledby'],
+        children: ['$slot'],
+      },
+    },
+  },
   states: ['active', 'inactive'],
   variants: [],
   sizes: [],

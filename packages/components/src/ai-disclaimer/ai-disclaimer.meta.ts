@@ -6,6 +6,19 @@ export const meta: ComponentMeta = {
     'A short, quiet note that AI-generated content may be wrong — "AI-generated content may be incorrect"',
   category: 'feedback',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'p',
+      local: 'disclaimer',
+      children: ['glyph', '$slot'],
+      // The text sits in a classless \`span\` that the part tree cannot express.
+      emit: 'manual',
+    },
+    parts: {
+      glyph: { element: 'svg', aria: ['aria-hidden'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

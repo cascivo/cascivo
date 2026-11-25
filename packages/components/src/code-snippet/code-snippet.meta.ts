@@ -7,6 +7,41 @@ export const meta: ComponentMeta = {
   category: 'display',
   // The code and its syntax highlighting are server-rendered; only the copy button needs JS.
   clientJs: 'enhancement',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      // The inline variant is a `span`, the block variants a `div`.
+      element: ['span', 'div'],
+      local: 'root',
+      data: {
+        'data-variant': ['inline', 'single', 'multi'],
+        'data-terminal': [''],
+      },
+      children: ['bar', 'pre', 'inlineCode', 'copy'],
+      // Tokenised highlighting and per-line numbering are computed, and the copy state is live.
+      emit: 'manual',
+    },
+    parts: {
+      bar: { element: 'div', aria: ['aria-hidden'], children: ['dots', 'title'], when: 'terminal' },
+      dots: { element: 'span', children: ['dot'] },
+      dot: { element: 'span' },
+      title: { element: 'span', children: ['$text'], when: 'title' },
+      pre: { element: 'pre', children: ['code', 'line'] },
+      code: { element: 'code', children: ['$text', 'line'] },
+      line: { element: 'span', children: ['lineNumber', 'lineText'] },
+      lineNumber: { element: 'span', aria: ['aria-hidden'], children: ['$text'] },
+      lineText: { element: 'span', children: ['$text'] },
+      inlineCode: { element: 'code', children: ['$text'] },
+      copy: {
+        element: 'button',
+        data: { 'data-state': ['idle', 'copied'] },
+        aria: ['aria-label'],
+        children: ['icon'],
+        when: 'showCopyButton',
+      },
+      icon: { element: 'svg', aria: ['aria-hidden'] },
+    },
+  },
   states: ['idle', 'copied'],
   variants: ['inline', 'single', 'multi'],
   sizes: [],

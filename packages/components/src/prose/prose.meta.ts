@@ -5,6 +5,10 @@ export const meta: ComponentMeta = {
   description: 'Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: { element: 'div', children: ['$slot'], emit: 'auto' },
+  },
   states: [],
   variants: [],
   sizes: [],

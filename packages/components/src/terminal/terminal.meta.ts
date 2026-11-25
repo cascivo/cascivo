@@ -8,6 +8,27 @@ export const meta: ComponentMeta = {
   // The visible lines are typed by a requestAnimationFrame loop. The full script is in the
   // server HTML for screen readers, but nothing is visible until JS runs.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'root',
+      role: 'group',
+      aria: ['aria-label'],
+      children: ['line'],
+    },
+    parts: {
+      line: {
+        element: 'div',
+        data: { 'data-type': ['command', 'output', 'error', 'comment'] },
+        children: ['prefix', 'text', 'cursor'],
+      },
+      prefix: { element: 'span', children: ['$text'] },
+      text: { element: 'span', children: ['$text'] },
+      // Only on the line currently being typed.
+      cursor: { element: 'span' },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

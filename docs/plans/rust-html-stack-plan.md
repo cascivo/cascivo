@@ -1,6 +1,6 @@
 # Rust + HTML-first stack: plan
 
-Status: Phase 0 (de-risk) done; go for Phase 1. Criterion 6 (tool vs product) awaits the owner. Origin: analysis of (1) a Rust, Astro-class framework and
+Status: Phase 0, 1, 2 and 3 done (Phase 3 S0/K wait for the owner's app). Criterion 6 settled for now: own tool, product later. Origin: analysis of (1) a Rust, Astro-class framework and
 (2) an HTML/CSS-first stack (htmx, custom elements). Both converge on one architecture.
 
 ## Target architecture
@@ -94,3 +94,28 @@ calendar overflowed at 320/360 px (now a bottom sheet below 30rem).
    (KV/D1/R2); Containers template; htmx/Datastar guides. Checkpoint: criterion 6.
 4. Behaviours: port remaining client-JS components to elements via the factory backlog;
    optional React-island loader.
+
+## Phase 1 and 3 plans: how they fit
+
+Plans: [phase-1-contract-plan.md](phase-1-contract-plan.md), [phase-3-dynamic-plan.md](phase-3-dynamic-plan.md).
+
+- **Gap closed here.** Phase 3 needs anatomy + Rust emitters + parity for `field`, `input`, `select`,
+  `checkbox`, `table`, and anatomy for `dialog`, `toast`, `tabs`. Phase 1 puts tier J (78 components)
+  at anatomy only. Rule: these eight get anatomy in WS-0 (with A4), and the form/table ones get
+  emitters + parity in WS-4, ahead of the other batches. Without this, Phase 3 B2, D1, D2 and E stall.
+- **One example, not two.** Phase 1 H2 (`apps/examples/solid-htmx`) is the seed of the Phase 3 H
+  starter: keep it as small as possible and extend it in Phase 3, rather than building a second one.
+- **Tabs.** Both plans pick the ARIA tablist + `cv-tabs` element with a no-JS fallback; Phase 1 WS-5
+  builds it, Phase 3 D2 reuses it.
+- **Order.** Phase 3 A, B1, B3, C, F, G, X1 and S0 can start alongside Phase 1; B2, D, E and K wait
+  for Phase 1 WS-0, WS-1 and the form emitters.
+
+## Status (2026-11-23)
+
+- **Phase 1 (Contract): done.** `@cascivo/css`; anatomy on every component with a CSS module (G2);
+  Rust consts + auto emitters from the contract (G4); 101 cascivo-html components; parity coverage
+  gate (G3); contract semver gate (G1); `cv-tabs`; Solid + htmx example on `cascivo-server`.
+- **Phase 2 (Static MVP): done** via #297–#302: images, i18n, RSS, Cloudflare deploy, cascivo.com home
+  on cascivo-web at Lighthouse 100.
+- **Phase 3 (Dynamic): done (2026-11-23)** except S0 and K, which wait for the owner's app. Done: A, X1
+  (α pass), B1 (β holds), B2, B3, C, D1, D2, E, F, G, H (starter), I (guides), T (harness: γ, δ pass).

@@ -5,6 +5,22 @@ export const meta: ComponentMeta = {
   description: 'Colored dot with a label communicating the state of a system or entity',
   category: 'display',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: 'span',
+      data: {
+        'data-status': ['success', 'warning', 'error', 'info', 'neutral'],
+        'data-pulse': 'boolean',
+      },
+      children: ['dot', '$slot'],
+      // `data-status` goes through a tone lookup at render time.
+      emit: 'manual',
+    },
+    parts: {
+      dot: { element: 'span', aria: ['aria-hidden'] },
+    },
+  },
   states: [],
   variants: ['success', 'warning', 'error', 'info', 'neutral'],
   sizes: [],

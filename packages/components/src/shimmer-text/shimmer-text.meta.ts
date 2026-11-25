@@ -6,6 +6,14 @@ export const meta: ComponentMeta = {
     'Text with a bright band sweeping through it — the "Thinking…" look for a label that marks work in progress',
   category: 'feedback',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: {
+      element: ['span', 'p', 'div'],
+      children: ['$slot'],
+      emit: 'manual',
+    },
+  },
   states: [],
   variants: [],
   sizes: [],
