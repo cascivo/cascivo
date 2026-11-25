@@ -91,6 +91,7 @@ OVERRIDES = {
         'Va': (-45, None, None),
         'Væ': (-45, None, None),
         'AV': (-55, None, None),
+        'VA': (-53, None, None),  # -45 was 0.66x Inter's -68; the white (0.88x of Inter's, as AV's) is what limits it
         'AW': (-40, None, None),
         'WA': (-40, None, None),
         # Black capitals: as the upright's.
@@ -101,6 +102,12 @@ OVERRIDES = {
         'LV': (None, None, -80),
         'LW': (0, 0, -50),
         'RT': (-25, -10, 0),
+        # t after R and before a round letter at Black, display size (JUDGING 6, open item): the italic t's crossbar reaches over the next
+        # letter, so ta td tq tg kept 22-28 units at 900 / opsz 48 and Rt 14 (Inter Black's opsz 32: 44-54; the gate asks 30). Black opens
+        # 15 (Rt 20): 900/14 49 (Inter 68-70) and 900/48 about 37; Thin and Regular stay unkerned (0: None would add the machine's -32 to -41).
+        **{'t' + b: (0, 0, 15) for b in 'adq'},
+        'tg': (0, 0, 10),
+        'Rt': (15, 10, 20),
         # Figures: the italic 1's flag leans away from the 7, 71 kept 1.4-2.3x Inter's white.
         '71': (-30, -35, -50),
         '77': (10, 15, 10),

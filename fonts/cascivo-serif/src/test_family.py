@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__))
 FONTS = os.path.join(HERE, '..', 'fonts')
 TTF = os.path.join(FONTS, 'CascivoSerif[opsz,wght].ttf')
+TTF_IT = os.path.join(FONTS, 'CascivoSerif-Italic[opsz,wght].ttf')
 SANS = os.path.join(HERE, '..', '..', 'cascivo-sans', 'fonts', 'CascivoSans[opsz,wght].ttf')
 
 
@@ -55,6 +56,20 @@ def o_contrast(path, wght=400):
     side = np.flatnonzero(row)
     side = side[: np.argmax(np.diff(side) > 1) + 1]
     return len(top) / len(side)
+
+
+def stem(path, wght, ch='n', size=800):
+    """First ink run across the letter at half its height, in units."""
+    a = raster(path, ch, wght, size)
+    ys = np.flatnonzero(a.any(1))
+    row = np.flatnonzero(a[(ys.min() + ys.max()) // 2])
+    return (np.argmax(np.diff(row) > 1) + 1 if (np.diff(row) > 1).any() else len(row)) / size * 1000
+
+
+def adv(path, ch, wght=400):
+    f = TTFont(path)
+    gs = f.getGlyphSet(location={'wght': wght, 'opsz': 14})
+    return gs[f.getBestCmap()[ord(ch)]].width
 
 
 class SerifFamily(unittest.TestCase):
@@ -242,6 +257,46 @@ class SerifFamily(unittest.TestCase):
             holes = [np.nonzero(lab == i)[0].mean() for i in range(2, n + 1) if (lab == i).sum() >= 300]
             with self.subTest(wght=wght):
                 self.assertEqual(sorted(y < base for y in holes), [False, True])
+
+    # Round 7 (NOTES.md): Source Serif 4's colour, weight spacing and proportions.
+    def test_named_weight_stems(self):
+        # family WGHT_MAP: n stems at Source Serif 4's (31 / 53 / 92 / 168 at 200 / 300 / 400 / 700); Sans's even steps
+        # left 200 at 46 and 700 at 150
+        for wght, want in ((200, 31), (300, 53.5), (400, 92), (700, 168)):
+            with self.subTest(wght=wght):
+                self.assertAlmostEqual(stem(TTF, wght), want, delta=7)
+
+    def test_x_height(self):
+        x = raster(TTF, 'x', 400, 1000)
+        self.assertTrue(490 <= np.ptp(np.flatnonzero(x.any(1))) <= 512)  # Sans's 528; Source Serif 4 ~495
+
+    def test_narrow_capitals(self):
+        for ch, most in (('P', 0.79), ('B', 0.83), ('S', 0.68), ('U', 0.985)):  # over H; round 6: 0.824 0.854 0.696 1.0
+            with self.subTest(ch=ch):
+                self.assertLess(adv(TTF, ch) / adv(TTF, 'H'), most)
+
+    def test_light_weights_hold_width(self):
+        # Thin's sidebearings and t's own factor: 300 and 400 within 10% (round 6's t: 349 / 411 after the new weight map)
+        for ch in 'tnH':
+            with self.subTest(ch=ch):
+                self.assertGreater(adv(TTF, ch, 300) / adv(TTF, ch, 400), 0.9)
+
+    def test_figures_narrower(self):
+        self.assertLess(adv(TTF, '0') / adv(TTF, 'n'), 0.83)  # round 6: 0.86 (figures set 1.09-1.12x Source Serif 4's)
+
+    def test_italic(self):
+        f = TTFont(TTF_IT)
+        self.assertLess(f['post'].italicAngle, -5)
+        self.assertEqual(set(f.getBestCmap()), set(self.f.getBestCmap()))
+        for wght in (100, 400, 900):
+            with self.subTest(wght=wght):
+                # an exit flick, not a slab: the italic i's foot reaches one side only
+                self.assertLess(foot_span(TTF_IT, 'i', wght), foot_span(TTF, 'i', wght) - 30)
+        r = __import__('ots').sanitize(TTF_IT, os.devnull, capture_output=True) if __import__('importlib').util.find_spec('ots') else None
+        if r is not None:
+            self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertLess(os.path.getsize(os.path.join(FONTS, 'CascivoSerif-Italic[opsz,wght].woff2')), 120_000)
+        self.assertLess(os.path.getsize(os.path.join(FONTS, 'CascivoSerif-Italic-Latin[opsz,wght].woff2')), 50_000)
 
     def test_ots_sanitize(self):
         try:

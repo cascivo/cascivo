@@ -1,7 +1,7 @@
 /* Site-wide "Aa" choice — imported only once the visitor picks Cascivo Mono. */
 @font-face {
   font-family: 'Cascivo Mono';
-  src: url('/fonts/cascivo-mono/CascivoMono-Latin[opsz,wght].woff2?v=ca3b1e7392') format('woff2');
+  src: url('/fonts/cascivo-mono/CascivoMono-Latin[opsz,wght].woff2?v=3d04585268') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;

@@ -1095,7 +1095,7 @@ def build(italic=False):
         a = AxisDescriptor()
         a.tag, a.name, a.minimum, a.default, a.maximum = tag, name, lo, df, hi
         if tag == 'wght':
-            a.map = WGHT_MAP
+            a.map = family.get('WGHT_MAP', WGHT_MAP)  # a family may space its named weights differently (serif); Sans: params'
         ds.addAxis(a)
     for o, glyf in zip(outs, glyfs):
         s = SourceDescriptor()
@@ -1199,11 +1199,15 @@ def _keep_marks_clear(font, masters):
     instructions after ttfautohint's: when the grid-fitted gap is under a pixel, the mark moves up to one."""
     glyf, maxp = font['glyf'], font['maxp']
     fn = maxp.maxFunctionDefs  # ttfautohint numbers its functions from 0
-    # args: the mark's points, their count, the mark's bottom point, the top point below. d = bottom - top
-    # (grid-fitted, MD[0] in FreeType's reading); under 64 (a pixel) the points move up by 64 - d (SHPIX takes
-    # the amount, then SLOOP's count of points); otherwise the arguments are dropped
+    amount, counter = maxp.maxStorage, maxp.maxStorage + 1  # two storage slots past ttfautohint's
+    # args: the mark's first point, their count, the mark's bottom point, the top point below (a mark's points are
+    # consecutive, so only the first is stored: listing every point cost more than the loop that walks them). d = bottom - top
+    # (grid-fitted, MD[0] in FreeType's reading); under 64 (a pixel) the points move up by 64 - d, one SHPIX each, the
+    # helper (fn + 1) taking the next point from the counter; otherwise the arguments are dropped
     clear = ['PUSH[ ] 1', 'SZPS[ ]', 'SVTCA[0]', 'MD[0]', 'DUP[ ]', 'PUSH[ ] 64', 'LT[ ]', 'IF[ ]',
-             'PUSH[ ] 64', 'SWAP[ ]', 'SUB[ ]', 'SWAP[ ]', 'SLOOP[ ]', 'SHPIX[ ]', 'ELSE[ ]', 'CLEAR[ ]', 'EIF[ ]']
+             'PUSH[ ] 64', 'SWAP[ ]', 'SUB[ ]', f'PUSH[ ] {amount}', 'SWAP[ ]', 'WS[ ]',
+             'SWAP[ ]', f'PUSH[ ] {counter}', 'SWAP[ ]', 'WS[ ]', f'PUSH[ ] {fn + 1}', 'LOOPCALL[ ]', 'ELSE[ ]', 'CLEAR[ ]', 'EIF[ ]']
+    step = [f'PUSH[ ] {counter}', 'RS[ ]', 'DUP[ ]', 'PUSH[ ] 1', 'ADD[ ]', f'PUSH[ ] {counter}', 'SWAP[ ]', 'WS[ ]', f'PUSH[ ] {amount}', 'RS[ ]', 'SHPIX[ ]']
     deepest, used = 0, False
     for name in font.getGlyphOrder():
         g = glyf[name]
@@ -1227,8 +1231,8 @@ def _keep_marks_clear(font, masters):
                 gaps.append(ys[bottom] - ys[top] if (bottom, top) == ends else 0)
             if min(gaps) <= 0:  # touching or attached marks (cedilla, ogonek) and stacks that change order stay as drawn
                 continue
-            deepest = max(deepest, len(mark) + 6)
-            program += [f'PUSH[ ] {" ".join(map(str, mark))} {len(mark)} {ends[0]} {ends[1]} {fn}', 'CALL[ ]']
+            deepest = max(deepest, 8)
+            program += [f'PUSH[ ] {mark[0]} {len(mark)} {ends[0]} {ends[1]} {fn}', 'CALL[ ]']
         if program:
             used = True
             p = ttProgram.Program()
@@ -1239,9 +1243,9 @@ def _keep_marks_clear(font, masters):
     if not used:
         return
     p = ttProgram.Program()
-    p.fromAssembly([f'PUSH[ ] {fn}', 'FDEF[ ]'] + clear + ['ENDF[ ]'])
+    p.fromAssembly([f'PUSH[ ] {fn}', 'FDEF[ ]'] + clear + ['ENDF[ ]', f'PUSH[ ] {fn + 1}', 'FDEF[ ]'] + step + ['ENDF[ ]'])
     font['fpgm'].program.fromBytecode(font['fpgm'].program.getBytecode() + p.getBytecode())
-    maxp.maxFunctionDefs = fn + 1
+    maxp.maxFunctionDefs, maxp.maxStorage = fn + 2, counter + 1
     maxp.maxStackElements = max(maxp.maxStackElements, deepest)
     maxp.maxSizeOfInstructions = max([maxp.maxSizeOfInstructions, len(font['fpgm'].program.getBytecode())] + [len(glyf[n].program.getBytecode()) for n in font.getGlyphOrder() if getattr(glyf[n], 'program', None) is not None])
 
@@ -1349,9 +1353,22 @@ def _subset_latin(font, unicodes=LATIN):
     return font
 
 
+# Brotli's block splitting is chaotic: the same bytes compress up to 0.3% apart for a different window or block size,
+# so the compressor is tried a few ways and the smallest stream kept. Every setting is a valid stream any decoder reads
+# (the window stays within RFC 7932's 24 bits).
+BROTLI_TRIES = ({}, {'lgblock': 16}, {'lgblock': 18}, {'lgwin': 18}, {'lgwin': 24}, {'lgwin': 24, 'lgblock': 16})
+
+
 def _save_woff2(font, fn):
+    from fontTools.ttLib import woff2
     font.flavor = 'woff2'
-    font.save(os.path.join(DIST, fn))
+    compress = woff2.brotli.compress
+    if not family.ACTIVE:  # the sibling families keep the stream they have
+        woff2.brotli.compress = lambda data, **kw: min((compress(data, **{**kw, **t}) for t in BROTLI_TRIES), key=len)
+    try:
+        font.save(os.path.join(DIST, fn))
+    finally:
+        woff2.brotli.compress = compress
 
 
 def _win_extent(vf):

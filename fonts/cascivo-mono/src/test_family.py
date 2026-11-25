@@ -266,6 +266,47 @@ class MonoFont(unittest.TestCase):
         self.assertGreaterEqual(self.width({'wght': 100, 'opsz': 14}, '.'), 118)
         self.assertLessEqual(self.width({'wght': 900, 'opsz': 14}, '.'), 200)  # Black's i j dots were big already
 
+    def test_delimiters_fill_the_cell(self):
+        # round 7: Sans's proportional ( ) [ ] { } were 0.31-0.45 of the cell (JetBrains Mono's 0.41-0.72) and read as slivers
+        for w in (100, 400, 900):
+            loc = {'wght': w, 'opsz': 14}
+            for chs, lo in (('()', 0.3), ('[]', 0.32), ('{}', 0.6)):  # before: 0.25-0.35, 0.29-0.35, 0.44-0.53
+                for ch in chs:
+                    self.assertGreaterEqual(self.width(loc, ch) / CELL, lo, f'{ch} at {w}')
+                    b = self.bounds(loc, ch)
+                    self.assertGreaterEqual(b[3], 780, f'{ch} top at {w}')  # over the ascenders, toward JetBrains Mono's 840
+                    self.assertGreaterEqual(b[1], -200, f'{ch} foot at {w}')
+            # the stems kept their weight: the bracket's stem and the brace's waist no heavier than n's stem
+            self.assertLessEqual(self.left_run(loc, '[', 300), self.left_run(loc, 'l', 300) * 1.15, f'[ stem at {w}')
+
+    def left_run(self, loc, ch, y):
+        # width of the leftmost ink run on the horizontal y, from the outline (a 1-unit raster of the glyph at y)
+        from fontTools.pens.recordingPen import DecomposingRecordingPen
+        from fontTools.pens.pointInsidePen import PointInsidePen
+        gs = self.font.getGlyphSet(location=loc)
+        g = gs[self.font.getBestCmap()[ord(ch)]]
+        rec = DecomposingRecordingPen(gs)
+        g.draw(rec)
+        xs = []
+        for x in range(0, CELL, 2):
+            pen = PointInsidePen(gs, (x, y))
+            rec.replay(pen)
+            xs.append(pen.getResult())
+        start = xs.index(True)
+        end = start + xs[start:].index(False) if False in xs[start:] else len(xs)
+        return (end - start) * 2
+
+    def test_tilde_caret_star_sized(self):
+        # round 7: ~ was 530 x 160 of ink (flat), ^ 397 x 284 and * 402 wide (JetBrains Mono: 470 x 205, 440 x 390, 530)
+        for w in (400, 900):
+            loc = {'wght': w, 'opsz': 14}
+            b = self.bounds(loc, '~')
+            self.assertGreaterEqual((b[3] - b[1]) / (b[2] - b[0]), 0.4, f'~ at {w}')
+            b = self.bounds(loc, '^')
+            self.assertGreaterEqual(b[3] - b[1], 350, f'^ at {w}')
+            self.assertGreaterEqual(self.width(loc, '*'), 440, f'* at {w}')
+            self.assertLessEqual(abs(self.mid(loc, '~') - self.mid(loc, '-')), 4, f'~ off the axis at {w}')
+
 
 if __name__ == '__main__':
     unittest.main()

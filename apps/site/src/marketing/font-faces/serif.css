@@ -1,7 +1,7 @@
 /* Site-wide "Aa" choice — imported only once the visitor picks Cascivo Serif. */
 @font-face {
   font-family: 'Cascivo Serif';
-  src: url('/fonts/cascivo-serif/CascivoSerif-Latin[opsz,wght].woff2?v=48d84d4ce1') format('woff2');
+  src: url('/fonts/cascivo-serif/CascivoSerif-Latin[opsz,wght].woff2?v=528fa58b5a') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;

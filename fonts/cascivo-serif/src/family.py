@@ -18,7 +18,7 @@ from glyphs import term_taper
 NAME = 'Cascivo Serif'
 PS = 'CascivoSerif'
 VERSION = '0.1.0'
-ITALIC = False
+ITALIC = True
 
 
 
@@ -37,29 +37,68 @@ SLAB, BRACKET = 1.12, 1.1  # round 4: slab over the hairline and bracket height 
 CAP_REACH = 1.2  # capitals carry longer serifs, as in Source Serif (and it moves I's stem off l's at 11 px)
 
 
-SB_K = [(24, 1.01), (84, 1.0), (194, 0.95)]  # sidebearing factor on Sans's
-CAP_SB_K = 0.95  # capitals' sidebearings, on top of SB_K
+SB_K = [(24, 1.12), (84, 1.0), (194, 0.9)]  # round 7: Thin 1.01 -> 1.12, its letters set narrow beside Regular's and
+# ExtraLight / Light, now near Thin on the avar map (WGHT_MAP), inherited it: a width jump from 300 to 400 (wstep row)  # sidebearing factor on Sans's
+CAP_SB_K = [(24, 0.95), (84, 0.95), (194, 0.8)]  # capitals' sidebearings, on top of SB_K (round 7: Black 0.95 -> 0.8,
+# HH set 1.22 gap over counter at 900, Source Serif 0.92; Sans's capitals widen toward Black where Source Serif's narrow)
 CAP_H_K = [(24, 0.96), (84, 0.94), (194, 0.83)]  # straight capitals' counter (H E N B ...)
 CAP_ROUND_K = [(24, 0.97), (84, 0.96), (194, 0.91)]  # round and diagonal capitals' (O C G S A V ...)
-LC_K = [(24, 0.99), (84, 0.98), (194, 0.93)]  # n's counter, which the lowercase follows
+LC_K = [(24, 0.95), (84, 0.92), (194, 0.89)]  # n's counter, which the lowercase follows
+
+
+STEM_K = [(24, 0.92), (84, 1.09), (190, 1.0)]  # round 7: stems on Sans's (keyed by its own stem, so Bold, the
+# 146 master, has its own entry): Source Serif 4's n stem is 30 / 90 / 170 / 200 at 100 / 400 / 700 / 900, ours stood 25 / 85 / 145 / 190,
+# and with the taller, wider letters a paragraph read pale and sans-like beside it
+HAIR_K = [(24, 0.8), (84, 0.68), (194, 0.56)]  # hairline on Sans's (round 7: 0.62 / 0.48 at Regular / Black left o's top 45 units
+# against Source Serif 4's 50 and the P B R 6 8 bowls 1.5x its counter over ink)
+XH_K = 0.95  # round 7: x-height on Sans's (528 -> 502 at opsz 14; Source Serif 4 ~495): a serif text face sits lower than a UI sans
+
+# Round 7: named weights' n stem, Source Serif 4's (31 / 53 / 92 / 110 / 128 / 168 / 183 / 199 at 200-900). Sans spaces its weights
+# by even 20-unit steps (params NAMED_STEMS), which left ExtraLight and Light a third too dark beside a book serif and Bold 18 units
+# light. The engine reads WGHT_MAP (avar) from here; Black stays the Sans master's 190.
+NAMED_STEMS = [(100, None), (200, 31), (300, 53.5), (400, None), (500, 110), (600, 128), (700, 168), (800, 183), (900, None)]
+
+
+def _wght_map():
+    from params import BLACK_STEM, THIN_STEM
+    thin, reg, black = THIN_STEM * _pw(THIN_STEM, STEM_K), 84 * _pw(84, STEM_K), BLACK_STEM * _pw(BLACK_STEM, STEM_K)
+    out = []
+    for w, s in NAMED_STEMS:
+        if s is None:
+            d = w
+        elif s <= reg:
+            d = 100 + (s - thin) / (reg - thin) * 300
+        else:
+            d = 400 + (s - reg) / (black - reg) * 500
+        out.append((w, round(d, 1)))
+    return out
+
+
+WGHT_MAP = _wght_map()
 
 
 def tune(p):
+    v0 = p.V
+    p.V *= _pw(v0, STEM_K)
+    p.xh = round(p.xh * XH_K)
     # contrast: hairlines thin faster than stems as the weight rises (Sans keeps 0.96 -> 0.72 of V)
-    f = _pw(p.V, [(24, 0.84), (84, 0.62), (194, 0.48)])
+    f = _pw(v0, HAIR_K)
     p.H *= f
     p.bar *= f ** BAR_SHARE
     # a little more white beside the serif tips (round 6: less at Black, whose lowercase set 1.06x Source Serif 4's)
-    p.S *= _pw(p.V, SB_K)
-    p.Sc *= _pw(p.V, SB_K) * CAP_SB_K
+    p.S *= _pw(v0, SB_K)
+    p.Sc *= _pw(v0, SB_K) * _pw(v0, CAP_SB_K)
     # Round 6: Sans widths under serifs set wide against Source Serif 4: capitals 1.08x (Regular) to 1.17x (Black), rounds
     # 1.07-1.11x, lowercase 1.02-1.06x. Counters narrow, most at Black where the slabs add the most width.
-    p.cH *= _pw(p.V, CAP_H_K)
-    p.cHd *= _pw(p.V, CAP_ROUND_K)
-    p.cn *= _pw(p.V, LC_K)
+    p.cH *= _pw(v0, CAP_H_K)
+    p.cHd *= _pw(v0, CAP_ROUND_K)
+    p.cn *= _pw(v0, LC_K)
+    p.fig_adv = round(p.fig_adv * FIG_K)
+    if p.italic:
+        p.cn *= ITALIC_CN
     # Round overshoot keeps growing past Regular, as Source Serif's (o 12 / 12 / 15, O 15 / 16 / 19 units at 200 / 400 / 800);
     # Sans holds 13.4 from Regular up, so Bold's rounds and the serifed x stood level at the x-height
-    p.ov = _pw(p.V, [(24, 11.5), (84, 13.4), (194, 16.5)])
+    p.ov = _pw(v0, [(24, 11.5), (84, 13.4), (194, 16.5)])
 
 
 @_hook.override('l')
@@ -73,6 +112,7 @@ def _l(g, p):  # plain stem: the serifs make it an l, the Sans tail would fight 
 def _I(g, p):
     g.vstem(0, 0, p.cap)
     g.ht = 'c'
+    g.sb = (0.8, 0.8)  # round 7: I set 1.11x Source Serif's, its stem on the 1's at 11 px (I/1 pixel overlap 0.81, Source Serif 0.24)
 
 
 # Round 6: C G c top terminals. The Sans C ran on to where its stroke falls near vertical and was cut flat ('h'); the serif pass hung a
@@ -126,6 +166,17 @@ def _side_pts(side, end, n=24):
 G2 = dict(bowl=(0.04, 0.74, 0.34), loop=(0.0, 0.94, 0.1), ear=(0.6, 1.0), link=0.3)  # x shares of w, y shares of the x-height
 
 
+# Round 7: skeleton width factors (stroke weights kept) for the letters that set furthest past Source Serif 4 at 400 (advance
+# ratio before: B 1.15 P 1.17 U 1.16 N 1.15 S 1.13 D 1.09 E F 1.07 H 1.08 M 1.09 J 1.79). Sans's wide, even capitals
+# under serifs read as a slab face; a book serif's P B S are narrow. Kept a few percent wide of Source Serif: Cascivo's own build.
+NARROW = {'B': 0.86, 'P': 0.84, 'U': 0.9, 'N': 0.9, 'S': 0.88, 'D': 0.93, 'E': 0.92, 'F': 0.92, 'H': 0.95, 'M': 0.95, 'R': 0.95,
+          'C': 0.95, 'K': 0.96, 'J': 0.8}
+# Weight-dependent factors (keyed by the stem, so each master gets its own and the outlines stay compatible): Sans's t is a
+# step wider at Regular than at its neighbours (349 / 411 / 407 at 300 / 400 / 500, score's wstep row).
+NARROW_W = {'t': [(22, 1.12), (92, 0.9), (190, 0.97)]}
+ITALIC_FOOT = 0.8  # italic lowercase exit flick's reach over the upright serif's
+ITALIC_CN = 0.93  # italic n counter on Sans italic's (round 7: the serifed italic set 1.1x Source Serif 4 Italic at 400)
+FIG_K = 0.93  # tabular figure advance on Sans's (round 7: figures set 1.09-1.12x Source Serif 4's)
 FIGS = {'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'}
 
 
@@ -566,6 +617,10 @@ def glyph(g, p, name):
         letter = unicodedata.category(toUnicode(name.split('.')[0]))[0] == 'L'
         _DPLAN[name] = (_diag_ends(g, p), _arm_ends(g, p)) if letter else ([], [])
         _TPLAN[name] = _terminals(g, name) if letter else []
+    nk = NARROW.get(name, 1.0) * _pw(p.V, NARROW_W.get(name, [(0, 1.0)]))
+    if nk != 1.0:
+        xs = [q[0] for st in g.strokes for seg in st.segs for q in seg[1:]]
+        _squeeze(g, nk, (min(xs) + max(xs)) / 2)
     outer, inner, t, bf = _sizes(p)
     k = CAP_REACH if name[:1].isupper() else 1.0
     if _DPLAN[name][0]:
@@ -606,6 +661,10 @@ def glyph(g, p, name):
         seg = s.segs[0] if end == 0 else s.segs[-1]
         b = seg[1] if end == 0 else seg[2]
         r = {side: k * (outer if out else inner) for side, out in sides}
+        if p.italic and k == 1.0 and kind == 'base' and r:
+            # Round 7: an italic lowercase foot is an exit flick to the right, not a slab (Source Serif 4 Italic): the left half
+            # goes and the right shortens. Both sides stay in the contour (zero reach), so the masters stay compatible.
+            r = {1: max(r.values()) * ITALIC_FOOT}
         tuck.update(side for side, out in sides if out)
         d = 1 if kind in ('base', 'desc') else -1
         wedge = t * WEDGE if d < 0 and k == 1.0 and -1 in r else 0.0
