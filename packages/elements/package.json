@@ -17,6 +17,13 @@
     "./date-picker": "./dist/date-picker.js",
     "./dialog": "./dist/dialog.js",
     "./toaster": "./dist/toaster.js",
+    "./data-table": "./dist/data-table.js",
+    "./drawer": "./dist/drawer.js",
+    "./command-menu": "./dist/command-menu.js",
+    "./theme": "./dist/theme.js",
+    "./tooltip": "./dist/tooltip.js",
+    "./multi-select": "./dist/multi-select.js",
+    "./tags-input": "./dist/tags-input.js",
     "./htmx": "./dist/htmx.js",
     "./elements.css": "./dist/elements.css",
     "./custom-elements.json": "./dist/custom-elements.json"
