@@ -26,7 +26,7 @@ VFI = os.path.join(DIST, 'CascivoSans-Italic[opsz,wght].ttf')
 # codepoints, 95 -> 78 bytes each); the Latin slices are unchanged.
 BUDGETS = {
     'CascivoSans[opsz,wght].woff2': 87_500,  # round 6 hinting: 77_800 -> 87_500 (ttfautohint programs + cvar; ships 87_412); round 8: 77_600 -> 77_800 for the heavy curves (oval fill, terminal tapers, r arm); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # Latin, Cyrillic, Greek (with polytonic); 69_500 -> 71_500 for the Latin quality pass (Black counters, redrawn letters), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then 74_500 -> 75_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 75_500 -> 75_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 75_600 -> 76_400, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 76_400 -> 76_600, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds), then 76_600 -> 76_735, raised by the user, round 5 (upright 2: Black a bowl, l tail, Bold's round letters, quote and bar spacing)
-    'CascivoSans-Latin[opsz,wght].woff2': 38_200,  # round 6 hinting: 32_600 -> 38_200 (ttfautohint programs + cvar; ships 38_156); round 8: 32_500 -> 32_600 for the heavy-weight curve redraws (oval counters, tapered terminals, r arm; ships 32_504); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 31_600 -> 32_000, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 32_000 -> 32_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
+    'CascivoSans-Latin[opsz,wght].woff2': 38_400,  # round 6 kerning: 38_200 -> 38_400 (hand override table over hinting; ships 38_356); round 6 hinting: 32_600 -> 38_200 (ttfautohint programs + cvar; ships 38_156); round 8: 32_500 -> 32_600 for the heavy-weight curve redraws (oval counters, tapered terminals, r arm; ships 32_504); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space), then by the user for the interface brief kerning (V, W, Y and A kern alike); round 4 ships 31_420, then 31_500 -> 31_600, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines), then 31_600 -> 32_000, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 32_000 -> 32_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
     'CascivoSans-Latin[wght].woff2': 31_600,  # round 6 hinting: 25_900 -> 31_600 (ttfautohint programs + cvar; ships 31_556); round 8: 25_800 -> 25_900 for the heavy-weight curve redraws (ships 25_896); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the interface brief: 23_500 -> 24_000 (width across weights), then for the Bold spacing master, then 24_500 -> 25_000 for its punctuation and spacing, then 25_000 -> 25_400, raised by the user, round 4 (Bold's counters narrowed, heavy lowercase and capitals redrawn), then 25_400 -> 25_600, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 25_600 -> 25_750, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds)
     'CascivoSans-Regular.woff2': 35_000,  # round 6 hinting: 25_200 -> 35_000 (ttfautohint programs + cvar; ships 34_952); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # raised by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 25_500 -> 25_000, round 4 (Regular ships 24_964), then 25_000 -> 25_100, raised by the user, round 4 (kerning fitted to Inter's white at Thin, Black and Regular, computed from the outlines)
     'CascivoSans-Italic[opsz,wght].woff2': 94_700,  # round 6 hinting: 84_200 -> 94_700 (ttfautohint programs + cvar; ships 94_644); round 9: 83_900 -> 84_200 for the heavy figures (6 9 hooks, wider spaced . , and x: 84_076, +300 B over round 8's 83_776); round 6: raised for Display's x-height and the smaller dot accent (within +10% of round 5's cap);  # 75_000 -> 77_000 for the Latin quality pass (joins), then raised by the user for the Bold spacing master (700 keeps its width, Black keeps its word space) and the capital counter curve, then by the user for the interface brief kerning (V, W, Y and A kern alike), then for the Black diagonal capitals across Latin, Cyrillic and Greek, then 81_500 -> 82_500, raised by the user, round 4 (Black's counters and sidebearings released, Bold's counters narrowed, heavy lowercase and capitals redrawn), then 82_500 -> 82_800, raised by the user, round 4 (merge 2: f, bowl joins, crotches, l; a c e g s S; guillemets, Thin %, Black T-Z, 5, 2; ff fl ft cf 02 fitted, Bold refits its own white), then 82_800 -> 83_100, raised by the user, round 4 (cycle 3: curved-stroke and stem cleanup at the heavy weights, b d p q joins, l t f k r z ends, squarer Black rounds), then 83_000 -> 83_100, raised by the user, round 5 (the comma, quotes and full stop the upright and italic share)
@@ -183,6 +183,8 @@ KERNING_SHORT_FLOOR = 0.25  # of Inter's, for the pairs in KERNING_SHORT: the we
 # Thin white is wide and the measure closes only what the eye reads as a hole. The Wa and V entries are Thin only.
 # Where 0.25x is too high the pair keeps what it ships, less a unit: italic Thin AW kerns 3 (Inter 57), the weakest pair of all.
 KERNING_SHORT_UNITS = {('italic', 'AW', 100): 2}
+# (round 6: kern_overrides.py tunes the Thin W and V pairs by hand; test_thin_w_and_v_kern_near_inter holds them at 0.65x Inter's. The entries
+# below stay as the floor for the pairs and weights that table leaves to the measure.)
 KERNING_SHORT = (
     # (round 3: Thin's V beside c e o q g œ reaches 0.8x and left this list, upright and italic: kern.THIN_REACH)
     {('upright', pair, 100) for pair in ('Wc', 'We', 'Wo', 'Wœ', 'AW', 'WA')}
@@ -467,11 +469,11 @@ def _shaper(hb, path):
     return _SHAPERS[path]
 
 
-def pair_kerning(hb, path, pair, wght):
-    """What the font's kerning adds to the advance of a two-letter string at (wght, opsz 14), in 1000 units per em (negative closes)."""
+def pair_kerning(hb, path, pair, wght, opsz=14):
+    """What the font's kerning adds to the advance of a two-letter string at (wght, opsz), in 1000 units per em (negative closes)."""
     face, f = _shaper(hb, path)
     font = hb.Font(face)
-    font.set_variations({'wght': wght, 'opsz': 14})
+    font.set_variations({'wght': wght, 'opsz': opsz})
 
     def advance(kern):
         buf = hb.Buffer()
@@ -2276,6 +2278,93 @@ class Font(unittest.TestCase):
                         self.assertGreaterEqual(got_mean / mean, WHITE_BAND[0], f'{pair} has {got_mean:.0f} of white at {wght}, Inter {mean}')
                         self.assertLessEqual(got_mean / mean, WHITE_BAND_SHAPE.get((kind, pair, wght), WHITE_BAND[1]), f'{pair} has {got_mean:.0f} of white at {wght}, Inter {mean}')
                         self.assertGreaterEqual(got_least, WHITE_LEAST_FLOOR * least, f'{pair} comes to {got_least:.0f} at {wght}, Inter {least}')  # Inter's ff at 700: 0
+
+    def test_hand_kerning_ships_as_tuned(self):
+        # Round 6: kern_overrides.py is a reviewed table over the measured kerning. Each value it sets ships exactly at its master (Thin,
+        # Regular, Black at opsz 14), and a Display opening adds its units at opsz 48 over opsz 14 (read at Regular and Black), upright and
+        # italic. Nothing later in kern.py (STRONG_FIX, DIAGONAL_FIX, the own-shape corners) may move a tuned pair.
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        import kern_overrides
+
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for pair, by in kern_overrides.OVERRIDES[kind].items():
+                for wght, value in zip(kern_overrides.MASTER_WGHT, by[:3]):
+                    if value is not None:
+                        with self.subTest(kind=kind, pair=pair, wght=wght):
+                            self.assertEqual(pair_kerning(hb, path, pair, wght), value)
+                for wght in (400, 900):
+                    with self.subTest(kind=kind, pair=pair, wght=wght, opsz=48):
+                        display = by[3] if len(by) > 3 else 0
+                        self.assertEqual(pair_kerning(hb, path, pair, wght, 48) - pair_kerning(hb, path, pair, wght), display)
+
+    def test_hand_kerning_table_names_real_pairs(self):
+        # Every entry is two characters both fonts map, with three master values (Thin, Regular, Black) and at most a Display opening, and
+        # at least one non-zero value (a master or the Display opening): test_hand_kerning_ships_as_tuned then proves the pair reached the kerning classes (a name kern.py
+        # does not draw would ship nothing). The shipped files keep no glyph names (post 3), so the names are not compared here.
+        import kern_overrides
+
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            cmap = TTFont(path).getBestCmap()
+            for pair, by in kern_overrides.OVERRIDES[kind].items():
+                with self.subTest(kind=kind, pair=pair):
+                    self.assertEqual(len(pair), 2)
+                    self.assertIn(len(by), (3, 4))
+                    self.assertTrue(any(v for v in by))
+                    for ch in pair:
+                        self.assertIn(ord(ch), cmap)
+
+    def test_hand_kerning_keeps_clear(self):
+        # A tuned pair never closes into a collision: its closest white keeps 0.3x the HH pair's at the same location (Thin, Regular, Black
+        # at opsz 14, Black at opsz 48, where Black's and Display's tightening add up). The tightest ship at 0.34-0.36x (italic Black ra rd).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+        import kern_overrides
+
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for pair in kern_overrides.OVERRIDES[kind]:
+                for wght, opsz in ((100, 14), (400, 14), (900, 14), (900, 48)):
+                    with self.subTest(kind=kind, pair=pair, wght=wght, opsz=opsz):
+                        (gap,), hh = shaped_gaps(hb, path, pair, wght, opsz)
+                        self.assertGreaterEqual(gap, 0.3 * hh, f'{pair} keeps {gap:.0f} units at {wght}/{opsz} (HH {hh:.0f})')
+
+    def test_thin_w_and_v_kern_near_inter(self):
+        # JUDGING 9: Thin's W and V beside a round letter and beside A kerned 0.05-0.67x Inter's (italic AW 3 against 57, upright We -27
+        # against -51), as the outline measure reads a hairline diagonal's white as spacing. kern_overrides.py tunes them by hand as far as
+        # Thin's and ExtraLight's white allow (test_fitted_pairs_hold_inter_white): every pair reaches 0.65x Inter's now (the least, italic
+        # VA, 0.66x; KERNING_SHORT_FLOOR's 0.25 stays for the other weights).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        pairs = ('Wa', 'We', 'Wo', 'Wc', 'Wœ', 'Va', 'Ve', 'Vo', 'Vc', 'AW', 'WA', 'AV', 'VA')
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for pair in pairs:
+                inter = INTER_KERNING[kind][pair][100]
+                with self.subTest(kind=kind, pair=pair):
+                    got = -pair_kerning(hb, path, pair, 100)
+                    self.assertGreaterEqual(got, 0.65 * inter, f'{pair} kerns {got} at Thin, Inter {inter}')
+
+    def test_display_black_keeps_its_white(self):
+        # JUDGING 8: at 900 / opsz 48 (Black's tightening and Display's add up, at a corner no master draws) the r's arm met the round letter
+        # after it: rg 12 units upright and ra rd rq -3 to -1 in the italic, in "0123Rag Hamburgefonstiv". Every neighbour in these strings keeps
+        # 30 units of white: 0.75x Inter Black's tightest at its largest optical size (opsz 32: OO 39, 0123Rag 41, rg 40-43).
+        try:
+            import uharfbuzz as hb
+        except ImportError:
+            self.skipTest('pip install uharfbuzz')
+
+        strings = ('0123Rag', 'ns', 'st', 'rg', 'ef', 'OO', 'ra', 'ro', 'rd', 'rq', 'rs', 'fo', 'fd', 'fs')
+        for kind, path in (('upright', VF), ('italic', VFI)):
+            for text in strings:
+                with self.subTest(kind=kind, text=text):
+                    gaps, _ = shaped_gaps(hb, path, text, 900, 48)
+                    self.assertGreaterEqual(min(gaps), 30, f'{text} keeps {[round(g) for g in gaps]} at 900/48')
 
     def test_black_proportional_one_sets_like_the_other_figures(self):
         # Round 4: Black's proportional 0 then 1 left 1.35x the HH gap upright and 1.46x italic (Inter's 0.89x), where 11, 10 and 12 sat at 0.9-1.0x. The pair

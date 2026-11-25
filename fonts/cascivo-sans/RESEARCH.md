@@ -1864,6 +1864,22 @@ How the figures were read:
   12-13 px; more would need a Light-Caption master or an `avar` remap of opsz (both change all
   weights).
 
+## 39. Kerning by hand, and Display Black
+
+The machine kerning (`kern.py`) measures white between outlines; it reads a round letter's open side
+as spacing, so Thin `W` and `V` beside `a e o` and `A` kerned 0.3-0.6x of Inter's, italic `AW` 0.05x.
+`src/kern_overrides.py` is a reviewed table laid over it: each pair carries Thin, Regular and Black
+values (`None` keeps the machine's), plus an optional Display delta, set against Inter's kern, its
+closest white and white profile, and rounded to 5 as a spacer would. It is applied after `_fit_white`,
+so the white-fitting cannot undo it; Bold interpolates. Groups: Thin W/V; Black W beside rounds eased
+to Inter's; `PA TA AT FA LV LW RT`; figures `71 77 7. 7,`; `L’ L” V, r. r f’ f” ’s`; quotes beside `A`.
+Tests check each value ships exactly at 100/400/900 and keeps 0.3x of the `HH` gap.
+
+Display Black (900/48) had no master of its own: the Display spacing (0.92) reaches 900 only through
+the Display master at 400, so changing it for heavy weights alone moves nothing. The near-touches were
+`r f t` before round letters (`ra rd rg`, italic `ra` overlapping by 3 units), fixed by the table's
+Display delta: the closest pair now keeps 30 units. See JUDGING.md, "Round 6 (engine)".
+
 ## Sources
 
 - [Introducing Geist Pixel (Vercel)](https://vercel.com/blog/introducing-geist-pixel) and the
