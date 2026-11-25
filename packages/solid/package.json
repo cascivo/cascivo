@@ -9,7 +9,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./vite": "./src/vite.ts",
-    "./elements": "./src/cv-elements.ts"
+    "./elements": "./src/cv-elements.ts",
+    "./testing": "./src/testing.ts"
   },
   "scripts": {
     "generate": "node --experimental-strip-types scripts/generate.ts",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@cascivo/elements": "workspace:*",
     "@types/node": "catalog:",
+    "htmx.org": "^2.0.8",
     "jsdom": "catalog:",
     "solid-js": "^1.9.0",
     "typescript": "catalog:",
