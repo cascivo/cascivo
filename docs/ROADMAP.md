@@ -15,6 +15,18 @@ token catalog, `audit --ai`).
 - **Open work** — GitHub issues, and `factory-backlog.json` for components
   queued for the dark factory.
 
+## htmx + Solid stack (no React)
+
+Guides: [USING-HTMX-SOLID.md](USING-HTMX-SOLID.md), [USING-CASCIVO-SERVER.md](USING-CASCIVO-SERVER.md),
+[CONTRACT.md](CONTRACT.md); measured comparison:
+[COMPARE-REACT-VS-HTMX-SOLID.md](COMPARE-REACT-VS-HTMX-SOLID.md). Per-gap status (done / open) lives in
+[plans/htmx-solid-gap-analysis.md](plans/htmx-solid-gap-analysis.md).
+
+- **Done:** 14 elements + htmx glue, Solid components/helpers/testing, contract parity for 80+ emitters,
+  distribution gates (`pack:check`, `isolated:check`, bundle budgets) cover `@cascivo/css`, `elements`, `solid`.
+- **Open:** first npm publish of `@cascivo/elements` and `@cascivo/solid` (`pnpm release:bootstrap`), Solid SSR, 18 chart types outside React, docs-site pages and visual baselines
+  for elements.
+
 ## History
 
 Development ran as 58 versioned implementation plans; they are preserved

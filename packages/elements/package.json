@@ -1,45 +1,126 @@
 {
   "name": "@cascivo/elements",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "description": "Light-DOM custom elements (cv-menu, cv-tabs, cv-combobox, cv-date-picker, cv-dialog, cv-toaster, cv-form) and the htmx glue that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure",
+  "keywords": [
+    "cascivo",
+    "custom-elements",
+    "design-system",
+    "htmx",
+    "light-dom",
+    "web-components"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/elements#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
   "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/elements"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "sideEffects": [
     "./dist/htmx.js"
   ],
   "exports": {
     "./package.json": "./package.json",
-    "./menu": "./dist/menu.js",
-    "./tabs": "./dist/tabs.js",
-    "./form": "./dist/form.js",
-    "./combobox": "./dist/combobox.js",
-    "./date-picker": "./dist/date-picker.js",
-    "./dialog": "./dist/dialog.js",
-    "./toaster": "./dist/toaster.js",
-    "./data-table": "./dist/data-table.js",
-    "./drawer": "./dist/drawer.js",
-    "./command-menu": "./dist/command-menu.js",
-    "./theme": "./dist/theme.js",
-    "./tooltip": "./dist/tooltip.js",
-    "./multi-select": "./dist/multi-select.js",
-    "./tags-input": "./dist/tags-input.js",
-    "./htmx": "./dist/htmx.js",
+    "./menu": {
+      "types": "./dist/menu.d.ts",
+      "import": "./dist/menu.js",
+      "default": "./dist/menu.js"
+    },
+    "./tabs": {
+      "types": "./dist/tabs.d.ts",
+      "import": "./dist/tabs.js",
+      "default": "./dist/tabs.js"
+    },
+    "./form": {
+      "types": "./dist/form.d.ts",
+      "import": "./dist/form.js",
+      "default": "./dist/form.js"
+    },
+    "./combobox": {
+      "types": "./dist/combobox.d.ts",
+      "import": "./dist/combobox.js",
+      "default": "./dist/combobox.js"
+    },
+    "./date-picker": {
+      "types": "./dist/date-picker.d.ts",
+      "import": "./dist/date-picker.js",
+      "default": "./dist/date-picker.js"
+    },
+    "./dialog": {
+      "types": "./dist/dialog.d.ts",
+      "import": "./dist/dialog.js",
+      "default": "./dist/dialog.js"
+    },
+    "./toaster": {
+      "types": "./dist/toaster.d.ts",
+      "import": "./dist/toaster.js",
+      "default": "./dist/toaster.js"
+    },
+    "./data-table": {
+      "types": "./dist/data-table.d.ts",
+      "import": "./dist/data-table.js",
+      "default": "./dist/data-table.js"
+    },
+    "./drawer": {
+      "types": "./dist/drawer.d.ts",
+      "import": "./dist/drawer.js",
+      "default": "./dist/drawer.js"
+    },
+    "./command-menu": {
+      "types": "./dist/command-menu.d.ts",
+      "import": "./dist/command-menu.js",
+      "default": "./dist/command-menu.js"
+    },
+    "./theme": {
+      "types": "./dist/theme.d.ts",
+      "import": "./dist/theme.js",
+      "default": "./dist/theme.js"
+    },
+    "./tooltip": {
+      "types": "./dist/tooltip.d.ts",
+      "import": "./dist/tooltip.js",
+      "default": "./dist/tooltip.js"
+    },
+    "./multi-select": {
+      "types": "./dist/multi-select.d.ts",
+      "import": "./dist/multi-select.js",
+      "default": "./dist/multi-select.js"
+    },
+    "./tags-input": {
+      "types": "./dist/tags-input.d.ts",
+      "import": "./dist/tags-input.js",
+      "default": "./dist/tags-input.js"
+    },
+    "./htmx": {
+      "types": "./dist/htmx.d.ts",
+      "import": "./dist/htmx.js",
+      "default": "./dist/htmx.js"
+    },
     "./elements.css": "./dist/elements.css",
     "./custom-elements.json": "./dist/custom-elements.json"
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
-    "build": "vp build && node --experimental-strip-types scripts/build-assets.ts",
+    "build": "vp build && node --experimental-strip-types scripts/build-assets.ts && node ../../scripts/build/flatten-dts.mjs menu=src/menu.ts tabs=src/tabs.ts form=src/form.ts combobox=src/combobox.ts date-picker=src/date-picker.ts dialog=src/dialog.ts toaster=src/toaster.ts data-table=src/data-table.ts drawer=src/drawer.ts command-menu=src/command-menu.ts theme=src/theme.ts tooltip=src/tooltip.ts multi-select=src/multi-select.ts tags-input=src/tags-input.ts htmx=src/htmx.ts && node ../../scripts/build/check-types-flat.mjs",
     "check": "tsc --noEmit",
     "test": "vp test"
   },
-  "dependencies": {
-    "@cascivo/core": "workspace:*",
-    "@cascivo/i18n": "workspace:*",
-    "@preact/signals-core": "^1.14.3"
-  },
   "devDependencies": {
+    "@cascivo/core": "workspace:*",
     "@cascivo/css": "workspace:*",
+    "@cascivo/i18n": "workspace:*",
+    "@preact/signals-core": "^1.14.3",
     "@types/node": "catalog:",
     "axe-core": "4.11.4",
     "idiomorph": "^0.8.0",

@@ -83,6 +83,8 @@ for pasting into an agent's context window.
 | [USING-CASCIVO-SERVER.md](USING-CASCIVO-SERVER.md) | `cascivo-server` (Rust crate) — dynamic htmx apps: fragments, forms, sessions, CSRF, auth, Workers/Containers, Solid islands, SSE. |
 | [USING-CASCIVO-TUI.md](USING-CASCIVO-TUI.md) | `cascivo-tui` (Rust crate) — terminal UIs on ratatui with class strings, widgets and the cascivo themes; testing with `TestApp`. |
 | [USING-CASCIVO-BLITZ.md](USING-CASCIVO-BLITZ.md) | `cascivo-blitz` (Rust crate) — render `.cv` in a native Blitz window with no browser: signals, event handlers, native table-sort/tabs/dialog/select. |
+| [USING-HTMX-SOLID.md](USING-HTMX-SOLID.md) | The no-React stack end to end: `@cascivo/css` + `@cascivo/elements` + `@cascivo/solid` + `cascivo-server`; install, wiring, budgets. |
+| [COMPARE-REACT-VS-HTMX-SOLID.md](COMPARE-REACT-VS-HTMX-SOLID.md) | The same app (`track-lite`) built in React and in htmx + Solid, with measured bundle, code and behaviour differences. |
 | [MACHINE-MODE.md](MACHINE-MODE.md) | Render a UI as Markdown, or list its operable nodes with `snapshot()`, with `@cascivo/text` — for agents. |
 | [CHART-LIBRARIES.md](CHART-LIBRARIES.md) | `@cascivo/charts` compared to Chart.js and Apache ECharts. |
 | [RECIPE-SOCIAL.md](RECIPE-SOCIAL.md) | Sign in with GitHub, Google or LinkedIn; connect Bluesky, Mastodon, LinkedIn, Threads and Buffer; post now or scheduled; a Share button for readers. |
