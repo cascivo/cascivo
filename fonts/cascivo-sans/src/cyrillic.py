@@ -9,8 +9,9 @@ cursive u n m forms as Plex's drawn italic does (Inter's sloped roman keeps them
 
 import copy
 
+import family
 from geom import expand
-from glyphs import _B, _K, _M, _N, _R, _S, _T, L, _bowl_right, _kra, _m, _n, _s_extra, _u, _v, glyph, on_line, shoulder
+from glyphs import _B, _K, _M, _N, _R, _S, _T, L, _bowl_right, _kra, _m, _n, _s_extra, _u, _v, glyph, on_line, shoulder, u_arch
 
 
 def _small(p, ratio):
@@ -276,18 +277,30 @@ def _Shcha(g, p, top, W, cap):
     g.sb = (1, 0.35)
 
 
+CHE_FLOOR = 0.30
+# Black's ч is this much wider (Inter's: 0.43 em at Regular, 0.51 at Black; ours 0.39, 0.47): the counter between its stems closed to
+# 88 units, half of Inter's, too narrow for the join to read. Regular is unchanged (its advance is pinned).
+CHE_HEAVY = 0.12
+
+
 @both(0x427, 0x447, 0.96)
 def _Che(g, p, top, W, cap):
-    """Ч: an upside-down h: the arm comes down and turns into the stem at about 0.4."""
-    V, H = p.V, p.H
-    w = W * 0.92
-    a, b = V / 2, w - V / 2
-    rx = (b - a) / 2
-    ry = min(rx * 0.8, top * 0.3)
-    yb = top * 0.36 - H / 2
-    cy = yb + H / 2 + ry
-    g.stroke([L((a, top), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 346), taper=(1, 0.5))
-    g.vstem(w - V, 0, top)
+    """Ч: an upside-down h: the u's arch (u_arch) hung from the top, its floor CHE_FLOOR of the height up (Inter's ч 0.31 x-heights)."""
+    if family.ACTIVE:  # the sibling families keep their v1 arc (round 7 redrew Sans only)
+        V, H = p.V, p.H
+        w = W * 0.92
+        a, b = V / 2, w - V / 2
+        rx = (b - a) / 2
+        ry = min(rx * 0.8, top * 0.3)
+        cy = top * 0.36 - H / 2 + H / 2 + ry
+        g.stroke([L((a, top), (a, cy))] + g.arc(a + rx, cy, rx, ry, 180, 346), taper=(1, 0.5))
+        g.vstem(w - V, 0, top)
+        g.sb = (0.9, 1)
+        return
+    w = W * 0.92 * (1 if cap else 1 + CHE_HEAVY * p.heavy)
+    dy = top * CHE_FLOOR + p.ov * 0.4
+    u_arch(g, p, w, top - dy, dy)
+    g.vstem(w - p.V, 0, top)
     g.sb = (0.9, 1)
 
 
@@ -433,19 +446,31 @@ def _ef(g, p):
 
 
 def _djerv(g, p, x, top, hook, depth=0.62):
-    """The arch of Ћ/Ђ (and ђ) from a stem centred at x; with `hook`, the leg curls below."""
+    """The arch of Ћ/Ђ (and ђ) from a stem centred at x: the h's shoulder (glyphs.shoulder); with `hook`, the leg curls below."""
     V, H = p.V, p.H
     w = p.nw * 0.98
-    a, b = x, x + w - V
-    rx = (b - a) / 2
-    ry = rx * 0.93
-    cy = top - H / 2 - ry
+    b = x + w - V
+    if family.ACTIVE:  # the sibling families keep their v1 arc (round 7 redrew Sans only)
+        a, rx = x, (b - x) / 2
+        ry = rx * 0.93
+        cy = top - H / 2 - ry
+        if hook:
+            rh = 70 + V * 0.3
+            yh = p.desc * depth + H / 2 + rh * 1.15
+            g.stroke(g.arc(a + rx, cy, rx, ry, 166, 0) + [L((b, cy), (b, yh))] + g.arc(b - rh, yh, rh, rh * 1.15, 0, -90) + [L((b - rh, yh - rh * 1.15), (b - rh - 12, yh - rh * 1.15))], taper=(0.5, 1))
+        else:
+            g.stroke(g.arc(a + rx, cy, rx, ry, 166, 0) + [L((b, cy), (b, 0))], taper=(0.5, 1))
+        return b
+    tail = None
     if hook:
         rh = 70 + V * 0.3
-        yh = p.desc * depth + H / 2 + rh * 1.15
-        g.stroke(g.arc(a + rx, cy, rx, ry, 166, 0) + [L((b, cy), (b, yh))] + g.arc(b - rh, yh, rh, rh * 1.15, 0, -90) + [L((b - rh, yh - rh * 1.15), (b - rh - 12, yh - rh * 1.15))], taper=(0.5, 1))
-    else:
-        g.stroke(g.arc(a + rx, cy, rx, ry, 166, 0) + [L((b, cy), (b, 0))], taper=(0.5, 1))
+
+        def tail(b, cy):
+            yh = p.desc * depth + H / 2 + rh * 1.15
+            return [L((b, cy), (b, yh))] + g.arc(b - rh, yh, rh, rh * 1.15, 0, -90) + [L((b - rh, yh - rh * 1.15), (b - rh - 12, yh - rh * 1.15))]
+
+    # Ћ's arch sits under the capital's bar, so its stem is shorter than the x-height: drawn as an x-height arch there
+    shoulder(g, x - V / 2, b - V / 2, top, tail=tail, xh=None if top >= p.xh else top - p.ov * 0.4)
     return b
 
 
