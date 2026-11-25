@@ -1,0 +1,1 @@
+@layer cascivo.component{.cv-stack-stack{isolation:isolate;grid-template-areas:"stack";display:grid}.cv-stack-layer{transform:translate(calc(var(--cascivo-stack-index,0) * var(--cascivo-stack-offset,4px)), calc(var(--cascivo-stack-index,0) * var(--cascivo-stack-offset,4px)));z-index:calc(10 - var(--cascivo-stack-index,0));grid-area:stack}}

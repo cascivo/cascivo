@@ -7,6 +7,26 @@ export const meta: ComponentMeta = {
   // The stars are buttons with role=radio, not native inputs, so no rating can be set without
   // JS.
   clientJs: 'required',
+  contractTier: 'native',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      role: 'radiogroup',
+      data: { 'data-size': ['sm', 'md', 'lg'] },
+      children: ['star'],
+      // One star per `max`, in a loop.
+      emit: 'manual',
+    },
+    parts: {
+      star: {
+        element: 'button',
+        role: 'radio',
+        data: { 'data-filled': [''], 'data-value': 'number' },
+        aria: ['aria-checked', 'aria-label'],
+      },
+    },
+  },
   states: ['idle', 'disabled', 'readOnly'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

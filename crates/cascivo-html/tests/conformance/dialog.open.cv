@@ -1,0 +1,2 @@
+dialog "Hello" id=hi size=lg open
+  text "Body"

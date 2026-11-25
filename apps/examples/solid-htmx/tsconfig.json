@@ -1,0 +1,15 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@cascivo/solid/vite": ["../../../packages/solid/src/vite.ts"],
+      "@cascivo/solid": ["../../../packages/solid/src/index.ts"],
+      "@cascivo/css/vite": ["../../../packages/css/src/vite.ts"],
+      "@cascivo/css": ["../../../packages/css/src/index.ts"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}

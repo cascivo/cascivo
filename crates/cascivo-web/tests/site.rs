@@ -1,3 +1,5 @@
+#![cfg(feature = "fs")]
+
 use cascivo_web::Site;
 
 mod common;

@@ -26,6 +26,14 @@
     "description": "Shows the current page location within a navigation hierarchy",
     "category": "navigation",
     "clientJs": "enhancement",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "nav",
+        "aria": ["aria-label"],
+        "emit": "manual"
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

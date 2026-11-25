@@ -1,0 +1,24 @@
+# Cascivo Mono changelog
+
+## Round 7 (visual)
+
+- ( ) [ ] { } fill the cell: braces 0.66 of it (were 0.45), brackets and parens about 0.4 (were 0.31-0.35), and all six reach
+  higher (-173..807, were -161..751). Stems keep their weight: only arms, hooks and the brace cusp move, parens bend.
+- ~ less flat (0.9 x 1.28), ^ larger (1.1 x 1.3), * 14% larger (radius 228, was 200).
+- Before/after specimens vs JetBrains Mono (code 13/14/20 px, punctuation, box drawing, weights, 72 px): `specimens/round7/`
+  (`src/specimen_round7.py`).
+
+## Round 6 (visual)
+
+- New ✓ (U+2713) and ✗ (U+2717), also in the Latin WOFF2 slice. ✗ sits under the cap height, so it does not read as X.
+- Black 7% lighter on the stem (162 units, was 175); Thin 15% heavier (no longer a grey hairline at 12-14 px).
+- `|` thinner (0.74 of the stem, was 0.9); it keeps the full line box.
+- Larger dots at 100-700 (Regular period 142, was 131); Black unchanged.
+- Before/after specimens vs JetBrains Mono: `specimens/round6/`.
+
+## Round 4 (visual)
+
+- r without a foot serif and a longer arm; wider f and t; round dots (rounded square at Black), larger at Thin; oval dot in 0.
+- `!` keeps its gap at Black; wider, lighter `/` and `\`; heavier w and W.
+- New ≤ ≥ ≠. The Latin WOFF2 slice includes box drawing, blocks and Powerline.
+- score.py vs JetBrains Mono + Geist Mono: 7.858 -> 7.888.

@@ -40,6 +40,7 @@ import {
   COMPARE_FONT_FILES,
   FONT_FILES,
 } from '../../apps/site/src/marketing/pages/cascivo-sans/data.ts'
+import { FAMILIES } from '../../apps/site/src/marketing/pages/fonts/families.ts'
 
 const root = fileURLToPath(new URL('../..', import.meta.url))
 const distDir = join(root, 'apps/site/dist')
@@ -212,6 +213,9 @@ const total = totals(perFile.keys())
 // The same holds for its compare switch's reference faces, fetched only once it is switched on.
 const sanctionedFonts = new Set([
   ...FONT_FILES.map((f) => join(distDir, 'fonts/cascivo-sans', f.name)),
+  ...FAMILIES.flatMap((family) =>
+    family.files.map((f) => join(distDir, `fonts/cascivo-${family.id}`, f.name)),
+  ),
   ...COMPARE_FONT_FILES.map((name) => join(distDir, 'fonts/compare', name)),
 ])
 let fontFiles = 0

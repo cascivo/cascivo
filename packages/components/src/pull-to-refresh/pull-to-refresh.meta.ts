@@ -7,6 +7,20 @@ export const meta: ComponentMeta = {
   category: 'feedback',
   // A pointer gesture is the entire trigger.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'div', local: 'root', children: ['indicator', 'srOnly', 'viewport'] },
+    parts: {
+      indicator: {
+        element: 'div',
+        data: { 'data-dragging': 'boolean' },
+        children: ['arrow', '@spinner'],
+      },
+      arrow: { element: 'svg', data: { 'data-ready': 'boolean' }, aria: ['aria-hidden'] },
+      srOnly: { element: 'span', role: 'status', aria: ['aria-live'], children: ['$text'] },
+      viewport: { element: 'div', data: { 'data-dragging': 'boolean' }, children: ['$slot'] },
+    },
+  },
   states: ['idle', 'pulling', 'ready', 'refreshing'],
   variants: [],
   sizes: [],

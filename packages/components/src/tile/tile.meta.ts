@@ -8,6 +8,21 @@ export const meta: ComponentMeta = {
   // Selection rides on role=radio/checkbox over a click handler, not a native input, so
   // nothing can be selected without JS.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'tile',
+      role: 'checkbox',
+      data: { 'data-selected': 'boolean', 'data-disabled': 'boolean' },
+      aria: ['aria-checked', 'aria-disabled'],
+      children: ['icon', 'body'],
+    },
+    parts: {
+      icon: { element: 'span', aria: ['aria-hidden'], children: ['$slot'] },
+      body: { element: 'span', children: ['$slot'] },
+    },
+  },
   states: ['default', 'selected', 'focus', 'disabled'],
   variants: ['single', 'multi'],
   sizes: [],
