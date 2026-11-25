@@ -13,8 +13,8 @@ PS = 'CascivoCondensed'
 ITALIC = False
 
 WIDTH = (0.76, 0.70, 0.58)  # counter factor at Thin, Regular, Black
-SPACE = (0.86, 0.78, 0.72)  # sidebearing factor at Thin, Regular, Black
-STEM = (1.0, 0.95, 0.92)  # stem factor at Thin, Regular, Black
+SPACE = (0.86, 0.78, 0.76)  # sidebearing factor at Thin, Regular, Black (round 6: Black 0.72 -> 0.76, rt ly nd touched in 72 px headlines)
+STEM = (1.0, 0.95, 0.87)  # stem factor at Thin, Regular, Black (round 6: Black 0.92 -> 0.87, its a e s g crotches filled at 12 px and 900 sat a bigger step past 800 than Roboto Condensed's)
 FIG = (0.82, 0.82, 0.786)  # tabular figure advance at Thin, Regular, Black: Black's figure ink ran 13% wider than Roboto Condensed Black's (0 495 vs 427 units)
 SFIG = (0.86, 0.78, 0.90)  # figure (and math sign, word space) sidebearing factor: Black's 0123 sat 30 units apart (RC 40) and its figures read as one bar
 SQUARE = 0.08  # superellipse factor added: condensed rounds read straighter-sided
@@ -50,6 +50,10 @@ def tune(p):
     p.V *= by_weight(p, STEM, R_STEM)
     p.H *= 1 - BLACK_H * h
     p.bar *= 1 - BLACK_H * h
+    p.dot *= DOT_UP
+
+
+DOT_UP = 1.08  # round 6: . , : ; i j dots, Sans's size, read small and light against the narrower letters at 100-400
 
 
 import glyphs as _GL  # noqa: E402  the engine has loaded glyphs.py before this module (family.load)
@@ -61,6 +65,7 @@ _GL.BLACK_JOIN = BLACK_JOIN = 0.36
 # Double quotes' pitch at Black (Sans +0.08 of a mark): 572 units wide against Roboto Condensed's 408, its two wedges read as two blobs
 _GL.QUOTE_GAP_HEAVY = QUOTE_GAP_HEAVY = -0.22
 
+T_OPEN = 0.2  # round 6: extra right sidebearing on t (in S units): its crossbar met the next letter at 12 px Black ("t able", "ts")
 R_OPEN = 0.25  # extra right sidebearing on r (in S units): condensed rn otherwise reads as m at 11-12 px
 C_OPEN = 0.35  # extra right sidebearing on c at Thin (in S units, fading out by Regular): close-set hairline cl read as d at 11 px
 
@@ -68,6 +73,8 @@ C_OPEN = 0.35  # extra right sidebearing on c at Thin (in S units, fading out by
 def glyph(g, p, name):
     if name == 'r':
         g.sb = (g.sb[0], g.sb[1] + R_OPEN)
+    elif name == 't':
+        g.sb = (g.sb[0], g.sb[1] + T_OPEN)
     elif name == 'c':
         g.sb = (g.sb[0], g.sb[1] + C_OPEN * max(0.0, (400 - p.wght) / 300))
     elif name in ('space', 'nbspace'):
@@ -75,7 +82,7 @@ def glyph(g, p, name):
 
 
 ONE_SHIFT = (0.10, 0.12, 0.12)  # (Thin, Regular, Black) left sidebearing added to the proportional 1 (share of the tabular advance): narrowed, its stem sat on l's and I's at 11 px
-SPACE_BLACK_ADD = 20  # units added to Black's word space: at 170 (RC 230, Inter Tight 210) Black words ran together
+SPACE_BLACK_ADD = 40  # units added to Black's word space: at 170 (RC 230, Inter Tight 210) Black words ran together; round 6: 20 still let 700-900 headline words run on
 
 
 def _pnum_left(p, name):
