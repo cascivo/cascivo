@@ -647,3 +647,49 @@ the mid-round state about 7.0 and ranked the Black mouths first; they were then 
   11 px 800 an offender. Start the next round from it.
 - Left: the 700 `wstep` kink (upright weight axis 7.3, italic 7.4), `I/1` at 12 px Black, italic shape 7.2, the Black `ll`/`l` tail and
   `k x y v w` crotches the review flagged, upright `tt` at 900/48 (12 units, a crossbar ligature; Inter overlaps too).
+
+## Round 8 (engine): the 700 bend of T-Z, italic Black Q, Black l tail
+
+Specimens before and after: `specimens/round8/r8-{wstep,q-italic,l-tail}-{before,after}.png`. `score.py`: upright 8.43 -> 8.43 (weight
+axis 7.33 -> 7.34), italic 8.20 -> 8.29 (weight axis 7.42 -> 7.53, shape 7.16 -> 7.44). Tests: `src/test_r8_design.py`. Sans only
+(`glyphs.R8 = not family.ACTIVE`; the test checks the siblings load round 7's values).
+
+- Weight axis (`glyphs.CAPW_START`, `CAPW_THIN`): T V W X Y Z bent at 700 because their Black widening (`CAPW_BLACK`) started at Bold's
+  own coordinate: flat 400-700, then all of it in 700-900. It starts at 615 upright (the most the 600 cap on 'OVERVIEW ACTIVITY SETTINGS'
+  allows: +2.41% of +2.5%) and 450 italic. Bend at 700 (|a600 - 2 a700 + a800|): upright 21-36 -> 12-21, italic 21-36 -> 4-6. Part of it moves
+  to 400; the upright gives back a fifth of the widening at Thin (`CAPW_THIN` 0.2; Inter, Geist and Plex set these 3-9% narrower at Thin,
+  ours 1-2%), as far as Thin's kerning floors allow (AY, Ya at 0.8x Inter's fail at 0.25; the italic's Vc sits at 0.78x, so it keeps its Thin).
+  The scorer's upright item barely moves (its 90th percentile now holds the 400 bends and the lowercase `w m g n o` at 700, untouched).
+- Italic shape (`glyphs.Q_CROSS_IT` (0.16, 0.25)): the worst italic shape row, Black `Q` counter over ink 0.378 (Inter Italic 0.246, z 5.4),
+  a stub hung on the O. Its tail now starts inside the counter at Black, as Inter Italic's crosses its bowl: 0.271 (z 1.0), Q colour 0.89x ->
+  0.97x Inter's. Regular italic and the upright Q (quality.py's counter gate, test_r7_latin) are unchanged.
+- Black `l` tail (`L_RSB` 0.6 -> 0.72, `L_BOLD_OPEN` 1.0 -> 2.3, new `L_BOLD_OPEN_IT` 1.6): the white after the tail in `ln lm` over the nn gap,
+  700 / 800 / 900: upright 0.83 / 0.87 / 0.94 -> 0.93 / 0.95 / 1.00, italic 0.81 / 0.90 / 1.00 -> 0.92 / 0.95 / 1.00. The tail's reach and shape
+  hold; 600 sets 'Overview Activity...' at +2.21% (cap 2.5%).
+- Bytes (`build.MAX_ERR` 1.5 -> 2.5, cu2qu's error in font units; `MAX_ERR_GLYPH` keeps 1.5 for `ae two O D B r g q α`, which the gates pin:
+  ae's Black counter tip, two's neck, O D B ink widths against a855b5e0, `rg` at 900/48, q and α bowl joins). comparison.json's slice is
+  `wght` only (opsz pinned at 14), hinted: upright 32,540 -> 31,604, italic 35,328 -> 34,560 (this round's redraws included; the tolerance
+  alone: 31,496 / 34,648). New fields: the same slice unhinted, like for like with Inter and Geist (`latin_wght_unhinted_*`: 25,632 upright
+  against Geist's 26,364, 28,468 italic; round 7 26,752 / 29,116), and with opsz kept (`latin_opsz_wght_*`: 38,768 / 42,432). Shipped
+  `Latin[opsz,wght]` 42,180 -> 41,284, italic 45,856 -> 45,152; full upright 91,304 -> 89,384. Where the hinted slice goes: gvar 13.1 KB (Black
+  6.3, Thin 4.7, Bold 1.4), hinting 5.5-5.9 KB (glyph programs 4.0, fpgm 1.7, composites' mark-clear 0.3), GPOS kern 3.9 KB. Tried and
+  rejected: an opsz-only IUP tolerance of 3 (shipped slice -1 KB; moved Light at opsz 48 by 3 units, Caption D 2 units wider, `rg` at
+  900/48 under its floor), dropping implied on-curve points (`dropImpliedOnCurvePoints` on all masters: hinted +104 B, unhinted -180 B; only
+  349 of 7,371 upright points are exact midpoints), GPOS compaction (+276 to +480 B, the kern is already one class matrix), ttfautohint
+  options (`hinting_range_max` 30 -200 B, `hinting_range_min` 11 -72 B, others 0 or worse; rasters change), kern values rounded to 2 units
+  (-316 B; it moves the hand table's values against floors set to the unit). Tests: `src/test_r8_bytes.py`.
+- Not done: `I/1` at 12 px Black (0.43 / 0.455 at 800 / 900). The round-7 retune's Black `1` flag (30 left, 0.14 lower) gets 0.35 but reaches
+  209 units left of the stem at 900, over quality.py's `flag` gate (1.05x Inter's 164; ours 167 now), so every flag that is longer or lower
+  fails it; one moved right to stay under it is worse (0.47-0.51). The overlap is the stems' alignment: our serifed I puts its stem's centre
+  217 units in, the 1's 317 (Inter 165 apart, Geist and Plex 140). A real fix needs a wider Black 1 or shorter I slabs: both are against a gate
+  or the identity.
+- Not merged: the round-7 spacing retune (CN_BLACK 135 lowercase only, BOLD_TIGHTEN 0.08, CAP_SB_BOLD 0.075, CAP_SB_BOLD_ITALIC 0.1, CH_BLACK
+  270 / 260 italic, HEAVY_TIGHTEN_ITALIC 0.12, BOLD_OPEN_SB 0.2; the 1 flag left out, see above; "Thin figures narrower" has no recorded
+  values). On top of this round it scores upright 8.64, italic 8.43, and fails 33 subtests in 19 tests of the full suite: the narrower Black
+  lowercase counters (`e` counter, `k` crotch and sliver, italic `b d p q` rounds, `m` arch join, italic `s` counter tip, `&`, `@`, `]{`, quotes,
+  Caption Black counters, Regular `a` bowl pin), the narrower H against the round capitals (O C G Q over H 1.09-1.11 against Inter's 1.04-1.08,
+  the italic H/n sidebearing 1.44 at 700), the tighter spacing at 900/48 (`ra ro fo rg to` 29-31 units against 30-32), the Caption `f` hook at
+  600/12 and one outline that is no longer simple. Each needs its own redraw before the spacing can move.
+- Left: bytes, the 5.5 KB of hinting (no glyph program is a no-op, round 7) and the gvar of the Thin and Black masters, which
+  only a coarser conversion or fewer points per contour would shrink further (the gates pin the outlines to the unit); the lowercase 700 bends (`w m g n o`, 16-33 units, Bold's natural spacing: `BOLD_ADV_BLEND`), Black round-letter counters (italic
+  `a b d p q O D` at 900, z 3-5), `I/1` above, `k x y v w` crotches, upright `tt` at 900/48.
