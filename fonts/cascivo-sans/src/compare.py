@@ -68,11 +68,22 @@ def _version(font):
     return v.removeprefix('Version ').split(';')[0].strip()
 
 
-def _latin_woff2(font):
-    """Instance (if variable) to `wght` only, subset to LATIN, return (woff2 bytes, codepoints)."""
+def _unhint(font):
+    """Drop the TrueType instructions (and the CVT and its variations): the same outlines as an unhinted build."""
+    for tag in ('fpgm', 'prep', 'cvt ', 'cvar', 'hdmx', 'LTSH', 'VDMX'):
+        if tag in font:
+            del font[tag]
+    glyf = font['glyf']
+    for name in font.getGlyphOrder():
+        glyf[name].removeHinting()
+    return font
+
+
+def _latin_woff2(font, keep=('wght',)):
+    """Instance (if variable) to the `keep` axes, subset to LATIN, return (woff2 bytes, codepoints)."""
     font = TTFont(io.BytesIO(_save(font)))
     if 'fvar' in font:
-        pin = {a.axisTag: a.defaultValue for a in font['fvar'].axes if a.axisTag != 'wght'}
+        pin = {a.axisTag: a.defaultValue for a in font['fvar'].axes if a.axisTag not in keep}
         if pin:
             font = instancer.instantiateVariableFont(font, pin, inplace=False)
     opts = subset.Options()
@@ -115,11 +126,15 @@ def _entry(name, upright, italic, note=None):
 
 
 def measure_cascivo():
-    return _entry(
-        'Cascivo Sans',
-        os.path.join(FONTS, 'CascivoSans[opsz,wght].ttf'),
-        os.path.join(FONTS, 'CascivoSans-Italic[opsz,wght].ttf'),
-    )
+    up, it = os.path.join(FONTS, 'CascivoSans[opsz,wght].ttf'), os.path.join(FONTS, 'CascivoSans-Italic[opsz,wght].ttf')
+    entry = _entry('Cascivo Sans', up, it)
+    # Like for like with the unhinted references (Inter, Geist): the same wght-only slice with the instructions
+    # dropped. And the slice as shipped, with the opsz axis kept (still the default subsetter options).
+    entry['latin_wght_unhinted_upright_bytes'] = len(_latin_woff2(_unhint(TTFont(up)))[0])
+    entry['latin_wght_unhinted_italic_bytes'] = len(_latin_woff2(_unhint(TTFont(it)))[0])
+    entry['latin_opsz_wght_upright_bytes'] = len(_latin_woff2(TTFont(up), keep=('wght', 'opsz'))[0])
+    entry['latin_opsz_wght_italic_bytes'] = len(_latin_woff2(TTFont(it), keep=('wght', 'opsz'))[0])
+    return entry
 
 
 PLEX_SOURCE = '@fontsource-variable/ibm-plex-sans@5.3.0'

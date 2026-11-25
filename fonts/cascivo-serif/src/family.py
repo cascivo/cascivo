@@ -173,7 +173,9 @@ NARROW = {'B': 0.86, 'P': 0.84, 'U': 0.9, 'N': 0.9, 'S': 0.88, 'D': 0.93, 'E': 0
           'C': 0.95, 'K': 0.96, 'J': 0.8}
 # Weight-dependent factors (keyed by the stem, so each master gets its own and the outlines stay compatible): Sans's t is a
 # step wider at Regular than at its neighbours (349 / 411 / 407 at 300 / 400 / 500, score's wstep row).
-NARROW_W = {'t': [(22, 1.12), (92, 0.9), (190, 0.97)]}
+# Round 8: Thin t and f still set narrow (t 333 / 398 / 391 at 100 / 400 / 900, f 275 / 369 / 449; Source Serif's t 357-389,
+# f 358-387, near flat), so the advance jumped at 300 -> 400 (wstep). Thin wider, Regular's t a little narrower.
+NARROW_W = {'t': [(22, 1.3), (92, 0.84), (190, 0.97)], 'f': [(22, 1.25), (92, 1.0), (190, 1.0)]}
 ITALIC_FOOT = 0.8  # italic lowercase exit flick's reach over the upright serif's
 ITALIC_CN = 0.93  # italic n counter on Sans italic's (round 7: the serifed italic set 1.1x Source Serif 4 Italic at 400)
 FIG_K = 0.93  # tabular figure advance on Sans's (round 7: figures set 1.09-1.12x Source Serif 4's)
@@ -406,7 +408,20 @@ def _squeeze(g, f, xc):
 BEAK_TOP = {'S', 's', 'uni0421', 'uni0441', 'uni0404', 'uni0454'}
 BEAK_FOOT = {'S', 's'}
 BALL = {'a', 'r', 'f', 'uni0430'}
-BALL_TAIL = {'dotlessj', 'y', 'uni0443'}  # descender tails, balled as Source Serif's j and y
+BALL_TAIL = {'dotlessj', 'y', 'uni0443', 'f'}  # descender tails, balled as Source Serif's j and y (round 8: and the italic f's)
+# Round 8: the figures' curved ends (2's head, 3's two ends, 5's tail, 6's and 9's hooks) were the Sans's flat cuts, the last sans
+# tell in a line of figures (round 6 and 7 critiques). They take the letters' ball, a little smaller: a figure's stroke runs
+# shorter than r's or a's, and a full ball crowded 3's ends into its bowls.
+FIG_BALL = {'two', 'three', 'five', 'six', 'nine'}
+FIG_BALL_K = [(24, 0.72), (84, 0.72), (194, 0.72)]  # 0.85 carried 3 and 5 to 1.1-1.4 z over Source Serif's ink (colour row)
+# Black: a ball hung off the face's outer corner stood beside a stroke that ends wider than it, a knob with a notch behind it.
+# There the ball moves onto the face's middle and takes the face's width (FIG_BALL_MID, the share of the way): a swelling.
+FIG_BALL_MID = [(24, 0.0), (84, 0.0), (140, 0.6), (194, 1.0)]
+FIG_BALL_SWELL = 1.12  # Black's ball over half the face; it sits FIG_BALL_SINK of its radius back from the face, so it covers both corners
+FIG_BALL_SINK = 0.25
+# and 7's bar hangs a spur from its free left end as E's arms do (sx: the side the free end is on). 5's flag was tried: its ink
+# already ran over Source Serif's (colour row), and Source Serif's 5 has none.
+FIG_ARM = {'seven': -1}
 BEAK_LEN, BEAK_TIP = 1.15, 0.36  # beak length over the stem serif's reach, its tip width over the stem
 BALL_BACK = 0.1  # how far the ball sits back along the stroke, in radii: further, it leaves the curve and stands out as a knob
 BALL_R = [(24, 0.75), (84, 0.56), (194, 0.36)]  # a ball's radius over the stem (Source Serif's r: ~0.55 at 400, ~0.33 at 900)
@@ -428,7 +443,7 @@ def _terminals(g, name):
             continue
         for end in (0, 1):
             seg = s.segs[0] if end == 0 else s.segs[-1]
-            if seg[0] != 'C' or s.caps[end] != 'b' or s.taper[end] != 1.0:
+            if seg[0] != 'C' or s.caps[end] != 'b' or (s.taper[end] != 1.0 and base not in FIG_BALL):
                 continue
             pt, (tx, ty) = _tangent(seg, end)
             if any(j != i and min(abs(q[0] - pt[0]) + abs(q[1] - pt[1]) for sg in o.segs for q in sg[1:]) < g.p.V for j, o in enumerate(g.strokes)):
@@ -440,6 +455,8 @@ def _terminals(g, name):
             elif base in BALL and pt[1] > 0.6 * g.p.xh:
                 out.append(('ball', i, end))
             elif base in BALL_TAIL and pt[1] < 0:
+                out.append(('ball', i, end))
+            elif base in FIG_BALL:
                 out.append(('ball', i, end))
     return out
 
@@ -466,8 +483,13 @@ def _terminal(g, p, kind, s, end, reach):
     turn = t1[0] * t0[1] - t1[1] * t0[0]
     nx, ny = (-ty, tx) if turn > 0 else (ty, -tx)
     out, inn = (f1, f2) if (f1[0] - x) * nx + (f1[1] - y) * ny < (f2[0] - x) * nx + (f2[1] - y) * ny else (f2, f1)
-    r = p.V * _pw(p.V, BALL_R)
+    r = p.V * _pw(p.V, BALL_R) * (_pw(p.V, FIG_BALL_K) if g.tab else 1.0)
     cx, cy = out[0] + nx * r - tx * r * BALL_BACK, out[1] + ny * r - ty * r * BALL_BACK
+    m = _pw(p.V, FIG_BALL_MID) if g.tab else 0.0
+    if m:
+        rm = ((f1[0] - f2[0]) ** 2 + (f1[1] - f2[1]) ** 2) ** 0.5 / 2 * FIG_BALL_SWELL
+        mx, my = (f1[0] + f2[0]) / 2 - tx * rm * FIG_BALL_SINK, (f1[1] + f2[1]) / 2 - ty * rm * FIG_BALL_SINK
+        cx, cy, r = cx + (mx - cx) * m, cy + (my - cy) * m, r + (rm - r) * m
     return orient(arc(cx, cy, r, r, 90, 450), outer=True)
 
 
@@ -598,12 +620,15 @@ def glyph(g, p, name):
     if name in ('space', 'nbspace') and g.adv_fixed is not None:
         g.adv_fixed = round(g.adv_fixed + _pw(p.wght, SPACE))
         return
+    # Round 8: the plans are keyed by style too. Upright and italic build in one process, and keyed by name alone the italic
+    # reused the upright's stroke indices wherever its drawing differs: the italic f took the upright's stem foot on its tail tip.
+    key = (name, bool(p.italic))
     # Sans's dots are squares; a serif's are round (Source Serif's), in punctuation, the i j tittles and the accents alike
     # (decided at the first master, like _PLAN: zero.dot's dot is square at some weights only, and masters must stay compatible)
-    if name not in _DOTS:
-        _DOTS[name] = {i for i, s in enumerate(g.strokes) if _is_dot(s)}
-    dots = [s for i, s in enumerate(g.strokes) if i in _DOTS[name]]
-    g.strokes = [s for i, s in enumerate(g.strokes) if i not in _DOTS[name]]
+    if key not in _DOTS:
+        _DOTS[key] = {i for i, s in enumerate(g.strokes) if _is_dot(s)}
+    dots = [s for i, s in enumerate(g.strokes) if i in _DOTS[key]]
+    g.strokes = [s for i, s in enumerate(g.strokes) if i not in _DOTS[key]]
     g.raw += [_round_dot(s) for s in dots]
     _comma_heads(g, p)
     # Round 6: tabular figures (g.tab) take serifs too: skipped, 0-9 read as the Sans's beside serifed text (critique). Their
@@ -612,30 +637,31 @@ def glyph(g, p, name):
         return
     if name.split('.')[0] not in ('Z', 'z') and unicodedata.category(toUnicode(name.split('.')[0]))[0] == 'L':
         _thin_slashes(g, p)
-    if name not in _PLAN:
-        _PLAN[name] = _plan(g, p, name)
+    if key not in _PLAN:
+        _PLAN[key] = _plan(g, p, name)
         letter = unicodedata.category(toUnicode(name.split('.')[0]))[0] == 'L'
-        _DPLAN[name] = (_diag_ends(g, p), _arm_ends(g, p)) if letter else ([], [])
-        _TPLAN[name] = _terminals(g, name) if letter else []
+        base = name.split('.')[0]
+        _DPLAN[key] = (_diag_ends(g, p), _arm_ends(g, p)) if letter else ([], [a for a in _arm_ends(g, p) if a[3] == FIG_ARM.get(base)])
+        _TPLAN[key] = _terminals(g, name) if letter or base in FIG_BALL else []
     nk = NARROW.get(name, 1.0) * _pw(p.V, NARROW_W.get(name, [(0, 1.0)]))
     if nk != 1.0:
         xs = [q[0] for st in g.strokes for seg in st.segs for q in seg[1:]]
         _squeeze(g, nk, (min(xs) + max(xs)) / 2)
     outer, inner, t, bf = _sizes(p)
     k = CAP_REACH if name[:1].isupper() else 1.0
-    if _DPLAN[name][0]:
+    if _DPLAN[key][0]:
         xs = [q[0] for s in g.strokes for seg in s.segs for q in seg[1:]]
-        sides = {side for *_, side in _DPLAN[name][0]}
+        sides = {side for *_, side in _DPLAN[key][0]}
         give = k * outer * DIAG_OUTER * DIAG_TAKE * len(sides)
         _squeeze(g, 1 - give / (max(xs) - min(xs) + p.V), (min(xs) + max(xs)) / 2)
-    for kind, i, end in _TPLAN[name]:
+    for kind, i, end in _TPLAN[key]:
         g.raw.append(_terminal(g, p, kind, g.strokes[i], end, outer * k))
     if name in VBEAK:
         h = p.cap if name.isupper() else p.xh
         g.raw.append(_vbeak(g, p, g.strokes[0], 0, VBEAK[name] * h, p.V * VBEAK_TIP, p.V * VBEAK_TIP + outer * k * BRACKET))
         if name == 'C':  # the lower end: a short spur standing up, as Merriweather's (Source Serif's a hint of one)
             g.raw.append(_vbeak(g, p, g.strokes[0], 1, 0, p.V * VBEAK_TIP * 0.7, p.V * 0.35 + outer * k * 0.6, rise=VBEAK_FOOT * (h * (1 - VBEAK[name]))))
-    for i, end, kind, side in _DPLAN[name][0]:
+    for i, end, kind, side in _DPLAN[key][0]:
         s = g.strokes[i]
         seg = s.segs[0] if end == 0 else s.segs[-1]
         b, a = (seg[1], seg[2]) if end == 0 else (seg[2], seg[1])
@@ -646,17 +672,17 @@ def glyph(g, p, name):
         B = outer * k * bf
         Bl, Br = (B * DIAG_LEAN, B) if sl < 0 else (B, B * DIAG_LEAN)
         g.raw.append(_diag_serif(b[0], _diag_hw(g, s, a, b), b[1], d, sl, rl, rr, t, Bl, Br))
-    for i, end, d, sx, h in _DPLAN[name][1]:
+    for i, end, d, sx, h in _DPLAN[key][1]:
         s = g.strokes[i]
         xe, ye = s.segs[0][1 + end]
         Ym = ye - d * h / 2
         g.raw.append(_spur(xe, sx, Ym, d, ye + d * h / 2, outer * k * SPUR_LEN, max(14.0, p.V * SPUR_TIP), max(14.0, p.V * SPUR_TIP) + outer * SPUR_BASE))
         # the spur fills the white beside the arm (EH set 0.66 of Source Serif's 0.85 gap at Bold): that side stands off further
         sb = list(g.sb)
-        sb[sx > 0] += SPUR_SB * (p.V * SPUR_TIP + outer * SPUR_BASE) / p.S / len(_DPLAN[name][1])
+        sb[sx > 0] += SPUR_SB * (p.V * SPUR_TIP + outer * SPUR_BASE) / p.S / len(_DPLAN[key][1])
         g.sb = tuple(sb)
     tuck = set()
-    for i, end, kind, sides in _PLAN[name]:
+    for i, end, kind, sides in _PLAN[key]:
         s = g.strokes[i]
         seg = s.segs[0] if end == 0 else s.segs[-1]
         b = seg[1] if end == 0 else seg[2]
@@ -672,5 +698,25 @@ def glyph(g, p, name):
     if tuck and not name[:1].isupper():
         # An outer serif widens the ink, so the stem would sit a reach further from its neighbour: heavy lowercase set
         # loose (nn 1.29 gap/counter at 900, Source Serif 1.14). Part of the reach is taken back from the sidebearing.
-        d = _pw(p.V, [(20, 0), (84, 10), (194, 24)]) / p.S
+        d = _pw(p.V, TUCK) / p.S
         g.sb = (g.sb[0] - d * (-1 in tuck), g.sb[1] - d * (1 in tuck))
+    base = name.split('.')[0]
+    if base in U_LSB:
+        g.sb = (g.sb[0] - _pw(p.V, U_LSB[base][bool(p.italic)]) / p.S, g.sb[1])
+    if base in ROUND_SB:
+        add = _pw(p.V, ROUND_SB_IT if p.italic else ROUND_SB_K)
+        g.sb = tuple(v + add / p.S * on for v, on in zip(g.sb, ROUND_SB[base]))
+
+
+# Round 8, rhythm (score's spacing row, gap over n's counter against Source Serif 4): Bold's lowercase set loose (nn 1.18 at 700,
+# Source Serif 1.01), so the tuck gains a Bold point (151: Bold's stem); u set looser still (nu 1.34 at 700, 1.36 at 900, Source
+# Serif 1.06 / 1.07; italic 1.15 at 400 against 0.98): its left side, which carries the head serif, comes in further.
+TUCK = [(20, 0), (84, 10), (151, 30), (194, 24)]
+U_LSB = {'u': ([(20, 0), (92, 0), (151, 16), (194, 22)], [(20, 0), (92, 22), (151, 30), (194, 36)])}  # (upright, italic), units
+# Heavy round capitals set tight (OO 0.61 at 900, Source Serif 0.94; DO 0.66 / 0.94): Black's capital sidebearings (CAP_SB_K 0.8)
+# suit H's straight sides, not a round's, which give back white at its extremes. The italic's light rounds set loose instead
+# (OO 0.58 at 200, Source Serif Italic 0.44), and its heavy ones already match (Source Serif Italic's rounds sit close). Units per
+# round side.
+ROUND_SB = {'O': (1, 1), 'Q': (1, 1), 'C': (1, 0), 'G': (1, 0), 'D': (0, 1)}
+ROUND_SB_K = [(20, 0), (92, 0), (151, 28), (194, 48)]
+ROUND_SB_IT = [(20, -32), (92, 0), (194, 0)]

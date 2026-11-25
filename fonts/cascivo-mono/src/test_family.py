@@ -307,6 +307,62 @@ class MonoFont(unittest.TestCase):
             self.assertGreaterEqual(self.width(loc, '*'), 440, f'* at {w}')
             self.assertLessEqual(abs(self.mid(loc, '~') - self.mid(loc, '-')), 4, f'~ off the axis at {w}')
 
+    # ---- round 8 regressions ----
+
+    def area(self, loc, ch, step=10):
+        """Ink in grid samples (nonzero fill, so overlapping strokes count once): AreaPen double-counts the brace's two strokes."""
+        from fontTools.pens.recordingPen import DecomposingRecordingPen
+        from fontTools.pens.pointInsidePen import PointInsidePen
+        gs = self.font.getGlyphSet(location=loc)
+        rec = DecomposingRecordingPen(gs)
+        gs[self.font.getBestCmap()[ord(ch)]].draw(rec)
+        n = 0
+        for x in range(0, CELL, step):
+            for y in range(DESC, ASC, step):
+                pen = PointInsidePen(gs, (x + step / 2, y + step / 2))
+                rec.replay(pen)
+                n += pen.getResult()
+        return n
+
+    def test_I_and_1_fill_the_cell(self):
+        # I was 245-313 units wide (JetBrains Mono's 390), 1 212-327 (theirs 450): both floated in the cell, I beside l read alike
+        for loc in LOCATIONS:
+            self.assertGreaterEqual(self.width(loc, 'I'), 360, f'I {loc}')
+            self.assertGreaterEqual(self.width(loc, '1'), 270 if loc['wght'] < 400 else 320, f'1 {loc}')
+
+    def test_j_tail_reaches_its_slab(self):
+        # j's hook stopped 75-80 units inside its top slab at 400-900 (j 0.7 of JetBrains Mono's width): the cell's left half was empty
+        for loc in LOCATIONS:
+            if loc['wght'] < 400:
+                continue
+            row = self.ink_run(loc, 'j', y=-150)
+            self.assertLessEqual(row.index(True) * 4 - self.bounds(loc, 'j')[0], 30, f'j tail {loc}')
+
+    def test_slash_weight(self):
+        # / was 0.63 of JetBrains Mono's ink at Regular (a hairline beside the letters in `a/b`, `//`): its stroke across the axis
+        for w, lo in ((400, 64), (700, 100), (900, 124)):  # before: 58, 90, 110
+            loc = {'wght': w, 'opsz': 14}
+            self.assertGreaterEqual(sum(self.ink_run(loc, '/', y=325)) * 4, lo, w)
+
+    def test_hash_and_braces_not_blots(self):
+        for z in (8, 14, 48):
+            # Black's # was as dark as H (1.2x JetBrains Mono's), four full-pen strokes; now lighter at Black only
+            self.assertLessEqual(self.area({'wght': 900, 'opsz': z}, '#') / self.area({'wght': 900, 'opsz': z}, 'H'), 0.92, z)
+            self.assertGreaterEqual(self.area({'wght': 400, 'opsz': z}, '#') / self.area({'wght': 400, 'opsz': z}, 'H'), 0.95, z)
+            for w in (700, 900):
+                # the brace's curls filled in at Bold and Black (ink 1.55-1.63x the paren's, JetBrains Mono's about 1.2x)
+                loc = {'wght': w, 'opsz': z}
+                self.assertLessEqual(self.area(loc, '{') / self.area(loc, '('), 1.15, f'{{ {loc}')
+
+    def test_woff2_hmtx_transformed(self):
+        # one advance and lsb = xMin everywhere: WOFF2's hmtx transform lets the decoder rebuild both (free bytes)
+        for fn in ('CascivoMono[opsz,wght].woff2', 'CascivoMono-Latin[opsz,wght].woff2'):
+            f = TTFont(os.path.join(FONTS, fn))
+            self.assertEqual(f.reader.tables['hmtx'].transformVersion, 1, fn)
+            ttf = TTFont(TTF) if fn.startswith('CascivoMono[') else None
+            if ttf:
+                self.assertEqual(f['hmtx'].metrics, ttf['hmtx'].metrics)
+
 
 if __name__ == '__main__':
     unittest.main()
