@@ -33,6 +33,8 @@ mod forms;
 mod headers;
 mod hx;
 mod islands;
+mod locale;
+mod multipart;
 mod path;
 mod session;
 mod sse;
@@ -54,6 +56,10 @@ pub use forms::{
 pub use headers::{Headers, Nonce};
 pub use hx::Hx;
 pub use islands::{ISLAND_PREFIX, IslandError, IslandKey};
+pub use multipart::{
+    File as UploadedFile, MultipartForm, UPLOAD_LIMIT, boundary as multipart_boundary,
+    parse_multipart,
+};
 pub use path::{LocalPath, LocalPathError, see_other};
 pub use session::{Record, SameSite, Session, SessionConfig, SessionId, SessionStore, StoreError};
 pub use sse::{Fragment, sse};

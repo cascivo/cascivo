@@ -53,3 +53,6 @@ Full guide: <https://cascivo.com/docs/guides/using-cascivo-server>.
 - Datastar is optional and wire-only (feature `datastar`: `patch_elements`, `patch_signals`); it needs `unsafe-eval` in
   the CSP. htmx is the supported path.
 - JS budgets (gz): 3 KB per element, 15 KB cascivo JS per page (htmx separate), 10 KB per Solid island.
+- Forms: `form.field(..., kind="textarea|select|checkbox|radio-group|checkbox-group")`; files via `MultipartForm<T>`
+  (`UploadedFile`, 8 MiB buffer, `filename` untrusted). Templates: `aria_current("/path")` marks the active nav link;
+  locale = session > `Facts::locale` > `Accept-Language` > default.

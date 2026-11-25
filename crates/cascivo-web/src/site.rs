@@ -250,6 +250,13 @@ pub(crate) fn tpl_err(file: &str, e: &minijinja::Error) -> Error {
     if let Some(d) = e.detail() {
         msg = format!("{msg}: {d}");
     }
+    // A failed `{% include %}` wraps the real error (the included file's, with its line) as the
+    // source; without it the message is just "could not render include".
+    let mut src = std::error::Error::source(e);
+    while let Some(c) = src {
+        msg = format!("{msg}: caused by: {c}");
+        src = c.source();
+    }
     let file = e.name().map_or_else(|| file.to_string(), |n| n.to_string());
     Error::new(file, e.line().and_then(|l| u32::try_from(l).ok()), msg)
 }
