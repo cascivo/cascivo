@@ -609,3 +609,35 @@ Closes the site's known gaps on hinting, kerning and optical size 48. Specimens 
   at 400, Black 5 foot, Regular a bowl, Caption Black counters, Cyrillic `Ч Ћ Ђ ђ`, Greek `α`.
 - Scores held: upright 8.74, italic 8.10, optical sizes 10.0. Left: italic Black `ta td tq` 22-23 and `Rt` 14 units at 900/48;
   italic Thin `VA` 0.66x Inter's.
+
+## Round 7 (engine): defect 11 leftovers, italic Display Black, Black mouths, bytes
+
+Specimens before and after, each row Cascivo above Inter: `specimens/round7/r7-defects-a-{before,after}.png` (the open items) and
+`r7-defects-b-{before,after}.png` (Black `c e a s C G S`). `score.py`: upright 8.43, italic 8.20 before and after (the scorer is Latin
+only and reads advances, stems, counters and colour; none of these fixes moved it). A blind sheet review (one sitting, proofs.cjs) rated
+the mid-round state about 7.0 and ranked the Black mouths first; they were then opened. Tests: `src/test_r7_*.py`.
+
+- Kerning (`kern_overrides.py`): italic Black `ta td tq tg` +15 and `Rt` (15, 10, 20) at 900 / opsz 48 keep 34-38 units of white
+  (14-23; Inter 44-52, gate 30). An override's `None` at Thin or Regular takes the machine's value, so unkerned pairs need an explicit 0.
+  Italic Thin `VA` -45 -> -53: 0.66x -> 0.78x Inter's kern (white 0.88x, as `AV`); test floor 0.75x for `VA AV` upright and italic.
+- Latin (`glyphs.py`, Sans only via `R7 = not family.ACTIVE`): `G` at 800-900 spur stands 1.2 bar-heights before the bowl (counter
+  run-out 23 -> 1.8 units at 900, Inter 7.9); `Q` at 100-400 tail 40 units longer, 10 lower, 0.1 heavier (angle 40.8 -> 47.8 deg, Inter
+  51.4; the hull gate holds); Black `5` foot rises 0.19 to the left (Inter 0.19), no step; Regular `a` bowl top +0.015 x-height (0.568 ->
+  0.583 at 0.45 of the width, Inter 0.575); Caption Black `6 9` counters 0.83x -> 1.00x of Text Black's, `s` 0.87x -> 0.98x.
+- Black mouths (opened only where they measured under Inter): `c` 0.78x -> 1.05x, `e` 0.92x -> 1.01x, `a` arc-to-bowl 0.70x -> 1.01x,
+  `C` 0.85x / 0.76x italic -> 1.0x. The `C`'s terminals no longer thin (`CAP_C_THIN` 0; 164 -> 184 units, Inter 199): opened alone, the
+  letter went lighter than the references and the colour score dropped. Upright `G`, `s`, `S` and the italic `c e s a` already measure
+  1.07-2.2x Inter's and were left; the italic Black `a` reads small because its counter is a tall slot (619 against 473 high, 0.96x wide).
+- Cyrillic and Greek: `Ч ч` on the u's arch (`u_arch`, floor 0.30 of the height, Inter 0.31), Black `ч` 12% wider (its counter had shut
+  to 88 units); `Ћ Ђ ђ` on the h's `shoulder()` (new `tail` and `xh`), `α` on q's bowl (`_bowl_lc`). Join ratio at 900: `ђ` 0.81 -> 0.41
+  (h 0.40), `α` 0.85 -> 0.42 (d 0.39). Siblings keep their v1 drawings (`family.ACTIVE`; their outlines checked identical).
+- Bytes: the mark-clear instructions after ttfautohint's (`_keep_marks_clear`) pass a first point and a count to a looping function, not
+  every point (rasters identical in FreeType v40, v35 grey and mono, 15 design-space corners, 6-100 ppem); `_save_woff2` keeps the
+  smallest of six Brotli settings (Sans only). Full upright 91,964 -> 91,304, italic 99,140 -> 98,928, Latin[opsz,wght] 42,280 -> 42,180,
+  Latin[wght] 34,692 -> 34,712, Regular 36,304 -> 35,776, italic Latin 45,820 -> 45,856 / 37,840 -> 37,692 (net of the redraws).
+  Budgets lowered to about +2%. Where the rest is: glyph programs 8.3 KB, fpgm 1.7 KB, the drawn-out transformed components 4.8 KB
+  (ten scaled figure owners, `¡ ¿ ‘ ģ ª º ™ © ®`: irreducible while Font Bakery forbids scaled components). Tried and rejected:
+  `hinting_range_max` 30 (-245 B, rasters change at 36 px and up), dropping the mark-clear calls (-1.6 KB, the i dot lands on the stem
+  again), `hint_composites` / `adjust_subglyphs` (+15-20 KB). No glyph program is a no-op.
+- Left: the 700 `wstep` kink (upright weight axis 7.3, italic 7.4), `I/1` at 12 px Black, italic shape 7.2, the Black `ll`/`l` tail and
+  `k x y v w` crotches the review flagged, upright `tt` at 900/48 (12 units, a crossbar ligature; Inter overlaps too).
