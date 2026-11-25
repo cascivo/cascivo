@@ -590,6 +590,11 @@ Closes the site's known gaps on hinting, kerning and optical size 48. Specimens 
 - Hinting: the variable fonts are hinted (ttfautohint per master, the CVT varied by `cvar`, `build._autohint_vf`). 96 cases
   (wght 100-900, opsz 8/14/48, 9-16 px): `o x n` tops on one row 83 -> 96, a shared baseline row 0 -> 96 in grey. The i/j dot no
   longer lands on the stem (11 of 32 cases before). Cost about +10 KB per full woff2, +6 KB per Latin slice. Details: RESEARCH.md.
+- Font Bakery `transformed_components` (hinted fonts only): the VF masters draw out their scaled, rotated and flipped components
+  (superior, inferior, numerator and denominator figures, fractions, ordinals, TM, (C), (R), turned commas, inverted ! ?, g cedilla)
+  before hinting; each scaled figure is drawn once and its other uses stay plain-offset components. Cost on top of hinting: full
+  woff2 +4.7 KB (87_296 -> 91_964 upright, 94_436 -> 99_140 italic), Latin slices +3.2-4.2 KB, static Regular woff2 +1.5 KB; budgets
+  raised to the measured size + 2%. Hinting is the deliberate trade; these outlines are its price.
 - Kerning (defect 9): `src/kern_overrides.py`, a hand table over the machine kerning, applied after `_fit_white` on Thin, Regular
   and Black (Bold interpolates; a fourth value is a Display delta). 41 upright and 52 italic pairs: Thin W/V, Black W beside rounds,
   PA TA AT FA LV LW RT, figures 71 77 7. 7, , L' L" V, r. r, f' f" 's, quotes beside A. Values set against Inter's kern and white,

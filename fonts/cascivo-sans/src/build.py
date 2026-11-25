@@ -1375,18 +1375,43 @@ def _win_extent(vf):
 def _flatten_transformed(font):
     """Hinted fonts must not carry scaled, rotated or flipped components (TM, turned commas, superiors):
     a hint program runs on the component untransformed. Draw those glyphs out as plain outlines (a flipped
-    component's contours reversed back to clockwise); plain-offset components stay."""
+    component's contours reversed back to clockwise); plain-offset components stay. A glyph made of one
+    transformed component is drawn out once, and every other use of that component at that transform (a
+    figure's sups, sinf, numr and dnom; the fractions; the double quote's two commas) becomes a plain-offset
+    component of it, so each scaled figure's outline and deltas are stored once, not four or five times."""
     from fontTools.pens.recordingPen import DecomposingRecordingPen
     from fontTools.pens.ttGlyphPen import TTGlyphPen
     glyf, gs = font['glyf'], font.getGlyphSet()
-    for name in font.getGlyphOrder():
+
+    def transformed(c):
+        return getattr(c, 'transform', None) is not None and [list(r) for r in c.transform] != [[1, 0], [0, 1]]
+
+    def key(c):
+        return c.glyphName, tuple(tuple(r) for r in c.transform)
+
+    order = font.getGlyphOrder()
+    owners = {}  # (component, transform) -> (glyph drawn out, its offset); first in glyph order, so every master picks alike
+    for name in order:
         g = glyf[name]
-        if g.isComposite() and any(getattr(c, 'transform', None) is not None and [list(r) for r in c.transform] != [[1, 0], [0, 1]] for c in g.components):
-            rec = DecomposingRecordingPen(gs, reverseFlipped=True)
-            gs[name].draw(rec)
-            pen = TTGlyphPen(None)
-            rec.replay(pen)
-            glyf[name] = pen.glyph()
+        if g.isComposite() and len(g.components) == 1 and transformed(g.components[0]):
+            owners.setdefault(key(g.components[0]), (name, g.components[0].x, g.components[0].y))
+    flat = {o for o, _, _ in owners.values()}
+    for name in order:
+        g = glyf[name]
+        if not (g.isComposite() and any(transformed(c) for c in g.components)):
+            continue
+        if name not in flat and all(key(c) in owners for c in g.components if transformed(c)):
+            for c in g.components:
+                if transformed(c):
+                    owner, ox, oy = owners[key(c)]
+                    c.glyphName, c.x, c.y = owner, c.x - ox, c.y - oy
+                    del c.transform
+            continue
+        rec = DecomposingRecordingPen(gs, reverseFlipped=True)
+        gs[name].draw(rec)
+        pen = TTGlyphPen(None)
+        rec.replay(pen)
+        glyf[name] = pen.glyph()
     return font
 
 

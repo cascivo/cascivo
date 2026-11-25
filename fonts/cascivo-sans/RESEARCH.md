@@ -823,7 +823,10 @@ least 1 px clear, in the variable and static fonts. FreeType's TrueType interpre
 grey and mono), wght 100/400/700/900 by opsz 8/14/48 at 9-16 px, 96 cases: `o x n` tops on one row
 83 -> 96, `O H` 84 -> 96, a shared baseline row 0 -> 96 in grey, `H` edge crispness 0.50 -> 1.00
 (`test_font.Hinting`, `src/hinting.py`). Cost: about +10 KB on the full woff2 files and +6 KB on
-the Latin slices. Not fixed: italic Thin in mono rendering, where dropout control fills a stub pixel
+the Latin slices. Hinting also brings Font Bakery's `transformed_components` to the variable fonts, so
+the masters draw out their scaled, rotated and flipped components before varLib (each scaled figure once,
+its sups/sinf/numr/dnom and fraction uses as plain offsets of it): a further +4.7 KB on the full woff2
+files and +3-4 KB on the Latin slices, since each drawn-out outline carries its own deltas. Not fixed: italic Thin in mono rendering, where dropout control fills a stub pixel
 between dot and stem, as the unhinted font did. Specimens: `specimens/round6/hinting-*.png`.
 
 ## 23. Mark-to-mark, ẞ, and Cyrillic
