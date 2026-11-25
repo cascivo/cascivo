@@ -81,7 +81,7 @@ def glyph(g, p, name):
         g.adv_fixed += round(SPACE_BLACK_ADD * p.heavy)
 
 
-ONE_SHIFT = (0.10, 0.12, 0.12)  # (Thin, Regular, Black) left sidebearing added to the proportional 1 (share of the tabular advance): narrowed, its stem sat on l's and I's at 11 px
+ONE_SHIFT = (0.05, 0.06, 0.06)  # (Thin, Regular, Black) left sidebearing added to the proportional 1 (share of the tabular advance): narrowed, its stem sat on l's and I's at 11 px; round 7: halved (0.10-0.12 left a hole after 0 in tracked "01 ·" eyebrows and "1,513": 1's left sidebearing 106 units, Roboto Condensed's 79)
 SPACE_BLACK_ADD = 40  # units added to Black's word space: at 170 (RC 230, Inter Tight 210) Black words ran together; round 6: 20 still let 700-900 headline words run on
 
 
@@ -98,8 +98,17 @@ MIDDOT = 0.8  # periodcentered drawn at this share of the full stop's dot, about
 DASH = {'endash': 0.84, 'emdash': 0.72}  # Sans's 500 and 1000 unit dashes: the em dash set as a double-width bar between condensed letters (RC 660)
 
 
+COMMA_TAIL = 0.8  # round 7: the comma's tail (ink under the baseline) shortened to this share: with DOT_UP it hung 173 units (Roboto Condensed 142) and read as a blob at 48 px
+
+
 def master(o):
     from geom import transform_contour
+
+    for name in ('comma', 'semicolon'):
+        if o.contours.get(name):
+            o.contours[name] = [transform_contour(c, lambda q: (q[0], q[1] * COMMA_TAIL if q[1] < 0 else q[1])) for c in o.contours[name]]
+            x0, y0, x1, y1 = o.bounds[name]
+            o.bounds[name] = (x0, min(y0 * COMMA_TAIL, 0), x1, y1)
 
     for name, f in DASH.items():
         a = o.adv[name]
