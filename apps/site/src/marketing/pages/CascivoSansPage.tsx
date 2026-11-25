@@ -68,7 +68,7 @@ const CASCIVO = measured('Cascivo Sans')
 const INTER = measured('Inter')
 const GEIST = measured('Geist')
 const PLEX = measured('IBM Plex Sans')
-const SAME_BASIS = CASCIVO.latin_wght_only_unhinted_upright_bytes ?? null
+const SAME_BASIS = CASCIVO.latin_wght_unhinted_upright_bytes ?? null
 const DIST = COMPARISON.distribution
 const PLEX_DIST = distributionOf('IBM Plex')
 
@@ -156,13 +156,13 @@ export function CascivoSansPage() {
             </p>
             <ul className="cs-why">
               <li>
-                <strong>Small web files, with more in them.</strong> A page loads one Latin WOFF2,{' '}
-                {formatKb(CASCIVO.latin_wght_upright_bytes)} upright. It has two axes (weight and
-                optical size) and is hinted. Geist's is {formatKb(GEIST.latin_wght_upright_bytes)}{' '}
-                with one axis and no hinting, so it is smaller, but it does less.
+                <strong>Small web files.</strong> For the same Latin characters and the weight axis,
+                the WOFF2 is {formatKb(CASCIVO.latin_wght_upright_bytes)} upright. It is hinted, so
+                it stays sharp at small sizes on Windows. Geist is{' '}
+                {formatKb(GEIST.latin_wght_upright_bytes)}, but it has no hinting.
                 {SAME_BASIS === null
                   ? ''
-                  : ` Cut the same way (weight only, unhinted), Cascivo is ${formatKb(SAME_BASIS)}.`}{' '}
+                  : ` Without hinting, as Geist ships, Cascivo is ${formatKb(SAME_BASIS)}${SAME_BASIS < GEIST.latin_wght_upright_bytes ? ', smaller than Geist' : ''}.`}{' '}
                 Inter is {formatKb(INTER.latin_wght_upright_bytes)} and IBM Plex Sans{' '}
                 {formatKb(PLEX.latin_wght_upright_bytes)}. For the whole family, all four Cascivo
                 fonts are {formatMb(DIST.cascivo.bytes)} in total. IBM Plex is{' '}

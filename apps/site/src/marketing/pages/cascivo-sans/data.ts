@@ -149,8 +149,8 @@ export interface ComparedFont {
   latin_wght_upright_bytes: number
   latin_wght_italic_bytes: number | null
   codepoints_upright: number
-  /** Added by the font build: wght-only, unhinted, upright cut of Cascivo, same basis as the others. */
-  latin_wght_only_unhinted_upright_bytes?: number | null
+  /** Cascivo only: the same wght-only Latin slice with the hinting dropped, like for like with unhinted fonts. */
+  latin_wght_unhinted_upright_bytes?: number | null
   note?: string
 }
 
