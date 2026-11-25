@@ -153,6 +153,66 @@ class CondensedTest(unittest.TestCase):
                 self.assertGreaterEqual(bounds(ch)[1], -150, (ch, w))
                 self.assertLessEqual(bounds(ch)[1], -100, (ch, w))  # still a comma, not a dot
 
+    # ---- round 8 regressions ----
+
+    def test_t_clears_the_letter_before(self):
+        # round 8: Black t's left sidebearing was 11 units (n's 35), and st, ct, rt touched at 12-16 px Bold and Black
+        for w in (700, 900):
+            for opsz in (14, 48):
+                f = instancer.instantiateVariableFont(TTFont(TTF), {'wght': w, 'opsz': opsz})
+                self.assertGreaterEqual(self.bounds_in(f, 't')[0], 18, (w, opsz))
+
+    def test_black_c_and_e_open_on_the_right(self):
+        # round 8: Black c and e kept 12-16 units on the right (o 27-30), and cc, ce, ee clumped at 12-14 px
+        for opsz in (14, 48):
+            f = instancer.instantiateVariableFont(TTFont(TTF), {'wght': 900, 'opsz': opsz})
+            for ch in 'ce':
+                adv = f['hmtx'][f.getBestCmap()[ord(ch)]][0]
+                self.assertGreaterEqual(adv - self.bounds_in(f, ch)[2], 16, (ch, opsz))
+
+    def test_tabular_three_fits_its_cell(self):
+        # round 8: the tabular 3 (Sans draws it 1.08 of the figure width at Black) inked 475 units in a 493 cell, 30 more than the 2
+        # and 9 units from each edge at display Black, so "33" ran together in tables. Now about the 0's width.
+        from fontTools.pens.boundsPen import BoundsPen
+
+        gsub = self.font['GSUB'].table
+        tnum = {}
+        for fr in gsub.FeatureList.FeatureRecord:
+            if fr.FeatureTag == 'tnum':
+                for li in fr.Feature.LookupListIndex:
+                    for st in gsub.LookupList.Lookup[li].SubTable:
+                        tnum.update(st.mapping)
+        for w in (700, 900):
+            f = instancer.instantiateVariableFont(TTFont(TTF), {'wght': w, 'opsz': 48})
+            gs, cmap = f.getGlyphSet(), f.getBestCmap()
+
+            def b(ch):
+                pen = BoundsPen(gs)
+                gs[tnum[cmap[ord(ch)]]].draw(pen)
+                return pen.bounds
+
+            three, zero = b('3'), b('0')
+            self.assertGreaterEqual(three[0], 14, w)
+            self.assertLessEqual(three[2] - three[0], zero[2] - zero[0] + 6, w)
+
+    def test_woff2_transforms_hmtx_losslessly(self):
+        # round 8 bytes: WOFF2's hmtx transform (-0.9 KB full, -0.3 KB Latin) must decode to the TTF's metrics exactly
+        for name in ('CascivoCondensed[opsz,wght].woff2', 'CascivoCondensed-Latin[opsz,wght].woff2'):
+            w = TTFont(os.path.join(FONTS, name))
+            self.assertIn('hmtx', w.flavorData.transformedTables, name)
+        w = TTFont(os.path.join(FONTS, 'CascivoCondensed[opsz,wght].woff2'))
+        self.assertEqual(dict(w['hmtx'].metrics), dict(self.font['hmtx'].metrics))
+        self.assertEqual(w['gvar'].compile(w), self.font['gvar'].compile(self.font))
+
+    @staticmethod
+    def bounds_in(f, ch):
+        from fontTools.pens.boundsPen import BoundsPen
+
+        gs = f.getGlyphSet()
+        pen = BoundsPen(gs)
+        gs[f.getBestCmap()[ord(ch)]].draw(pen)
+        return pen.bounds
+
 
 if __name__ == '__main__':
     unittest.main()

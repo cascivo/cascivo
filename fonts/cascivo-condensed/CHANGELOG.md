@@ -1,5 +1,13 @@
 # Cascivo Condensed changelog
 
+## Round 8 (visual, bytes)
+
+- Bold and Black t have more room on the left: st, ct, rt stop touching at 12-16 px.
+- Black c and e have more room on the right: cc, ce, ee stop clumping at 12-14 px.
+- The tabular 3 is as wide as the 0 (it was 16 units wider at Black and nearly filled its cell).
+- WOFF2s 1.2% smaller with the same outlines (hmtx transform, brotli tries): full 75,700 -> 74,772 bytes, Latin 31,764 -> 31,496.
+- Before/after sheets (UI labels 12/16/48 px, figures, rhythm): `specimens/round8/` (`src/specimen_round8.py`).
+
 ## Round 7 (visual)
 
 - The proportional 1 sits closer to its neighbours: left sidebearing 78 units (was 106, Roboto Condensed 79). "01 ·" eyebrows and

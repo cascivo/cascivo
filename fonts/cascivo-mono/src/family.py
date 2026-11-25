@@ -199,6 +199,11 @@ R_WIDE = 0.6
 for _n in ('five', 'six', 'nine'):
     _lighter(_n, 0.94)
 _lighter('r', 0.94, wider=R_WIDE + 0.15, base=R_WIDE)
+# Round 8: Sans's Black brace runs a heavier pen than its stem (BRACE_BLACK), and round 7 widened it: at 700-900 `{}` was the
+# darkest pair on a line of code (ink 1.4-1.55x JetBrains Mono's, ( ) [ ] about 1.0x). BRACE_PEN of the pen at Black.
+BRACE_PEN = 0.7
+for _n in ('braceleft', 'braceright'):
+    _lighter(_n, BRACE_PEN)
 
 
 def _vee(g, q, w, top, apex, ws):
@@ -239,6 +244,48 @@ def _M(g, p):
         g.diag(w, p.cap, w / 2, yv, 'r', 'c', ws=0.9)
 
     _drawn_with(g, q, draw)
+    g.ht = 'c'
+
+
+# Round 8: the 1 l I j / # read lost or blotted in the cell beside JetBrains Mono (ink at Regular: I 299 units wide, theirs 390;
+# 1 265, theirs 450; j 256, theirs 366; / 0.63 of their ink, # at Black 1.52 of theirs)
+I_INK = 380  # I's slabs: the serifs both sides make it the I beside l (one-sided top slab) at 12 px, and it no longer floats in the cell
+ONE_FLAG = 1.35  # the 1's flag stretched this much leftward of its stem: a stub flag read as l's slab at 12 px
+J_TAIL = 1.6  # the j's hook radius x Sans's: its tail reaches under the left half of the cell, as i's slab does
+HASH_LIGHT = 0.18  # # at Black: four strokes at the full pen filled it into a block
+
+
+@_hooks.override('I')
+def _I(g, p):
+    w = I_INK + 20 * p.heavy
+    h = p.H * (1 - 0.26 * p.heavy)
+    g.vstem((w - p.V) / 2, 0, p.cap)
+    g.hbar(0, w, 0, h).hbar(0, w, p.cap - h, h)
+    g.ht = 'c'
+    g.sb = (0.6, 0.6)
+
+
+@_hooks.override('dotlessj')
+def _dotlessj(g, p):
+    from geom import L
+
+    x = p.V * 0.5 + 70
+    rx = (70 + p.V * 0.3) * J_TAIL
+    ry = (70 + p.V * 0.3) * 1.15 * (1 + (J_TAIL - 1) / 2)  # the hook deepens half as much as it widens: it stays under the baseline
+    cy = p.desc + p.H / 2 + ry
+    g.stroke([L((x, p.xh), (x, cy))] + g.arc(x - rx, cy, rx, ry, 0, -90) + [L((x - rx, p.desc + p.H / 2), (x - rx - 12, p.desc + p.H / 2))])
+    g.sb = (0.5, 1)
+    g.anchors['top_x'] = x  # glyph() adds the top slab
+
+
+@_hooks.override('numbersign')
+def _numbersign(g, p):
+    k = 1 - HASH_LIGHT * p.heavy
+    w, t, top = 480, p.H * 0.95 * k, p.cap
+    for x in (w * 0.3, w * 0.68):
+        g.line((x + 30, top), (x - 30, 0), w=p.V * 0.85 * k, caps=('h', 'h'))
+    g.hbar(0, w, p.cap * 0.63 - t / 2, h=t).hbar(0, w, p.cap * 0.32 - t / 2, h=t)
+    g.tab = True
     g.ht = 'c'
 
 
@@ -291,7 +338,7 @@ def _backslash(g, p):
     g.diag(0, SLASH_Y1, SLASH_W, SLASH_Y0, 'l', 'r', ws=SLASH_WS)
 
 
-SLASH_W, SLASH_Y0, SLASH_Y1, SLASH_WS = 430, -150, 800, 0.66
+SLASH_W, SLASH_Y0, SLASH_Y1, SLASH_WS = 430, -150, 800, 0.8  # round 8: 0.66 -> 0.8, / was 0.63 of JetBrains Mono's ink
 
 
 # ------------------------------------------------------------------------------------------------
@@ -597,6 +644,23 @@ def _patch():
 
     B.build_glyf = build_glyf
 
+    def save_woff2(font, fn):
+        # round 8, free bytes (same font data): Brotli tried the engine's few ways, smallest kept (Sans does this, the siblings did
+        # not), and the hmtx transform (WOFF2 5.4): every advance is 600 and every lsb is the glyph's xMin, so both are rebuilt
+        # by the decoder instead of stored
+        from fontTools.ttLib import woff2
+
+        font.flavorData = woff2.WOFF2FlavorData(transformedTables=('glyf', 'loca', 'hmtx'))
+        compress = woff2.brotli.compress
+        woff2.brotli.compress = lambda data, **kw: min((compress(data, **{**kw, **t}) for t in B.BROTLI_TRIES), key=len)
+        try:
+            orig_save(font, fn)
+        finally:
+            woff2.brotli.compress = compress
+
+    orig_save = B._save_woff2
+    B._save_woff2 = save_woff2
+
 
 # Round 7: Sans's proportional ( ) [ ] { } sat in the 600 cell at 0.31-0.45 of it (JetBrains Mono's 0.41-0.72): `{}` and `()`
 # read as slivers in code. Widened without thickening a stem: brackets and braces lengthen only the points outside their stems
@@ -611,6 +675,10 @@ DELIMS = {'bracketleft': (1, BRACKET_ARM), 'bracketright': (-1, BRACKET_ARM), 'b
           'braceright': (0, BRACE_REACH), 'parenleft': ('bend', -PAREN_BEND), 'parenright': ('bend', PAREN_BEND)}
 # Round 7: ~ ^ were flat and small beside the letters (~ 530 x 160 of ink, JetBrains Mono's 470 x 205; ^ 397 x 284, theirs 440 x 390)
 OPS_SCALE = {'asciitilde': (0.9, 1.28), 'asciicircum': (1.1, 1.3)}
+
+
+def _points(c):
+    return [q for seg in c for q in seg[1:]]
 
 
 def _delims(o):
@@ -635,6 +703,12 @@ def _delims(o):
             return (x, y * DELIM_TALL)  # about the baseline: the reach goes mostly up, where theirs does
         o.contours[n] = [B.transform_contour(c, f) for c in cs]
         o.bounds[n] = _bounds(B, o.contours[n])
+    cs = o.contours.get('one')
+    if cs:
+        # the stem's left edge is the leftmost point under mid-height; only the flag lies left of it
+        xl = min(q[0] for c in cs for q in _points(c) if q[1] < o.p.cap / 2)
+        o.contours['one'] = [B.transform_contour(c, lambda q, xl=xl: (xl - (xl - q[0]) * ONE_FLAG if q[0] < xl else q[0], q[1])) for c in cs]
+        o.bounds['one'] = _bounds(B, o.contours['one'])
     for n, (sx, sy) in OPS_SCALE.items():
         cs = o.contours.get(n)
         if not cs:
