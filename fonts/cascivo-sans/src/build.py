@@ -56,7 +56,11 @@ FAMILY = family.get('NAME', 'Cascivo Sans')
 PS = family.get('PS', 'CascivoSans')
 VERSION = family.get('VERSION', '0.6.1')
 DIST = os.path.join(family.ROOT, 'fonts') if family.ACTIVE else os.path.join(HERE, '..', 'fonts')  # not dist/: the repo ignores dist/, and these files ship
-MAX_ERR = 1.5  # cu2qu tolerance in font units: 1.5/1000 em is sub-pixel below ~700px
+# Glyphs the gates pin to their round-7 outlines keep the old 1.5: ae's Black counter tip and two's neck (test_quality),
+# O D B's ink widths at the Regular optical sizes (test_font, against a855b5e0), r g's clearance at 900/48 (kern), and
+# q and alpha's bowl joins (test_r7_cyrgreek; on q the measure jumps between two joins on a one-unit change).
+MAX_ERR_GLYPH = dict.fromkeys(('ae', 'two', 'O', 'D', 'B', 'r', 'g', 'q', 'uni03B1'), 1.5)
+MAX_ERR = 2.5  # cu2qu tolerance in font units: 2.5/1000 em is under a quarter pixel below ~100px (round 8: 1.5 -> 2.5, Latin slice -1.1 KB)
 BOLD_IUP_TOLERANCE = 0.5  # the Bold master's own deltas (its counters narrowed, counter_squeeze), see exact_optimize
 IUP_TOLERANCE = 2.0  # gvar deltas the rasterizer can re-infer within 2 units are dropped (section 25)
 
@@ -828,7 +832,7 @@ def build_glyf(outs, order):
                     # Bold takes no part in the conversion: its quadratics are Regular's and Black's interpolated, as
                     # the variable font will draw it, so it stores no outline delta (converted on its own, it differs
                     # from that line by a unit or two, which blunts a counter tip between Bold and Black)
-                    quads = curves_to_quadratic([c for m, c in enumerate(curves) if m not in mids], [MAX_ERR] * (len(curves) - len(mids)))
+                    quads = curves_to_quadratic([c for m, c in enumerate(curves) if m not in mids], [MAX_ERR_GLYPH.get(name, MAX_ERR)] * (len(curves) - len(mids)))
                     for m in sorted(mids):
                         qr, qb = quads[0], quads[black - sum(1 for x in mids if x < black)]
                         quads.insert(m, tuple(bold_pt(m, [pr, pb], name) for pr, pb in zip(qr, qb)))
