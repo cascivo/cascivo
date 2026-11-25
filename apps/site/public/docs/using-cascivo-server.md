@@ -197,7 +197,11 @@ In the template, `form` is a `FormState` (`FormState::new::<T>()` for an empty f
 ```
 
 `field(name, label, hint, kind, options, rows, type, placeholder, value)`: `kind` is `input`,
-`textarea`, `select` or `checkbox`. It renders the cascivo `field` and control with `aria-invalid`,
+`textarea`, `select`, `checkbox`, `radio-group` or `checkbox-group` (`options=[["v", "Text"], …]`).
+Groups render one field around native inputs sharing `name`; the group element (`role="radiogroup"` /
+`"group"`) carries `aria-invalid` and `aria-describedby` → the `role="alert"` error, and the
+submitted values stay checked. A struct field fed by a checkbox group is a `Vec<String>`
+(repeated names are collected). It renders the cascivo `field` and control with `aria-invalid`,
 `aria-describedby` pointing at the `role="alert"` error, the submitted value kept, and the rule's
 constraint attributes. Control ids are `f-<name>`. Always return **422** on `Invalid`.
 
@@ -211,6 +215,24 @@ control as `data-cv-msg-<flag>`, so the browser shows the server's words.
 markup client-side instead of the browser bubble, blocks a second submit while one is in flight
 (`aria-busy`), swaps 422 responses itself (so htmx needs no `responseHandling` override), and moves
 focus to the first `[aria-invalid=true]` on connect and after a swap. It never sets `novalidate`.
+
+## Layouts, navigation, locale
+
+**Layout pattern.** One template per page that `{% extends "base.html" %}`, with the shell (head, nav,
+`<main>`) in the base and the swappable region in a named block. The handler returns
+`View::page("notes.html").fragment("main")`: a plain request gets the page, a partial htmx request
+only `{% block main %}`, and a boosted link or a history-restore cache miss gets the whole page
+(`Hx::is_partial()`), so back/forward never shows a bare fragment. Put `hx-boost="true"` on `<body>`
+and `hx-target`/`hx-push-url` only on swaps that are not whole-page navigation.
+
+**Active nav.** `{{ aria_current("/notes") }}` writes ` aria-current="page"` when `request.path` is
+`/notes` or under it, else nothing (`exact=true`: that path only; `/` always matches exactly):
+`<a href="/notes"{{ aria_current("/notes") }}>`. Boosted navigation re-renders the nav, so the mark
+follows.
+
+**Locale.** `t(key, **args)` works in every template with the request locale. It comes from the session's
+`locale` key, else a handler's `Facts::locale`, else `Accept-Language` negotiated against the app's
+`[i18n] locales` (highest `q`, exact tag then primary subtag), else the default locale.
 
 ## CSRF, sessions and auth
 
@@ -248,6 +270,13 @@ forms, and the htmx header once on the body:
 
 `Csrf { check_origin, header, field, origins, exempt, body_limit }`; `exempt: vec!["/hooks/*"]` opts
 out webhooks that verify their own signature. Multipart forms must send the header.
+
+**File uploads.** `MultipartForm<T>` is `Form<T>` for `multipart/form-data`: the text fields go through
+the same rules and `Validate`, the files come back as `Vec<UploadedFile>` (`field`, `filename` with any
+directory part dropped, `content_type`, `bytes`; an unchosen file input yields none). The body is
+buffered up to `UPLOAD_LIMIT` (8 MiB, 413 beyond). Check size, type and content yourself, never use
+`filename` as a path, and send the CSRF token in `hx-headers`. Stream large objects to storage
+(`R2::upload` on Workers) instead. A malformed body is 400, another content type 415.
 
 **Auth.** Implement `Authenticator` and use the `User<U>` extractor, which redirects an anonymous
 visitor to `LOGIN?next=…` (default `/login`); `MaybeUser<U>` returns an `Option`.
@@ -569,3 +598,9 @@ cover the Workers build.
 - `HX-*` request headers never choose what the server renders; use static block names.
 - `!Send` Workers futures need `#[worker::send]`; `Hub` and `SqliteStore` are native only.
 - Never `|safe` a user string; an `IslandKey::placeholder` fallback is trusted markup.
+
+## Not yet covered
+
+Deferred: Durable Objects / Queues and R2 multipart streaming on the Worker (`Hub` and `SqliteStore`
+stay native-only), passkeys, magic links and rate limiting, mixing htmx and Datastar on one page.
+Gaps tracked in `docs/plans/htmx-solid-gap-analysis.md` (F15-F17).

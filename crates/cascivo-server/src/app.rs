@@ -241,13 +241,28 @@ async fn layer(State(rt): State<Arc<Runtime>>, mut req: Request, next: Next) -> 
     let hx = Hx::from_headers(req.headers());
     let path = req.uri().path().to_owned();
     let facts = req.extensions().get::<Facts>().cloned();
+    let accept_language = req
+        .headers()
+        .get(axum::http::header::ACCEPT_LANGUAGE)
+        .and_then(|v| v.to_str().ok())
+        .filter(|v| v.len() <= 1024)
+        .map(str::to_owned);
     let mut res = next.run(req).await;
     if let Some(view) = res.extensions_mut().remove::<View>() {
-        let facts = res
+        let mut facts = res
             .extensions_mut()
             .remove::<Facts>()
             .or(facts)
             .unwrap_or_default();
+        // No session locale: the browser's `Accept-Language`, among the locales the app has.
+        if facts.locale.is_empty()
+            && let Some(h) = &accept_language
+        {
+            let locales = rt.engine.locales();
+            if locales.len() > 1 {
+                facts.locale = crate::locale::negotiate(h, &locales).unwrap_or_default();
+            }
+        }
         let (mut parts, _) = res.into_parts();
         let r = Req {
             hx: &hx,

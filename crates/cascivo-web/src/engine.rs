@@ -188,6 +188,7 @@ impl Inner {
                     .map(Value::from_safe_string)
                     .map_err(|e| crate::web::err(e.to_string()))
             });
+            env.add_function("aria_current", aria_current);
             register_pure(&mut env, &web);
             env.add_global("data", data.clone());
             env.add_global("site", config_value(cfg));
@@ -224,6 +225,32 @@ impl Inner {
         env.get_template(tpl)
             .map_err(|e| Errors(vec![tpl_err(tpl, &e)]))
     }
+}
+
+/// `{{ aria_current("/docs") }}`: ` aria-current="page"` when `request.path` is `/docs` or under
+/// it, else nothing. `exact=true` matches the path only; `/` always matches exactly.
+fn aria_current(
+    state: &minijinja::State,
+    href: &str,
+    kw: minijinja::value::Kwargs,
+) -> std::result::Result<Value, minijinja::Error> {
+    let exact = kw.get::<Option<bool>>("exact")?.unwrap_or(false);
+    kw.assert_all_used()?;
+    let path = state
+        .lookup("request")
+        .and_then(|r| r.get_attr("path").ok())
+        .map(|p| p.to_string())
+        .unwrap_or_default();
+    let href = href.split(['?', '#']).next().unwrap_or(href);
+    let on = path == href
+        || (!exact
+            && href != "/"
+            && path
+                .strip_prefix(href.trim_end_matches('/'))
+                .is_some_and(|r| r.starts_with('/')));
+    Ok(Value::from_safe_string(
+        if on { " aria-current=\"page\"" } else { "" }.to_owned(),
+    ))
 }
 
 /// The caller's context under the request facts; `request`, `user` and `flash` cannot be
@@ -518,6 +545,40 @@ mod tests {
                 .starts_with("Hello Ann|")
         );
         assert_eq!(e.locales(), ["en", "de"]);
+    }
+
+    #[test]
+    fn aria_current_marks_the_current_path_and_its_children() {
+        let e = Engine::new(&bundle(&[(
+            "n.html",
+            "[{{ aria_current('/docs') }}][{{ aria_current('/') }}][{{ aria_current('/docs', exact=true) }}][{{ aria_current('/doc') }}]",
+        )]))
+        .unwrap();
+        let at = |path| {
+            let req = ReqCtx {
+                path,
+                ..ReqCtx::default()
+            };
+            e.render("n.html", &context! {}, &req).unwrap()
+        };
+        let on = " aria-current=\"page\"";
+        assert_eq!(at("/docs"), format!("[{on}][][{on}][]"));
+        assert_eq!(at("/docs/x"), format!("[{on}][][][]"));
+        assert_eq!(at("/"), format!("[][{on}][][]"));
+    }
+
+    #[test]
+    fn failed_include_names_its_cause() {
+        let e = Engine::new(&bundle(&[
+            ("a.html", "{% include 'b.html' %}"),
+            ("b.html", "{{ 1 / 0 }}"),
+        ]))
+        .unwrap();
+        let msg = e
+            .render("a.html", &context! {}, &ReqCtx::default())
+            .unwrap_err()
+            .to_string();
+        assert!(msg.contains("caused by") && msg.contains("b.html"), "{msg}");
     }
 
     #[test]
