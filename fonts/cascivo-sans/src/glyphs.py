@@ -1910,8 +1910,6 @@ def _osf(fn):
 
 
 ONE_FLUSH = 1.0
-ONE_FLAG_IT = (50, 0.15)  # italic: units further left, share of the cap lower
-ONE_STEM_IT = 0.0
 
 
 def pnum_left(p, name):
