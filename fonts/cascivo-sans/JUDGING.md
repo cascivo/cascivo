@@ -568,3 +568,17 @@ The x stood 10 off its neighbours (Geist 63). Fixed, every knob scaled by `p.hea
 - Scores: upright 8.73 -> 8.74, italic 8.09 -> 8.10. Specimens ("78.6 KB 1.9x 0123456789 $4.20 12:30" at 400 / 700 / 900, Black
   tabular too, over Inter and Geist): `specimens/round9/`.
 - Not done: Inter's 8 upper counter is rounder; the period stays square.
+
+## Round 10: punctuation and Black capitals by eye
+
+Specimens ("Own your stylesheet.", "78.6 KB 1.9× 0", pangrams, punctuation, paragraphs at 100 / 400 / 700 / 900, upright and
+italic, over Inter) before and after: `specimens/round-next/`. Measured against Inter at opsz 14 (units per 1000 of the cap height):
+
+- × (`_multiply` r 0.36 -> 0.41 of the operator width): 562 wide at Regular against Inter's 631, now 630; Black 795 (Inter 769).
+- Black ? (`Q_MARK_HEAVY_W` 0.14 -> 0.06): 860 wide -> 789 (Inter 713), the hook a round cap, not a flat one with a beak.
+- Black Q tail (`Q_HEAVY_WS` 0.25): a full stem. Entering the counter as Inter's does (tried: start 0.04 w left, 30 up) reads
+  better but fails `quality.py`'s Q counter gate (0.967 of its hull, floor 0.9955) and lint: not kept.
+- Black J (`J_RUN` 20 -> 12): the hook ends 8 deg further round, its butt end no longer a spike.
+- Scores: upright 8.74, italic 8.10 (held). All gates pass; Mono, Serif and Condensed rebuilt, their `test_family.py` pass.
+- Not done: the thicker Black Q tail reaches 197 under the baseline (176; Inter 74), the `test_q_tail...` floor is 151; Black e terminal overhangs the bowl a little (aperture gates); heavy b d p q O counters stay lighter than Inter's (the
+  round-6 attempt broke gates); the 600 -> 700 width step on diagonal capitals (`wstep`) and the I/1 ambiguity at 12 px Black.

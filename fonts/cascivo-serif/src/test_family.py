@@ -92,9 +92,18 @@ class SerifFamily(unittest.TestCase):
     def test_round_dots_without_serifs(self):
         # The serif pass took the engine's dot (a short vertical stroke from the baseline) for a stem foot: . : ; ! ? and the ellipsis
         # carried a slab and brackets. Punctuation keeps Sans's contours, and every dot is one round contour.
+        # Round 4: a comma (and every curly quote, built from it) adds one round head per comma, the period's dot.
+        heads = {'semicolon': 1, 'comma': 1, 'quoteright': 1, 'quotedblleft': 2}
         for name in ('period', 'colon', 'semicolon', 'ellipsis', 'exclam', 'question', 'exclamdown', 'questiondown', 'quotesingle', 'quotedbl', 'bar', 'brokenbar', 'comma', 'quoteright', 'quotedblleft'):
             with self.subTest(name=name):
-                self.assertEqual(len(contours(TTF, name, 400)), len(contours(SANS, name, 400)))
+                self.assertEqual(len(contours(TTF, name, 400)), len(contours(SANS, name, 400)) + heads.get(name, 0))
+        for wght in (100, 400, 900):
+            for name in ('comma', 'quoteright'):
+                head = max(contours(TTF, name, wght), key=lambda c: c[:, 1].max())  # the head is the top of a comma
+                ctr = (head.max(0) + head.min(0)) / 2
+                r = np.hypot(*(head - ctr).T)
+                with self.subTest(wght=wght, name=name, part='head'):
+                    self.assertLess(r.max() / r.min(), 1.03)
         for wght in (100, 400, 700, 900):
             for name, n in (('period', 1), ('colon', 2), ('ellipsis', 3), ('exclam', 1), ('question', 1), ('dotaccent', 1)):
                 cs = contours(TTF, name, wght)
@@ -146,6 +155,45 @@ class SerifFamily(unittest.TestCase):
                             self.assertLessEqual(abs(w - h), max(0.03 * h, 2.0))
                             r = np.hypot(*(c - (c.max(0) + c.min(0)) / 2).T)
                             self.assertLessEqual(r.max() - r.min(), max(0.03 * r.mean(), 2.0))
+
+    def test_ink_grows_with_weight(self):
+        # Round 4 review: Black's Z read a weight lighter than its neighbours (its diagonal drawn near a hairline). Every letter and
+        # figure gains ink at each step of wght, and no glyph falls behind the alphabet's growth from Regular to Black by much.
+        chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        ink = {ch: [int(raster(TTF, ch, w, 120).sum()) for w in range(100, 1000, 100)] for ch in chars}
+        for ch, row in ink.items():
+            with self.subTest(ch=ch):
+                self.assertTrue(all(b > a for a, b in zip(row, row[1:])), row)
+        growth = {ch: row[-1] / row[3] for ch, row in ink.items()}
+        median = float(np.median(list(growth.values())))
+        for ch, g in growth.items():
+            with self.subTest(ch=ch, growth=round(g, 2)):
+                self.assertGreater(g, median * 0.8)
+
+    def test_z_diagonal_is_thick(self):
+        # A serif Z's diagonal is its thick stroke (Source Serif's): measured square to the stroke it is at least 0.75 of H's stem
+        # at every weight. The engine's angle pen drew it near a hairline (0.5 of the stem at Black).
+        def diag(wght):
+            a = raster(TTF, 'Z', wght)
+            ys = np.nonzero(a.any(1))[0]
+            mid, h = (ys.min() + ys.max()) // 2, ys.max() - ys.min()
+            runs = []
+            for y in (mid - h // 8, mid + h // 8):
+                xs = np.flatnonzero(a[y])
+                runs.append((xs.min(), xs.max()))
+            (l0, r0), (l1, r1) = runs
+            dx, dy = ((l1 + r1) - (l0 + r0)) / 2, h / 4
+            return (r0 - l0 + 1) * dy / np.hypot(dx, dy)
+
+        def stem(wght):
+            a = raster(TTF, 'H', wght)
+            ys = np.nonzero(a.any(1))[0]
+            xs = np.flatnonzero(a[(ys.min() + ys.max()) // 2 - (ys.max() - ys.min()) // 4])
+            return int(np.argmax(np.diff(xs) > 1)) + 1
+
+        for wght in (400, 700, 900):
+            with self.subTest(wght=wght):
+                self.assertGreater(diag(wght), stem(wght) * 0.75)
 
     def test_ots_sanitize(self):
         try:

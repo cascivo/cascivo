@@ -1,7 +1,7 @@
 """Cascivo Mono v1: Cascivo Sans's engine, every spacing glyph on one advance (fonts/PLAN-families.md).
 
 Loaded by fonts/cascivo-sans/src/family.py when CASCIVO_FAMILY=mono. The engine is not edited: the hooks
-below narrow the counters (tune), add slabs to i j l r (glyph), centre every glyph in one cell (master),
+below narrow the counters (tune), add slabs to i j l (glyph), centre every glyph in one cell (master),
 and, because the Bold master's outlines are re-derived from Regular's and Black's points plus o.shift in
 build_glyf, a few build.py functions are wrapped on the first master() call (see _patch).
 """
@@ -32,6 +32,10 @@ FIG_HEAVY = 45  # units Black's figure width gives up (0 ink 598 -> about 520)
 _frozen = {}
 # Terminal legibility at 12-14 px: JetBrains Mono's x-height is 550, Geist Mono's 530, Sans's 528. Units added to every master's.
 XH_UP = 22
+# Dots (. , : ; ! ? i j): at least DOT_MIN + DOT_K stems; round at Thin, squarer (DOT_SQ more handle) toward Black, as JetBrains
+# Mono's. Sans's square dot, enlarged for the cell, read as a block beside Thin's hairlines.
+DOT_MIN, DOT_K, DOT_SQ = 92, 0.6, 0.2
+COMMA_DEPTH = 230  # units the comma's tail may hang under its head
 
 
 def _freeze(p):
@@ -57,6 +61,8 @@ def tune(p):
     p.cHd *= 0.76 * (1 - CAP_HEAVY * h)
     p.fig_adv -= FIG_HEAVY * h
     p.xh += XH_UP
+    # a code font's dots carry the punctuation: Sans's Thin period was 54 units (JetBrains Mono's 146), a speck at 12 px
+    p.dot = max(p.dot, p.V * DOT_K + DOT_MIN)
 
 
 def _slabs(g, p, name):
@@ -72,10 +78,6 @@ def _slabs(g, p, name):
         g.hbar(-e, V + e, 0, h)
         g.hbar(-e * 0.85, V / 2, p.asc - h, h)
         g.anchors.pop('top_x', None)
-    elif name == 'r':
-        # foot only: with Sans's short arm the top serif made r read as a small-cap I in `drwxr-xr-x` (Plex Mono's r has the same
-        # trouble; JetBrains Mono's has neither serif)
-        g.hbar(-e * 0.8, V + e * 0.8, 0, h)
     elif name == 'dotlessj':
         x = g.anchors.get('top_x', V * 0.5 + 70)
         g.hbar(x - V / 2 - e * 0.85, x, p.xh - h, h)
@@ -83,6 +85,49 @@ def _slabs(g, p, name):
 
 def glyph(g, p, name):
     _slabs(g, p, name)
+
+
+def _round_dot(self, xc, yb, d=None):
+    from geom import arc, orient
+
+    d = self.p.dot if d is None else d
+    self.raw.append(orient(arc(xc, yb + d / 2, d / 2, d / 2, 0, 360, k=0.5523 + DOT_SQ * self.p.heavy), outer=True))
+    return self
+
+
+def _install_dot():
+    import glyphs as GL
+
+    GL.G.dot = _round_dot
+    orig = GL.comma_shape
+
+    def comma_shape(g, d, x, top, depth, *a, **k):
+        # the tail follows the dot's size in Sans: with Thin's dot doubled it ran under the line box (-335 at opsz 8)
+        return orig(g, d, x, top, min(depth, COMMA_DEPTH), *a, **k)
+
+    GL.comma_shape = comma_shape
+
+
+_install_dot()
+
+
+def _wider(name, attr, k):
+    """Redraw Sans's `name` with p.<attr> k times p's: f and t are drawn from the n's counter (cn) or width (nw), and Sans's narrow
+    f and t (ink 0.5 of the cell, JetBrains Mono's 0.8) left holes either side of them in `fn`, `let`, `for`."""
+    import glyphs as GL
+
+    orig = GL.GLYPHS[name][1]
+
+    @_hooks.override(name)
+    def draw(g, p):
+        q = copy.copy(p)
+        setattr(q, attr, getattr(p, attr) * k)
+        _drawn_with(g, q, lambda: orig(g, q))
+
+
+F_WIDE, T_WIDE = 2.2, 1.6  # t's foot curve folds (a kink) past 1.6
+_wider('f', 'cn', F_WIDE)
+_wider('t', 'cn', T_WIDE)
 
 
 # ------------------------------------------------------------------------------------------------
@@ -145,10 +190,10 @@ def _lighter(name, k, wider=0.0, base=0.0):
 
 # Black's 5 6 9 closed their counters in the cell and the r's arm was a stub: a lighter pen, and at every weight a longer arm (R_WIDE
 # of the n's counter more; Sans's narrow r left a wide white beside it in the cell)
-R_WIDE = 0.4
+R_WIDE = 0.6
 for _n in ('five', 'six', 'nine'):
     _lighter(_n, 0.94)
-_lighter('r', 0.94, wider=0.45, base=R_WIDE)
+_lighter('r', 0.94, wider=R_WIDE + 0.15, base=R_WIDE)
 
 
 def _vee(g, q, w, top, apex, ws):
@@ -168,12 +213,12 @@ def _vee(g, q, w, top, apex, ws):
 
 @_hooks.override('w')
 def _w(g, p):
-    _vee(g, _pen(p, 0.9 - 0.04 * p.heavy), INK_LC, p.xh, p.xh * (0.74 - 0.04 * p.heavy), 0.86)
+    _vee(g, _pen(p, 0.97 - 0.04 * p.heavy), INK_LC, p.xh, p.xh * (0.74 - 0.04 * p.heavy), 0.86)
 
 
 @_hooks.override('W')
 def _W(g, p):
-    _vee(g, _pen(p, 0.92 - 0.04 * p.heavy), INK_CAP, p.cap, p.cap * (0.66 - 0.04 * p.heavy), 0.9)
+    _vee(g, _pen(p, 0.99 - 0.04 * p.heavy), INK_CAP, p.cap, p.cap * (0.66 - 0.04 * p.heavy), 0.9)
     g.ht = 'c'
 
 
@@ -192,12 +237,29 @@ def _M(g, p):
     g.ht = 'c'
 
 
+ZERO_DOT = 1.3  # the oval a little larger than the bar it replaced: an oval of the same box carries ~0.8 of its ink
+ZERO_HEAVY = -0.03  # Black's 0 was 530 of ink (JetBrains Mono's 480) and squeezed in the cell: narrower, it keeps its own stems
+
+
+@_hooks.override('exclam')
+def _exclam(g, p):
+    # Sans's stem stops at 0.27 cap height, under Black's 197-unit dot: the two touched and `!` read as l at 700-900
+    d = p.dot
+    gap = max(EXCL_GAP, d * 0.45)
+    g.line((d / 2, p.cap), (d / 2, d + gap), w=p.V * 1.04, taper=(1, 0.78))
+    g.dot(d / 2, 0)
+    g.ht = 'c'
+
+
+EXCL_GAP = 70
+
+
 @_hooks.override('zero')
 def _zero(g, p):
     """Dotted zero (JetBrains Mono's): the slash met the ring at Black and read as O, and the slashed Ø is a letter of its own."""
     import glyphs as GL
 
-    w = GL.fw(p) * (1.01 + 0.03 * p.heavy)
+    w = GL.fw(p) * (1.01 + ZERO_HEAVY * p.heavy)
     g.oval(0, -p.ov, w, p.cap + p.ov, k=p.k + GL.CAP_O_SQUARE * p.heavy)
     cw = w - 2 * p.V
     # JetBrains Mono's: about a stem wide and half again as tall; at Black no more than 0.4 of the counter, or the white
@@ -205,9 +267,26 @@ def _zero(g, p):
     dw = min(0.4 * cw, max(70.0, p.V * 1.15))  # 70: Thin's dot still reads at 12 px (its period is 53)
     dh = dw * 1.6
     cy = p.cap / 2
-    g.line((w / 2 - dw / 2, cy), (w / 2 + dw / 2, cy), w=dh)  # drawn across: run along its height, Black's thick dot came out hollow
+    from geom import arc, orient
+
+    # an oval, squarer toward Black as the period is (a sharp-cornered bar read as a foreign mark in the ring)
+    g.raw.append(orient(arc(w / 2, cy, dw * ZERO_DOT / 2, dh * ZERO_DOT / 2, 0, 360, k=0.5523 + DOT_SQ * p.heavy), outer=True))
     g.tab = True
     g.ht = 'c'
+
+
+@_hooks.override('slash')
+def _slash(g, p):
+    # JetBrains Mono's / is 0.7-0.8 of the cell wide over 940 units; Sans's 0.42 cap height made a steep stroke that read as l at Black
+    g.diag(0, SLASH_Y0, SLASH_W, SLASH_Y1, 'l', 'r', ws=SLASH_WS)
+
+
+@_hooks.override('backslash')
+def _backslash(g, p):
+    g.diag(0, SLASH_Y1, SLASH_W, SLASH_Y0, 'l', 'r', ws=SLASH_WS)
+
+
+SLASH_W, SLASH_Y0, SLASH_Y1, SLASH_WS = 430, -150, 800, 0.66
 
 
 # ------------------------------------------------------------------------------------------------
@@ -285,6 +364,38 @@ def _register_box():
 
 
 _register_box()
+
+
+def _math_ops():
+    """≤ ≥ ≠ (no ligatures: `<=` stays two glyphs, these are the characters). Drawn on Sans's operator geometry (glyphs._mathy)."""
+    import glyphs as GL
+
+    def rel(sign):
+        def draw(g, p):
+            w, cy, t = GL._mathy(p)
+            h = w * 0.36
+            cy += t * 0.7  # the chevron rides above the bar, the pair centred on the axis
+            a, b = (w, 0) if sign < 0 else (0, w)
+            g.line((a, cy + h), (b, cy), w=t, caps=('b', 'b'))
+            g.line((b, cy), (a, cy - h), w=t, caps=('b', 'b'))
+            g.hbar(0, w, cy - h - t * 1.9, h=t)
+            g.tab = True
+        return draw
+
+    def notequal(g, p):
+        w, cy, t = GL._mathy(p)
+        gap = w * 0.17 + t / 2
+        g.hbar(0, w, cy - gap - t / 2, h=t).hbar(0, w, cy + gap - t / 2, h=t)
+        r = w * 0.5
+        g.line((w / 2 - r * 0.42, cy - r), (w / 2 + r * 0.42, cy + r), w=t, caps=('b', 'b'))
+        g.tab = True
+
+    GL.glyph('lessequal', 0x2264)(rel(-1))
+    GL.glyph('greaterequal', 0x2265)(rel(1))
+    GL.glyph('notequal', 0x2260)(notequal)
+
+
+_math_ops()
 
 
 def fea(text):
@@ -374,6 +485,9 @@ def mono(o, scale=True, keep=()):
 _patched = False
 
 
+LATIN_TERMINAL = ',U+2260,U+2264-2265,U+2500-259F,U+E0B0-E0B3'
+
+
 def _patch():
     """Wrap build.py functions this family needs changed (the engine stays untouched on disk)."""
     global _patched
@@ -382,6 +496,13 @@ def _patch():
     _patched = True
     B = sys.modules['__main__']
     orig_mid = B.mid_master
+    orig_subset = B._subset_latin
+
+    def subset_latin(font, unicodes=B.LATIN):
+        # the Latin slice is what a site serves: it carries the terminal set too (box drawing, blocks, Powerline, ≠ ≤ ≥)
+        return orig_subset(font, unicodes + LATIN_TERMINAL if unicodes == B.LATIN else unicodes)
+
+    B._subset_latin = subset_latin
 
     def mid_master(reg, black, nat):
         m = orig_mid(reg, black, nat)
