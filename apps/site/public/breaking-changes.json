@@ -590,6 +590,11 @@
       ]
     },
     {
+      "name": "@cascivo/elements",
+      "version": "0.0.0",
+      "releases": []
+    },
+    {
       "name": "@cascivo/email",
       "version": "0.6.1",
       "releases": [
@@ -1178,6 +1183,11 @@
           ]
         }
       ]
+    },
+    {
+      "name": "@cascivo/solid",
+      "version": "0.0.0",
+      "releases": []
     },
     {
       "name": "@cascivo/storage",

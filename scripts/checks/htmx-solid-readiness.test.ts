@@ -1,8 +1,7 @@
 /**
- * The no-React packages stay `private: true` until a maintainer flips them (docs/plans/
- * htmx-solid-gap-analysis.md, F2), but they must already be measured by every release gate.
- * This keeps those gates from silently dropping one: a new element without a size budget,
- * or a package missing from the pack / isolated-install / bundle lists, fails here.
+ * The no-React packages are published, so every release gate must measure them. This keeps a
+ * gate from silently dropping one: a new element without a size budget, a package that is
+ * private again, or one missing from the isolated-install / bundle lists, fails here.
  */
 import { strict as assert } from 'node:assert'
 import { readFileSync } from 'node:fs'
@@ -43,14 +42,14 @@ describe('htmx + solid release readiness', () => {
     }
   })
 
-  it('pack, bundle and isolated gates cover both packages', () => {
-    const pack = read('scripts/checks/pack-lint.mjs')
+  it('both packages are public and covered by the bundle and isolated gates', () => {
     const bundle = read('scripts/quality/bundle-check.ts')
     const isolated = read('scripts/checks/isolated-install.test.ts')
     for (const name of READY) {
-      assert.ok(pack.includes(`'${name}'`), `${name} missing from pack-lint PUBLISH_READY`)
-      assert.ok(bundle.includes(`'${name}'`), `${name} missing from bundle-check`)
       const short = name.slice('@cascivo/'.length)
+      const pkg = JSON.parse(read(`packages/${short}/package.json`)) as { private?: boolean }
+      assert.equal(pkg.private, false, `${name} must be public`)
+      assert.ok(bundle.includes(`'${name}'`), `${name} missing from bundle-check`)
       assert.ok(
         new RegExp(`PACKAGES = \\[[^\\]]*'${short}'`).test(isolated),
         `${short} missing from isolated-install PACKAGES`,

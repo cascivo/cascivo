@@ -24,8 +24,7 @@ Guides: [USING-HTMX-SOLID.md](USING-HTMX-SOLID.md), [USING-CASCIVO-SERVER.md](US
 
 - **Done:** 14 elements + htmx glue, Solid components/helpers/testing, contract parity for 80+ emitters,
   distribution gates (`pack:check`, `isolated:check`, bundle budgets) cover `@cascivo/css`, `elements`, `solid`.
-- **Open:** publishing `@cascivo/elements` and `@cascivo/solid` (flip `private`, add a changeset: a
-  maintainer decision), Solid SSR, 18 chart types outside React, docs-site pages and visual baselines
+- **Open:** first npm publish of `@cascivo/elements` and `@cascivo/solid` (`pnpm release:bootstrap`), Solid SSR, 18 chart types outside React, docs-site pages and visual baselines
   for elements.
 
 ## History

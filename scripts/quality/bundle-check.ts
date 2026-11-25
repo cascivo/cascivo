@@ -111,9 +111,6 @@ const BUDGETS: Record<string, number> = {
   cascivo: 45,
 }
 
-/** Private today, measured like a published package so the budget exists before `private` flips. */
-const PUBLISH_READY = new Set(['@cascivo/elements', '@cascivo/solid'])
-
 /**
  * Gzipped-KB ceilings for the LARGEST single stylesheet a package exports — the sheet an
  * adopter pays for on the "one import" path.
@@ -182,7 +179,7 @@ function readPackages(): Array<{ dir: string; pkg: PackageJson }> {
     const file = join(PACKAGES, entry, 'package.json')
     if (!existsSync(file)) continue
     const pkg = JSON.parse(readFileSync(file, 'utf8')) as PackageJson
-    if (pkg.name === undefined || (pkg.private === true && !PUBLISH_READY.has(pkg.name))) continue
+    if (pkg.name === undefined || pkg.private === true) continue
     out.push({ dir: join(PACKAGES, entry), pkg })
   }
   return out

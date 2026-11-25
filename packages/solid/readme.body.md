@@ -1,6 +1,6 @@
 ## What
 
-Solid islands for [cascivo-web](../../docs/USING-CASCIVO-WEB.md) / `cascivo-server` markup. Private workspace package.
+Solid islands for [cascivo-web](../../docs/USING-CASCIVO-WEB.md) / `cascivo-server` markup.
 
 ```tsx
 // src/cart.tsx — the island module the loader imports (`data-src`)

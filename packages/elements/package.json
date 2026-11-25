@@ -1,7 +1,7 @@
 {
   "name": "@cascivo/elements",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "description": "Light-DOM custom elements (cv-menu, cv-tabs, cv-combobox, cv-date-picker, cv-dialog, cv-toaster, cv-form) and the htmx glue that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure",
   "keywords": [
     "cascivo",
@@ -116,13 +116,11 @@
     "check": "tsc --noEmit",
     "test": "vp test"
   },
-  "dependencies": {
-    "@cascivo/core": "workspace:*",
-    "@cascivo/i18n": "workspace:*",
-    "@preact/signals-core": "^1.14.3"
-  },
   "devDependencies": {
+    "@cascivo/core": "workspace:*",
     "@cascivo/css": "workspace:*",
+    "@cascivo/i18n": "workspace:*",
+    "@preact/signals-core": "^1.14.3",
     "@types/node": "catalog:",
     "axe-core": "4.11.4",
     "idiomorph": "^0.8.0",

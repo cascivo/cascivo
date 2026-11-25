@@ -12,10 +12,14 @@ The no-React stack is four layers; take only what you need. Reasoning and a meas
 
 ## Install
 
-`@cascivo/css` is on npm. `@cascivo/elements` and `@cascivo/solid` are built, packed and size-checked
-like published packages but are not on npm yet (the maintainer flips `private` when they ship); until then
-the starter in `apps/examples/track-lite-htmx` links them from a checkout. They are not registry items, so
-`npx cascivo add` does not apply. `@cascivo/solid` peers: `solid-js >= 1.9`, optional `vite-plugin-solid`.
+These are npm packages, not registry items: `npx cascivo add` does not apply.
+
+```sh
+pnpm add @cascivo/css @cascivo/elements   # markup + behaviour
+pnpm add @cascivo/solid solid-js          # only if you write islands
+```
+
+`@cascivo/solid` peers: `solid-js >= 1.9`, optional `vite` and `vite-plugin-solid`.
 
 ## Wire up
 

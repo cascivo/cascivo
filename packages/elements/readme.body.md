@@ -4,8 +4,7 @@ Light-DOM custom elements that enhance the server-rendered [`@cascivo/css`](../c
 `cv-<unit>-<part>` classes that `cascivo-html` and `cascivo-server` emit): `<cv-menu>`, `<cv-tabs>`,
 `<cv-form>`, `<cv-combobox>`, `<cv-date-picker>`, `<cv-dialog>` and `<cv-toaster>`. No React. Without JS the
 markup still works; with JS the elements add the keyboard, focus and ARIA behaviour on top of
-`@cascivo/core/pure` signals. Private workspace package (not published yet; the starter links it from a
-checkout). Guide: [USING-CASCIVO-SERVER.md](../../docs/USING-CASCIVO-SERVER.md); markup contract:
+`@cascivo/core/pure` signals. Guide: [USING-CASCIVO-SERVER.md](../../docs/USING-CASCIVO-SERVER.md); markup contract:
 [CONTRACT.md](../../docs/CONTRACT.md).
 
 ## Usage

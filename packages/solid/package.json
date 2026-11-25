@@ -1,7 +1,7 @@
 {
   "name": "@cascivo/solid",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "description": "Solid islands for cascivo-web/cascivo-server markup: defineIsland (mount + htmx-safe dispose), cv-* JSX typings from the Custom Elements Manifest, and a Vite preset",
   "keywords": [
     "cascivo",

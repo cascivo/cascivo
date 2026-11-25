@@ -107,21 +107,18 @@ cases. Still allowlisted (need named-slot grammar): `dashboard-layout`, `masonry
 
 ## Status: package D and overall (2026-11-25)
 
-Package D: F3, F14 (minimal) and Q4/Q6 done; F2 is **ready, not flipped**: `private: true` stays on
-`@cascivo/elements` and `@cascivo/solid` (publishing is the maintainer's decision). Q9 and Q11 skipped.
+Package D: F2, F3, F14 (minimal), Q4 and Q6 done. Q9 and Q11 skipped.
 Both packages now build to `dist/` with flattened types and export maps, are packed by `pack:check`, installed by
 `isolated:check`, and budgeted by `audit:bundle` / `elements:check`. Statuses are from the merged commits; a
 gap marked open has no code for it.
 
-To publish: set `"private": false` in `packages/{elements,solid}/package.json`, add a changeset for both
-(minor, `0.1.0` lockstep per `docs/RELEASING.md`), drop both names from `PUBLISH_READY` in
-`scripts/checks/pack-lint.mjs` and `scripts/quality/bundle-check.ts`, run `pnpm regen` (api-surface and
-package tables pick them up), then `pnpm ready`, `pnpm isolated:check`, `pnpm pack:check`.
+F2 done: both packages are public (`private: false`, minor changeset `.changeset/htmx-solid-packages.md`). The names do not
+exist on npm yet: run `pnpm release:bootstrap` once from a clean `main`, then attach the trusted publisher (docs/RELEASING.md).
 
 | Gap | Status | Note |
 | --- | ------ | ---- |
 | F1 | partial | 14 elements (menu, tabs, form, combobox, date-picker, dialog, toaster, data-table, drawer, command-menu, theme, tooltip, multi-select, tags-input); file-uploader, tree-view, pagination/filter patterns open |
-| F2 | ready, not flipped | see "To publish" above |
+| F2 | done | public + changeset; npm bootstrap pending |
 | F3 | done | `docs/USING-HTMX-SOLID.md` in llms.txt, MCP guides and the docs site; elements/solid are npm packages, so no `cascivo add` item and no scaffold (the cargo starter stays the scaffold) |
 | F4 | done | typed wrappers, `createForm`/`createI18n`/`createTheme`/`fromSignal` |
 | F5 | open | 18 chart types |
