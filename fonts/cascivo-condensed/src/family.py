@@ -150,3 +150,55 @@ def woff2(font):
     from fontTools.ttLib.woff2 import WOFF2FlavorData
 
     font.flavorData = WOFF2FlavorData(transformedTables={'glyf', 'loca', 'hmtx'})
+
+
+# Round 9: punctuation that kept Sans's width. At opsz 14 the parentheses were 0.91 of Sans's advance at Regular and 0.85 at
+# Black, the brackets the same, the straight double quote 0.90 and 0.89 and the hyphen 0.95, against the letters' 0.79: "(Mobile)",
+# "[Beta]" and "\"Draft\"" set loose, and "2026-11-25" read as long bars between narrow figures. Each is narrowed in its drawing,
+# not scaled, so its stroke keeps its weight.
+PAREN_BOW = 0.75  # the parentheses' bow depth (Sans 123 units, the arc's horizontal reach) at this share, about the stroke's ends
+BRACKET_ARM = 0.85  # the brackets' arms (from the stem's centre) at this share
+QUOTEDBL_GAP = 0.82  # the straight double quote's mark pitch at this share
+HYPHEN_W = 0.84  # the hyphen's bar at this share, as the en dash (DASH)
+
+
+def _narrowed(name, f, about):
+    """Redraw `name` with its strokes' x scaled by f about x = about(g, p, flip), the centreline's fixed side."""
+    flip = name.endswith('right')
+    draw = _GL.GLYPHS[name][1]
+
+    @_hooks.override(name)
+    def _draw(g, p):
+        n = len(g.strokes)
+        draw(g, p)
+        c = about(p) * (-1 if flip else 1)
+        g.strokes[n:] = [s.transformed(lambda q: (c + (q[0] - c) * f, q[1])) for s in g.strokes[n:]]
+
+
+def _paren_end(p):
+    # the arc's ends (122 and 238 degrees on a 262-unit radius centred 262 + V/2 in): the bow shallows towards them
+    import math
+
+    return 262 + p.V / 2 + 262 * math.cos(math.radians(122))
+
+
+for _n in ('parenleft', 'parenright'):
+    _narrowed(_n, PAREN_BOW, _paren_end)
+for _n in ('bracketleft', 'bracketright'):
+    _narrowed(_n, BRACKET_ARM, lambda p: p.V / 2)
+
+
+@_hooks.override('quotedbl')
+def _quotedbl(g, p):
+    w, ln, gap = _GL._straight_quote(p)
+    for x in (w / 2, w / 2 + gap * QUOTEDBL_GAP):
+        g.line((x, p.cap), (x, p.cap - ln), w=w, taper=(1, 0.8))
+    g.sb = (0.9, 0.9)
+    g.ht = 'c'
+
+
+@_hooks.override('hyphen')
+def _hyphen(g, p):
+    w = (270 + p.V * 0.3) * HYPHEN_W
+    g.hbar(0, w, p.xh * 0.5 - p.H * 0.55, h=p.H * 1.1)
+    g.sb = (0.55, 0.55)

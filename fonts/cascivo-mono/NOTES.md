@@ -108,10 +108,31 @@ code, punctuation and operators, disambiguation, a cell grid). Ink ratios below 
 - Sheet caveat: in the grid, Pillow draws m w 1 I # lighter at 700/900 for both fonts (also JetBrains Mono's statics); the code
   sheets show them at weight.
 
+Round 9, visual (`src/family.py`; engine untouched, Sans byte-identical). Judged at 12/14/16/48 px, 100/400/700/900, against
+JetBrains Mono's statics; sheets `specimens/round9/` (`python3 -I src/specimen_round9.py <tag> <jetbrains dir> [--ink]`, `--ink` prints
+each glyph's ink over JetBrains Mono's, rasterized at 150 px). Remaining weaknesses after round 8: Thin grey (ink 0.45x theirs on
+every glyph), `|` over the whole line box (read as the text cursor in `x |= y`, 190 units over the capitals), `*` 0.72x at 400,
+` 1.26/1.36x at 700/900, `~` 0.7x, 1 0.64-0.73x, r t j 0.72-0.80x, no italic.
+
+- Thin: THIN_UP 0.15 -> 0.5, now on the horizontals and bars as well as the stem (stem alone would invert the contrast). Stem 28 -> 36,
+  hyphen 40 thick; ink 0.45 -> 0.55-0.79x JetBrains Mono Thin's (l 0.51 -> 0.74, `-` 0.31 -> 0.56). Fades out by Regular as before.
+- `|` and `¦`: -190..850 (BAR_Y0/BAR_Y1, the delimiters' span; JetBrains Mono's -110..830), not the line box. Stacked `|` no longer
+  join; U+2502 │ still does. Reverses round 3's choice: decided by the code sheets, where the full-height bar looked like a caret.
+- `*`: radius 228 -> 250 and pen 0.82 -> 0.92 of the stem at 100-700 (STAR_R, STAR_PEN); Black's size and pen unchanged (both lerp
+  to 254 / 0.64). Width 455 -> 500 at 400; ink 0.72 -> 0.90x.
+- `` ` ``: GRAVE_HEAVY 0.1 smaller at Black (stroke and length), none at Regular; ink 1.26/1.36 -> 1.05/1.05x. The spacing grave is a
+  composite of gravecomb (à è share it), so `_flatten` draws it out in every master (compatible) before `build_glyf`.
+- Bytes: WOFF2 70 456 -> 70 360, TTF 206 240 -> 204 688 (the shorter bar); the Latin slice 27 292 -> 27 344 (+52 B, the grave's own
+  outlines and deltas). Budgets unchanged.
+- Tests: Thin stem >= 34 and its hyphen >= 32, `|` within -180..900 (not the line box), `*` >= 490 wide at 400, Black's ` under 1.5x
+  Regular's width and shorter. All fail on the round 8 font.
+- Not done: `~` (0.69-0.73x; at Thin 0.46x), 1 (a foot slab reads as l, round 8), r t j a touch light; Thin still lighter than
+  JetBrains Mono's (theirs is closer to an ExtraLight). No italic yet: needs the engine's ITALIC path for this family (needs a decision).
+
 v1 score vs JetBrains Mono + Geist Mono: overall 7.78; rhythm 7.25, weight axis 9.04, shape 8.56, colour 6.69,
 small sizes 9.84, optical sizes 1.27 (the refs have no opsz axis, so that row is not meaningful).
 
 Known gaps: Black's O Q A 6 9 0 are still squeezed slightly (~0.9); wide non-Latin glyphs (Cyrillic Ш Ж, Georgian, Hebrew) and
 the flattened composites (Greek capitals with breathings down to ~0.65) are squeezed rather than redrawn; stacked Vietnamese
 capitals reach over the line box (to 1206 at Black; the win metrics hold them); Black is a little darker than JetBrains Mono's; f's
-crossbar is short on the left; `|` spans the whole line box (by design, it reads tall in code); no ✓ ✗; no statics, no italic.
+crossbar is short on the left; no ✓ ✗; no statics, no italic.
