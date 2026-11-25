@@ -13,9 +13,9 @@ export const COMPARISON = {
         "wght",
         "opsz"
       ],
-      "hinted": false,
-      "latin_wght_upright_bytes": 23892,
-      "latin_wght_italic_bytes": 26240,
+      "hinted": true,
+      "latin_wght_upright_bytes": 32504,
+      "latin_wght_italic_bytes": 35392,
       "codepoints_upright": 211
     },
     {

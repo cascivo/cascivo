@@ -582,3 +582,30 @@ italic, over Inter) before and after: `specimens/round-next/`. Measured against 
 - Scores: upright 8.74, italic 8.10 (held). All gates pass; Mono, Serif and Condensed rebuilt, their `test_family.py` pass.
 - Not done: the thicker Black Q tail reaches 197 under the baseline (176; Inter 74), the `test_q_tail...` floor is 151; Black e terminal overhangs the bowl a little (aperture gates); heavy b d p q O counters stay lighter than Inter's (the
   round-6 attempt broke gates); the 600 -> 700 width step on diagonal capitals (`wstep`) and the I/1 ambiguity at 12 px Black.
+
+## Round 6 (engine): hinted variable fonts, kerning by hand, Display Black
+
+Closes the site's known gaps on hinting, kerning and optical size 48. Specimens before and after: `specimens/round6/`.
+
+- Hinting: the variable fonts are hinted (ttfautohint per master, the CVT varied by `cvar`, `build._autohint_vf`). 96 cases
+  (wght 100-900, opsz 8/14/48, 9-16 px): `o x n` tops on one row 83 -> 96, a shared baseline row 0 -> 96 in grey. The i/j dot no
+  longer lands on the stem (11 of 32 cases before). Cost about +10 KB per full woff2, +6 KB per Latin slice. Details: RESEARCH.md.
+- Font Bakery `transformed_components` (hinted fonts only): the VF masters draw out their scaled, rotated and flipped components
+  (superior, inferior, numerator and denominator figures, fractions, ordinals, TM, (C), (R), turned commas, inverted ! ?, g cedilla)
+  before hinting; each scaled figure is drawn once and its other uses stay plain-offset components. Cost on top of hinting: full
+  woff2 +4.7 KB (87_296 -> 91_964 upright, 94_436 -> 99_140 italic), Latin slices +3.2-4.2 KB, static Regular woff2 +1.5 KB; budgets
+  raised to the measured size + 2%. Hinting is the deliberate trade; these outlines are its price.
+- Kerning (defect 9): `src/kern_overrides.py`, a hand table over the machine kerning, applied after `_fit_white` on Thin, Regular
+  and Black (Bold interpolates; a fourth value is a Display delta). 41 upright and 52 italic pairs: Thin W/V, Black W beside rounds,
+  PA TA AT FA LV LW RT, figures 71 77 7. 7, , L' L" V, r. r, f' f" 's, quotes beside A. Values set against Inter's kern and white,
+  rounded to 5. Thin W/V as a share of Inter's: upright We Wo .53/.51 -> .78, AW WA .63 -> .79; italic We Wo Wc .27-.33 -> .69,
+  AW .05 -> .70, WA .33 -> .70 (test floor 0.65x). Sans only: siblings keep machine kerning unless their `family.py` sets `KERN_OVERRIDES`.
+- Optical size 48 (defect 8): the near-touches at 900/48 were `r f t` before rounds (`rd ra rg`), not the figures (`0123Rag`'s
+  tightest gap, a-g, is 63). Min gap 12 (upright `rd`) -> 32, italic -3 (`ra`, overlapping) -> 30, by the Display delta in the
+  table. A heavy-only `DISPLAY_SPACING` would do nothing: Display Black has no master of its own. Gate: 30 units over `0123Rag`,
+  `ns st rg ef OO` and `r f` beside rounds at 900/48.
+- Defect 11: Thin comma below on `ș ț` (`COMMA_BELOW_LN` floor 150: bottom -141 -> -208, Inter -241). Black quotes (inner white 104
+  against Inter's 86) and `@` (3-4% smaller than Inter's, not low) measured within Inter and left. Not done: G spur at 900, Q tail
+  at 400, Black 5 foot, Regular a bowl, Caption Black counters, Cyrillic `Ч Ћ Ђ ђ`, Greek `α`.
+- Scores held: upright 8.74, italic 8.10, optical sizes 10.0. Left: italic Black `ta td tq` 22-23 and `Rt` 14 units at 900/48;
+  italic Thin `VA` 0.66x Inter's.

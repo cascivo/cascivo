@@ -29,6 +29,7 @@ from fontTools.ttLib.tables.TupleVariation import TupleVariation  # noqa: E402
 from fontTools import varLib  # noqa: E402
 from fontTools.varLib import instancer  # noqa: E402
 import ttfautohint  # noqa: E402
+from ttfautohint.options import StemWidthMode  # noqa: E402
 
 import glyphs as GL  # noqa: E402
 import family  # noqa: E402
@@ -1021,7 +1022,8 @@ def build_master_font(o, glyf, order):
     if HEBREW:
         fea += '\n' + hebrew.kern_fea(o) + '\n' + hebrew.mark_fea(o)
     addOpenTypeFeaturesFromString(fb.font, family.fea(fea))
-    # smart dropout control: keeps thin strokes from vanishing in unhinted rasterization
+    # smart dropout control: keeps thin strokes from vanishing in unhinted rasterization (the sibling
+    # families' variable fonts ship this; Cascivo Sans's are autohinted over it, _autohint_vf)
     prep = newTable('prep')
     prep.program = ttProgram.Program()
     prep.program.fromBytecode(bytes([0xB8, 0x01, 0xFF, 0x85, 0xB0, 0x04, 0x8D]))
@@ -1098,6 +1100,8 @@ def build(italic=False):
     for o, glyf in zip(outs, glyfs):
         s = SourceDescriptor()
         s.font = build_master_font(o, glyf, order)
+        if not family.ACTIVE:  # hinted below: Font Bakery's transformed_components (each master alike, so they stay compatible)
+            _flatten_transformed(s.font)
         s.location = {'Weight': o.loc['wght'], 'Optical size': o.loc['opsz']}
         s.name = o.name
         ds.addSource(s)
@@ -1127,7 +1131,119 @@ def build(italic=False):
         VariationModel.getMasterLocationsSortKeyFunc = staticmethod(sort_key)
     _sparse_zero_deltas(vf)
     finish(vf, italic)
+    if not family.ACTIVE:  # the sibling families keep their unhinted v1 files (and their size budgets)
+        _autohint_vf(vf, ds)
     return vf
+
+
+# Natural stem widths: a stem keeps its own width (rounded) at every instance rather than snapping to the
+# default master's standard width, which would draw Thin and Black stems at Regular's pixel count. No x-height
+# increase: rounding the x-height up scales the whole glyph, which set Display's capitals at 11 px a row tall.
+HINT_OPTS = dict(no_info=True, increase_x_height=0, gray_stem_width_mode=StemWidthMode.NATURAL, gdi_cleartype_stem_width_mode=StemWidthMode.NATURAL,
+                 dw_cleartype_stem_width_mode=StemWidthMode.NATURAL)
+
+
+def _autohint(font):
+    buf = io.BytesIO()
+    font.save(buf)
+    # no_info keeps ttfautohint's own version out of the name table, so builds stay reproducible
+    return TTFont(io.BytesIO(ttfautohint.ttfautohint(in_buffer=buf.getvalue(), **HINT_OPTS)))
+
+
+def _autohint_vf(vf, ds):
+    """TrueType hinting for the variable font. ttfautohint reads no gvar, so each master is hinted as a static
+    font: the default master's fpgm, prep and glyph programs go into the variable font as they are, and the
+    masters' CVTs (blue zones and stem widths, in the same layout at every master) become a cvar. The glyph
+    programs only address points by index and measure stems from the outline the rasterizer has at the
+    instance, so the default master's programs fit every instance; the cvar moves the zones they align to."""
+    from fontTools.misc.vector import Vector
+    from fontTools.varLib.models import normalizeLocation
+
+    axes = {a.tag: (a.minimum, a.default, a.maximum) for a in ds.axes}
+    tags = {a.name: a.tag for a in ds.axes}
+    locs, hinted = [], []
+    for s in ds.sources:
+        locs.append({k: v for k, v in normalizeLocation({tags[n]: v for n, v in s.location.items()}, axes).items() if v})
+        s.font['OS/2'].usWeightClass = round(s.font['OS/2'].usWeightClass)  # Bold's is its design coordinate
+        hinted.append(_autohint(s.font))
+    base = hinted[locs.index({})]
+    glyf, hglyf = vf['glyf'], base['glyf']
+    for name in vf.getGlyphOrder():
+        g, h = glyf[name], hglyf[name]
+        # ttfautohint must not have moved, added or dropped a point: gvar's deltas are by point index
+        if g.isComposite():
+            assert [(c.glyphName, c.x, c.y) for c in g.components] == [(c.glyphName, c.x, c.y) for c in h.components], name
+        else:
+            assert (g.getCoordinates(glyf)[0] if g.numberOfContours else []) == (h.getCoordinates(hglyf)[0] if h.numberOfContours else []), name
+        if getattr(h, 'program', None) is not None and h.program.getBytecode():
+            g.program = h.program
+    for tag in ('fpgm', 'prep', 'cvt ', 'gasp'):
+        vf[tag] = base[tag]
+    for k in ('maxZones', 'maxTwilightPoints', 'maxStorage', 'maxFunctionDefs', 'maxInstructionDefs', 'maxStackElements', 'maxSizeOfInstructions'):
+        setattr(vf['maxp'], k, getattr(base['maxp'], k))
+    vf['head'].flags |= base['head'].flags & 0b11111  # ttfautohint's: instructions depend on the size
+    cvts = [Vector(h['cvt '].values) for h in hinted]
+    assert len({len(c) for c in cvts}) == 1, 'masters hinted to different CVT layouts'
+    assert all(h['fpgm'].program == base['fpgm'].program and h['prep'].program == base['prep'].program for h in hinted)
+    deltas, supports = VariationModel(locs, axisOrder=[a.tag for a in ds.axes]).getDeltasAndSupports(cvts, round=round)
+    cvar = vf['cvar'] = newTable('cvar')
+    cvar.version = 1
+    cvar.variations = [TupleVariation(sup, [d or None for d in delta]) for delta, sup in zip(deltas[1:], supports[1:]) if any(delta)]
+    _keep_marks_clear(vf, [s.font for s in ds.sources])
+
+
+def _keep_marks_clear(font, masters):
+    """ttfautohint hints a composite's components apart: the base's top snaps to its blue zone and the mark's
+    offset is only rounded, so at text sizes the i's dot could land on the stem (an i read as an l at 14 px, in
+    11 of 32 weight and size cases). Each mark that clears the glyph below it in every master gets a few
+    instructions after ttfautohint's: when the grid-fitted gap is under a pixel, the mark moves up to one."""
+    glyf, maxp = font['glyf'], font['maxp']
+    fn = maxp.maxFunctionDefs  # ttfautohint numbers its functions from 0
+    # args: the mark's points, their count, the mark's bottom point, the top point below. d = bottom - top
+    # (grid-fitted, MD[0] in FreeType's reading); under 64 (a pixel) the points move up by 64 - d (SHPIX takes
+    # the amount, then SLOOP's count of points); otherwise the arguments are dropped
+    clear = ['PUSH[ ] 1', 'SZPS[ ]', 'SVTCA[0]', 'MD[0]', 'DUP[ ]', 'PUSH[ ] 64', 'LT[ ]', 'IF[ ]',
+             'PUSH[ ] 64', 'SWAP[ ]', 'SUB[ ]', 'SWAP[ ]', 'SLOOP[ ]', 'SHPIX[ ]', 'ELSE[ ]', 'CLEAR[ ]', 'EIF[ ]']
+    deepest, used = 0, False
+    for name in font.getGlyphOrder():
+        g = glyf[name]
+        if not g.isComposite() or len(g.components) < 2:
+            continue
+        ranges, start = [], 0
+        for c in g.components:
+            n = len(glyf[c.glyphName].getCoordinates(glyf)[0])
+            ranges.append(range(start, start + n))
+            start += n
+        program = []
+        for k in range(1, len(ranges)):
+            below, mark = [i for r in ranges[:k] for i in r], list(ranges[k])
+            if not below or not mark:
+                continue
+            gaps, ends = [], None
+            for m in masters:
+                ys = [y for _, y in m['glyf'][name].getCoordinates(m['glyf'])[0]]
+                bottom, top = min(mark, key=lambda i: ys[i]), max(below, key=lambda i: ys[i])
+                ends = ends or (bottom, top)
+                gaps.append(ys[bottom] - ys[top] if (bottom, top) == ends else 0)
+            if min(gaps) <= 0:  # touching or attached marks (cedilla, ogonek) and stacks that change order stay as drawn
+                continue
+            deepest = max(deepest, len(mark) + 6)
+            program += [f'PUSH[ ] {" ".join(map(str, mark))} {len(mark)} {ends[0]} {ends[1]} {fn}', 'CALL[ ]']
+        if program:
+            used = True
+            p = ttProgram.Program()
+            p.fromAssembly(program)
+            own = g.program.getBytecode() if getattr(g, 'program', None) is not None else b''
+            g.program = ttProgram.Program()
+            g.program.fromBytecode(own + p.getBytecode())
+    if not used:
+        return
+    p = ttProgram.Program()
+    p.fromAssembly([f'PUSH[ ] {fn}', 'FDEF[ ]'] + clear + ['ENDF[ ]'])
+    font['fpgm'].program.fromBytecode(font['fpgm'].program.getBytecode() + p.getBytecode())
+    maxp.maxFunctionDefs = fn + 1
+    maxp.maxStackElements = max(maxp.maxStackElements, deepest)
+    maxp.maxSizeOfInstructions = max([maxp.maxSizeOfInstructions, len(font['fpgm'].program.getBytecode())] + [len(glyf[n].program.getBytecode()) for n in font.getGlyphOrder() if getattr(glyf[n], 'program', None) is not None])
 
 
 WEIGHTS = [(100, 'Thin'), (200, 'ExtraLight'), (300, 'Light'), (400, 'Regular'), (500, 'Medium'), (600, 'SemiBold'), (700, 'Bold'), (800, 'ExtraBold'), (900, 'Black')]
@@ -1257,19 +1373,45 @@ def _win_extent(vf):
 
 
 def _flatten_transformed(font):
-    """Hinted fonts must not carry scaled or rotated components (TM, turned commas): draw those
-    glyphs out as plain outlines."""
+    """Hinted fonts must not carry scaled, rotated or flipped components (TM, turned commas, superiors):
+    a hint program runs on the component untransformed. Draw those glyphs out as plain outlines (a flipped
+    component's contours reversed back to clockwise); plain-offset components stay. A glyph made of one
+    transformed component is drawn out once, and every other use of that component at that transform (a
+    figure's sups, sinf, numr and dnom; the fractions; the double quote's two commas) becomes a plain-offset
+    component of it, so each scaled figure's outline and deltas are stored once, not four or five times."""
     from fontTools.pens.recordingPen import DecomposingRecordingPen
     from fontTools.pens.ttGlyphPen import TTGlyphPen
     glyf, gs = font['glyf'], font.getGlyphSet()
-    for name in font.getGlyphOrder():
+
+    def transformed(c):
+        return getattr(c, 'transform', None) is not None and [list(r) for r in c.transform] != [[1, 0], [0, 1]]
+
+    def key(c):
+        return c.glyphName, tuple(tuple(r) for r in c.transform)
+
+    order = font.getGlyphOrder()
+    owners = {}  # (component, transform) -> (glyph drawn out, its offset); first in glyph order, so every master picks alike
+    for name in order:
         g = glyf[name]
-        if g.isComposite() and any(getattr(c, 'transform', None) is not None and [list(r) for r in c.transform] != [[1, 0], [0, 1]] for c in g.components):
-            rec = DecomposingRecordingPen(gs)
-            gs[name].draw(rec)
-            pen = TTGlyphPen(None)
-            rec.replay(pen)
-            glyf[name] = pen.glyph()
+        if g.isComposite() and len(g.components) == 1 and transformed(g.components[0]):
+            owners.setdefault(key(g.components[0]), (name, g.components[0].x, g.components[0].y))
+    flat = {o for o, _, _ in owners.values()}
+    for name in order:
+        g = glyf[name]
+        if not (g.isComposite() and any(transformed(c) for c in g.components)):
+            continue
+        if name not in flat and all(key(c) in owners for c in g.components if transformed(c)):
+            for c in g.components:
+                if transformed(c):
+                    owner, ox, oy = owners[key(c)]
+                    c.glyphName, c.x, c.y = owner, c.x - ox, c.y - oy
+                    del c.transform
+            continue
+        rec = DecomposingRecordingPen(gs, reverseFlipped=True)
+        gs[name].draw(rec)
+        pen = TTGlyphPen(None)
+        rec.replay(pen)
+        glyf[name] = pen.glyph()
     return font
 
 
@@ -1299,9 +1441,13 @@ def _save_static(vf, style, wght):
     path = os.path.join(DIST, f'{ps}.ttf')
     font.save(path)
     # Static desktop files are hinted (ttfautohint): Windows at 100% scaling snaps unhinted stems
-    # unevenly. The variable fonts stay unhinted, as Inter's and Geist's web fonts are.
+    # unevenly. The variable fonts are hinted too (_autohint_vf); the subset above dropped their
+    # programs, so this instance is hinted afresh, with ttfautohint's default stem snapping.
     # no_info keeps ttfautohint's own version out of the name table, so builds stay reproducible.
     ttfautohint.ttfautohint(in_file=path, out_file=path, no_info=True)
+    font = TTFont(path)
+    _keep_marks_clear(font, [font])
+    font.save(path)
 
 
 def save_all(upright, italic):

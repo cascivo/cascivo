@@ -104,5 +104,40 @@ class CondensedTest(unittest.TestCase):
         self.assertLess(os.path.getsize(os.path.join(FONTS, 'CascivoCondensed-Latin[opsz,wght].woff2')), 45_000)
 
 
+    # ---- round 6 regressions ----
+
+    def instance(self, w):
+        from fontTools.pens.boundsPen import BoundsPen
+
+        f = instancer.instantiateVariableFont(TTFont(TTF), {'wght': w, 'opsz': 14})
+        cmap, gs = f.getBestCmap(), f.getGlyphSet()
+
+        def bounds(ch):
+            pen = BoundsPen(gs)
+            gs[cmap[ord(ch)]].draw(pen)
+            return pen.bounds
+
+        return f, cmap, bounds
+
+    def test_black_word_space_and_stem(self):
+        # 72 px Black headlines ran their words together (space 204) and their stems filled a e s g at 12 px (l stem 218)
+        f, cmap, bounds = self.instance(900)
+        self.assertGreaterEqual(f['hmtx'][cmap[32]][0], 215)
+        l = bounds('l')
+        self.assertLessEqual(l[2] - l[0], 212)
+
+    def test_t_clears_the_next_letter(self):
+        # t's crossbar met the next letter at 12 px ("ts", "t able"): right sidebearing at least 20 units at every weight
+        for w in (100, 400, 700, 900):
+            f, cmap, bounds = self.instance(w)
+            self.assertGreaterEqual(f['hmtx'][cmap[ord('t')]][0] - bounds('t')[2], 20, w)
+
+    def test_dots_larger_than_sans(self):
+        # Sans's dots read small beside the narrower letters
+        _, _, bounds = self.instance(400)
+        p = bounds('.')
+        self.assertGreaterEqual(p[2] - p[0], 110)
+
+
 if __name__ == '__main__':
     unittest.main()
