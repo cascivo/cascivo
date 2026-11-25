@@ -54,6 +54,36 @@ Round 7 (specimens in `specimens/round7/`, `before.png` / `after.png`; italic ro
 - Costs and caveats: small sizes is I/1 and I/l pixel overlap at 11-12 px; the stems sit within 20 units of Source Serif's, so the rest is pixel phase (a shorter 1 foot moved it 0.83 -> 0.80 and was dropped). Optical sizes compares against a reference with no opsz axis: any Display x-height change costs. Weight axis and wstep still carry single-reference noise (Source Serif's own stem steps run 25-35 units).
 - Left: 2 3 5 7 9 terminals still Sans; italic a / e / f still the Sans italic's; italic sets ~1.05x Source Serif Italic; Black g heavy at 72 px.
 
+Round 8 (specimens in `specimens/round8/`, `before.png` / `after.png`: Regular, Bold, Italic at 12 / 16 / 48 px, Source Serif 4
+in grey under each line):
+
+- Bug: the serif plans (`_PLAN`, `_DPLAN`, `_TPLAN`, `_DOTS`) were keyed by glyph name, and `build.py` builds the upright and
+  then the italic in one process, so the italic reused the upright's stroke indices wherever its drawing differs. The italic f
+  carried the upright's stem foot, a slab, on its descender tip (the "blocky f" of the round 7 critique). Now keyed by
+  (name, italic). Gate: `test_italic_plans_its_own_strokes` (fails on the round 7 fonts).
+- Italic f: the tail takes a ball (`BALL_TAIL`), as Source Serif 4 Italic's; the top kept its ball. Italic a and e judged close
+  enough once the stray serifs left (a's foot is the exit flick).
+- Figures (`FIG_BALL`, `FIG_ARM`): 2 3 5 6 9 end in a ball (0.72 of the letters' ball; at Black it moves onto the face's middle
+  and takes the face's width, `FIG_BALL_MID`, or it read as a knob with a notch behind it); 7's bar hangs a spur from its free
+  end. A flag on 5's bar was tried and dropped (5 already ran over Source Serif's ink). Gates: `test_figure_terminals_balled`,
+  `test_seven_bar_spur`.
+- Rhythm: Bold's lowercase set loose (nn 1.18 gap over counter at 700, Source Serif 1.01): `TUCK` gains a Bold point; u looser
+  still (nu 1.34 / 1.36 at 700 / 900, 1.15 italic at 400): `U_LSB`. Black's round capitals set tight (OO 0.61 at 900, Source
+  Serif 0.94; O's sidebearing 27 beside H's 43, Source Serif 37 beside 28): `ROUND_SB_K`, upright only (the italic's heavy
+  rounds already matched; its light ones set loose, `ROUND_SB_IT`). A smoother `ROUND_SB_K` (rising from Thin) was tried and
+  dropped: rhythm 9.03 -> 8.88. Gate: `test_heavy_spacing`.
+- t and f advances (`NARROW_W`): Thin t and f were narrow (t 333 / 398 at 100 / 400), a jump at 300 -> 400 (wstep t 40, italic 54).
+- Score vs Source Serif 4 (same ref): 6.985 -> 7.111. rhythm 8.26 -> 9.03, weight axis 5.01 -> 4.80, shape 8.32 -> 8.32,
+  colour 8.39 -> 8.34, small sizes 6.03 -> 6.04, optical sizes 1.29 -> 1.29.
+- Italic vs Source Serif 4 Italic: 6.464 -> 6.547. rhythm 8.07 -> 8.58, weight axis 3.79 -> 3.77, shape 6.82 -> 6.73, colour
+  6.91 -> 6.55, small sizes 6.21 -> 6.55.
+- Costs: the balls add ink to 3 and 5 (colour row, worst in the italic); the Bold sidebearing points add advance kinks at 600
+  (weight axis). WOFF2: upright 89_296 -> 90_112, italic 98_932 -> 98_544 (the stray italic serifs went); GPOS compaction
+  (`fontTools.otlLib.optimize`, levels 1-9) was measured and grows the WOFF2 (89_908 -> 90_260+), so nothing was free there.
+- Left: small sizes is still I/l and I/1 at 11-12 px, 200-400 (pixel phase); wstep at 600 on X Y V W A (the Bold master sits
+  between the named 600 and 700, whose design coordinates are uneven, 585 / 788); Black 6 and 9 show a hairline notch in the
+  counter at opsz 48 (round 7 fonts too; engine).
+
 Score vs Source Serif 4 (score.run, ref fontsource `@fontsource-variable/source-serif-4` 5.3.1 `source-serif-4-latin-wght-normal.woff2`):
 
 - round 2: overall 5.68 (v1 5.61 recorded, 5.65 re-measured on the same build). rhythm 6.92 -> 8.13, weight axis 0.88 -> 0.85, shape 6.84 -> 6.28, colour 6.80 -> 6.73, small sizes 8.04 -> 7.40, optical sizes 1.30 -> 1.28.
