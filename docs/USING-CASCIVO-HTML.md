@@ -62,6 +62,16 @@ The format has 51 elements: layout, display, feedback, navigation and seven SVG 
 `line`, `area`, `pie`, `scatter`, `spark`, `gauge`). Do not guess names or props. Run
 `cascivo-html guide` for the list and `cascivo-html guide <name>` for every prop of one component.
 
+## Static-only units
+
+A few units render their first paint only; there is no live behaviour on a static page.
+
+- `qr-code "text" size=128 errorCorrection=M`: SVG encoded at build time.
+- `relative-time "2026-11-25T09:00:00Z" now=<epoch ms>`: the phrase is frozen at build. Without `now` it uses the build clock.
+- `code-snippet "npm i x" language=bash`: highlighted (`bash`, `css`, `js`, `ts`). Use `\n` for line breaks inside the string. `showCopyButton` adds a copy button and its small script (off by default).
+- `indicator overlay="3" placement=top-end` wraps its child; `input-group prefix="$" suffix="USD"` wraps an `input`; `inline-citation 1 title="T" url=https://…` renders a numbered marker with its card.
+- Layouts (`flex`, `grid`, `columns`, `center`, `section`, `page-header`, `spacer`, `auto-grid`) are in the markup contract and parity-tested against React. `dashboard-layout`, `masonry`, `settings-layout`, `auth-layout` have no parity case yet (see the allowlist).
+
 ## Dialogs and toasts
 
 `dialog "Title" id=del description="..."` renders a native `<dialog>` inside `<cv-dialog>`; `dialog-trigger del "Delete"` is the button that opens it (`size=sm|md|lg`, `open` to start open). `toaster` is the notification region (`id="cv-toaster"`) a server appends toasts to; `toast "Saved" success` is one row (`info|success|warning|danger`, `title=`). Both ship a small inline script (`cv-dialog.js`, `cv-toaster.js`); without it a dialog stays closed unless `open`, and toasts stay on the page.

@@ -347,6 +347,17 @@ pub mod aspect_ratio {
     pub const INNER: &str = "cv-aspect-ratio-inner";
 }
 
+/// `auth-layout`
+pub mod auth_layout {
+    /// Root part.
+    pub const ROOT: &str = "cv-auth-layout-layout";
+    /// Root alias class.
+    pub const ALIAS: &str = "cv-auth-layout";
+    pub const CARD: &str = "cv-auth-layout-card";
+    pub const LAYOUT: &str = "cv-auth-layout-layout";
+    pub const LOGO: &str = "cv-auth-layout-logo";
+}
+
 /// `auto-grid`
 pub mod auto_grid {
     /// Root part.
@@ -1192,7 +1203,7 @@ pub mod color_picker {
 /// `columns`
 pub mod columns {
     /// Root part.
-    pub const ROOT: &str = "cv-columns-columns";
+    pub const ROOT: &str = "cv-columns-columns-container";
     /// Root alias class.
     pub const ALIAS: &str = "cv-columns";
     pub const COLUMNS: &str = "cv-columns-columns";
@@ -1546,6 +1557,8 @@ pub mod copy_button {
 
 /// `dashboard-layout`
 pub mod dashboard_layout {
+    /// Root part.
+    pub const ROOT: &str = "cv-dashboard-layout-layout";
     /// Root alias class.
     pub const ALIAS: &str = "cv-dashboard-layout";
     pub const ASIDE: &str = "cv-dashboard-layout-aside";
@@ -2513,6 +2526,56 @@ pub mod flex {
     pub const ALIAS: &str = "cv-flex";
     pub const FLEX: &str = "cv-flex-flex";
     pub const FLEX_ITEM: &str = "cv-flex-flex-item";
+    /// `data-direction` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Direction {
+        Vertical,
+        Horizontal,
+    }
+    impl Direction {
+        pub const ALL: &[Self] = &[Self::Vertical, Self::Horizontal];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Vertical => "vertical",
+                Self::Horizontal => "horizontal",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-wrap` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Wrap {
+        Empty,
+    }
+    impl Wrap {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-truncate` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum FlexItemTruncate {
+        Empty,
+    }
+    impl FlexItemTruncate {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `form`
@@ -2527,12 +2590,60 @@ pub mod form {
 /// `grid`
 pub mod grid {
     /// Root part.
-    pub const ROOT: &str = "cv-grid-grid";
+    pub const ROOT: &str = "cv-grid-grid-container";
     /// Root alias class.
     pub const ALIAS: &str = "cv-grid";
     pub const GRID: &str = "cv-grid-grid";
     pub const GRID_CONTAINER: &str = "cv-grid-grid-container";
     pub const GRID_ITEM: &str = "cv-grid-grid-item";
+    /// `data-responsive` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum GridResponsive {
+        Empty,
+    }
+    impl GridResponsive {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-align-rows` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum GridAlignRows {
+        Empty,
+    }
+    impl GridAlignRows {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
+    /// `data-responsive` values.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum GridItemResponsive {
+        Empty,
+    }
+    impl GridItemResponsive {
+        pub const ALL: &[Self] = &[Self::Empty];
+        pub const fn as_str(self) -> &'static str {
+            match self {
+                Self::Empty => "",
+            }
+        }
+        pub fn parse(s: &str) -> Option<Self> {
+            Self::ALL.iter().copied().find(|v| v.as_str() == s)
+        }
+    }
 }
 
 /// `header`
@@ -3313,6 +3424,15 @@ pub mod log_viewer {
     }
 }
 
+/// `masonry`
+pub mod masonry {
+    /// Root part.
+    pub const ROOT: &str = "cv-masonry-masonry";
+    /// Root alias class.
+    pub const ALIAS: &str = "cv-masonry";
+    pub const MASONRY: &str = "cv-masonry-masonry";
+}
+
 /// `menu`
 pub mod menu {
     /// Root part.
@@ -3910,6 +4030,8 @@ pub mod overflow_menu {
 
 /// `page-header`
 pub mod page_header {
+    /// Root part.
+    pub const ROOT: &str = "cv-page-header-header";
     /// Root alias class.
     pub const ALIAS: &str = "cv-page-header";
     pub const ACTIONS: &str = "cv-page-header-actions";
@@ -4817,6 +4939,18 @@ pub mod separator {
     }
 }
 
+/// `settings-layout`
+pub mod settings_layout {
+    /// Root part.
+    pub const ROOT: &str = "cv-settings-layout-layout-container";
+    /// Root alias class.
+    pub const ALIAS: &str = "cv-settings-layout";
+    pub const CONTENT: &str = "cv-settings-layout-content";
+    pub const LAYOUT: &str = "cv-settings-layout-layout";
+    pub const LAYOUT_CONTAINER: &str = "cv-settings-layout-layout-container";
+    pub const MENU: &str = "cv-settings-layout-menu";
+}
+
 /// `share-menu`
 pub mod share_menu {
     /// Root part.
@@ -5310,6 +5444,18 @@ pub mod spinner {
             Self::ALL.iter().copied().find(|v| v.as_str() == s)
         }
     }
+}
+
+/// `split-view`
+pub mod split_view {
+    /// Root part.
+    pub const ROOT: &str = "cv-split-view-split";
+    /// Root alias class.
+    pub const ALIAS: &str = "cv-split-view";
+    pub const DIVIDER: &str = "cv-split-view-divider";
+    pub const PANE_END: &str = "cv-split-view-pane-end";
+    pub const PANE_START: &str = "cv-split-view-pane-start";
+    pub const SPLIT: &str = "cv-split-view-split";
 }
 
 /// `stack`

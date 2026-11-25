@@ -5,6 +5,11 @@ export const meta: ComponentMeta = {
   description: 'Media-query-free responsive grid — columns auto-fill based on available space.',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: { element: 'div', local: 'auto-grid', children: ['$slot'], emit: 'manual' },
+    parts: {},
+  },
   states: [],
   variants: [],
   sizes: [],

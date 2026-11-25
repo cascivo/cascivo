@@ -160,6 +160,7 @@ const SCRIPTS: &[(&str, &str)] = &[
     (CV_TABS, include_str!("../assets/extra/cv-tabs.js")),
     (CV_DIALOG, include_str!("../assets/extra/cv-dialog.js")),
     (CV_TOASTER, include_str!("../assets/extra/cv-toaster.js")),
+    ("copy-btn", include_str!("../assets/extra/copy-btn.js")),
 ];
 
 /// Page shell: inline padding and a vertical rhythm from the brand's `gap` (default space-4).

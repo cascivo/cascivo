@@ -26,6 +26,29 @@
     "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
     "category": "layout",
     "clientJs": "required",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "split",
+        "children": ["pane-start", "divider", "pane-end"]
+      },
+      "parts": {
+        "pane-start": {
+          "element": "div",
+          "children": ["$slot"]
+        },
+        "divider": {
+          "element": "div",
+          "role": "separator",
+          "children": []
+        },
+        "pane-end": {
+          "element": "div",
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

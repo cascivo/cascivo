@@ -30,10 +30,12 @@ pub mod diag;
 pub mod emit;
 pub mod guide;
 mod guide_gen;
+mod highlight;
 pub mod html;
 mod lex;
 mod parse;
 pub mod path;
+mod qr;
 pub mod render;
 
 pub use ast::{BrandItem, Directive, Doc, Node, Value};

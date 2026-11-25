@@ -1,2 +1,2 @@
-flex
+flex direction=horizontal gap=2 align=center
   separator

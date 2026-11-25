@@ -34,7 +34,7 @@
           "data-placement": ["top-start", "top-end", "bottom-start", "bottom-end"]
         },
         "children": ["$slot", "overlay"],
-        "emit": "auto"
+        "emit": "manual"
       },
       "parts": {
         "overlay": {

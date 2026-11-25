@@ -5,6 +5,14 @@ export const meta: ComponentMeta = {
   description: 'Centered card layout for authentication pages (login, register, forgot password).',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: { element: 'div', local: 'layout', children: ['card'], emit: 'manual' },
+    parts: {
+      card: { element: 'div', children: ['logo', '$slot'] },
+      logo: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

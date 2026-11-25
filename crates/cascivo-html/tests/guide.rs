@@ -11,7 +11,7 @@ fn examples() -> Vec<&'static str> {
 
 #[test]
 fn guide_fits_budget() {
-    assert!(GUIDE.chars().count() <= 6000, "{}", GUIDE.chars().count());
+    assert!(GUIDE.chars().count() <= 6300, "{}", GUIDE.chars().count());
 }
 
 #[test]

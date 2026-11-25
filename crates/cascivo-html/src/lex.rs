@@ -135,6 +135,11 @@ impl Lexer<'_> {
                         s.push(e);
                         self.i += 1;
                     }
+                    // Code samples need line breaks inside one-line strings.
+                    Some('n') => {
+                        s.push('\n');
+                        self.i += 1;
+                    }
                     Some(e) => {
                         self.err(self.i - 1, format!("unknown escape '\\{e}'"));
                         s.push('\\');

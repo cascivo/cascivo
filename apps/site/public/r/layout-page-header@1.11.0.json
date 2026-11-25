@@ -26,6 +26,37 @@
     "description": "Page-level header with title, description, breadcrumb, and actions slots.",
     "category": "layout",
     "clientJs": "none",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "header",
+        "local": "header",
+        "children": ["breadcrumb", "row", "description"],
+        "emit": "manual"
+      },
+      "parts": {
+        "breadcrumb": {
+          "element": "div",
+          "children": ["$slot"]
+        },
+        "row": {
+          "element": "div",
+          "children": ["title", "actions"]
+        },
+        "title": {
+          "element": "h1",
+          "children": ["$text"]
+        },
+        "actions": {
+          "element": "div",
+          "children": ["$slot"]
+        },
+        "description": {
+          "element": "p",
+          "children": ["$text"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

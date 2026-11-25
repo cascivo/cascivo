@@ -17,6 +17,8 @@ import { compileModule, contractClass } from './css.ts'
 export const REPO_ROOT = fileURLToPath(new URL('../../', import.meta.url))
 export const COMPONENTS_DIR = join(REPO_ROOT, 'packages/components/src')
 export const CONTRACT_JSON = 'packages/css/contract.json'
+/** Layout primitives live in their own package but share the markup contract. */
+export const LAYOUTS_DIR = join(REPO_ROOT, 'packages/layouts/src')
 export const CLASSES_TS = 'packages/css/src/classes.gen.ts'
 /** Bumped on a breaking change to the shape of `contract.json` itself (not its content). */
 export const CONTRACT_FORMAT = 1
@@ -32,6 +34,15 @@ export interface UnitSource {
 }
 
 export async function loadUnits(dir = COMPONENTS_DIR): Promise<UnitSource[]> {
+  const units = await loadFrom(dir)
+  if (dir !== COMPONENTS_DIR) return units
+  // A unit present in both (app-shell) keeps its components copy.
+  const seen = new Set(units.map((u) => u.unit))
+  const extra = (await loadFrom(LAYOUTS_DIR)).filter((u) => !seen.has(u.unit))
+  return [...units, ...extra].sort((a, b) => (a.unit < b.unit ? -1 : 1))
+}
+
+async function loadFrom(dir: string): Promise<UnitSource[]> {
   const units: UnitSource[] = []
   const dirs = readdirSync(dir, { withFileTypes: true })
     .filter((d) => d.isDirectory() && !NOT_COMPONENTS.has(d.name))

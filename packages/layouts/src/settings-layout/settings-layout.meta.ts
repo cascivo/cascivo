@@ -5,6 +5,15 @@ export const meta: ComponentMeta = {
   description: 'Two-column settings page layout with a fixed-width menu and fluid content area.',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: { element: 'div', local: 'layout-container', children: ['layout'], emit: 'manual' },
+    parts: {
+      layout: { element: 'div', children: ['menu', 'content'] },
+      menu: { element: 'div', children: ['$slot'] },
+      content: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

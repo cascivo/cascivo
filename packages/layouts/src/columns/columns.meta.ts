@@ -6,6 +6,11 @@ export const meta: ComponentMeta = {
     'Equal-width multi-column layout that collapses to single column on narrow viewports.',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: { element: 'div', local: 'columns-container', children: ['columns'], emit: 'manual' },
+    parts: { columns: { element: 'div', children: ['$slot'] } },
+  },
   states: [],
   variants: [],
   sizes: [],

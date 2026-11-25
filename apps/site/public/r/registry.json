@@ -19239,7 +19239,7 @@
               "data-placement": ["top-start", "top-end", "bottom-start", "bottom-end"]
             },
             "children": ["$slot", "overlay"],
-            "emit": "auto"
+            "emit": "manual"
           },
           "parts": {
             "overlay": {
@@ -21092,6 +21092,25 @@
         "description": "Centered card layout for authentication pages (login, register, forgot password).",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "layout",
+            "children": ["card"],
+            "emit": "manual"
+          },
+          "parts": {
+            "card": {
+              "element": "div",
+              "children": ["logo", "$slot"]
+            },
+            "logo": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -21181,6 +21200,16 @@
         "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "auto-grid",
+            "children": ["$slot"],
+            "emit": "manual"
+          },
+          "parts": {}
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -21265,6 +21294,16 @@
         "description": "Horizontally centered container with a configurable max-width.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "center",
+            "children": ["$slot"],
+            "emit": "manual"
+          },
+          "parts": {}
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -21347,6 +21386,21 @@
         "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "columns-container",
+            "children": ["columns"],
+            "emit": "manual"
+          },
+          "parts": {
+            "columns": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -21436,6 +21490,33 @@
         "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "layout",
+            "children": ["stats", "body"],
+            "emit": "manual"
+          },
+          "parts": {
+            "stats": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "body": {
+              "element": "div",
+              "children": ["main", "aside"]
+            },
+            "main": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "aside": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -21523,6 +21604,29 @@
         "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "flex",
+            "data": {
+              "data-direction": ["vertical", "horizontal"],
+              "data-wrap": [""]
+            },
+            "children": ["flex-item", "$slot"],
+            "emit": "manual"
+          },
+          "parts": {
+            "flex-item": {
+              "element": "div",
+              "data": {
+                "data-size": "string",
+                "data-truncate": [""]
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -21663,6 +21767,32 @@
         "description": "CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "grid-container",
+            "children": ["grid"],
+            "emit": "manual"
+          },
+          "parts": {
+            "grid": {
+              "element": "div",
+              "data": {
+                "data-responsive": [""],
+                "data-align-rows": [""]
+              },
+              "children": ["grid-item", "$slot"]
+            },
+            "grid-item": {
+              "element": "div",
+              "data": {
+                "data-responsive": [""]
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -21777,6 +21907,16 @@
         "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "masonry",
+            "children": ["$slot"],
+            "emit": "manual"
+          },
+          "parts": {}
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -21860,6 +22000,37 @@
         "description": "Page-level header with title, description, breadcrumb, and actions slots.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "header",
+            "local": "header",
+            "children": ["breadcrumb", "row", "description"],
+            "emit": "manual"
+          },
+          "parts": {
+            "breadcrumb": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "row": {
+              "element": "div",
+              "children": ["title", "actions"]
+            },
+            "title": {
+              "element": "h1",
+              "children": ["$text"]
+            },
+            "actions": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "description": {
+              "element": "p",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -21967,6 +22138,21 @@
         "description": "Page-section shell with block padding, centered inner width, and stack gap.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "section",
+            "local": "section",
+            "children": ["inner"],
+            "emit": "manual"
+          },
+          "parts": {
+            "inner": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -22050,6 +22236,29 @@
         "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "layout-container",
+            "children": ["layout"],
+            "emit": "manual"
+          },
+          "parts": {
+            "layout": {
+              "element": "div",
+              "children": ["menu", "content"]
+            },
+            "menu": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "content": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -22131,6 +22340,15 @@
         "description": "Fixed-height spacing block using design token steps.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "spacer",
+            "emit": "manual"
+          },
+          "parts": {}
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -22202,6 +22420,29 @@
         "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
         "category": "layout",
         "clientJs": "required",
+        "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "split",
+            "children": ["pane-start", "divider", "pane-end"]
+          },
+          "parts": {
+            "pane-start": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "divider": {
+              "element": "div",
+              "role": "separator",
+              "children": []
+            },
+            "pane-end": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],

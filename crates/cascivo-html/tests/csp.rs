@@ -143,7 +143,7 @@ fn script_bundle_covers_every_script() {
         assert!(all.contains(script(n).unwrap().trim_end()));
     }
     let used = render_parts(
-        "table sort A | b\ntabs\n  text \"x\"\ndialog \"d\"\ntoaster\n",
+        "table sort A | b\ntabs\n  text \"x\"\ndialog \"d\"\ntoaster\ncode-snippet \"x\" showCopyButton\n",
         &Options::default(),
     )
     .unwrap();

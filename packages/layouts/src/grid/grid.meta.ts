@@ -6,6 +6,18 @@ export const meta: ComponentMeta = {
     'CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: { element: 'div', local: 'grid-container', children: ['grid'], emit: 'manual' },
+    parts: {
+      grid: {
+        element: 'div',
+        data: { 'data-responsive': [''], 'data-align-rows': [''] },
+        children: ['grid-item', '$slot'],
+      },
+      'grid-item': { element: 'div', data: { 'data-responsive': [''] }, children: ['$slot'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],

@@ -5,6 +5,16 @@ export const meta: ComponentMeta = {
   description: 'Dashboard page layout with stats strip, main content area, and optional aside.',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: { element: 'div', local: 'layout', children: ['stats', 'body'], emit: 'manual' },
+    parts: {
+      stats: { element: 'div', children: ['$slot'] },
+      body: { element: 'div', children: ['main', 'aside'] },
+      main: { element: 'div', children: ['$slot'] },
+      aside: { element: 'div', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],
