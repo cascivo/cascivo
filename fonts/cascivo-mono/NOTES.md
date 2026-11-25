@@ -85,6 +85,29 @@ JetBrains Mono; before/after sheets in `specimens/round-next/`.
 Score vs JetBrains Mono + Geist Mono, round 4: 7.858 -> **7.888**; shape 8.37 -> 8.40, colour 6.76 -> 6.86, small sizes 9.71 -> 9.74,
 rhythm and weight axis unchanged.
 
+Round 8, visual + bytes (`src/family.py`; engine untouched, Sans byte-identical). Judged at 12/16/48 px, 400/700/900, against
+JetBrains Mono (static TTFs from /usr/share/fonts); sheets `specimens/round8/` (`python3 -I src/specimen_round8.py <tag> <jetbrains dir>`:
+code, punctuation and operators, disambiguation, a cell grid). Ink ratios below are rasterized at 150 px, Cascivo / JetBrains Mono.
+
+- `{ }`: at 700-900 the brace's curls filled into a solid lobe (Sans's BRACE_BLACK pen in round 7's wider brace): `{}` was the darkest
+  pair on a line, ink 1.32/1.40x. Pen BRACE_PEN 0.7 at Black (via `_lighter`): curls open, 0.84/0.77x. The fill is a threshold, not a
+  ramp: 0.75 still fills, 0.72 opens, so 0.7 keeps a margin at opsz 8.
+- I: slabs on I_INK 380 (+20 at Black) of ink, was 245-313 (theirs 390): 0.79 -> 0.89x; with serifs both sides it is further from l.
+- 1: flag stretched ONE_FLAG 1.35 leftward of the stem (`_delims`, points left of the stem only; stem untouched): ink 265 -> 329 wide.
+- j: hook radius J_TAIL 1.6x Sans's (depth 1.3x): its tail now reaches under the top slab (was 75-80 units short), ink 0.79 -> 0.81x
+  at 400, 0.86 -> 0.89x at Black.
+- `/` `\`: pen SLASH_WS 0.66 -> 0.8 (0.63 -> 0.76x at 400, 0.73 -> 0.88x at Black); `a/b` and `//` no longer hairlines.
+- `#`: Mono's own, 480 wide, full cap height, pen 1 - HASH_LIGHT 0.18 at Black: 1.20 -> 1.03x at Black, 400 unchanged.
+- Bytes, free: the WOFF2 hmtx transform (one advance, every lsb = xMin, so the decoder rebuilds hmtx; -956 B) and Brotli tried the
+  engine's BROTLI_TRIES ways (-30..-120 B), both in a `_save_woff2` wrap. Decoded tables are identical to the TTF's (head aside).
+  WOFF2 73 380 -> 72 212, Latin slice 28 176 -> 27 832, TTF 210 044 -> 209 908.
+- Tests: I and 1 widths, j tail vs slab, `/` stroke, # vs H and { vs ( ink (grid-sampled: AreaPen double-counts the brace's two
+  overlapping strokes), hmtx transformed in both WOFF2s. All five fail on the round 7 font.
+- Tried and dropped: BRACE_PEN 0.8/0.85 (curls still filled, 1.19-1.31x); HASH_LIGHT 0.3 (0.91x, # thin beside letters); a foot on 1
+  (with l's foot slab, `1l` read alike at 12 px). Not done: `~` (0.75x) and `*` at 400 (0.72x) still light; ` at Black 1.36x.
+- Sheet caveat: in the grid, Pillow draws m w 1 I # lighter at 700/900 for both fonts (also JetBrains Mono's statics); the code
+  sheets show them at weight.
+
 v1 score vs JetBrains Mono + Geist Mono: overall 7.78; rhythm 7.25, weight axis 9.04, shape 8.56, colour 6.69,
 small sizes 9.84, optical sizes 1.27 (the refs have no opsz axis, so that row is not meaningful).
 
