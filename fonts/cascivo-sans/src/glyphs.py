@@ -19,6 +19,8 @@ from geom import L, lerp, Stroke, _smooth, arc, contour_bounds, expand, norm, or
 R7 = not family.ACTIVE
 # Round 8 (CAPW_START, CAPW_THIN, ...) likewise: the sibling families keep their round-7 outlines.
 R8 = not family.ACTIVE
+# Round 9 (J_HEAVY) likewise.
+R9 = not family.ACTIVE
 
 GLYPHS = {}  # name -> (codepoints, fn)
 ORDER = []
@@ -261,12 +263,22 @@ def _T(g, p):
 A_DIAG, A_BAR, A_BAR_DROP = 0.08, 0.14, 0.08
 
 
+# A_THIN (upright, italic): share of its width the A gives up at Thin, on a straight line to Regular. Regular to Black it widens by
+# 4-5% per 100 units of weight, Thin to Regular by under 1% (602 -> 616 italic): a bend of 22-26 units at 400 (score.py wstep, the
+# italic's worst weight-axis row; Inter, Geist and Plex 1-3), whose Thin A is 9-11% narrower than their Regular's. Held at 0: at 0.06
+# (bends 7 / 15) Thin's kerning fits less (AV AY VA YA 50-52 units against floors of 54-59, test_key_pairs_kern_like_inter; round 8 ships
+# AY at 60 over 59.2) and the italic's WA VA white drops under 0.85x Inter's, so it waits on an owner decision on the Thin kerning floors.
+A_THIN = (0.0, 0.0)
+
+
 @glyph('A', 0x41)
 def _A(g, p):
     # heavy A widens and drops its bar, or the counter above the bar closes (Black: 0.38x)
     w = p.Hd * (1.1 + 0.14 * p.heavy)
     if p.italic:  # the italic's narrowing closed Black's counter to 0.89x the upright's
         w *= 1 + 0.06 * p.heavy
+    if p.wght < 400:  # A_THIN: see its comment
+        w *= 1 - A_THIN[p.italic] * (400 - p.wght) / 300
     c = w / 2
     # diagonals at (nearly) the full stroke: the A carried 0.90-0.91x the references' ink at every
     # weight. Black widens as much again, so the counter above the bar stays open
@@ -560,14 +572,20 @@ def _U(g, p):
 J_RUN = 12
 
 
+# J_HEAVY (wider, taller): round 9, the heavy J's hook grows past Regular's, wider by J_HEAVY[0] of the H's width and its hook taller by
+# J_HEAVY[1] of the width (its cap by half that of the cap height). At 500-900 it carried 0.80-0.82x the references' ink per advance
+# (score.py colour, z -2, the worst colour row upright and italic): a narrow stem on a shallow hook beside Inter's and Geist's wide J.
+J_HEAVY = (0.0, 0.35) if R9 else (0.0, 0.0)
+
+
 @glyph('J', 0x4A)
 def _J(g, p):
-    w = p.Hd * 0.8
+    w = p.Hd * (0.8 + J_HEAVY[0] * p.heavy)
     V, H = p.V, p.H
     xr = w - V / 2
     rx = (w - V / 2) / 2 - 2
     # a taller hook: the J carried 0.88-0.91x Geist's and Inter's ink at every weight
-    ry = min(rx * 1.12, p.cap * 0.40)
+    ry = min(rx * (1.12 + J_HEAVY[1] * p.heavy), p.cap * (0.40 + J_HEAVY[1] / 4 * p.heavy))
     cy = -p.ov + H / 2 + ry
     # Regular's hook runs 12° further round (it stopped short, 0.87x the references' ink); Black's
     # is unchanged

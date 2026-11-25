@@ -693,3 +693,31 @@ axis 7.33 -> 7.34), italic 8.20 -> 8.29 (weight axis 7.42 -> 7.53, shape 7.16 ->
 - Left: bytes, the 5.5 KB of hinting (no glyph program is a no-op, round 7) and the gvar of the Thin and Black masters, which
   only a coarser conversion or fewer points per contour would shrink further (the gates pin the outlines to the unit); the lowercase 700 bends (`w m g n o`, 16-33 units, Bold's natural spacing: `BOLD_ADV_BLEND`), Black round-letter counters (italic
   `a b d p q O D` at 900, z 3-5), `I/1` above, `k x y v w` crotches, upright `tt` at 900/48.
+
+## Round 9 (engine): the 700 bend of m w g, the heavy J
+
+Built (`python3 -I src/build.py`), specimens at 12 / 16 / 48 / 96 px, Thin / Regular / Bold / Black, upright and italic, Cascivo over
+Inter (`specimens/round9/r9e-*.png`; before / after at 700, 700 italic and 900: `r9e-before-after.png`). Scores held, upright 8.43, italic 8.27: the
+`m w` rows leave the top ten, the scorer's top rows left are the blocked `I/1`, Black `Q` and Black `b d p q a` counters (see below).
+
+- The 700 bend of `m w g` (`build.BOLD_ADV_BLEND_LETTERS` m, w, g at 0.5): the Bold master keeps each letter's natural Bold advance,
+  so these three, the widest-moving, bent 23-32 units at 700 (references 1-2). Half way to the Regular-Black line they bend 11-16. The
+  global blend failed the reflow rule in round 6; per letter it fits: `v y` at 0.5 as well put 'Overview Activity Settings' at +2.55%
+  at 600 (cap 2.5%), so they and the italic's round letters (`o b d p q h`, italic headroom 0.15% at 700) stay.
+- Heavy `J` (`glyphs.J_HEAVY` (0.0, 0.35)): Black's J carried 0.80-0.82x the references' ink per advance from 500 up (score.py colour,
+  the worst colour row upright and italic), a stem on a shallow hook. The hook now rises by up to 0.35 of the width more at Black:
+  ink per advance at 900 0.263 -> 0.271 upright, 0.273 -> 0.282 italic. Tried first: a wider heavy J (+6% of H), which moved the
+  colour the wrong way (the added hook bottom is lighter than the letter's mean) and was dropped.
+- Bytes: full upright woff2 89,384 -> 89,392 (+8); comparison.json's hinted Latin `wght` slice 31,604 -> 31,512 upright, 34,560 -> 34,508 italic
+  (comparison.json and the site's comparison.generated.ts refreshed).
+- Tests: `src/test_r9_design.py` (m w g bend at 700, J ink at 900, siblings keep round-8 knobs: `glyphs.R9`,
+  the per-letter blend is off whenever `family.ACTIVE`).
+- Tried and held at 0: a narrower Thin `A` (`glyphs.A_THIN`). The A widens 4-5% per 100 units from Regular to Black but under 1%
+  from Thin to Regular, a bend of 19 units upright and 26 italic at 400 (the italic's worst weight-axis row; references 1-3), and
+  its Thin sits at 0.98x its Regular (Inter's and Geist's 0.89-0.90x). At 0.06 the bends drop to 7 / 15, but Thin's measured
+  kerning shrinks with the overhang: AV AY VA YA kern 50-52 against floors of 54-59 (`test_key_pairs_kern_like_inter`; round 8 ships
+  AY at 60 over a 59.2 floor, so there is no headroom), and the italic's WA / VA white at 100-200 falls to 0.84x Inter's (floor
+  0.85). Needs an owner decision: floors on white rather than kerning units at Thin, or a hand override for the A pairs.
+- Still blocked (unchanged from round 8): `I/1` at 12 px Black (the 1's flag gate against the I's slab width), the round-7 spacing
+  retune (33 subtests in 19 tests), the upright Black `Q` counter (quality.py's Q counter gate keeps the tail out), Black `b d p q a`
+  counters (crotch gate, round 6). Seen and left: upright `r` and italic `E` stem rows at 600 are 5-unit raster steps, not outline kinks.
