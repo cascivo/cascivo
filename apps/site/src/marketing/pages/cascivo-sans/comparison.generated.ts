@@ -14,9 +14,13 @@ export const COMPARISON = {
         "opsz"
       ],
       "hinted": true,
-      "latin_wght_upright_bytes": 32540,
-      "latin_wght_italic_bytes": 35328,
-      "codepoints_upright": 211
+      "latin_wght_upright_bytes": 31604,
+      "latin_wght_italic_bytes": 34560,
+      "codepoints_upright": 211,
+      "latin_wght_unhinted_upright_bytes": 25632,
+      "latin_wght_unhinted_italic_bytes": 28468,
+      "latin_opsz_wght_upright_bytes": 38768,
+      "latin_opsz_wght_italic_bytes": 42432
     },
     {
       "name": "Inter",
