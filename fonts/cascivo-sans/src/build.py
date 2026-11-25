@@ -1095,7 +1095,7 @@ def build(italic=False):
         a = AxisDescriptor()
         a.tag, a.name, a.minimum, a.default, a.maximum = tag, name, lo, df, hi
         if tag == 'wght':
-            a.map = WGHT_MAP
+            a.map = family.get('WGHT_MAP', WGHT_MAP)  # a family may space its named weights differently (serif); Sans: params'
         ds.addAxis(a)
     for o, glyf in zip(outs, glyfs):
         s = SourceDescriptor()

@@ -612,7 +612,8 @@ def _white0(o, a, b):
 
 def _design(w):
     """The design coordinate of a user weight (the avar map): 800 sits halfway between Bold (700) and Black, not 4/5 of the way to Black."""
-    for (u0, d0), (u1, d1) in zip(WGHT_MAP, WGHT_MAP[1:]):
+    m = family.get('WGHT_MAP', WGHT_MAP)  # the family's own avar map when it has one (build.py)
+    for (u0, d0), (u1, d1) in zip(m, m[1:]):
         if u0 <= w <= u1:
             return d0 + (d1 - d0) * (w - u0) / (u1 - u0)
     raise ValueError(w)
