@@ -1,5 +1,12 @@
 # Cascivo Condensed changelog
 
+## Round 9 (visual)
+
+- Parentheses, brackets, the straight double quote and the hyphen are condensed with the letters (they kept 0.85-0.95 of Sans's
+  width; now 0.77-0.83): "(Mobile)", "[Beta]", "Draft" and 2026-11-25 stop setting loose. Strokes keep their weight.
+- WOFF2: full 73,704 -> 73,504 bytes, Latin 31,060 -> 31,104.
+- Before/after sheets (headlines 48/96 px, UI 12/16 px, tables 12/16/48 px, 300-900): `specimens/round9/` (`src/specimen_round9.py`).
+
 ## Round 8 (visual, bytes)
 
 - Bold and Black t have more room on the left: st, ct, rt stop touching at 12-16 px.
