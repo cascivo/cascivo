@@ -86,6 +86,18 @@ export const classes = {
     alias: 'cv-aspect-ratio',
     inner: 'cv-aspect-ratio-inner',
   },
+  authLayout: {
+    root: 'cv-auth-layout-layout',
+    alias: 'cv-auth-layout',
+    card: 'cv-auth-layout-card',
+    layout: 'cv-auth-layout-layout',
+    logo: 'cv-auth-layout-logo',
+  },
+  autoGrid: {
+    root: 'cv-auto-grid-auto-grid',
+    alias: 'cv-auto-grid',
+    'auto-grid': 'cv-auto-grid-auto-grid',
+  },
   avatar: {
     root: 'cv-avatar-avatar',
     alias: 'cv-avatar',
@@ -191,6 +203,11 @@ export const classes = {
     track: 'cv-carousel-track',
     viewport: 'cv-carousel-viewport',
   },
+  center: {
+    root: 'cv-center-center',
+    alias: 'cv-center',
+    center: 'cv-center-center',
+  },
   chainOfThought: {
     root: 'cv-chain-of-thought-chain',
     alias: 'cv-chain-of-thought',
@@ -282,6 +299,12 @@ export const classes = {
     srOnly: 'cv-color-picker-srOnly',
     thumb: 'cv-color-picker-thumb',
     wrapper: 'cv-color-picker-wrapper',
+  },
+  columns: {
+    root: 'cv-columns-columns-container',
+    alias: 'cv-columns',
+    columns: 'cv-columns-columns',
+    'columns-container': 'cv-columns-columns-container',
   },
   combobox: {
     root: 'cv-combobox-wrapper',
@@ -383,6 +406,15 @@ export const classes = {
     alias: 'cv-copy-button',
     copyButton: 'cv-copy-button-copyButton',
     icon: 'cv-copy-button-icon',
+  },
+  dashboardLayout: {
+    root: 'cv-dashboard-layout-layout',
+    alias: 'cv-dashboard-layout',
+    aside: 'cv-dashboard-layout-aside',
+    body: 'cv-dashboard-layout-body',
+    layout: 'cv-dashboard-layout-layout',
+    main: 'cv-dashboard-layout-main',
+    stats: 'cv-dashboard-layout-stats',
   },
   dataList: {
     root: 'cv-data-list-list',
@@ -566,10 +598,23 @@ export const classes = {
     filter: 'cv-filter-filter',
     item: 'cv-filter-item',
   },
+  flex: {
+    root: 'cv-flex-flex',
+    alias: 'cv-flex',
+    flex: 'cv-flex-flex',
+    'flex-item': 'cv-flex-flex-item',
+  },
   form: {
     root: 'cv-form-form',
     alias: 'cv-form',
     form: 'cv-form-form',
+  },
+  grid: {
+    root: 'cv-grid-grid-container',
+    alias: 'cv-grid',
+    grid: 'cv-grid-grid',
+    'grid-container': 'cv-grid-grid-container',
+    'grid-item': 'cv-grid-grid-item',
   },
   header: {
     root: 'cv-header-header',
@@ -727,6 +772,11 @@ export const classes = {
     toggle: 'cv-log-viewer-toggle',
     toolbar: 'cv-log-viewer-toolbar',
   },
+  masonry: {
+    root: 'cv-masonry-masonry',
+    alias: 'cv-masonry',
+    masonry: 'cv-masonry-masonry',
+  },
   menu: {
     root: 'cv-menu-panel',
     alias: 'cv-menu',
@@ -850,6 +900,16 @@ export const classes = {
     alias: 'cv-overflow-menu',
     'destructive-flag': 'cv-overflow-menu-destructive-flag',
     trigger: 'cv-overflow-menu-trigger',
+  },
+  pageHeader: {
+    root: 'cv-page-header-header',
+    alias: 'cv-page-header',
+    actions: 'cv-page-header-actions',
+    breadcrumb: 'cv-page-header-breadcrumb',
+    description: 'cv-page-header-description',
+    header: 'cv-page-header-header',
+    row: 'cv-page-header-row',
+    title: 'cv-page-header-title',
   },
   pagination: {
     root: 'cv-pagination-pagination',
@@ -1014,6 +1074,12 @@ export const classes = {
     input: 'cv-search-input',
     label: 'cv-search-label',
   },
+  section: {
+    root: 'cv-section-section',
+    alias: 'cv-section',
+    inner: 'cv-section-inner',
+    section: 'cv-section-section',
+  },
   segmentedControl: {
     root: 'cv-segmented-control-wrapper',
     alias: 'cv-segmented-control',
@@ -1035,6 +1101,14 @@ export const classes = {
     root: 'cv-separator-separator',
     alias: 'cv-separator',
     separator: 'cv-separator-separator',
+  },
+  settingsLayout: {
+    root: 'cv-settings-layout-layout-container',
+    alias: 'cv-settings-layout',
+    content: 'cv-settings-layout-content',
+    layout: 'cv-settings-layout-layout',
+    'layout-container': 'cv-settings-layout-layout-container',
+    menu: 'cv-settings-layout-menu',
   },
   shareMenu: {
     root: 'cv-share-menu-root',
@@ -1149,10 +1223,23 @@ export const classes = {
     summary: 'cv-sources-summary',
     title: 'cv-sources-title',
   },
+  spacer: {
+    root: 'cv-spacer-spacer',
+    alias: 'cv-spacer',
+    spacer: 'cv-spacer-spacer',
+  },
   spinner: {
     root: 'cv-spinner-spinner',
     alias: 'cv-spinner',
     spinner: 'cv-spinner-spinner',
+  },
+  splitView: {
+    root: 'cv-split-view-split',
+    alias: 'cv-split-view',
+    divider: 'cv-split-view-divider',
+    'pane-end': 'cv-split-view-pane-end',
+    'pane-start': 'cv-split-view-pane-start',
+    split: 'cv-split-view-split',
   },
   stack: {
     root: 'cv-stack-stack',

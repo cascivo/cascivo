@@ -1,0 +1,1 @@
+code-snippet "const a = \"x\" // hi\nlet b = 1" variant=multi language=js terminal title="demo"

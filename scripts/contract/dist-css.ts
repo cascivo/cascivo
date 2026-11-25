@@ -11,7 +11,7 @@ import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { layerOrderStatement } from '../build/layer-order.ts'
 import { compileModule } from './css.ts'
-import { COMPONENTS_DIR, REPO_ROOT, rootClass, type Contract } from './generate.ts'
+import { COMPONENTS_DIR, LAYOUTS_DIR, REPO_ROOT, rootClass, type Contract } from './generate.ts'
 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
@@ -29,8 +29,8 @@ export function buildDistCss(contract: Contract, dir = COMPONENTS_DIR): Map<stri
   const out = new Map<string, string>()
   const bodies: string[] = []
   for (const [unit, u] of Object.entries(contract.units)) {
-    const unitDir = join(dir, unit)
-    if (!existsSync(unitDir)) continue
+    const unitDir = [dir, LAYOUTS_DIR].map((d) => join(d, unit)).find((d) => existsSync(d))
+    if (!unitDir) continue
     const modules = readdirSync(unitDir)
       .filter((f) => f.endsWith('.module.css'))
       .sort()

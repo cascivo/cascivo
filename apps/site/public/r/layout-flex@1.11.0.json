@@ -26,6 +26,29 @@
     "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
     "category": "layout",
     "clientJs": "none",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "local": "flex",
+        "data": {
+          "data-direction": ["vertical", "horizontal"],
+          "data-wrap": [""]
+        },
+        "children": ["flex-item", "$slot"],
+        "emit": "manual"
+      },
+      "parts": {
+        "flex-item": {
+          "element": "div",
+          "data": {
+            "data-size": "string",
+            "data-truncate": [""]
+          },
+          "children": ["$slot"]
+        }
+      }
+    },
     "states": [],
     "variants": [],
     "sizes": [],

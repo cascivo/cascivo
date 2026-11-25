@@ -666,6 +666,66 @@
         }
       }
     },
+    "auth-layout": {
+      "name": "AuthLayout",
+      "tier": "static",
+      "alias": "cv-auth-layout",
+      "classes": {
+        "card": "cv-auth-layout-card",
+        "layout": "cv-auth-layout-layout",
+        "logo": "cv-auth-layout-logo"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "layout",
+          "children": [
+            "card"
+          ],
+          "emit": "manual",
+          "class": "cv-auth-layout-layout"
+        },
+        "parts": {
+          "card": {
+            "element": "div",
+            "children": [
+              "logo",
+              "$slot"
+            ],
+            "local": "card",
+            "class": "cv-auth-layout-card"
+          },
+          "logo": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "logo",
+            "class": "cv-auth-layout-logo"
+          }
+        }
+      }
+    },
+    "auto-grid": {
+      "name": "AutoGrid",
+      "tier": "static",
+      "alias": "cv-auto-grid",
+      "classes": {
+        "auto-grid": "cv-auto-grid-auto-grid"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "auto-grid",
+          "children": [
+            "$slot"
+          ],
+          "emit": "manual",
+          "class": "cv-auto-grid-auto-grid"
+        },
+        "parts": {}
+      }
+    },
     "avatar": {
       "name": "Avatar",
       "tier": "static",
@@ -1537,6 +1597,26 @@
         }
       }
     },
+    "center": {
+      "name": "Center",
+      "tier": "static",
+      "alias": "cv-center",
+      "classes": {
+        "center": "cv-center-center"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "center",
+          "children": [
+            "$slot"
+          ],
+          "emit": "manual",
+          "class": "cv-center-center"
+        },
+        "parts": {}
+      }
+    },
     "chain-of-thought": {
       "name": "ChainOfThought",
       "tier": "native",
@@ -2337,6 +2417,36 @@
             ],
             "local": "srOnly",
             "class": "cv-color-picker-srOnly"
+          }
+        }
+      }
+    },
+    "columns": {
+      "name": "Columns",
+      "tier": "static",
+      "alias": "cv-columns",
+      "classes": {
+        "columns": "cv-columns-columns",
+        "columns-container": "cv-columns-columns-container"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "columns-container",
+          "children": [
+            "columns"
+          ],
+          "emit": "manual",
+          "class": "cv-columns-columns-container"
+        },
+        "parts": {
+          "columns": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "columns",
+            "class": "cv-columns-columns"
           }
         }
       }
@@ -3302,6 +3412,65 @@
             ],
             "local": "icon",
             "class": "cv-copy-button-icon"
+          }
+        }
+      }
+    },
+    "dashboard-layout": {
+      "name": "DashboardLayout",
+      "tier": "static",
+      "alias": "cv-dashboard-layout",
+      "classes": {
+        "aside": "cv-dashboard-layout-aside",
+        "body": "cv-dashboard-layout-body",
+        "layout": "cv-dashboard-layout-layout",
+        "main": "cv-dashboard-layout-main",
+        "stats": "cv-dashboard-layout-stats"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "layout",
+          "children": [
+            "stats",
+            "body"
+          ],
+          "emit": "manual",
+          "class": "cv-dashboard-layout-layout"
+        },
+        "parts": {
+          "stats": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "stats",
+            "class": "cv-dashboard-layout-stats"
+          },
+          "body": {
+            "element": "div",
+            "children": [
+              "main",
+              "aside"
+            ],
+            "local": "body",
+            "class": "cv-dashboard-layout-body"
+          },
+          "main": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "main",
+            "class": "cv-dashboard-layout-main"
+          },
+          "aside": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "aside",
+            "class": "cv-dashboard-layout-aside"
           }
         }
       }
@@ -5140,6 +5309,52 @@
         }
       }
     },
+    "flex": {
+      "name": "Flex",
+      "tier": "static",
+      "alias": "cv-flex",
+      "classes": {
+        "flex": "cv-flex-flex",
+        "flex-item": "cv-flex-flex-item"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "flex",
+          "data": {
+            "data-direction": [
+              "vertical",
+              "horizontal"
+            ],
+            "data-wrap": [
+              ""
+            ]
+          },
+          "children": [
+            "flex-item",
+            "$slot"
+          ],
+          "emit": "manual",
+          "class": "cv-flex-flex"
+        },
+        "parts": {
+          "flex-item": {
+            "element": "div",
+            "data": {
+              "data-size": "string",
+              "data-truncate": [
+                ""
+              ]
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "flex-item",
+            "class": "cv-flex-flex-item"
+          }
+        }
+      }
+    },
     "form": {
       "name": "Form",
       "tier": "behaviour",
@@ -5157,6 +5372,59 @@
           "class": "cv-form-form"
         },
         "parts": {}
+      }
+    },
+    "grid": {
+      "name": "Grid",
+      "tier": "static",
+      "alias": "cv-grid",
+      "classes": {
+        "grid": "cv-grid-grid",
+        "grid-container": "cv-grid-grid-container",
+        "grid-item": "cv-grid-grid-item"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "grid-container",
+          "children": [
+            "grid"
+          ],
+          "emit": "manual",
+          "class": "cv-grid-grid-container"
+        },
+        "parts": {
+          "grid": {
+            "element": "div",
+            "data": {
+              "data-responsive": [
+                ""
+              ],
+              "data-align-rows": [
+                ""
+              ]
+            },
+            "children": [
+              "grid-item",
+              "$slot"
+            ],
+            "local": "grid",
+            "class": "cv-grid-grid"
+          },
+          "grid-item": {
+            "element": "div",
+            "data": {
+              "data-responsive": [
+                ""
+              ]
+            },
+            "children": [
+              "$slot"
+            ],
+            "local": "grid-item",
+            "class": "cv-grid-grid-item"
+          }
+        }
       }
     },
     "header": {
@@ -5526,7 +5794,7 @@
             "$slot",
             "overlay"
           ],
-          "emit": "auto",
+          "emit": "manual",
           "local": "indicator",
           "class": "cv-indicator-indicator"
         },
@@ -6389,6 +6657,26 @@
             "class": "cv-log-viewer-ansi"
           }
         }
+      }
+    },
+    "masonry": {
+      "name": "Masonry",
+      "tier": "static",
+      "alias": "cv-masonry",
+      "classes": {
+        "masonry": "cv-masonry-masonry"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "masonry",
+          "children": [
+            "$slot"
+          ],
+          "emit": "manual",
+          "class": "cv-masonry-masonry"
+        },
+        "parts": {}
       }
     },
     "menu": {
@@ -7538,6 +7826,75 @@
             ],
             "local": "destructive-flag",
             "class": "cv-overflow-menu-destructive-flag"
+          }
+        }
+      }
+    },
+    "page-header": {
+      "name": "PageHeader",
+      "tier": "static",
+      "alias": "cv-page-header",
+      "classes": {
+        "actions": "cv-page-header-actions",
+        "breadcrumb": "cv-page-header-breadcrumb",
+        "description": "cv-page-header-description",
+        "header": "cv-page-header-header",
+        "row": "cv-page-header-row",
+        "title": "cv-page-header-title"
+      },
+      "anatomy": {
+        "root": {
+          "element": "header",
+          "local": "header",
+          "children": [
+            "breadcrumb",
+            "row",
+            "description"
+          ],
+          "emit": "manual",
+          "class": "cv-page-header-header"
+        },
+        "parts": {
+          "breadcrumb": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "breadcrumb",
+            "class": "cv-page-header-breadcrumb"
+          },
+          "row": {
+            "element": "div",
+            "children": [
+              "title",
+              "actions"
+            ],
+            "local": "row",
+            "class": "cv-page-header-row"
+          },
+          "title": {
+            "element": "h1",
+            "children": [
+              "$text"
+            ],
+            "local": "title",
+            "class": "cv-page-header-title"
+          },
+          "actions": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "actions",
+            "class": "cv-page-header-actions"
+          },
+          "description": {
+            "element": "p",
+            "children": [
+              "$text"
+            ],
+            "local": "description",
+            "class": "cv-page-header-description"
           }
         }
       }
@@ -8838,6 +9195,36 @@
         }
       }
     },
+    "section": {
+      "name": "Section",
+      "tier": "static",
+      "alias": "cv-section",
+      "classes": {
+        "inner": "cv-section-inner",
+        "section": "cv-section-section"
+      },
+      "anatomy": {
+        "root": {
+          "element": "section",
+          "local": "section",
+          "children": [
+            "inner"
+          ],
+          "emit": "manual",
+          "class": "cv-section-section"
+        },
+        "parts": {
+          "inner": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "inner",
+            "class": "cv-section-inner"
+          }
+        }
+      }
+    },
     "segmented-control": {
       "name": "SegmentedControl",
       "tier": "behaviour",
@@ -9016,6 +9403,55 @@
           "class": "cv-separator-separator"
         },
         "parts": {}
+      }
+    },
+    "settings-layout": {
+      "name": "SettingsLayout",
+      "tier": "static",
+      "alias": "cv-settings-layout",
+      "classes": {
+        "content": "cv-settings-layout-content",
+        "layout": "cv-settings-layout-layout",
+        "layout-container": "cv-settings-layout-layout-container",
+        "menu": "cv-settings-layout-menu"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "layout-container",
+          "children": [
+            "layout"
+          ],
+          "emit": "manual",
+          "class": "cv-settings-layout-layout-container"
+        },
+        "parts": {
+          "layout": {
+            "element": "div",
+            "children": [
+              "menu",
+              "content"
+            ],
+            "local": "layout",
+            "class": "cv-settings-layout-layout"
+          },
+          "menu": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "menu",
+            "class": "cv-settings-layout-menu"
+          },
+          "content": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "content",
+            "class": "cv-settings-layout-content"
+          }
+        }
       }
     },
     "share-menu": {
@@ -10058,6 +10494,23 @@
         }
       }
     },
+    "spacer": {
+      "name": "Spacer",
+      "tier": "static",
+      "alias": "cv-spacer",
+      "classes": {
+        "spacer": "cv-spacer-spacer"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "spacer",
+          "emit": "manual",
+          "class": "cv-spacer-spacer"
+        },
+        "parts": {}
+      }
+    },
     "spinner": {
       "name": "Spinner",
       "tier": "static",
@@ -10084,6 +10537,54 @@
           "class": "cv-spinner-spinner"
         },
         "parts": {}
+      }
+    },
+    "split-view": {
+      "name": "SplitView",
+      "tier": "behaviour",
+      "alias": "cv-split-view",
+      "classes": {
+        "divider": "cv-split-view-divider",
+        "pane-end": "cv-split-view-pane-end",
+        "pane-start": "cv-split-view-pane-start",
+        "split": "cv-split-view-split"
+      },
+      "anatomy": {
+        "root": {
+          "element": "div",
+          "local": "split",
+          "children": [
+            "pane-start",
+            "divider",
+            "pane-end"
+          ],
+          "class": "cv-split-view-split"
+        },
+        "parts": {
+          "pane-start": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "pane-start",
+            "class": "cv-split-view-pane-start"
+          },
+          "divider": {
+            "element": "div",
+            "role": "separator",
+            "children": [],
+            "local": "divider",
+            "class": "cv-split-view-divider"
+          },
+          "pane-end": {
+            "element": "div",
+            "children": [
+              "$slot"
+            ],
+            "local": "pane-end",
+            "class": "cv-split-view-pane-end"
+          }
+        }
       }
     },
     "stack": {

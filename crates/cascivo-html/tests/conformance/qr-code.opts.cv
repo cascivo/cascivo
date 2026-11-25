@@ -1,0 +1,1 @@
+qr-code "Hi" size=96 errorCorrection=H fill="#000" background="#fff" label="Hi"

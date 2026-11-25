@@ -11,7 +11,7 @@ export const meta: ComponentMeta = {
       element: 'div',
       data: { 'data-placement': ['top-start', 'top-end', 'bottom-start', 'bottom-end'] },
       children: ['$slot', 'overlay'],
-      emit: 'auto',
+      emit: 'manual',
     },
     parts: {
       overlay: { element: 'div', aria: ['aria-hidden'], children: ['$slot'] },

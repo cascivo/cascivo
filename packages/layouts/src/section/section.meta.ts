@@ -5,6 +5,11 @@ export const meta: ComponentMeta = {
   description: 'Page-section shell with block padding, centered inner width, and stack gap.',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: { element: 'section', local: 'section', children: ['inner'], emit: 'manual' },
+    parts: { inner: { element: 'div', children: ['$slot'] } },
+  },
   states: [],
   variants: [],
   sizes: [],

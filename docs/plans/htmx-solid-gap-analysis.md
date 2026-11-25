@@ -94,3 +94,13 @@ from the package that changed them, and rebase before `pnpm regen` if two packag
 1. Parallel start: A (Q2 + F1 top 6), B (Q1, F4 core), C (F7-F9, F18), E (F6 layouts first).
 2. D starts with F3/Q4 (independent), then F2/Q6 once A and B tag their first release.
 3. F5 charts and F12 Solid SSR are the last, largest items; both can slip without blocking an htmx+Solid MVP.
+
+
+## Status: package E (2026-11-25)
+
+Done: the 6 remaining static units now have Rust emitters and parity cases (`indicator`, `input-group`,
+`inline-citation`, `relative-time`, `qr-code`, `code-snippet`); the parity-coverage allowlist is down to the
+4 layouts below. F6 (layouts): 13 units in `packages/layouts` joined the contract (anatomy, `cv-*` classes,
+dist CSS); `flex`, `grid`, `columns`, `center`, `section`, `page-header`, `spacer`, `auto-grid` have parity
+cases. Still allowlisted (need named-slot grammar): `dashboard-layout`, `masonry`, `settings-layout`,
+`auth-layout`. Deferred: F5 charts (18 types), sections, flow, editor (no `cv-*` contract yet).

@@ -12140,7 +12140,7 @@
         "indicator.tsx": "sha256-449602743c2521710aeb277f60a94448ae027679142c6cf673fa5d1ac883bebf",
         "index.ts": "sha256-5d8398504f61bd01953da105acc592a83fd8a682cd3cbfd1b13cd2f5350b6f7d",
         "indicator.module.css": "sha256-7e1f689d9f7baad0fb1b022aa6ae71ab80ba0d642ad99cd1ac5268eeab4d4d1c",
-        "indicator.meta.ts": "sha256-a1a63139d6244ba0a5f14413346036f8bfd0ddb30f042b8d83d6ff1eb80908d3"
+        "indicator.meta.ts": "sha256-3b5690df6ae9a34c4fa76babf7c8de7819b0b279b5e749234008521bf8f29fa2"
       },
       "dependencies": [],
       "tags": ["badge", "indicator", "overlay", "notification", "layout"],
@@ -12157,7 +12157,7 @@
               "data-placement": ["top-start", "top-end", "bottom-start", "bottom-end"]
             },
             "children": ["$slot", "overlay"],
-            "emit": "auto"
+            "emit": "manual"
           },
           "parts": {
             "overlay": {
@@ -29696,7 +29696,7 @@
         "auth-layout.tsx": "sha256-99abe9286affc10554c0ecbb96c5bfa60813ed85eae07405bcd80719da83cd42",
         "index.ts": "sha256-b91beec446eccad3a2a0ab93256e74e2298315a0b911f155847bfbfc10dac77e",
         "auth-layout.module.css": "sha256-5a80937a55aa6a462469214dcfd5f90ca86ba97478b4b5d6557ad1837bc181ec",
-        "auth-layout.meta.ts": "sha256-aade447b5ee21630825cd609b5c990460df2e5bbe376b5b0648da28445934c36"
+        "auth-layout.meta.ts": "sha256-5d7ef644f9487269b5a515c61aae5ecf554dbf5ce135686e15fef07fd7a7759f"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -29708,6 +29708,25 @@
         "description": "Centered card layout for authentication pages (login, register, forgot password).",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "layout",
+            "children": ["card"],
+            "emit": "manual"
+          },
+          "parts": {
+            "card": {
+              "element": "div",
+              "children": ["logo", "$slot"]
+            },
+            "logo": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -29792,7 +29811,7 @@
         "auto-grid.tsx": "sha256-eec15cbad7e4f3dce0856caa7a356ceb18afe5b80df61fcde82a8bfa7e77c9e7",
         "index.ts": "sha256-40c91b2a311dc816749ccf4b196cefdf65f775abf12e41d14869581461626120",
         "auto-grid.module.css": "sha256-c4ddabc261c6f0ae4292d463dd92647c5bb91a67bc137bf56cfcfd47e9603082",
-        "auto-grid.meta.ts": "sha256-5b8be7182a27faa4c3481effee85d8d437a07b06e0823dc66c23ec7646320e67"
+        "auto-grid.meta.ts": "sha256-c609754c872cad1e6ab639ece273b13b7a5e8b07ccd838cd73ac5461b9709cee"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -29804,6 +29823,16 @@
         "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "auto-grid",
+            "children": ["$slot"],
+            "emit": "manual"
+          },
+          "parts": {}
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -29883,7 +29912,7 @@
         "center.tsx": "sha256-4249debc191fd25381bc529b746fe1bc33e12f213e2304cc4e9f0e3e6784e9b6",
         "index.ts": "sha256-bba794649e15e7705b1c1fd800e7a1a9fc39af4383018c5f385b1c83a3711156",
         "center.module.css": "sha256-179d9de5d56624bc88d2a8218f297d75501842258032767fe1c289fc38522a7f",
-        "center.meta.ts": "sha256-dc37cd34ab549cd5f77b4bc3943c98223a5fa534dac5bcd3c14f11df5f9e2190"
+        "center.meta.ts": "sha256-fa719141d2cc2c585d643a15a43147fbc915e091e906db81ac1a581ee983dc25"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -29895,6 +29924,16 @@
         "description": "Horizontally centered container with a configurable max-width.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "center",
+            "children": ["$slot"],
+            "emit": "manual"
+          },
+          "parts": {}
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -29972,7 +30011,7 @@
         "columns.tsx": "sha256-baa9f6e95ab46188587f2d1e57d0228cb2e99e7bef14f98bd8405ab0b9321704",
         "index.ts": "sha256-50393c929c531bafea79b38c0c6f0c113439fddaf17c973ddb45df0ebeb9db1d",
         "columns.module.css": "sha256-b13c6d5993a498e14b560c09bcc02cb2139deadf3ef47ff44bb83f0cfcef2ad1",
-        "columns.meta.ts": "sha256-5286836b1dfecb6857b42860c282a360a3c60db4074cc6186bf2e0f4b8170b3a"
+        "columns.meta.ts": "sha256-9e9811e0104bf97bb6522db2eae1e499aef254f13194511c562798759486ed12"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -29984,6 +30023,21 @@
         "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "columns-container",
+            "children": ["columns"],
+            "emit": "manual"
+          },
+          "parts": {
+            "columns": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -30068,7 +30122,7 @@
         "dashboard-layout.tsx": "sha256-23e79b32a35ccd89ffbfa80e327d06aa62dfbf58df7ea15eaf03575663060fd1",
         "index.ts": "sha256-8ee37612388c6c5a8914706d7442147739caf5ce9801679e1067406956efdb30",
         "dashboard-layout.module.css": "sha256-89cadb02ecead74e8062237f501c7865882c5569f30ceec04bfae58c33473997",
-        "dashboard-layout.meta.ts": "sha256-f9da74e7e072279dbdf8a9cdcdf3b99aa8b46c24b89acba5a4d45d159a601be0"
+        "dashboard-layout.meta.ts": "sha256-790703e5bafe234195e80ca6ee9f79277fc4a3dc9fd942ed219247a0b80b8f00"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -30080,6 +30134,33 @@
         "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "layout",
+            "children": ["stats", "body"],
+            "emit": "manual"
+          },
+          "parts": {
+            "stats": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "body": {
+              "element": "div",
+              "children": ["main", "aside"]
+            },
+            "main": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "aside": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -30162,7 +30243,7 @@
         "flex.tsx": "sha256-5e7b831f678ef3ff6c3652ef9db9dd21d5927f3f6440773e54ce30d8ffe971d2",
         "index.ts": "sha256-866e136d307ce28ddd698039d7c2234f14aeadeaa877ec2afaaf40b9634bed94",
         "flex.module.css": "sha256-cb5c86471738605bfa5fc3e043e84b4ac8f93bc9f4096e7a3542d4c72130d5df",
-        "flex.meta.ts": "sha256-69cfd77dab8eda96700a9d571f5b65997c583ae44adc3e72a18d5559992eac41"
+        "flex.meta.ts": "sha256-83b60334971b5d01097d17fe9d470a2f21ad679e88dabcc636ec60188df0b7ce"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -30174,6 +30255,29 @@
         "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "flex",
+            "data": {
+              "data-direction": ["vertical", "horizontal"],
+              "data-wrap": [""]
+            },
+            "children": ["flex-item", "$slot"],
+            "emit": "manual"
+          },
+          "parts": {
+            "flex-item": {
+              "element": "div",
+              "data": {
+                "data-size": "string",
+                "data-truncate": [""]
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -30324,7 +30428,7 @@
         "grid.tsx": "sha256-3e207a75575d4c265c1e07db335913e0f33f26c37215fbfdda2905c7d5ee5b18",
         "index.ts": "sha256-21d70762c13307b349141181d6df3e8f53a4015d21a169fcb559c7b7ada19b99",
         "grid.module.css": "sha256-9ade6558652f06b75760f19832bac02eee37e255d0fe78de2665a987adba01e3",
-        "grid.meta.ts": "sha256-c4a6fbbae7806b9faab013616464a486c36972e91af55a6a34ca896575294d42"
+        "grid.meta.ts": "sha256-04ce2879bbbd415486198490b47ad2ec6dc1362a3f14a218ead9602392d280f1"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -30336,6 +30440,32 @@
         "description": "CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "grid-container",
+            "children": ["grid"],
+            "emit": "manual"
+          },
+          "parts": {
+            "grid": {
+              "element": "div",
+              "data": {
+                "data-responsive": [""],
+                "data-align-rows": [""]
+              },
+              "children": ["grid-item", "$slot"]
+            },
+            "grid-item": {
+              "element": "div",
+              "data": {
+                "data-responsive": [""]
+              },
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -30455,7 +30585,7 @@
         "masonry.tsx": "sha256-8eabd0f5f6dcad61a8dd12a713f1d90f844f4c4cdfd9d74e83188546dc1af07d",
         "index.ts": "sha256-2e66a720d725c5e293aad353e1d22f3fc7527dd0085dee4a2d59e744a214737b",
         "masonry.module.css": "sha256-6d4dff2b18d3b3db045e24372c7cfa352a4fecb930bd9f94a2364c025d775793",
-        "masonry.meta.ts": "sha256-dbc8ae734630dabb179ef89fab03e1572ef0c50ba743eb260ab2853697a52817"
+        "masonry.meta.ts": "sha256-4066b5ceb7545678424c0a513d0cead05458bb1961a9c9ec288bf6910b27c6da"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -30467,6 +30597,16 @@
         "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "masonry",
+            "children": ["$slot"],
+            "emit": "manual"
+          },
+          "parts": {}
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -30545,7 +30685,7 @@
         "page-header.tsx": "sha256-1c1eab61ce2a39a30cf5237d5eacb434e78cd354d7ef8511632cdc18533f07df",
         "index.ts": "sha256-79937b347d022425887d682b658169f648e0a39b3190daea7f60d34310de1936",
         "page-header.module.css": "sha256-f5a39930488fb3107318f673616818dbc750556b756df9328d0e830bed65d646",
-        "page-header.meta.ts": "sha256-bda2f530237b3b24dc16c6db97413ea2ac53559a54feacc52ff6d574e9d908ea"
+        "page-header.meta.ts": "sha256-ac1e73fcaed988fdbc052c75565b791e6088c051433dcbbe96abefcf25bdd26e"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -30557,6 +30697,37 @@
         "description": "Page-level header with title, description, breadcrumb, and actions slots.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "header",
+            "local": "header",
+            "children": ["breadcrumb", "row", "description"],
+            "emit": "manual"
+          },
+          "parts": {
+            "breadcrumb": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "row": {
+              "element": "div",
+              "children": ["title", "actions"]
+            },
+            "title": {
+              "element": "h1",
+              "children": ["$text"]
+            },
+            "actions": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "description": {
+              "element": "p",
+              "children": ["$text"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -30659,7 +30830,7 @@
         "section.tsx": "sha256-ec58e0ecd90562b5cb63c9e91b396e788f091c9848a1cb6e05032b4b82175a12",
         "index.ts": "sha256-eebabcd2850dfaac91c227ba00f29411109795e0f262df79532d5b46541b5955",
         "section.module.css": "sha256-94d60eef5a1a659f3455da858f1dd311a1524c06565cd718c65e1f616b5b2001",
-        "section.meta.ts": "sha256-e2ca0c997c7e5b801492625aed063f533f850dcb8d89ffac659559771be32f8e"
+        "section.meta.ts": "sha256-f904266e36bd5e21809eeb7dfda7ed7827dcd971ae6bb44c886a7c78fa13c1a8"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -30671,6 +30842,21 @@
         "description": "Page-section shell with block padding, centered inner width, and stack gap.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "section",
+            "local": "section",
+            "children": ["inner"],
+            "emit": "manual"
+          },
+          "parts": {
+            "inner": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -30749,7 +30935,7 @@
         "settings-layout.tsx": "sha256-9b235035eeb48c862bcf0fb4957ba9f0e1ab037f6874ec133173621f4f95c649",
         "index.ts": "sha256-c6fd1ae92240641a3c96cd1a6758a74abb60dfcba6db489dbf09293dc9add607",
         "settings-layout.module.css": "sha256-f8056bc2aa0d3ba25fca1b4834a6261b3c54d2c719a4253c885d131f07f283c4",
-        "settings-layout.meta.ts": "sha256-5ddff15a7bd94add0b2dd1e9b8c39d7ea89a004312a945c1f93b937176d226aa"
+        "settings-layout.meta.ts": "sha256-3081c18ce0d376999a4e9fd8fd53509029502ff7d604a7357ed751404e462415"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -30761,6 +30947,29 @@
         "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "layout-container",
+            "children": ["layout"],
+            "emit": "manual"
+          },
+          "parts": {
+            "layout": {
+              "element": "div",
+              "children": ["menu", "content"]
+            },
+            "menu": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "content": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -30837,7 +31046,7 @@
         "spacer.tsx": "sha256-3a8ea7a1b0f9b76add1ca8493b77a0146dd7cd1a047469bd48abadea3132159d",
         "index.ts": "sha256-cba7197e853d0b3156df64107a9f000e9307a80837cf257d4c65ac2ac9c0edea",
         "spacer.module.css": "sha256-b958a185559596febc9b8f7be84fea0da37cba494e8e096eb24cefce645836ca",
-        "spacer.meta.ts": "sha256-eff5d5f755c4ff11dcf413fe70908224160421a527e278b163a55acad177073a"
+        "spacer.meta.ts": "sha256-6138e89ad159b98f02c52444b5cfa4872b14f2a381400e0915ee9b47c4695961"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -30849,6 +31058,15 @@
         "description": "Fixed-height spacing block using design token steps.",
         "category": "layout",
         "clientJs": "none",
+        "contractTier": "static",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "spacer",
+            "emit": "manual"
+          },
+          "parts": {}
+        },
         "states": [],
         "variants": [],
         "sizes": [],
@@ -30915,7 +31133,7 @@
         "split-view.tsx": "sha256-22be3e5d3d72c53b6253d41b434ba999a65e073d2095286396687235eb7555d1",
         "index.ts": "sha256-7f4c4c9c676f1b8c7875f7f91a3343af12b245bf851bb2ae7692059ea50a5bcb",
         "split-view.module.css": "sha256-6abe3492b40fa6bfe00e0f5d4d65829f269c3f6565b9e929af7b2705e178f6e9",
-        "split-view.meta.ts": "sha256-a537628e24b020183cc3154d271c4843f9e738bb6436cce2fd6df4f5053a8c5b"
+        "split-view.meta.ts": "sha256-ff7909605b667a868c49b3b39be9702031c7a49ad5a6cea45db2220d540a37fe"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -30927,6 +31145,29 @@
         "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
         "category": "layout",
         "clientJs": "required",
+        "contractTier": "behaviour",
+        "anatomy": {
+          "root": {
+            "element": "div",
+            "local": "split",
+            "children": ["pane-start", "divider", "pane-end"]
+          },
+          "parts": {
+            "pane-start": {
+              "element": "div",
+              "children": ["$slot"]
+            },
+            "divider": {
+              "element": "div",
+              "role": "separator",
+              "children": []
+            },
+            "pane-end": {
+              "element": "div",
+              "children": ["$slot"]
+            }
+          }
+        },
         "states": [],
         "variants": [],
         "sizes": [],

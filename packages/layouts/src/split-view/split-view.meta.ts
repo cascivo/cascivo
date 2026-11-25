@@ -6,6 +6,15 @@ export const meta: ComponentMeta = {
   category: 'layout',
   // Both panes render, but resizing by drag or keyboard is the component.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: { element: 'div', local: 'split', children: ['pane-start', 'divider', 'pane-end'] },
+    parts: {
+      'pane-start': { element: 'div', children: ['$slot'] },
+      divider: { element: 'div', role: 'separator', children: [] },
+      'pane-end': { element: 'div', children: ['$slot'] },
+    },
+  },
   states: [],
   variants: [],
   sizes: [],
