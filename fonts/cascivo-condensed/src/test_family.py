@@ -220,6 +220,29 @@ class CondensedTest(unittest.TestCase):
             x0, _, x1, _ = self.bounds_in(c, '-')
             self.assertGreaterEqual(x1 - x0, 0.5 * n, w)
 
+    def test_slash_guillemets_braces_condensed(self):
+        # round 10: / \ kept 0.98 of Sans's advance, the guillemets 0.93-0.96 and the braces 0.88-0.93 (letters 0.79): "Read/Write",
+        # "«Oui»" and "{name}" set loose. The slash also leans as steeply as the condensed diagonals (ink no wider than half of n's).
+        for w in (100, 400, 700, 900):
+            c = instancer.instantiateVariableFont(TTFont(TTF), {'wght': w, 'opsz': 14})
+            s = instancer.instantiateVariableFont(TTFont(SANS), {'wght': w, 'opsz': 14})
+            for ch, cap in (('/', 0.85), ('\\', 0.85), ('{', 0.85), ('}', 0.85), ('«', 0.88), ('»', 0.88), ('‹', 0.88), ('›', 0.88)):
+                ratio = c['hmtx'][c.getBestCmap()[ord(ch)]][0] / s['hmtx'][s.getBestCmap()[ord(ch)]][0]
+                self.assertLessEqual(ratio, cap, (ch, w))
+            x0, _, x1, _ = self.bounds_in(c, '/')
+            self.assertLessEqual(x1 - x0, 0.6 * c['hmtx']['n'][0], w)
+
+    def test_black_t_condensed_like_sans(self):
+        # round 10: the thinner Black stems held p.heavy to 0.75, so Black t kept a long foot and inked 379 units (Sans's 376, against
+        # an n 113 units narrower): "start ed", "Set tings" at 12-16 px. Its ink over n's ink now sits near Sans's (0.71), not 0.91.
+        # Bold interpolates toward Regular, whose t foot (2.1 stems past the stem) is not condensed: 0.92 before, under 0.85 now.
+        for w, cap in ((700, 0.85), (900, 0.78)):
+            for path in (TTF, SANS):
+                f = instancer.instantiateVariableFont(TTFont(path), {'wght': w, 'opsz': 14})
+                tx0, _, tx1, _ = self.bounds_in(f, 't')
+                nx0, _, nx1, _ = self.bounds_in(f, 'n')
+                self.assertLessEqual((tx1 - tx0) / (nx1 - nx0), cap, (path, w))
+
     @staticmethod
     def bounds_in(f, ch):
         from fontTools.pens.boundsPen import BoundsPen
