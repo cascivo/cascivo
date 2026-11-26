@@ -5,7 +5,7 @@ a change here reaches them, so rebuild all four and run their `test_family.py`.
 
 Round history, scores and every tried-and-reverted change: `JUDGING.md`. Changes: `CHANGELOG.md`.
 
-Known gaps (after round 10):
+Known gaps (after round 10, engine: Thin A hand-kerned, bar sidebearings, shorter Black Q tail; JUDGING.md):
 
 - Black `e`: the lower terminal overhangs the bowl a little; its aperture and Display-face gates hold the run.
 - Heavy rounds (`O Q b d p q`) have lighter counters than Inter's (`score.py` counter z 3-5); heavier bowls broke gates (round 6).

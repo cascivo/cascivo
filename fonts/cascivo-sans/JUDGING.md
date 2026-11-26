@@ -721,3 +721,34 @@ Inter (`specimens/round9/r9e-*.png`; before / after at 700, 700 italic and 900: 
 - Still blocked (unchanged from round 8): `I/1` at 12 px Black (the 1's flag gate against the I's slab width), the round-7 spacing
   retune (33 subtests in 19 tests), the upright Black `Q` counter (quality.py's Q counter gate keeps the tail out), Black `b d p q a`
   counters (crotch gate, round 6). Seen and left: upright `r` and italic `E` stem rows at 600 are 5-unit raster steps, not outline kinks.
+
+## Round 10 (engine): the Thin A with hand-kerned A pairs, the bar, Black's Q tail
+
+Built (`python3 -I src/build.py`), specimens at 12 / 16 / 48 / 96 px, Thin / Regular / Bold / Black, upright and italic, Cascivo over
+Inter 4 statics (`specimens/round10/r10e-*.png`; before / after: `r10e-before-after-u96.png`, `r10e-before-after-i48.png`). Measured per
+a 728 cap height against Inter at the same weight. No `score.py` numbers this round: its reference set (Inter, Geist, Plex variables
+under `/tmp/refs`) was not on the machine.
+
+- Thin `A`, upright (`glyphs.A_THIN` (0.0, 0.0) -> (0.06, 0.0)): the owner decision left open in round 9 is taken the second way,
+  a hand override for the A pairs, floors unchanged. Thin's A is 615 (652; Regular 662), 0.93x its Regular (Inter 0.93x).
+  `kern_overrides.py` sets Thin AV VA -55, AY YA -60 (the measure gave -50..-52 against floors of 54.4 / 59.2): white 0.87-0.89x
+  Inter's at Thin, >= 0.86x at ExtraLight. Tried and reverted, italic at 0.04 (601 wide): its Thin VA must kern >= 51 units
+  (`test_r7_kern`, 0.75x Inter's 68) yet <= 45 to keep ExtraLight's white >= 0.85x Inter's (at -53 it read 0.84x). The italic's
+  400 bend (26 units) stays; it needs the italic VA floors relaxed or measured on white.
+- Bar (`glyphs.BAR_SB` 1.1 -> 1.5 sidebearing units, `brokenbar` too): the upright `|` kept 80 units a side at Regular (Inter 128,
+  advance 239 against 333) and 78 at Black (Inter 107), so `1|` and `l|` read as one mark at 12-16 px Bold and Black. Now 109 at
+  Regular, 97 at Black, 138 at Thin (Inter 125); italic 312 wide at Regular (250; Inter 333).
+- Black `Q` tail (`glyphs.Q_HEAVY_RISE` (25, 12) units at Black): it ended 144 under the baseline upright and 130 italic (Bold 124 /
+  114) where Inter Black's ends at 54 and Bold's at 61, a hook dragging under the line at 48-96 px. Now 112 / 119 (Bold 106 / 108);
+  `test_q_tail_reaches_below_the_line` keeps >= 110 at Black (tried 30 upright: 108).
+- Bytes: full upright woff2 89,392 -> 89,132, Latin[wght] 33,808 -> 33,784, Latin[opsz,wght] 41,276 -> 41,304; italic full 97,276 ->
+  97,468, italic Latin[wght] 36,872 -> 36,828, italic Latin[opsz,wght] 45,108 -> 45,080. All six: 343,732 -> 343,596.
+  comparison.json's hinted Latin `wght` slice grew: 31,512 -> 31,652 upright, 34,508 -> 34,584 italic (unhinted 25,736 -> 25,704 /
+  28,400 -> 28,508); comparison.json and the site's comparison.generated.ts refreshed. The built fonts are not committed this round.
+- `test_font.test_advances_at_regular_match_a855b5e0` pins the bar's new advances (286 upright, 300 italic at 400 / opsz 14).
+- Tests: `src/test_r10_design.py` (upright Thin A <= 0.94x Regular, bar sidebearings >= 100 at Regular and 90 at Black,
+  Black Q tail >= -120, siblings keep round-9 knobs: `glyphs.R10`). Kerning overrides are Sans only, so Mono, Serif and Condensed
+  build as before.
+- Still open: `I/1` at 12 px Black (the 1's flag gate, `quality.ONE_FLAG_SHARE`, against the I's slab width); the round-7 spacing
+  retune (33 subtests in 19 tests); the upright Black `Q` counter; Black `b d p q a` counters. Seen and left: the 1's flag and the
+  italic `I` at 12 px Black still read close; `Qb` at Black italic sets the tail near the b's bowl (eased by the shorter tail).

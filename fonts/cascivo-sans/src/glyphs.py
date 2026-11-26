@@ -21,6 +21,8 @@ R7 = not family.ACTIVE
 R8 = not family.ACTIVE
 # Round 9 (J_HEAVY) likewise.
 R9 = not family.ACTIVE
+# Round 10 (engine: A_THIN on, BAR_SB, Q_HEAVY_RISE) likewise.
+R10 = not family.ACTIVE
 
 GLYPHS = {}  # name -> (codepoints, fn)
 ORDER = []
@@ -268,7 +270,9 @@ A_DIAG, A_BAR, A_BAR_DROP = 0.08, 0.14, 0.08
 # italic's worst weight-axis row; Inter, Geist and Plex 1-3), whose Thin A is 9-11% narrower than their Regular's. Held at 0: at 0.06
 # (bends 7 / 15) Thin's kerning fits less (AV AY VA YA 50-52 units against floors of 54-59, test_key_pairs_kern_like_inter; round 8 ships
 # AY at 60 over 59.2) and the italic's WA VA white drops under 0.85x Inter's, so it waits on an owner decision on the Thin kerning floors.
-A_THIN = (0.0, 0.0)
+# Round 10 (engine): upright on, with kern_overrides.py setting AV AY VA YA at Thin by hand (the owner's second option; floors
+# unchanged). The italic stays at 0: at 0.04 its Thin VA must kern >= 51 (test_r7_kern) yet <= 45 to keep ExtraLight's white 0.85x Inter's.
+A_THIN = (0.06, 0.0) if R10 else (0.0, 0.0)
 
 
 @glyph('A', 0x41)
@@ -423,6 +427,10 @@ Q_TAIL = 30
 # At 400 it was a 41-degree stick 0.92x Inter's weight that read as a dash laid on the bowl (Inter's falls at 51-53 degrees); it
 # still starts where it did, so it reaches no further into the counter.
 Q_LIGHT = (40, 10, 0.1) if R7 else (0, 0, 0.0)
+# Q_HEAVY_RISE (upright, italic): units Black's tail end rises (round 10, engine). It reached 144 under the baseline upright and 130
+# italic (per a 728 cap; Bold 124 / 114), where Inter Black's stops at 54 and Bold's at 61: a hook dragging under the line at 48-96 px.
+# test_q_tail_reaches_below_the_line keeps it >= 110 at Black.
+Q_HEAVY_RISE = (25, 12) if R10 else (0, 0)
 Q_HEAVY_WS = 0.25  # round 10: Black's tail was a 0.9-stem stick off the bowl; a full stem reads as Inter's wedge (it may not enter the counter: quality.py)
 # Q_CROSS_IT: at Black, the italic tail's start moves into the counter, (share of the width left, share of the cap up), as Inter Italic's
 # crosses its bowl (round 8). Held in the ring's wall, the italic Black Q kept a counter 0.38 of its ink (Inter Italic 0.25, score.py counter,
@@ -447,7 +455,7 @@ def _Q(g, p):
     # at Regular and 32 at Black, a stub beside Inter's 56 and 70
     lt = 1 - p.heavy  # Q_LIGHT: Thin and Regular only, Black's wedge is held by the counter gate
     cross = Q_CROSS_IT if p.italic else (0.0, 0.0)
-    g.diag(w * (0.6 - cross[0] * p.heavy), p.cap * (0.2 + cross[1] * p.heavy) - 60 * p.heavy, w + p.V * 0.2 + 30 * p.heavy - Q_LIGHT[0] * lt, -p.ov - 40 + 0.32 * p.V - 40 * p.heavy - Q_TAIL - Q_LIGHT[1] * lt, 'c', 'r', ws=0.9 + Q_HEAVY_WS * p.heavy + Q_LIGHT[2] * lt, caps=('b', 'b'))  # a square end: the flat cut left a sliver at its lower corner; Black's starts lower and ends longer, in the ring's wall: its square start poked a spur into the counter
+    g.diag(w * (0.6 - cross[0] * p.heavy), p.cap * (0.2 + cross[1] * p.heavy) - 60 * p.heavy, w + p.V * 0.2 + 30 * p.heavy - Q_LIGHT[0] * lt, -p.ov - 40 + 0.32 * p.V - 40 * p.heavy + Q_HEAVY_RISE[p.italic] * p.heavy - Q_TAIL - Q_LIGHT[1] * lt, 'c', 'r', ws=0.9 + Q_HEAVY_WS * p.heavy + Q_LIGHT[2] * lt, caps=('b', 'b'))  # a square end: the flat cut left a sliver at its lower corner; Black's starts lower and ends longer, in the ring's wall: its square start poked a spur into the counter
     g.ht = 'c'
     g.sb = (0.62, 0.5)
 
@@ -2547,6 +2555,9 @@ def _backslash(g, p):
 
 
 BAR_OPEN = 0.6
+# BAR_SB: the bar's base sidebearing, in sidebearing units a side. At 1.1 it kept 80 units a side at Regular where Inter keeps 128
+# (advance 239 against 333) and 78 at Black upright (Inter 107): `1|` and `l|` read as one mark at 12-16 px Bold and Black (round 10).
+BAR_SB = 1.5 if R10 else 1.1
 
 
 @glyph('bar', 0x7C)
@@ -2554,7 +2565,7 @@ def _bar(g, p):
     g.line((p.V * 0.45, p.desc), (p.V * 0.45, p.asc + 30), w=p.V * 0.9)
     # Round 5 (2): heavier, the bar takes BAR_OPEN more of a sidebearing a side: at 700 `1|` stood closer than `I l` (Inter's 1| is 1.4x
     # its Il), and the heavy rule read as part of the 1
-    g.sb = (1.1 + (0 if p.italic else BAR_OPEN) * p.heavy,) * 2
+    g.sb = (BAR_SB + (0 if p.italic else BAR_OPEN) * p.heavy,) * 2
 
 
 @glyph('brokenbar', 0xA6)
@@ -2562,7 +2573,7 @@ def _brokenbar(g, p):
     x = p.V * 0.45
     g.line((x, p.desc), (x, p.xh * 0.3), w=p.V * 0.9)
     g.line((x, p.xh * 0.62), (x, p.asc + 30), w=p.V * 0.9)
-    g.sb = (1.1, 1.1)
+    g.sb = (BAR_SB, BAR_SB)
 
 
 # Parentheses, brackets and braces share one height, Inter's 908, centred on 295 (between the x-height's middle and the cap height's,
