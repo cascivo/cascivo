@@ -35,6 +35,12 @@ OVERRIDES = {
         'Wæ': (None, None, -52),
         'AW': (-45, None, None),
         'WA': (-45, None, None),
+        # Round 10 (engine): Thin's A is 6% narrower (glyphs.A_THIN), its diagonals steeper, and the measure eased AV AY VA YA to -50..-52
+        # (floors 54-59). Set by hand: the white stays 0.87-0.89x Inter's at Thin and >= 0.86x at ExtraLight.
+        'AV': (-55, None, None),
+        'VA': (-55, None, None),
+        'AY': (-60, None, None),
+        'YA': (-60, None, None),
         # Black capitals beside A and L: the measure caps its depth, so the open triangle under P, T, F and beside L's arm is undercounted
         # at Black, where Inter kerns PA -91, TA -92, FA -91, LV -85, LW -68 and these pairs kept 1.3-1.8x Inter's closest white. Closed to
         # about 1.1-1.5x of it (our A and L carry more sidebearing than Inter's). RT: Inter does not kern it; the legacy pair closed the

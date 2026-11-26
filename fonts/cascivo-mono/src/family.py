@@ -41,7 +41,7 @@ _frozen = {}
 XH_UP = 22
 # Dots (. , : ; ! ? i j): at least DOT_MIN + DOT_K stems; round at Thin, squarer (DOT_SQ more handle) toward Black, as JetBrains
 # Mono's. Sans's square dot, enlarged for the cell, read as a block beside Thin's hairlines.
-DOT_MIN, DOT_K, DOT_SQ = 110, 0.52, 0.2  # round 6: more floor, less stem: . , : read small at 400-700, Black's i j dots big
+DOT_MIN, DOT_K, DOT_SQ = 124, 0.46, 0.2  # round 6: more floor, less stem: . , : read small at 400-700, Black's i j dots big
 COMMA_DEPTH = 230  # units the comma's tail may hang under its head
 
 
@@ -136,6 +136,27 @@ def _wider(name, attr, k):
 F_WIDE, T_WIDE = 2.2, 1.6  # t's foot curve folds (a kink) past 1.6
 _wider('f', 'cn', F_WIDE)
 _wider('t', 'cn', T_WIDE)
+# Round 10: the f's crossbar ran 120 units left of the stem and 176 right at Regular (76 / 144 at Black); JetBrains Mono's is about
+# even, and the short left arm read as a hook-heavy f leaning right in `fn`, `if`. F_BAR_LEFT more units on the left.
+F_BAR_LEFT = 40
+
+
+def _f_bar():
+    import glyphs as GL
+
+    wide = GL.GLYPHS['f'][1]
+
+    @_hooks.override('f')
+    def draw(g, p):
+        wide(g, p)
+        q = copy.copy(p)
+        q.cn = p.cn * F_WIDE
+        _, xs, _, _ = GL._f_hook(q)
+        arm = GL.F_ARM * p.V * p.heavy  # where Sans's crossbar starts
+        g.hbar(arm - F_BAR_LEFT, xs + p.V, p.xh - p.H)
+
+
+_f_bar()
 
 
 # ------------------------------------------------------------------------------------------------
@@ -198,7 +219,7 @@ def _lighter(name, k, wider=0.0, base=0.0):
 
 # Black's 5 6 9 closed their counters in the cell and the r's arm was a stub: a lighter pen, and at every weight a longer arm (R_WIDE
 # of the n's counter more; Sans's narrow r left a wide white beside it in the cell)
-R_WIDE = 0.6
+R_WIDE = 0.75  # round 10: 0.6 -> 0.75, the r was 0.72x JetBrains Mono's ink at 400 with white after it in `return`, `err`
 for _n in ('five', 'six', 'nine'):
     _lighter(_n, 0.94)
 _lighter('r', 0.94, wider=R_WIDE + 0.15, base=R_WIDE)
@@ -252,6 +273,29 @@ def _M(g, p):
 
 # Round 8: the 1 l I j / # read lost or blotted in the cell beside JetBrains Mono (ink at Regular: I 299 units wide, theirs 390;
 # 1 265, theirs 450; j 256, theirs 366; / 0.63 of their ink, # at Black 1.52 of theirs)
+# Round 10: ~ was 0.69-0.73x JetBrains Mono's ink at every weight (0.46x at Thin): a thin wave beside heavier operators in `~z`,
+# `~/.config`. TILDE_PEN x the pen (less TILDE_BLACK at Black). The straight quotes were 0.75x at Regular and 0.44x at Thin (Black already 0.96x): QUOTE_PEN x
+# the pen, fading to none at Black.
+TILDE_PEN = 1.3
+TILDE_BLACK = 0.15  # Black's wave at the full 1.3 swelled into a bow tie with spiked ends
+QUOTE_PEN = 1.2
+
+
+def _heavier(name, k):
+    import glyphs as GL
+
+    orig = GL.GLYPHS[name][1]
+
+    @_hooks.override(name)
+    def draw(g, p):
+        q = _pen(p, k(p))
+        _drawn_with(g, q, lambda: orig(g, q))
+
+
+_heavier('asciitilde', lambda p: TILDE_PEN - TILDE_BLACK * p.heavy)
+for _n in ('quotesingle', 'quotedbl'):
+    _heavier(_n, lambda p: 1 + (QUOTE_PEN - 1) * (1 - p.heavy))
+
 I_INK = 380  # I's slabs: the serifs both sides make it the I beside l (one-sided top slab) at 12 px, and it no longer floats in the cell
 ONE_FLAG = 1.35  # the 1's flag stretched this much leftward of its stem: a stub flag read as l's slab at 12 px
 J_TAIL = 1.6  # the j's hook radius x Sans's: its tail reaches under the left half of the cell, as i's slab does

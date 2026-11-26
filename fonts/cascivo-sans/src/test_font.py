@@ -1607,6 +1607,9 @@ class Font(unittest.TestCase):
         # Round 4 (owner decision 3): [ ] { } open their sidebearings (glyphs._bracket_sb), 56 / 21 beside the parentheses' 70 / 31. Their
         # new advances are pinned here instead of the fixture's (upright 264 and 334, italic 269 and 338)
         reopened = {'upright': {0x5B: 296, 0x5D: 296, 0x7B: 369, 0x7D: 369}, 'italic': {0x5B: 303, 0x5D: 303, 0x7B: 375, 0x7D: 375}}
+        # Round 10 (engine, glyphs.BAR_SB): | and ¦ open their sidebearings (80 -> 109 units a side upright per a 728 cap; Inter 128)
+        reopened['upright'].update({0x7C: 286, 0xA6: 286})
+        reopened['italic'].update({0x7C: 300, 0xA6: 300})
         allowed = {'upright': sized | opened | set(reopened['upright']), 'italic': sized | opened | set(reopened['italic'])}
         for kind, path in (('upright', VF), ('italic', VFI)):
             f = instantiateVariableFont(TTFont(path), {'wght': 400, 'opsz': 14})

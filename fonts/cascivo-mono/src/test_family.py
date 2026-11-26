@@ -381,3 +381,45 @@ class MonoFont(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+    # ---- round 10 regressions: ~ quotes and dots 0.69-0.75x JetBrains Mono's ink at Regular, f's left arm and r's arm short ----
+
+    def test_tilde_pen(self):
+        for w in (100, 400, 900):
+            loc = {'wght': w, 'opsz': 14}
+            run = sum(self.ink_run(loc, '~', x=CELL // 2)) * 4
+            self.assertGreaterEqual(run, self.stem(loc) * 0.85, f'~ at the middle of the wave, {w}')  # before 0.73-0.89 of the stem
+
+    def test_straight_quotes_heavier(self):
+        loc = {'wght': 400, 'opsz': 14}
+        self.assertGreaterEqual(self.width(loc, "'"), self.stem(loc) * 1.2)  # before 92 on an 84 stem
+        self.assertGreaterEqual(self.width(loc, '"'), 280)  # before 256
+
+    def test_regular_dot_floor(self):
+        self.assertGreaterEqual(self.width({'wght': 400, 'opsz': 14}, '.'), 150)  # before 142
+        self.assertGreaterEqual(self.width({'wght': 100, 'opsz': 14}, '.'), 136)  # before 129
+
+    def test_f_crossbar_reaches_left(self):
+        from fontTools.pens.pointInsidePen import PointInsidePen
+
+        for w in (400, 700, 900):
+            loc = {'wght': w, 'opsz': 14}
+            gs = self.font.getGlyphSet(location=loc)
+            g = gs[self.font.getBestCmap()[ord('f')]]
+
+            def span(y):
+                xs = []
+                for x in range(0, CELL, 4):
+                    pen = PointInsidePen(gs, (x, y))
+                    g.draw(pen)
+                    if pen.getResult():
+                        xs.append(x)
+                return xs[0], xs[-1]
+
+            stem, bar = span(200), span(520)
+            left, right = stem[0] - bar[0], bar[1] - stem[1]
+            self.assertGreaterEqual(left, 0.8 * right, f'f arms {left} / {right} at {w}')  # before 120 / 176 at 400
+
+    def test_r_arm_longer(self):
+        loc = {'wght': 400, 'opsz': 14}
+        self.assertGreaterEqual(self.width(loc, 'r'), 420)  # before 398

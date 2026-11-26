@@ -7,6 +7,51 @@ Test: `python3 -I -m unittest discover -s fonts/cascivo-condensed/src` (loads, L
 of Sans at 100, 400 and 900, o e a B d g b p q & 6 8 9 0 counters open at 900 / opsz 14 and 48, OTS, woff2 budget).
 Specimen (Regular and Black, plus Black at 12/14/16 px): `python3 -I fonts/cascivo-condensed/src/specimen.py` -> `specimen.png`.
 
+## Round 10 (t, slash, guillemets, braces)
+
+Sheets: `specimens/round10/` (`src/specimen_round10.py`): headlines at 48 and 96 px, UI labels at 12 and 16 px (now with
+"Read/Write and/or «Oui» ‹non› {name}", "Home / Projects / Settings src\\app\\main"), tables and figures (tnum, 11/25/2026, 1/2)
+at 12, 16 and 48 px, each in 100, 400, 700 and 900. No Roboto, Barlow or IBM Plex Sans Condensed on disk, so no refs. No italic
+(upright only, see round 9's decision).
+
+Remaining weaknesses carried in from round 9: braces at 0.88-0.93 of Sans, display Black crowded, I/1 and O/0 at 11 px, Black 1's
+wide left sidebearing, no italic. A sweep of every Latin advance over Sans's (opsz 14, letters 0.79) found more: / \ 0.98-0.99,
+« » ‹ › 0.93-0.96, and the Black t at 1.02, wider than Sans's own.
+
+| opsz 14            | 400 before | 400 after | 900 before | 900 after |
+| ------------------ | ---------- | --------- | ---------- | --------- |
+| / \ advance / Sans | 0.98       | 0.83      | 0.99       | 0.83      |
+| « » advance / Sans | 0.96       | 0.85      | 0.93       | 0.85      |
+| { } advance / Sans | 0.93       | 0.79      | 0.88       | 0.74      |
+| t ink / n ink      | 0.88       | 0.88      | 0.91       | 0.74      |
+
+- **t (the root cause is family-wide).** The engine fades Black shapes in by `p.heavy`, which it reads off the stem. This family's
+  Black stem is 0.87 of Sans's, so `p.heavy` stops at 0.75 at Black. The t kept a foot 0.94 of a stem past its stem (Black's is
+  0.55) and inked 379 units, wider than Sans's Black t (376) beside an n 113 units narrower. At 12-16 px Bold and Black white
+  opened after it: "start ed", "Set tings", "Project s". `tune` now stores Sans's heaviness (`p.sans_heavy`) and the t is drawn
+  with it (`_t_full_heavy`): Black t ink 309, 0.74 of n (Sans 0.71). Its stem sits 1-2 units further left, so `T_LEFT`
+  0.4 -> 0.46 keeps round 8's 18-unit gate on st, ct, rt.
+- Slash and backslash: horizontal run at 0.83 of Sans's (`SLASH_RUN`), so it leans like the condensed diagonals; stroke unchanged.
+- Guillemets and single guillemets: the chevron's run and the white inside a pair at 0.8 (`GUIL_RUN`); the arm keeps its width.
+- Braces: the curls at 0.8 about the stem (`BRACE_W`, with round 9's `_narrowed`, as the parentheses).
+- All are `override`s in `src/family.py`; the engine is not edited. New tests: `test_slash_guillemets_braces_condensed`,
+  `test_black_t_condensed_like_sans`.
+
+WOFF2: full 73,504 -> **73,776** bytes, Latin 31,104 -> **31,132** (+0.3%). The TTF grows 88 bytes; the rest is brotli noise
+on changed outlines: SLASH_RUN 0.75-0.84 and T_LEFT 0.44-0.5 moved the full file between 73,624 and 74,072 with the same glyph set,
+and this pair was the smallest that keeps every gate.
+
+Before/after: 16 px Bold and Black "Get started", "Settings", "Projects" lose the hole after t; "Read/Write", "«Oui»",
+"{name}" set as tight as the words beside them; at 96 px Black the t's foot is short and square, as Sans's.
+
+Remaining: Regular t still inks 0.88 of n (Sans 0.76): its foot (2.1 stems past the stem) is drawn from the stem, not the counter,
+so Bold, which interpolates, sits at 0.81. `* © ® °` stay at 0.92-0.98 (radial shapes; Roboto Condensed keeps them round too).
+Display Black crowding, I/1 and O/0 at 11 px and Black "$1" are untouched.
+
+Needs a decision: `p.heavy` at 0.75 affects every Black-only adjustment in the engine (joins, feet, crossbars, kerning floors),
+not only the t. Making `heavy` read `p.sans_heavy` for all glyphs would apply Sans's full Black shapes everywhere, but it changes
+most Black outlines and needs a full by-eye round; this round fixed the t only.
+
 ## Round 9 (punctuation widths)
 
 Sheets: `specimens/round9/` (`src/specimen_round9.py`): headlines at 48 and 96 px, UI labels at 12 and 16 px, tables and figures

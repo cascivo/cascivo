@@ -1,5 +1,14 @@
 # Cascivo Condensed changelog
 
+## Round 10 (visual)
+
+- Bold and Black t are narrower: their foot was drawn only three quarters of the way to Black's short foot (the thinner stems read as
+  a lighter weight), so the t inked wider than Sans's and "started", "Settings" opened a hole after it at 12-16 px.
+- Slash, backslash, guillemets and braces are condensed with the letters (they kept 0.88-0.99 of Sans's width; now 0.74-0.85):
+  "Read/Write", "«Oui»", "{name}" stop setting loose, and the slash leans like the condensed diagonals.
+- WOFF2: full 73,504 -> 73,776 bytes, Latin 31,104 -> 31,132 (+0.3%, brotli noise on the changed outlines).
+- Before/after sheets (headlines 48/96 px, UI 12/16 px, tables 12/16/48 px, 100-900): `specimens/round10/` (`src/specimen_round10.py`).
+
 ## Round 9 (visual)
 
 - Parentheses, brackets, the straight double quote and the hyphen are condensed with the letters (they kept 0.85-0.95 of Sans's
