@@ -738,8 +738,7 @@ under `/tmp/refs`) was not on the machine.
 - Bar (`glyphs.BAR_SB` 1.1 -> 1.5 sidebearing units, `brokenbar` too): the upright `|` kept 80 units a side at Regular (Inter 128,
   advance 239 against 333) and 78 at Black (Inter 107), so `1|` and `l|` read as one mark at 12-16 px Bold and Black. Now 109 at
   Regular, 97 at Black, 138 at Thin (Inter 125); italic 312 wide at Regular (250; Inter 333).
-- Black `Q` tail (`glyphs.Q_HEAVY_RISE` (25, 12) units at Black): it ended 144 under the baseline upright and 130 italic (Bold 124 /
-  114) where Inter Black's ends at 54 and Bold's at 61, a hook dragging under the line at 48-96 px. Now 112 / 119 (Bold 106 / 108);
+- Black `Q` tail (`glyphs.Q_HEAVY_RISE` (25, 12) units at Black): it ended 144 under the baseline upright and 130 italic (Bold 124 / 114) where Inter Black's ends at 54 and Bold's at 61, a hook dragging under the line at 48-96 px. Now 112 / 119 (Bold 106 / 108);
   `test_q_tail_reaches_below_the_line` keeps >= 110 at Black (tried 30 upright: 108).
 - Bytes: full upright woff2 89,392 -> 89,132, Latin[wght] 33,808 -> 33,784, Latin[opsz,wght] 41,276 -> 41,304; italic full 97,276 ->
   97,468, italic Latin[wght] 36,872 -> 36,828, italic Latin[opsz,wght] 45,108 -> 45,080. All six: 343,732 -> 343,596.
