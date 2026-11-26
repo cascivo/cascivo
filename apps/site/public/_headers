@@ -37,9 +37,28 @@
   Access-Control-Allow-Origin: *
   X-Robots-Tag: all
 
-# Cascivo Sans files for /cascivo-sans. CORS so adopters can hotlink them; one day, not
-# `immutable`, because the file names are not content-hashed and a rebuild must reach users.
-/fonts/*
+# Cascivo font files. CORS so adopters can hotlink them; one day, not `immutable`, because the
+# file names are not content-hashed and a rebuild must reach users. One rule per directory, never
+# /fonts/*: that also matches the /fonts page (dist/fonts/index.html, served at /fonts/), whose
+# HTML then outlived the hashed chunks it names and loaded blank after a deploy
+# (src/headers.test.ts).
+/fonts/cascivo-sans/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=86400
+
+/fonts/cascivo-mono/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=86400
+
+/fonts/cascivo-serif/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=86400
+
+/fonts/cascivo-condensed/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=86400
+
+/fonts/compare/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=86400
 

@@ -1,4 +1,5 @@
-import { Suspense, lazy } from 'react'
+import { Suspense } from 'react'
+import { lazyReload } from './lazy-reload'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { currentPath, initRouter, navigate, scrollToHash } from './router'
 import { initReveal } from './marketing/reveal'
@@ -8,14 +9,14 @@ import { theme } from './theme'
 
 // The dialog AND its index (built from registry.json, ~130 KB gzip) live behind
 // this one lazy boundary, so the registry never lands in the home entry chunk.
-const SearchDialogLazy = lazy(() =>
+const SearchDialogLazy = lazyReload(() =>
   import('./marketing/search/SearchDialogLazy').then((m) => ({ default: m.SearchDialogLazy })),
 )
 
 // Docs surface (every component page, AppShell, charts, editor, flow) is a large
 // subtree only reached under /docs. Lazy so it never weighs on the home bundle —
 // its JS and CSS load on demand instead of blocking the marketing landing page.
-const DocsApp = lazy(() => import('./DocsApp').then((m) => ({ default: m.DocsApp })))
+const DocsApp = lazyReload(() => import('./DocsApp').then((m) => ({ default: m.DocsApp })))
 
 /**
  * Navigate to a search result. External links are full browser navigations
