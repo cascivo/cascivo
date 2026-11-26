@@ -1,18 +1,14 @@
 /**
- * True when an `npm trust list --json` payload names `repo` and `workflow`. The JSON
- * shape is not documented, so walk it instead of casting it.
- * @param {unknown} value
- * @param {string} repo `owner/name`
- * @param {string} workflow workflow file name, e.g. `release.yml`
+ * True when a registry version document (`GET /<name>/latest`) was published through a
+ * trusted publisher. npm records that in `_npmUser.trustedPublisher`, and it is public,
+ * so no login or 2FA is needed to tell which names still lack one.
+ * @param {unknown} doc
  * @returns {boolean}
  */
-export function trustsRepo(value, repo, workflow) {
-  if (Array.isArray(value)) return value.some((v) => trustsRepo(v, repo, workflow))
-  if (typeof value !== 'object' || value === null) return false
-  const values = Object.values(value)
-  const strings = values.filter((v) => typeof v === 'string')
-  if (strings.includes(repo) && strings.some((s) => s.endsWith(workflow))) return true
-  return values.some((v) => trustsRepo(v, repo, workflow))
+export function publishedByTrustedPublisher(doc) {
+  if (typeof doc !== 'object' || doc === null || !('_npmUser' in doc)) return false
+  const user = doc._npmUser
+  return typeof user === 'object' && user !== null && 'trustedPublisher' in user
 }
 
 /**

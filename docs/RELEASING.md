@@ -135,10 +135,11 @@ environment):
 pnpm release:trust                 # every published name; or name packages; --dry-run to preview
 ```
 
-`release:trust` runs `npm trust github --allow-publish` (pinned `npm@12`; npm 10 has no `trust`) for each name
-that exists on npm and does not already trust this repo's `release.yml`, so it is safe to
-re-run. npm may prompt for a 2FA code. The manual path is `npmjs.com/package/<name>` →
-Settings → Trusted Publisher. Then re-run the Release workflow via **workflow_dispatch** on `main`. The provenance badge
+`release:trust` runs `npm trust github --allow-publish` (pinned `npm@12`; npm 10 has no `trust`)
+for each name on npm whose latest version was not published through a trusted publisher
+(public `_npmUser.trustedPublisher`, so no 2FA for the check; `--force` asks npm anyway). npm
+prompts for 2FA per name; a failure such as a 409 (config exists) is listed, not fatal. The
+manual path is `npmjs.com/package/<name>` → Settings → Trusted Publisher. Then re-run the Release workflow via **workflow_dispatch** on `main`. The provenance badge
 appears from the next CI publish onward.
 
 ## Steady-state release flow
