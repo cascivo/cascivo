@@ -39,8 +39,11 @@ CAP_REACH = 1.2  # capitals carry longer serifs, as in Source Serif (and it move
 
 SB_K = [(24, 1.12), (84, 1.0), (194, 0.9)]  # round 7: Thin 1.01 -> 1.12, its letters set narrow beside Regular's and
 # ExtraLight / Light, now near Thin on the avar map (WGHT_MAP), inherited it: a width jump from 300 to 400 (wstep row)  # sidebearing factor on Sans's
-CAP_SB_K = [(24, 0.95), (84, 0.95), (194, 0.8)]  # capitals' sidebearings, on top of SB_K (round 7: Black 0.95 -> 0.8,
+CAP_SB_K = [(24, 0.95), (84, 0.82), (194, 0.8)]  # capitals' sidebearings, on top of SB_K (round 7: Black 0.95 -> 0.8,
 # HH set 1.22 gap over counter at 900, Source Serif 0.92; Sans's capitals widen toward Black where Source Serif's narrow)
+# Round 10: upright capitals set loose (HH 0.80 / 0.90 gap over counter at 400 / 700, Source Serif 4 0.71 / 0.82): Regular and
+# Bold 0.95 -> 0.8 / 0.78. The italic's heavy capitals already sat at Source Serif 4 Italic's (HH 0.88 at 700): CAP_SB_IT gives it back.
+CAP_SB_IT = [(24, 1.0), (84, 1.015), (146, 1.09), (194, 1.03)]
 CAP_H_K = [(24, 0.96), (84, 0.94), (194, 0.83)]  # straight capitals' counter (H E N B ...)
 CAP_ROUND_K = [(24, 0.97), (84, 0.96), (194, 0.91)]  # round and diagonal capitals' (O C G S A V ...)
 LC_K = [(24, 0.95), (84, 0.92), (194, 0.89)]  # n's counter, which the lowercase follows
@@ -97,6 +100,7 @@ def tune(p):
     if p.italic:
         p.cn *= _pw(v0, ITALIC_CN)
         p.V *= _pw(v0, ITALIC_STEM_K)
+        p.Sc *= _pw(v0, CAP_SB_IT)
     # Round overshoot keeps growing past Regular, as Source Serif's (o 12 / 12 / 15, O 15 / 16 / 19 units at 200 / 400 / 800);
     # Sans holds 13.4 from Regular up, so Bold's rounds and the serifed x stood level at the x-height
     p.ov = _pw(v0, [(24, 11.5), (84, 13.4), (194, 16.5)])
@@ -720,7 +724,7 @@ def glyph(g, p, name):
     if tuck and not name[:1].isupper():
         # An outer serif widens the ink, so the stem would sit a reach further from its neighbour: heavy lowercase set
         # loose (nn 1.29 gap/counter at 900, Source Serif 1.14). Part of the reach is taken back from the sidebearing.
-        d = (_pw(p.V, TUCK) - (0.0 if p.italic else TRIM_BACK * _pw(p.V, HEAVY_TRIM))) / p.S
+        d = (_pw(p.V, TUCK) + (_pw(p.V, ITALIC_TUCK) if p.italic else -TRIM_BACK * _pw(p.V, HEAVY_TRIM))) / p.S
         g.sb = (g.sb[0] - d * (-1 in tuck), g.sb[1] - d * (1 in tuck))
     base = name.split('.')[0]
     if base in U_LSB:
@@ -728,6 +732,9 @@ def glyph(g, p, name):
     if base in ROUND_SB:
         add = _pw(p.V, ROUND_SB_IT if p.italic else ROUND_SB_K)
         g.sb = tuple(v + add / p.S * on for v, on in zip(g.sb, ROUND_SB[base]))
+    if base in LC_ROUND_SB:
+        add = _pw(p.V, LC_ROUND_SB_K[bool(p.italic)])
+        g.sb = tuple(v + add / p.S * on for v, on in zip(g.sb, LC_ROUND_SB[base]))
 
 
 # Round 8, rhythm (score's spacing row, gap over n's counter against Source Serif 4): Bold's lowercase set loose (nn 1.18 at 700,
@@ -748,4 +755,12 @@ U_LSB = {'u': ([(20, 0), (92, 0), (151, 16), (194, 22)], [(20, 0), (92, 22), (15
 # round side.
 ROUND_SB = {'O': (1, 1), 'Q': (1, 1), 'C': (1, 0), 'G': (1, 0), 'D': (0, 1)}
 ROUND_SB_K = [(20, 0), (92, 0), (151, 28), (194, 48)]
-ROUND_SB_IT = [(20, -32), (92, 0), (194, 0)]
+ROUND_SB_IT = [(20, -32), (92, 0), (151, 10), (194, 16)]
+# Round 10: the italic's light lowercase stems set loose (nn 1.11 gap over counter at 400, 1.08 at 300; Source Serif 4 Italic 0.97 /
+# 0.95; "H a m b u r g" at 48 px): its feet are exit flicks and its heads shorter, so the white between stems reads open. Units a
+# tucked side, on top of TUCK; Bold and Black already matched.
+ITALIC_TUCK = [(20, 14), (84, 15), (151, 0)]
+# Round 10: heavy lowercase rounds set tight (oo 0.97 at 900, Source Serif 4 1.18; italic 0.92 / 0.95 at 700 / 900 against 1.11 /
+# 1.27), the lowercase twin of ROUND_SB. Units per round side, (upright, italic).
+LC_ROUND_SB = {'o': (1, 1), 'c': (1, 0), 'e': (1, 0), 'd': (1, 0), 'q': (1, 0), 'b': (0, 1), 'p': (0, 1)}
+LC_ROUND_SB_K = ([(20, 0), (170, 0), (194, 14)], [(20, 0), (92, 0), (151, 12), (194, 19)])

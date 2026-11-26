@@ -374,6 +374,27 @@ class SerifFamily(unittest.TestCase):
                 self.assertLess(stem(TTF_IT, wght), stem(TTF, wght) - 3)
                 self.assertLess(adv(TTF_IT, 'n', wght) / adv(TTF, 'n', wght), 0.93)
 
+    def test_round10_spacing(self):
+        # Round 10 (NOTES.md): the light italic's stems set loose (nn 1.11 gap over counter at 400, Source Serif 4 Italic 0.97),
+        # heavy lowercase rounds tight (oo 0.92-0.97 at 700-900, Source Serif 1.11-1.27), upright capitals loose (HH 0.80 at 400,
+        # Source Serif 0.71). Round 9 fonts: italic n white 231 at 400, H sidebearings 173 at 400, o 63 at 900, italic o 52 at 700.
+        from fontTools.pens.boundsPen import BoundsPen
+
+        def sbs(path, ch, wght):
+            f = TTFont(path)
+            gs = f.getGlyphSet(location={'wght': wght, 'opsz': 14})
+            g = gs[f.getBestCmap()[ord(ch)]]
+            b = BoundsPen(gs)
+            g.draw(b)
+            return b.bounds[0] + g.width - b.bounds[2]
+        a = raster(TTF_IT, 'n', 400, 1000)
+        ys = np.flatnonzero(a.any(1))
+        xs = np.flatnonzero(a[(ys.min() + ys.max()) // 2])
+        self.assertLess(adv(TTF_IT, 'n', 400) - (np.ptp(xs) + 1), 215)  # now ~201
+        self.assertLess(sbs(TTF, 'H', 400), 162)  # now ~150
+        self.assertGreater(sbs(TTF, 'o', 900), 75)  # now ~87
+        self.assertGreater(sbs(TTF_IT, 'o', 700), 65)  # now ~77
+
     def test_ots_sanitize(self):
         try:
             import ots

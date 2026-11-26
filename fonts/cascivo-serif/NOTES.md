@@ -113,6 +113,30 @@ and the italic at 170 px beside Source Serif 4. `specimens/round9/specimen.py`, 
   letters reads open); Rn at Black (R's foot and leg serifs, 24 units at opsz 48 against 41; capitals not trimmed); small
   sizes is still I/l and I/1 at 11-12 px, 200-400; wstep at 600 on X Y V W A.
 
+Round 10 (specimens in `specimens/round10/`: `before.png` / `after.png`, same layout as round 9, Source Serif 4 grey, IBM Plex
+Serif blue; `specimens/round10/specimen.py`). A spacing round: gap over n's counter (score's spacing row) against Source Serif 4:
+
+- Light italic stems (`ITALIC_TUCK`, 14 / 15 / 0 units at Thin / Regular / Bold, on top of `TUCK`): nn 1.08 / 1.11 at 300 / 400
+  (Source Serif 4 Italic 0.95 / 0.97), "H a m b u r g" at 48 px; now 0.98 / 0.98. The exit-flick feet and shorter heads left the
+  white between stems open.
+- Heavy lowercase rounds (`LC_ROUND_SB`, o c e d q b p, `LC_ROUND_SB_K` per style): oo 0.97 at 900 (ref 1.18), italic 0.92 / 0.95
+  at 700 / 900 (ref 1.11 / 1.27); now 1.13, 1.11 / 1.22. Upright starts at Black only; the named 700 still takes part of it (oo 0.96
+  -> 1.04, ref 0.97). Heavy italic round capitals too (`ROUND_SB_IT` 10 / 16 at Bold / Black): OO 0.59 / 0.61 -> 0.68 / 0.74 (ref
+  0.66 / 0.74).
+- Upright capitals (`CAP_SB_K` Regular 0.95 -> 0.82): HH 0.80 / 0.90 at 400 / 700 (ref 0.71 / 0.82) -> 0.78 / 0.88; H's sidebearings
+  173 -> 150 units at 400. The italic's capitals already matched, `CAP_SB_IT` gives the change back. A Bold point (0.78 at 146) moved
+  HH to 0.87 but kinked the axis (weight axis 4.89 -> 4.61); dropped for the straight line. The capitals' white is mostly serif
+  reach, so the sidebearing moves HH little; a shorter `CAP_REACH` is the next lever.
+- Gate: `test_round10_spacing` (italic n white at 400, H sidebearings at 400, o at 900, italic o at 700; fails on round 9 fonts).
+- Score vs Source Serif 4: 7.158 -> 7.196. rhythm 9.03 -> 9.22, weight axis 4.89 -> 4.83, shape 8.32 -> 8.32, colour 8.36 -> 8.39,
+  small sizes 6.23 -> 6.24, optical sizes 1.29 -> 1.30.
+- Italic vs Source Serif 4 Italic: 6.624 -> 6.967. rhythm 8.35 -> 9.13, weight axis 3.58 -> 3.68, shape 6.44 -> 6.43, colour 7.10 ->
+  7.30, small sizes 7.40 -> 8.07.
+- WOFF2: upright 88_444 -> 88_532, Latin 37_756 -> 37_800; italic 96_344 -> 97_328 (+984: GPOS +458 raw, the measured kerning finds
+  more pairs past `MIN_KERN` once the italic tightens; gvar shrank), Latin 41_360 -> 41_404.
+- Left: italic a / e still the sheared Sans shapes; Rn at Black; upright capitals still a little loose at 400-700 (serif reach);
+  upright 700 lowercase a touch loose (lc 1.06 vs 1.00); small sizes I/l and I/1 at 11-12 px; wstep at 600 on X Y V W A.
+
 Score vs Source Serif 4 (score.run, ref fontsource `@fontsource-variable/source-serif-4` 5.3.1 `source-serif-4-latin-wght-normal.woff2`):
 
 - round 2: overall 5.68 (v1 5.61 recorded, 5.65 re-measured on the same build). rhythm 6.92 -> 8.13, weight axis 0.88 -> 0.85, shape 6.84 -> 6.28, colour 6.80 -> 6.73, small sizes 8.04 -> 7.40, optical sizes 1.30 -> 1.28.
