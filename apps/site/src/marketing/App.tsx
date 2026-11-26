@@ -42,7 +42,9 @@ const PosterAppBuilder = lazyReload(() =>
 const PosterShowcase = lazyReload(() =>
   import('./poster/PosterShowcase').then((m) => ({ default: m.PosterShowcase })),
 )
-const PosterCta = lazyReload(() => import('./poster/PosterCta').then((m) => ({ default: m.PosterCta })))
+const PosterCta = lazyReload(() =>
+  import('./poster/PosterCta').then((m) => ({ default: m.PosterCta })),
+)
 const Footer = lazyReload(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
 
 // Non-home routes — loaded on demand, never in the home bundle.
@@ -55,11 +57,15 @@ const AccessibleComponentPage = lazyReload(() =>
 const PerformancePage = lazyReload(() =>
   import('./pages/PerformancePage').then((m) => ({ default: m.PerformancePage })),
 )
-const EvalsPage = lazyReload(() => import('./pages/EvalsPage').then((m) => ({ default: m.EvalsPage })))
+const EvalsPage = lazyReload(() =>
+  import('./pages/EvalsPage').then((m) => ({ default: m.EvalsPage })),
+)
 const EnterprisePage = lazyReload(() =>
   import('./pages/EnterprisePage').then((m) => ({ default: m.EnterprisePage })),
 )
-const GuidesPage = lazyReload(() => import('./pages/GuidesPage').then((m) => ({ default: m.GuidesPage })))
+const GuidesPage = lazyReload(() =>
+  import('./pages/GuidesPage').then((m) => ({ default: m.GuidesPage })),
+)
 const ComingFromShadcnPage = lazyReload(() =>
   import('./pages/guides/ComingFromShadcnPage').then((m) => ({ default: m.ComingFromShadcnPage })),
 )
@@ -90,7 +96,9 @@ const ModernCssPage = lazyReload(() =>
 const CascivoSansPage = lazyReload(() =>
   import('./pages/CascivoSansPage').then((m) => ({ default: m.CascivoSansPage })),
 )
-const FontsPage = lazyReload(() => import('./pages/FontsPage').then((m) => ({ default: m.FontsPage })))
+const FontsPage = lazyReload(() =>
+  import('./pages/FontsPage').then((m) => ({ default: m.FontsPage })),
+)
 const CascivoMonoPage = lazyReload(() =>
   import('./pages/fonts/FamilyPage').then((m) => ({ default: m.CascivoMonoPage })),
 )
@@ -113,12 +121,16 @@ const ShowcasePage = lazyReload(() =>
   import('./pages/ShowcasePage').then((m) => ({ default: m.ShowcasePage })),
 )
 const AiPage = lazyReload(() => import('./pages/AiPage').then((m) => ({ default: m.AiPage })))
-const ChartsPage = lazyReload(() => import('./pages/ChartsPage').then((m) => ({ default: m.ChartsPage })))
+const ChartsPage = lazyReload(() =>
+  import('./pages/ChartsPage').then((m) => ({ default: m.ChartsPage })),
+)
 const ExampleDetailPage = lazyReload(() =>
   import('./pages/ExampleDetailPage').then((m) => ({ default: m.ExampleDetailPage })),
 )
 const OgCard = lazyReload(() => import('./sections/OgCard').then((m) => ({ default: m.OgCard })))
-const CreatePage = lazyReload(() => import('./pages/CreatePage').then((m) => ({ default: m.CreatePage })))
+const CreatePage = lazyReload(() =>
+  import('./pages/CreatePage').then((m) => ({ default: m.CreatePage })),
+)
 const NotFound = lazyReload(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })))
 const BlocksPage = lazyReload(() =>
   import('./pages/blocks/BlocksPage').then((m) => ({ default: m.BlocksPage })),
