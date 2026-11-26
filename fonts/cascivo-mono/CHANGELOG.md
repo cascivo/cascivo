@@ -1,5 +1,12 @@
 # Cascivo Mono changelog
 
+## Round 10 (visual)
+
+- `~` 1.3x heavier pen (1.15x at Black): 0.69 -> 0.91x JetBrains Mono's ink at Regular.
+- Straight quotes 1.2x heavier at Thin-Regular; `.` `:` `i` `j` dots larger at Thin and Regular (period 142 -> 150 at 400).
+- f's crossbar reaches 40 units further left (arms about even); r's arm longer (398 -> 425 wide at 400).
+- WOFF2 70 360 -> 70 652 B, Latin slice 27 344 -> 27 392 B. Sheets: `specimens/round10/` (`src/specimen_round10.py`).
+
 ## Round 9 (visual)
 
 - Thin 50% heavier at the Thin master, horizontals included (stem 28 -> 36): it was 0.45x JetBrains Mono Thin's ink, grey at 12-14 px.
