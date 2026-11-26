@@ -14,7 +14,7 @@
 
 import { execFileSync } from 'node:child_process'
 import { fetchVersions, listPublishable } from '../lib/npm-publishable.mjs'
-import { trustsRepo } from '../lib/npm-trust.mjs'
+import { trustGithubArgs, trustsRepo } from '../lib/npm-trust.mjs'
 
 const NPM = ['-y', 'npm@12']
 const REPO = 'cascivo/cascivo'
@@ -76,7 +76,7 @@ for (const name of names.toSorted()) {
     continue
   }
   console.log(`\n→ ${name}`)
-  const trustArgs = ['trust', 'github', name, '--repo', REPO, '--file', WORKFLOW, '--yes']
+  const trustArgs = trustGithubArgs(name, REPO, WORKFLOW)
   // Inherit stdio so npm can prompt for a 2FA one-time password.
   npm(dryRun ? [...trustArgs, '--dry-run'] : trustArgs, 'inherit')
   added.push(name)

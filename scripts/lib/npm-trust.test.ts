@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { trustsRepo } from './npm-trust.mjs'
+import { trustGithubArgs, trustsRepo } from './npm-trust.mjs'
 
 const REPO = 'cascivo/cascivo'
 const FILE = 'release.yml'
@@ -21,5 +21,14 @@ describe('trustsRepo', () => {
     expect(trustsRepo([{ repository: REPO, file: 'ci.yml' }], REPO, FILE)).toBe(false)
     expect(trustsRepo(null, REPO, FILE)).toBe(false)
     expect(trustsRepo(`${REPO} ${FILE}`, REPO, FILE)).toBe(false)
+  })
+})
+
+describe('trustGithubArgs', () => {
+  it('grants publish permission, which npm 12 requires', () => {
+    const args = trustGithubArgs('@cascivo/ai', REPO, FILE)
+    expect(args).toContain('--allow-publish')
+    expect(args).not.toContain('--allow-stage-publish')
+    expect(args.slice(0, 3)).toEqual(['trust', 'github', '@cascivo/ai'])
   })
 })
