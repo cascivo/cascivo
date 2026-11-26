@@ -26,6 +26,50 @@
     "description": "Highlights a short, important message inline",
     "category": "display",
     "clientJs": "enhancement",
+    "contractTier": "static",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "data": {
+          "data-variant": ["default", "info", "success", "warning", "destructive"]
+        },
+        "children": ["icon", "body", "dismiss"],
+        "emit": "manual"
+      },
+      "parts": {
+        "icon": {
+          "element": "span",
+          "aria": ["aria-hidden"],
+          "children": ["$slot"],
+          "when": "icon"
+        },
+        "body": {
+          "element": "div",
+          "children": ["title", "content", "action"]
+        },
+        "title": {
+          "element": "div",
+          "children": ["$text"],
+          "when": "title"
+        },
+        "content": {
+          "element": "div",
+          "children": ["$slot"],
+          "when": "children"
+        },
+        "action": {
+          "element": "button",
+          "children": ["$text"],
+          "when": "action"
+        },
+        "dismiss": {
+          "element": "button",
+          "aria": ["aria-label"],
+          "children": ["$text"],
+          "when": "dismissible"
+        }
+      }
+    },
     "states": [],
     "variants": ["default", "info", "success", "warning", "destructive"],
     "sizes": [],

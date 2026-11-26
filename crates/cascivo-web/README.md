@@ -22,6 +22,11 @@ cascivo-web dev      # http://127.0.0.1:4321/ with live reload
 cascivo-web build    # write dist/ (emptied first; --no-clean keeps old files)
 ```
 
+A dynamic app instead (axum + `cascivo-server`, htmx, `@cascivo/elements`, a Solid island):
+`cascivo-web new my-app --dynamic --target native|workers|containers`. It writes notes CRUD
+behind sign-in, a server island, SSE and the `/c/*` interaction demos; `--checkout
+<checkout>` links the unreleased crates and JS packages from a cascivo checkout.
+
 ## Features
 
 - File-based routes in `pages/`, including `pages/blog/[posts].html` once per collection entry

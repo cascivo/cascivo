@@ -26,6 +26,8 @@ import unicodedata
 from params import MID_WGHT, WGHT_MAP, P  # noqa: E402
 from composites import ALIAS, GREEK_ACCENTED, GREEK_POLY, accented_chars, glyph_name, is_cap, script_glyph
 from geom import seg_point
+import family
+from kern_overrides import MASTER_WGHT, OVERRIDES
 
 BAND = 10
 # Black's sidebearing was ~20 units before round 4 (params.HEAVY_TIGHTEN; 44 now), so 0.55 S would keep pairs 11 units apart, and a band
@@ -62,7 +64,7 @@ STRONG_CLASSES = [
 # deeper than Regular's, so Vo, Ve, Vc read 0.6 to 0.75x Inter's. The hole counts THIN_REACH Regular sidebearings deeper at Thin, fading
 # to none at Regular (whose values do not move): 0.8 to 1.08x Inter's now. W beside a round letter and A beside W do not answer to it
 # (tried with 4 and 1.5, and with a lower closest-point floor): their white is spread over every band, which the measure reads as
-# spacing, not as a hole. They stay in test_font.KERNING_SHORT.
+# spacing, not as a hole. They stay in test_font.KERNING_SHORT. (Round 6: kern_overrides.py sets their Thin values by hand.)
 THIN_REACH = {('V', b): 2.0 for b in ['c', 'e', 'o', 'q', 'g', 'oe']}
 STRONG = {(a, b): (reach, more, gain, limit) for lefts, rights, reach, more, gain, limit in STRONG_CLASSES for a in lefts for b in rights}
 
@@ -310,6 +312,24 @@ def white_ref(italic):
     return {(_glyph(p[0]), _glyph(p[1])): by for p, by in WHITE_REF['italic' if italic else 'upright'].items()}
 
 
+def overrides(italic):
+    """{(first glyph, second glyph): (Thin, Regular, Black[, Display])} of the hand-tuned table (kern_overrides.py) for the upright or the italic. A sibling
+    family keeps the measured kerning unless its family.py brings a KERN_OVERRIDES of its own: the values were set on Sans's outlines."""
+    table = family.get('KERN_OVERRIDES', {}) if family.ACTIVE else OVERRIDES
+    return {(_glyph(p[0]), _glyph(p[1])): v for p, v in table.get('italic' if italic else 'upright', {}).items()}
+
+
+def _apply_overrides(o, vals, w0):
+    """The hand-tuned value replaces the measured one on the master at w0 (Thin, Regular or Black, opsz 14). A WHITE_REF pair's fitted
+    value is recorded for the Bold and Black fits (_WHITE0), so they interpolate from what ships."""
+    i = MASTER_WGHT.index(w0)
+    for k, by in overrides(o.p.italic).items():
+        if k in vals and by[i] is not None:
+            vals[k] = by[i]
+            if (k, w0) in _WHITE0:
+                _WHITE0[k, w0] = _WHITE0[k, w0][:2] + (by[i],)
+
+
 def _candidates():
     here = os.path.dirname(os.path.abspath(__file__))
     with open(os.path.join(here, 'kern_candidates.json'), encoding='utf-8') as fh:
@@ -478,6 +498,8 @@ def kern_pairs(o):
     cands.update(OWN_SHAPE_PAIRS)
     cands.update({k: v for k, v in OWN_CLOSING_PAIRS.items() if not (o.p.italic and k in UPRIGHT_ONLY)})
     cands.update({k: -1 for k in list(white_ref(o.p.italic)) + list(FIT_HH) + (list(FIT_ROWS_ITALIC) if o.p.italic else []) if k[0] in glyphs and k[1] in glyphs})
+    # the hand-tuned pairs are kerned whatever the measure says (kern_overrides.py)
+    cands.update({k: (-1 if min(v for v in by if v is not None) < 0 else 1) for k, by in overrides(o.p.italic).items() if k[0] in glyphs and k[1] in glyphs})
     # Georgian and Armenian against punctuation and figures: neither Noto nor DejaVu kerns these,
     # but at Black შ's and წ's curls reach a dash's height (–შ touched at Display Black italic).
     # Opening only. (։ and ֊ are the colon and hyphen themselves.)
@@ -590,7 +612,8 @@ def _white0(o, a, b):
 
 def _design(w):
     """The design coordinate of a user weight (the avar map): 800 sits halfway between Bold (700) and Black, not 4/5 of the way to Black."""
-    for (u0, d0), (u1, d1) in zip(WGHT_MAP, WGHT_MAP[1:]):
+    m = family.get('WGHT_MAP', WGHT_MAP)  # the family's own avar map when it has one (build.py)
+    for (u0, d0), (u1, d1) in zip(m, m[1:]):
         if u0 <= w <= u1:
             return d0 + (d1 - d0) * (w - u0) / (u1 - u0)
     raise ValueError(w)
@@ -738,6 +761,8 @@ def _values(o, pairs):
     loc = getattr(o, 'loc', {'wght': 400, 'opsz': 14})
     if loc.get('opsz') == 14:
         _fit_white(o, vals, loc)
+        if loc.get('wght') in MASTER_WGHT:
+            _apply_overrides(o, vals, loc['wght'])
     if loc.get('wght') == 400 and loc.get('opsz') == 14:
         _REGULAR = vals
     elif loc.get('wght') == 900 and loc.get('opsz') == 14:
@@ -759,6 +784,10 @@ def _values(o, pairs):
         out = dict(_REGULAR)
         for k, held in _EXCESS.get(getattr(o, 'name', None), {}).items():
             out[k] = out[k] + held
+        if loc.get('opsz') == 48:  # a hand-tuned Display opening: what opsz 48 adds over opsz 14 at every weight (kern_overrides.py)
+            for k, by in overrides(o.p.italic).items():
+                if k in out and len(by) > 3 and by[3]:
+                    out[k] += by[3]
         return out
     elif loc.get('wght') == MID_WGHT and _REGULAR is not None and _BLACK is not None:
         # Bold kerns as Regular and Black interpolated, so the master adds no kerning data; a pair that
@@ -1014,7 +1043,7 @@ def kern_fea(o):
             elif (a, b) in OWN_SHAPE_PAIRS:
                 if k > 0 or not _HEAVY or any(_need(h, a, b) > 0 for h in _HEAVY):
                     keep.append((a, b))
-            elif (a, b) in white_ref(o.p.italic) or (a, b) in FIT_HH or (o.p.italic and (a, b) in FIT_ROWS_ITALIC):
+            elif (a, b) in white_ref(o.p.italic) or (a, b) in FIT_HH or (o.p.italic and (a, b) in FIT_ROWS_ITALIC) or (a, b) in overrides(o.p.italic):
                 keep.append((a, b))
         _SELECTED = sorted(keep)
     firsts = sorted({a for a, _ in _SELECTED})

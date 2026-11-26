@@ -8,6 +8,41 @@ export const meta: ComponentMeta = {
   category: 'overlay',
   // A toast only exists because useToast() created it at runtime; the server renders nothing.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    // The provider's viewport holds the toasts; a toast only exists once useToast() queued it.
+    root: {
+      element: 'div',
+      local: 'viewport',
+      role: 'region',
+      aria: ['aria-label'],
+      children: ['toast'],
+    },
+    parts: {
+      toast: {
+        element: 'div',
+        // `alert`/`status` follow the assertive variants.
+        role: 'status',
+        data: {
+          'data-variant': ['default', 'success', 'warning', 'destructive'],
+          'data-state': ['visible', 'dismissing', 'gone'],
+        },
+        aria: ['aria-live'],
+        children: ['icon', 'body', 'close'],
+      },
+      // A decorative glyph for every tone but `default`.
+      icon: {
+        element: 'span',
+        aria: ['aria-hidden'],
+        children: ['$text'],
+        when: "variant !== 'default'",
+      },
+      body: { element: 'div', children: ['title', 'description'] },
+      title: { element: 'div', children: ['$text'] },
+      description: { element: 'div', children: ['$text'], when: 'description' },
+      close: { element: 'button', aria: ['aria-label'], children: ['$text'] },
+    },
+  },
   states: ['visible', 'dismissing', 'gone'],
   variants: ['default', 'success', 'warning', 'destructive'],
   sizes: [],

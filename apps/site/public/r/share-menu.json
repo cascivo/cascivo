@@ -26,6 +26,64 @@
     "description": "A Share button opening intent links for Bluesky, Mastodon, Threads, LinkedIn and X, plus copy link and the system share sheet",
     "category": "overlay",
     "clientJs": "enhancement",
+    "contractTier": "behaviour",
+    "anatomy": {
+      "root": {
+        "element": "span",
+        "local": "root",
+        "children": ["trigger", "panel"]
+      },
+      "parts": {
+        "trigger": {
+          "element": "button",
+          "data": {
+            "data-size": ["sm", "md"]
+          },
+          "aria": ["aria-expanded"],
+          "children": ["icon", "$text"]
+        },
+        "icon": {
+          "element": "svg",
+          "aria": ["aria-hidden"]
+        },
+        "panel": {
+          "element": "div",
+          "aria": ["aria-label"],
+          "children": ["list"]
+        },
+        "list": {
+          "element": "ul",
+          "children": ["server", "item", "divided"]
+        },
+        "server": {
+          "element": "form",
+          "children": ["serverLabel", "serverRow"]
+        },
+        "serverLabel": {
+          "element": "label",
+          "children": ["$text"]
+        },
+        "serverRow": {
+          "element": "span",
+          "children": ["serverInput", "item"]
+        },
+        "serverInput": {
+          "element": "input"
+        },
+        "item": {
+          "element": ["a", "button"],
+          "data": {
+            "data-network": ["bluesky", "mastodon", "threads", "linkedin", "x"],
+            "data-state": ["idle", "copied"]
+          },
+          "children": ["$text"]
+        },
+        "divided": {
+          "element": "li",
+          "children": ["item"]
+        }
+      }
+    },
     "states": ["closed", "open", "copied"],
     "variants": [],
     "sizes": ["sm", "md"],

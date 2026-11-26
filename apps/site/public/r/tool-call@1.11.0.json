@@ -27,6 +27,67 @@
     "description": "Card for one AI tool invocation — the tool name, its lifecycle status, collapsible input/output, and approval actions",
     "category": "display",
     "clientJs": "none",
+    "contractTier": "native",
+    "anatomy": {
+      "root": {
+        "element": "div",
+        "data": {
+          "data-status": ["pending", "running", "awaiting-approval", "complete", "error", "denied"]
+        },
+        "children": ["disclosure", "summary", "actions"],
+        "emit": "manual"
+      },
+      "parts": {
+        "disclosure": {
+          "element": "details",
+          "children": ["summary", "body"]
+        },
+        "summary": {
+          "element": ["summary", "div"],
+          "children": ["glyph", "name", "badge", "indicator"]
+        },
+        "glyph": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        },
+        "name": {
+          "element": "code",
+          "children": ["$text"]
+        },
+        "badge": {
+          "element": "span",
+          "children": ["$text"]
+        },
+        "indicator": {
+          "element": "span",
+          "aria": ["aria-hidden"]
+        },
+        "body": {
+          "element": "div",
+          "children": ["section"]
+        },
+        "section": {
+          "element": "div",
+          "data": {
+            "data-kind": ["error"]
+          },
+          "children": ["section-label", "code"]
+        },
+        "section-label": {
+          "element": "div",
+          "children": ["$text"]
+        },
+        "code": {
+          "element": "pre",
+          "children": ["$text"]
+        },
+        "actions": {
+          "element": "div",
+          "children": ["$slot"],
+          "when": "actions"
+        }
+      }
+    },
     "states": ["pending", "running", "awaiting-approval", "complete", "error", "denied"],
     "variants": [],
     "sizes": [],

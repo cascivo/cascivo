@@ -36,6 +36,27 @@ export const ELEMENTS: Entry[] = [
     events: [['cv-select', 'An item was activated. `detail: { value: string }` (data-value).']],
   },
   {
+    tag: 'cv-tabs',
+    className: 'CvTabs',
+    module: 'tabs',
+    description: 'Tabs: enhances a [role=tablist] of [role=tab] and their [role=tabpanel] panels.',
+    formAssociated: false,
+    attributes: [
+      ['activation', "'auto' | 'manual'", 'Manual: arrow keys move focus, Enter/Space selects.'],
+    ],
+    events: [['cv-value-change', 'A tab was selected. `detail: { value: string }` (data-value).']],
+  },
+  {
+    tag: 'cv-form',
+    className: 'CvForm',
+    module: 'form',
+    description:
+      'Form: renders constraint-validation errors with server-provided messages, guards double submit, swaps htmx 422 and focuses the first error.',
+    formAssociated: false,
+    attributes: [],
+    events: [],
+  },
+  {
     tag: 'cv-combobox',
     className: 'CvCombobox',
     module: 'combobox',
@@ -57,6 +78,32 @@ export const ELEMENTS: Entry[] = [
       ...formAttributes,
     ],
     events: formEvents,
+  },
+  {
+    tag: 'cv-dialog',
+    className: 'CvDialog',
+    module: 'dialog',
+    description:
+      'Modal dialog: wraps a native <dialog> opened with showModal(); focus returns to the opener.',
+    formAssociated: false,
+    attributes: [
+      ['open', 'boolean', 'Open state (initial value; the live state is the `open` property).'],
+      ['static', 'boolean', 'A backdrop click does not close.'],
+    ],
+    events: [
+      ['cv-open', 'The dialog opened.'],
+      ['cv-close', 'The dialog closed (Escape, close control, backdrop, cv-dialog-close).'],
+    ],
+  },
+  {
+    tag: 'cv-toaster',
+    className: 'CvToaster',
+    module: 'toaster',
+    description:
+      'Live region for toasts: auto-dismiss, pause on hover/focus, filled by OOB swap or the cv-toast trigger.',
+    formAssociated: false,
+    attributes: [['duration', 'number', 'Milliseconds before a toast dismisses (0: never).']],
+    events: [['cv-toast-dismiss', 'A toast was dismissed.']],
   },
 ]
 

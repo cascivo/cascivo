@@ -1,0 +1,1 @@
+input "Email" error="Invalid email" size=lg

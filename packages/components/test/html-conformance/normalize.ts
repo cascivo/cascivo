@@ -45,10 +45,36 @@ function normTag(tag: string, strip: boolean): string {
   return `<${m[1]}${attrs.length ? ' ' : ''}${attrs.join(' ')}>`
 }
 
+/**
+ * Drop `[role=tabpanel][hidden]` subtrees. Rust emits every panel and hides the inactive ones
+ * (so they stack without JS); React mounts only the active panel, so the hidden ones have no
+ * React counterpart.
+ */
+function dropHiddenPanels(html: string): string {
+  const open = /<div\b(?=[^>]*\brole="tabpanel")(?=[^>]*\shidden(?:[\s>=]|$))[^>]*>/
+  for (let m = open.exec(html); m; m = open.exec(html)) {
+    const tag = /<(\/?)div\b[^>]*>/g
+    tag.lastIndex = m.index + m[0].length
+    let depth = 1
+    for (let t = tag.exec(html); t; t = tag.exec(html)) {
+      depth += t[1] ? -1 : 1
+      if (depth === 0) {
+        html = html.slice(0, m.index) + html.slice(tag.lastIndex)
+        break
+      }
+    }
+    if (depth !== 0) break
+  }
+  return html
+}
+
 /** Same DOM, comparable string: attrs sorted, classes unprefixed, ids by first appearance. */
 export function normalize(html: string, opts: { rust: boolean }): string {
   // React 19 hoists a preload <link> before any <img src>; Rust emits none (no head to hoist to).
   let s = html.replace(/<!--.*?-->/gs, '').replace(/<link rel="preload"[^>]*>/g, '')
+  // `<cv-tabs>` is the behaviour host of an element React has no counterpart for (the script
+  // enhances markup that is otherwise identical).
+  if (opts.rust) s = dropHiddenPanels(s).replace(/<\/?cv-tabs[^>]*>/g, '')
   s = s.replace(/<[^>]+>/g, (t) =>
     t.startsWith('</') ? t.replace(/\s+/g, '') : normTag(t, opts.rust),
   )

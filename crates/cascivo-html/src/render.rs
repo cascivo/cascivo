@@ -70,6 +70,18 @@ pub struct Cx<'a> {
     pub scripts: BTreeSet<&'static str>,
     /// CSP-safe mode only: `data-cv-style` key → declarations.
     pub styles: BTreeMap<String, String>,
+    /// Set by `field` for the control it wraps; the control takes it (React's `cloneElement`).
+    pub(crate) field: Option<FieldCtx>,
+}
+
+/// What a `field` hands its control: the id and the ARIA wiring.
+#[derive(Debug, Default, Clone)]
+pub(crate) struct FieldCtx {
+    pub id: String,
+    pub labelled_by: Option<String>,
+    pub described_by: Option<String>,
+    pub invalid: bool,
+    pub disabled: bool,
 }
 
 impl Cx<'_> {
@@ -131,13 +143,24 @@ pub fn style_rules(styles: &BTreeMap<String, String>) -> String {
 
 /// CSS that only some emitters need beyond the per-component module (inside `@layer cascivo.component`).
 // Static output has no load handler, so the image must not stay hidden behind its placeholder.
-const EXTRA_CSS: &[(&str, &str)] = &[
-    ("image", include_str!("../assets/extra/image.css")),
-    ("tabs", include_str!("../assets/extra/tabs.css")),
-];
+const EXTRA_CSS: &[(&str, &str)] = &[("image", include_str!("../assets/extra/image.css"))];
+
+/// The tabs custom element: its tag name and its key in [`SCRIPTS`].
+pub(crate) const CV_TABS: &str = "cv-tabs";
+/// The dialog and toaster custom elements, likewise.
+pub(crate) const CV_DIALOG: &str = "cv-dialog";
+pub(crate) const CV_TOASTER: &str = "cv-toaster";
+/// Attributes `cv-dialog.js` listens for on the document.
+pub(crate) const DIALOG_OPEN: &str = "data-cv-dialog-open";
+pub(crate) const DIALOG_CLOSE: &str = "data-cv-dialog-close";
 
 /// Inline scripts, keyed by the name emitters put in `Cx::scripts`.
-const SCRIPTS: &[(&str, &str)] = &[("table-sort", include_str!("../assets/extra/table-sort.js"))];
+const SCRIPTS: &[(&str, &str)] = &[
+    ("table-sort", include_str!("../assets/extra/table-sort.js")),
+    (CV_TABS, include_str!("../assets/extra/cv-tabs.js")),
+    (CV_DIALOG, include_str!("../assets/extra/cv-dialog.js")),
+    (CV_TOASTER, include_str!("../assets/extra/cv-toaster.js")),
+];
 
 /// Page shell: inline padding and a vertical rhythm from the brand's `gap` (default space-4).
 /// Mobile-first, no max-width: the document fills the viewport like a dashboard.

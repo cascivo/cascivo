@@ -1,0 +1,60 @@
+{
+  "name": "@cascivo/css",
+  "version": "0.0.0",
+  "private": false,
+  "description": "cascivo's stable markup contract as plain CSS: unhashed cv-* classes and data-* attributes for HTML, htmx, Solid or any framework, plus the typed class map and a Vite scoped-name helper",
+  "keywords": [
+    "cascivo",
+    "css",
+    "css-modules",
+    "design-system",
+    "htmx",
+    "markup-contract",
+    "vite"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/css#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/css"
+  },
+  "files": [
+    "dist",
+    "contract.json"
+  ],
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js",
+      "default": "./dist/vite.js"
+    },
+    "./contract.json": "./contract.json",
+    "./*.css": "./dist/*.css"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "vp build && node scripts/flatten-types.mjs && node scripts/check-types-flat.mjs && node ../../scripts/contract/dist-css.ts",
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  }
+}

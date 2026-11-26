@@ -6,6 +6,27 @@ export const meta: ComponentMeta = {
   category: 'inputs',
   // Adding and removing chips is the component; with JS off the value cannot change.
   clientJs: 'required',
+  contractTier: 'behaviour',
+  anatomy: {
+    root: {
+      element: 'div',
+      local: 'wrapper',
+      data: { 'data-disabled': 'boolean' },
+      children: ['tag', 'input'],
+    },
+    parts: {
+      tag: {
+        element: 'span',
+        data: { 'data-state': ['invalid'] },
+        children: ['$text', 'dismiss'],
+      },
+      dismiss: { element: 'button', aria: ['aria-label'], children: ['$text'] },
+      input: {
+        element: 'input',
+        aria: ['aria-labelledby', 'aria-describedby', 'aria-invalid', 'aria-label'],
+      },
+    },
+  },
   states: ['idle', 'focused', 'disabled'],
   variants: [],
   sizes: [],

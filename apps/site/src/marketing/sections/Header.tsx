@@ -14,6 +14,8 @@ import {
 } from '../../theme'
 import { currentPath, navigate } from '../../router'
 import { Logo } from '@cascivo/components/brand/logo'
+import { FontToggle } from './FontToggle'
+import '../font-toggle'
 import { SearchButton } from '../search/SearchButton'
 import { searchOpen } from '../search/state'
 import { PRIMARY_LINKS, RESOURCE_LINKS } from '../nav-data'
@@ -329,6 +331,7 @@ export function Header() {
           : {})}
         end={
           <>
+            <FontToggle />
             {renderSchemeToggle()}
             {!isMobileNav && renderThemeDropdown()}
             <SearchButton

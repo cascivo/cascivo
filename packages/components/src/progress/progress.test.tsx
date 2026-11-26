@@ -39,3 +39,12 @@ describe('Progress', () => {
     expect(screen.getByRole('progressbar', { name: 'Uploading file' })).toBeInTheDocument()
   })
 })
+
+describe('Progress data-state', () => {
+  it('is determinate with a value and indeterminate without', () => {
+    const { rerender } = render(<Progress value={10} aria-label="p" />)
+    expect(screen.getByRole('progressbar')).toHaveAttribute('data-state', 'determinate')
+    rerender(<Progress aria-label="p" />)
+    expect(screen.getByRole('progressbar')).toHaveAttribute('data-state', 'indeterminate')
+  })
+})

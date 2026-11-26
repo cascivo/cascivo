@@ -274,31 +274,30 @@ fn table_sort_can_be_turned_off() {
 
 const TABS: &str = "tabs\n  section \"One\"\n    text \"a\"\n  section \"Two\"\n    text \"b\"\n  section \"Three\"\n    text \"c\"\n";
 
-fn checked(doc: &mut InteractiveDocument) -> Option<String> {
-    attr(doc, "input.cv-tabs-input:checked", "id")
+fn selected(doc: &mut InteractiveDocument) -> Option<String> {
+    attr(doc, "[role=tab][aria-selected=true]", "data-value")
 }
 
 #[test]
-fn radio_tabs_switch_on_click_and_arrow_keys() {
+fn cv_tabs_switch_on_click_and_arrow_keys() {
     let mut doc = cv(TABS);
-    let first = checked(&mut doc).unwrap();
-    assert!(first.ends_with("-0"));
-    assert_eq!(display(&mut doc, "#cv-1-1-panel"), "none");
+    assert_eq!(selected(&mut doc).as_deref(), Some("one"));
+    assert_eq!(display(&mut doc, "#cv-1-content-two"), "none");
 
-    doc.click("label[for='cv-1-1']");
-    assert!(checked(&mut doc).unwrap().ends_with("-1"));
-    assert_eq!(display(&mut doc, "#cv-1-1-panel"), "block");
-    assert_eq!(display(&mut doc, "#cv-1-0-panel"), "none");
+    doc.click("#cv-1-trigger-two");
+    assert_eq!(selected(&mut doc).as_deref(), Some("two"));
+    assert_eq!(display(&mut doc, "#cv-1-content-two"), "block");
+    assert_eq!(display(&mut doc, "#cv-1-content-one"), "none");
 
-    doc.focus("#cv-1-1");
+    doc.focus("#cv-1-trigger-two");
     doc.press(named(NamedKey::ArrowRight));
-    assert!(checked(&mut doc).unwrap().ends_with("-2"));
+    assert_eq!(selected(&mut doc).as_deref(), Some("three"));
     doc.press(named(NamedKey::ArrowRight));
-    assert!(checked(&mut doc).unwrap().ends_with("-0"), "wraps");
+    assert_eq!(selected(&mut doc).as_deref(), Some("one"), "wraps");
     doc.press(named(NamedKey::End));
-    assert!(checked(&mut doc).unwrap().ends_with("-2"));
+    assert_eq!(selected(&mut doc).as_deref(), Some("three"));
     doc.press(named(NamedKey::ArrowLeft));
-    assert!(checked(&mut doc).unwrap().ends_with("-1"));
+    assert_eq!(selected(&mut doc).as_deref(), Some("two"));
 }
 
 const ARIA_TABS: &str = r#"<div role=tablist>

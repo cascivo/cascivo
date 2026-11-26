@@ -49,6 +49,24 @@ export function packageExports(pkgName: string): Record<string, unknown> | null 
   }
 }
 
+/**
+ * Whether an exports map has `subpath`, exactly or through a one-`*` subpath pattern
+ * (`"./*.css"` covers `./button.css`), as Node resolves it.
+ */
+export function hasExport(exp: Record<string, unknown>, subpath: string): boolean {
+  if (exp[subpath] !== undefined) return true
+  return Object.keys(exp).some((key) => {
+    const star = key.indexOf('*')
+    if (star < 0 || key.indexOf('*', star + 1) >= 0) return false
+    const [head, tail] = [key.slice(0, star), key.slice(star + 1)]
+    return (
+      subpath.length > head.length + tail.length &&
+      subpath.startsWith(head) &&
+      subpath.endsWith(tail)
+    )
+  })
+}
+
 /** Try a set of candidate file paths for a module specifier, returning the first hit. */
 function resolveModuleFile(fromFile: string, spec: string): string | null {
   if (spec.startsWith('.')) {
