@@ -129,6 +129,25 @@ every glyph), `|` over the whole line box (read as the text cursor in `x |= y`, 
 - Not done: `~` (0.69-0.73x; at Thin 0.46x), 1 (a foot slab reads as l, round 8), r t j a touch light; Thin still lighter than
   JetBrains Mono's (theirs is closer to an ExtraLight). No italic yet: needs the engine's ITALIC path for this family (needs a decision).
 
+Round 10, visual (`src/family.py`; engine untouched). Judged at 12/16/48/96 px, 100/400/700/900, against JetBrains Mono's statics;
+sheets `specimens/round10/` (`python3 -I src/specimen_round10.py <tag> <jetbrains dir> [--ink]`; adds a 96 px sheet of ~ 1 r t j f
+O Q A 6 9 0). Ink at 400 before -> after, x JetBrains Mono's: ~ 0.69 -> 0.91, ' 0.78 -> 0.93, " 0.75 -> 0.90, . 0.73 -> 0.84,
+: 0.78 -> 0.89, f 0.82 -> 0.85, r 0.72 -> 0.74.
+
+- `~`: TILDE_PEN 1.3x the pen (TILDE_BLACK 0.15 less at Black, where 1.3 swelled into a bow tie). Was a thin wave beside `^ * %`.
+- Straight quotes: QUOTE_PEN 1.2x the pen at Thin-Regular, fading to none at Black (Black was already 0.96x).
+- Dots: DOT_MIN/DOT_K 110/0.52 -> 126/0.44: Regular's period 142 -> 150 wide, Thin's 129 -> 142, Black's 195 -> 198. Kept linear
+  in the stem: a floor that faded out by Black (same sizes) cost 240 B more of WOFF2 in non-linear deltas.
+- f: crossbar F_BAR_LEFT 40 units further left (an extra bar from Sans's start to the stem): its arms were 120 / 176 at Regular,
+  76 / 144 at Black; now about even, as JetBrains Mono's. The f no longer leans right in `fn`, `if`.
+- r: R_WIDE 0.6 -> 0.75 (398 -> 425 wide at Regular): less white after it in `return`, `err`.
+- Bytes: WOFF2 70 360 -> 70 652, Latin slice 27 344 -> 27 392 (+48 B), TTF 204 688 -> 205 156. Budgets unchanged; most of it is
+  compression noise of the changed deltas (each knob alone moved the slice -50..+110 B).
+- Tests (`test_family.py`, round 10 block): ~ at mid-wave >= 0.85 of the stem, ' >= 1.2 stems and " >= 280 at 400, . >= 150 / 136
+  at 400 / 100, f's left arm >= 0.8 of its right at 400-900, r >= 420 at 400. All fail on the round 9 font.
+- Not done: 1 (0.64x; JetBrains Mono's has a foot, which round 8 rejected as l-like), t 0.72x (T_WIDE folds past 1.6), Thin still
+  0.55-0.75x JetBrains Mono Thin's, Black O Q A 6 9 0 squeezed (~0.9), Black : a touch heavy (1.19x). No italic (needs a decision).
+
 v1 score vs JetBrains Mono + Geist Mono: overall 7.78; rhythm 7.25, weight axis 9.04, shape 8.56, colour 6.69,
 small sizes 9.84, optical sizes 1.27 (the refs have no opsz axis, so that row is not meaningful).
 

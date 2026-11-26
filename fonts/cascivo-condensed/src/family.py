@@ -38,6 +38,7 @@ def by_weight(p, f, r):
 
 def tune(p):
     h = p.heavy  # read before the stem changes: p.heavy derives from p.V
+    p.sans_heavy = h  # round 10: the thinner stems below hold p.heavy to 0.75 at Black; _t_full_heavy draws the t with this
     w, sp = by_weight(p, WIDTH, R_COUNTER), by_weight(p, SPACE, R_SPACE)
     p.cn *= w
     p.cH *= w
@@ -69,7 +70,7 @@ _GL.QUOTE_GAP_HEAVY = QUOTE_GAP_HEAVY = -0.22
 T_OPEN = 0.2  # round 6: extra right sidebearing on t (in S units): its crossbar met the next letter at 12 px Black ("t able", "ts")
 R_OPEN = 0.25  # extra right sidebearing on r (in S units): condensed rn otherwise reads as m at 11-12 px
 C_OPEN = 0.35  # extra right sidebearing on c at Thin (in S units, fading out by Regular): close-set hairline cl read as d at 11 px
-T_LEFT = 0.4  # round 8: extra left sidebearing on t at Black (in S units, by p.heavy): its crossbar's left arm sat 11 units off the stem's left edge, and st, ct, rt touched at 12-16 px Bold and Black ("Get started", "Activity")
+T_LEFT = 0.46  # round 10: 0.4 -> 0.46, the t drawn with Sans's heaviness sits 1-2 units further left. Round 8: extra left sidebearing on t at Black (in S units, by p.heavy): its crossbar's left arm sat 11 units off the stem's left edge, and st, ct, rt touched at 12-16 px Bold and Black ("Get started", "Activity")
 CE_OPEN = 0.2  # round 8: extra right sidebearing on c and e at Black (in S units, by p.heavy): c 14 and e 16 units against o's 30, so "cc", "ce", "ee" clumped at 12-14 px Black
 
 
@@ -202,3 +203,68 @@ def _hyphen(g, p):
     w = (270 + p.V * 0.3) * HYPHEN_W
     g.hbar(0, w, p.xh * 0.5 - p.H * 0.55, h=p.H * 1.1)
     g.sb = (0.55, 0.55)
+
+
+# Round 10: glyphs whose shape still carried Sans's width. At opsz 14 the slash and backslash were 0.98 of Sans's advance at
+# Regular and 0.99 at Black, the guillemets 0.96 and 0.93, the braces 0.93 and 0.88, against the letters' 0.79: "Read/Write",
+# "Home / Projects", "«Oui»" and "{name}" set loose, and the slash leaned flatter than the condensed letters' diagonals.
+SLASH_RUN = 0.83  # the slash's and backslash's horizontal run (Sans 0.42 cap) at this share: steeper, the stroke keeps its width
+GUIL_RUN = 0.8  # the chevrons' run back from the tip (Sans 200 units) and the white inside a pair, at this share
+BRACE_W = 0.8  # the braces' curls (their reach from the stem's centre) at this share, as PAREN_BOW
+
+
+for _n, _a, _b in (('slash', 0, 1), ('backslash', 1, 0)):
+
+    def _sl(g, p, a=_a, b=_b):
+        w = p.cap * 0.42 * SLASH_RUN
+        y = (p.desc * 0.6, p.cap)
+        g.diag(0, y[a], w, y[b], 'l', 'r', ws=0.8)
+        g.sb = (0.15, 0.15)
+
+    _hooks.override(_n)(_sl)
+
+
+def _guil_c(g, p, x0, flip):
+    # glyphs._guil with the run at GUIL_RUN; the arm's width along the line (th) is Sans's, so the steeper arm reads a little heavier,
+    # as the condensed letters' diagonals do
+    k = max(0.0, min(1.0, (p.wght - 400) / (_GL.MID_WGHT - 400)))
+    run = (200.0 - _GL.GUIL_HEAVY[0] * k) * GUIL_RUN
+    th = 8 + p.V
+    hh = 231 - _GL.GUIL_HEAVY[1] * k
+    cy = p.xh * (0.5 + _GL.GUIL_HEAVY[2] * k)
+    d = -1 if flip else 1
+    tip = x0 + (run + th if flip else 0)
+    pts = [(tip, cy), (tip + d * run, cy + hh), (tip + d * (run + th), cy + hh), (tip + d * th, cy), (tip + d * (run + th), cy - hh), (tip + d * run, cy - hh)]
+    g.raw.append(_GL.orient([_GL.L(a, b) for a, b in zip(pts, pts[1:] + pts[:1])], outer=True))
+    return th
+
+
+for _n, _pair, _flip in (('guilsinglleft', False, False), ('guilsinglright', False, True), ('guillemotleft', True, False), ('guillemotright', True, True)):
+
+    def _gu(g, p, pair=_pair, flip=_flip):
+        th = _guil_c(g, p, 0, flip)
+        if pair:
+            _guil_c(g, p, th + (105 - 20 * (1 - _GL.thin_blend(p)) - 50 * p.heavy) * GUIL_RUN, flip)
+        g.sb = (0.5, 0.5)
+
+    _hooks.override(_n)(_gu)
+
+for _n in ('braceleft', 'braceright'):
+    _narrowed(_n, BRACE_W, lambda p: 70 + p.V * 0.5)
+
+
+# Round 10: the t. Its Black shape (crossbar 0.74 of n, a foot 0.55 of a stem past the stem) fades in by p.heavy, which the engine
+# reads off the stem; this family's Black stem is 0.87 of Sans's, so p.heavy stops at 0.75 and the t kept a foot 0.94 of a stem long
+# and a crossbar 0.70 of n. Black t inked 379 units (Sans's Black t 376, against an n 113 units narrower here), and white opened after
+# it at 12-16 px: "start ed", "Set tings". Drawn with Sans's heaviness, its ink is about 0.72 of n's, as Sans's (0.71).
+_t = _GL.GLYPHS['t'][1]
+
+
+@_hooks.override('t')
+def _t_full_heavy(g, p):
+    import copy
+
+    cls = type(p)
+    pc = copy.copy(p)
+    pc.__class__ = type('PFullHeavy', (cls,), {'heavy': property(lambda s: s.sans_heavy)})
+    _t(g, pc)
