@@ -18,6 +18,7 @@ jobs:
       storybook: ${{ steps.out.outputs.storybook }}
       playground: ${{ steps.out.outputs.playground }}
       live: ${{ steps.out.outputs.live }}
+      track_htmx: ${{ steps.out.outputs.track_htmx }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -60,6 +61,11 @@ jobs:
               - 'apps/live/**'
               - 'packages/app/**'
               - 'pnpm-lock.yaml'
+            track_htmx:
+              - 'apps/examples/track-lite-htmx/**'
+              - 'crates/cascivo-server/**'
+              - 'crates/cascivo-worker/**'
+              - 'crates/cascivo-web/**'
       - id: out
         env:
           FORCE: ${{ github.event_name == 'workflow_dispatch' }}
@@ -67,11 +73,13 @@ jobs:
           STORYBOOK: ${{ steps.filter.outputs.storybook }}
           PLAYGROUND: ${{ steps.filter.outputs.playground }}
           LIVE: ${{ steps.filter.outputs.live }}
+          TRACK_HTMX: ${{ steps.filter.outputs.track_htmx }}
         run: |
           echo "site=$(     [ "$FORCE" = "true" ] && echo true || echo "$SITE"      )" >> $GITHUB_OUTPUT
           echo "storybook=$([ "$FORCE" = "true" ] && echo true || echo "$STORYBOOK" )" >> $GITHUB_OUTPUT
           echo "playground=$([ "$FORCE" = "true" ] && echo true || echo "$PLAYGROUND" )" >> $GITHUB_OUTPUT
           echo "live=$(      [ "$FORCE" = "true" ] && echo true || echo "$LIVE"       )" >> $GITHUB_OUTPUT
+          echo "track_htmx=$([ "$FORCE" = "true" ] && echo true || echo "$TRACK_HTMX" )" >> $GITHUB_OUTPUT
 
   # ── Shared install + build step ───────────────────────────────────────────
   # Each app builds in its own job so failures are isolated and CF Pages
@@ -203,6 +211,34 @@ jobs:
       # The Worker imports @cascivo/app, whose exports point at dist/.
       - run: pnpm exec vp run @cascivo/app#build
       - working-directory: apps/live
+        run: npx wrangler@4 deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+
+  # track-lite-htmx (axum + htmx + Solid) as its own Worker on the route
+  # cascivo.com/demos/track-lite-htmx/*, one Durable Object per visitor. Runs only once the
+  # repository variable CASCIVO_TRACK_HTMX_DEPLOY is `true`.
+  deploy-track-lite-htmx:
+    needs: changes
+    if: needs.changes.outputs.track_htmx == 'true' && vars.CASCIVO_TRACK_HTMX_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # The Vite assets (live.js, htmx.js, elements.js, live.css) and the packages they import.
+      - run: pnpm exec vp run --filter @cascivo/example-track-lite-htmx... build
+      - name: Toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - run: rustup target add wasm32-unknown-unknown
+      - run: cargo install worker-build --version 0.9.0 --locked
+      # wrangler's build step runs worker-build and stages ../dist under public/.
+      - working-directory: apps/examples/track-lite-htmx/worker
         run: npx wrangler@4 deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}

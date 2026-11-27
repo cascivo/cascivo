@@ -8,15 +8,29 @@ publish = false
 
 [dependencies]
 axum = { version = "0.8.9", default-features = false, features = ["query"] }
-cascivo-server = { path = "../../../../crates/cascivo-server", default-features = false, features = [
-  "native",
-] }
+cascivo-server = { path = "../../../../crates/cascivo-server", default-features = false }
 cascivo-web = { path = "../../../../crates/cascivo-web", default-features = false }
 futures-util = { version = "0.3.34", default-features = false, features = ["alloc"] }
 minijinja = { version = "3.1.0", default-features = false, features = ["serde"] }
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.154"
-tokio = { version = "1.54.1", features = ["macros", "rt-multi-thread", "time"] }
+tokio = { version = "1.54.1", optional = true, features = ["macros", "rt-multi-thread", "time"] }
+
+[features]
+default = ["native"]
+# The tokio binary: `Hub`, `spawn_teammate`, assets from disk.
+native = ["cascivo-server/native", "dep:tokio"]
+# The Cloudflare Worker (`../worker`): wasm32, no tokio.
+workers = ["cascivo-server/workers"]
+
+[[bin]]
+name = "track-lite-htmx-server"
+path = "src/main.rs"
+required-features = ["native"]
+
+[[test]]
+name = "smoke"
+required-features = ["native"]
 
 [dev-dependencies]
 tower = { version = "0.5.3", features = ["util"] }
