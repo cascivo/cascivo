@@ -1,5 +1,11 @@
 # @cascivo/docspack
 
+## 0.3.7
+
+### Patch Changes
+
+- f84d572: Update the bundled `using-cascivo-server.md` guide: SSE fan-out on Cloudflare Workers with a Durable Object (the track-lite-htmx Worker as the worked example).
+
 ## 0.3.6
 
 ### Patch Changes
