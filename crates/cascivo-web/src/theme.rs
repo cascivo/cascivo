@@ -131,7 +131,8 @@ mod tests {
 
     #[test]
     fn defaults_follow_configured_themes() {
-        let cfg = Config::parse("title = \"t\"\ntheme = \"midnight\"\ndark_theme = \"dark\"").unwrap();
+        let cfg =
+            Config::parse("title = \"t\"\ntheme = \"midnight\"\ndark_theme = \"dark\"").unwrap();
         let a = Args::parse("theme_script", PARAMS, &[], None).unwrap();
         let s = body(&cfg, &a).unwrap();
         assert!(s.contains("f=l?\"midnight\":\"dark\""), "{s}");
