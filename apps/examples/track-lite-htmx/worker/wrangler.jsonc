@@ -1,7 +1,6 @@
 // track-lite-htmx at https://cascivo.com/demos/track-lite-htmx/: the axum app from ../server in
 // one Durable Object per visitor. Deployed by the `deploy-track-lite-htmx` job in
-// .github/workflows/cf-pages.yml once the repository variable CASCIVO_TRACK_HTMX_DEPLOY is
-// `true`. Build the Vite assets first (`pnpm exec vp run --filter @cascivo/example-track-lite-htmx... build`).
+// .github/workflows/cf-pages.yml. Build the Vite assets first (`pnpm exec vp run --filter @cascivo/example-track-lite-htmx... build`).
 {
   "name": "cascivo-track-lite-htmx",
   "main": "build/worker/shim.mjs",

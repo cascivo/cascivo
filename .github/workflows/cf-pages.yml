@@ -217,11 +217,10 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
   # track-lite-htmx (axum + htmx + Solid) as its own Worker on the route
-  # cascivo.com/demos/track-lite-htmx/*, one Durable Object per visitor. Runs only once the
-  # repository variable CASCIVO_TRACK_HTMX_DEPLOY is `true`.
+  # cascivo.com/demos/track-lite-htmx/*, one Durable Object per visitor.
   deploy-track-lite-htmx:
     needs: changes
-    if: needs.changes.outputs.track_htmx == 'true' && vars.CASCIVO_TRACK_HTMX_DEPLOY == 'true'
+    if: needs.changes.outputs.track_htmx == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

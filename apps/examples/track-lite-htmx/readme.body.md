@@ -40,5 +40,4 @@ npx wrangler@4 deploy       # the cascivo.com route in wrangler.jsonc
 ```
 
 CI deploys it (`deploy-track-lite-htmx` in `.github/workflows/cf-pages.yml`) when the example or
-`cascivo-server`/`-worker`/`-web` change on `main` and the repository variable
-`CASCIVO_TRACK_HTMX_DEPLOY` is `true`.
+`cascivo-server`/`-worker`/`-web` change on `main`.
