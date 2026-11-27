@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/elements",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "Light-DOM custom elements (cv-menu, cv-tabs, cv-combobox, cv-date-picker, cv-dialog, cv-toaster, cv-form) and the htmx glue that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure",
   "keywords": [

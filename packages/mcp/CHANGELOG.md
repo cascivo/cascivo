@@ -1,5 +1,14 @@
 # @cascivo/mcp
 
+## 0.10.3
+
+### Patch Changes
+
+- eaefb56: Component context and the audit contract now carry each component's markup anatomy and contract tier, and badge documents its `info` and `primary` variants.
+- Updated dependencies [76944c6]
+- Updated dependencies [eaefb56]
+  - @cascivo/docs@0.2.20
+
 ## 0.10.2
 
 ### Patch Changes

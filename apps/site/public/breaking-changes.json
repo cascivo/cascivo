@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-11-21",
+  "generatedAt": "2026-11-27",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
         {
           "version": "1.7.0",
@@ -32,7 +32,7 @@
     },
     {
       "name": "@cascivo/app",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
         {
           "version": "1.8.0",
@@ -97,7 +97,7 @@
     },
     {
       "name": "@cascivo/astro",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
         {
           "version": "1.10.0",
@@ -110,7 +110,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -198,7 +198,7 @@
     },
     {
       "name": "cascivo",
-      "version": "1.8.2",
+      "version": "1.8.3",
       "releases": [
         {
           "version": "1.8.0",
@@ -364,8 +364,15 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
+        {
+          "version": "1.12.0",
+          "level": "minor",
+          "notes": [
+            "Add the markup-contract manifest types: `ComponentMeta.contractTier` (`ContractTier`) and `ComponentMeta.anatomy` (`Anatomy`, `AnatomyPart`, `AnatomyDataValues`). They describe the stable `cv-<unit>-<local>` classes and `data-*` attributes of a component; `scripts/contract/generate.ts` turns them into `packages/css/contract.json`."
+          ]
+        },
         {
           "version": "1.11.0",
           "level": "minor",
@@ -494,8 +501,16 @@
     },
     {
       "name": "@cascivo/css",
-      "version": "0.0.0",
-      "releases": []
+      "version": "0.1.0",
+      "releases": [
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": [
+            "New package: cascivo's markup contract as plain CSS. `@cascivo/css/cascivo.css` and `@cascivo/css/<unit>.css` ship every component with unhashed `cv-<unit>-<local>` classes plus a `cv-<unit>` alias on each root; `@cascivo/css` exports the typed `classes` map and the `Contract` types; `@cascivo/css/contract.json` is the versioned contract; `@cascivo/css/vite` exports `cascivoScopedName` for Vite CSS modules."
+          ]
+        }
+      ]
     },
     {
       "name": "@cascivo/data",
@@ -512,7 +527,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.19",
+      "version": "0.2.20",
       "releases": [
         {
           "version": "0.2.0",
@@ -525,7 +540,7 @@
     },
     {
       "name": "@cascivo/docspack",
-      "version": "0.3.5",
+      "version": "0.3.6",
       "releases": [
         {
           "version": "0.3.0",
@@ -545,7 +560,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
         {
           "version": "1.3.0",
@@ -591,8 +606,16 @@
     },
     {
       "name": "@cascivo/elements",
-      "version": "0.0.0",
-      "releases": []
+      "version": "0.1.0",
+      "releases": [
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": [
+            "New packages for the no-React stack. `@cascivo/elements`: light-DOM custom elements (`cv-menu`, `cv-tabs`, `cv-form`, `cv-combobox`, `cv-date-picker`, `cv-dialog`, `cv-toaster`, `cv-data-table`, `cv-drawer`, `cv-command-menu`, `cv-theme`, `cv-tooltip`, `cv-multi-select`, `cv-tags-input`), the htmx glue, `elements.css` and a Custom Elements Manifest. `@cascivo/solid`: `defineIsland`, typed `cv-*` components, form/i18n/theme/signal helpers, `cv-*` JSX typings, a Vite preset and an island test helper."
+          ]
+        }
+      ]
     },
     {
       "name": "@cascivo/email",
@@ -712,7 +735,7 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -744,7 +767,7 @@
     },
     {
       "name": "@cascivo/i18n",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
         {
           "version": "1.10.0",
@@ -838,7 +861,7 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.10.2",
+      "version": "0.10.3",
       "releases": [
         {
           "version": "0.10.0",
@@ -937,8 +960,15 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
+        {
+          "version": "1.12.0",
+          "level": "minor",
+          "notes": [
+            "Components now render the unhashed contract class names from `@cascivo/css` (`cv-button-button`, `cv-button-label`) instead of build hashes (`_button_1r5fv_83`). Rules, nesting and specificity are unchanged, so nothing looks different. Hashed names were never API; if you targeted one, use the `cv-*` class listed in `@cascivo/css/contract.json` or a `data-cascivo-*` style hook."
+          ]
+        },
         {
           "version": "1.10.0",
           "level": "minor",
@@ -1156,7 +1186,7 @@
     },
     {
       "name": "@cascivo/render",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
         {
           "version": "1.10.0",
@@ -1186,12 +1216,20 @@
     },
     {
       "name": "@cascivo/solid",
-      "version": "0.0.0",
-      "releases": []
+      "version": "0.1.0",
+      "releases": [
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": [
+            "New packages for the no-React stack. `@cascivo/elements`: light-DOM custom elements (`cv-menu`, `cv-tabs`, `cv-form`, `cv-combobox`, `cv-date-picker`, `cv-dialog`, `cv-toaster`, `cv-data-table`, `cv-drawer`, `cv-command-menu`, `cv-theme`, `cv-tooltip`, `cv-multi-select`, `cv-tags-input`), the htmx glue, `elements.css` and a Custom Elements Manifest. `@cascivo/solid`: `defineIsland`, typed `cv-*` components, form/i18n/theme/signal helpers, `cv-*` JSX typings, a Vite preset and an island test helper."
+          ]
+        }
+      ]
     },
     {
       "name": "@cascivo/storage",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
         {
           "version": "1.0.0",
@@ -1214,7 +1252,7 @@
     },
     {
       "name": "@cascivo/text",
-      "version": "1.11.0",
+      "version": "1.12.0",
       "releases": [
         {
           "version": "1.4.0",

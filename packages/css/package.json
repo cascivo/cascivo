@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/css",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "cascivo's stable markup contract as plain CSS: unhashed cv-* classes and data-* attributes for HTML, htmx, Solid or any framework, plus the typed class map and a Vite scoped-name helper",
   "keywords": [

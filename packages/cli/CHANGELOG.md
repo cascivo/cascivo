@@ -1,5 +1,11 @@
 # cascivo
 
+## 1.8.3
+
+### Patch Changes
+
+- eaefb56: Component context and the audit contract now carry each component's markup anatomy and contract tier, and badge documents its `info` and `primary` variants.
+
 ## 1.8.2
 
 ### Patch Changes
