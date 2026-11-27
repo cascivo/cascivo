@@ -5,8 +5,8 @@
     id="live"
     data-island="live"
     data-client="idle"
-    data-src="/assets/live.js"
-    data-css="/assets/live.css"
+    data-src="{{ base }}/assets/live.js"
+    data-css="{{ base }}/assets/live.css"
   >
     <span class="cv-badge-badge" data-variant="success" data-size="sm">Live</span>
   </div>
@@ -21,11 +21,11 @@
     <span class="cv-button-label">New issue</span>
   </button>
 </header>
-<div hx-ext="sse" sse-connect="/events">
+<div hx-ext="sse" sse-connect="{{ base }}/events">
   <section
     id="issues"
     aria-label="Issues"
-    hx-get="/issues"
+    hx-get="{{ base }}/issues"
     hx-trigger="sse:changed"
     hx-swap="innerHTML"
   >
@@ -49,8 +49,8 @@
         <span class="tl-assignee">{{ i.assignee or "Unassigned" }}</span>
         <form
           method="post"
-          action="/issues/{{ i.id }}/advance"
-          hx-post="/issues/{{ i.id }}/advance"
+          action="{{ base }}/issues/{{ i.id }}/advance"
+          hx-post="{{ base }}/issues/{{ i.id }}/advance"
           hx-target="#issues"
           hx-swap="innerHTML"
         >
@@ -68,8 +68,8 @@
         </form>
         <form
           method="post"
-          action="/issues/{{ i.id }}/delete"
-          hx-post="/issues/{{ i.id }}/delete"
+          action="{{ base }}/issues/{{ i.id }}/delete"
+          hx-post="{{ base }}/issues/{{ i.id }}/delete"
           hx-target="#issues"
           hx-swap="innerHTML"
         >
@@ -106,8 +106,8 @@
         {% block issue_form %}<cv-form
           ><form
             method="post"
-            action="/issues"
-            hx-post="/issues"
+            action="{{ base }}/issues"
+            hx-post="{{ base }}/issues"
             hx-target="closest cv-form"
             hx-swap="outerHTML"
             class="tl-form"

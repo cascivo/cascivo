@@ -195,3 +195,31 @@ export const DEMOS: Demo[] = [
 export function demoBySlug(slug: string): Demo | undefined {
   return DEMOS.find((d) => d.slug === slug)
 }
+
+/**
+ * Demos that run on their own server rather than as static apps in the Pages build. Each is a
+ * separate Cloudflare Worker on a cascivo.com route (track-lite-htmx: one Durable Object per
+ * visitor, deployed by the `deploy-track-lite-htmx` job in .github/workflows/cf-pages.yml).
+ */
+export interface ServerDemo {
+  slug: string
+  name: string
+  tagline: string
+  /** What serves and renders it, shown as chips. */
+  stack: string[]
+  /** The live app (same origin, served by its Worker). */
+  liveHref: string
+  sourceHref: string
+}
+
+export const SERVER_DEMOS: ServerDemo[] = [
+  {
+    slug: 'track-lite-htmx',
+    name: 'Track lite · htmx + Solid',
+    tagline:
+      'The issue list, dialog form, toasts and live updates of the React Track, rendered by an axum server: htmx fragments, server-validated forms, SSE across your tabs. Your own sandbox, reset after a week.',
+    stack: ['axum', 'cascivo-server', 'htmx', '@cascivo/elements', 'Solid island', 'Workers'],
+    liveHref: '/demos/track-lite-htmx/',
+    sourceHref: 'https://github.com/cascivo/cascivo/tree/main/apps/examples/track-lite-htmx',
+  },
+]

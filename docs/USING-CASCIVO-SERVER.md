@@ -484,9 +484,21 @@ hub.publish("room:42", Fragment::new("msg", html))?;
 
 Topics are allowlisted (exact, or `prefix:*` with a `[A-Za-z0-9_-]{1,64}` suffix); `max_per_key` caps
 streams per subscriber; a lagging subscriber skips events. Native `sse` also sends a keep-alive
-comment every 15 s. **Workers:** the framing compiles but there is no `Hub` and no keep-alive, and
-cross-connection fan-out would need Durable Objects, which this stack does not use. Use the
-`containers` target for long-lived streams.
+comment every 15 s. **Workers:** the framing compiles but there is no `Hub` and no keep-alive;
+cross-connection fan-out needs a Durable Object, or use the `containers` target for long-lived streams.
+
+### Fan-out on Workers with a Durable Object
+
+`apps/examples/track-lite-htmx/worker` is the worked example (live at
+`cascivo.com/demos/track-lite-htmx/`). Keep the app target-agnostic: the router takes the fan-out as
+a trait object (its `Bus`: `publish(Fragment)`, `subscribe(key) -> BoxStream<Fragment>`), backed by
+`Hub` natively and, on Workers, by a list of bounded `futures_channel::mpsc` senders inside the DO.
+The entry Worker picks the DO (`get_by_name`, here from a random per-visitor cookie) and forwards
+the request; the DO runs the router with `cascivo_worker::serve_router` and returns the SSE
+response, which stays open while that DO keeps the senders. Persist state to DO storage after the
+request that changed it, run periodic work on the DO alarm (no tokio timers), prefix every route and
+link when mounting under a path, and serve the Vite build with the static-assets binding. A tab that
+leaves without the cancel arriving is dropped once its bounded channel fills.
 
 ## Datastar (optional)
 

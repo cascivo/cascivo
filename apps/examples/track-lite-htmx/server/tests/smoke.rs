@@ -255,3 +255,57 @@ async fn serves_only_the_built_files() {
         StatusCode::NOT_FOUND
     );
 }
+
+/// The Worker mounts the same app under `/demos/track-lite-htmx`: routes, links, htmx URLs,
+/// assets, the SSE endpoint and the no-JavaScript redirect all carry the prefix.
+#[tokio::test]
+async fn base_path_prefixes_routes_links_and_redirects() {
+    use std::sync::Arc;
+    use track_lite_htmx_server::{Hub, Options, Store, build};
+    let base = "/demos/track-lite-htmx";
+    let (app, _) = build(
+        Options {
+            base: base.into(),
+            assets: None,
+        },
+        Store::seeded(),
+        Arc::new(Hub::<cascivo_server::Fragment>::new(&["issues"])),
+        cascivo_server::MemoryStore::new(),
+        cascivo_server::SessionConfig::default(),
+    );
+    assert_eq!(send(&app, get("/")).await.0, StatusCode::NOT_FOUND);
+    let (status, headers, page) = send(&app, get(&format!("{base}/"))).await;
+    assert_eq!(status, StatusCode::OK);
+    for url in [
+        "/assets/live.css",
+        "/assets/htmx.js",
+        "/assets/live.js",
+        "/events",
+        "/issues",
+        "/issues/1/advance",
+        "/issues/1/delete",
+    ] {
+        assert!(
+            page.contains(&format!("\"{base}{url}\"")),
+            "{url} lacks the base"
+        );
+    }
+    let cookie = headers[header::SET_COOKIE].to_str().unwrap();
+    let cookie = cookie.split(';').next().unwrap().to_owned();
+    let token = page
+        .split("name=\"csrf\" value=\"")
+        .nth(1)
+        .and_then(|t| t.split('"').next())
+        .unwrap()
+        .to_owned();
+    // A plain form post (no htmx) redirects to the prefixed home.
+    let req = Request::post(format!("{base}/issues/1/advance"))
+        .header("sec-fetch-site", "same-origin")
+        .header(header::CONTENT_TYPE, "application/x-www-form-urlencoded")
+        .header(header::COOKIE, cookie)
+        .body(Body::from(format!("csrf={token}")))
+        .unwrap();
+    let (status, headers, _) = send(&app, req).await;
+    assert_eq!(status, StatusCode::SEE_OTHER);
+    assert_eq!(headers[header::LOCATION], format!("{base}/"));
+}

@@ -7,10 +7,10 @@
     <title>Track lite · htmx + Solid</title>
     <meta name="htmx-config" content='{"allowEval":false,"includeIndicatorStyles":false}' />
     {{ theme_script(default_light="light", default_dark="dark") }}
-    <link rel="stylesheet" href="/assets/live.css" />
-    <script type="module" nonce="{{ request.nonce }}" src="/assets/htmx.js"></script>
+    <link rel="stylesheet" href="{{ base }}/assets/live.css" />
+    <script type="module" nonce="{{ request.nonce }}" src="{{ base }}/assets/htmx.js"></script>
     {{ islands_script() }}
-    <script type="module" nonce="{{ request.nonce }}" src="/assets/elements.js"></script>
+    <script type="module" nonce="{{ request.nonce }}" src="{{ base }}/assets/elements.js"></script>
   </head>
   <body hx-headers='{"X-CSRF-Token":"{{ request.csrf }}"}'>
     <main class="tl-app">{% block main %}{% endblock %}</main>

@@ -3,7 +3,7 @@ import { Header } from '../sections/Header'
 import { Footer } from '../sections/Footer'
 import { ChartShowcase } from '../sections/ChartShowcase'
 import { RelayConsole } from '../demo/RelayConsole'
-import { DEMOS } from './examples/data'
+import { DEMOS, SERVER_DEMOS } from './examples/data'
 
 const NUMERALS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
 const DEMO_COUNT_WORD = NUMERALS[DEMOS.length] ?? String(DEMOS.length)
@@ -66,6 +66,37 @@ export function ExamplesPage() {
                       </a>
                     </div>
                     <span className="examples-mock-note">Mock demo &mdash; no real data</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="section examples-hub" aria-labelledby="examples-server-title">
+            <h2 id="examples-server-title">Server-rendered</h2>
+            <ul className="examples-hub-grid">
+              {SERVER_DEMOS.map((demo) => (
+                <li key={demo.slug} className="examples-hub-card">
+                  <div className="examples-hub-body">
+                    <div className="examples-card-header">
+                      <span className="examples-name">{demo.name}</span>
+                    </div>
+                    <p className="examples-desc">{demo.tagline}</p>
+                    <ul className="examples-chips" aria-label="Stack">
+                      {demo.stack.map((chip) => (
+                        <li key={chip} className="examples-chip">
+                          {chip}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="examples-card-footer">
+                      <a className="examples-link" href={demo.sourceHref}>
+                        Source &rarr;
+                      </a>
+                      <a className="examples-link examples-link--live" href={demo.liveHref}>
+                        Open live demo &rarr;
+                      </a>
+                    </div>
                   </div>
                 </li>
               ))}

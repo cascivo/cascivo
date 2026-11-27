@@ -1,22 +1,27 @@
 //! track-lite on cascivo-server: the same issue list, dialog form, toasts and live updates as the
 //! React `apps/examples/track-lite`, rendered as HTML. Every mutation answers with the `issues`
-//! fragment and publishes `changed` on the SSE hub, so every open tab refetches that fragment.
+//! fragment and publishes `changed` on a [`Bus`], so every open tab refetches that fragment.
+//!
+//! The core here is target-agnostic: the native binary (feature `native`) runs it on tokio with
+//! a [`Hub`], and `../worker` runs it in a Cloudflare Durable Object per visitor, under a path
+//! prefix ([`Options::base`]) and with its own SSE fan-out, storage and teammate alarm.
 
 use std::collections::BTreeMap;
 use std::sync::{Arc, Mutex, PoisonError};
-use std::time::Duration;
 
 use axum::Router;
 use axum::extract::{Path, State};
-use axum::http::{HeaderMap, HeaderValue, StatusCode, header};
+use axum::http::{HeaderMap, StatusCode};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
+#[cfg(feature = "native")]
+pub use cascivo_server::Hub;
 use cascivo_server::{
-    App, AppError, Csrf, Form, FormErrors, FormState, Fragment, Hub, Hx, LocalPath, MemoryStore,
-    Msg, Rule, Session, SessionConfig, Submission, ToastKind, Validate, View, see_other, sse,
+    App, AppError, Csrf, Form, FormErrors, FormState, Fragment, Hx, LocalPath, Msg, Rule, Session,
+    SessionConfig, SessionStore, Submission, ToastKind, Validate, View, see_other, sse,
 };
 use cascivo_web::{Bundle, Config, Engine};
-use futures_util::StreamExt;
+use futures_util::stream::BoxStream;
 use minijinja::value::Serde;
 use minijinja::{Value, context};
 use serde::{Deserialize, Serialize};
@@ -42,7 +47,7 @@ pub const USERS: [&str; 5] = [
     "Eva Novak",
 ];
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct Issue {
     pub id: u32,
     pub title: String,
@@ -70,18 +75,60 @@ fn seed() -> Vec<Issue> {
     ]
 }
 
-struct Store {
-    issues: Vec<Issue>,
-    next: u32,
-    tick: usize,
+/// The whole mutable state: the issues, the next id and the teammate's turn. Serializable so
+/// the Worker can keep it in Durable Object storage.
+#[derive(Clone, Serialize, Deserialize)]
+pub struct Store {
+    pub issues: Vec<Issue>,
+    pub next: u32,
+    pub tick: usize,
 }
 
-/// Shared app state: the issues and the hub that tells every open page to refetch them.
+impl Store {
+    pub fn seeded() -> Self {
+        let issues = seed();
+        let next = issues.iter().map(|i| i.id).max().unwrap_or(0) + 1;
+        Self {
+            issues,
+            next,
+            tick: 0,
+        }
+    }
+}
+
+/// Where `changed` events go and where `/events` streams come from: the tokio [`Hub`] natively,
+/// a Durable Object's own subscriber list on Workers.
+pub trait Bus: Send + Sync + 'static {
+    /// Tells every open page of this store that the list changed. No subscriber is not an error.
+    fn publish(&self, event: Fragment);
+    /// One stream per open page; `key` is the session's CSRF token (per-visitor caps).
+    ///
+    /// # Errors
+    /// The cap is reached (answered as 429).
+    fn subscribe(&self, key: &str) -> Result<BoxStream<'static, Fragment>, AppError>;
+}
+
+#[cfg(feature = "native")]
+impl Bus for Hub<Fragment> {
+    fn publish(&self, event: Fragment) {
+        // No subscriber is not an error; "issues" is on the allowlist.
+        let _ = Hub::publish(self, "issues", event);
+    }
+
+    fn subscribe(&self, key: &str) -> Result<BoxStream<'static, Fragment>, AppError> {
+        use futures_util::StreamExt;
+        Hub::subscribe(self, "issues", key)
+            .map(StreamExt::boxed)
+            .map_err(|e| AppError::new(StatusCode::TOO_MANY_REQUESTS, e.to_string()))
+    }
+}
+
+/// Shared app state: the issues and the bus that tells every open page to refetch them.
 #[derive(Clone)]
 pub struct Tracker {
     store: Arc<Mutex<Store>>,
-    hub: Hub<Fragment>,
-    assets: Arc<std::path::PathBuf>,
+    bus: Arc<dyn Bus>,
+    base: Arc<str>,
 }
 
 impl Tracker {
@@ -92,31 +139,44 @@ impl Tracker {
     /// `origin` is the mutating tab's `X-Client-Id` ("-" for none); that tab already has the
     /// fresh list in its response, so its client drops the event (`src/htmx.ts`).
     fn changed(&self, origin: &str) {
-        // No subscriber is not an error; "issues" is on the allowlist.
-        let _ = self
-            .hub
-            .publish("issues", Fragment::new("changed", origin.to_owned()));
+        self.bus
+            .publish(Fragment::new("changed", origin.to_owned()));
     }
 
-    /// The simulated teammate: every `every`, advance the next issue in turn (the React app's
-    /// `setInterval` makes the same moves, so both demos stay in step).
-    pub fn spawn_teammate(&self, every: Duration) {
+    /// A copy of the state (the Worker persists it after every change).
+    pub fn snapshot(&self) -> Store {
+        self.with(|s| s.clone())
+    }
+
+    /// One move of the simulated teammate: advance the next issue in turn (the React app's
+    /// `setInterval` makes the same moves, so both demos stay in step) and tell every page.
+    pub fn teammate_step(&self) {
+        self.with(|s| {
+            if !s.issues.is_empty() {
+                let i = s.tick % s.issues.len();
+                s.tick += 1;
+                if let Some(issue) = s.issues.get_mut(i) {
+                    issue.status = (issue.status + 1) % STATUSES.len();
+                }
+            }
+        });
+        self.changed("-");
+    }
+
+    /// The teammate on tokio: one [`teammate_step`](Self::teammate_step) every `every`.
+    #[cfg(feature = "native")]
+    pub fn spawn_teammate(&self, every: std::time::Duration) {
         let t = self.clone();
         tokio::spawn(async move {
             loop {
                 tokio::time::sleep(every).await;
-                t.with(|s| {
-                    if !s.issues.is_empty() {
-                        let i = s.tick % s.issues.len();
-                        s.tick += 1;
-                        if let Some(issue) = s.issues.get_mut(i) {
-                            issue.status = (issue.status + 1) % STATUSES.len();
-                        }
-                    }
-                });
-                t.changed("-");
+                t.teammate_step();
             }
         });
+    }
+
+    fn home(&self) -> LocalPath {
+        LocalPath::parse_or_root(Some(&format!("{}/", self.base)))
     }
 }
 
@@ -206,7 +266,10 @@ fn options() -> Value {
 }
 
 fn ctx(t: &Tracker, form: FormState) -> Value {
-    context! { issues => Value::from(Serde(rows(t))), form, options => options() }
+    context! {
+        issues => Value::from(Serde(rows(t))), form, options => options(), // Checked plain in `build`; unescaped so links read `/demos/x`, not `&#x2f;demos&#x2f;x`.
+        base => Value::from_safe_string(t.base.to_string()),
+    }
 }
 
 fn page(t: &Tracker, form: FormState) -> View {
@@ -238,7 +301,7 @@ async fn create(
             });
             t.changed(&origin(&headers));
             if !hx.is_partial() {
-                return see_other(&hx, &LocalPath::parse_or_root(None));
+                return see_other(&hx, &t.home());
             }
             // A fresh form for the next issue, the list out of band, the dialog closed.
             page(&t, empty_form())
@@ -281,7 +344,7 @@ fn mutate(
     }
     t.changed(origin);
     if !hx.is_partial() {
-        return see_other(hx, &LocalPath::parse_or_root(None));
+        return see_other(hx, &t.home());
     }
     match toast {
         Some(key) => list(t).toast(ToastKind::Success, key).into_response(),
@@ -319,15 +382,13 @@ async fn delete(
 /// One stream per open page; the session's CSRF token is the per-subscriber key (4 tabs max).
 async fn events(State(t): State<Tracker>, session: Session) -> Result<Response, AppError> {
     let key = session.csrf_token()?;
-    let sub = t
-        .hub
-        .subscribe("issues", &key)
-        .map_err(|e| AppError::new(StatusCode::TOO_MANY_REQUESTS, e.to_string()))?;
-    Ok(sse(sub.boxed()))
+    Ok(sse(t.bus.subscribe(&key)?))
 }
 
 /// Serves only files the Vite build emits: a flat `.js`/`.css` name, never a request-chosen path.
-async fn asset(State(t): State<Tracker>, Path(name): Path<String>) -> Response {
+#[cfg(feature = "native")]
+async fn asset(State(dir): State<Arc<std::path::PathBuf>>, Path(name): Path<String>) -> Response {
+    use axum::http::{HeaderValue, header};
     let safe = !name.starts_with('.')
         && name
             .bytes()
@@ -337,7 +398,7 @@ async fn asset(State(t): State<Tracker>, Path(name): Path<String>) -> Response {
         Some((_, "css")) if safe => "text/css; charset=utf-8",
         _ => return StatusCode::NOT_FOUND.into_response(),
     };
-    match std::fs::read(t.assets.join(&name)) {
+    match std::fs::read(dir.join(&name)) {
         Ok(body) => (
             [(header::CONTENT_TYPE, HeaderValue::from_static(ctype))],
             body,
@@ -376,40 +437,83 @@ fn engine() -> Engine {
     .expect("static templates compile")
 }
 
-/// The router plus its state (`main` starts the teammate on it; tests leave it off).
-/// `assets` is the Vite output directory (`apps/examples/track-lite-htmx/dist`).
-pub fn app(assets: impl Into<std::path::PathBuf>) -> (Router, Tracker) {
-    let issues = seed();
-    let next = issues.iter().map(|i| i.id).max().unwrap_or(0) + 1;
+/// How [`build`] mounts the app.
+pub struct Options {
+    /// Path prefix of every route and link: `""` (native) or `/demos/track-lite-htmx` (no
+    /// trailing slash; letters, digits, `/`, `-`, `_` only, else [`build`] panics). The page
+    /// itself is `{base}/`.
+    pub base: String,
+    /// The Vite output directory served at `{base}/assets/` (`None`: something else serves it,
+    /// such as the Workers static-assets binding).
+    #[cfg(feature = "native")]
+    pub assets: Option<std::path::PathBuf>,
+}
+
+/// The router plus its state, on any target: `store` is the starting state ([`Store::seeded`]
+/// or what the Worker loaded from storage), `sessions` the session store.
+pub fn build(
+    opts: Options,
+    store: Store,
+    bus: Arc<dyn Bus>,
+    sessions: impl SessionStore,
+    session_cfg: SessionConfig,
+) -> (Router, Tracker) {
+    let base = opts.base.trim_end_matches('/').to_owned();
+    assert!(
+        base.is_empty()
+            || (base.starts_with('/')
+                && base
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || matches!(b, b'/' | b'-' | b'_'))),
+        "Options::base must be empty or a plain absolute path"
+    );
     let tracker = Tracker {
-        store: Arc::new(Mutex::new(Store {
-            issues,
-            next,
-            tick: 0,
-        })),
-        hub: Hub::new(&["issues"]),
-        assets: Arc::new(assets.into()),
+        store: Arc::new(Mutex::new(store)),
+        bus,
+        base: base.clone().into(),
     };
+    #[allow(unused_mut)]
+    let mut routes = Router::new()
+        .route(
+            &format!("{base}/"),
+            get(|State(t): State<Tracker>| async move { page(&t, empty_form()) }),
+        )
+        .route(
+            &format!("{base}/issues"),
+            get(|State(t): State<Tracker>| async move { list(&t) }).post(create),
+        )
+        .route(&format!("{base}/issues/{{id}}/advance"), post(advance))
+        .route(&format!("{base}/issues/{{id}}/delete"), post(delete))
+        .route(&format!("{base}/events"), get(events));
+    #[cfg(feature = "native")]
+    if let Some(dir) = opts.assets {
+        routes = routes.route(
+            &format!("{base}/assets/{{name}}"),
+            get(asset).with_state(Arc::new(dir)),
+        );
+    }
     let router = App::new(engine())
-        .sessions(MemoryStore::new(), SessionConfig::default())
+        .sessions(sessions, session_cfg)
         .csrf(Csrf::default())
         .toaster("base.html", "toaster")
         .with_state(tracker.clone())
-        .routes(
-            Router::new()
-                .route(
-                    "/",
-                    get(|State(t): State<Tracker>| async move { page(&t, empty_form()) }),
-                )
-                .route(
-                    "/issues",
-                    get(|State(t): State<Tracker>| async move { list(&t) }).post(create),
-                )
-                .route("/issues/{id}/advance", post(advance))
-                .route("/issues/{id}/delete", post(delete))
-                .route("/events", get(events))
-                .route("/assets/{name}", get(asset)),
-        )
+        .routes(routes)
         .into_router();
     (router, tracker)
+}
+
+/// The native app at `/`: seeded, in-memory sessions, a [`Hub`], assets from `assets`
+/// (`apps/examples/track-lite-htmx/dist`). `main` starts the teammate on it; tests leave it off.
+#[cfg(feature = "native")]
+pub fn app(assets: impl Into<std::path::PathBuf>) -> (Router, Tracker) {
+    build(
+        Options {
+            base: String::new(),
+            assets: Some(assets.into()),
+        },
+        Store::seeded(),
+        Arc::new(Hub::<Fragment>::new(&["issues"])),
+        cascivo_server::MemoryStore::new(),
+        SessionConfig::default(),
+    )
 }

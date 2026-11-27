@@ -1,0 +1,25 @@
+// track-lite-htmx at https://cascivo.com/demos/track-lite-htmx/: the axum app from ../server in
+// one Durable Object per visitor. Deployed by the `deploy-track-lite-htmx` job in
+// .github/workflows/cf-pages.yml. Build the Vite assets first (`pnpm exec vp run --filter @cascivo/example-track-lite-htmx... build`).
+{
+  "name": "cascivo-track-lite-htmx",
+  "main": "build/worker/shim.mjs",
+  "compatibility_date": "2026-09-01",
+  // worker-build compiles the crate; the Vite output is staged at the path the pages link.
+  "build": {
+    "command": "worker-build --release && rm -rf public && mkdir -p public/demos/track-lite-htmx/assets && cp ../dist/*.js ../dist/*.css public/demos/track-lite-htmx/assets/",
+  },
+  // Served before the Worker runs; a miss falls through to it (and 404s there).
+  "assets": { "directory": "./public" },
+  "routes": [{ "pattern": "cascivo.com/demos/track-lite-htmx/*", "zone_name": "cascivo.com" }],
+  "workers_dev": false,
+  "durable_objects": { "bindings": [{ "name": "SANDBOX", "class_name": "Sandbox" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Sandbox"] }],
+  "ratelimits": [
+    // Per IP: page loads, htmx requests and SSE reconnects.
+    { "name": "REQUESTS", "namespace_id": "1002", "simple": { "limit": 120, "period": 60 } },
+    // Per IP: new sandboxes (a page load without a `demo` cookie), each a Durable Object.
+    { "name": "SANDBOXES", "namespace_id": "1003", "simple": { "limit": 10, "period": 60 } },
+  ],
+  "observability": { "enabled": true },
+}

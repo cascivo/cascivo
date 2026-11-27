@@ -61,3 +61,8 @@ jobs:
       - run: cargo build -p cascivo-worker --target wasm32-unknown-unknown --locked
       - run: cargo clippy -p cascivo-worker --target wasm32-unknown-unknown --all-features -- -D warnings
       - run: cargo clippy -p cascivo-worker --no-default-features --all-targets -- -D warnings
+      # track-lite-htmx's Cloudflare Worker (own workspace root, so the lines above skip it):
+      # builds and lints for wasm32; its fan-out unit tests run natively.
+      - run: cargo fmt --check --manifest-path apps/examples/track-lite-htmx/worker/Cargo.toml
+      - run: cargo clippy --manifest-path apps/examples/track-lite-htmx/worker/Cargo.toml --target wasm32-unknown-unknown --all-targets --locked -- -D warnings
+      - run: cargo test --manifest-path apps/examples/track-lite-htmx/worker/Cargo.toml --locked
