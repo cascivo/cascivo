@@ -13,6 +13,20 @@ export interface CvElements {
     placeholder?: string
     'on:cv-value-change'?: (event: CustomEvent<{ value: string | undefined }>) => void
   }>
+  /** Command palette: a <dialog> opened by a shortcut with a filtering input over [role=option] rows; Enter activates the row (anchors and hx-get rows work). */
+  'cv-command-menu': CvAttrs<{
+    shortcut?: string
+    'on:cv-select'?: (event: CustomEvent<{ value: string }>) => void
+    'on:cv-open'?: (event: CustomEvent<unknown>) => void
+    'on:cv-close'?: (event: CustomEvent<unknown>) => void
+  }>
+  /** Data table: header sort cycles aria-sort and fires cv-sort (server or client sort); row checkboxes with tri-state select-all and a selected count. */
+  'cv-data-table': CvAttrs<{
+    remote?: boolean
+    'count-label'?: string
+    'on:cv-sort'?: (event: CustomEvent<{ key: string; direction: 'asc' | 'desc' | 'none' }>) => void
+    'on:cv-selection-change'?: (event: CustomEvent<{ selected: string[] }>) => void
+  }>
   /** Typeable date field with a calendar dialog; submits an ISO YYYY-MM-DD date. */
   'cv-date-picker': CvAttrs<{
     value?: string
@@ -31,21 +45,59 @@ export interface CvElements {
     'on:cv-open'?: (event: CustomEvent<unknown>) => void
     'on:cv-close'?: (event: CustomEvent<unknown>) => void
   }>
+  /** Drawer: wraps the Drawer overlay/panel markup; Escape, backdrop click, inert focus trap, focus returns to the opener. */
+  'cv-drawer': CvAttrs<{
+    open?: boolean
+    side?: 'start' | 'end' | 'top' | 'bottom'
+    static?: boolean
+    'on:cv-open'?: (event: CustomEvent<unknown>) => void
+    'on:cv-close'?: (event: CustomEvent<unknown>) => void
+  }>
   /** Form: renders constraint-validation errors with server-provided messages, guards double submit, swaps htmx 422 and focuses the first error. */
   'cv-form': CvAttrs<{}>
   /** Action menu: enhances a [aria-haspopup=menu] button and a [role=menu] popover. */
   'cv-menu': CvAttrs<{
     'on:cv-select'?: (event: CustomEvent<{ value: string }>) => void
   }>
+  /** Multi-select: chips plus a listbox panel; submits one form entry per value. */
+  'cv-multi-select': CvAttrs<{
+    name?: string
+    required?: boolean
+    disabled?: boolean
+    placeholder?: string
+    'selected-label'?: string
+    'remove-label'?: string
+    'on:cv-value-change'?: (event: CustomEvent<{ value: string[] }>) => void
+  }>
   /** Tabs: enhances a [role=tablist] of [role=tab] and their [role=tabpanel] panels. */
   'cv-tabs': CvAttrs<{
     activation?: 'auto' | 'manual'
     'on:cv-value-change'?: (event: CustomEvent<{ value: string }>) => void
   }>
+  /** Tags input: Enter/comma/paste/blur add tags, Backspace removes the last; submits one entry per tag. */
+  'cv-tags-input': CvAttrs<{
+    name?: string
+    required?: boolean
+    disabled?: boolean
+    max?: number
+    placeholder?: string
+    'remove-label'?: string
+    'on:cv-value-change'?: (event: CustomEvent<{ value: string[] }>) => void
+  }>
+  /** Theme or density switcher over a <select> or [data-cv-theme-value] buttons; sets an attribute on <html> and persists it. */
+  'cv-theme': CvAttrs<{
+    attribute?: string
+    'storage-key'?: string
+    'on:cv-theme-change'?: (event: CustomEvent<{ value: string }>) => void
+  }>
   /** Live region for toasts: auto-dismiss, pause on hover/focus, filled by OOB swap or the cv-toast trigger. */
   'cv-toaster': CvAttrs<{
     duration?: number
     'on:cv-toast-dismiss'?: (event: CustomEvent<unknown>) => void
+  }>
+  /** Tooltip: shows the [role=tooltip][popover=manual] sibling on hover/focus after a delay; Escape dismisses. */
+  'cv-tooltip': CvAttrs<{
+    delay?: number
   }>
 }
 

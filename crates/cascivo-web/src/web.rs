@@ -322,7 +322,7 @@ pub(crate) fn register_pure(env: &mut Environment<'static>, state: &Arc<WebState
         move |st: &State, rest: Rest<Value>, kw: Kwargs| {
             let a = Args::parse("theme_script", theme::PARAMS, &rest, Some(kw))?;
             let attrs = nonce_attr(st);
-            safe(theme::body(&a).and_then(|js| s.script("cascivo-theme", &js, &attrs)))
+            safe(theme::body(&s.cfg, &a).and_then(|js| s.script("cascivo-theme", &js, &attrs)))
         },
     );
     let s = Arc::clone(state);

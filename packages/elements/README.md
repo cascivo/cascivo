@@ -5,10 +5,12 @@
   <h1>@cascivo/elements</h1>
   <p><strong>Light-DOM custom elements (cv-menu, cv-tabs, cv-combobox, cv-date-picker, cv-dialog, cv-toaster, cv-form) and the htmx glue that enhance cascivo's server-rendered markup: no React, behaviour on @cascivo/core/pure</strong></p>
 
-![workspace](https://img.shields.io/badge/workspace-private-64748b?style=flat-square)
+[![npm](https://img.shields.io/npm/v/%40cascivo%2Felements?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/elements)
+[![downloads](https://img.shields.io/npm/dm/%40cascivo%2Felements?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/elements)
+[![license](https://img.shields.io/npm/l/%40cascivo%2Felements?style=flat-square&color=0079bf)](https://github.com/cascivo/cascivo/blob/main/LICENSE)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)
 
-[cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
+[npm](https://www.npmjs.com/package/@cascivo/elements) · [cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
 </div>
 
 ---
@@ -19,8 +21,7 @@ Light-DOM custom elements that enhance the server-rendered [`@cascivo/css`](../c
 `cv-<unit>-<part>` classes that `cascivo-html` and `cascivo-server` emit): `<cv-menu>`, `<cv-tabs>`,
 `<cv-form>`, `<cv-combobox>`, `<cv-date-picker>`, `<cv-dialog>` and `<cv-toaster>`. No React. Without JS the
 markup still works; with JS the elements add the keyboard, focus and ARIA behaviour on top of
-`@cascivo/core/pure` signals. Private workspace package (not published yet; the starter links it from a
-checkout). Guide: [USING-CASCIVO-SERVER.md](../../docs/USING-CASCIVO-SERVER.md); markup contract:
+`@cascivo/core/pure` signals. Guide: [USING-CASCIVO-SERVER.md](../../docs/USING-CASCIVO-SERVER.md); markup contract:
 [CONTRACT.md](../../docs/CONTRACT.md).
 
 ## Usage
@@ -109,6 +110,12 @@ Each element is at most 3 KB gzip and a page's cascivo JS (elements plus glue, h
 most 15 KB; see [JavaScript budgets](../../docs/USING-CASCIVO-SERVER.md#javascript-budgets). Messages are
 declared in `src/messages.ts` under the same keys as `@cascivo/i18n`'s `builtin`, so an adopter's
 `defineCatalog` translates them without pulling the whole catalog in.
+
+## Install
+
+```sh
+pnpm add @cascivo/elements
+```
 
 ---
 

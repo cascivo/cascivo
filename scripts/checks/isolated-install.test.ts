@@ -84,6 +84,8 @@ const PACKAGES = [
   'text',
   'render',
   'css',
+  'elements',
+  'solid',
 ]
 
 /**
@@ -104,6 +106,8 @@ const NEEDS_DIST = [
   'text',
   'render',
   'css',
+  'elements',
+  'solid',
 ]
 
 const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 'dist')))
@@ -214,6 +218,21 @@ export const contractUnit: ContractUnitName = 'button'
 export const contractTier = (c: Contract): string | undefined => c.units['button']?.tier
 export const scopedLabel: string = cascivoScopedName('label', '/src/button/button.module.css')
 export const scopedCustom = createCascivoScopedName({ unit: () => 'button', locals: 'any' })
+// @cascivo/elements (one entry per element + the htmx glue) and @cascivo/solid (islands, typed
+// wrappers, Vite preset, test helper, \`cv-*\` JSX typings): every entry ships its own flattened .d.ts.
+import { define as defineMenu, CvMenu } from '@cascivo/elements/menu'
+import { install as installHtmx } from '@cascivo/elements/htmx'
+import { createForm, defineIsland, Button as SolidButton, type IslandMount } from '@cascivo/solid'
+import { cascivoSolid } from '@cascivo/solid/vite'
+import { mountIsland } from '@cascivo/solid/testing'
+import '@cascivo/solid/elements'
+export const menuDefine: () => void = defineMenu
+export const menuClass: typeof CvMenu = CvMenu
+export const htmxInstall: () => void = installHtmx
+export const island: IslandMount = defineIsland(() => SolidButton({ children: 'Go' }))
+export const solidForm = createForm(() => undefined)
+export const solidPlugins = cascivoSolid({ islands: { cart: 'src/cart.tsx' } })
+export const mounted = mountIsland(island)
 import { connectRoom } from '@cascivo/app/sync'
 import {
   roomResponse,
@@ -662,7 +681,7 @@ describe('isolated-install — cascivo type-checks in a real consumer install', 
     const overrides = PACKAGES.map((p) => `  '@cascivo/${p}': '${tarballFor(p)}'`).join('\n')
     writeFileSync(
       join(work, 'pnpm-workspace.yaml'),
-      `packages:\n  - 'packages/*'\n${workspaceSettings}overrides:\n${overrides}\n`,
+      `packages:\n  - 'packages/*'\n# vite (peer of @cascivo/solid/vite types) pulls esbuild, whose build script pnpm refuses unasked\nallowBuilds:\n  esbuild: false\n${workspaceSettings}overrides:\n${overrides}\n`,
     )
     writeFileSync(
       join(work, 'package.json'),
@@ -690,6 +709,8 @@ describe('isolated-install — cascivo type-checks in a real consumer install', 
             ['@types/react', '^19'],
             ['@types/react-dom', '^19'],
             ['typescript', '^5'],
+            ['solid-js', '^1.9'],
+            ['vite', '^7'],
           ]),
         },
         null,

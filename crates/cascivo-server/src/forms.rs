@@ -346,7 +346,7 @@ pub fn parse<T: DeserializeOwned + Validate>(body: &[u8]) -> Submission<T> {
     let non_empty = form_urlencoded::Serializer::new(String::new())
         .extend_pairs(form_urlencoded::parse(body).filter(|(_, v)| !v.is_empty()))
         .finish();
-    let de = serde_urlencoded::Deserializer::new(form_urlencoded::parse(non_empty.as_bytes()));
+    let de = serde_html_form::Deserializer::new(form_urlencoded::parse(non_empty.as_bytes()));
     match serde_path_to_error::deserialize::<_, T>(de) {
         Ok(t) if errors.is_empty() => {
             t.validate(&mut errors);
@@ -376,7 +376,7 @@ pub fn parse<T: DeserializeOwned + Validate>(body: &[u8]) -> Submission<T> {
     )
 }
 
-/// serde's "missing field `name`" message (serde_urlencoded reports no path for it).
+/// serde's "missing field `name`" message (serde_html_form reports no path for it).
 fn missing_field(e: &str) -> Option<&str> {
     e.strip_prefix("missing field `")?.strip_suffix('`')
 }

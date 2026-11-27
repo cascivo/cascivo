@@ -85,6 +85,20 @@ export const PARITY_COMPONENTS = [
   'sources',
   'tool-call',
   'prompt-suggestions',
+  'indicator',
+  'input-group',
+  'inline-citation',
+  'relative-time',
+  'qr-code',
+  'code-snippet',
+  'auto-grid',
+  'flex',
+  'grid',
+  'columns',
+  'center',
+  'section',
+  'page-header',
+  'spacer',
 ] as const
 
 export type Fact = { facet: Facet; text: string }

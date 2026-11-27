@@ -2,7 +2,7 @@ import { Section } from '../../../layouts/src/section/section'
 import { Separator } from '../../src/separator/separator'
 
 export default (
-  <Section>
+  <Section aria-label="Hi">
     <Separator />
   </Section>
 )

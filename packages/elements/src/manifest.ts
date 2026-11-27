@@ -105,6 +105,120 @@ export const ELEMENTS: Entry[] = [
     attributes: [['duration', 'number', 'Milliseconds before a toast dismisses (0: never).']],
     events: [['cv-toast-dismiss', 'A toast was dismissed.']],
   },
+  {
+    tag: 'cv-data-table',
+    className: 'CvDataTable',
+    module: 'data-table',
+    description:
+      'Data table: header sort cycles aria-sort and fires cv-sort (server or client sort); row checkboxes with tri-state select-all and a selected count.',
+    formAssociated: false,
+    attributes: [
+      ['remote', 'boolean', 'The server sorts: rows are not reordered client-side.'],
+      ['count-label', 'string', 'Selected-count text; `{count}` is replaced.'],
+    ],
+    events: [
+      [
+        'cv-sort',
+        "A sortable header was activated. `detail: { key: string; direction: 'asc' | 'desc' | 'none' }`.",
+      ],
+      ['cv-selection-change', 'Row selection changed. `detail: { selected: string[] }`.'],
+    ],
+  },
+  {
+    tag: 'cv-drawer',
+    className: 'CvDrawer',
+    module: 'drawer',
+    description:
+      'Drawer: wraps the Drawer overlay/panel markup; Escape, backdrop click, inert focus trap, focus returns to the opener.',
+    formAssociated: false,
+    attributes: [
+      ['open', 'boolean', 'Initial open state.'],
+      ['side', "'start' | 'end' | 'top' | 'bottom'", 'Edge the panel slides from.'],
+      ['static', 'boolean', 'A backdrop click does not close.'],
+    ],
+    events: [
+      ['cv-open', 'The drawer opened.'],
+      ['cv-close', 'The drawer closed.'],
+    ],
+  },
+  {
+    tag: 'cv-command-menu',
+    className: 'CvCommandMenu',
+    module: 'command-menu',
+    description:
+      'Command palette: a <dialog> opened by a shortcut with a filtering input over [role=option] rows; Enter activates the row (anchors and hx-get rows work).',
+    formAssociated: false,
+    attributes: [['shortcut', 'string', 'Open shortcut, e.g. `mod+k` (default).']],
+    events: [
+      ['cv-select', 'A row was activated. `detail: { value: string }`.'],
+      ['cv-open', 'The palette opened.'],
+      ['cv-close', 'The palette closed.'],
+    ],
+  },
+  {
+    tag: 'cv-theme',
+    className: 'CvTheme',
+    module: 'theme',
+    description:
+      'Theme or density switcher over a <select> or [data-cv-theme-value] buttons; sets an attribute on <html> and persists it.',
+    formAssociated: false,
+    attributes: [
+      ['attribute', 'string', 'Attribute set on <html> (default `data-theme`).'],
+      ['storage-key', 'string', 'localStorage key (default `cascade-theme`).'],
+    ],
+    events: [['cv-theme-change', 'The user picked a value. `detail: { value: string }`.']],
+  },
+  {
+    tag: 'cv-tooltip',
+    className: 'CvTooltip',
+    module: 'tooltip',
+    description:
+      'Tooltip: shows the [role=tooltip][popover=manual] sibling on hover/focus after a delay; Escape dismisses.',
+    formAssociated: false,
+    attributes: [['delay', 'number', 'Milliseconds before showing (default 200).']],
+    events: [],
+  },
+  {
+    tag: 'cv-multi-select',
+    className: 'CvMultiSelect',
+    module: 'multi-select',
+    description: 'Multi-select: chips plus a listbox panel; submits one form entry per value.',
+    formAssociated: true,
+    attributes: [
+      ['name', 'string', 'Form field name.'],
+      ['required', 'boolean', 'Reports valueMissing when empty.'],
+      ['disabled', 'boolean', 'Disables the field.'],
+      ['placeholder', 'string', 'Trigger text when empty.'],
+      ['selected-label', 'string', 'Count template, `{count}`.'],
+      ['remove-label', 'string', 'Chip remove label, `{label}`.'],
+    ],
+    events: [
+      ['cv-value-change', 'The values changed. `detail: { value: string[] }`.'],
+      ['input', 'Native, fired on the host.'],
+      ['change', 'Native, fired on the host.'],
+    ],
+  },
+  {
+    tag: 'cv-tags-input',
+    className: 'CvTagsInput',
+    module: 'tags-input',
+    description:
+      'Tags input: Enter/comma/paste/blur add tags, Backspace removes the last; submits one entry per tag.',
+    formAssociated: true,
+    attributes: [
+      ['name', 'string', 'Form field name.'],
+      ['required', 'boolean', 'Reports valueMissing when empty.'],
+      ['disabled', 'boolean', 'Disables the field.'],
+      ['max', 'number', 'Maximum tag count.'],
+      ['placeholder', 'string', 'Shown only while empty.'],
+      ['remove-label', 'string', 'Dismiss label, `{label}`.'],
+    ],
+    events: [
+      ['cv-value-change', 'The values changed. `detail: { value: string[] }`.'],
+      ['input', 'Native, fired on the host.'],
+      ['change', 'Native, fired on the host.'],
+    ],
+  },
 ]
 
 export function customElementsManifest(): object {

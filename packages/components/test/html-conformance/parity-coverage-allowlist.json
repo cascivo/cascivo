@@ -1,11 +1,9 @@
 {
   "_doc": "G3: static/native-tier components that have no cascivo-html emitter or parity case yet. Key: unit name. The list may only shrink: an entry whose component gained an emitter, case and PARITY_COMPONENTS row fails as stale.",
   "entries": {
-    "code-snippet": "Copy-to-clipboard button and highlighted code need client JS; a static emitter would drop the behaviour that defines the component.",
-    "indicator": "Positions an arbitrary child through a slot; the .cv language has no slot-in-slot syntax for the overlay yet.",
-    "inline-citation": "Hover card content is composed by the host app from source data; markup depends on a runtime lookup, not on .cv input.",
-    "input-group": "Wraps a caller-supplied input element; emitting it needs the compound-child grammar planned with the form emitters.",
-    "qr-code": "SVG is produced by a JS encoder; porting the encoder to Rust is its own task, not a markup emitter.",
-    "relative-time": "Renders a phrase from the current clock and locale; a static page would freeze it, and the live update is JS behaviour."
+    "dashboard-layout": "React takes stats/main/aside as three props; .cv fills the slots from child order, so a case would pin the mapping rather than the markup. Follow-up with named-slot grammar.",
+    "masonry": "Column packing is measured at runtime by the React component; a static emitter would need a no-JS fallback design (CSS columns) agreed first.",
+    "settings-layout": "Composes a nav rail plus routed panels from props objects; the .cv grammar has no object-prop syntax for them yet.",
+    "auth-layout": "Takes brand, form and aside as ReactNode slots; needs the same named-slot grammar as dashboard-layout."
   }
 }

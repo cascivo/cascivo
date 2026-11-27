@@ -5,6 +5,11 @@ export const meta: ComponentMeta = {
   description: 'Fixed-height spacing block using design token steps.',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: { element: 'div', local: 'spacer', emit: 'manual' },
+    parts: {},
+  },
   states: [],
   variants: [],
   sizes: [],

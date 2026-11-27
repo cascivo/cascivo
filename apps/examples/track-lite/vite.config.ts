@@ -1,0 +1,33 @@
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { defineConfig } from 'vite-plus'
+import { cascivoRepoScopedName } from '../../../scripts/contract/scoped-name.ts'
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
+const root = resolve(__dirname, '../../..')
+
+export default defineConfig({
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/setup.ts'],
+  },
+  server: {
+    port: 4190,
+    strictPort: true,
+  },
+  // Contract class names (cv-<unit>-<local>) for the aliased component source, like @cascivo/react.
+  css: { modules: { generateScopedName: cascivoRepoScopedName } },
+  resolve: {
+    alias: {
+      // Source aliases so Rolldown doesn't need pre-built dist files.
+      // In your own app (installing from npm) you don't need these.
+      // Must precede the bare '@cascivo/core' entry: a string alias replaces by
+      // prefix, so without this '@cascivo/core/pure' resolves to 'index.ts/pure'.
+      '@cascivo/core/pure': resolve(root, 'packages/core/src/pure.ts'),
+      '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
+      '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
+      '@cascivo/react': resolve(root, 'packages/react/src/index.ts'),
+    },
+  },
+})

@@ -21,6 +21,7 @@ use std::fmt;
 use std::sync::Arc;
 
 use cascivo_html::ast::{Node, Value as HValue};
+use cascivo_html::contract::{field as cfield, label as clabel};
 use cascivo_html::html::attr;
 use cascivo_html::{Cx, lookup};
 use minijinja::value::{Kwargs, Object, ObjectRepr, from_args};
@@ -292,6 +293,9 @@ impl FormState {
         let given_value: Option<String> = kw.get("value")?;
         let options: Option<Value> = kw.get("options")?;
         let kind: Option<String> = kw.get("kind")?;
+        if let Some(k @ ("radio-group" | "checkbox-group")) = kind.as_deref() {
+            return self.group(state, name, k == "radio-group", &kw_group(kw)?);
+        }
         let unit = match kind.as_deref() {
             Some(k @ ("input" | "textarea" | "select" | "checkbox")) => k,
             Some(k) => return Err(bad(format!("field kind `{k}`"))),
@@ -364,6 +368,137 @@ impl FormState {
         Ok(out)
     }
 
+    /// `kind="radio-group"` / `"checkbox-group"`: one field around several native inputs that
+    /// share `name`. The group carries `aria-invalid` and `aria-describedby` → the
+    /// `role="alert"` error (a single `aria-describedby` on one input would miss the rest).
+    fn group(
+        &self,
+        state: &mut State<'_, '_>,
+        name: &str,
+        radio: bool,
+        g: &Group,
+    ) -> Result<String, Error> {
+        let rule = self
+            .rules
+            .iter()
+            .find(|(n, _)| *n == name)
+            .map_or(Rule::text(), |(_, r)| *r);
+        let id = format!("{}{name}", self.id_prefix);
+        let error = match self.errors.field(name).first() {
+            Some(m) => Some(translate(state, m)?),
+            None => None,
+        };
+        let chosen = self.values.get(name).map(Vec::as_slice).unwrap_or_default();
+        let (ty, role) = if radio {
+            ("radio", "radiogroup")
+        } else {
+            ("checkbox", "group")
+        };
+        let mut out = String::new();
+        out.push_str("<div");
+        attr(&mut out, "class", cfield::ROOT);
+        attr(
+            &mut out,
+            "data-state",
+            if error.is_some() {
+                "invalid"
+            } else {
+                "default"
+            },
+        );
+        out.push('>');
+        if let Some(l) = &g.label {
+            out.push_str("<span");
+            attr(&mut out, "id", &format!("{id}-label"));
+            attr(&mut out, "class", clabel::ROOT);
+            out.push('>');
+            cascivo_html::html::esc(&mut out, l);
+            if rule.required {
+                out.push_str("<span aria-hidden=\"true\" class=\"");
+                out.push_str(clabel::MARKER);
+                out.push_str("\">*</span>");
+            }
+            out.push_str("</span>");
+        }
+        out.push_str("<div");
+        attr(&mut out, "id", &id);
+        attr(&mut out, "role", role);
+        if g.label.is_some() {
+            attr(&mut out, "aria-labelledby", &format!("{id}-label"));
+        }
+        if error.is_some() {
+            attr(&mut out, "aria-invalid", "true");
+        }
+        let described: Vec<String> = [
+            g.hint.as_ref().map(|_| format!("{id}-description")),
+            error.as_ref().map(|_| format!("{id}-error")),
+        ]
+        .into_iter()
+        .flatten()
+        .collect();
+        if !described.is_empty() {
+            attr(&mut out, "aria-describedby", &described.join(" "));
+        }
+        out.push('>');
+        for (i, row) in g.options.iter().enumerate() {
+            let value = row.first().map_or("", String::as_str);
+            let text = row.get(1).map_or(value, String::as_str);
+            let cid = format!("{id}-{i}");
+            out.push_str("<label for=\"");
+            cascivo_html::html::esc(&mut out, &cid);
+            out.push_str("\"><input");
+            attr(&mut out, "type", ty);
+            attr(&mut out, "id", &cid);
+            attr(&mut out, "name", name);
+            attr(&mut out, "value", value);
+            if chosen.iter().any(|c| c == value) {
+                cascivo_html::html::flag(&mut out, "checked");
+            }
+            // One required radio makes the browser require a pick; a required checkbox
+            // would demand every box, so the server's rule covers checkbox groups.
+            if radio && rule.required {
+                cascivo_html::html::flag(&mut out, "required");
+            }
+            out.push_str("> ");
+            cascivo_html::html::esc(&mut out, text);
+            out.push_str("</label>");
+        }
+        out.push_str("</div>");
+        if let Some(h) = &g.hint {
+            out.push_str("<p");
+            attr(&mut out, "id", &format!("{id}-description"));
+            attr(&mut out, "class", cfield::DESCRIPTION);
+            out.push('>');
+            cascivo_html::html::esc(&mut out, h);
+            out.push_str("</p>");
+        }
+        if let Some(e) = &error {
+            out.push_str("<p");
+            attr(&mut out, "id", &format!("{id}-error"));
+            attr(&mut out, "role", "alert");
+            attr(&mut out, "class", cfield::ERROR);
+            out.push('>');
+            cascivo_html::html::esc(&mut out, e);
+            out.push_str("</p>");
+        }
+        out.push_str("</div>");
+        let msg = translate(state, &Msg::new(format!("{MSG_PREFIX}valueMissing")))?;
+        if rule.required && radio {
+            // The text `<cv-form>` shows when the browser blocks submit on the group.
+            let marker = format!(" id=\"{id}\"");
+            if let Some(at) = out.find(&marker) {
+                out.insert_str(
+                    at + marker.len(),
+                    &format!(
+                        " data-cv-msg-value-missing=\"{}\"",
+                        msg.replace('"', "&quot;")
+                    ),
+                );
+            }
+        }
+        Ok(out)
+    }
+
     /// Constraint attributes of `rule` plus the translated `data-cv-msg-<flag>` of each.
     fn constraints(
         &self,
@@ -415,6 +550,21 @@ impl FormState {
         }
         Ok(out)
     }
+}
+
+struct Group {
+    label: Option<String>,
+    hint: Option<String>,
+    options: Vec<Vec<String>>,
+}
+
+fn kw_group(kw: &Kwargs) -> Result<Group, Error> {
+    let options: Option<Value> = kw.get("options")?;
+    Ok(Group {
+        label: kw.get("label")?,
+        hint: kw.get("hint")?,
+        options: rows_of(options.as_ref())?,
+    })
 }
 
 /// `options=[["v", "Text"], "plain", …]` as select rows.

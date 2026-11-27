@@ -12,6 +12,7 @@ mod e1_b;
 mod e1_c;
 mod e1_d;
 mod embed;
+mod extra;
 mod feedback;
 mod form;
 mod form_ai;
@@ -39,6 +40,8 @@ pub fn emit(node: &Node, cx: &mut Cx, out: &mut String) {
         | "timeline" | "empty-state" | "blockquote" | "code" | "kbd" | "link" => {
             display::emit(node, cx, out);
         }
+        "indicator" | "input-group" | "inline-citation" | "relative-time" | "qr-code"
+        | "code-snippet" => extra::emit(node, cx, out),
         "chat-bubble" | "shimmer-text" | "stack" | "aspect-ratio" | "skip-nav"
         | "typing-indicator" | "ai-disclaimer" => e1_a::emit(node, cx, out),
         "header" | "large-title-header" | "app-shell" | "dock" | "scroll-area" | "toc" => {

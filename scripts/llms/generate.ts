@@ -1288,6 +1288,10 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     `- Dynamic server-rendered apps (cascivo-server axum + htmx, forms, sessions, Workers/Containers, Solid islands): ${SITE}/docs/using-cascivo-server.md`,
   )
   lines.push(
+    `- No-React stack (@cascivo/css + @cascivo/elements: 14 light-DOM custom elements + htmx glue, @cascivo/solid islands, /testing; npm packages, not \`cascivo add\` items): ${SITE}/docs/using-htmx-solid.md`,
+    `- Same app in React and in htmx + Solid, measured: ${SITE}/docs/compare-react-vs-htmx-solid.md`,
+  )
+  lines.push(
     `- Terminal UIs in Rust (cascivo-tui ratatui toolkit, class strings + themes): ${SITE}/docs/using-cascivo-tui.md`,
   )
   lines.push(

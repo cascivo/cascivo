@@ -109,7 +109,7 @@ fn grid(node: &Node, cx: &mut Cx, out: &mut String) {
     attr(out, "class", grid::GRID_CONTAINER);
     cx.style(out, &style);
     out.push_str("><div");
-    attr(out, "class", grid::ROOT);
+    attr(out, "class", grid::GRID);
     if node.prop_bool("alignRows") {
         flag(out, "data-align-rows");
     }
@@ -129,7 +129,7 @@ fn columns(node: &Node, cx: &mut Cx, out: &mut String) {
     attr(out, "class", columns::COLUMNS_CONTAINER);
     cx.style(out, &style);
     out.push_str("><div");
-    attr(out, "class", columns::ROOT);
+    attr(out, "class", columns::COLUMNS);
     out.push('>');
     emit_children(node, cx, out);
     out.push_str("</div></div>");

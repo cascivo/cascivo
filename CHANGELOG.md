@@ -21,6 +21,7 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 | `@cascivo/docs`          | 0.2.19  | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/docs/CHANGELOG.md)           |
 | `@cascivo/docspack`      | 0.3.5   | 0.3.0 — The CLI ships a machine-readable description of every command (`dist/cmdspec.jso  | [CHANGELOG](packages/docspack/CHANGELOG.md)       |
 | `@cascivo/editor`        | 1.11.0  | 1.3.0 — Editor: line numbers, the current-line highlight and the left gutter all survive  | [CHANGELOG](packages/editor/CHANGELOG.md)         |
+| `@cascivo/elements`      | 0.0.0   | —                                                                                         | [CHANGELOG](packages/elements/CHANGELOG.md)       |
 | `@cascivo/email`         | 0.6.1   | 0.6.0 — Dead links block a send, and Resend is a sender.                                  | [CHANGELOG](packages/email/CHANGELOG.md)          |
 | `@cascivo/email-preview` | 4.0.0   | 4.0.0 — A Links panel lists what `checkLinks` finds in the open template — blocked rows   | [CHANGELOG](packages/email-preview/CHANGELOG.md)  |
 | `@cascivo/eslint-config` | 0.4.2   | 0.4.0 — Enforce the styling contract: a `--cascivo-*` token or `data-cascivo-*` hook tha  | [CHANGELOG](packages/eslint-config/CHANGELOG.md)  |
@@ -33,6 +34,7 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 | `@cascivo/react`         | 1.11.0  | 1.10.0 — `TabsList`, `TabsTrigger`, `TabsContent`, `AccordionItem`, `AccordionTrigger` an | [CHANGELOG](packages/react/CHANGELOG.md)          |
 | `@cascivo/registry`      | 0.3.0   | 0.3.0 — Component manifests gain an optional `agent` section (`AgentMeta`) that maps age  | [CHANGELOG](packages/registry/CHANGELOG.md)       |
 | `@cascivo/render`        | 1.11.0  | 1.10.0 — Add `@cascivo/render/a2ui/v0_9`: an A2UI v0.9 renderer. `createA2uiStore` valida | [CHANGELOG](packages/render/CHANGELOG.md)         |
+| `@cascivo/solid`         | 0.0.0   | —                                                                                         | [CHANGELOG](packages/solid/CHANGELOG.md)          |
 | `@cascivo/storage`       | 1.11.0  | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an   | [CHANGELOG](packages/storage/CHANGELOG.md)        |
 | `@cascivo/text`          | 1.11.0  | 1.4.0 — Machine mode — render a cascivo UI as a Markdown document.                        | [CHANGELOG](packages/text/CHANGELOG.md)           |
 | `@cascivo/themes`        | 1.0.3   | 1.0.0 — Join the `1.x` line.                                                              | [CHANGELOG](packages/themes/CHANGELOG.md)         |

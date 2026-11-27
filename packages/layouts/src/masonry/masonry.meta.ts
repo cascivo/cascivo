@@ -6,6 +6,11 @@ export const meta: ComponentMeta = {
     'Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: { element: 'div', local: 'masonry', children: ['$slot'], emit: 'manual' },
+    parts: {},
+  },
   states: [],
   variants: [],
   sizes: [],

@@ -24,12 +24,16 @@ fn js(s: &str) -> Result<String, String> {
 }
 
 /// The script source, without the `<script>` tag.
-pub fn body(a: &Args) -> Result<String, String> {
+pub fn body(cfg: &Config, a: &Args) -> Result<String, String> {
     let e = |m: minijinja::Error| m.to_string();
     let key = js(&a.or("storage_key", "cascade-theme").map_err(e)?)?;
     let attr = js(&a.or("attribute", "data-theme").map_err(e)?)?;
-    let light = a.or("default_light", "poster").map_err(e)?;
-    let dark = a.or("default_dark", "poster-dark").map_err(e)?;
+    // Default to the configured themes: a hard-coded pair left tokens unresolved for apps that
+    // ship another theme package.
+    let light = a.or("default_light", &cfg.theme).map_err(e)?;
+    let dark = a
+        .or("default_dark", cfg.dark_theme.as_deref().unwrap_or("dark"))
+        .map_err(e)?;
     let blocking = a.strings("blocking").map_err(e)?.unwrap_or_else(|| {
         let mut b = vec![light.clone(), dark.clone()];
         for t in ["light", "dark", "warm"] {
@@ -50,8 +54,8 @@ document.documentElement.setAttribute({attr},{blocking}.indexOf(v)>=0?v:f)}}catc
     ))
 }
 
-pub fn script(a: &Args) -> Result<String, String> {
-    Ok(format!("<script>{}</script>", script_json(&body(a)?)))
+pub fn script(cfg: &Config, a: &Args) -> Result<String, String> {
+    Ok(format!("<script>{}</script>", script_json(&body(cfg, a)?)))
 }
 
 /// `cascivo.css`: base, `theme` and component CSS; with `dark_theme`, that theme for explicit
@@ -100,7 +104,7 @@ mod tests {
         let mut env = Environment::new();
         env.add_function("theme_script", |rest: Rest<Value>, kw: Kwargs| {
             let a = Args::parse("theme_script", PARAMS, &rest, Some(kw))?;
-            script(&a)
+            script(&Config::parse("title = \"t\"").unwrap(), &a)
                 .map(Value::from_safe_string)
                 .map_err(crate::web::err)
         });
@@ -116,13 +120,23 @@ mod tests {
         );
         for needle in [
             "matchMedia('(prefers-color-scheme: light)').matches",
-            "f=l?\"poster\":\"poster-dark\"",
+            "f=l?\"light\":\"dark\"",
             "localStorage.getItem(\"cascade-theme\")",
             "'value'in e",
-            "setAttribute(\"data-theme\",[\"poster\",\"poster-dark\",\"light\",\"dark\",\"warm\"].indexOf(v)>=0?v:f)",
+            "setAttribute(\"data-theme\",[\"light\",\"dark\",\"warm\"].indexOf(v)>=0?v:f)",
         ] {
             assert!(s.contains(needle), "missing {needle} in {s}");
         }
+    }
+
+    #[test]
+    fn defaults_follow_configured_themes() {
+        let cfg =
+            Config::parse("title = \"t\"\ntheme = \"midnight\"\ndark_theme = \"dark\"").unwrap();
+        let a = Args::parse("theme_script", PARAMS, &[], None).unwrap();
+        let s = body(&cfg, &a).unwrap();
+        assert!(s.contains("f=l?\"midnight\":\"dark\""), "{s}");
+        assert!(!s.contains("poster"), "{s}");
     }
 
     #[test]

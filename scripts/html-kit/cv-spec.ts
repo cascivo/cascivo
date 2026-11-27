@@ -117,6 +117,38 @@ export const CV_SPEC: readonly CvEntry[] = [
   e('tag', { children: 'text' }),
   e('avatar', { args: [a('name', 'str')] }),
   e('avatar-group', { children: 'nodes', css: ['avatar-group', 'avatar'] }),
+  e('indicator', {
+    children: 'nodes',
+    extraProps: [{ name: 'overlay', type: 'string', summary: 'Text of the corner badge or count' }],
+  }),
+  e('input-group', {
+    children: 'nodes',
+    extraProps: [
+      { name: 'prefix', type: 'string', summary: 'Addon text before the input' },
+      { name: 'suffix', type: 'string', summary: 'Addon text after the input' },
+    ],
+  }),
+  e('inline-citation', {
+    args: [a('index', 'num', true)],
+    css: ['inline-citation', 'hover-card', 'visually-hidden'],
+    extraProps: [
+      { name: 'title', type: 'string', summary: 'Source title (required)' },
+      { name: 'url', type: 'string', summary: 'Source URL; only http(s) becomes a link' },
+      {
+        name: 'description',
+        type: 'string',
+        summary: 'Short source description shown in the card',
+      },
+    ],
+  }),
+  e('relative-time', {
+    args: [a('date', 'str', true)],
+    extraProps: [
+      { name: 'title', type: 'string', summary: 'Hover text (default: the UTC date and time)' },
+    ],
+  }),
+  e('qr-code', { args: [a('value', 'str', true)] }),
+  e('code-snippet', { children: 'text' }),
   e('image', { args: [a('src', 'str', true), a('alt', 'str')], extraProps: assetProps }),
   e('svg', {
     args: [a('src', 'str', true), a('alt', 'str')],

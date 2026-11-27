@@ -1,17 +1,59 @@
 {
   "name": "@cascivo/solid",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "description": "Solid islands for cascivo-web/cascivo-server markup: defineIsland (mount + htmx-safe dispose), cv-* JSX typings from the Custom Elements Manifest, and a Vite preset",
+  "keywords": [
+    "cascivo",
+    "htmx",
+    "islands",
+    "solid",
+    "solid-js",
+    "vite"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/solid#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
   "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/solid"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./src/index.ts",
-    "./vite": "./src/vite.ts",
-    "./elements": "./src/cv-elements.ts"
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js",
+      "default": "./dist/vite.js"
+    },
+    "./elements": {
+      "types": "./dist/elements.d.ts",
+      "import": "./dist/elements.js",
+      "default": "./dist/elements.js"
+    },
+    "./testing": {
+      "types": "./dist/testing.d.ts",
+      "import": "./dist/testing.js",
+      "default": "./dist/testing.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
+    "build": "vp build && node ../../scripts/build/flatten-dts.mjs index=src/index.ts vite=src/vite.ts elements=src/cv-elements.ts testing=src/testing.ts && node ../../scripts/build/check-types-flat.mjs",
     "generate": "node --experimental-strip-types scripts/generate.ts",
     "check": "tsc --noEmit",
     "test": "vp test"
@@ -22,18 +64,24 @@
   "devDependencies": {
     "@cascivo/elements": "workspace:*",
     "@types/node": "catalog:",
+    "htmx.org": "^2.0.8",
     "jsdom": "catalog:",
     "solid-js": "^1.9.0",
     "typescript": "catalog:",
+    "vite": "^8.0.0",
     "vite-plugin-solid": "^2.11.0",
     "vite-plus": "catalog:"
   },
   "peerDependencies": {
     "solid-js": ">=1.9.0",
+    "vite": ">=5",
     "vite-plugin-solid": ">=2.11.0"
   },
   "peerDependenciesMeta": {
     "vite-plugin-solid": {
+      "optional": true
+    },
+    "vite": {
       "optional": true
     }
   }

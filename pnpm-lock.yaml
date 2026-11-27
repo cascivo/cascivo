@@ -1262,6 +1262,86 @@ importers:
         specifier: 5.0.1
         version: 5.0.1(@types/node@25.9.2)(@vitest/browser-preview@5.0.1)(@vitest/ui@5.0.1)(@voidzero-dev/vite-plus-core@1.0.0(@arethetypeswrong/core@0.18.5)(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(publint@0.3.21)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(yaml@2.9.0))(jsdom@29.1.1)
 
+  apps/examples/track-lite:
+    dependencies:
+      '@cascivo/core':
+        specifier: workspace:*
+        version: link:../../../packages/core
+      '@cascivo/react':
+        specifier: workspace:*
+        version: link:../../../packages/react
+      '@cascivo/themes':
+        specifier: workspace:*
+        version: link:../../../packages/themes
+      '@cascivo/tokens':
+        specifier: workspace:*
+        version: link:../../../packages/tokens
+      '@preact/signals-react':
+        specifier: 'catalog:'
+        version: 3.10.1(react@19.2.7)
+      react:
+        specifier: 'catalog:'
+        version: 19.2.7
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.7(react@19.2.7)
+    devDependencies:
+      '@testing-library/jest-dom':
+        specifier: 'catalog:'
+        version: 6.9.1
+      '@testing-library/react':
+        specifier: 'catalog:'
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.3(@types/react@19.2.17)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plus:
+        specifier: 'catalog:'
+        version: 1.0.0(@arethetypeswrong/core@0.18.5)(@types/node@25.9.2)(@vitest/ui@5.0.1)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1)(publint@0.3.21)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(yaml@2.9.0)
+      vitest:
+        specifier: 5.0.1
+        version: 5.0.1(@types/node@25.9.2)(@vitest/browser-preview@5.0.1)(@vitest/ui@5.0.1)(@voidzero-dev/vite-plus-core@1.0.0(@arethetypeswrong/core@0.18.5)(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(publint@0.3.21)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(yaml@2.9.0))(jsdom@29.1.1)
+
+  apps/examples/track-lite-htmx:
+    dependencies:
+      '@cascivo/css':
+        specifier: workspace:*
+        version: link:../../../packages/css
+      '@cascivo/elements':
+        specifier: workspace:*
+        version: link:../../../packages/elements
+      '@cascivo/solid':
+        specifier: workspace:*
+        version: link:../../../packages/solid
+      '@cascivo/themes':
+        specifier: workspace:*
+        version: link:../../../packages/themes
+      htmx-ext-sse:
+        specifier: ^2.2.4
+        version: 2.2.4
+      htmx.org:
+        specifier: ^2.0.8
+        version: 2.0.11
+      solid-js:
+        specifier: ^1.9.0
+        version: 1.9.20
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plugin-solid:
+        specifier: ^2.11.0
+        version: 2.11.17(@testing-library/jest-dom@6.9.1)(@voidzero-dev/vite-plus-core@1.0.0(@arethetypeswrong/core@0.18.5)(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(publint@0.3.21)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(yaml@2.9.0))(solid-js@1.9.20)(supports-color@8.1.1)
+      vite-plus:
+        specifier: 'catalog:'
+        version: 1.0.0(@arethetypeswrong/core@0.18.5)(@types/node@25.9.2)(@vitest/ui@5.0.1)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1)(publint@0.3.21)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(yaml@2.9.0)
+
   apps/examples/trade:
     dependencies:
       '@cascivo/charts':
@@ -1876,20 +1956,19 @@ importers:
         version: 1.0.0(@arethetypeswrong/core@0.18.5)(@types/node@25.9.2)(@vitest/ui@5.0.1)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1)(publint@0.3.21)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(yaml@2.9.0)
 
   packages/elements:
-    dependencies:
+    devDependencies:
       '@cascivo/core':
         specifier: workspace:*
         version: link:../core
+      '@cascivo/css':
+        specifier: workspace:*
+        version: link:../css
       '@cascivo/i18n':
         specifier: workspace:*
         version: link:../i18n
       '@preact/signals-core':
         specifier: ^1.14.3
         version: 1.14.3
-    devDependencies:
-      '@cascivo/css':
-        specifier: workspace:*
-        version: link:../css
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.2
@@ -2299,6 +2378,9 @@ importers:
       '@cascivo/css':
         specifier: workspace:*
         version: link:../css
+      vite:
+        specifier: npm:@voidzero-dev/vite-plus-core@1.0.0
+        version: '@voidzero-dev/vite-plus-core@1.0.0(@arethetypeswrong/core@0.18.5)(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(publint@0.3.21)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(yaml@2.9.0)'
     devDependencies:
       '@cascivo/elements':
         specifier: workspace:*
@@ -2306,6 +2388,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.2
+      htmx.org:
+        specifier: ^2.0.8
+        version: 2.0.11
       jsdom:
         specifier: 'catalog:'
         version: 29.1.1

@@ -42,7 +42,7 @@ const ANATOMY_REQUIRED = [
 ]
 
 test('finds every component manifest (guards against a silent skip)', () => {
-  assert.equal(units.length, 146)
+  assert.equal(units.length, 159)
 })
 
 test('every component manifest declares a valid contractTier and anatomy (generator throws)', () => {

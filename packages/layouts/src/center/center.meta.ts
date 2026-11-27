@@ -5,6 +5,11 @@ export const meta: ComponentMeta = {
   description: 'Horizontally centered container with a configurable max-width.',
   category: 'layout',
   clientJs: 'none',
+  contractTier: 'static',
+  anatomy: {
+    root: { element: 'div', local: 'center', children: ['$slot'], emit: 'manual' },
+    parts: {},
+  },
   states: [],
   variants: [],
   sizes: [],
