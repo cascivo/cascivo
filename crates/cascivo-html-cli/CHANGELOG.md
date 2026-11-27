@@ -1,5 +1,11 @@
 # cascivo-html-cli
 
+## 0.4.0
+
+### Minor Changes
+
+- Released in lockstep with cascivo-html (fixed group).
+
 ## 0.3.0
 
 ### Minor Changes
