@@ -33,8 +33,8 @@ sqlx = { version = "0.9.1", optional = true, default-features = false, features 
   "sqlite",
   "runtime-tokio",
 ] }
-cascivo-html = { path = "../cascivo-html", version = "0.3.0" }
-cascivo-web = { path = "../cascivo-web", version = "0.2.1", default-features = false }
+cascivo-html = { path = "../cascivo-html", version = "0.4.0" }
+cascivo-web = { path = "../cascivo-web", version = "0.3.0", default-features = false }
 getrandom = "0.4.3"
 minijinja = { version = "3.1.0", default-features = false, features = ["serde"] }
 form_urlencoded = "1.2.3"
