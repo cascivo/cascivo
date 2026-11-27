@@ -1,5 +1,13 @@
 # @cascivo/ai
 
+## 1.12.0
+
+### Patch Changes
+
+- Updated dependencies [eaefb56]
+  - @cascivo/core@1.12.0
+  - @cascivo/i18n@1.12.0
+
 ## 1.11.0
 
 ### Patch Changes

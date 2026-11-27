@@ -99,4 +99,4 @@ overlay, action-sheet, menu, mobile, sheet
 
 ---
 
-_Generated from registry v1.11.0 on 2026-11-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v1.12.0 on 2026-11-27. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
