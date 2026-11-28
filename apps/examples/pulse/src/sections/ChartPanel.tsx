@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 
-// One palette hue per percentile, so the three charts read apart at a glance and every
-// theme (including the landing's brutalist embed) recolours them.
-export const P50_COLOR = 'var(--cascivo-chart-2)'
-export const P95_COLOR = 'var(--cascivo-chart-1)'
-export const P99_COLOR = 'var(--cascivo-chart-6)'
+// One step of the theme's ink ramp per percentile (palette.css): the slow tail darkest,
+// so the page that embeds Pulse keeps its own colours and P99 still reads first.
+export const P50_COLOR = 'var(--pulse-ink-3)'
+export const P95_COLOR = 'var(--pulse-ink-2)'
+export const P99_COLOR = 'var(--pulse-ink)'
 
 /** A titled surface for one chart, keyed by a swatch in the series colour. */
 export function ChartPanel({

@@ -4,7 +4,7 @@ import { useSignals } from '@cascivo/core'
 import { currentLocale, t } from '@cascivo/i18n'
 import { AlertTriangle, CheckCircle, Layers, Upload } from '@cascivo/icons'
 import { AreaChart, Bullet, Heatmap, Kpi, Meter, Sparkline } from '@cascivo/charts'
-import type { HeatmapDatum } from '@cascivo/charts'
+import type { AreaChartProps, HeatmapDatum } from '@cascivo/charts'
 import { Badge, ProgressBar, ProgressCircle, Status, Timeline } from '@cascivo/react'
 import type { TimelineItem } from '@cascivo/react'
 import { events, hostMetrics, latencyHistory } from '../sim/metrics'
@@ -16,6 +16,7 @@ import styles from './Overview.module.css'
 
 const SLO_MS = 500
 type LatencyDatum = { t: number; y: number }
+type Annotation = NonNullable<AreaChartProps<LatencyDatum>['annotations']>[number]
 
 const mean = (xs: readonly number[]) =>
   xs.length > 0 ? xs.reduce((s, v) => s + v, 0) / xs.length : 0
@@ -89,7 +90,7 @@ export function Overview() {
             <Status status={failing > 0 ? 'warning' : 'success'} pulse>
               {failing > 0 ? t(msg.healthDegraded, { count: failing }) : t(msg.healthOk)}
             </Status>
-            <Badge variant="warning">{t(msg.mockData)}</Badge>
+            <Badge variant="outline">{t(msg.mockData)}</Badge>
           </div>
         </header>
 
@@ -236,11 +237,36 @@ function Panel({
   )
 }
 
+// P99 is the one filled area; the faster percentiles are lines over it, so the three differ
+// in form and lightness, not hue (and their readouts name them).
 const SERIES = [
-  { id: 'p99', label: msg.seriesP99, color: P99_COLOR },
-  { id: 'p95', label: msg.seriesP95, color: P95_COLOR },
-  { id: 'p50', label: msg.seriesP50, color: P50_COLOR },
+  { id: 'p99', label: msg.seriesP99, color: P99_COLOR, type: 'area' },
+  { id: 'p95', label: msg.seriesP95, color: P95_COLOR, type: 'line' },
+  { id: 'p50', label: msg.seriesP50, color: P50_COLOR, type: 'line' },
 ] as const
+
+/**
+ * The SLO rule plus the theme's accent, spent only where P99 breaches it: the zone above
+ * the objective and a dot on the peak of each breach. The dots carry no text label: accent
+ * text fails contrast on a light page, and the readouts already give the value.
+ */
+function sloAnnotations(history: LatencyPoint[], label: string): Annotation[] {
+  const peaks = history.filter((d, i) => {
+    const prev = history[i - 1]?.p99 ?? 0
+    const next = history[i + 1]?.p99 ?? 0
+    return d.p99 > SLO_MS && d.p99 >= prev && d.p99 > next
+  })
+  return [
+    { kind: 'threshold', value: SLO_MS, side: 'above', color: 'var(--cascivo-color-accent)' },
+    { kind: 'line', axis: 'y', value: SLO_MS, label, color: 'var(--cascivo-color-foreground)' },
+    ...peaks.map((d): Annotation => ({
+      kind: 'dot',
+      x: new Date(d.t),
+      y: d.p99,
+      color: 'var(--cascivo-color-accent)',
+    })),
+  ]
+}
 
 function LatencyHero({ history }: { history: LatencyPoint[] }) {
   const latest = history[history.length - 1]
@@ -249,6 +275,7 @@ function LatencyHero({ history }: { history: LatencyPoint[] }) {
     id: s.id,
     label: t(s.label),
     color: s.color,
+    type: s.type,
     data: history.map((d): LatencyDatum => ({ t: d.t, y: d[s.id] })),
   }))
   return (
@@ -286,7 +313,7 @@ function LatencyHero({ history }: { history: LatencyPoint[] }) {
         fill="gradient"
         curve="monotone"
         legend={false}
-        annotations={[{ kind: 'line', axis: 'y', value: SLO_MS, label: t(msg.sloLine) }]}
+        annotations={sloAnnotations(history, t(msg.sloLine))}
         tooltip
         tooltipMode="axis"
       />
@@ -385,7 +412,7 @@ function ServicesTable({ hosts }: { hosts: HostMetric[] }) {
 const EVENT_TONE = {
   incident: 'danger',
   resolved: 'success',
-  deploy: 'info',
+  deploy: 'neutral',
   scale: 'neutral',
 } as const
 

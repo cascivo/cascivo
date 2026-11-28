@@ -165,6 +165,9 @@
 
   /* Error budget: the ring and its caption, then one row per objective. */
   .budget {
+    /* The ring is the budget, not the breach: ink, keeping the accent for the latency SLO. */
+    --cascivo-color-accent: var(--pulse-ink);
+
     display: flex;
     align-items: center;
     gap: var(--cascivo-space-4);
@@ -300,6 +303,9 @@
   }
 
   .cpu {
+    /* Load bars are ink; only an over-80% host turns destructive (status="error"). */
+    --cascivo-color-accent: var(--pulse-ink-2);
+
     min-inline-size: 6rem;
   }
 
@@ -311,6 +317,8 @@
   /* Heatmap ramps from --cascivo-gray-100, which is near-white in every dark theme: an
      empty cell glared brighter than a busy one. Re-base it on this surface instead. */
   .heat {
+    /* Density as ink on paper, darkest where most requests land. */
+    --cascivo-chart-1: var(--pulse-ink);
     --cascivo-gray-100: color-mix(
       in oklab,
       var(--cascivo-color-foreground) 6%,

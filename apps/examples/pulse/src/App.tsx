@@ -19,6 +19,7 @@ import { msg } from './i18n'
 import '@cascivo/themes/all.css'
 import '../../../site/src/poster.css'
 import '@cascivo/tokens'
+import './palette.css'
 
 type Section = 'overview' | 'metrics' | 'alerts' | 'logs'
 type TimeRange = 'live' | '5m' | '1h'
