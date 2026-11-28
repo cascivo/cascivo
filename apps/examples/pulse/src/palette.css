@@ -2,18 +2,21 @@
  * Pulse's palette, derived from whatever theme it wears.
  *
  * The landing page embeds Pulse live in its own theme (a cream/ink poster with one acid
- * accent). Left on the charts' categorical defaults, Pulse painted a rainbow over it: blue,
- * orange and red latency bands, amber sparklines, green dots and bars. So every colour here
- * is re-based on the theme's ink:
+ * accent), so no colour here is a literal: everything is mixed from the theme's accent,
+ * destructive and ink tokens, and every theme (and its dark half) stays coherent.
  *
- * - data series use an ink ramp (foreground mixed toward the surface), told apart by
- *   lightness, line-versus-area and their labelled readouts, never by hue alone;
- * - "healthy" is quiet ink, so the status colours that remain (warning, destructive) only
- *   appear when something is wrong;
- * - the accent is spent once, on the latency SLO breach (Overview.tsx).
- *
- * The three steps keep at least 3:1 against the surface (WCAG 1.4.11) in the light and dark
- * poster themes: foreground at 42% is the lightest mark that still clears it.
+ * - Latency is heat. A warm sequential ramp runs from the theme accent (P50, the bulk of
+ *   requests) through an accent/destructive blend (P95) to destructive (P99, the tail the
+ *   SLO watches). Mixed in oklch, so the hue travels the short way round the wheel: acid →
+ *   amber → signal red on the poster, blue → violet → red on a blue-accent theme. Lightness
+ *   falls along the ramp in light themes, so it also reads in greyscale.
+ * - Each step has a `-line` twin, pulled 12–70% toward the ink (in oklab, so the hue holds), for strokes and small marks:
+ *   an acid fill reads on cream, an acid line does not (WCAG 1.4.11). Mixing toward the
+ *   foreground darkens in light themes and lightens in dark ones, with no media query.
+ * - Ink steps stay for the quiet furniture (table sparklines, meters, the heatmap floor).
+ * - "Healthy" is quiet ink, so the status colours that remain (warning, destructive) only
+ *   appear when something is wrong. Identity never rests on colour alone: every series has a
+ *   labelled readout, every state a word or glyph.
  */
 @layer cascivo.example {
   [data-theme] {
@@ -29,7 +32,25 @@
       var(--cascivo-color-surface)
     );
 
-    /* Charts default to --cascivo-chart-N (Kpi and table sparklines, Meter, Bullet, Heatmap). */
+    /* The heat ramp: fills. */
+    --pulse-p50: var(--cascivo-color-accent);
+    --pulse-p95: color-mix(
+      in oklch,
+      var(--cascivo-color-accent) 45%,
+      var(--cascivo-color-destructive)
+    );
+    --pulse-p99: color-mix(
+      in oklch,
+      var(--cascivo-color-destructive) 88%,
+      var(--cascivo-color-accent)
+    );
+
+    /* The same ramp for strokes, dots and swatches. */
+    --pulse-p50-line: color-mix(in oklab, var(--pulse-p50) 30%, var(--cascivo-color-foreground));
+    --pulse-p95-line: color-mix(in oklab, var(--pulse-p95) 80%, var(--cascivo-color-foreground));
+    --pulse-p99-line: color-mix(in oklab, var(--pulse-p99) 88%, var(--cascivo-color-foreground));
+
+    /* Charts default to --cascivo-chart-N (table sparklines, Meter, Bullet). */
     --cascivo-chart-1: var(--pulse-ink-2);
     --cascivo-chart-2: var(--pulse-ink-3);
     --cascivo-chart-3: var(--pulse-ink);
@@ -39,9 +60,27 @@
     --cascivo-chart-7: var(--pulse-ink-2);
     --cascivo-chart-8: var(--pulse-ink-3);
 
-    /* Healthy reads as ink: status dots, the live badge, Kpi "good" deltas, a met objective.
+    /* Healthy reads as ink: status dots, the live badge, "good" deltas, a met objective.
        The meaning stays in the words and glyphs beside each mark (Healthy, ✓, ▼). */
     --cascivo-color-success: var(--pulse-ink-2);
     --cascivo-color-success-foreground: var(--cascivo-color-foreground-muted);
+  }
+}
+
+/* Strokes take the ramp's `-line` twin wherever a chart draws a series in a ramp colour:
+   the chart paints stroke and fill from one colour, and CSS outranks the SVG attribute. */
+@layer cascivo.example {
+  [data-theme] svg {
+    & [stroke='var(--pulse-p50)'] {
+      stroke: var(--pulse-p50-line);
+    }
+
+    & [stroke='var(--pulse-p95)'] {
+      stroke: var(--pulse-p95-line);
+    }
+
+    & [stroke='var(--pulse-p99)'] {
+      stroke: var(--pulse-p99-line);
+    }
   }
 }

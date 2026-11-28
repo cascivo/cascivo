@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from 'react'
 import { useSignals } from '@cascivo/core'
 import { currentLocale, t } from '@cascivo/i18n'
 import { AlertTriangle, CheckCircle, Layers, Upload } from '@cascivo/icons'
-import { AreaChart, Bullet, Heatmap, Kpi, Meter, Sparkline } from '@cascivo/charts'
+import { AreaChart, Bullet, Heatmap, Meter, Sparkline } from '@cascivo/charts'
 import type { AreaChartProps, HeatmapDatum } from '@cascivo/charts'
 import { Badge, ProgressBar, ProgressCircle, Status, Timeline } from '@cascivo/react'
 import type { TimelineItem } from '@cascivo/react'
@@ -11,6 +11,7 @@ import { events, hostMetrics, latencyHistory } from '../sim/metrics'
 import { HOSTS } from '../data/seed'
 import type { HostMetric, LatencyPoint, PulseEvent } from '../data/seed'
 import { P50_COLOR, P95_COLOR, P99_COLOR } from './ChartPanel'
+import { KpiTile } from './KpiTile'
 import { msg } from '../i18n'
 import styles from './Overview.module.css'
 
@@ -95,45 +96,49 @@ export function Overview() {
         </header>
 
         <section className={styles['kpis']} aria-label={t(msg.overviewTitle)}>
-          <div className={styles['rise']} style={rise(0)}>
-            <Kpi
-              label={t(msg.kpiThroughput)}
-              value={nf.format(totalRps)}
-              delta={deltaPct(rpsSeries)}
-              deltaFormat="percent"
-              sparkline={rpsSeries.slice(-40)}
-            />
-          </div>
-          <div className={styles['rise']} style={rise(1)}>
-            <Kpi
-              label={t(msg.kpiP99)}
-              value={latest?.p99 ?? 0}
-              delta={deltaPct(p99Series)}
-              deltaFormat="percent"
-              goodDirection="down"
-              sparkline={p99Series.slice(-40)}
-            />
-          </div>
-          <div className={styles['rise']} style={rise(2)}>
-            <Kpi
-              label={t(msg.kpiErrorRate)}
-              value={`${errNow.toFixed(2)}%`}
-              delta={deltaPct(errSeries)}
-              deltaFormat="percent"
-              goodDirection="down"
-              sparkline={errSeries.slice(-40)}
-            />
-          </div>
-          <div className={styles['rise']} style={rise(3)}>
-            <Kpi
-              label={t(msg.kpiCpu)}
-              value={`${Math.round(cpuNow)}%`}
-              delta={deltaPct(cpuSeries)}
-              deltaFormat="percent"
-              goodDirection="down"
-              sparkline={cpuSeries.slice(-40)}
-            />
-          </div>
+          <KpiTile
+            index={0}
+            label={t(msg.kpiThroughput)}
+            value={nf.format(totalRps)}
+            unit={t(msg.unitRps)}
+            delta={deltaPct(rpsSeries)}
+            goodDirection="up"
+            series={rpsSeries.slice(-40)}
+            format={(v) => nf.format(v)}
+          />
+          <KpiTile
+            index={1}
+            label={t(msg.kpiP99)}
+            value={nf.format(latest?.p99 ?? 0)}
+            unit="ms"
+            delta={deltaPct(p99Series)}
+            goodDirection="down"
+            series={p99Series.slice(-40)}
+            format={(v) => nf.format(v)}
+            target={SLO_MS}
+          />
+          <KpiTile
+            index={2}
+            label={t(msg.kpiErrorRate)}
+            value={errNow.toFixed(2)}
+            unit="%"
+            delta={deltaPct(errSeries)}
+            goodDirection="down"
+            series={errSeries.slice(-40)}
+            format={(v) => `${v.toFixed(2)}%`}
+            target={1}
+          />
+          <KpiTile
+            index={3}
+            label={t(msg.kpiCpu)}
+            value={String(Math.round(cpuNow))}
+            unit="%"
+            delta={deltaPct(cpuSeries)}
+            goodDirection="down"
+            series={cpuSeries.slice(-40)}
+            format={(v) => `${Math.round(v)}%`}
+            target={80}
+          />
         </section>
 
         <div className={styles['band']}>
@@ -237,34 +242,72 @@ function Panel({
   )
 }
 
-// P99 is the one filled area; the faster percentiles are lines over it, so the three differ
-// in form and lightness, not hue (and their readouts name them).
+// Back to front, slowest first: three translucent gradient bands layered like heat, P99 behind
+// so every band stays visible. Each also has a labelled readout, so none rests on hue.
 const SERIES = [
-  { id: 'p99', label: msg.seriesP99, color: P99_COLOR, type: 'area' },
-  { id: 'p95', label: msg.seriesP95, color: P95_COLOR, type: 'line' },
-  { id: 'p50', label: msg.seriesP50, color: P50_COLOR, type: 'line' },
+  { id: 'p99', label: msg.seriesP99, color: P99_COLOR, line: 'var(--pulse-p99-line)' },
+  { id: 'p95', label: msg.seriesP95, color: P95_COLOR, line: 'var(--pulse-p95-line)' },
+  { id: 'p50', label: msg.seriesP50, color: P50_COLOR, line: 'var(--pulse-p50-line)' },
 ] as const
 
 /**
- * The SLO rule plus the theme's accent, spent only where P99 breaches it: the zone above
- * the objective and a dot on the peak of each breach. The dots carry no text label: accent
- * text fails contrast on a light page, and the readouts already give the value.
+ * The SLO as a rule, the zone above it, each breach window as a band, and a ringed marker on
+ * each breach peak, all from the hot end of the ramp. The highest peak also gets a note in ink,
+ * so the worst moment is labelled in words, not only shown in red.
  */
-function sloAnnotations(history: LatencyPoint[], label: string): Annotation[] {
+function sloAnnotations(history: LatencyPoint[], sloLabel: string): Annotation[] {
+  // Consecutive samples over the objective merge into one window.
+  const windows: { from: number; to: number }[] = []
+  history.forEach((d, i) => {
+    if (d.p99 <= SLO_MS) return
+    const open = windows[windows.length - 1]
+    if (open && (history[i - 1]?.p99 ?? 0) > SLO_MS) open.to = d.t
+    else windows.push({ from: d.t, to: d.t })
+  })
   const peaks = history.filter((d, i) => {
     const prev = history[i - 1]?.p99 ?? 0
     const next = history[i + 1]?.p99 ?? 0
     return d.p99 > SLO_MS && d.p99 >= prev && d.p99 > next
   })
+  const worst = peaks.reduce<LatencyPoint | undefined>(
+    (m, d) => (m && m.p99 >= d.p99 ? m : d),
+    undefined,
+  )
   return [
-    { kind: 'threshold', value: SLO_MS, side: 'above', color: 'var(--cascivo-color-accent)' },
-    { kind: 'line', axis: 'y', value: SLO_MS, label, color: 'var(--cascivo-color-foreground)' },
+    { kind: 'threshold', value: SLO_MS, side: 'above', color: 'var(--pulse-p99)' },
+    ...windows.map((w): Annotation => ({
+      kind: 'area',
+      axis: 'x',
+      from: new Date(w.from),
+      to: new Date(w.to),
+      color: 'var(--pulse-p99)',
+    })),
+    {
+      kind: 'line',
+      axis: 'y',
+      value: SLO_MS,
+      label: sloLabel,
+      color: 'var(--cascivo-color-foreground)',
+    },
     ...peaks.map((d): Annotation => ({
       kind: 'dot',
       x: new Date(d.t),
       y: d.p99,
-      color: 'var(--cascivo-color-accent)',
+      color: 'var(--pulse-p99-line)',
     })),
+    ...(worst
+      ? [
+          {
+            kind: 'note',
+            x: new Date(worst.t),
+            y: worst.p99,
+            label: t(msg.heroBreach, { value: worst.p99 }),
+            dx: 28,
+            dy: 6,
+            color: 'var(--cascivo-color-foreground)',
+          } satisfies Annotation,
+        ]
+      : []),
   ]
 }
 
@@ -275,7 +318,6 @@ function LatencyHero({ history }: { history: LatencyPoint[] }) {
     id: s.id,
     label: t(s.label),
     color: s.color,
-    type: s.type,
     data: history.map((d): LatencyDatum => ({ t: d.t, y: d[s.id] })),
   }))
   return (
@@ -291,7 +333,7 @@ function LatencyHero({ history }: { history: LatencyPoint[] }) {
                 <span
                   aria-hidden="true"
                   className={styles['swatch']}
-                  style={{ '--swatch': s.color } as CSSProperties}
+                  style={{ '--swatch': s.color, '--swatch-line': s.line } as CSSProperties}
                 />
                 {t(s.label)}
               </span>
@@ -304,19 +346,21 @@ function LatencyHero({ history }: { history: LatencyPoint[] }) {
         </div>
       }
     >
-      <AreaChart<LatencyDatum>
-        title={t(msg.heroTitle)}
-        series={series}
-        x={(d) => new Date(d.t)}
-        y={(d) => d.y}
-        height={280}
-        fill="gradient"
-        curve="monotone"
-        legend={false}
-        annotations={sloAnnotations(history, t(msg.sloLine))}
-        tooltip
-        tooltipMode="axis"
-      />
+      <div className={styles['heroPlot']}>
+        <AreaChart<LatencyDatum>
+          title={t(msg.heroTitle)}
+          series={series}
+          x={(d) => new Date(d.t)}
+          y={(d) => d.y}
+          height={300}
+          fill="gradient"
+          curve="monotone"
+          legend={false}
+          annotations={sloAnnotations(history, t(msg.sloLine))}
+          tooltip
+          tooltipMode="axis"
+        />
+      </div>
     </Panel>
   )
 }

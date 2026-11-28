@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 
-// One step of the theme's ink ramp per percentile (palette.css): the slow tail darkest,
-// so the page that embeds Pulse keeps its own colours and P99 still reads first.
-export const P50_COLOR = 'var(--pulse-ink-3)'
-export const P95_COLOR = 'var(--pulse-ink-2)'
-export const P99_COLOR = 'var(--pulse-ink)'
+// One step of the theme-derived heat ramp per percentile (palette.css): accent for the bulk
+// of requests, destructive for the slow tail, so P99 reads first in every theme.
+export const P50_COLOR = 'var(--pulse-p50)'
+export const P95_COLOR = 'var(--pulse-p95)'
+export const P99_COLOR = 'var(--pulse-p99)'
 
 /** A titled surface for one chart, keyed by a swatch in the series colour. */
 export function ChartPanel({

@@ -35,6 +35,7 @@
 
   .title {
     margin-block-start: var(--cascivo-space-1);
+    font-family: var(--cascivo-font-display, var(--cascivo-font-sans));
     font-size: var(--cascivo-text-2xl);
     font-weight: var(--cascivo-font-bold);
     line-height: var(--cascivo-leading-tight, 1.2);
@@ -62,13 +63,6 @@
 
     @container (min-width: 40rem) {
       gap: var(--cascivo-space-4);
-    }
-
-    /* Two tiles abreast on a 320px phone leave the delta no room beside the value: let it
-       drop under it rather than clip (keyed on Kpi's data attribute, not its class). */
-    & div:has(> [data-trend]) {
-      flex-wrap: wrap;
-      row-gap: var(--cascivo-space-1);
     }
 
     @container (min-width: 64rem) {
@@ -142,15 +136,61 @@
     color: var(--cascivo-color-foreground-muted);
   }
 
+  /* A chip of the band's fill with its line along the top, as the chart draws it. */
   .swatch {
-    inline-size: 0.625rem;
+    inline-size: 0.875rem;
     block-size: 0.625rem;
-    border-radius: 2px;
+    border-block-start: 2px solid var(--swatch-line);
     background: var(--swatch);
   }
 
+  /* The latency plot: heat bands, a glowing tail, breach markers that ring. */
+  .heroPlot {
+    min-inline-size: 0;
+
+    /* Denser at the top of each band than the chart's default, so the layers read as
+       solid heat rather than a wash; the foot still fades into the axis. */
+    & linearGradient stop:first-child {
+      stop-opacity: 0.78;
+    }
+
+    & linearGradient stop:last-child {
+      stop-opacity: 0.18;
+    }
+
+    & path[stroke='var(--pulse-p99)'] {
+      filter: drop-shadow(0 0 4px var(--pulse-p99));
+    }
+
+    & [data-annotation='threshold'] rect {
+      fill-opacity: 0.07;
+    }
+
+    & [data-annotation='area'] rect {
+      fill-opacity: 0.14;
+    }
+
+    & [data-annotation='dot'] circle {
+      r: 5px;
+      stroke: var(--cascivo-color-surface);
+      stroke-width: 2px;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    & [data-annotation='note'] text {
+      font-family: var(--cascivo-font-mono);
+      font-weight: var(--cascivo-font-semibold);
+      paint-order: stroke;
+      stroke: var(--cascivo-color-surface);
+      stroke-width: 3px;
+    }
+  }
+
   .readoutValue {
-    font-size: var(--cascivo-text-lg);
+    font-family: var(--cascivo-font-display, var(--cascivo-font-sans));
+    font-size: var(--cascivo-text-xl);
+    letter-spacing: -0.02em;
     font-weight: var(--cascivo-font-semibold);
     font-variant-numeric: tabular-nums;
     color: var(--cascivo-color-foreground);
@@ -165,8 +205,9 @@
 
   /* Error budget: the ring and its caption, then one row per objective. */
   .budget {
-    /* The ring is the budget, not the breach: ink, keeping the accent for the latency SLO. */
-    --cascivo-color-accent: var(--pulse-ink);
+    /* The budget is headroom, the cool end of the heat ramp; the figure beside it carries
+       the value, so the ring may be the bare accent. */
+    --cascivo-color-accent: var(--pulse-p50);
 
     display: flex;
     align-items: center;
@@ -317,8 +358,9 @@
   /* Heatmap ramps from --cascivo-gray-100, which is near-white in every dark theme: an
      empty cell glared brighter than a busy one. Re-base it on this surface instead. */
   .heat {
-    /* Density as ink on paper, darkest where most requests land. */
-    --cascivo-chart-1: var(--pulse-ink);
+    /* Density as heat, one hue from the ramp's middle step: brightest where most requests
+       land, fading into the surface where none do. */
+    --cascivo-chart-1: var(--pulse-p95);
     --cascivo-gray-100: color-mix(
       in oklab,
       var(--cascivo-color-foreground) 6%,

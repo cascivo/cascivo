@@ -38,11 +38,23 @@ describe('pulse palette', () => {
     }
   })
 
-  it('draws the latency percentiles from the ink ramp', () => {
+  it('draws the latency percentiles from the theme-derived heat ramp', () => {
     expect([P50_COLOR, P95_COLOR, P99_COLOR]).toEqual([
-      'var(--pulse-ink-3)',
-      'var(--pulse-ink-2)',
-      'var(--pulse-ink)',
+      'var(--pulse-p50)',
+      'var(--pulse-p95)',
+      'var(--pulse-p99)',
     ])
+  })
+
+  it('builds the heat ramp from the accent and destructive tokens only', () => {
+    const css = readFileSync(join(SRC, 'palette.css'), 'utf8')
+    for (const step of ['p50', 'p95', 'p99']) {
+      const decl = new RegExp(`--pulse-${step}:([^;]+);`).exec(css)?.[1] ?? ''
+      expect(decl, step).toMatch(/var\(--cascivo-color-(accent|destructive)\)/)
+      // Each step has a stroke twin mixed toward the ink, so thin marks keep their contrast.
+      expect(css, step).toMatch(
+        new RegExp(`--pulse-${step}-line: color-mix\\(in oklab, var\\(--pulse-${step}\\)`),
+      )
+    }
   })
 })
