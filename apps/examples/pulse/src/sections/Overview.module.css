@@ -1,0 +1,335 @@
+@layer cascivo.example {
+  .root {
+    container-type: inline-size;
+    padding: var(--cascivo-space-4);
+
+    @media (min-width: 40rem) {
+      padding: var(--cascivo-space-6);
+    }
+  }
+
+  .stack {
+    display: grid;
+    gap: var(--cascivo-space-4);
+    max-inline-size: 100rem;
+    margin-inline: auto;
+  }
+
+  /* Page heading: eyebrow, title and the overall health on one band. */
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--cascivo-space-3);
+    padding-block-end: var(--cascivo-space-2);
+  }
+
+  .eyebrow {
+    font-family: var(--cascivo-font-mono);
+    font-size: var(--cascivo-text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cascivo-color-foreground-muted);
+  }
+
+  .title {
+    margin-block-start: var(--cascivo-space-1);
+    font-size: var(--cascivo-text-2xl);
+    font-weight: var(--cascivo-font-bold);
+    line-height: var(--cascivo-leading-tight, 1.2);
+    letter-spacing: -0.02em;
+    color: var(--cascivo-color-foreground);
+
+    @container (min-width: 40rem) {
+      font-size: var(--cascivo-text-3xl);
+    }
+  }
+
+  .headMeta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cascivo-space-3);
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+  }
+
+  .kpis {
+    display: grid;
+    gap: var(--cascivo-space-3);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    @container (min-width: 40rem) {
+      gap: var(--cascivo-space-4);
+    }
+
+    /* Two tiles abreast on a 320px phone leave the delta no room beside the value: let it
+       drop under it rather than clip (keyed on Kpi's data attribute, not its class). */
+    & div:has(> [data-trend]) {
+      flex-wrap: wrap;
+      row-gap: var(--cascivo-space-1);
+    }
+
+    @container (min-width: 64rem) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* Two-thirds / one-third bands from 64rem; a single column below. */
+  .band {
+    display: grid;
+    gap: var(--cascivo-space-4);
+    grid-template-columns: minmax(0, 1fr);
+
+    @container (min-width: 64rem) {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-4);
+    min-inline-size: 0;
+    padding: var(--cascivo-space-4);
+    background: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-surface);
+
+    @container (min-width: 40rem) {
+      padding: var(--cascivo-space-5, 1.25rem);
+    }
+  }
+
+  .panelHead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--cascivo-space-3);
+  }
+
+  .panelTitle {
+    font-size: var(--cascivo-text-base);
+    font-weight: var(--cascivo-font-semibold);
+    color: var(--cascivo-color-foreground);
+  }
+
+  .panelSub {
+    margin-block-start: 0.125rem;
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-foreground-muted);
+  }
+
+  /* Current value per series, doubling as the hero chart's legend. */
+  .readouts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cascivo-space-4);
+  }
+
+  .readout {
+    display: grid;
+    gap: 0.125rem;
+  }
+
+  .readoutLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-foreground-muted);
+  }
+
+  .swatch {
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    border-radius: 2px;
+    background: var(--swatch);
+  }
+
+  .readoutValue {
+    font-size: var(--cascivo-text-lg);
+    font-weight: var(--cascivo-font-semibold);
+    font-variant-numeric: tabular-nums;
+    color: var(--cascivo-color-foreground);
+  }
+
+  .unit {
+    margin-inline-start: 0.125rem;
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-normal, 400);
+    color: var(--cascivo-color-foreground-muted);
+  }
+
+  /* Error budget: the ring and its caption, then one row per objective. */
+  .budget {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-4);
+  }
+
+  .budgetValue {
+    font-size: var(--cascivo-text-3xl);
+    font-weight: var(--cascivo-font-bold);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--cascivo-color-foreground);
+  }
+
+  .objectives {
+    display: grid;
+    gap: var(--cascivo-space-4);
+    padding-block-start: var(--cascivo-space-4);
+    border-block-start: 1px solid var(--cascivo-color-border);
+  }
+
+  .objective {
+    display: grid;
+    gap: var(--cascivo-space-2);
+    min-inline-size: 0;
+  }
+
+  /* The head above already names the objective; the chart's own caption would repeat it.
+     Same for each CPU bar, whose column header names it. Visually hidden rather than removed, so it still reaches assistive tech. */
+  .objective :is(figcaption, [role='meter'] > div),
+  .cpu [data-size] > span:first-child {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .objective svg {
+    max-inline-size: 100%;
+  }
+
+  .objectiveHead {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--cascivo-space-2);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground);
+
+    & > :last-child {
+      font-variant-numeric: tabular-nums;
+      color: var(--cascivo-color-foreground-muted);
+    }
+  }
+
+  /* Services table: scrolls inside its panel on a phone instead of widening the page. */
+  .tableScroll {
+    overflow-x: auto;
+    margin-inline: calc(var(--cascivo-space-4) * -1);
+    padding-inline: var(--cascivo-space-4);
+
+    &:focus-visible {
+      outline: 2px solid var(--cascivo-color-focus-ring, var(--cascivo-color-accent));
+      outline-offset: -2px;
+    }
+  }
+
+  .table {
+    inline-size: 100%;
+    min-inline-size: 34rem;
+    border-collapse: collapse;
+    font-size: var(--cascivo-text-sm);
+    font-variant-numeric: tabular-nums;
+
+    & th {
+      padding-block: var(--cascivo-space-2);
+      padding-inline: var(--cascivo-space-2);
+      font-size: var(--cascivo-text-xs);
+      font-weight: var(--cascivo-font-medium);
+      text-align: start;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--cascivo-color-foreground-muted);
+      border-block-end: 1px solid var(--cascivo-color-border);
+    }
+
+    & td {
+      padding: var(--cascivo-space-3) var(--cascivo-space-2);
+      vertical-align: middle;
+      color: var(--cascivo-color-foreground);
+      border-block-end: 1px solid var(--cascivo-color-border);
+    }
+
+    & tr:last-child td {
+      border-block-end: 0;
+    }
+
+    & tbody tr {
+      transition: background-color var(--cascivo-duration-fast, 150ms) ease;
+    }
+
+    & tbody tr:hover {
+      background: var(--cascivo-color-surface-hover, var(--cascivo-color-muted));
+    }
+  }
+
+  .num,
+  .table .num {
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  .service {
+    display: grid;
+    gap: 0.125rem;
+  }
+
+  .serviceName {
+    font-family: var(--cascivo-font-mono);
+    font-weight: var(--cascivo-font-medium);
+  }
+
+  .serviceMeta {
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-foreground-muted);
+  }
+
+  .spark {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--cascivo-space-2);
+  }
+
+  .cpu {
+    min-inline-size: 6rem;
+  }
+
+  .bad {
+    color: var(--cascivo-color-error-foreground, var(--cascivo-color-error));
+    font-weight: var(--cascivo-font-semibold);
+  }
+
+  /* Heatmap ramps from --cascivo-gray-100, which is near-white in every dark theme: an
+     empty cell glared brighter than a busy one. Re-base it on this surface instead. */
+  .heat {
+    --cascivo-gray-100: color-mix(
+      in oklab,
+      var(--cascivo-color-foreground) 6%,
+      var(--cascivo-color-surface)
+    );
+  }
+
+  /* Entrance: panels rise in one after another. Motion is opt-in, never a requirement. */
+  @media (prefers-reduced-motion: no-preference) {
+    .rise {
+      animation: pulse-rise 480ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      animation-delay: calc(var(--i, 0) * 60ms);
+    }
+  }
+
+  @keyframes pulse-rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+  }
+}

@@ -5,8 +5,14 @@ Alert acknowledgements and time-range preferences persist across reload via `@ca
 
 ## What it demos
 
-`LineChart`, `Heatmap`, `Sparkline`, `Meter`, `Bullet`, `ProgressCircle` (charts);
-`Badge`, `Button`, `EmptyState`, `SegmentedControl`, `Toast`, `Skeleton` (react);
+The overview is a single-screen service-health page: `Kpi` tiles with deltas and sparklines,
+a multi-series `AreaChart` hero with an SLO annotation, an error-budget panel (`ProgressCircle`,
+`ProgressBar`, `Meter`, `Bullet`), a per-service table composed from `Status`, `Sparkline` and
+`ProgressBar`, an activity `Timeline`, and a latency-distribution `Heatmap`.
+
+`AreaChart`, `Heatmap`, `Kpi`, `Sparkline`, `Meter`, `Bullet` (charts);
+`Badge`, `Button`, `EmptyState`, `ProgressBar`, `ProgressCircle`, `SegmentedControl`, `Status`,
+`Timeline`, `Toast` (react);
 `AppShell` + live simulation engine from `@cascivo/example-kit`
 
 ## Run

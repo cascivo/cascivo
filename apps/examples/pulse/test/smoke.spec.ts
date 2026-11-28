@@ -5,6 +5,9 @@ import {
   INITIAL_HOST_METRICS,
   INITIAL_HEATMAP_GRID,
   INITIAL_LOGS,
+  INITIAL_EVENTS,
+  SPIKE_PERIOD,
+  latencySample,
 } from '../src/data/seed'
 
 describe('seed data', () => {
@@ -50,5 +53,34 @@ describe('seed data', () => {
       expect(hm.errorRate).toBeGreaterThanOrEqual(0)
       expect(hm.errorRate).toBeLessThanOrEqual(1)
     }
+  })
+
+  it('the backfill window shows an incident over the 500 ms SLO and a calm baseline', () => {
+    // The hero chart draws its SLO rule inside the y-domain only if some P99 crosses it.
+    const p99s = INITIAL_LATENCY_HISTORY.map((p) => p.p99)
+    expect(Math.max(...p99s)).toBeGreaterThan(500)
+    expect(Math.min(...p99s)).toBeLessThan(500)
+  })
+
+  it('latencySample keeps p50 <= p95 <= p99 and never goes negative, for negative ticks too', () => {
+    const rng = { int: (min: number) => min }
+    for (let tick = -SPIKE_PERIOD; tick < SPIKE_PERIOD * 2; tick++) {
+      const s = latencySample(tick, rng)
+      expect(s.p50).toBeGreaterThan(0)
+      expect(s.p50).toBeLessThanOrEqual(s.p95)
+      expect(s.p95).toBeLessThanOrEqual(s.p99)
+    }
+  })
+
+  it('every service carries 60-point error and CPU histories', () => {
+    for (const hm of INITIAL_HOST_METRICS) {
+      expect(hm.errorHistory).toHaveLength(60)
+      expect(hm.cpuHistory).toHaveLength(60)
+    }
+  })
+
+  it('seeds an activity feed, newest first', () => {
+    const times = INITIAL_EVENTS.map((e) => e.t)
+    expect(times).toEqual([...times].sort((a, b) => b - a))
   })
 })
