@@ -1,0 +1,250 @@
+@layer cascivo.example {
+  .tile {
+    /* The tile wears the theme accent; past its objective, the hot end of the heat ramp. */
+    --tile-fill: var(--pulse-p50);
+    --tile-line: var(--pulse-p50-line);
+    --tile-pad: var(--cascivo-space-4);
+
+    position: relative;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: var(--cascivo-space-2);
+    min-inline-size: 0;
+    min-block-size: 9.5rem;
+    padding: var(--tile-pad) var(--tile-pad) 0;
+    overflow: hidden;
+    container-type: inline-size;
+    background: var(--cascivo-color-surface);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-surface);
+
+    &[data-breach] {
+      --tile-fill: var(--pulse-p99);
+      --tile-line: var(--pulse-p99-line);
+    }
+
+    @media (min-width: 40rem) {
+      --tile-pad: var(--cascivo-space-5, 1.25rem);
+
+      min-block-size: 10.5rem;
+    }
+  }
+
+  /* A narrow tile (two abreast on a phone) drops the delta under the label, never
+     breaking the label mid-word. */
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cascivo-space-2);
+    min-inline-size: 0;
+  }
+
+  .label {
+    min-inline-size: 0;
+    font-family: var(--cascivo-font-mono);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cascivo-color-foreground-muted);
+  }
+
+  .delta {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.25em;
+    padding: 0.125rem var(--cascivo-space-2);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-semibold);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: var(--cascivo-color-foreground-muted);
+    background: color-mix(in oklab, var(--cascivo-color-foreground) 6%, transparent);
+    border-radius: var(--cascivo-radius-full, 999px);
+
+    & > span {
+      font-size: 0.75em;
+    }
+
+    &[data-sentiment='bad'] {
+      color: var(--cascivo-color-destructive-foreground, var(--cascivo-color-destructive));
+      background: color-mix(in oklab, var(--cascivo-color-destructive) 12%, transparent);
+    }
+  }
+
+  /* Value on the left, low/peak on the right; a narrow tile stacks them. */
+  .body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--cascivo-space-1) var(--cascivo-space-3);
+    min-inline-size: 0;
+  }
+
+  .value {
+    font-family: var(--cascivo-font-display, var(--cascivo-font-sans));
+    font-size: var(--cascivo-text-2xl);
+    font-weight: var(--cascivo-font-bold);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    color: var(--cascivo-color-foreground);
+
+    @container (min-width: 13rem) {
+      font-size: var(--cascivo-text-4xl, 2.25rem);
+    }
+  }
+
+  .unit {
+    margin-inline-start: 0.25rem;
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+    letter-spacing: 0;
+    color: var(--cascivo-color-foreground-muted);
+  }
+
+  .range {
+    display: flex;
+    gap: var(--cascivo-space-3);
+    font-family: var(--cascivo-font-mono);
+    font-size: var(--cascivo-text-xs);
+    font-variant-numeric: tabular-nums;
+
+    & div {
+      display: grid;
+      justify-items: end;
+    }
+
+    & dt {
+      font-size: 0.625rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cascivo-color-foreground-muted);
+    }
+
+    & dd {
+      color: var(--cascivo-color-foreground);
+    }
+  }
+
+  /* The trend runs edge to edge along the foot of the tile. */
+  .trend {
+    position: relative;
+    align-self: end;
+    block-size: 3.5rem;
+    margin-inline: calc(var(--tile-pad) * -1);
+    margin-block-start: var(--cascivo-space-1);
+    /* Time runs left to right in every script, like the charts; the overlays follow it. */
+    direction: ltr;
+  }
+
+  .plot {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: visible;
+  }
+
+  .stopTop {
+    stop-color: var(--tile-fill);
+    stop-opacity: 0.75;
+  }
+
+  .stopBottom {
+    stop-color: var(--tile-fill);
+    stop-opacity: 0.04;
+  }
+
+  .line {
+    fill: none;
+    stroke: var(--tile-line);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* The objective: a dashed rule with its value, so the threshold is never colour alone. */
+  .target {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: var(--target-y);
+    border-block-start: 1px dashed var(--cascivo-color-foreground-muted);
+  }
+
+  .targetLabel {
+    position: absolute;
+    inset-inline-start: var(--tile-pad);
+    inset-block-end: 0.125rem;
+    padding-inline: 0.25rem;
+    font-family: var(--cascivo-font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--cascivo-color-foreground-muted);
+    background: color-mix(in oklab, var(--cascivo-color-surface) 80%, transparent);
+
+    [data-breach] & {
+      font-weight: var(--cascivo-font-semibold);
+      color: var(--cascivo-color-destructive-foreground, var(--cascivo-color-destructive));
+    }
+  }
+
+  /* "Now": a ringed dot on the newest point, breathing while the feed is live. */
+  .end {
+    position: absolute;
+    inset-inline-start: var(--end-x);
+    inset-block-start: var(--end-y);
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    background: var(--tile-line);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--cascivo-color-surface);
+    translate: -50% -50%;
+
+    &::after {
+      position: absolute;
+      inset: -0.25rem;
+      content: '';
+      border: 2px solid var(--tile-fill);
+      border-radius: 50%;
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .end::after {
+      animation: kpi-ping 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) infinite;
+    }
+
+    .tile {
+      animation: kpi-rise 480ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      animation-delay: calc(var(--i, 0) * 60ms);
+    }
+  }
+
+  @keyframes kpi-ping {
+    0% {
+      opacity: 0.9;
+      scale: 0.6;
+    }
+
+    80%,
+    100% {
+      opacity: 0;
+      scale: 1.8;
+    }
+  }
+
+  @keyframes kpi-rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+  }
+}

@@ -94,7 +94,7 @@ export function Metrics() {
       </section>
 
       {/* Heatmap — request density by hour × minute */}
-      <ChartPanel title={t(msg.sectionHeatmap)} color="var(--cascivo-chart-1)">
+      <ChartPanel title={t(msg.sectionHeatmap)} color="var(--pulse-ink-2)">
         <Heatmap title={t(msg.sectionHeatmap)} data={heatmapData} height={220} />
       </ChartPanel>
 
@@ -178,7 +178,7 @@ function HostCard({ hm }: { hm: HostMetric }) {
             label={`${hm.host.name} P99`}
             width={100}
             height={36}
-            color="var(--cascivo-chart-3)"
+            color="var(--pulse-ink)"
           />
         </div>
         <div>
@@ -196,7 +196,7 @@ function HostCard({ hm }: { hm: HostMetric }) {
             label={`${hm.host.name} RPS`}
             width={100}
             height={36}
-            color="var(--cascivo-chart-1)"
+            color="var(--pulse-ink-2)"
           />
         </div>
       </div>

@@ -1388,34 +1388,42 @@
     --cascivo-font-display: var(--cascivo-font-sans);
   }
 
-  /* Cascivo Fonts: all four families by role. Display is a light serif (400, caps need air, so
-     tracking is opened where the other faces tighten it), body is Sans, code and captions stay
-     Mono, eyebrows are Condensed. */
+  /* Cascivo Fonts: the four families by role, keeping the poster's voice.
+     Display, stat figures and step numbers: Condensed, heavy caps. It is the
+     family's poster face, and its narrow caps carry the weight of the default
+     Arial Black stack without its width, so the hero sets larger in the same
+     measure. Body: Sans. Ledes: Serif, the reading face, so the sentence under
+     each headline reads as editorial text, not as more UI. Labels, captions,
+     tables' meta and code: Mono, one face for every small uppercase line.
+     Optical size stays automatic: every family spans opsz 8–48, so the 112px
+     hero gets the tight display cut and the 11px labels the open text cut. */
   :root[data-font='cascivo'] {
-    --cascivo-font-display: 'Cascivo Serif', ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+    --cascivo-font-display:
+      'Cascivo Condensed', 'Arial Narrow', ui-sans-serif, system-ui, sans-serif;
     --cascivo-font-sans:
       'Cascivo Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
       sans-serif;
     --cascivo-font-mono:
       'Cascivo Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-    --cascivo-font-eyebrow:
-      'Cascivo Condensed', 'Arial Narrow', ui-sans-serif, system-ui, sans-serif;
-    --cx-display-weight: 400;
-    --cx-display-tracking: 0.01em;
-    --cx-display-leading: 1.05;
-    --cx-eyebrow-size: 0.75rem;
-    --cx-eyebrow-weight: 500;
-    --cx-eyebrow-tracking: 0.2em;
+    --cascivo-font-serif: 'Cascivo Serif', ui-serif, Georgia, Cambria, 'Times New Roman', serif;
+    /* Mono, not Condensed: eyebrows and the stat captions beside them are the
+       same kind of line and must not be set in two faces. */
+    --cascivo-font-eyebrow: var(--cascivo-font-mono);
   }
 }
 
 /* Unlayered, like the display rules it overrides (unlayered beats every layer); the extra `html`
-   outranks poster-sections.css's two-class selectors (.pg-stat > :last-child). */
+   outranks poster-sections.css's two-class selectors (.pg-stat > :last-child).
+   Condensed caps need less negative tracking than Arial Black (its sidebearings
+   are already tight), and a little more leading so the accents of stacked caps
+   lines do not touch. */
 html:root[data-font='cascivo']
   :where(
     .pg-display,
     .pg-stat-value,
     .cta-band h2,
+    .section h2,
+    .guides-section h2,
     .guides-section h3,
     .proof-hero h1,
     .blog-post-header h1,
@@ -1427,15 +1435,73 @@ html:root[data-font='cascivo']
     .pg-theme-card-title,
     .pg-step-num
   ) {
-  /* The serif reads as sentence case; caps belong to the Condensed eyebrows below. */
-  text-transform: none;
-  font-weight: var(--cx-display-weight);
-  letter-spacing: var(--cx-display-tracking);
-  line-height: var(--cx-display-leading);
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: -0.012em;
+  line-height: 0.92;
+  /* case: punctuation and dashes sit at cap height; lining tabular figures keep
+     "1.9×" and "78.6 KB" on the cap line and the stat columns aligned. */
+  font-feature-settings: 'case';
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
-html:root[data-font='cascivo'] :where(.pg-eyebrow, .guides-eyebrow, .doc-eyebrow) {
-  font-size: var(--cx-eyebrow-size);
-  font-weight: var(--cx-eyebrow-weight);
-  letter-spacing: var(--cx-eyebrow-tracking);
+html:root[data-font='cascivo'] :where(.pg-display--hero, .pg-display--cta) {
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+}
+
+/* Condensed's content area is taller than its caps, so the acid mark's fill
+   reached over the foot of the line above and hid it. Drop the mark beneath the
+   heading's other text: the earlier line overprints the fill, as on a poster. */
+html:root[data-font='cascivo'] :where(.pg-display:has(.pg-mark)) {
+  isolation: isolate;
+}
+
+html:root[data-font='cascivo'] :where(.pg-display .pg-mark) {
+  position: relative;
+  z-index: -1;
+}
+
+/* The hero is narrower in Condensed, so it can grow; the floor keeps
+   "STYLESHEET." inside 320px. */
+html:root[data-font='cascivo'] :where(.pg-display--hero) {
+  font-size: clamp(3.25rem, 8.6vw + 1.25rem, 8.5rem);
+}
+
+html:root[data-font='cascivo'] :where(.pg-display--tile, .pg-display--sub, .pg-theme-card-title) {
+  letter-spacing: 0;
+  line-height: 1.05;
+}
+
+html:root[data-font='cascivo'] :where(.pg-eyebrow, .guides-eyebrow, .doc-eyebrow, .pg-mono) {
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  font-feature-settings: 'case', 'zero';
+}
+
+/* Ledes in Serif at the text optical size; 400 because the serif's 500 is
+   already heavier on the page than Sans 500. */
+html:root[data-font='cascivo']
+  :where(.pg-lede, .pg-compare-lede, .section-sub, .proof-hero-sub, .guides-section-sub) {
+  font-family: var(--cascivo-font-serif);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Body in Sans: 450 sits between the default stack's 500 and the font's
+   regular, which reads too light on the cream poster ground. */
+html:root[data-font='cascivo'] :where(.pg-body, .pg-note) {
+  font-weight: 450;
+  max-inline-size: 66ch;
+}
+
+html:root[data-font='cascivo'] :where(.pg-table, code, pre, kbd, samp) {
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+/* Cascivo Sans is wider than the system stack, so at 390px a single long word
+   ("Internationalization") outgrows a third of the table. */
+html:root[data-font='cascivo'] :where(.pg-table :is(th, td)) {
+  overflow-wrap: anywhere;
 }

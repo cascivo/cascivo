@@ -2,11 +2,12 @@
 import { signal, useMediaQuery, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
 import { Activity, Bell, LayoutDashboard, Terminal } from '@cascivo/icons'
-import { ToastProvider, Button, SegmentedControl } from '@cascivo/react'
+import { ToastProvider, Badge, Button, SegmentedControl, Status } from '@cascivo/react'
 import { persistedSignal } from '@cascivo/storage'
 import { AppShell, useSimulation } from '@cascivo/example-kit'
 import type { SideNavItem } from '@cascivo/react'
-import { metricsSim } from './sim/metrics'
+import { alerts, hostMetrics, metricsSim } from './sim/metrics'
+import { HOSTS } from './data/seed'
 import { Overview } from './sections/Overview'
 import { Metrics } from './sections/Metrics'
 import { Alerts } from './sections/Alerts'
@@ -18,6 +19,7 @@ import { msg } from './i18n'
 import '@cascivo/themes/all.css'
 import '../../../site/src/poster.css'
 import '@cascivo/tokens'
+import './palette.css'
 
 type Section = 'overview' | 'metrics' | 'alerts' | 'logs'
 type TimeRange = 'live' | '5m' | '1h'
@@ -62,6 +64,15 @@ export default function App() {
     {
       label: t(msg.navAlerts),
       icon: <Bell size={16} />,
+      ...(alerts.value.length > 0
+        ? {
+            trailing: (
+              <Badge variant="danger" size="sm">
+                {alerts.value.length}
+              </Badge>
+            ),
+          }
+        : {}),
       active: currentSection.value === 'alerts',
       onClick: (e) => {
         e.preventDefault()
@@ -78,6 +89,36 @@ export default function App() {
       },
     },
   ]
+
+  // Sidebar footer: per-region health, so the rail carries signal instead of empty space.
+  const regionHealth = [...new Set(HOSTS.map((h) => h.region))].map((region) => {
+    const services = hostMetrics.value.filter((hm) => hm.host.region === region)
+    const failing = services.filter((hm) => hm.p99 > 500 || hm.errorRate > 0.01).length
+    return { region, services: services.length, failing }
+  })
+  const navFooter = (
+    <div
+      style={{
+        display: 'grid',
+        gap: 'var(--cascivo-space-2)',
+        padding: 'var(--cascivo-space-3)',
+        fontSize: 'var(--cascivo-text-xs)',
+        color: 'var(--cascivo-color-foreground-muted)',
+      }}
+    >
+      <span style={{ textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
+        {t(msg.sidebarRegions)}
+      </span>
+      {regionHealth.map((r) => (
+        <Status key={r.region} status={r.failing > 0 ? 'warning' : 'success'}>
+          <span style={{ fontFamily: 'var(--cascivo-font-mono)' }}>{r.region}</span>
+          <span style={{ marginInlineStart: 'auto' }}>
+            {r.services - r.failing}/{r.services}
+          </span>
+        </Status>
+      ))}
+    </div>
+  )
 
   const controls = (
     <div
@@ -114,6 +155,7 @@ export default function App() {
               background: 'var(--cascivo-color-success)',
               animation: 'pulse-blink 1.2s ease-in-out infinite',
             }}
+            data-pulse-live=""
           />
           {t(msg.liveLabel)}
         </span>
@@ -145,9 +187,17 @@ export default function App() {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.3; }
         }
+        @media (prefers-reduced-motion: reduce) {
+          [data-pulse-live] { animation: none !important; }
+        }
       `}</style>
       <ToastProvider>
-        <AppShell navItems={navItems} actions={wide.value ? controls : undefined} mockBanner>
+        <AppShell
+          navItems={navItems}
+          navFooter={navFooter}
+          actions={wide.value ? controls : undefined}
+          mockBanner
+        >
           {!wide.value && controls}
           {currentSection.value === 'overview' && <Overview />}
           {currentSection.value === 'metrics' && <Metrics />}
