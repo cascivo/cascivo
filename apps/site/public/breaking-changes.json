@@ -527,7 +527,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.20",
+      "version": "0.2.21",
       "releases": [
         {
           "version": "0.2.0",
@@ -540,7 +540,7 @@
     },
     {
       "name": "@cascivo/docspack",
-      "version": "0.3.6",
+      "version": "0.3.7",
       "releases": [
         {
           "version": "0.3.0",

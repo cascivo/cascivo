@@ -18,8 +18,8 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 | `create-cascivo`         | 0.1.1   | 0.1.0 — `cascivo create --framework cloudflare` scaffolds a client-rendered app and its   | [CHANGELOG](packages/create-cascivo/CHANGELOG.md) |
 | `@cascivo/css`           | 0.1.0   | 0.1.0 — New package: cascivo's markup contract as plain CSS. `@cascivo/css/cascivo.css`   | [CHANGELOG](packages/css/CHANGELOG.md)            |
 | `@cascivo/data`          | 0.1.1   | 0.1.0 — New package: `@cascivo/data`, client data primitives with zero dependencies. The  | [CHANGELOG](packages/data/CHANGELOG.md)           |
-| `@cascivo/docs`          | 0.2.20  | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/docs/CHANGELOG.md)           |
-| `@cascivo/docspack`      | 0.3.6   | 0.3.0 — The CLI ships a machine-readable description of every command (`dist/cmdspec.jso  | [CHANGELOG](packages/docspack/CHANGELOG.md)       |
+| `@cascivo/docs`          | 0.2.21  | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/docs/CHANGELOG.md)           |
+| `@cascivo/docspack`      | 0.3.7   | 0.3.0 — The CLI ships a machine-readable description of every command (`dist/cmdspec.jso  | [CHANGELOG](packages/docspack/CHANGELOG.md)       |
 | `@cascivo/editor`        | 1.12.0  | 1.3.0 — Editor: line numbers, the current-line highlight and the left gutter all survive  | [CHANGELOG](packages/editor/CHANGELOG.md)         |
 | `@cascivo/elements`      | 0.1.0   | 0.1.0 — New packages for the no-React stack. `@cascivo/elements`: light-DOM custom eleme  | [CHANGELOG](packages/elements/CHANGELOG.md)       |
 | `@cascivo/email`         | 0.6.1   | 0.6.0 — Dead links block a send, and Resend is a sender.                                  | [CHANGELOG](packages/email/CHANGELOG.md)          |
